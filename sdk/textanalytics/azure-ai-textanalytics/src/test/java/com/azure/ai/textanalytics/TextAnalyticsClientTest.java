@@ -3,18 +3,14 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.models.DetectedLanguageImpl;
-import com.azure.ai.textanalytics.implementation.models.DocumentSentimentImpl;
-import com.azure.ai.textanalytics.implementation.models.LinkedEntityImpl;
-import com.azure.ai.textanalytics.implementation.models.LinkedEntityMatchImpl;
-import com.azure.ai.textanalytics.implementation.models.SentenceSentimentImpl;
-import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScoresImpl;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
@@ -35,6 +31,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.models.WarningCodeValue.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -106,7 +103,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        validatePrimaryLanguage(new DetectedLanguageImpl("English", "en", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0, null),
             client.detectLanguage("This is a test English Text"));
     }
 
@@ -124,7 +121,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageFaultyText() {
-        DetectedLanguage primaryLanguage = new DetectedLanguageImpl("(Unknown)", "(Unknown)", 0.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
         validatePrimaryLanguage(client.detectLanguage("!@#%%"), primaryLanguage);
     }
 
@@ -143,7 +140,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyCountryHint() {
-        validatePrimaryLanguage(new DetectedLanguageImpl("Spanish", "es", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0, null),
             client.detectLanguage("Este es un documento  escrito en Español", ""));
     }
 
@@ -152,7 +149,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageNoneCountryHint() {
-        validatePrimaryLanguage(new DetectedLanguageImpl("Spanish", "es", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0, null),
             client.detectLanguage("Este es un documento  escrito en Español", "none"));
     }
 
@@ -250,8 +247,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatchImpl("Seattle", 0.0);
-        final LinkedEntity linkedEntity1 = new LinkedEntityImpl("Seattle",
+        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0);
+        final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle",
             new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
         final List<LinkedEntity> linkedEntities = client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week.")
@@ -376,6 +373,26 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
+    @Test
+    public void extractKeyPhrasesWarning() {
+        extractKeyPhrasesWarningRunner(input ->
+            client.extractKeyPhrases(input).getWarnings().forEach(warning-> {
+                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+                }));
+    }
+
+    @Test
+    public void extractKeyPhrasesBatchWarning() {
+        extractKeyPhrasesBatchWarningRunner(inputs ->
+            client.extractKeyPhrasesBatch(inputs, null, Context.NONE).forEach(keyPhrasesResult ->
+                keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
+                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+                })
+            ));
+    }
+
     // Sentiment
 
     /**
@@ -383,13 +400,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForTextInput() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(
             TextSentiment.MIXED,
-            new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEGATIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
-                new SentenceSentimentImpl("", TextSentiment.POSITIVE, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
-            )));
+                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
@@ -410,12 +427,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void analyseSentimentForFaultyText() {
-        final DocumentSentiment expectedDocumentSentiment = new DocumentSentimentImpl(TextSentiment.NEUTRAL,
-            new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0),
+        final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.NEUTRAL,
+            new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0)),
-                new SentenceSentimentImpl("", TextSentiment.NEUTRAL, new SentimentConfidenceScoresImpl(0.0, 0.0, 0.0))
-            )));
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 

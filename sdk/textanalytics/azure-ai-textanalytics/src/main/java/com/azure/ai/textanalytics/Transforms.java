@@ -8,16 +8,12 @@ import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorImpl;
-import com.azure.ai.textanalytics.implementation.models.TextDocumentBatchStatisticsImpl;
-import com.azure.ai.textanalytics.implementation.models.TextDocumentStatisticsImpl;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.core.util.logging.ClientLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,8 +24,6 @@ import java.util.function.BiFunction;
  * Helper class to convert service level models to SDK exposes models.
  */
 final class Transforms {
-    private static final ClientLogger LOGGER = new ClientLogger(Transforms.class);
-
     private Transforms() {
     }
 
@@ -61,7 +55,7 @@ final class Transforms {
      * @return the {@link TextDocumentStatistics} returned by the SDK.
      */
     static TextDocumentStatistics toTextDocumentStatistics(DocumentStatistics statistics) {
-        return new TextDocumentStatisticsImpl(statistics.getCharactersCount(), statistics.getTransactionsCount());
+        return new TextDocumentStatistics(statistics.getCharactersCount(), statistics.getTransactionsCount());
     }
 
     /**
@@ -71,7 +65,7 @@ final class Transforms {
      * @return the {@link TextDocumentBatchStatistics} returned by the SDK.
      */
     static TextDocumentBatchStatistics toBatchStatistics(RequestStatistics statistics) {
-        return new TextDocumentBatchStatisticsImpl(statistics.getDocumentsCount(), statistics.getValidDocumentsCount(),
+        return new TextDocumentBatchStatistics(statistics.getDocumentsCount(), statistics.getValidDocumentsCount(),
             statistics.getErroneousDocumentsCount(), statistics.getTransactionsCount());
     }
 
@@ -86,12 +80,12 @@ final class Transforms {
     static com.azure.ai.textanalytics.models.TextAnalyticsError toTextAnalyticsError(
         TextAnalyticsError textAnalyticsError) {
         if (textAnalyticsError.getInnererror() == null) {
-            return new TextAnalyticsErrorImpl(
+            return new com.azure.ai.textanalytics.models.TextAnalyticsError(
                 TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
-        return new TextAnalyticsErrorImpl(
+        return new com.azure.ai.textanalytics.models.TextAnalyticsError(
             TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnererror().getCode().toString()),
             textAnalyticsError.getInnererror().getMessage(),
             textAnalyticsError.getInnererror().getTarget());

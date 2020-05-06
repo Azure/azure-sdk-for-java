@@ -5,12 +5,15 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -255,14 +258,14 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
+     * @return A {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CategorizedEntityCollection recognizeEntities(String document) {
         return recognizeEntities(document, client.getDefaultLanguage());
     }
 
@@ -281,16 +284,16 @@ public final class TextAnalyticsClient {
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as default.
      *
-     * @return The {@link TextAnalyticsPagedIterable} contains a list of
+     * @return The {@link CategorizedEntityCollection} contains a list of
      * {@link CategorizedEntity recognized categorized entities}.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntities(String document, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CategorizedEntityCollection recognizeEntities(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedIterable<>(client.recognizeEntities(document, language));
+        return client.recognizeEntities(document, language).block();
     }
 
     /**
@@ -416,14 +419,13 @@ public final class TextAnalyticsClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link LinkedEntity recognized linked entities}.
+     * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<LinkedEntity> recognizeLinkedEntities(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedEntityCollection recognizeLinkedEntities(String document) {
         return recognizeLinkedEntities(document, client.getDefaultLanguage());
     }
 
@@ -443,16 +445,15 @@ public final class TextAnalyticsClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link TextAnalyticsPagedIterable} contains a list of
-     * {@link LinkedEntity recognized linked entities}.
+     * @return A {@link LinkedEntityCollection} contains a list of {@link LinkedEntity recognized linked entities}.
      *
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LinkedEntityCollection recognizeLinkedEntities(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedIterable<>(client.recognizeLinkedEntities(document, language));
+        return client.recognizeLinkedEntities(document, language).block();
     }
 
     /**
@@ -596,8 +597,8 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<String> extractKeyPhrases(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyPhrasesCollection extractKeyPhrases(String document) {
         return extractKeyPhrases(document, client.getDefaultLanguage());
     }
 
@@ -620,10 +621,10 @@ public final class TextAnalyticsClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedIterable<String> extractKeyPhrases(String document, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyPhrasesCollection extractKeyPhrases(String document, String language) {
         Objects.requireNonNull(document, "'document' cannot be null.");
-        return new TextAnalyticsPagedIterable<>(client.extractKeyPhrases(document, language));
+        return client.extractKeyPhrases(document, language).block();
     }
 
     /**

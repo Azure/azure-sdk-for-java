@@ -3,12 +3,12 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,7 +34,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     public TextAnalyticsAsyncClient createTextAnalyticsAsyncClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.instantiation
@@ -48,7 +49,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -197,10 +198,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(document)
-            .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %f.%n",
+            .subscribe(entityCollection -> entityCollection.forEach(entity ->
+                System.out.printf("Recognized categorized entity: %s, category: %s, score: %f.%n",
                 entity.getText(),
                 entity.getCategory(),
-                entity.getConfidenceScore()));
+                entity.getConfidenceScore())));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string
     }
 
@@ -211,10 +213,11 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsAsyncClient.recognizeEntities(document, "en")
-            .subscribe(entity -> System.out.printf("Recognized categorized entity: %s, category: %s, score: %f.%n",
+            .subscribe(entityCollection -> entityCollection.forEach(entity ->
+                System.out.printf("Recognized categorized entity: %s, category: %s, score: %f.%n",
                 entity.getText(),
                 entity.getCategory(),
-                entity.getConfidenceScore()));
+                entity.getConfidenceScore())));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeEntities#string-string
     }
 
@@ -327,14 +330,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
         String document = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntities(document).subscribe(linkedEntity -> {
-            System.out.println("Linked Entities:");
-            System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
-                linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
-                linkedEntity.getDataSource());
-            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
-        });
+        textAnalyticsAsyncClient.recognizeLinkedEntities(document).subscribe(
+            linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
+                System.out.println("Linked Entities:");
+                System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
+                    linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
+                    linkedEntity.getDataSource());
+                linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                    "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+            }));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string
     }
 
@@ -345,15 +349,15 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
         String document = "Old Faithful is a geyser at Yellowstone Park.";
-        textAnalyticsAsyncClient.recognizeLinkedEntities(document, "en")
-            .subscribe(linkedEntity -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntities(document, "en").subscribe(
+            linkedEntityCollection -> linkedEntityCollection.forEach(linkedEntity -> {
                 System.out.println("Linked Entities:");
                 System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                     linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                     linkedEntity.getDataSource());
                 linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
                     "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
-            });
+            }));
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntities#string-string
     }
 
@@ -788,8 +792,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
     // Text Analytics Paged flux
     public void textAnalyticsPagedFluxSample() {
-        TextAnalyticsPagedFlux<CategorizedEntity> pagedFlux =
-            textAnalyticsAsyncClient.recognizeEntities("");
+        TextAnalyticsPagedFlux<RecognizeEntitiesResult> pagedFlux =
+            textAnalyticsAsyncClient.recognizeEntitiesBatch(Collections.singletonList(""));
         // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribe
         pagedFlux
             .log()

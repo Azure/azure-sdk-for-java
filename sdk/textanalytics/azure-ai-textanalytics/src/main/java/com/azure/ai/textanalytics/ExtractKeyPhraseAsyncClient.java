@@ -6,13 +6,14 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
-import com.azure.ai.textanalytics.implementation.models.ExtractKeyPhraseResultImpl;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCodeValue;
@@ -40,6 +41,7 @@ import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -61,40 +63,28 @@ class ExtractKeyPhraseAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains extracted key phrases.
+     * Helper function for calling service with max overloaded parameters that a returns {@link KeyPhrasesCollection}.
      *
      * @param document A document.
      * @param language The language code.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of extracted key phrases strings.
+     * @return The {@link Mono} of {@link KeyPhrasesCollection} extracted key phrases strings.
      */
-    TextAnalyticsPagedFlux<String> extractKeyPhrasesSingleText(String document, String language) {
+    Mono<KeyPhrasesCollection> extractKeyPhrasesSingleText(String document, String language) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> extractKeyPhrases(
-                    Collections.singletonList(new TextDocumentInput("0", document, language)), null).byPage()
-                    .map(resOfResult -> {
-                        final Iterator<ExtractKeyPhraseResult> iterator = resOfResult.getValue().iterator();
-                        // Collection will never empty
-                        if (!iterator.hasNext()) {
-                            throw logger.logExceptionAsError(new IllegalStateException(
-                                "An empty collection returned which is an unexpected error."));
-                        }
-
-                        final ExtractKeyPhraseResult keyPhraseResult = iterator.next();
+            return extractKeyPhrases(
+                    Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+                    .map(keyPhraseResult -> {
                         if (keyPhraseResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
                         }
 
-                        return new TextAnalyticsPagedResponse<>(
-                            resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                            keyPhraseResult.getKeyPhrases().stream().collect(Collectors.toList()),
-                            null, resOfResult.getModelVersion(), resOfResult.getStatistics());
-                    }));
+                        return new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
+                            keyPhraseResult.getKeyPhrases().getWarnings());
+                    }).last();
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
@@ -155,13 +145,13 @@ class ExtractKeyPhraseAsyncClient {
         final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
         for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
             final String documentId = documentKeyPhrases.getId();
-            keyPhraseResultList.add(new ExtractKeyPhraseResultImpl(
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(
                 documentId,
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
                 new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                    new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
                         warning.getMessage()))
                     .collect(Collectors.toList()))));
         }
@@ -172,7 +162,7 @@ class ExtractKeyPhraseAsyncClient {
 
             final String documentId = documentError.getId();
 
-            keyPhraseResultList.add(new ExtractKeyPhraseResultImpl(
+            keyPhraseResultList.add(new ExtractKeyPhraseResult(
                 documentId, null, error, null, null));
         }
 

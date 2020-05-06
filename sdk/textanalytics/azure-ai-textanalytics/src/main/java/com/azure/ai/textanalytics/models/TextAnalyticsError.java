@@ -4,10 +4,42 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /**
  * The {@link TextAnalyticsError} model.
  */
-public interface TextAnalyticsError {
+@Immutable
+public final class TextAnalyticsError {
+    /*
+     * Error code. Possible values include: 'invalidRequest',
+     * 'invalidArgument', 'internalServerError', 'serviceUnavailable'
+     */
+    private final TextAnalyticsErrorCode code;
+
+    /*
+     * Error message.
+     */
+    private final String message;
+
+    /*
+     * Error target.
+     */
+    private final String target;
+
+    /**
+     * Creates a {@code TextAnalyticsError} model that describes text analytics error.
+     *
+     * @param code The error code.
+     * @param message The error message.
+     * @param target The error target.
+     */
+    public TextAnalyticsError(TextAnalyticsErrorCode code, String message, String target) {
+        this.code = code;
+        this.message = message;
+        this.target = target;
+    }
+
     /**
      * Get the code property: Error code. Possible values include:
      * 'invalidRequest', 'invalidArgument', 'internalServerError',
@@ -15,19 +47,25 @@ public interface TextAnalyticsError {
      *
      * @return The code value.
      */
-    TextAnalyticsErrorCode getCode();
+    public TextAnalyticsErrorCode getCode() {
+        return this.code;
+    }
 
     /**
      * Get the message property: Error message.
      *
      * @return The message value.
      */
-    String getMessage();
+    public String getMessage() {
+        return this.message;
+    }
 
     /**
      * Get the target property: Error target.
      *
      * @return The target value.
      */
-    String getTarget();
+    public String getTarget() {
+        return this.target;
+    }
 }

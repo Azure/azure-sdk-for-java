@@ -58,7 +58,9 @@ import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
+import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -74,12 +76,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final Map<String, String> properties = CoreUtils.getProperties(TEXT_ANALYTICS_PROPERTIES);
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
-    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResultImpl returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
+    static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
+    static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
 
     <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
         AzureKeyCredential credential = null;
@@ -204,6 +207,12 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void extractKeyPhrasesForListLanguageHint();
+
+    @Test
+    abstract void extractKeyPhrasesWarning();
+
+    @Test
+    abstract void extractKeyPhrasesBatchWarning();
 
     // Sentiment
     @Test
@@ -349,6 +358,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void extractBatchKeyPhrasesDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(getDuplicateTextDocumentInputs());
+    }
+
+    void extractKeyPhrasesWarningRunner(Consumer<String> testRunner) {
+        testRunner.accept(TOO_LONG_INPUT);
+    }
+
+    void extractKeyPhrasesBatchWarningRunner(Consumer<List<TextDocumentInput>> testRunner) {
+        testRunner.accept(getWarningsTextDocumentInputs());
     }
 
     // Sentiment Runner
@@ -613,7 +630,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualStatistics the value returned by API.
      */
     private static void validateBatchStatistics(TextDocumentBatchStatistics expectedStatistics,
-        TextDocumentBatchStatistics actualStatistics) {
+                                                TextDocumentBatchStatistics actualStatistics) {
         assertEquals(expectedStatistics.getDocumentCount(), actualStatistics.getDocumentCount());
         assertEquals(expectedStatistics.getInvalidDocumentCount(), actualStatistics.getInvalidDocumentCount());
         assertEquals(expectedStatistics.getValidDocumentCount(), actualStatistics.getValidDocumentCount());

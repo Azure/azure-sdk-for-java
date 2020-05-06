@@ -4,19 +4,16 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.AnalyzeSentimentResultImpl;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
-import com.azure.ai.textanalytics.implementation.models.DocumentSentimentImpl;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.SentenceSentimentImpl;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
-import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScoresImpl;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -118,7 +115,7 @@ class AnalyzeSentimentAsyncClient {
             analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
-            analyzeSentimentResults.add(new AnalyzeSentimentResultImpl(documentError.getId(), null,
+            analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null, null));
         }
         return new TextAnalyticsPagedResponse<>(
@@ -164,26 +161,32 @@ class AnalyzeSentimentAsyncClient {
                 final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
                     sentenceSentiment.getConfidenceScores();
 
-                return new SentenceSentimentImpl(sentenceSentiment.getText(),
+                return new SentenceSentiment(sentenceSentiment.getText(),
                     sentenceSentimentLabel,
-                    new SentimentConfidenceScoresImpl(confidenceScorePerSentence.getNegative(),
+                    new SentimentConfidenceScores(confidenceScorePerSentence.getNegative(),
                         confidenceScorePerSentence.getNeutral(), confidenceScorePerSentence.getPositive()));
             }).collect(Collectors.toList());
 
-        return new AnalyzeSentimentResultImpl(
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentSentiment.getWarnings().stream().map(
+            warning -> new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
+                warning.getMessage())).collect(Collectors.toList());
+
+        return new AnalyzeSentimentResult(
             documentSentiment.getId(),
             documentSentiment.getStatistics() == null
                 ? null : toTextDocumentStatistics(documentSentiment.getStatistics()),
             null,
-            new DocumentSentimentImpl(
+            new com.azure.ai.textanalytics.models.DocumentSentiment(
                 documentSentimentLabel,
-                new SentimentConfidenceScoresImpl(
+                new SentimentConfidenceScores(
                     confidenceScorePerLabel.getNegative(),
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
-                new IterableStream<>(sentenceSentiments)),
+                new IterableStream<>(sentenceSentiments),
+                new IterableStream<>(warnings)),
                 new IterableStream<>(documentSentiment.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                    new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
                         warning.getMessage()))
                     .collect(Collectors.toList()))
         );

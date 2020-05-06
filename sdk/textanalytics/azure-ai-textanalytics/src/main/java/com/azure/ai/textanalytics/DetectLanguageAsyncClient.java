@@ -4,16 +4,15 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.DetectLanguageResultImpl;
-import com.azure.ai.textanalytics.implementation.models.DetectedLanguageImpl;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.WarningCodeValue;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
@@ -111,21 +110,29 @@ class DetectLanguageAsyncClient {
         for (DocumentLanguage documentLanguage : languageResult.getDocuments()) {
             com.azure.ai.textanalytics.implementation.models.DetectedLanguage detectedLanguage =
                 documentLanguage.getDetectedLanguage();
-            detectLanguageResults.add(new DetectLanguageResultImpl(
+
+            // warnings
+            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream().map(warning ->
+                new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
+                    warning.getMessage())).collect(Collectors.toList());
+
+
+            detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
                     ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
-                new DetectedLanguageImpl(detectedLanguage.getName(),
-                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore()),
+                new DetectedLanguage(detectedLanguage.getName(),
+                    detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
+                    new IterableStream<>(warnings)),
                 new IterableStream<>(documentLanguage.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                    new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
                         warning.getMessage()))
                     .collect(Collectors.toList()))));
         }
 
         for (DocumentError documentError : languageResult.getErrors()) {
-            detectLanguageResults.add(new DetectLanguageResultImpl(documentError.getId(), null,
+            detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null, null));
         }
 

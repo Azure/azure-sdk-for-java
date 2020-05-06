@@ -3,30 +3,90 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.IterableStream;
+
 /**
  * The {@link DetectedLanguage} model.
  */
-public interface DetectedLanguage {
+@Immutable
+public final class DetectedLanguage {
     /**
-     * Get the name property: Long name of a detected language (e.g. English, French).
      *
-     * @return The name value.
+     * Long name of a detected language (e.g. English, French).
      */
-    String getName();
+    private final String name;
+
+    /**
+     * A two letter representation of the detected language according to the
+     * ISO 639-1 standard (e.g. en, fr).
+     */
+    private final String iso6391Name;
+
+    /**
+     * A confidence score between 0 and 1. Scores close to 1 indicate 100%
+     * certainty that the identified language is true.
+     */
+    private final double confidenceScore;
+
+    /**
+     * A {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     */
+    private final IterableStream<TextAnalyticsWarning> warnings;
+
+    /**
+     * Creates a {@link DetectedLanguage} model that describes detected language content.
+     *
+     * @param name The name of a detected language.
+     * @param iso6391Name A two letter representation of the detected language according to the ISO 639-1 standard.
+     * @param confidenceScore A confidence score between 0 and 1.
+     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
+     */
+    public DetectedLanguage(String name, String iso6391Name, double confidenceScore,
+                            IterableStream<TextAnalyticsWarning> warnings) {
+        this.name = name;
+        this.iso6391Name = iso6391Name;
+        this.confidenceScore = confidenceScore;
+        this.warnings = warnings;
+    }
+
+    /**
+     * Get the name property: Long name of a detected language (e.g. English,
+     * French).
+     *
+     * @return the name value.
+     */
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Get the iso6391Name property: A two letter representation of the
      * detected language according to the ISO 639-1 standard (e.g. en, fr).
      *
-     * @return The iso6391Name value.
+     * @return the iso6391Name value.
      */
-    String getIso6391Name();
+    public String getIso6391Name() {
+        return this.iso6391Name;
+    }
 
     /**
-     * Get the score property: A confidence score between 0 and 1. Scores close
-     * to 1 indicate 100% certainty that the identified language is true.
+     * Get the confidenceScore property: A confidence score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language
+     * is true.
      *
-     * @return The score value.
+     * @return the confidenceScore value.
      */
-    double getConfidenceScore();
+    public double getConfidenceScore() {
+        return this.confidenceScore;
+    }
+
+    /**
+     * Get the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     *
+     * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
+     */
+    public IterableStream<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
 }

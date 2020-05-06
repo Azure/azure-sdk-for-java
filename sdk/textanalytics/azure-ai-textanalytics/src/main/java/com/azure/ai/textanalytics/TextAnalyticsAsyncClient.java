@@ -6,12 +6,15 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -168,7 +171,6 @@ public final class TextAnalyticsAsyncClient {
             return detectLanguageBatch(Collections.singletonList(document), countryHint, null)
                 .map(detectLanguageResult -> {
                     if (detectLanguageResult.isError()) {
-                        // TODO: throw HttpResponseException instead
                         throw logger.logExceptionAsError(toTextAnalyticsException(detectLanguageResult.getError()));
                     }
                     return detectLanguageResult.getPrimaryLanguage();
@@ -320,8 +322,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CategorizedEntityCollection> recognizeEntities(String document) {
         return recognizeEntities(document, defaultLanguage);
     }
 
@@ -349,8 +351,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CategorizedEntityCollection> recognizeEntities(String document, String language) {
         return recognizeEntityAsyncClient.recognizeEntities(document, language);
     }
 
@@ -489,8 +491,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LinkedEntityCollection> recognizeLinkedEntities(String document) {
         return recognizeLinkedEntities(document, defaultLanguage);
     }
 
@@ -514,8 +516,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<LinkedEntity> recognizeLinkedEntities(String document, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<LinkedEntityCollection> recognizeLinkedEntities(String document, String language) {
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(document, language);
     }
 
@@ -658,8 +660,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyPhrasesCollection> extractKeyPhrases(String document) {
         return extractKeyPhrases(document, defaultLanguage);
     }
 
@@ -684,8 +686,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws NullPointerException if {@code document} is {@code null}.
      * @throws TextAnalyticsException if the response returned with an {@link TextAnalyticsError error}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public TextAnalyticsPagedFlux<String> extractKeyPhrases(String document, String language) {
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<KeyPhrasesCollection> extractKeyPhrases(String document, String language) {
         return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(document, language);
     }
 
@@ -856,7 +858,6 @@ public final class TextAnalyticsAsyncClient {
             return analyzeSentimentBatch(Collections.singletonList(document), language, null)
                 .map(sentimentResult -> {
                     if (sentimentResult.isError()) {
-                        // TODO: throw HttpResponseException instead
                         throw logger.logExceptionAsError(toTextAnalyticsException(sentimentResult.getError()));
                     }
                     return sentimentResult.getDocumentSentiment();

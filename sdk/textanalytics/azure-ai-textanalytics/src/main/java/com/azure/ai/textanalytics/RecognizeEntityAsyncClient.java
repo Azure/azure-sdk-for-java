@@ -4,15 +4,14 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.implementation.models.CategorizedEntityImpl;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.RecognizeEntitiesResultImpl;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsWarningImpl;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
+import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCodeValue;
@@ -27,7 +26,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -40,6 +38,7 @@ import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.core.util.FluxUtil.fluxError;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -61,41 +60,28 @@ class RecognizeEntityAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link CategorizedEntity}.
+     * Helper function for calling service with max overloaded parameters that a returns {@link Mono}
+     * which is a paged flux that contains {@link CategorizedEntityCollection}.
      *
      * @param document A single document.
      * @param language The language code.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link CategorizedEntity}.
+     * @return The {@link Mono} of {@link CategorizedEntityCollection}.
      */
-    TextAnalyticsPagedFlux<CategorizedEntity> recognizeEntities(String document, String language) {
+    Mono<CategorizedEntityCollection> recognizeEntities(String document, String language) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> recognizeEntitiesBatch(
+            return recognizeEntitiesBatch(
                     Collections.singletonList(new TextDocumentInput("0", document, language)), null)
-                    .byPage()
-                    .map(resOfResult -> {
-                        Iterator<RecognizeEntitiesResult> iterator = resOfResult.getValue().iterator();
-                        // Collection will never empty
-                        if (!iterator.hasNext()) {
-                            throw logger.logExceptionAsError(new IllegalStateException(
-                                "An empty collection returned which is an unexpected error."));
-                        }
-
-                        final RecognizeEntitiesResult entitiesResult = iterator.next();
+                    .map(entitiesResult -> {
                         if (entitiesResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
-
-                        return new TextAnalyticsPagedResponse<>(
-                            resOfResult.getRequest(), resOfResult.getStatusCode(), resOfResult.getHeaders(),
-                            entitiesResult.getEntities().stream().collect(Collectors.toList()), null,
-                            resOfResult.getModelVersion(), resOfResult.getStatistics());
-                    }));
+                        return new CategorizedEntityCollection(entitiesResult.getEntities(),
+                            entitiesResult.getEntities().getWarnings());
+                    }).last();
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
@@ -156,23 +142,23 @@ class RecognizeEntityAsyncClient {
         // List of documents results
         List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
         entitiesResult.getDocuments().forEach(documentEntities ->
-            recognizeEntitiesResults.add(new RecognizeEntitiesResultImpl(
+            recognizeEntitiesResults.add(new RecognizeEntitiesResult(
                 documentEntities.getId(),
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
                 new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                    new CategorizedEntityImpl(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                    new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
                         entity.getSubcategory(), entity.getConfidenceScore()))
                     .collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarningImpl(WarningCodeValue.fromString(warning.getCode().toString()),
+                    new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
                         warning.getMessage()))
                     .collect(Collectors.toList()))
             )));
         // Document errors
         entitiesResult.getErrors().forEach(documentError -> recognizeEntitiesResults.add(
-            new RecognizeEntitiesResultImpl(documentError.getId(), null,
+            new RecognizeEntitiesResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null, null)));
 
         return new TextAnalyticsPagedResponse<>(

@@ -41,7 +41,7 @@ public class ReadmeSamples {
      */
     public void useApiKeySyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
@@ -51,7 +51,7 @@ public class ReadmeSamples {
      */
     public void useApiKeyAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
     }
@@ -72,7 +72,7 @@ public class ReadmeSamples {
     public void rotatingApiKey() {
         AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 

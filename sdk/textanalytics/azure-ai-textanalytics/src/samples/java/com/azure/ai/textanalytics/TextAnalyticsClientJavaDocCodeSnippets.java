@@ -4,10 +4,11 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.CategorizedEntity;
+import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.LinkedEntity;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
@@ -20,6 +21,7 @@ import com.azure.core.util.Context;
 
 import java.net.HttpURLConnection;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .build();
 
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
@@ -52,7 +54,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void createTextAnalyticsClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
@@ -201,7 +203,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntities() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String
-        final TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntitiesResult =
+        final CategorizedEntityCollection recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft");
         for (CategorizedEntity entity : recognizeEntitiesResult) {
             System.out.printf("Recognized entity: %s, entity category: %s, score: %f.%n",
@@ -215,7 +217,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      */
     public void recognizeEntitiesWithLanguage() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeCategorizedEntities#String-String
-        final TextAnalyticsPagedIterable<CategorizedEntity> recognizeEntitiesResult =
+        final CategorizedEntityCollection recognizeEntitiesResult =
             textAnalyticsClient.recognizeEntities("Satya Nadella is the CEO of Microsoft", "en");
 
         for (CategorizedEntity entity : recognizeEntitiesResult) {
@@ -858,13 +860,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
      * Code snippet for {@Link TextAnalyticsPagedIterable}
      */
     public void textAnalyticsPagedIterableSample() {
-        TextAnalyticsPagedIterable<LinkedEntity> pagedIterable = textAnalyticsClient.recognizeLinkedEntities("");
+        TextAnalyticsPagedIterable<RecognizeLinkedEntitiesResult> pagedIterable =
+            textAnalyticsClient.recognizeLinkedEntitiesBatch(Collections.singleton(""));
         // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable.stream
         pagedIterable.stream().forEach(item -> System.out.println("Processing item" + item));
         // END: com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable.stream
 
         // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable.iterator
-        Iterator<LinkedEntity> iterator = pagedIterable.iterator();
+        Iterator<RecognizeLinkedEntitiesResult> iterator = pagedIterable.iterator();
         while (iterator.hasNext()) {
             System.out.println("Processing item" + iterator.next());
         }
