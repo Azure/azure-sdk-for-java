@@ -34,7 +34,7 @@ final class IdentitesImpl
         if (inner == null) {
             return null;
         } else {
-            return new IdentityImpl(inner.getName(), inner, this.manager());
+            return new IdentityImpl(inner.name(), inner, this.manager());
         }
     }
 

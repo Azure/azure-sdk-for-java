@@ -33,17 +33,17 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().getId());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

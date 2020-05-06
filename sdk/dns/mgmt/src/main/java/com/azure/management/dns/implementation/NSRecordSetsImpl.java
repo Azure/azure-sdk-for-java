@@ -67,6 +67,6 @@ class NSRecordSetsImpl extends DnsRecordSetsBaseImpl<NSRecordSet, NSRecordSetImp
         if (inner == null) {
             return null;
         }
-        return new NSRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new NSRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

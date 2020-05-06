@@ -58,7 +58,7 @@ final class PolicyAssignmentsImpl
         if (inner == null) {
             return null;
         }
-        return new PolicyAssignmentImpl(inner.getName(), inner, client);
+        return new PolicyAssignmentImpl(inner.name(), inner, client);
     }
 
     @Override
