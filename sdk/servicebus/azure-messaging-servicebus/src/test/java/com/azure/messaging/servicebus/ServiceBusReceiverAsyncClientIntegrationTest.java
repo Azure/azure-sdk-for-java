@@ -958,7 +958,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
+     * Sets the sender, receiver and receiver2. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
         this.isSessionEnabled = isSessionEnabled;
