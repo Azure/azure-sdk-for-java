@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,6 +65,7 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
 
         when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
