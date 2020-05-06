@@ -93,7 +93,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 
-#### Create a Service Bus client using Microsoft identity platform (formerly Azure Active Directory)
+#### Create a Service Bus client using Microsoft Identity platform (formerly Azure Active Directory)
 
 Azure SDK for Java supports an Azure Identity package, making it simple to get credentials from the Microsoft identity
 platform. First, add the package:
@@ -118,6 +118,7 @@ running environment. For more information about using Azure Active Directory aut
 refer to [the associated documentation][aad_authorization].
 
 Use the returned token credential to authenticate the client:
+
 <!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L48-L54 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder()
@@ -222,7 +223,7 @@ Disposable subscription = receiver.receive().subscribe(context -> {
 When a message is received, it can be settled using any of the `complete()`, `abandon()`, `defer()`, or `deadLetter()`
 overloads. The sample below completes a received message from synchronous `ServiceBusReceiverClient`.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L126-131 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L126-L131 -->
 ```java
 receiver.receive(10).forEach(context -> {
     ServiceBusReceivedMessage message = context.getMessage();
@@ -246,7 +247,7 @@ that session.
 Create a `ServiceBusSenderClient` for a session enabled queue or topic subscription. Setting `.setSessionId(String)` on
 a `ServiceBusMessage` will publish the message to that session. If the session does not exist, it is created.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L150-153 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L150-L153 -->
 ```java
 ServiceBusMessage message = new ServiceBusMessage("Hello world".getBytes())
     .setSessionId("greetings");
@@ -260,7 +261,7 @@ Receivers can fetch messages from a specific session or the first available, unl
 a receiver for a session with id "greetings". The second snippet creates a receiver that fetches the first available
 session.
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L160-165 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L160-L165 -->
 ```java
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -270,7 +271,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L172-176 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L172-L176 -->
 ```java
 ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
@@ -346,7 +347,7 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
-[message-sessions]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/message-sessions
+[message-sessions]: https://docs.microsoft.com/azure/service-bus-messaging/message-sessions
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
 [product_docs]: https://docs.microsoft.com/azure/service-bus-messaging
@@ -356,7 +357,7 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [sample_examples]: ./src/samples/java/com/azure/messaging/servicebus/
 [samples_readme]: ./src/samples/README.md
 [service_bus_connection_string]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
-[servicebus_create]: https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-create-namespace-portal
+[servicebus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
 [servicebus_messsaging_exceptions]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
 [servicebus_roles]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
