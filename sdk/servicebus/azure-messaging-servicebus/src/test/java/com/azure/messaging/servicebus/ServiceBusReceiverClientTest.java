@@ -382,9 +382,9 @@ class ServiceBusReceiverClientTest {
         final int maxMessages = 10;
         final int numberToEmit = 5;
         final Duration receiveTimeout = Duration.ofSeconds(2);
+        final AtomicInteger emittedMessages = new AtomicInteger();
         Flux<ServiceBusReceivedMessageContext> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
-                final AtomicInteger emittedMessages = new AtomicInteger();
                 if (emittedMessages.get() >= numberToEmit) {
                     logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);
