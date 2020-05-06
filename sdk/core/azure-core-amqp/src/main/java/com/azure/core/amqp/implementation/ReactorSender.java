@@ -204,14 +204,16 @@ class ReactorSender implements AmqpSendLink {
 
                     try {
                         encodedSize =
-                            messageWrappedByData.encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
+                            messageWrappedByData
+                                .encode(bytes, byteArrayOffset, maxMessageSizeTemp - byteArrayOffset - 1);
                     } catch (BufferOverflowException exception) {
                         final String message =
                             String.format(Locale.US,
                                 "Size of the payload exceeded maximum message size: %s kb",
                                 maxMessageSizeTemp / 1024);
-                        final AmqpException error = new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                            message, exception, handler.getErrorContext(sender));
+                        final AmqpException error = new AmqpException(false,
+                            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED, message, exception,
+                            handler.getErrorContext(sender));
 
                         return Mono.error(error);
                     }
