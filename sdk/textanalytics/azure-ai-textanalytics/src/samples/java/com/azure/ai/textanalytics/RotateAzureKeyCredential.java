@@ -9,7 +9,7 @@ import com.azure.core.exception.HttpResponseException;
 /**
  * Sample demonstrates how to rotate the existing API key of text analytics client
  */
-public class RotateApiKey {
+public class RotateAzureKeyCredential {
 
     /**
      * Main method to invoke this demo about how to rotate the existing API key of text analytics client.

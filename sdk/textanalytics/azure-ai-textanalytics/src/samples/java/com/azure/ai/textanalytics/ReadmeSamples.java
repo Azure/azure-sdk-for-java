@@ -37,9 +37,9 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for getting sync client using the API key authentication.
+     * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
-    public void useApiKeySyncClient() {
+    public void useAzureKeyCredentialSyncClient() {
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
@@ -47,9 +47,9 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for getting async client using API key authentication.
+     * Code snippet for getting async client using AzureKeyCredential authentication.
      */
-    public void useApiKeyAsyncClient() {
+    public void useAzureKeyCredentialAsyncClient() {
         TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(new AzureKeyCredential("{api_key}"))
             .endpoint("{endpoint}")
@@ -67,9 +67,9 @@ public class ReadmeSamples {
     }
 
     /**
-     * Code snippet for rotating API key of the client
+     * Code snippet for rotating AzureKeyCredential of the client
      */
-    public void rotatingApiKey() {
+    public void rotatingAzureKeyCredential() {
         AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(credential)

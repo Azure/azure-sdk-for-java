@@ -48,10 +48,10 @@ public class FormRecognizerClientBuilderUnitTest {
     }
 
     /**
-     * Test for null API key
+     * Test for null AzureKeyCredential
      */
     @Test
-    public void nullApiKey() {
+    public void nullAzureKeyCredential() {
         assertThrows(NullPointerException.class, () -> {
             final FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder();
             builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
@@ -59,10 +59,10 @@ public class FormRecognizerClientBuilderUnitTest {
     }
 
     /**
-     * Test for empty Api Key without any other authentication
+     * Test for empty Key without any other authentication
      */
     @Test
-    public void emptyApiKey() {
+    public void emptyKeyCredential() {
         assertThrows(IllegalArgumentException.class, () -> new AzureKeyCredential(""));
     }
 }

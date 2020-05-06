@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to rotate the existing API key of text analytics client
  */
-public class RotateApiKeyAsync {
+public class RotateAzureKeyCredentialAsync {
 
     /**
      * Main method to invoke this demo about how to rotate the existing API key of text analytics client.

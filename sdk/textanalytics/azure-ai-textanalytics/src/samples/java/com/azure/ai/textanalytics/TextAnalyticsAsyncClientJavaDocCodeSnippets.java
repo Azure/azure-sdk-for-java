@@ -43,8 +43,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     /**
      * Code snippet for updating the existing API key.
      */
-    public void rotateApiKey() {
-        // BEGIN: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
+    public void rotateAzureKeyCredential() {
+        // BEGIN: com.azure.ai.textanalytics.models.AzureKeyCredential
         AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
 
         TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
@@ -53,7 +53,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         credential.update("{new_api_key}");
-        // END: com.azure.ai.textanalytics.models.TextAnalyticsApiKeyCredential
+        // END: com.azure.ai.textanalytics.models.AzureKeyCredential
     }
 
     // Languages
