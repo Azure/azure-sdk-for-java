@@ -30,7 +30,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosContainer container;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled")
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled")
     public CosmosItemContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -50,7 +50,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void createItem_withContentResponseOnWriteEnabled() throws Exception {
+    public void createItem_withContentResponseOnWriteDisabled() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
@@ -62,7 +62,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readItem_withContentResponseOnWriteEnabled() throws Exception {
+    public void readItem_withContentResponseOnWriteDisabled() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -76,7 +76,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void replaceItem_withContentResponseOnWriteEnabled() throws Exception{
+    public void replaceItem_withContentResponseOnWriteDisabled() throws Exception{
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
 
@@ -94,7 +94,7 @@ public class CosmosItemContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void deleteItem_withContentResponseOnWriteEnabled() throws Exception {
+    public void deleteItem_withContentResponseOnWriteDisabled() throws Exception {
         CosmosItemProperties properties = getDocumentDefinition(UUID.randomUUID().toString());
         CosmosItemResponse<CosmosItemProperties> itemResponse = container.createItem(properties);
         CosmosItemRequestOptions options = new CosmosItemRequestOptions();

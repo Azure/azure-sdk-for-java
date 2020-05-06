@@ -80,6 +80,7 @@ public class DCDocumentCrudTest extends TestSuiteBase {
             .withConfigs(configs)
             .withConnectionPolicy(connectionPolicy)
             .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY);
     }
 

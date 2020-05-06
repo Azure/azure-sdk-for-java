@@ -200,7 +200,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("beforeSuite Started");
 
-        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(false).buildAsyncClient()) {
+        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
             SHARED_DATABASE = dbForTest.createdDatabase;
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -216,7 +216,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         logger.info("afterSuite Started");
 
-        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(false).buildAsyncClient()) {
+        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             safeDeleteDatabase(SHARED_DATABASE);
             CosmosDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
         }
@@ -844,15 +844,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @DataProvider
     public static Object[][] clientBuilders() {
-        return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, false)}};
+        return new Object[][]{{createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}};
     }
 
     @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, false)},
-            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, false)},
-            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, false)}
+            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.HTTPS, false, null, true)},
+            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true)},
+            {createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true)}
         };
     }
 
@@ -914,7 +914,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
-    public static Object[][] simpleClientBuildersWithDirectTcpWithContentResponseOnWriteEnabled() {
+    public static Object[][] simpleClientBuildersWithDirectTcpWithContentResponseOnWriteDisabled() {
         return simpleClientBuildersWithDirect(false, Protocol.TCP);
     }
 
@@ -966,7 +966,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
-    public static Object[][] clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled() {
+    public static Object[][] clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled() {
         return clientBuildersWithDirectAllConsistencies(false, Protocol.TCP);
     }
 
@@ -1084,7 +1084,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient() {
-        return createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, false);
+        return createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true);
     }
 
     static protected CosmosClientBuilder createDirectRxDocumentClient(ConsistencyLevel consistencyLevel,

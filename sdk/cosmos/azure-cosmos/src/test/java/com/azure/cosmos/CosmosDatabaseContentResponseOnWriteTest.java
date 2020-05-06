@@ -28,7 +28,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled")
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled")
     public CosmosDatabaseContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -50,7 +50,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase_withContentResponseOnWriteEnabled() throws CosmosClientException {
+    public void createDatabase_withContentResponseOnWriteDisabled() throws CosmosClientException {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 
@@ -60,7 +60,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void readDatabase_withContentResponseOnWriteEnabled() throws Exception {
+    public void readDatabase_withContentResponseOnWriteDisabled() throws Exception {
         CosmosDatabase database = client.getDatabase(createdDatabase.getId());
         CosmosDatabaseProperties properties = new CosmosDatabaseProperties(createdDatabase.getId());
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();

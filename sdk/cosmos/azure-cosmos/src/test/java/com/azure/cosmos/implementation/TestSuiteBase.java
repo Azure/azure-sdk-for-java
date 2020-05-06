@@ -783,28 +783,28 @@ public class TestSuiteBase extends DocumentClientTest {
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirect() {
-        return simpleClientBuildersWithDirect(toArray(protocols));
+        return simpleClientBuildersWithDirect(true, toArray(protocols));
     }
 
     @DataProvider
     public static Object[][] simpleClientBuildersWithDirectHttps() {
-        return simpleClientBuildersWithDirect(Protocol.HTTPS);
+        return simpleClientBuildersWithDirect(true, Protocol.HTTPS);
     }
 
-    private static Object[][] simpleClientBuildersWithDirect(Protocol... protocols) {
+    private static Object[][] simpleClientBuildersWithDirect(boolean contentResponseOnWriteEnabled, Protocol... protocols) {
         logger.info("Max test consistency to use is [{}]", accountConsistency);
         List<ConsistencyLevel> testConsistencies = ImmutableList.of(ConsistencyLevel.EVENTUAL);
 
         boolean isMultiMasterEnabled = preferredLocations != null && accountConsistency == ConsistencyLevel.SESSION;
 
         List<Builder> builders = new ArrayList<>();
-        builders.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, true));
+        builders.add(createGatewayRxDocumentClient(ConsistencyLevel.SESSION, false, null, contentResponseOnWriteEnabled));
 
         for (Protocol protocol : protocols) {
             testConsistencies.forEach(consistencyLevel -> builders.add(createDirectRxDocumentClient(consistencyLevel,
                                                                                                     protocol,
                                                                                                     isMultiMasterEnabled,
-                                                                                                    preferredLocations, true)));
+                                                                                                    preferredLocations, contentResponseOnWriteEnabled)));
         }
 
         builders.forEach(b -> logger.info("Will Use ConnectionMode [{}], Consistency [{}], Protocol [{}]",
@@ -915,7 +915,7 @@ public class TestSuiteBase extends DocumentClientTest {
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION);
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true);
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {

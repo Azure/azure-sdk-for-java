@@ -30,7 +30,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
     private CosmosDatabase createdDatabase;
 
     //  Currently Gateway and Direct TCP support minimal response feature.
-    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteEnabled")
+    @Factory(dataProvider = "clientBuildersWithDirectTcpWithContentResponseOnWriteDisabled")
     public CosmosContainerContentResponseOnWriteTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -49,7 +49,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer_withContentResponseOnWriteEnabled() throws Exception {
+    public void createContainer_withContentResponseOnWriteDisabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
 
@@ -59,7 +59,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void readContainer_withContentResponseOnWriteEnabled() throws Exception {
+    public void readContainer_withContentResponseOnWriteDisabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
@@ -76,7 +76,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void replaceContainer_withContentResponseOnWriteEnabled() throws Exception {
+    public void replaceContainer_withContentResponseOnWriteDisabled() throws Exception {
 
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
