@@ -254,7 +254,8 @@ public final class TextAnalyticsClientBuilder {
     }
 
     /**
-     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this {@link TextAnalyticsClientBuilder}.
+     * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
+     * {@link TextAnalyticsClientBuilder}.
      *
      * @param keyCredential {@link AzureKeyCredential} API key credential
      * @return The updated {@link TextAnalyticsClientBuilder} object.
