@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.indexes.FieldBuilder;
 import com.azure.search.documents.models.ComplexField;
 import com.azure.search.documents.models.LexicalAnalyzerName;
 import com.azure.search.documents.models.SearchField;
