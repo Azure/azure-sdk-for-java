@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TracerProvider;

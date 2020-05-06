@@ -50,8 +50,8 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
         try {
             this.locationCache = new LocationCache(
-                    new ArrayList<>(connectionPolicy.getPreferredLocations() != null ?
-                            connectionPolicy.getPreferredLocations():
+                    new ArrayList<>(connectionPolicy.getPreferredRegions() != null ?
+                            connectionPolicy.getPreferredRegions():
                             Collections.emptyList()
                     ),
                     owner.getServiceEndpoint(),
@@ -138,7 +138,7 @@ public class GlobalEndpointManager implements AutoCloseable {
             if (forceRefresh) {
                 Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                     this.defaultEndpoint,
-                    new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
+                    new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
                     this::getDatabaseAccountAsync);
 
                 return databaseAccountObs.map(dbAccount -> {
@@ -186,7 +186,7 @@ public class GlobalEndpointManager implements AutoCloseable {
 
                     Mono<DatabaseAccount> databaseAccountObs = getDatabaseAccountFromAnyLocationsAsync(
                             this.defaultEndpoint,
-                            new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
+                            new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
                             this::getDatabaseAccountAsync);
 
                     return databaseAccountObs.map(dbAccount -> {
@@ -246,7 +246,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                             }
 
                             logger.debug("startRefreshLocationTimerAsync() - Invoking refresh, I was registered on [{}]", now);
-                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredLocations()),
+                            Mono<DatabaseAccount> databaseAccountObs = GlobalEndpointManager.getDatabaseAccountFromAnyLocationsAsync(this.defaultEndpoint, new ArrayList<>(this.connectionPolicy.getPreferredRegions()),
                                     this::getDatabaseAccountAsync);
 
                             return databaseAccountObs.flatMap(dbAccount -> {

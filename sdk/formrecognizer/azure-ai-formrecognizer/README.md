@@ -16,6 +16,7 @@ from form documents. It includes the following main functionalities:
 - [Cognitive Services or Form Recognizer account][form_recognizer_account] to use this package.
 
 ### Include the Package
+**Note:** This beta version targets Azure Form Recognizer service API version v2.0-preview.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml

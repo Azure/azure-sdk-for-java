@@ -4,7 +4,7 @@
 package com.azure.core.serializer.json.gson;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.JsonSerializer;
+import com.azure.core.implementation.serializer.JsonSerializer;
 import com.google.gson.Gson;
 
 import java.nio.charset.StandardCharsets;

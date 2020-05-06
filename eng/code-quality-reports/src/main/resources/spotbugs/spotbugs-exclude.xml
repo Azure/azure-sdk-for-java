@@ -60,6 +60,12 @@
       <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
   
+  <!-- Exception needs to be caught here.-->
+  <Match>
+      <Class name="~com\.azure\.identity\.IntelliJCredential"/>
+      <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+  
   <!-- Accesses native api, doesn't follow java style.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
@@ -2015,6 +2021,23 @@
                   NP_LOAD_OF_KNOWN_NULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
+  </Match>
+  
+  
+  <!-- These fields are designed to be not written. They are for deserializing. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
+      <Bug pattern="UWF_UNWRITTEN_FIELD"/>
+  </Match>
+  
+  <!-- These fields use File Reader with default encoding, java 8 doesn't support passing in encoding type. -->
+  <Match>
+      <Class name="com.azure.identity.implementation.IntelliJCacheAccessor"/>
+      <Or>
+          <Method name="getIntellijServicePrincipalDetails"/>
+          <Method name="getKdbxPassword"/>
+      </Or>
+      <Bug pattern="DM_DEFAULT_ENCODING"/>
   </Match>
 
 </FindBugsFilter>

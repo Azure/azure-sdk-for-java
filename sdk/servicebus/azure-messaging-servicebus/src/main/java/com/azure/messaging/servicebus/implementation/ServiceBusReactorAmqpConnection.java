@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpSession;
-import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
@@ -160,7 +159,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
@@ -186,7 +185,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @return A new or existing receive link that is connected to the given {@code entityPath}.
      */
     @Override
-    public Mono<AmqpReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
+    public Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType, String sessionId) {
         return createSession(entityPath).cast(ServiceBusSession.class)
             .flatMap(session -> {
@@ -200,7 +199,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
 
     @Override
     public void dispose() {
-        logger.info("Disposing of connection.");
+        logger.verbose("Disposing of connection.");
         sendLinks.forEach((key, value) -> value.dispose());
         sendLinks.clear();
 

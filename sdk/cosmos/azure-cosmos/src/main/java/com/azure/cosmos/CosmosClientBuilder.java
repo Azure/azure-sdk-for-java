@@ -6,6 +6,7 @@ import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.TracerProvider;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
@@ -143,7 +144,7 @@ public class CosmosClientBuilder {
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder authorizationTokenResolver(
+    CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
@@ -319,9 +320,8 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
-                && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
-            "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and "
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.cosmosKeyCredential == null,
+            "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");

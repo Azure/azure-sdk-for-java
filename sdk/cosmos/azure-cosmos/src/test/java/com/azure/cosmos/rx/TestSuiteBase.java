@@ -1047,11 +1047,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
-    static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations) {
+    static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredRegions) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        connectionPolicy.setUsingMultipleWriteLocations(multiMasterEnabled);
-        connectionPolicy.setPreferredLocations(preferredLocations);
+        connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
+        connectionPolicy.setPreferredRegions(preferredRegions);
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .keyCredential(cosmosKeyCredential)
             .connectionPolicy(connectionPolicy)
@@ -1065,16 +1065,16 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected CosmosClientBuilder createDirectRxDocumentClient(ConsistencyLevel consistencyLevel,
                                                                       Protocol protocol,
                                                                       boolean multiMasterEnabled,
-                                                                      List<String> preferredLocations) {
+                                                                      List<String> preferredRegions) {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
 
-        if (preferredLocations != null) {
-            connectionPolicy.setPreferredLocations(preferredLocations);
+        if (preferredRegions != null) {
+            connectionPolicy.setPreferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            connectionPolicy.setUsingMultipleWriteLocations(true);
+            connectionPolicy.setUsingMultipleWriteRegions(true);
         }
 
         Configs configs = spy(new Configs());
