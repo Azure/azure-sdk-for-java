@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An instance of this class provides additional information about a CloudError.
+ * An instance of this class provides additional information about a {@link ManagementError}.
  */
 @Immutable
 public final class AdditionalInfo {

@@ -15,7 +15,7 @@ public class ManagementException extends HttpResponseException {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Initializes a new instance of the CloudException class.
+     * Initializes a new instance of the {@link ManagementException} class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
@@ -25,14 +25,14 @@ public class ManagementException extends HttpResponseException {
     }
 
     /**
-     * Initializes a new instance of the CloudException class.
+     * Initializes a new instance of the {@link ManagementException} class.
      *
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
-     * @param body the deserialized response body
+     * @param value the deserialized response value
      */
-    public ManagementException(String message, HttpResponse response, ManagementError body) {
-        super(message, response, body);
+    public ManagementException(String message, HttpResponse response, ManagementError value) {
+        super(message, response, value);
     }
 
     @Override

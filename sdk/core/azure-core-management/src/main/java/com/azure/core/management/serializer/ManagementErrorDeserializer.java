@@ -28,7 +28,7 @@ final class ManagementErrorDeserializer extends StdDeserializer<Object> {
     private final ObjectMapper mapper;
 
     /**
-     * Creates an instance of CloudErrorDeserializer.
+     * Creates an instance of {@link ManagementErrorDeserializer}.
      *
      * @param vc type of values this deserializer handles.
      * @param mapper the object mapper for default deserializations.
