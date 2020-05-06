@@ -12,15 +12,41 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.resources.v2019_06_01.implementation.ResourcesManager;
 import com.microsoft.azure.management.resources.v2019_06_01.implementation.TenantIdDescriptionInner;
+import java.util.List;
 
 /**
  * Type representing TenantIdDescription.
  */
 public interface TenantIdDescription extends HasInner<TenantIdDescriptionInner>, HasManager<ResourcesManager> {
     /**
+     * @return the country value.
+     */
+    String country();
+
+    /**
+     * @return the countryCode value.
+     */
+    String countryCode();
+
+    /**
+     * @return the displayName value.
+     */
+    String displayName();
+
+    /**
+     * @return the domains value.
+     */
+    List<String> domains();
+
+    /**
      * @return the id value.
      */
     String id();
+
+    /**
+     * @return the tenantCategory value.
+     */
+    TenantCategory tenantCategory();
 
     /**
      * @return the tenantId value.
