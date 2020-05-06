@@ -75,7 +75,8 @@ public class CosmosAsyncScripts {
         sProc.setId(properties.getId());
         sProc.setBody(properties.getBody());
         final CosmosStoredProcedureRequestOptions requestOptions = options;
-        return withContext(context -> createStoredProcedure(sProc, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return TracerProvider.cosmosWithContext(withContext(context -> createStoredProcedure(sProc, requestOptions, context)),
+            container.getDatabase().getClient().getTracerProvider());
     }
 
 
@@ -175,7 +176,8 @@ public class CosmosAsyncScripts {
         udf.setId(properties.getId());
         udf.setBody(properties.getBody());
 
-        return withContext(context -> createUserDefinedFunction(udf, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return TracerProvider.cosmosWithContext(withContext(context -> createUserDefinedFunction(udf, context)),
+            container.getDatabase().getClient().getTracerProvider());
     }
 
     /**
@@ -269,7 +271,8 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        return withContext(context -> createTrigger(properties, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return TracerProvider.cosmosWithContext(withContext(context -> createTrigger(properties, context)),
+            container.getDatabase().getClient().getTracerProvider());
     }
 
     /**

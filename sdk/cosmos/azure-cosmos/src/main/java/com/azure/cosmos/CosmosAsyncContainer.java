@@ -88,7 +88,7 @@ public class CosmosAsyncContainer {
         }
 
         final CosmosContainerRequestOptions requestOptions = options;
-        return TracerProvider.cosmosWithContext(withContext(context -> read(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc), database.getClient().getTracerProvider());
+        return TracerProvider.cosmosWithContext(withContext(context -> read(requestOptions, context)), database.getClient().getTracerProvider());
     }
 
     /**

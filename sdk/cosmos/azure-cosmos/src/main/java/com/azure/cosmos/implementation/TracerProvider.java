@@ -35,7 +35,7 @@ public class TracerProvider {
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String MICROSOFT_DOCOMENTDB = "Microsoft.DocumentDB";
 
-    private final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
+    public final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
         reactor.util.context.Context reactorContext) -> {
         CallDepth callDepth = reactorContext.getOrDefault(COSMOS_CALL_DEPTH, CallDepth.ZERO);
         assert callDepth != null;
