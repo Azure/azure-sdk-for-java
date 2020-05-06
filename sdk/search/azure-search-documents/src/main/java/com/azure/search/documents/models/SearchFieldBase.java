@@ -11,17 +11,17 @@ import java.util.Objects;
 /**
  * Base field type for helper classes to more easily create a {@link SearchIndex}.
  */
-public abstract class FieldBase {
-    private final ClientLogger logger = new ClientLogger(FieldBase.class);
+public abstract class SearchFieldBase {
+    private final ClientLogger logger = new ClientLogger(SearchFieldBase.class);
     private final String name;
     private final SearchFieldDataType dataType;
 
     /**
-     * Initializes a new instance of the {@link FieldBase} class.
+     * Initializes a new instance of the {@link SearchFieldBase} class.
      * @param name The name of the field, which must be unique within the index or parent field.
      * @param dataType The data type of the field.
      */
-    protected FieldBase(String name, SearchFieldDataType dataType) {
+    protected SearchFieldBase(String name, SearchFieldDataType dataType) {
         if (CoreUtils.isNullOrEmpty(name)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The name of the field cannot be null"));
         }

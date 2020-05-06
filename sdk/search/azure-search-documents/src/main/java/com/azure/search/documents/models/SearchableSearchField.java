@@ -8,20 +8,20 @@ import java.util.List;
 /**
  * A helper Field model to build a searchable {@link SearchField}.
  */
-public class SearchableField extends SimpleField {
+public class SearchableSearchField extends SimpleSearchField {
     private LexicalAnalyzerName analyzer;
     private LexicalAnalyzerName searchAnalyzer;
     private LexicalAnalyzerName indexAnalyzer;
     private List<String> synonymMapNames;
 
     /**
-     * Initializes a new instance of the {@link SearchableField} class.
+     * Initializes a new instance of the {@link SearchableSearchField} class.
      *
      * @param name The name of the field, which must be unique within the index or parent field.
      * @param collection Whether the field is a collection of strings.
      * @throws NullPointerException when {@code name} is null.
      */
-    public SearchableField(String name, boolean collection) {
+    public SearchableSearchField(String name, boolean collection) {
         super(name, SearchFieldDataType.STRING, collection);
     }
 
@@ -42,7 +42,7 @@ public class SearchableField extends SimpleField {
      * @param analyzer The {@link LexicalAnalyzerName} used for analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setAnalyzer(LexicalAnalyzerName analyzer) {
+    public SearchableSearchField setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -66,7 +66,7 @@ public class SearchableField extends SimpleField {
      * @param searchAnalyzer The {@link LexicalAnalyzerName} used for search analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setSearchAnalyzer(LexicalAnalyzerName searchAnalyzer) {
+    public SearchableSearchField setSearchAnalyzer(LexicalAnalyzerName searchAnalyzer) {
         this.searchAnalyzer = searchAnalyzer;
         return this;
     }
@@ -90,7 +90,7 @@ public class SearchableField extends SimpleField {
      * @param indexAnalyzer The {@link LexicalAnalyzerName} used for index analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setIndexAnalyzer(LexicalAnalyzerName indexAnalyzer) {
+    public SearchableSearchField setIndexAnalyzer(LexicalAnalyzerName indexAnalyzer) {
         this.indexAnalyzer = indexAnalyzer;
         return this;
     }
@@ -118,7 +118,7 @@ public class SearchableField extends SimpleField {
      * @param synonymMapNames list of names of synonym maps to associate with this field.
      * @return The SearchableField object itself.
      */
-    public SearchableField setSynonymMapNames(List<String> synonymMapNames) {
+    public SearchableSearchField setSynonymMapNames(List<String> synonymMapNames) {
         this.synonymMapNames = synonymMapNames;
         return this;
     }
