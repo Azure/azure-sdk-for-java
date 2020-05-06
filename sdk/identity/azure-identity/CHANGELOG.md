@@ -23,6 +23,8 @@
 - Added `tokenRefreshOffset` set method in all the credential builders.
 - Added `httpClient` set method in all the credential builders.
 - Updated `DefaultAzureCredential` to enable authenticating through the Azure CLI
+- Added shared token cache support for MacOS Keychain, Gnome Keyring, and plain text for other Linux environments
+- Added option to write to shared token cache from `InteractiveBrowserCredential`, `AuthorizationCodeCredential`, `UsernamePasswordCredential`, and `DeviceCodeCredential`
 
 ## 1.1.0-beta.1 (2020-02-12)
 - All credential builders support setting a pipeline via `httpPipeline` method.
