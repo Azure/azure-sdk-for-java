@@ -6,7 +6,7 @@ package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.blob.implementation.models.BlobItemPropertiesInternal;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
@@ -17,17 +17,84 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "Properties")
 @Fluent
 public final class BlobItemProperties {
+
+    /**
+     * Initializes a new BlobItemProperties.
+     */
+    public BlobItemProperties() {
+
+    }
+
+    /**
+     * Initializes a new BlobItemPropertiesInternal.
+     *
+     * @param blobItemPropertiesInternal The internal object from which to pull state.
+     */
+    public BlobItemProperties(BlobItemPropertiesInternal blobItemPropertiesInternal) {
+        this.creationTime = blobItemPropertiesInternal.getCreationTime();
+        this.lastModified = blobItemPropertiesInternal.getLastModified();
+        this.eTag = blobItemPropertiesInternal.getETag();
+        this.contentLength = blobItemPropertiesInternal.getContentLength();
+        this.contentType = blobItemPropertiesInternal.getContentType();
+        this.contentEncoding = blobItemPropertiesInternal.getContentEncoding();
+        this.contentLanguage = blobItemPropertiesInternal.getContentLanguage();
+        this.contentMd5 = blobItemPropertiesInternal.getContentMd5();
+        this.contentDisposition = blobItemPropertiesInternal.getContentDisposition();
+        this.cacheControl = blobItemPropertiesInternal.getCacheControl();
+        this.blobSequenceNumber = blobItemPropertiesInternal.getBlobSequenceNumber();
+        this.blobType = blobItemPropertiesInternal.getBlobType();
+        this.leaseStatus = blobItemPropertiesInternal.getLeaseStatus();
+        this.leaseState = blobItemPropertiesInternal.getLeaseState();
+        this.leaseDuration = blobItemPropertiesInternal.getLeaseDuration();
+        this.copyId = blobItemPropertiesInternal.getCopyId();
+        this.copyStatus = blobItemPropertiesInternal.getCopyStatus();
+        this.copySource = blobItemPropertiesInternal.getCopySource();
+        this.copyProgress = blobItemPropertiesInternal.getCopyProgress();
+        this.copyCompletionTime = blobItemPropertiesInternal.getCopyCompletionTime();
+        this.copyStatusDescription = blobItemPropertiesInternal.getCopyStatusDescription();
+        this.serverEncrypted = blobItemPropertiesInternal.isServerEncrypted();
+        this.incrementalCopy = blobItemPropertiesInternal.isIncrementalCopy();
+        this.destinationSnapshot = blobItemPropertiesInternal.getDestinationSnapshot();
+        this.deletedTime = blobItemPropertiesInternal.getDeletedTime();
+        this.remainingRetentionDays = blobItemPropertiesInternal.getRemainingRetentionDays();
+        this.accessTier = blobItemPropertiesInternal.getAccessTier();
+        this.accessTierInferred = blobItemPropertiesInternal.isAccessTierInferred();
+        this.archiveStatus = blobItemPropertiesInternal.getArchiveStatus();
+        this.customerProvidedKeySha256 = blobItemPropertiesInternal.getCustomerProvidedKeySha256();
+        this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
+        this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
+
+        // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
+        /*this.objectReplicationSourcePolicies = new HashMap<>();
+        this.objectReplicationDestinationPolicyId = objectReplicationStatus.getOrDefault("policy-id", null);
+        if (objectReplicationDestinationPolicyId == null) {
+            for (String str : objectReplicationStatus.keySet()) {
+                String[] split = str.split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                if (objectReplicationSourcePolicies.containsKey(policyId)) {
+                    objectReplicationSourcePolicies.get(policyId)
+                        .putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
+                } else {
+                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                    policy.putRuleAndStatus(ruleId, objectReplicationStatus.get(str));
+                    objectReplicationSourcePolicies.put(policyId, policy);
+                }
+            }
+        }*/
+    }
+
     /*
      * The creationTime property.
      */
     @JsonProperty(value = "Creation-Time")
-    private DateTimeRfc1123 creationTime;
+    private OffsetDateTime creationTime;
 
     /*
      * The lastModified property.
      */
     @JsonProperty(value = "Last-Modified", required = true)
-    private DateTimeRfc1123 lastModified;
+    private OffsetDateTime lastModified;
 
     /*
      * The eTag property.
@@ -136,7 +203,7 @@ public final class BlobItemProperties {
      * The copyCompletionTime property.
      */
     @JsonProperty(value = "CopyCompletionTime")
-    private DateTimeRfc1123 copyCompletionTime;
+    private OffsetDateTime copyCompletionTime;
 
     /*
      * The copyStatusDescription property.
@@ -166,7 +233,7 @@ public final class BlobItemProperties {
      * The deletedTime property.
      */
     @JsonProperty(value = "DeletedTime")
-    private DateTimeRfc1123 deletedTime;
+    private OffsetDateTime deletedTime;
 
     /*
      * The remainingRetentionDays property.
@@ -210,7 +277,14 @@ public final class BlobItemProperties {
      * The accessTierChangeTime property.
      */
     @JsonProperty(value = "AccessTierChangeTime")
-    private DateTimeRfc1123 accessTierChangeTime;
+    private OffsetDateTime accessTierChangeTime;
+
+    // TODO: (rickle-msft) uncomment when these are returned on lists.
+    /*
+    private Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+
+    private String objectReplicationDestinationPolicyId;
+    */
 
     /*
      * The tagCount property.
@@ -224,10 +298,7 @@ public final class BlobItemProperties {
      * @return the creationTime value.
      */
     public OffsetDateTime getCreationTime() {
-        if (this.creationTime == null) {
-            return null;
-        }
-        return this.creationTime.getDateTime();
+        return this.creationTime;
     }
 
     /**
@@ -237,11 +308,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setCreationTime(OffsetDateTime creationTime) {
-        if (creationTime == null) {
-            this.creationTime = null;
-        } else {
-            this.creationTime = new DateTimeRfc1123(creationTime);
-        }
+        this.creationTime = creationTime;
         return this;
     }
 
@@ -251,10 +318,7 @@ public final class BlobItemProperties {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
+        return this.lastModified;
     }
 
     /**
@@ -264,11 +328,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
+        this.lastModified = lastModified;
         return this;
     }
 
@@ -628,10 +688,7 @@ public final class BlobItemProperties {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        if (this.copyCompletionTime == null) {
-            return null;
-        }
-        return this.copyCompletionTime.getDateTime();
+        return this.copyCompletionTime;
     }
 
     /**
@@ -641,11 +698,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        if (copyCompletionTime == null) {
-            this.copyCompletionTime = null;
-        } else {
-            this.copyCompletionTime = new DateTimeRfc1123(copyCompletionTime);
-        }
+        this.copyCompletionTime = copyCompletionTime;
         return this;
     }
 
@@ -737,10 +790,7 @@ public final class BlobItemProperties {
      * @return the deletedTime value.
      */
     public OffsetDateTime getDeletedTime() {
-        if (this.deletedTime == null) {
-            return null;
-        }
-        return this.deletedTime.getDateTime();
+        return this.deletedTime;
     }
 
     /**
@@ -750,11 +800,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setDeletedTime(OffsetDateTime deletedTime) {
-        if (deletedTime == null) {
-            this.deletedTime = null;
-        } else {
-            this.deletedTime = new DateTimeRfc1123(deletedTime);
-        }
+        this.deletedTime = deletedTime;
         return this;
     }
 
@@ -898,10 +944,7 @@ public final class BlobItemProperties {
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime getAccessTierChangeTime() {
-        if (this.accessTierChangeTime == null) {
-            return null;
-        }
-        return this.accessTierChangeTime.getDateTime();
+        return this.accessTierChangeTime;
     }
 
     /**
@@ -912,11 +955,7 @@ public final class BlobItemProperties {
      * @return the BlobItemProperties object itself.
      */
     public BlobItemProperties setAccessTierChangeTime(OffsetDateTime accessTierChangeTime) {
-        if (accessTierChangeTime == null) {
-            this.accessTierChangeTime = null;
-        } else {
-            this.accessTierChangeTime = new DateTimeRfc1123(accessTierChangeTime);
-        }
+        this.accessTierChangeTime = accessTierChangeTime;
         return this;
     }
 

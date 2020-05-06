@@ -60,7 +60,7 @@ final class ReliableDownload {
     }
 
     BlobDownloadHeaders getDeserializedHeaders() {
-        return rawResponse.getDeserializedHeaders();
+        return new BlobDownloadHeaders(rawResponse.getDeserializedHeaders());
     }
 
     Flux<ByteBuffer> getValue() {

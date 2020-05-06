@@ -20,6 +20,11 @@ public class ModelHelper {
     private static final long MAX_APPEND_FILE_BYTES = 4000L * Constants.MB;
 
     /**
+     * Indicates the default size above which the upload will be broken into blocks and parallelized.
+     */
+    private static final long FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE = 100L * Constants.MB;
+
+    /**
      * The block size to use if none is specified in parallel operations.
      */
     private static final long FILE_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
@@ -62,7 +67,7 @@ public class ModelHelper {
 
         Long maxSingleUploadSize = other.getMaxSingleUploadSizeLong();
         if (maxSingleUploadSize == null) {
-            maxSingleUploadSize = MAX_APPEND_FILE_BYTES;
+            maxSingleUploadSize = FILE_DEFAULT_MAX_SINGLE_UPLOAD_SIZE;
         }
 
         return new ParallelTransferOptions()

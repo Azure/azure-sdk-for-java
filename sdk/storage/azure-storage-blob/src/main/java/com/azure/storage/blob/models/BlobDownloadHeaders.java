@@ -7,11 +7,11 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.Map;
+import java.util.HashMap;
 
 /**
  * Defines headers for Download operation.
@@ -19,19 +19,110 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob-Download-Headers")
 @Fluent
 public final class BlobDownloadHeaders {
+
+    /**
+     * Instantiates an empty {@code BlobDownloadHeaders}.
+     */
+    public BlobDownloadHeaders() {
+        objectReplicationSourcePolicies = null;
+    }
+
+    /**
+     * Instantiates a {@code BlobDownloadHeaders} object based on the generated, internal version of the type.
+     * @param headers The generated headers type from which to extract values.
+     */
+    public BlobDownloadHeaders(com.azure.storage.blob.implementation.models.BlobDownloadHeaders headers) {
+        /*
+        We have these two types because we needed to update this interface in a way that could not be generated
+        (getObjectReplicationSourcePolicies), so we switched to generating BlobDownloadHeaders into implementation and
+        wrapping it. Because it's headers type, we couldn't change the name of the generated type.
+         */
+        this.lastModified = headers.getLastModified();
+        this.metadata = headers.getMetadata();
+        this.eTag = headers.getETag();
+        this.contentLength = headers.getContentLength();
+        this.contentType = headers.getContentType();
+        this.contentRange = headers.getContentRange();
+        this.contentEncoding = headers.getContentEncoding();
+        this.contentLanguage = headers.getContentLanguage();
+        this.contentMd5 = headers.getContentMd5();
+        this.contentDisposition = headers.getContentDisposition();
+        this.cacheControl = headers.getCacheControl();
+        this.blobSequenceNumber = headers.getBlobSequenceNumber();
+        this.blobType = headers.getBlobType();
+        this.leaseStatus = headers.getLeaseStatus();
+        this.leaseState = headers.getLeaseState();
+        this.leaseDuration = headers.getLeaseDuration();
+        this.copyId = headers.getCopyId();
+        this.copyStatus = headers.getCopyStatus();
+        this.copySource = headers.getCopySource();
+        this.copyProgress = headers.getCopyProgress();
+        this.copyCompletionTime = headers.getCopyCompletionTime();
+        this.copyStatusDescription = headers.getCopyStatusDescription();
+        this.isServerEncrypted = headers.isServerEncrypted();
+        this.clientRequestId = headers.getClientRequestId();
+        this.requestId = headers.getRequestId();
+        this.version = headers.getVersion();
+        this.versionId = headers.getVersionId();
+        this.acceptRanges = headers.getAcceptRanges();
+        this.dateProperty = headers.getDateProperty();
+        this.blobCommittedBlockCount = headers.getBlobCommittedBlockCount();
+        this.encryptionKeySha256 = headers.getEncryptionKeySha256();
+        this.encryptionScope = headers.getEncryptionScope();
+        this.blobContentMD5 = headers.getBlobContentMD5();
+        this.contentCrc64 = headers.getContentCrc64();
+        this.errorCode = headers.getErrorCode();
+
+        this.objectReplicationSourcePolicies = new HashMap<>();
+        this.objectReplicationRuleStatus = headers.getObjectReplicationRules() == null ? new HashMap<>()
+            : headers.getObjectReplicationRules();
+        this.objectReplicationDestinationPolicyId = this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
+        /*
+        If there is no destination policy, then we are a source. If ORS is enabled. If it is not enabled, the loop will
+        just never enter.
+         */
+        if (this.objectReplicationDestinationPolicyId == null) {
+            for (Map.Entry<String, String> entry : this.objectReplicationRuleStatus.entrySet()) {
+                String[] split = entry.getKey().split("_");
+                String policyId = split[0];
+                String ruleId = split[1];
+                if (this.objectReplicationSourcePolicies.containsKey(policyId)) {
+                    this.objectReplicationSourcePolicies.get(policyId).putRuleAndStatus(ruleId, entry.getValue());
+                } else {
+                    ObjectReplicationPolicy policy = new ObjectReplicationPolicy(policyId);
+                    policy.putRuleAndStatus(ruleId, entry.getValue());
+                    this.objectReplicationSourcePolicies.put(policyId, policy);
+                }
+            }
+        }
+    }
+
     /*
      * Returns the date and time the container was last modified. Any operation
      * that modifies the blob, including an update of the blob's metadata or
      * properties, changes the last-modified time of the blob.
      */
     @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
+    private OffsetDateTime lastModified;
 
     /*
      * The metadata property.
      */
     @HeaderCollection("x-ms-meta-")
     private Map<String, String> metadata;
+
+    /*
+     * Optional. Only valid when Object Replication is enabled for the storage
+     * container and on the destination blob of the replication.
+     */
+    @JsonProperty(value = "x-ms-or-policy-id")
+    private String objectReplicationDestinationPolicyId;
+
+    /*
+     * The objectReplicationRuleStatus property.
+     */
+    @HeaderCollection("x-ms-or-")
+    private Map<String, String> objectReplicationRuleStatus;
 
     /*
      * The number of bytes present in the response body.
@@ -125,7 +216,7 @@ public final class BlobDownloadHeaders {
      * List.
      */
     @JsonProperty(value = "x-ms-copy-completion-time")
-    private DateTimeRfc1123 copyCompletionTime;
+    private OffsetDateTime copyCompletionTime;
 
     /*
      * Only appears when x-ms-copy-status is failed or pending. Describes the
@@ -237,7 +328,7 @@ public final class BlobDownloadHeaders {
      * which the response was initiated
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private OffsetDateTime dateProperty;
 
     /*
      * The number of committed blocks present in the blob. This header is
@@ -303,6 +394,8 @@ public final class BlobDownloadHeaders {
     @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
+    private final Map<String, ObjectReplicationPolicy> objectReplicationSourcePolicies;
+
     /**
      * Get the lastModified property: Returns the date and time the container
      * was last modified. Any operation that modifies the blob, including an
@@ -312,10 +405,7 @@ public final class BlobDownloadHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
+        return this.lastModified;
     }
 
     /**
@@ -328,11 +418,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
+        this.lastModified = lastModified;
         return this;
     }
 
@@ -353,6 +439,54 @@ public final class BlobDownloadHeaders {
      */
     public BlobDownloadHeaders setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationDestinationPolicyId property: Optional. Only
+     * valid when Object Replication is enabled for the storage container and
+     * on the destination blob of the replication.
+     *
+     * @return the objectReplicationDestinationPolicyId value.
+     */
+    public String getObjectReplicationDestinationPolicyId() {
+        return this.objectReplicationRuleStatus.getOrDefault("policy-id", null);
+    }
+
+    /**
+     * Set the objectReplicationDestinationPolicyId property: Optional. Only
+     * valid when Object Replication is enabled for the storage container and
+     * on the destination blob of the replication.
+     *
+     * @param objectReplicationDestinationPolicyId the
+     * objectReplicationDestinationPolicyId value to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setObjectReplicationDestinationPolicyId(String objectReplicationDestinationPolicyId) {
+        this.objectReplicationDestinationPolicyId = objectReplicationDestinationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @return the objectReplicationRuleStatus value.
+     */
+    public Map<String, ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
+        return this.objectReplicationSourcePolicies;
+    }
+
+    /**
+     * Set the objectReplicationRuleStatus property: The
+     * objectReplicationRuleStatus property.
+     *
+     * @param objectReplicationRuleStatus the objectReplicationRuleStatus value
+     * to set.
+     * @return the BlobDownloadHeaders object itself.
+     */
+    public BlobDownloadHeaders setObjectReplicationRuleStatus(Map<String, String> objectReplicationRuleStatus) {
+        this.objectReplicationRuleStatus = objectReplicationRuleStatus;
         return this;
     }
 
@@ -628,10 +762,7 @@ public final class BlobDownloadHeaders {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        if (this.copyCompletionTime == null) {
-            return null;
-        }
-        return this.copyCompletionTime.getDateTime();
+        return this.copyCompletionTime;
     }
 
     /**
@@ -647,11 +778,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        if (copyCompletionTime == null) {
-            this.copyCompletionTime = null;
-        } else {
-            this.copyCompletionTime = new DateTimeRfc1123(copyCompletionTime);
-        }
+        this.copyCompletionTime = copyCompletionTime;
         return this;
     }
 
@@ -988,10 +1115,7 @@ public final class BlobDownloadHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
-            return null;
-        }
-        return this.dateProperty.getDateTime();
+        return this.dateProperty;
     }
 
     /**
@@ -1002,11 +1126,7 @@ public final class BlobDownloadHeaders {
      * @return the BlobDownloadHeaders object itself.
      */
     public BlobDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
+        this.dateProperty = dateProperty;
         return this;
     }
 

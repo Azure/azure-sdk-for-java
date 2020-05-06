@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.blob.implementation.models.BlobExpiryOptions;
 import com.azure.storage.blob.implementation.models.BlobsAbortCopyFromURLResponse;
 import com.azure.storage.blob.implementation.models.BlobsAcquireLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsBreakLeaseResponse;
@@ -42,6 +43,7 @@ import com.azure.storage.blob.implementation.models.BlobsReleaseLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsRenameResponse;
 import com.azure.storage.blob.implementation.models.BlobsRenewLeaseResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetAccessControlResponse;
+import com.azure.storage.blob.implementation.models.BlobsSetExpiryResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetHTTPHeadersResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetMetadataResponse;
 import com.azure.storage.blob.implementation.models.BlobsSetTagsResponse;
@@ -136,6 +138,11 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
+        Mono<BlobsSetExpiryResponse> setExpiry(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-expiry-option") BlobExpiryOptions expiryOptions, @HeaderParam("x-ms-expiry-time") String expiresOn, @QueryParam("comp") String comp, Context context);
+
+        @Put("{containerName}/{blob}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(BlobStorageException.class)
         Mono<BlobsSetHTTPHeadersResponse> setHTTPHeaders(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, @HeaderParam("x-ms-blob-cache-control") String cacheControl, @HeaderParam("x-ms-blob-content-type") String contentType, @HeaderParam("x-ms-blob-content-md5") String contentMd5, @HeaderParam("x-ms-blob-content-encoding") String contentEncoding, @HeaderParam("x-ms-blob-content-language") String contentLanguage, @HeaderParam("x-ms-blob-content-disposition") String contentDisposition, Context context);
 
         @Put("{containerName}/{blob}")
@@ -176,12 +183,12 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-tags") String blobTagsString, Context context);
+        Mono<BlobsStartCopyFromURLResponse> startCopyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-seal-blob") Boolean sealBlob, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsCopyFromURLResponse> copyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-requires-sync") String xMsRequiresSync, Context context);
+        Mono<BlobsCopyFromURLResponse> copyFromURL(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-source-if-modified-since") DateTimeRfc1123 sourceIfModifiedSince, @HeaderParam("x-ms-source-if-unmodified-since") DateTimeRfc1123 sourceIfUnmodifiedSince, @HeaderParam("x-ms-source-if-match") String sourceIfMatch, @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch, @HeaderParam("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @HeaderParam("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-copy-source") URL copySource, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-source-content-md5") String sourceContentMD5, @HeaderParam("x-ms-tags") String blobTagsString, @HeaderParam("x-ms-seal-blob") Boolean sealBlob, @HeaderParam("x-ms-requires-sync") String xMsRequiresSync, Context context);
 
         @Put("{containerName}/{blob}")
         @ExpectedResponses({204})
@@ -191,7 +198,7 @@ public final class BlobsImpl {
         @Put("{containerName}/{blob}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("comp") String comp, Context context);
+        Mono<BlobsSetTierResponse> setTier(@PathParam("containerName") String containerName, @PathParam("blob") String blob, @HostParam("url") String url, @QueryParam("snapshot") String snapshot, @QueryParam("versionid") String versionId, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-access-tier") AccessTier tier, @HeaderParam("x-ms-rehydrate-priority") RehydratePriority rehydratePriority, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-lease-id") String leaseId, @QueryParam("comp") String comp, Context context);
 
         @Get("{containerName}/{blob}")
         @ExpectedResponses({200})
@@ -614,6 +621,40 @@ public final class BlobsImpl {
     public Mono<BlobsUndeleteResponse> undeleteWithRestResponseAsync(String containerName, String blob, Integer timeout, String requestId, Context context) {
         final String comp = "undelete";
         return service.undelete(containerName, blob, this.client.getUrl(), timeout, this.client.getVersion(), requestId, comp, context);
+    }
+
+    /**
+     * Sets the time a blob will expire and be deleted.
+     *
+     * @param expiryOptions Required. Indicates mode of the expiry time. Possible values include: 'NeverExpire', 'RelativeToCreation', 'RelativeToNow', 'Absolute'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsSetExpiryResponse> setExpiryWithRestResponseAsync(BlobExpiryOptions expiryOptions, Context context) {
+        final Integer timeout = null;
+        final String requestId = null;
+        final String expiresOn = null;
+        final String comp = "expiry";
+        return service.setExpiry(this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
+    }
+
+    /**
+     * Sets the time a blob will expire and be deleted.
+     *
+     * @param expiryOptions Required. Indicates mode of the expiry time. Possible values include: 'NeverExpire', 'RelativeToCreation', 'RelativeToNow', 'Absolute'.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
+     * @param expiresOn The time to set the blob to expiry.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @return a Mono which performs the network request upon subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BlobsSetExpiryResponse> setExpiryWithRestResponseAsync(BlobExpiryOptions expiryOptions, Integer timeout, String requestId, String expiresOn, Context context) {
+        final String comp = "expiry";
+        return service.setExpiry(this.client.getUrl(), timeout, this.client.getVersion(), requestId, expiryOptions, expiresOn, comp, context);
     }
 
     /**
@@ -1101,11 +1142,12 @@ public final class BlobsImpl {
         final String leaseId = null;
         final String requestId = null;
         final String blobTagsString = null;
+        final Boolean sealBlob = null;
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
-        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, context);
+        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob, context);
     }
 
     /**
@@ -1129,17 +1171,18 @@ public final class BlobsImpl {
      * @param leaseId If specified, the operation only succeeds if the resource's lease is active and matches this ID.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param blobTagsString Optional.  Used to set blob tags in various blob operations.
+     * @param sealBlob Overrides the sealed state of the destination blob.  Service version 2019-12-12 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, RehydratePriority rehydratePriority, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, String blobTagsString, Context context) {
+    public Mono<BlobsStartCopyFromURLResponse> startCopyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, RehydratePriority rehydratePriority, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, String blobTagsString, Boolean sealBlob, Context context) {
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, context);
+        return service.startCopyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, rehydratePriority, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, blobTagsString, sealBlob, context);
     }
 
     /**
@@ -1164,13 +1207,14 @@ public final class BlobsImpl {
         final String leaseId = null;
         final String requestId = null;
         final String blobTagsString = null;
+        final Boolean sealBlob = null;
         final String xMsRequiresSync = "true";
         DateTimeRfc1123 sourceIfModifiedSinceConverted = null;
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = null;
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
         String sourceContentMD5Converted = null;
-        return service.copyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, xMsRequiresSync, context);
+        return service.copyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, sealBlob, xMsRequiresSync, context);
     }
 
     /**
@@ -1194,19 +1238,20 @@ public final class BlobsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param sourceContentMD5 Specify the md5 calculated for the range of bytes that must be read from the copy source.
      * @param blobTagsString Optional.  Used to set blob tags in various blob operations.
+     * @param sealBlob Overrides the sealed state of the destination blob.  Service version 2019-12-12 and newer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsCopyFromURLResponse> copyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, byte[] sourceContentMD5, String blobTagsString, Context context) {
+    public Mono<BlobsCopyFromURLResponse> copyFromURLWithRestResponseAsync(String containerName, String blob, URL copySource, Integer timeout, Map<String, String> metadata, AccessTier tier, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch, String sourceIfNoneMatch, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String leaseId, String requestId, byte[] sourceContentMD5, String blobTagsString, Boolean sealBlob, Context context) {
         final String xMsRequiresSync = "true";
         DateTimeRfc1123 sourceIfModifiedSinceConverted = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
         DateTimeRfc1123 sourceIfUnmodifiedSinceConverted = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         DateTimeRfc1123 ifModifiedSinceConverted = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         DateTimeRfc1123 ifUnmodifiedSinceConverted = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        return service.copyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, xMsRequiresSync, context);
+        return service.copyFromURL(containerName, blob, this.client.getUrl(), timeout, metadata, tier, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, copySource, leaseId, this.client.getVersion(), requestId, sourceContentMD5Converted, blobTagsString, sealBlob, xMsRequiresSync, context);
     }
 
     /**
@@ -1261,12 +1306,14 @@ public final class BlobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, Context context) {
+        final String snapshot = null;
+        final String versionId = null;
         final Integer timeout = null;
         final RehydratePriority rehydratePriority = null;
         final String requestId = null;
         final String leaseId = null;
         final String comp = "tier";
-        return service.setTier(containerName, blob, this.client.getUrl(), timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, comp, context);
+        return service.setTier(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, comp, context);
     }
 
     /**
@@ -1275,6 +1322,8 @@ public final class BlobsImpl {
      * @param containerName The container name.
      * @param blob The blob name.
      * @param tier Indicates the tier to be set on the blob. Possible values include: 'P4', 'P6', 'P10', 'P15', 'P20', 'P30', 'P40', 'P50', 'P60', 'P70', 'P80', 'Hot', 'Cool', 'Archive'.
+     * @param snapshot The snapshot parameter is an opaque DateTime value that, when present, specifies the blob snapshot to retrieve. For more information on working with blob snapshots, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/creating-a-snapshot-of-a-blob"&gt;Creating a Snapshot of a Blob.&lt;/a&gt;.
+     * @param versionId The version id parameter is an opaque DateTime value that, when present, specifies the version of the blob to operate on. It's for service version 2019-10-10 and newer.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param rehydratePriority Optional: Indicates the priority with which to rehydrate an archived blob. Possible values include: 'High', 'Standard'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
@@ -1284,9 +1333,9 @@ public final class BlobsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId, Context context) {
+    public Mono<BlobsSetTierResponse> setTierWithRestResponseAsync(String containerName, String blob, AccessTier tier, String snapshot, String versionId, Integer timeout, RehydratePriority rehydratePriority, String requestId, String leaseId, Context context) {
         final String comp = "tier";
-        return service.setTier(containerName, blob, this.client.getUrl(), timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, comp, context);
+        return service.setTier(containerName, blob, this.client.getUrl(), snapshot, versionId, timeout, tier, rehydratePriority, this.client.getVersion(), requestId, leaseId, comp, context);
     }
 
     /**

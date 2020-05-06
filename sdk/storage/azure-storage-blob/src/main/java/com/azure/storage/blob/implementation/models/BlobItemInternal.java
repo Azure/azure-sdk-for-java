@@ -50,7 +50,7 @@ public final class BlobItemInternal {
      * The properties property.
      */
     @JsonProperty(value = "Properties", required = true)
-    private BlobItemProperties properties;
+    private BlobItemPropertiesInternal properties;
 
     /*
      * The metadata property.
@@ -63,6 +63,18 @@ public final class BlobItemInternal {
      */
     @JsonProperty(value = "Tags")
     private BlobTags blobTags;
+
+    /*
+     * The objectReplicationPolicyId property.
+     */
+    @JsonProperty(value = "ObjectReplicationPolicyId")
+    private String objectReplicationPolicyId;
+
+    /*
+     * The objectReplicationRules property.
+     */
+    @JsonProperty(value = "BlobObjectReplicationRules")
+    private Map<String, String> objectReplicationRules;
 
     /*
      * The isPrefix property.
@@ -175,7 +187,7 @@ public final class BlobItemInternal {
      *
      * @return the properties value.
      */
-    public BlobItemProperties getProperties() {
+    public BlobItemPropertiesInternal getProperties() {
         return this.properties;
     }
 
@@ -185,7 +197,7 @@ public final class BlobItemInternal {
      * @param properties the properties value to set.
      * @return the BlobItemInternal object itself.
      */
-    public BlobItemInternal setProperties(BlobItemProperties properties) {
+    public BlobItemInternal setProperties(BlobItemPropertiesInternal properties) {
         this.properties = properties;
         return this;
     }
@@ -227,6 +239,51 @@ public final class BlobItemInternal {
      */
     public BlobItemInternal setBlobTags(BlobTags blobTags) {
         this.blobTags = blobTags;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationPolicyId property: The
+     * objectReplicationPolicyId property.
+     *
+     * @return the objectReplicationPolicyId value.
+     */
+    public String getObjectReplicationPolicyId() {
+        return this.objectReplicationPolicyId;
+    }
+
+    /**
+     * Set the objectReplicationPolicyId property: The
+     * objectReplicationPolicyId property.
+     *
+     * @param objectReplicationPolicyId the objectReplicationPolicyId value to
+     * set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setObjectReplicationPolicyId(String objectReplicationPolicyId) {
+        this.objectReplicationPolicyId = objectReplicationPolicyId;
+        return this;
+    }
+
+    /**
+     * Get the objectReplicationRules property: The objectReplicationRules
+     * property.
+     *
+     * @return the objectReplicationRules value.
+     */
+    public Map<String, String> getObjectReplicationRules() {
+        return this.objectReplicationRules;
+    }
+
+    /**
+     * Set the objectReplicationRules property: The objectReplicationRules
+     * property.
+     *
+     * @param objectReplicationRules the objectReplicationRules value to set.
+     * @return the BlobItemInternal object itself.
+     */
+    public BlobItemInternal setObjectReplicationRules(Map<String, String> objectReplicationRules) {
+        this.objectReplicationRules = objectReplicationRules;
         return this;
     }
 

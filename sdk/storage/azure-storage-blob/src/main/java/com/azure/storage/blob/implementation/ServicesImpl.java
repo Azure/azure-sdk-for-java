@@ -19,6 +19,8 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
+import com.azure.core.util.serializer.CollectionFormat;
+import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetAccountInfoResponse;
 import com.azure.storage.blob.implementation.models.ServicesGetPropertiesResponse;
@@ -32,6 +34,7 @@ import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.KeyInfo;
 import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import java.nio.ByteBuffer;
+import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -85,7 +88,7 @@ public final class ServicesImpl {
         @Get("")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") ListBlobContainersIncludeType include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
+        Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegment(@HostParam("url") String url, @QueryParam("prefix") String prefix, @QueryParam("marker") String marker1, @QueryParam("maxresults") Integer maxresults, @QueryParam("include") String include, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp, Context context);
 
         @Post("")
         @ExpectedResponses({200})
@@ -218,11 +221,11 @@ public final class ServicesImpl {
         final String prefix = null;
         final String marker = null;
         final Integer maxresults = null;
-        final ListBlobContainersIncludeType include = null;
         final Integer timeout = null;
         final String requestId = null;
         final String comp = "list";
-        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
+        String listBlobContainersIncludeTypeConverted = null;
+        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
@@ -231,7 +234,7 @@ public final class ServicesImpl {
      * @param prefix Filters the results to return only containers whose name begins with the specified prefix.
      * @param marker A string value that identifies the portion of the list of containers to be returned with the next listing operation. The operation returns the NextMarker value within the response body if the listing operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used as the value for the marker parameter in a subsequent call to request the next page of list items. The marker value is opaque to the client.
      * @param maxresults Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder of the results. For this reason, it is possible that the service will return fewer results than specified by maxresults, or than the default of 5000.
-     * @param include Include this parameter to specify that the container's metadata be returned as part of the response body. Possible values include: 'metadata'.
+     * @param listBlobContainersIncludeType Include this parameter to specify that the container's metadata be returned as part of the response body.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
@@ -239,9 +242,10 @@ public final class ServicesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, ListBlobContainersIncludeType include, Integer timeout, String requestId, Context context) {
+    public Mono<ServicesListBlobContainersSegmentResponse> listBlobContainersSegmentWithRestResponseAsync(String prefix, String marker, Integer maxresults, List<ListBlobContainersIncludeType> listBlobContainersIncludeType, Integer timeout, String requestId, Context context) {
         final String comp = "list";
-        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, include, timeout, this.client.getVersion(), requestId, comp, context);
+        String listBlobContainersIncludeTypeConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(listBlobContainersIncludeType, CollectionFormat.CSV);
+        return service.listBlobContainersSegment(this.client.getUrl(), prefix, marker, maxresults, listBlobContainersIncludeTypeConverted, timeout, this.client.getVersion(), requestId, comp, context);
     }
 
     /**
