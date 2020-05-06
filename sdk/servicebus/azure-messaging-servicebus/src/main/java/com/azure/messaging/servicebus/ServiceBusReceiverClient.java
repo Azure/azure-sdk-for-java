@@ -509,7 +509,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
         final Flux<ServiceBusReceivedMessageContext> messages = Flux.create(emitter -> queueWork(maxMessages,
             maxWaitTime, emitter));
-
+        //queueWork(maxMessages, maxWaitTime, null);
+        //return null;
         return new IterableStream<>(messages);
     }
 
@@ -629,12 +630,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        if (messageProcessor.get() != null) {
+        if (messageProcessor.get() != null && !messageProcessor.get().isDisposed()) {
             messageProcessor.get().dispose();
         }
 
         Disposable activeSubscription = messageProcessorSubscription.get();
-        if (activeSubscription != null) {
+        if (activeSubscription != null && !activeSubscription.isDisposed()) {
             activeSubscription.dispose();
         }
     }
@@ -652,28 +653,35 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         }
 
         if (messageProcessor.get() == null) {
-            EmitterProcessor<ServiceBusReceivedMessageContext> processor = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                .subscribeWith(EmitterProcessor.create(false));
+            logger.info("[{}]: Creating EmitterProcessor message processor for entity.", asyncClient.getEntityPath());
 
-            if (!messageProcessor.compareAndSet(null, processor)) {
-                processor.dispose();
+            EmitterProcessor<ServiceBusReceivedMessageContext> newProcessor = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                .subscribeWith(EmitterProcessor.create(false));
+            // if some other thread have come in between, we will not reset new processor
+            if (!messageProcessor.compareAndSet(null, newProcessor)) {
+                newProcessor.dispose();
             }
 
-            logger.info("[{}]: Started ContinuesMessageSubscriber message subscriber for entity.",
+            logger.info("[{}]: Started EmitterProcessor message processor for entity.",
                 asyncClient.getEntityPath());
         }
+
+            logger.info("[{}]: Subscribing EmitterProcessor message processor for entity.",
+                asyncClient.getEntityPath());
 
         Disposable newSubscription = messageProcessor.get()
             .take(maximumMessageCount)
             .timeout(maxWaitTime)
-            .doOnNext(messageContext -> {
+            .map(messageContext -> {
                 emitter.next(messageContext);
+                return messageContext;
             })
             .doOnError(throwable -> {
                 emitter.error(throwable);
             })
             .doOnComplete(emitter::complete)
             .subscribe();
+
 
         Disposable oldSubscription = messageProcessorSubscription.getAndSet(newSubscription);
         if (oldSubscription != null) {
