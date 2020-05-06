@@ -145,6 +145,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverForRead())
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             List<ResourceResponse<Document>> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
@@ -183,6 +184,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverForReadWrite())
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             List<ResourceResponse<Document>> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
@@ -225,6 +227,7 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverWithBlockList(blockListedUserId, errorMessage))
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
 
             // READ a document using a block listed user, passing the 'userId' in the item.

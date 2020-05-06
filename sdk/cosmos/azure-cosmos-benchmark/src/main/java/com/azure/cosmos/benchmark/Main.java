@@ -52,7 +52,7 @@ public class Main {
             case WriteThroughput:
                 break;
             default:
-                if (cfg.isContentResponseOnWriteEnabled()) {
+                if (Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled())) {
                     throw new IllegalArgumentException("contentResponseOnWriteEnabled parameter can only be set to true " +
                         "for write latency and write throughput operations");
                 }

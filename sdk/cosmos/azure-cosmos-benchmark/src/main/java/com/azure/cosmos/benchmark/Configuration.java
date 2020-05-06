@@ -80,9 +80,6 @@ class Configuration {
     @Parameter(names = "-throughput", description = "provisioned throughput for test container")
     private int throughput = 100000;
 
-    @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
-    private boolean contentResponseOnWriteEnabled = true;
-
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -132,6 +129,9 @@ class Configuration {
 
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
+
+    @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
+    private String contentResponseOnWriteEnabled = String.valueOf(true);
 
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
@@ -267,7 +267,7 @@ class Configuration {
         return consistencyLevel;
     }
 
-    boolean isContentResponseOnWriteEnabled() {
+    String isContentResponseOnWriteEnabled() {
         return contentResponseOnWriteEnabled;
     }
 
