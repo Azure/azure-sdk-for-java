@@ -59,7 +59,7 @@ az cognitiveservices account create \
 ```
 ### Authenticate the client
 In order to interact with the Form Recognizer service, you will need to create an instance of the `FormRecognizerClient` 
-class. You will need an **endpoint** and an **API key** to instantiate a client object, 
+class. You will need an **endpoint** and an **key** to instantiate a client object, 
 they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
 Form Recognizer resource. See the full details regarding [authentication][authentication] of Cognitive Services.
 
@@ -67,7 +67,7 @@ Form Recognizer resource. See the full details regarding [authentication][authen
 The `credential` parameter may be provided as a [`AzureKeyCredential`][azure_key_credential] from [azure-core][azure_core].
 
 ##### Create FormRecognizerClient with AzureKeyCredential
-To use an [API key][api_key], provide the key as a string to the AzureKeyCredential. This can be found in the [Azure Portal][azure_portal] 
+To use AzureKeyCredential authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. This can be found in the [Azure Portal][azure_portal] 
    under the "Quickstart" section or by running the following Azure CLI command:
 
 ```bash
@@ -77,7 +77,7 @@ Use the API key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L37-L40 -->
 ```java
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
@@ -85,13 +85,13 @@ The Azure Form Recognizer client library provides a way to **rotate the existing
 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L47-L53 -->
 ```java
-AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+AzureKeyCredential credential = new AzureKeyCredential("{key}");
 FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-    .apiKey(credential)
+    .credential(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.update("{new_api_key}");
+credential.update("{new_key}");
 ```
 
 ## Key concepts
@@ -336,7 +336,8 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
-[api_key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
+[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
+[key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-formrecognizer-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
