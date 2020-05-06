@@ -29,6 +29,11 @@ public interface Run extends HasInner<RunInner>, Indexable, Refreshable<Run>, Up
     AgentProperties agentConfiguration();
 
     /**
+     * @return the agentPoolName value.
+     */
+    String agentPoolName();
+
+    /**
      * @return the createTime value.
      */
     DateTime createTime();
