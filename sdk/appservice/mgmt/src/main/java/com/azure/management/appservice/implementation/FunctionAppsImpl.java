@@ -87,7 +87,7 @@ class FunctionAppsImpl
         if (inner == null) {
             return null;
         }
-        return new FunctionAppImpl(inner.getName(), inner, siteConfig, logConfig, this.manager());
+        return new FunctionAppImpl(inner.name(), inner, siteConfig, logConfig, this.manager());
     }
 
     @Override
@@ -100,11 +100,11 @@ class FunctionAppsImpl
                         && Arrays.asList(siteInner.kind().split(",")).contains("functionapp")) {
                         return Mono
                             .zip(
-                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.getName()),
+                                this.inner().getConfigurationAsync(siteInner.resourceGroup(), siteInner.name()),
                                 this
                                     .inner()
                                     .getDiagnosticLogsConfigurationAsync(
-                                        siteInner.resourceGroup(), siteInner.getName()),
+                                        siteInner.resourceGroup(), siteInner.name()),
                                 (siteConfigResourceInner, logsConfigInner) ->
                                     this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner));
                     } else {

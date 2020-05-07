@@ -60,7 +60,7 @@ public final class Dependency {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

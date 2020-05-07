@@ -694,13 +694,13 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         // checking to see if withTag correctly update
         virtualMachine.update().withTag("test", "testValue").apply();
-        Assertions.assertEquals("testValue", virtualMachine.inner().getTags().get("test"));
+        Assertions.assertEquals("testValue", virtualMachine.inner().tags().get("test"));
 
         // checking to see if withTags correctly updates
         Map<String, String> testTags = new HashMap<String, String>();
         testTags.put("testTag", "testValue");
         virtualMachine.update().withTags(testTags).apply();
-        Assertions.assertEquals(testTags, virtualMachine.inner().getTags());
+        Assertions.assertEquals(testTags, virtualMachine.inner().tags());
     }
 
     @Test

@@ -80,7 +80,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         List<String> list = new ArrayList<>();
         if (this.inner().registrationVirtualNetworks() != null) {
             for (SubResource sb : this.inner().registrationVirtualNetworks()) {
-                list.add(sb.getId());
+                list.add(sb.id());
             }
         }
         return list;
@@ -91,7 +91,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         List<String> list = new ArrayList<>();
         if (this.inner().resolutionVirtualNetworks() != null) {
             for (SubResource sb : this.inner().resolutionVirtualNetworks()) {
-                list.add(sb.getId());
+                list.add(sb.id());
             }
         }
         return list;
@@ -177,7 +177,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         if (inner == null) {
             return null;
         }
-        return new SoaRecordSetImpl(inner.getName(), this, inner);
+        return new SoaRecordSetImpl(inner.name(), this, inner);
     }
 
     // Setters
@@ -471,28 +471,28 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                         .recordSets()
                         .listByDnsZoneAsync(this.resourceGroupName(), this.name(), pageSize, recordSetSuffix),
                     inner -> {
-                        DnsRecordSet recordSet = new DnsRecordSetImpl(inner.getName(), inner.getType(), self, inner);
+                        DnsRecordSet recordSet = new DnsRecordSetImpl(inner.name(), inner.type(), self, inner);
                         switch (recordSet.recordType()) {
                             case A:
-                                return Mono.just(new ARecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new ARecordSetImpl(inner.name(), self, inner));
                             case AAAA:
-                                return Mono.just(new AaaaRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new AaaaRecordSetImpl(inner.name(), self, inner));
                             case CAA:
-                                return Mono.just(new CaaRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new CaaRecordSetImpl(inner.name(), self, inner));
                             case CNAME:
-                                return Mono.just(new CNameRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new CNameRecordSetImpl(inner.name(), self, inner));
                             case MX:
-                                return Mono.just(new MXRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new MXRecordSetImpl(inner.name(), self, inner));
                             case NS:
-                                return Mono.just(new NSRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new NSRecordSetImpl(inner.name(), self, inner));
                             case PTR:
-                                return Mono.just(new PtrRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new PtrRecordSetImpl(inner.name(), self, inner));
                             case SOA:
-                                return Mono.just(new SoaRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new SoaRecordSetImpl(inner.name(), self, inner));
                             case SRV:
-                                return Mono.just(new SrvRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new SrvRecordSetImpl(inner.name(), self, inner));
                             case TXT:
-                                return Mono.just(new TxtRecordSetImpl(inner.getName(), self, inner));
+                                return Mono.just(new TxtRecordSetImpl(inner.name(), self, inner));
                             default:
                                 return Mono.just(recordSet);
                         }
@@ -524,12 +524,12 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
         this.inner().withResolutionVirtualNetworks(new ArrayList<>());
         for (String rvnId : registrationVirtualNetworkIds) {
             SubResource sb = new SubResource();
-            sb.setId(rvnId);
+            sb.withId(rvnId);
             this.inner().registrationVirtualNetworks().add(sb);
         }
         for (String rvnId : resolutionVirtualNetworkIds) {
             SubResource sb = new SubResource();
-            sb.setId(rvnId);
+            sb.withId(rvnId);
             this.inner().resolutionVirtualNetworks().add(sb);
         }
         return this;

@@ -35,6 +35,6 @@ class NetworkWatchersImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkWatcherImpl(inner.getName(), inner, this.manager());
+        return new NetworkWatcherImpl(inner.name(), inner, this.manager());
     }
 }

@@ -34,6 +34,6 @@ class DdosProtectionPlansImpl
         if (inner == null) {
             return null;
         }
-        return new DdosProtectionPlanImpl(inner.getName(), inner, this.manager());
+        return new DdosProtectionPlanImpl(inner.name(), inner, this.manager());
     }
 }
