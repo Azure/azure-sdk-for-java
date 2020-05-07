@@ -1,5 +1,8 @@
 # Release History
 
+## 1.0.0-beta.3 (Unreleased)
+
+
 ## 1.0.0-beta.2 (2020-05-06)
 - Fixed Receipt type bug to select the valueString field via fieldValue.
 - Rename `apiKey()` to `credential()` on FormRecognizerClientBuilder.
