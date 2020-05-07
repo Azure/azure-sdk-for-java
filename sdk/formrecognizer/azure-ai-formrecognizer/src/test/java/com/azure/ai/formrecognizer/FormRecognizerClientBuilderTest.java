@@ -6,13 +6,11 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -37,7 +35,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void clientBuilderWithInvalidApiKeyCredential(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithInvalidApiKeyCredential(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithInvalidApiKeyCredentialRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
             assertThrows(output.getClass(), () -> clientBuilder.buildClient().beginRecognizeContentFromUrl(input)));
     }
@@ -47,7 +45,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void clientBuilderWithRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
@@ -57,7 +55,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void clientBuilderWithRotateToInvalidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithRotateToInvalidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithRotateToInvalidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
             assertThrows(output.getClass(), () -> clientBuilder.buildClient().beginRecognizeContentFromUrl(input)));
     }
@@ -67,7 +65,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void clientBuilderWithNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
@@ -77,7 +75,7 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+    public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
