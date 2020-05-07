@@ -8,10 +8,11 @@
 
 package com.microsoft.azure.management.compute.v2017_12_01.implementation;
 
-import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachine;
+import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineUpdate;
+import java.util.Map;
 import com.microsoft.azure.SubResource;
 import java.util.List;
 import com.microsoft.azure.management.compute.v2017_12_01.Plan;
@@ -26,17 +27,42 @@ import java.util.ArrayList;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineExtension;
 import rx.functions.Func1;
 
-class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl, ComputeManager> implements VirtualMachine, VirtualMachine.Definition, VirtualMachine.Update {
+class VirtualMachineImpl extends CreatableUpdatableImpl<VirtualMachine, VirtualMachineInner, VirtualMachineImpl> implements VirtualMachine, VirtualMachine.Definition, VirtualMachine.Update {
+    private final ComputeManager manager;
+    private String resourceGroupName;
+    private String vmName;
     private VirtualMachineUpdate updateParameter;
-    VirtualMachineImpl(String name, VirtualMachineInner inner, ComputeManager manager) {
-        super(name, inner, manager);
+
+    VirtualMachineImpl(String name, ComputeManager manager) {
+        super(name, new VirtualMachineInner());
+        this.manager = manager;
+        // Set resource name
+        this.vmName = name;
+        //
         this.updateParameter = new VirtualMachineUpdate();
+    }
+
+    VirtualMachineImpl(VirtualMachineInner inner, ComputeManager manager) {
+        super(inner.name(), inner);
+        this.manager = manager;
+        // Set resource name
+        this.vmName = inner.name();
+        // set resource ancestor and positional variables
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.vmName = IdParsingUtils.getValueFromIdByName(inner.id(), "virtualMachines");
+        //
+        this.updateParameter = new VirtualMachineUpdate();
+    }
+
+    @Override
+    public ComputeManager manager() {
+        return this.manager;
     }
 
     @Override
     public Observable<VirtualMachine> createResourceAsync() {
         VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.vmName, this.inner())
             .map(new Func1<VirtualMachineInner, VirtualMachineInner>() {
                @Override
                public VirtualMachineInner call(VirtualMachineInner resource) {
@@ -50,7 +76,7 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     public Observable<VirtualMachine> updateResourceAsync() {
         VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return client.updateAsync(this.resourceGroupName(), this.name(), this.updateParameter)
+        return client.updateAsync(this.resourceGroupName, this.vmName, this.updateParameter)
             .map(new Func1<VirtualMachineInner, VirtualMachineInner>() {
                @Override
                public VirtualMachineInner call(VirtualMachineInner resource) {
@@ -64,7 +90,7 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     protected Observable<VirtualMachineInner> getInnerAsync() {
         VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return client.getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return null; // NOP getInnerAsync implementation as get is not supported
     }
 
     @Override
@@ -92,6 +118,11 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     }
 
     @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
     public VirtualMachineIdentity identity() {
         return this.inner().identity();
     }
@@ -109,6 +140,16 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     public String licenseType() {
         return this.inner().licenseType();
+    }
+
+    @Override
+    public String location() {
+        return this.inner().location();
+    }
+
+    @Override
+    public String name() {
+        return this.inner().name();
     }
 
     @Override
@@ -148,6 +189,16 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     }
 
     @Override
+    public Map<String, String> tags() {
+        return this.inner().getTags();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
     public String vmId() {
         return this.inner().vmId();
     }
@@ -155,6 +206,18 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
     @Override
     public List<String> zones() {
         return this.inner().zones();
+    }
+
+    @Override
+    public VirtualMachineImpl withExistingLocation(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withLocation(String location) {
+        this.inner().withLocation(location);
+        return this;
     }
 
     @Override
@@ -243,6 +306,16 @@ class VirtualMachineImpl extends GroupableResourceCoreImpl<VirtualMachine, Virtu
             this.inner().withStorageProfile(storageProfile);
         } else {
             this.updateParameter.withStorageProfile(storageProfile);
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.inner().withTags(tags);
+        } else {
+            this.updateParameter.withTags(tags);
         }
         return this;
     }
