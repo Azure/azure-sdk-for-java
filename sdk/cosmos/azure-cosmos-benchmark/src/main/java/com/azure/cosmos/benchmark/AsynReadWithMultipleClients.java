@@ -226,6 +226,7 @@ public class AsynReadWithMultipleClients<T> {
                         .connectionPolicy(configuration.getConnectionPolicy())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionReuseAcrossClientsEnabled(true)
+                        .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()))
                         .buildAsyncClient();
                     List<PojoizedJson> docsToRead = new ArrayList<>();
                     CosmosAsyncDatabase cosmosAsyncDatabase = null;
