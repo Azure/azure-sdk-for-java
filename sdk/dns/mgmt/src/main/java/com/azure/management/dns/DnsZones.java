@@ -3,6 +3,7 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.dns.models.ZonesInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -15,15 +16,12 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import com.azure.management.dns.implementation.DnsZoneManager;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to DNS zone management API in Azure.
- */
+/** Entry point to DNS zone management API in Azure. */
 @Fluent
-public interface DnsZones extends
-        SupportsCreating<DnsZone.DefinitionStages.Blank>,
+public interface DnsZones
+    extends SupportsCreating<DnsZone.DefinitionStages.Blank>,
         SupportsListing<DnsZone>,
         SupportsListingByResourceGroup<DnsZone>,
         SupportsGettingByResourceGroup<DnsZone>,

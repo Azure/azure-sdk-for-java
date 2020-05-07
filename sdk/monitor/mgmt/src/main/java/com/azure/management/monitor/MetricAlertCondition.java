@@ -6,16 +6,11 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.Collection;
 
-/**
- * An immutable client-side representation of an Azure metric dynamic alert criteria.
- */
+/** An immutable client-side representation of an Azure metric dynamic alert criteria. */
 @Fluent
-public interface MetricAlertCondition extends
-        HasInner<MetricCriteria>,
-        HasParent<MetricAlert> {
+public interface MetricAlertCondition extends HasInner<MetricCriteria>, HasParent<MetricAlert> {
     /**
      * Get name of the criteria.
      *
@@ -38,7 +33,8 @@ public interface MetricAlertCondition extends
     String metricNamespace();
 
     /**
-     * Get the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
+     * Get the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual',
+     * 'LessThan', 'LessThanOrEqual'.
      *
      * @return the operator value
      */
@@ -65,18 +61,15 @@ public interface MetricAlertCondition extends
      */
     Collection<MetricDimension> dimensions();
 
-    /**
-     * Grouping of metric alerts condition definition stages.
-     */
+    /** Grouping of metric alerts condition definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a Metric Alert condition definition.
-         */
+        /** The first stage of a Metric Alert condition definition. */
         interface Blank {
             /**
-             * The stage of the definition which specifies metric signal name.
-             *              *
-             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this definition
+             * The stage of the definition which specifies metric signal name. *
+             *
+             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this
+             *     definition
              */
             interface MetricName<ParentT> {
                 /**
@@ -107,12 +100,15 @@ public interface MetricAlertCondition extends
             /**
              * Sets the condition to monitor for the current metric alert.
              *
-             * @param timeAggregation the criteria time aggregation types. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total'.
-             * @param condition the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
+             * @param timeAggregation the criteria time aggregation types. Possible values include: 'Average',
+             *     'Minimum', 'Maximum', 'Total'.
+             * @param condition the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan',
+             *     'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
              * @param threshold the criteria threshold value that activates the alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithConditionAttach<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
+            WithConditionAttach<ParentT> withCondition(
+                MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
         }
 
         /**
@@ -132,24 +128,22 @@ public interface MetricAlertCondition extends
 
             /**
              * Attaches the defined condition to the parent metric alert.
+             *
              * @return the next stage of metric alert definition.
              */
             ParentT attach();
         }
     }
 
-    /**
-     * The entirety of a metric alert condition definition as a part of a parent metric alert update.
-     */
+    /** The entirety of a metric alert condition definition as a part of a parent metric alert update. */
     interface UpdateDefinitionStages {
-        /**
-         * The first stage of a Metric Alert condition definition.
-         */
+        /** The first stage of a Metric Alert condition definition. */
         interface Blank {
             /**
-             * The stage of the definition which specifies metric signal name.
-             *              *
-             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this definition
+             * The stage of the definition which specifies metric signal name. *
+             *
+             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this
+             *     definition
              */
             interface MetricName<ParentT> {
                 /**
@@ -180,12 +174,15 @@ public interface MetricAlertCondition extends
             /**
              * Sets the condition to monitor for the current metric alert.
              *
-             * @param condition the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
-             * @param timeAggregation the criteria time aggregation types. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total'.
+             * @param condition the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan',
+             *     'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
+             * @param timeAggregation the criteria time aggregation types. Possible values include: 'Average',
+             *     'Minimum', 'Maximum', 'Total'.
              * @param threshold the criteria threshold value that activates the alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithConditionAttach<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
+            WithConditionAttach<ParentT> withCondition(
+                MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
         }
 
         /**
@@ -205,25 +202,27 @@ public interface MetricAlertCondition extends
 
             /**
              * Attaches the defined condition to the parent metric alert.
+             *
              * @return the next stage of metric alert definition.
              */
             ParentT attach();
         }
     }
 
-    /**
-     * Grouping of metric alert condition update stages.
-     */
+    /** Grouping of metric alert condition update stages. */
     interface UpdateStages {
         /**
          * Sets the condition to monitor for the current metric alert.
          *
-         * @param condition the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan', 'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
-         * @param timeAggregation the criteria time aggregation types. Possible values include: 'Average', 'Minimum', 'Maximum', 'Total'.
+         * @param condition the criteria operator. Possible values include: 'Equals', 'NotEquals', 'GreaterThan',
+         *     'GreaterThanOrEqual', 'LessThan', 'LessThanOrEqual'.
+         * @param timeAggregation the criteria time aggregation types. Possible values include: 'Average', 'Minimum',
+         *     'Maximum', 'Total'.
          * @param threshold the criteria threshold value that activates the alert.
          * @return the next stage of the metric alert condition update.
          */
-        UpdateStages withCondition(MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
+        UpdateStages withCondition(
+            MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold);
 
         /**
          * Adds a metric dimension filter.

@@ -7,9 +7,7 @@ package com.azure.management.sql;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PrivateEndpointProperty model.
- */
+/** The PrivateEndpointProperty model. */
 @Fluent
 public final class PrivateEndpointProperty {
     /*
@@ -20,7 +18,7 @@ public final class PrivateEndpointProperty {
 
     /**
      * Get the id property: Resource id of the private endpoint.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -29,7 +27,7 @@ public final class PrivateEndpointProperty {
 
     /**
      * Set the id property: Resource id of the private endpoint.
-     * 
+     *
      * @param id the id value to set.
      * @return the PrivateEndpointProperty object itself.
      */

@@ -3,14 +3,11 @@
 
 package com.azure.management.monitor;
 
-import java.util.Collection;
-
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import java.util.Collection;
 
-/**
- * Defines values for MetricAlertRuleTimeAggregation.
- */
+/** Defines values for MetricAlertRuleTimeAggregation. */
 public final class MetricAlertRuleTimeAggregation extends ExpandableStringEnum<MetricAlertRuleTimeAggregation> {
     /** Static value Count for MetricAlertRuleTimeAggregation. */
     public static final MetricAlertRuleTimeAggregation COUNT = fromString("Count");
@@ -29,6 +26,7 @@ public final class MetricAlertRuleTimeAggregation extends ExpandableStringEnum<M
 
     /**
      * Creates or finds a MetricAlertRuleTimeAggregation from its string representation.
+     *
      * @param name a name to look for
      * @return the corresponding MetricAlertRuleTimeAggregation
      */
@@ -37,9 +35,7 @@ public final class MetricAlertRuleTimeAggregation extends ExpandableStringEnum<M
         return fromString(name, MetricAlertRuleTimeAggregation.class);
     }
 
-    /**
-     * @return known MetricAlertRuleTimeAggregation values
-     */
+    /** @return known MetricAlertRuleTimeAggregation values */
     public static Collection<MetricAlertRuleTimeAggregation> values() {
         return values(MetricAlertRuleTimeAggregation.class);
     }

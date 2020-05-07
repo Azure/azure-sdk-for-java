@@ -3,37 +3,31 @@
 
 package com.azure.management.containerservice;
 
-
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.containerservice.implementation.ContainerServiceManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 
 public class ContainerServiceManagementTest extends TestBase {
     protected ResourceManager resourceManager;
     protected ContainerServiceManager containerServiceManager;
-    protected String RG_NAME = "";
+    protected String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javaacsrg", 15);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        rgName = generateRandomResourceName("javaacsrg", 15);
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(defaultSubscription);
+        resourceManager = ResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
 
-       containerServiceManager = ContainerServiceManager
-                .authenticate(restClient, defaultSubscription);
+        containerServiceManager = ContainerServiceManager.authenticate(httpPipeline, profile);
 
-       resourceManager.resourceGroups()
-               .define(RG_NAME)
-               .withRegion(Region.US_EAST)
-               .create();
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

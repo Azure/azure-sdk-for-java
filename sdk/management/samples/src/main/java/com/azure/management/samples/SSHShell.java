@@ -22,6 +22,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -44,8 +45,8 @@ public final class SSHShell {
      * @param userName the ssh user name
      * @param password the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException the JSchException
+     * @throws IOException the IOException
      */
     private SSHShell(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -78,8 +79,8 @@ public final class SSHShell {
      * @param userName the ssh user name
      * @param sshPrivateKey the ssh password
      * @return the shell
-     * @throws JSchException
-     * @throws IOException
+     * @throws JSchException the JSchException
+     * @throws IOException the IOException
      */
     private SSHShell(String host, int port, String userName, byte[] sshPrivateKey)
             throws JSchException, IOException {
@@ -113,7 +114,7 @@ public final class SSHShell {
      * @param password the ssh password
      * @return the shell
      * @throws JSchException exception thrown
-     * @throws IOException   IO exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, String password)
             throws JSchException, IOException {
@@ -129,7 +130,7 @@ public final class SSHShell {
      * @param sshPrivateKey the ssh private key
      * @return the shell
      * @throws JSchException exception thrown
-     * @throws IOException   IO exception thrown
+     * @throws IOException IO exception thrown
      */
     public static SSHShell open(String host, int port, String userName, byte[] sshPrivateKey)
             throws JSchException, IOException {
@@ -169,8 +170,8 @@ public final class SSHShell {
      * @throws Exception exception thrown
      */
     public String executeCommand(String command, Boolean getExitStatus, Boolean withErr) throws Exception {
-        String result = "";
-        String resultErr = "";
+        StringBuilder result = new StringBuilder();
+        StringBuilder resultErr = new StringBuilder();
 
         Channel channel = this.session.openChannel("exec");
         ((ChannelExec) channel).setCommand(command);
@@ -184,35 +185,36 @@ public final class SSHShell {
                 if (i < 0) {
                     break;
                 }
-                result += new String(tmp, 0, i);
+                result.append(new String(tmp, 0, i, StandardCharsets.UTF_8));
             }
             while (commandErr.available() > 0) {
                 int i = commandErr.read(tmp, 0, 4096);
                 if (i < 0) {
                     break;
                 }
-                resultErr += new String(tmp, 0, i);
+                resultErr.append(new String(tmp, 0, i, StandardCharsets.UTF_8));
             }
             if (channel.isClosed()) {
                 if (commandOutput.available() > 0) {
                     continue;
                 }
                 if (getExitStatus) {
-                    result += "exit-status: " + channel.getExitStatus();
+                    result.append("exit-status: ").append(channel.getExitStatus());
                     if (withErr) {
-                        result += "\n With error:\n" + resultErr;
+                        result.append("\n With error:\n").append(resultErr);
                     }
                 }
                 break;
             }
             try {
                 Thread.sleep(100);
-            } catch (Exception ee) {
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }
         channel.disconnect();
 
-        return result;
+        return result.toString();
     }
 
     /**
@@ -235,7 +237,7 @@ public final class SSHShell {
 
         channel.disconnect();
 
-        return outputStream.toString();
+        return outputStream.toString("UTF-8");
     }
 
     /**
@@ -253,12 +255,13 @@ public final class SSHShell {
         channel.connect();
         String absolutePath = isUserHomeBased ? channel.getHome() + "/" + toPath : toPath;
 
-        String path = "";
+        StringBuilder path = new StringBuilder();
         for (String dir : absolutePath.split("/")) {
-            path = path + "/" + dir;
+            path.append("/" + dir);
             try {
-                channel.mkdir(path);
-            } catch (Exception ee) {
+                channel.mkdir(path.toString());
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
             }
         }
         channel.cd(absolutePath);
@@ -287,6 +290,9 @@ public final class SSHShell {
 
     private Closure getExpectClosure() {
         return new Closure() {
+            /**
+             * @throws Exception thrown Exception
+             */
             public void run(ExpectState expectState) throws Exception {
                 String outputBuffer = expectState.getBuffer();
                 System.out.println(outputBuffer);
@@ -315,10 +321,10 @@ public final class SSHShell {
         if (passPhrase == null || passPhrase.isEmpty()) {
             keyPair.writePrivateKey(privateKeyBuff);
         } else {
-            keyPair.writePrivateKey(privateKeyBuff, passPhrase.getBytes());
+            keyPair.writePrivateKey(privateKeyBuff, passPhrase.getBytes(StandardCharsets.UTF_8));
         }
 
-        return new SshPublicPrivateKey(privateKeyBuff.toString(), publicKeyBuff.toString());
+        return new SshPublicPrivateKey(privateKeyBuff.toString("UTF-8"), publicKeyBuff.toString("UTF-8"));
     }
 
     /**

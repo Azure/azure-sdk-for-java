@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActivityLogAlertActionList model.
- */
+/** The ActivityLogAlertActionList model. */
 @Fluent
 public final class ActivityLogAlertActionList {
     /*
@@ -21,7 +19,7 @@ public final class ActivityLogAlertActionList {
 
     /**
      * Get the actionGroups property: The list of activity log alerts.
-     * 
+     *
      * @return the actionGroups value.
      */
     public List<ActivityLogAlertActionGroup> actionGroups() {
@@ -30,7 +28,7 @@ public final class ActivityLogAlertActionList {
 
     /**
      * Set the actionGroups property: The list of activity log alerts.
-     * 
+     *
      * @param actionGroups the actionGroups value to set.
      * @return the ActivityLogAlertActionList object itself.
      */

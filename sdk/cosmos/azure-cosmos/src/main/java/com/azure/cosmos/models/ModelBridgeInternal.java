@@ -14,15 +14,18 @@ import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
@@ -38,9 +41,7 @@ import com.azure.cosmos.implementation.query.QueryItem;
 import com.azure.cosmos.implementation.query.orderbyquery.OrderByRowResult;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
@@ -99,6 +100,10 @@ public final class ModelBridgeInternal {
 
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
         return new CosmosStoredProcedureProperties(jsonString);
+    }
+
+    public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
+        return new CosmosPermissionProperties(jsonString);
     }
 
     public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
@@ -463,6 +468,19 @@ public final class ModelBridgeInternal {
             return null;
         }
         return jsonSerializable.getPropertyBag();
+    }
+
+    public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
+        feedOptions.setRequestContinuation(continuationToken);
+        feedOptions.setMaxItemCount(maxItemCount);
+    }
+
+    public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
+        feedOptions.setRequestContinuation(continuationToken);
+    }
+
+    public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
+        feedOptions.setMaxItemCount(maxItemCount);
     }
 
 }

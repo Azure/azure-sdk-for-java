@@ -12,9 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the ContainerRegistryManagementClientImpl type.
- */
+/** A builder for creating a new instance of the ContainerRegistryManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {ContainerRegistryManagementClientImpl.class})
 public final class ContainerRegistryManagementClientBuilder {
     /*
@@ -24,7 +22,7 @@ public final class ContainerRegistryManagementClientBuilder {
 
     /**
      * Sets The Microsoft Azure subscription ID.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the ContainerRegistryManagementClientBuilder.
      */
@@ -40,7 +38,7 @@ public final class ContainerRegistryManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the ContainerRegistryManagementClientBuilder.
      */
@@ -56,7 +54,7 @@ public final class ContainerRegistryManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the ContainerRegistryManagementClientBuilder.
      */
@@ -72,7 +70,7 @@ public final class ContainerRegistryManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the ContainerRegistryManagementClientBuilder.
      */
@@ -83,10 +81,10 @@ public final class ContainerRegistryManagementClientBuilder {
 
     /**
      * Builds an instance of ContainerRegistryManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of ContainerRegistryManagementClientImpl.
      */
-    public ContainerRegistryManagementClientImpl build() {
+    public ContainerRegistryManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -94,7 +92,10 @@ public final class ContainerRegistryManagementClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         ContainerRegistryManagementClientImpl client = new ContainerRegistryManagementClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The IPRule model.
- */
+/** The IPRule model. */
 @Fluent
 public final class IPRule {
     /*
@@ -26,9 +24,8 @@ public final class IPRule {
     private Action action;
 
     /**
-     * Get the iPAddressOrRange property: Specifies the IP or IP range in CIDR
-     * format. Only IPV4 address is allowed.
-     * 
+     * Get the iPAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+     *
      * @return the iPAddressOrRange value.
      */
     public String iPAddressOrRange() {
@@ -36,9 +33,8 @@ public final class IPRule {
     }
 
     /**
-     * Set the iPAddressOrRange property: Specifies the IP or IP range in CIDR
-     * format. Only IPV4 address is allowed.
-     * 
+     * Set the iPAddressOrRange property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
+     *
      * @param iPAddressOrRange the iPAddressOrRange value to set.
      * @return the IPRule object itself.
      */
@@ -49,7 +45,7 @@ public final class IPRule {
 
     /**
      * Get the action property: The action of IP ACL rule.
-     * 
+     *
      * @return the action value.
      */
     public Action action() {
@@ -58,7 +54,7 @@ public final class IPRule {
 
     /**
      * Set the action property: The action of IP ACL rule.
-     * 
+     *
      * @param action the action value to set.
      * @return the IPRule object itself.
      */

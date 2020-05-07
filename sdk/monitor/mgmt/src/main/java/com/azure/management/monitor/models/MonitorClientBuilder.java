@@ -12,10 +12,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the MonitorClientImpl type.
- */
-@ServiceClientBuilder(serviceClients = MonitorClientImpl.class)
+/** A builder for creating a new instance of the MonitorClientImpl type. */
+@ServiceClientBuilder(serviceClients = {MonitorClientImpl.class})
 public final class MonitorClientBuilder {
     /*
      * The Azure subscription Id.
@@ -24,7 +22,7 @@ public final class MonitorClientBuilder {
 
     /**
      * Sets The Azure subscription Id.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the MonitorClientBuilder.
      */
@@ -40,7 +38,7 @@ public final class MonitorClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the MonitorClientBuilder.
      */
@@ -56,7 +54,7 @@ public final class MonitorClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the MonitorClientBuilder.
      */
@@ -72,7 +70,7 @@ public final class MonitorClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the MonitorClientBuilder.
      */
@@ -83,10 +81,10 @@ public final class MonitorClientBuilder {
 
     /**
      * Builds an instance of MonitorClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of MonitorClientImpl.
      */
-    public MonitorClientImpl build() {
+    public MonitorClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -94,7 +92,10 @@ public final class MonitorClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         MonitorClientImpl client = new MonitorClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

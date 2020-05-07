@@ -10,9 +10,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/**
- * The DockerTaskStep model.
- */
+/** The DockerTaskStep model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Docker")
 @Fluent
@@ -57,9 +55,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     private List<Argument> arguments;
 
     /**
-     * Get the imageNames property: The fully qualified image names including
-     * the repository and tag.
-     * 
+     * Get the imageNames property: The fully qualified image names including the repository and tag.
+     *
      * @return the imageNames value.
      */
     public List<String> imageNames() {
@@ -67,9 +64,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the imageNames property: The fully qualified image names including
-     * the repository and tag.
-     * 
+     * Set the imageNames property: The fully qualified image names including the repository and tag.
+     *
      * @param imageNames the imageNames value to set.
      * @return the DockerTaskStep object itself.
      */
@@ -79,9 +75,9 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the isPushEnabled property: The value of this property indicates
-     * whether the image built should be pushed to the registry or not.
-     * 
+     * Get the isPushEnabled property: The value of this property indicates whether the image built should be pushed to
+     * the registry or not.
+     *
      * @return the isPushEnabled value.
      */
     public Boolean isPushEnabled() {
@@ -89,9 +85,9 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the isPushEnabled property: The value of this property indicates
-     * whether the image built should be pushed to the registry or not.
-     * 
+     * Set the isPushEnabled property: The value of this property indicates whether the image built should be pushed to
+     * the registry or not.
+     *
      * @param isPushEnabled the isPushEnabled value to set.
      * @return the DockerTaskStep object itself.
      */
@@ -101,9 +97,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the noCache property: The value of this property indicates whether
-     * the image cache is enabled or not.
-     * 
+     * Get the noCache property: The value of this property indicates whether the image cache is enabled or not.
+     *
      * @return the noCache value.
      */
     public Boolean noCache() {
@@ -111,9 +106,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the noCache property: The value of this property indicates whether
-     * the image cache is enabled or not.
-     * 
+     * Set the noCache property: The value of this property indicates whether the image cache is enabled or not.
+     *
      * @param noCache the noCache value to set.
      * @return the DockerTaskStep object itself.
      */
@@ -123,9 +117,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the dockerFilePath property: The Docker file path relative to the
-     * source context.
-     * 
+     * Get the dockerFilePath property: The Docker file path relative to the source context.
+     *
      * @return the dockerFilePath value.
      */
     public String dockerFilePath() {
@@ -133,9 +126,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the dockerFilePath property: The Docker file path relative to the
-     * source context.
-     * 
+     * Set the dockerFilePath property: The Docker file path relative to the source context.
+     *
      * @param dockerFilePath the dockerFilePath value to set.
      * @return the DockerTaskStep object itself.
      */
@@ -145,9 +137,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the target property: The name of the target build stage for the
-     * docker build.
-     * 
+     * Get the target property: The name of the target build stage for the docker build.
+     *
      * @return the target value.
      */
     public String target() {
@@ -155,9 +146,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the target property: The name of the target build stage for the
-     * docker build.
-     * 
+     * Set the target property: The name of the target build stage for the docker build.
+     *
      * @param target the target value to set.
      * @return the DockerTaskStep object itself.
      */
@@ -167,9 +157,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Get the arguments property: The collection of override arguments to be
-     * used when executing this build step.
-     * 
+     * Get the arguments property: The collection of override arguments to be used when executing this build step.
+     *
      * @return the arguments value.
      */
     public List<Argument> arguments() {
@@ -177,9 +166,8 @@ public final class DockerTaskStep extends TaskStepProperties {
     }
 
     /**
-     * Set the arguments property: The collection of override arguments to be
-     * used when executing this build step.
-     * 
+     * Set the arguments property: The collection of override arguments to be used when executing this build step.
+     *
      * @param arguments the arguments value to set.
      * @return the DockerTaskStep object itself.
      */

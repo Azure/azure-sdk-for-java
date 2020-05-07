@@ -8,29 +8,28 @@ import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.models.SiteConfigResourceInner;
 import com.azure.management.appservice.models.SiteInner;
 import com.azure.management.appservice.models.SiteLogsConfigInner;
-import reactor.core.publisher.Mono;
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * The implementation for DeploymentSlot.
- */
-class DeploymentSlotImpl
-        extends DeploymentSlotBaseImpl<
-        DeploymentSlot,
-            DeploymentSlotImpl,
-            WebAppImpl,
-            DeploymentSlot.DefinitionStages.WithCreate,
-            DeploymentSlot.Update>
-        implements
-            DeploymentSlot,
-            DeploymentSlot.Definition,
-            DeploymentSlot.Update {
+import reactor.core.publisher.Mono;
 
-    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, WebAppImpl parent) {
+/** The implementation for DeploymentSlot. */
+class DeploymentSlotImpl
+    extends DeploymentSlotBaseImpl<
+        DeploymentSlot,
+        DeploymentSlotImpl,
+        WebAppImpl,
+        DeploymentSlot.DefinitionStages.WithCreate,
+        DeploymentSlot.Update>
+    implements DeploymentSlot, DeploymentSlot.Definition, DeploymentSlot.Update {
+
+    DeploymentSlotImpl(
+        String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        WebAppImpl parent) {
         super(name, innerObject, siteConfig, logConfig, parent);
     }
 
@@ -69,7 +68,7 @@ class DeploymentSlotImpl
     @Override
     public Mono<Void> warDeployAsync(File warFile, String appName) {
         try {
-            return warDeployAsync(new FileInputStream(warFile), appName);
+            return kuduClient.warDeployAsync(warFile, appName);
         } catch (IOException e) {
             return Mono.error(e);
         }
@@ -102,15 +101,13 @@ class DeploymentSlotImpl
 
     @Override
     public Mono<Void> zipDeployAsync(InputStream zipFile) {
-        return kuduClient.zipDeployAsync(zipFile)
-                .then(stopAsync())
-                .then(startAsync());
+        return kuduClient.zipDeployAsync(zipFile).then(stopAsync()).then(startAsync());
     }
 
     @Override
     public Mono<Void> zipDeployAsync(File zipFile) {
         try {
-            return zipDeployAsync(new FileInputStream(zipFile));
+            return kuduClient.zipDeployAsync(zipFile);
         } catch (IOException e) {
             return Mono.error(e);
         }

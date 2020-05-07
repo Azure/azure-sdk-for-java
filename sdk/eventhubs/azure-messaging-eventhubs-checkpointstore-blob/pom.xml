@@ -11,7 +11,7 @@
     <artifactId>azure-client-sdk-parent</artifactId>
     <groupId>com.azure</groupId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../../pom.client.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -45,10 +45,16 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.5.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
+      <version>12.6.0</version> <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.0.6</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <scope>test</scope>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
@@ -70,7 +76,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The OperationListResult model.
- */
+/** The OperationListResult model. */
 @Fluent
 public final class OperationListResultInner {
     /*
@@ -29,10 +27,9 @@ public final class OperationListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: The list of container registry operations. Since
-     * this list may be incomplete, the nextLink field should be used to
-     * request the next list of operations.
-     * 
+     * Get the value property: The list of container registry operations. Since this list may be incomplete, the
+     * nextLink field should be used to request the next list of operations.
+     *
      * @return the value value.
      */
     public List<OperationDefinitionInner> value() {
@@ -40,10 +37,9 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the value property: The list of container registry operations. Since
-     * this list may be incomplete, the nextLink field should be used to
-     * request the next list of operations.
-     * 
+     * Set the value property: The list of container registry operations. Since this list may be incomplete, the
+     * nextLink field should be used to request the next list of operations.
+     *
      * @param value the value value to set.
      * @return the OperationListResultInner object itself.
      */
@@ -53,9 +49,8 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Get the nextLink property: The URI that can be used to request the next
-     * list of container registry operations.
-     * 
+     * Get the nextLink property: The URI that can be used to request the next list of container registry operations.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,9 +58,8 @@ public final class OperationListResultInner {
     }
 
     /**
-     * Set the nextLink property: The URI that can be used to request the next
-     * list of container registry operations.
-     * 
+     * Set the nextLink property: The URI that can be used to request the next list of container registry operations.
+     *
      * @param nextLink the nextLink value to set.
      * @return the OperationListResultInner object itself.
      */

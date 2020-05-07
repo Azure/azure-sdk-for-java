@@ -4,8 +4,9 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.models.Permission;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class CosmosClientBuilder {
     private String keyOrResourceToken;
     private ConnectionPolicy connectionPolicy;
     private ConsistencyLevel desiredConsistencyLevel;
-    private List<Permission> permissions;
+    private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
@@ -138,7 +139,7 @@ public class CosmosClientBuilder {
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder authorizationTokenResolver(
+    CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
@@ -214,7 +215,7 @@ public class CosmosClientBuilder {
      *
      * @return the permission list
      */
-    List<Permission> getPermissions() {
+    List<CosmosPermissionProperties> getPermissions() {
         return permissions;
     }
 
@@ -225,7 +226,7 @@ public class CosmosClientBuilder {
      * @param permissions Permission list for authentication.
      * @return current Builder.
      */
-    public CosmosClientBuilder permissions(List<Permission> permissions) {
+    public CosmosClientBuilder permissions(List<CosmosPermissionProperties> permissions) {
         this.permissions = permissions;
         return this;
     }
@@ -305,9 +306,8 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
-                && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
-            "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and "
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.cosmosKeyCredential == null,
+            "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");

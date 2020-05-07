@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SetValue model.
- */
+/** The SetValue model. */
 @Fluent
 public final class SetValue {
     /*
@@ -32,7 +30,7 @@ public final class SetValue {
 
     /**
      * Get the name property: The name of the overridable value.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -41,7 +39,7 @@ public final class SetValue {
 
     /**
      * Set the name property: The name of the overridable value.
-     * 
+     *
      * @param name the name value to set.
      * @return the SetValue object itself.
      */
@@ -52,7 +50,7 @@ public final class SetValue {
 
     /**
      * Get the value property: The overridable value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -61,7 +59,7 @@ public final class SetValue {
 
     /**
      * Set the value property: The overridable value.
-     * 
+     *
      * @param value the value value to set.
      * @return the SetValue object itself.
      */
@@ -71,9 +69,8 @@ public final class SetValue {
     }
 
     /**
-     * Get the isSecret property: Flag to indicate whether the value represents
-     * a secret or not.
-     * 
+     * Get the isSecret property: Flag to indicate whether the value represents a secret or not.
+     *
      * @return the isSecret value.
      */
     public Boolean isSecret() {
@@ -81,9 +78,8 @@ public final class SetValue {
     }
 
     /**
-     * Set the isSecret property: Flag to indicate whether the value represents
-     * a secret or not.
-     * 
+     * Set the isSecret property: Flag to indicate whether the value represents a secret or not.
+     *
      * @param isSecret the isSecret value to set.
      * @return the SetValue object itself.
      */

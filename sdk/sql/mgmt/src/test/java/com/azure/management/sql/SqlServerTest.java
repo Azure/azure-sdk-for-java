@@ -3,9 +3,9 @@
 
 package com.azure.management.sql;
 
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.implementation.SqlServerManager;
@@ -15,36 +15,25 @@ public abstract class SqlServerTest extends TestBase {
     protected ResourceManager resourceManager;
     protected SqlServerManager sqlServerManager;
     protected StorageManager storageManager;
-    protected String RG_NAME = "";
-    protected String SQL_SERVER_NAME = "";
+    protected String rgName = "";
+    protected String sqlServerName = "";
 
     @Override
-    protected RestClient buildRestClient(RestClientBuilder builder, boolean isMocked) {
-//        if (!isMocked) {
-//        return super.buildRestClient(builder.withReadTimeout(150, TimeUnit.SECONDS) , isMocked);
-        return super.buildRestClient(builder, isMocked);
-    }
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        rgName = generateRandomResourceName("rgsql", 20);
+        sqlServerName = generateRandomResourceName("javasqlserver", 20);
 
-    @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("rgsql", 20);
-        SQL_SERVER_NAME = generateRandomResourceName("javasqlserver", 20);
+        resourceManager =
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
+        sqlServerManager = SqlServerManager.authenticate(httpPipeline, profile, sdkContext);
 
-        sqlServerManager = SqlServerManager
-                .authenticate(restClient, domain, defaultSubscription, sdkContext);
-
-        storageManager = StorageManager
-            .authenticate(restClient, defaultSubscription, sdkContext);
+        storageManager = StorageManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override
     protected void cleanUpResources() {
         SdkContext.sleep(1000);
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+        resourceManager.resourceGroups().beginDeleteByName(rgName);
     }
 }

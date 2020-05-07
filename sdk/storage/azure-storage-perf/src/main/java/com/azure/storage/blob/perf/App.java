@@ -11,7 +11,8 @@ import com.azure.perf.test.core.PerfStressProgram;
  * <p>To run from command line. Package the project into a jar with dependencies via mvn clean package.
  * Then run the program via java -jar 'compiled-jar-with-dependencies-path' </p>
  *
- * <p> To run from IDE, set all the required environment variables in IntelliJ via Run -&gt; EditConfigurations section.
+ * <p> To run from IDE, set all the required environment variables in IntelliJ via Run -&gt; EditConfigurations
+ * section.
  * Then run the App's main method via IDE.</p>
  */
 public class App {
@@ -19,7 +20,7 @@ public class App {
         Class<?>[] testClasses;
 
         try {
-            testClasses = new Class<?>[] {
+            testClasses = new Class<?>[]{
                 Class.forName("com.azure.storage.blob.perf.DownloadBlobTest"),
                 Class.forName("com.azure.storage.blob.perf.ListBlobsTest"),
                 Class.forName("com.azure.storage.blob.perf.UploadBlockBlobTest"),

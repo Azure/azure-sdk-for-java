@@ -3,9 +3,7 @@
 
 package com.azure.management.appservice;
 
-/**
- * Defines values for app service platform architecture.
- */
+/** Defines values for app service platform architecture. */
 public enum PlatformArchitecture {
     /** Enum value for 32 bit platform. */
     X86,

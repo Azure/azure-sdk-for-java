@@ -5,16 +5,14 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.GalleryImageInner;
-import com.azure.management.compute.models.GalleryImagesInner;
 import com.azure.management.compute.GalleryImage;
 import com.azure.management.compute.GalleryImages;
+import com.azure.management.compute.models.GalleryImageInner;
+import com.azure.management.compute.models.GalleryImagesInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for GalleryImages.
- */
+/** The implementation for GalleryImages. */
 class GalleryImagesImpl extends WrapperImpl<GalleryImagesInner> implements GalleryImages {
     private final ComputeManager manager;
 
@@ -42,21 +40,20 @@ class GalleryImagesImpl extends WrapperImpl<GalleryImagesInner> implements Galle
 
     @Override
     public PagedFlux<GalleryImage> listByGalleryAsync(final String resourceGroupName, final String galleryName) {
-        return inner().listByGalleryAsync(resourceGroupName, galleryName)
-                .mapPage(this::wrapModel);
+        return inner().listByGalleryAsync(resourceGroupName, galleryName).mapPage(this::wrapModel);
     }
 
     @Override
     public PagedIterable<GalleryImage> listByGallery(String resourceGroupName, String galleryName) {
-        return inner().listByGallery(resourceGroupName, galleryName)
-                .mapPage(this::wrapModel);
+        return inner().listByGallery(resourceGroupName, galleryName).mapPage(this::wrapModel);
     }
 
     @Override
     public Mono<GalleryImage> getByGalleryAsync(String resourceGroupName, String galleryName, String galleryImageName) {
-        return inner().getAsync(resourceGroupName, galleryName, galleryImageName)
-                .onErrorResume(e -> Mono.empty())
-                .map(this::wrapModel);
+        return inner()
+            .getAsync(resourceGroupName, galleryName, galleryImageName)
+            .onErrorResume(e -> Mono.empty())
+            .map(this::wrapModel);
     }
 
     @Override

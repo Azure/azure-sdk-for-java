@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -72,6 +73,35 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
         assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
         validateContainerResponse(containerProperties, containerResponse);
+    }
+
+    @DataProvider
+    public static Object[][] analyticalTTLProvider() {
+        return new Object[][]{
+            // analytical ttl >= collection default ttl
+            {-1},  // infinite ttl for data stored in analytical storage
+            {0},   // analytics disabled
+            {10},
+            {null}
+        };
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "analyticalTTLProvider", enabled = false)
+    public void createContainer_withAnalyticalTTL(Integer analyticalTTL) throws Exception {
+        // not working with emulator yet. TODO: enable when emulator has support for this.
+        String collectionName = UUID.randomUUID().toString();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionName, "/id");
+
+        containerProperties.setAnalyticalStoreTimeToLiveInSeconds(analyticalTTL);
+        if (analyticalTTL != null && analyticalTTL > 0) {
+            containerProperties.setDefaultTimeToLiveInSeconds(analyticalTTL - 1);
+        }
+
+        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
+        assertThat(containerResponse.getRequestCharge()).isGreaterThan(0);
+        validateContainerResponse(containerProperties, containerResponse);
+
+        assertThat(containerResponse.getProperties().getAnalyticalStoreTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)

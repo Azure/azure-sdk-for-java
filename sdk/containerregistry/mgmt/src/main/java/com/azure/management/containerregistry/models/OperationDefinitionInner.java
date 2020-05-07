@@ -10,9 +10,7 @@ import com.azure.management.containerregistry.OperationDisplayDefinition;
 import com.azure.management.containerregistry.OperationServiceSpecificationDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The OperationDefinition model.
- */
+/** The OperationDefinition model. */
 @JsonFlatten
 @Fluent
 public class OperationDefinitionInner {
@@ -41,9 +39,8 @@ public class OperationDefinitionInner {
     private OperationServiceSpecificationDefinition serviceSpecification;
 
     /**
-     * Get the origin property: The origin information of the container
-     * registry operation.
-     * 
+     * Get the origin property: The origin information of the container registry operation.
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -51,9 +48,8 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Set the origin property: The origin information of the container
-     * registry operation.
-     * 
+     * Set the origin property: The origin information of the container registry operation.
+     *
      * @param origin the origin value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -63,9 +59,8 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Get the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Get the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @return the name value.
      */
     public String name() {
@@ -73,9 +68,8 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Set the name property: Operation name:
-     * {provider}/{resource}/{operation}.
-     * 
+     * Set the name property: Operation name: {provider}/{resource}/{operation}.
+     *
      * @param name the name value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -85,9 +79,8 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Get the display property: The display information for the container
-     * registry operation.
-     * 
+     * Get the display property: The display information for the container registry operation.
+     *
      * @return the display value.
      */
     public OperationDisplayDefinition display() {
@@ -95,9 +88,8 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Set the display property: The display information for the container
-     * registry operation.
-     * 
+     * Set the display property: The display information for the container registry operation.
+     *
      * @param display the display value to set.
      * @return the OperationDefinitionInner object itself.
      */
@@ -107,9 +99,8 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Get the serviceSpecification property: The definition of Azure
-     * Monitoring service.
-     * 
+     * Get the serviceSpecification property: The definition of Azure Monitoring service.
+     *
      * @return the serviceSpecification value.
      */
     public OperationServiceSpecificationDefinition serviceSpecification() {
@@ -117,13 +108,13 @@ public class OperationDefinitionInner {
     }
 
     /**
-     * Set the serviceSpecification property: The definition of Azure
-     * Monitoring service.
-     * 
+     * Set the serviceSpecification property: The definition of Azure Monitoring service.
+     *
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationDefinitionInner object itself.
      */
-    public OperationDefinitionInner withServiceSpecification(OperationServiceSpecificationDefinition serviceSpecification) {
+    public OperationDefinitionInner withServiceSpecification(
+        OperationServiceSpecificationDefinition serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }

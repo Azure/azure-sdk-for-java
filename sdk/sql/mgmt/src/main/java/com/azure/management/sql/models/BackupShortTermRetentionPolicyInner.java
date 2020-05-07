@@ -9,9 +9,7 @@ import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BackupShortTermRetentionPolicy model.
- */
+/** The BackupShortTermRetentionPolicy model. */
 @JsonFlatten
 @Fluent
 public class BackupShortTermRetentionPolicyInner extends ProxyResource {
@@ -23,9 +21,9 @@ public class BackupShortTermRetentionPolicyInner extends ProxyResource {
     private Integer retentionDays;
 
     /**
-     * Get the retentionDays property: The backup retention period in days.
-     * This is how many days Point-in-Time Restore will be supported.
-     * 
+     * Get the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
+     * will be supported.
+     *
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -33,9 +31,9 @@ public class BackupShortTermRetentionPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the retentionDays property: The backup retention period in days.
-     * This is how many days Point-in-Time Restore will be supported.
-     * 
+     * Set the retentionDays property: The backup retention period in days. This is how many days Point-in-Time Restore
+     * will be supported.
+     *
      * @param retentionDays the retentionDays value to set.
      * @return the BackupShortTermRetentionPolicyInner object itself.
      */

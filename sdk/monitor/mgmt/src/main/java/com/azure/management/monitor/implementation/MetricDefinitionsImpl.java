@@ -9,12 +9,8 @@ import com.azure.management.monitor.MetricDefinition;
 import com.azure.management.monitor.MetricDefinitions;
 import com.azure.management.monitor.models.MetricDefinitionsInner;
 
-
-/**
- * Implementation for {@link MetricDefinitions}.
- */
-class MetricDefinitionsImpl
-    implements MetricDefinitions {
+/** Implementation for {@link MetricDefinitions}. */
+class MetricDefinitionsImpl implements MetricDefinitions {
 
     private final MonitorManager myManager;
 

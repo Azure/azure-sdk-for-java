@@ -88,19 +88,16 @@ class AsyncQueryBenchmark extends AsyncBenchmark<FeedResponse<PojoizedJson>> {
             obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
         } else if (configuration.getOperationType() == Configuration.Operation.QueryParallel) {
 
-            options.setMaxItemCount(10);
             String sqlQuery = "Select * from c";
-            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryOrderby) {
 
-            options.setMaxItemCount(10);
             String sqlQuery = "Select * from c order by c._ts";
-            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregate) {
 
-            options.setMaxItemCount(10);
             String sqlQuery = "Select value max(c._ts) from c";
-            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage();
+            obs = cosmosAsyncContainer.queryItems(sqlQuery, options, PojoizedJson.class).byPage(10);
         } else if (configuration.getOperationType() == Configuration.Operation.QueryAggregateTopOrderby) {
 
             String sqlQuery = "Select top 1 value count(c) from c order by c._ts";

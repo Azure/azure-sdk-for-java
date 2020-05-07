@@ -9,17 +9,15 @@ import com.azure.management.containerregistry.OverridingValue;
 import com.azure.management.containerregistry.RegistryEncodedTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
 import com.azure.management.containerregistry.SetValue;
+import com.azure.management.containerregistry.TaskStepProperties;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryEncodedTaskStepImpl
-        extends RegistryTaskStepImpl
-        implements
-        RegistryEncodedTaskStep,
+class RegistryEncodedTaskStepImpl extends RegistryTaskStepImpl
+    implements RegistryEncodedTaskStep,
         RegistryEncodedTaskStep.Definition,
         RegistryEncodedTaskStep.Update,
         HasInner<EncodedTaskStep> {
@@ -32,7 +30,8 @@ class RegistryEncodedTaskStepImpl
         super(taskImpl.inner().step());
         this.inner = new EncodedTaskStep();
         if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof EncodedTaskStep)) {
-            throw new IllegalArgumentException("Constructor for RegistryEncodedTaskStepImpl invoked for class that is not an EncodedTaskStep");
+            throw new IllegalArgumentException(
+                "Constructor for RegistryEncodedTaskStepImpl invoked for class that is not an EncodedTaskStep");
         }
         this.taskImpl = taskImpl;
         this.encodedTaskStepUpdateParameters = new EncodedTaskStepUpdateParameters();
@@ -40,23 +39,32 @@ class RegistryEncodedTaskStepImpl
 
     @Override
     public String encodedTaskContent() {
-        EncodedTaskStep encodedTaskStep = (EncodedTaskStep) this.taskImpl.inner().step();
+        EncodedTaskStep encodedTaskStep = encodedTaskStep();
         return encodedTaskStep.encodedTaskContent();
     }
 
     @Override
     public String encodedValuesContent() {
-        EncodedTaskStep encodedTaskStep = (EncodedTaskStep) this.taskImpl.inner().step();
+        EncodedTaskStep encodedTaskStep = encodedTaskStep();
         return encodedTaskStep.encodedValuesContent();
     }
 
     @Override
     public List<SetValue> values() {
-        EncodedTaskStep encodedTaskStep = (EncodedTaskStep) this.taskImpl.inner().step();
+        EncodedTaskStep encodedTaskStep = encodedTaskStep();
         if (encodedTaskStep.values() == null) {
             return Collections.unmodifiableList(new ArrayList<SetValue>());
         }
         return Collections.unmodifiableList(encodedTaskStep.values());
+    }
+
+    private EncodedTaskStep encodedTaskStep() {
+        TaskStepProperties step = this.taskImpl.inner().step();
+        if (step instanceof EncodedTaskStep) {
+            return (EncodedTaskStep) step;
+        } else {
+            return new EncodedTaskStep();
+        }
     }
 
     @Override

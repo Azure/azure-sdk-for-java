@@ -9,13 +9,13 @@ import com.azure.ai.formrecognizer.implementation.models.AnalyzeOperationResult;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeReceiptAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeWithCustomModelResponse;
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.implementation.models.ErrorResponseException;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
 import com.azure.ai.formrecognizer.implementation.models.Models;
 import com.azure.ai.formrecognizer.implementation.models.SourcePath;
 import com.azure.ai.formrecognizer.implementation.models.TrainCustomModelAsyncResponse;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
+import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -54,7 +54,7 @@ public final class FormRecognizerClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private FormRecognizerClientService service;
+    private final FormRecognizerClientService service;
 
     /**
      * Supported Cognitive Services endpoints (protocol and hostname, for example: https://westus2.api.cognitive.microsoft.com).
@@ -84,7 +84,7 @@ public final class FormRecognizerClientImpl {
     /**
      * The HTTP pipeline to send requests through.
      */
-    private HttpPipeline httpPipeline;
+    private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
@@ -137,12 +137,12 @@ public final class FormRecognizerClientImpl {
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") Long contentLength, Context context);
+        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Post("/custom/models/{modelId}/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModel(@HostParam("endpoint") String endpoint, @PathParam("modelId") UUID modelId, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Get("/custom/models/{modelId}/analyzeResults/{resultId}")
         @ExpectedResponses({200})
@@ -152,7 +152,7 @@ public final class FormRecognizerClientImpl {
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") Long contentLength, Context context);
+        Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsync(@HostParam("endpoint") String endpoint, @QueryParam("includeTextDetails") Boolean includeTextDetails, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/prebuilt/receipt/analyze")
         @ExpectedResponses({202})
@@ -167,12 +167,12 @@ public final class FormRecognizerClientImpl {
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") long contentLength, Context context);
 
         @Post("/layout/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @HeaderParam("Content-Type") ContentType contentType, @BodyParam("application/octet-stream") Flux<ByteBuffer> fileStream, @HeaderParam("Content-Length") Long contentLength, Context context);
+        Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsync(@HostParam("endpoint") String endpoint, @BodyParam("application/json") SourcePath fileStream, Context context);
 
         @Get("/layout/analyzeResults/{resultId}")
         @ExpectedResponses({200})
@@ -202,6 +202,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest) {
@@ -216,6 +217,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainCustomModelAsyncResponse> trainCustomModelAsyncWithResponseAsync(TrainRequest trainRequest, Context context) {
@@ -230,6 +232,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a custom model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Boolean includeKeys) {
@@ -245,6 +248,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return detailed information about a custom model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Model>> getCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeKeys) {
@@ -258,6 +262,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId) {
@@ -272,6 +277,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCustomModelWithResponseAsync(UUID modelId, Context context) {
@@ -282,16 +288,17 @@ public final class FormRecognizerClientImpl {
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      * 
      * @param modelId Model identifier.
-     * @param includeTextDetails Include text lines and element references in the result.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
-     * @param contentLength null
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Boolean includeTextDetails, ContentType contentType, Flux<ByteBuffer> fileStream, Long contentLength) {
+    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
         return FluxUtil.withContext(context -> service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context));
     }
 
@@ -299,17 +306,18 @@ public final class FormRecognizerClientImpl {
      * Extract key-value pairs, tables, and semantic values from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      * 
      * @param modelId Model identifier.
-     * @param context The context to associate with this operation.
-     * @param includeTextDetails Include text lines and element references in the result.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
-     * @param contentLength null
+     * @param contentLength The contentLength parameter.
+     * @param context The context to associate with this operation.
+     * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeTextDetails, ContentType contentType, Flux<ByteBuffer> fileStream, Long contentLength) {
+    public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
         return service.analyzeWithCustomModel(this.getEndpoint(), modelId, includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
@@ -322,6 +330,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Boolean includeTextDetails, SourcePath fileStream) {
@@ -338,6 +347,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeWithCustomModelResponse> analyzeWithCustomModelWithResponseAsync(UUID modelId, Context context, Boolean includeTextDetails, SourcePath fileStream) {
@@ -352,6 +362,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId) {
@@ -367,6 +378,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeFormResultWithResponseAsync(UUID modelId, UUID resultId, Context context) {
@@ -376,33 +388,35 @@ public final class FormRecognizerClientImpl {
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      * 
-     * @param includeTextDetails Include text lines and element references in the result.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
-     * @param contentLength null
+     * @param contentLength The contentLength parameter.
+     * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Boolean includeTextDetails, ContentType contentType, Flux<ByteBuffer> fileStream, Long contentLength) {
+    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Boolean includeTextDetails) {
         return FluxUtil.withContext(context -> service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context));
     }
 
     /**
      * Extract field text and semantic values from a given receipt document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      * 
-     * @param context The context to associate with this operation.
-     * @param includeTextDetails Include text lines and element references in the result.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
-     * @param contentLength null
+     * @param contentLength The contentLength parameter.
+     * @param context The context to associate with this operation.
+     * @param includeTextDetails Include text lines and element references in the result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Context context, Boolean includeTextDetails, ContentType contentType, Flux<ByteBuffer> fileStream, Long contentLength) {
+    public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context, Boolean includeTextDetails) {
         return service.analyzeReceiptAsync(this.getEndpoint(), includeTextDetails, contentType, fileStream, contentLength, context);
     }
 
@@ -414,6 +428,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Boolean includeTextDetails, SourcePath fileStream) {
@@ -429,6 +444,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeReceiptAsyncResponse> analyzeReceiptAsyncWithResponseAsync(Context context, Boolean includeTextDetails, SourcePath fileStream) {
@@ -442,6 +458,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId) {
@@ -456,6 +473,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeReceiptResultWithResponseAsync(UUID resultId, Context context) {
@@ -467,29 +485,31 @@ public final class FormRecognizerClientImpl {
      * 
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
-     * @param contentLength null
+     * @param contentLength The contentLength parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, Long contentLength) {
+    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength) {
         return FluxUtil.withContext(context -> service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context));
     }
 
     /**
      * Extract text and layout information from a given document. The input document must be of one of the supported content types - 'application/pdf', 'image/jpeg', 'image/png' or 'image/tiff'. Alternatively, use 'application/json' type to specify the location (Uri or local path) of the document to be analyzed.
      * 
-     * @param context The context to associate with this operation.
      * @param contentType Content type for upload.
      * @param fileStream Uri or local path to source data.
-     * @param contentLength null
+     * @param contentLength The contentLength parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(Context context, ContentType contentType, Flux<ByteBuffer> fileStream, Long contentLength) {
+    public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(ContentType contentType, Flux<ByteBuffer> fileStream, long contentLength, Context context) {
         return service.analyzeLayoutAsync(this.getEndpoint(), contentType, fileStream, contentLength, context);
     }
 
@@ -500,6 +520,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(SourcePath fileStream) {
@@ -514,6 +535,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AnalyzeLayoutAsyncResponse> analyzeLayoutAsyncWithResponseAsync(Context context, SourcePath fileStream) {
@@ -527,6 +549,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId) {
@@ -541,6 +564,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return status and result of the queued analyze operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AnalyzeOperationResult>> getAnalyzeLayoutResultWithResponseAsync(UUID resultId, Context context) {
@@ -552,6 +576,7 @@ public final class FormRecognizerClientImpl {
      * 
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync() {
@@ -569,8 +594,31 @@ public final class FormRecognizerClientImpl {
     /**
      * Get information about all custom models.
      * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ModelInfo>> listCustomModelsSinglePageAsync(Context context) {
+        final String op = "full";
+        return service.listCustomModels(this.getEndpoint(), op, context)
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getModelList(),
+                res.getValue().getNextLink(),
+                null));
+    }
+
+    /**
+     * Get information about all custom models.
+     * 
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync() {
@@ -585,6 +633,7 @@ public final class FormRecognizerClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about all custom models.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Models>> getCustomModelsWithResponseAsync(Context context) {
@@ -595,14 +644,37 @@ public final class FormRecognizerClientImpl {
     /**
      * Get the next page of items.
      * 
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to the list custom models operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink) {
         return FluxUtil.withContext(context -> service.listCustomModelsNext(nextLink, context))
+            .map(res -> new PagedResponseBase<>(
+                res.getRequest(),
+                res.getStatusCode(),
+                res.getHeaders(),
+                res.getValue().getModelList(),
+                res.getValue().getNextLink(),
+                null));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response to the list custom models operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ModelInfo>> listCustomModelsNextSinglePageAsync(String nextLink, Context context) {
+        return service.listCustomModelsNext(nextLink, context)
             .map(res -> new PagedResponseBase<>(
                 res.getRequest(),
                 res.getStatusCode(),

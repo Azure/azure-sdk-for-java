@@ -88,6 +88,17 @@ public final class TestUtils {
     }
 
     /**
+     * Creates a mock {@link IAccount} instance.
+     * @param accessToken the access token to return
+     * @param expiresOn the expiration time
+     * @return a Mono publisher of the result
+     */
+    public static Mono<IAccount> getMockMsalAccount(String accessToken, OffsetDateTime expiresOn) {
+        return Mono.fromFuture(getMockAuthenticationResult(accessToken, expiresOn))
+            .map(IAuthenticationResult::account);
+    }
+
+    /**
      * Creates a mock {@link AccessToken} instance.
      * @param accessToken the access token to return
      * @param expiresOn the expiration time

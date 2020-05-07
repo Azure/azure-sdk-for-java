@@ -6,20 +6,18 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.ResourceSkusInner;
 import com.azure.management.compute.implementation.ComputeManager;
+import com.azure.management.compute.models.ResourceSkusInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point to compute service SKUs.
- */
+/** Entry point to compute service SKUs. */
 @Fluent
 public interface ComputeSkus
-        extends SupportsListing<ComputeSku>,
+    extends SupportsListing<ComputeSku>,
         SupportsListingByRegion<ComputeSku>,
         HasInner<ResourceSkusInner>,
         HasManager<ComputeManager> {

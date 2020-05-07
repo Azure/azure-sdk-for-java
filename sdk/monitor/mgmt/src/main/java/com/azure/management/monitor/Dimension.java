@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Dimension model.
- */
+/** The Dimension model. */
 @Fluent
 public final class Dimension {
     /*
@@ -33,7 +31,7 @@ public final class Dimension {
 
     /**
      * Get the name property: Name of the dimension.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,7 +40,7 @@ public final class Dimension {
 
     /**
      * Set the name property: Name of the dimension.
-     * 
+     *
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
@@ -53,7 +51,7 @@ public final class Dimension {
 
     /**
      * Get the operator property: Operator for dimension values.
-     * 
+     *
      * @return the operator value.
      */
     public Operator operator() {
@@ -62,7 +60,7 @@ public final class Dimension {
 
     /**
      * Set the operator property: Operator for dimension values.
-     * 
+     *
      * @param operator the operator value to set.
      * @return the Dimension object itself.
      */
@@ -73,7 +71,7 @@ public final class Dimension {
 
     /**
      * Get the values property: List of dimension values.
-     * 
+     *
      * @return the values value.
      */
     public List<String> values() {
@@ -82,7 +80,7 @@ public final class Dimension {
 
     /**
      * Set the values property: List of dimension values.
-     * 
+     *
      * @param values the values value to set.
      * @return the Dimension object itself.
      */

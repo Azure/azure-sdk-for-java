@@ -7,9 +7,7 @@ package com.azure.management.containerregistry;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The PlatformUpdateParameters model.
- */
+/** The PlatformUpdateParameters model. */
 @Fluent
 public final class PlatformUpdateParameters {
     /*
@@ -32,7 +30,7 @@ public final class PlatformUpdateParameters {
 
     /**
      * Get the os property: The operating system type required for the run.
-     * 
+     *
      * @return the os value.
      */
     public OS os() {
@@ -41,7 +39,7 @@ public final class PlatformUpdateParameters {
 
     /**
      * Set the os property: The operating system type required for the run.
-     * 
+     *
      * @param os the os value to set.
      * @return the PlatformUpdateParameters object itself.
      */
@@ -52,7 +50,7 @@ public final class PlatformUpdateParameters {
 
     /**
      * Get the architecture property: The OS architecture.
-     * 
+     *
      * @return the architecture value.
      */
     public Architecture architecture() {
@@ -61,7 +59,7 @@ public final class PlatformUpdateParameters {
 
     /**
      * Set the architecture property: The OS architecture.
-     * 
+     *
      * @param architecture the architecture value to set.
      * @return the PlatformUpdateParameters object itself.
      */
@@ -72,7 +70,7 @@ public final class PlatformUpdateParameters {
 
     /**
      * Get the variant property: Variant of the CPU.
-     * 
+     *
      * @return the variant value.
      */
     public Variant variant() {
@@ -81,7 +79,7 @@ public final class PlatformUpdateParameters {
 
     /**
      * Set the variant property: Variant of the CPU.
-     * 
+     *
      * @param variant the variant value to set.
      * @return the PlatformUpdateParameters object itself.
      */

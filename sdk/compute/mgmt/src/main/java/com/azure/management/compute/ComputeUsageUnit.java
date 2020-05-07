@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.management.compute;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
- * Compute usage units.
- */
+/** Compute usage units. */
 public final class ComputeUsageUnit extends ExpandableStringEnum<ComputeUsageUnit> {
     /** Static value Count for ComputeUsageUnit. */
     public static final ComputeUsageUnit COUNT = fromString("Count");
@@ -30,6 +28,7 @@ public final class ComputeUsageUnit extends ExpandableStringEnum<ComputeUsageUni
 
     /**
      * Creates or finds a compute usage unit based on its name.
+     *
      * @param name a name
      * @return a corresponding ComputeUsageUnit
      */
@@ -37,9 +36,7 @@ public final class ComputeUsageUnit extends ExpandableStringEnum<ComputeUsageUni
         return fromString(name, ComputeUsageUnit.class);
     }
 
-    /**
-     * @return known compute usage units
-     */
+    /** @return known compute usage units */
     public Collection<ComputeUsageUnit> values() {
         return values(ComputeUsageUnit.class);
     }

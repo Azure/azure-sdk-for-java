@@ -10,34 +10,38 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class CertificateOrdersTests extends AppServiceTest {
-    private final String CERTIFICATE_NAME = "graphwildcert319";
+    private final String certificateName = "graphwildcert319";
 
     @Override
     protected void cleanUpResources() {
-        //super.cleanUpResources();
+        // super.cleanUpResources();
     }
 
     @Test
-    @Disabled("Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
+    @Disabled(
+        "Test is failing fix it. we may not intent to create a resource here but just to fetch existing resource.")
     public void canCRUDCertificateOrder() throws Exception {
         // CREATE
-        AppServiceCertificateOrder certificateOrder = appServiceManager.certificateOrders()
-                .define(CERTIFICATE_NAME)
-                .withExistingResourceGroup(RG_NAME)
+        AppServiceCertificateOrder certificateOrder =
+            appServiceManager
+                .certificateOrders()
+                .define(certificateName)
+                .withExistingResourceGroup(rgName)
                 .withHostName("*.graph-webapp-319.com")
                 .withWildcardSku()
-                .withDomainVerification(appServiceManager.domains().getByResourceGroup(RG_NAME, "graph-webapp-319.com"))
+                .withDomainVerification(appServiceManager.domains().getByResourceGroup(rgName, "graph-webapp-319.com"))
                 .withNewKeyVault("graphvault", Region.US_WEST)
                 .withValidYears(1)
                 .create();
         Assertions.assertNotNull(certificateOrder);
         // GET
-        Assertions.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(RG_NAME, CERTIFICATE_NAME));
+        Assertions.assertNotNull(appServiceManager.certificateOrders().getByResourceGroup(rgName, certificateName));
         // LIST
-        PagedIterable<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByResourceGroup(RG_NAME);
+        PagedIterable<AppServiceCertificateOrder> certificateOrders =
+            appServiceManager.certificateOrders().listByResourceGroup(rgName);
         boolean found = false;
         for (AppServiceCertificateOrder co : certificateOrders) {
-            if (CERTIFICATE_NAME.equals(co.name())) {
+            if (certificateName.equals(co.name())) {
                 found = true;
                 break;
             }

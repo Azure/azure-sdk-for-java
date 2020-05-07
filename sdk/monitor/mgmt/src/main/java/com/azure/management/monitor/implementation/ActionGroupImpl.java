@@ -4,47 +4,39 @@
 package com.azure.management.monitor.implementation;
 
 import com.azure.management.monitor.ActionGroup;
+import com.azure.management.monitor.AutomationRunbookReceiver;
 import com.azure.management.monitor.AzureAppPushReceiver;
+import com.azure.management.monitor.AzureFunctionReceiver;
 import com.azure.management.monitor.EmailReceiver;
 import com.azure.management.monitor.ItsmReceiver;
 import com.azure.management.monitor.LogicAppReceiver;
 import com.azure.management.monitor.SmsReceiver;
-import com.azure.management.monitor.WebhookReceiver;
-import com.azure.management.monitor.AutomationRunbookReceiver;
-import com.azure.management.monitor.AzureFunctionReceiver;
 import com.azure.management.monitor.VoiceReceiver;
+import com.azure.management.monitor.WebhookReceiver;
 import com.azure.management.monitor.models.ActionGroupResourceInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ActionGroup.
- */
+/** Implementation for ActionGroup. */
 class ActionGroupImpl
-        extends GroupableResourceImpl<
-            ActionGroup,
-            ActionGroupResourceInner,
-            ActionGroupImpl,
-            MonitorManager>
-        implements
-            ActionGroup,
-            ActionGroup.Definition,
-            ActionGroup.Update,
-            ActionGroup.UpdateStages.WithActionUpdateDefinition {
-    private final String emailSuffix = "_-EmailAction-";
-    private final String smsSuffix = "_-SMSAction-";
-    private final String appActionSuffix = "_-AzureAppAction-";
-    private final String voiceSuffix = "_-VoiceAction-";
-    private final String runBookSuffix = " (RB)";
-    private final String logicSuffix = " (LA)";
-    private final String functionSuffix = " (F)";
-    private final String webhookSuffix = " (WH)";
-    private final String itsmSuffix = " (ITSM)";
+    extends GroupableResourceImpl<ActionGroup, ActionGroupResourceInner, ActionGroupImpl, MonitorManager>
+    implements ActionGroup,
+        ActionGroup.Definition,
+        ActionGroup.Update,
+        ActionGroup.UpdateStages.WithActionUpdateDefinition {
+    private static final String EMAIL_SUFFIX = "_-EmailAction-";
+    private static final String SMS_SUFFIX = "_-SMSAction-";
+    private static final String APP_ACTION_SUFFIX = "_-AzureAppAction-";
+    private static final String VOICE_SUFFIX = "_-VoiceAction-";
+    private static final String RUN_BOOK_SUFFIX = " (RB)";
+    private static final String LOGIC_SUFFIX = " (LA)";
+    private static final String FUNCTION_SUFFIX = " (F)";
+    private static final String WEBHOOK_SUFFIX = " (WH)";
+    private static final String ITSM_SUFFIX = " (ITSM)";
 
     private String actionReceiverPrefix;
     private TreeMap<String, EmailReceiver> emailReceivers;
@@ -71,7 +63,9 @@ class ActionGroupImpl
         this.itsmReceivers = new TreeMap<>();
         if (isInCreateMode()) {
             this.inner().withEnabled(true);
-            this.inner().withGroupShortName(this.name().substring(0, (this.name().length() > 12) ? 12 : this.name().length()));
+            this
+                .inner()
+                .withGroupShortName(this.name().substring(0, (this.name().length() > 12) ? 12 : this.name().length()));
         } else {
             this.withExistingResourceGroup(ResourceUtils.groupFromResourceId(this.id()));
         }
@@ -173,7 +167,6 @@ class ActionGroupImpl
             }
         }
 
-
         if (this.inner().azureAppPushReceivers() != null) {
             for (AzureAppPushReceiver ar : this.inner().azureAppPushReceivers()) {
                 this.appActionReceivers.put(ar.name(), ar);
@@ -227,8 +220,12 @@ class ActionGroupImpl
     @Override
     public Mono<ActionGroup> createResourceAsync() {
         this.inner().setLocation("global");
-        return this.manager().inner().actionGroups().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .actionGroups()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -240,7 +237,7 @@ class ActionGroupImpl
     public ActionGroupImpl withEmail(String emailAddress) {
         this.withoutEmail();
 
-        String compositeKey = this.actionReceiverPrefix + emailSuffix;
+        String compositeKey = this.actionReceiverPrefix + EMAIL_SUFFIX;
         EmailReceiver er = new EmailReceiver();
         er.withName(compositeKey);
         er.withEmailAddress(emailAddress);
@@ -253,7 +250,7 @@ class ActionGroupImpl
     public ActionGroupImpl withSms(String countryCode, String phoneNumber) {
         this.withoutSms();
 
-        String compositeKey = this.actionReceiverPrefix + smsSuffix;
+        String compositeKey = this.actionReceiverPrefix + SMS_SUFFIX;
         SmsReceiver sr = new SmsReceiver();
         sr.withName(compositeKey);
         sr.withCountryCode(countryCode);
@@ -267,7 +264,7 @@ class ActionGroupImpl
     public ActionGroupImpl withWebhook(String serviceUri) {
         this.withoutWebhook();
 
-        String compositeKey = this.actionReceiverPrefix + webhookSuffix;
+        String compositeKey = this.actionReceiverPrefix + WEBHOOK_SUFFIX;
         WebhookReceiver wr = new WebhookReceiver();
         wr.withName(compositeKey);
         wr.withServiceUri(serviceUri);
@@ -277,10 +274,11 @@ class ActionGroupImpl
     }
 
     @Override
-    public ActionGroupImpl withItsm(String workspaceId, String connectionId, String ticketConfiguration, String region) {
+    public ActionGroupImpl withItsm(
+        String workspaceId, String connectionId, String ticketConfiguration, String region) {
         this.withoutItsm();
 
-        String compositeKey = this.actionReceiverPrefix + itsmSuffix;
+        String compositeKey = this.actionReceiverPrefix + ITSM_SUFFIX;
         ItsmReceiver ir = new ItsmReceiver();
         ir.withName(compositeKey);
         ir.withWorkspaceId(workspaceId);
@@ -296,7 +294,7 @@ class ActionGroupImpl
     public ActionGroupImpl withPushNotification(String emailAddress) {
         this.withoutPushNotification();
 
-        String compositeKey = this.actionReceiverPrefix + appActionSuffix;
+        String compositeKey = this.actionReceiverPrefix + APP_ACTION_SUFFIX;
         AzureAppPushReceiver ar = new AzureAppPushReceiver();
         ar.withName(compositeKey);
         ar.withEmailAddress(emailAddress);
@@ -306,10 +304,11 @@ class ActionGroupImpl
     }
 
     @Override
-    public ActionGroupImpl withAutomationRunbook(String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook) {
+    public ActionGroupImpl withAutomationRunbook(
+        String automationAccountId, String runbookName, String webhookResourceId, boolean isGlobalRunbook) {
         this.withoutAutomationRunbook();
 
-        String compositeKey = this.actionReceiverPrefix + runBookSuffix;
+        String compositeKey = this.actionReceiverPrefix + RUN_BOOK_SUFFIX;
         AutomationRunbookReceiver arr = new AutomationRunbookReceiver();
         arr.withName(compositeKey);
         arr.withAutomationAccountId(automationAccountId);
@@ -325,7 +324,7 @@ class ActionGroupImpl
     public ActionGroupImpl withVoice(String countryCode, String phoneNumber) {
         this.withoutVoice();
 
-        String compositeKey = this.actionReceiverPrefix + voiceSuffix;
+        String compositeKey = this.actionReceiverPrefix + VOICE_SUFFIX;
         VoiceReceiver vr = new VoiceReceiver();
         vr.withName(compositeKey);
         vr.withCountryCode(countryCode);
@@ -339,7 +338,7 @@ class ActionGroupImpl
     public ActionGroupImpl withLogicApp(String logicAppResourceId, String callbackUrl) {
         this.withoutLogicApp();
 
-        String compositeKey = this.actionReceiverPrefix + logicSuffix;
+        String compositeKey = this.actionReceiverPrefix + LOGIC_SUFFIX;
         LogicAppReceiver lr = new LogicAppReceiver();
         lr.withName(compositeKey);
         lr.withResourceId(logicAppResourceId);
@@ -352,7 +351,7 @@ class ActionGroupImpl
     @Override
     public ActionGroupImpl withAzureFunction(String functionAppResourceId, String functionName, String httpTriggerUrl) {
         this.withoutAzureFunction();
-        String compositeKey = this.actionReceiverPrefix + functionSuffix;
+        String compositeKey = this.actionReceiverPrefix + FUNCTION_SUFFIX;
 
         AzureFunctionReceiver afr = new AzureFunctionReceiver();
         afr.withName(compositeKey);
@@ -384,7 +383,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutEmail() {
-        String compositeKey = this.actionReceiverPrefix + emailSuffix;
+        String compositeKey = this.actionReceiverPrefix + EMAIL_SUFFIX;
         if (this.emailReceivers.containsKey(compositeKey)) {
             this.emailReceivers.remove(compositeKey);
         }
@@ -396,7 +395,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutSms() {
-        String compositeKey = this.actionReceiverPrefix + smsSuffix;
+        String compositeKey = this.actionReceiverPrefix + SMS_SUFFIX;
         if (this.smsReceivers.containsKey(compositeKey)) {
             this.smsReceivers.remove(compositeKey);
         }
@@ -408,7 +407,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutWebhook() {
-        String compositeKey = this.actionReceiverPrefix + webhookSuffix;
+        String compositeKey = this.actionReceiverPrefix + WEBHOOK_SUFFIX;
         if (this.webhookReceivers.containsKey(compositeKey)) {
             this.webhookReceivers.remove(compositeKey);
         }
@@ -420,7 +419,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutItsm() {
-        String compositeKey = this.actionReceiverPrefix + itsmSuffix;
+        String compositeKey = this.actionReceiverPrefix + ITSM_SUFFIX;
         if (this.itsmReceivers.containsKey(compositeKey)) {
             this.itsmReceivers.remove(compositeKey);
         }
@@ -432,7 +431,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutPushNotification() {
-        String compositeKey = this.actionReceiverPrefix + appActionSuffix;
+        String compositeKey = this.actionReceiverPrefix + APP_ACTION_SUFFIX;
         if (this.appActionReceivers.containsKey(compositeKey)) {
             this.appActionReceivers.remove(compositeKey);
         }
@@ -444,7 +443,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutAutomationRunbook() {
-        String compositeKey = this.actionReceiverPrefix + runBookSuffix;
+        String compositeKey = this.actionReceiverPrefix + RUN_BOOK_SUFFIX;
         if (this.runBookReceivers.containsKey(compositeKey)) {
             this.runBookReceivers.remove(compositeKey);
         }
@@ -456,7 +455,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutVoice() {
-        String compositeKey = this.actionReceiverPrefix + voiceSuffix;
+        String compositeKey = this.actionReceiverPrefix + VOICE_SUFFIX;
         if (this.voiceReceivers.containsKey(compositeKey)) {
             this.voiceReceivers.remove(compositeKey);
         }
@@ -468,7 +467,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutLogicApp() {
-        String compositeKey = this.actionReceiverPrefix + logicSuffix;
+        String compositeKey = this.actionReceiverPrefix + LOGIC_SUFFIX;
         if (this.logicReceivers.containsKey(compositeKey)) {
             this.logicReceivers.remove(compositeKey);
         }
@@ -480,7 +479,7 @@ class ActionGroupImpl
 
     @Override
     public ActionGroupImpl withoutAzureFunction() {
-        String compositeKey = this.actionReceiverPrefix + logicSuffix;
+        String compositeKey = this.actionReceiverPrefix + LOGIC_SUFFIX;
         if (this.functionReceivers.containsKey(compositeKey)) {
             this.functionReceivers.remove(compositeKey);
         }
@@ -540,7 +539,6 @@ class ActionGroupImpl
             this.inner().withVoiceReceivers(null);
         }
 
-
         if (this.runBookReceivers.values().size() > 0) {
             if (this.inner().automationRunbookReceivers() == null) {
                 this.inner().withAutomationRunbookReceivers(new ArrayList<AutomationRunbookReceiver>());
@@ -595,7 +593,5 @@ class ActionGroupImpl
         } else {
             this.inner().withItsmReceivers(null);
         }
-
     }
 }
-

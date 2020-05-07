@@ -10,13 +10,9 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Interface to define the RegistryTasks collection.
- */
+/** Interface to define the RegistryTasks collection. */
 @Fluent()
-public interface RegistryTasks extends
-        HasInner<TasksInner>,
-        SupportsCreating<RegistryTask.DefinitionStages.Blank> {
+public interface RegistryTasks extends HasInner<TasksInner>, SupportsCreating<RegistryTask.DefinitionStages.Blank> {
     /**
      * Lists the tasks in a registry asynchronously.
      *
@@ -44,7 +40,8 @@ public interface RegistryTasks extends
      * @param includeSecrets whether to include secrets or not.
      * @return the task
      */
-    Mono<RegistryTask> getByRegistryAsync(String resourceGroupName, String registryName, String taskName, boolean includeSecrets);
+    Mono<RegistryTask> getByRegistryAsync(
+        String resourceGroupName, String registryName, String taskName, boolean includeSecrets);
 
     /**
      * Gets a task in a registry.
@@ -59,6 +56,7 @@ public interface RegistryTasks extends
 
     /**
      * Deletes a task in a registry asynchronously.
+     *
      * @param resourceGroupName the resource group of the parent registry.
      * @param registryName the name of the parent registry.
      * @param taskName the name of the task.
@@ -68,6 +66,7 @@ public interface RegistryTasks extends
 
     /**
      * Deletes a task in a registry.
+     *
      * @param resourceGroupName the resource group of the parent registry.
      * @param registryName the name of the parent registry.
      * @param taskName the name of the task.

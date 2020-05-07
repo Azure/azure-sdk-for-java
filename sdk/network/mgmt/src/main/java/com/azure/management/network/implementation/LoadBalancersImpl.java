@@ -8,17 +8,11 @@ import com.azure.management.network.models.LoadBalancerInner;
 import com.azure.management.network.models.LoadBalancersInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for {@link LoadBalancers}.
- */
+/** Implementation for {@link LoadBalancers}. */
 class LoadBalancersImpl
-        extends TopLevelModifiableResourcesImpl<
-                LoadBalancer,
-                LoadBalancerImpl,
-                LoadBalancerInner,
-                LoadBalancersInner,
-                NetworkManager>
-        implements LoadBalancers {
+    extends TopLevelModifiableResourcesImpl<
+        LoadBalancer, LoadBalancerImpl, LoadBalancerInner, LoadBalancersInner, NetworkManager>
+    implements LoadBalancers {
 
     LoadBalancersImpl(final NetworkManager networkManager) {
         super(networkManager.inner().loadBalancers(), networkManager);
@@ -34,10 +28,7 @@ class LoadBalancersImpl
     @Override
     protected LoadBalancerImpl wrapModel(String name) {
         LoadBalancerInner inner = new LoadBalancerInner();
-        return new LoadBalancerImpl(
-                name,
-                inner,
-                this.manager());
+        return new LoadBalancerImpl(name, inner, this.manager());
     }
 
     @Override
@@ -45,9 +36,6 @@ class LoadBalancersImpl
         if (inner == null) {
             return null;
         }
-        return new LoadBalancerImpl(
-                inner.getName(),
-                inner,
-                this.manager());
+        return new LoadBalancerImpl(inner.getName(), inner, this.manager());
     }
 }

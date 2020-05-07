@@ -7,9 +7,7 @@ package com.azure.management.dns;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The NsRecord model.
- */
+/** The NsRecord model. */
 @Fluent
 public final class NsRecord {
     /*
@@ -20,7 +18,7 @@ public final class NsRecord {
 
     /**
      * Get the nsdname property: The name server name for this NS record.
-     * 
+     *
      * @return the nsdname value.
      */
     public String nsdname() {
@@ -29,7 +27,7 @@ public final class NsRecord {
 
     /**
      * Set the nsdname property: The name server name for this NS record.
-     * 
+     *
      * @param nsdname the nsdname value to set.
      * @return the NsRecord object itself.
      */

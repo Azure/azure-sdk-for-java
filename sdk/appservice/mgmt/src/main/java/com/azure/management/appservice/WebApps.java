@@ -7,8 +7,8 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.appservice.implementation.AppServiceManager;
 import com.azure.management.appservice.models.WebAppsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
-import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -16,12 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for web app management API.
- */
+/** Entry point for web app management API. */
 @Fluent
-public interface WebApps extends
-        SupportsCreating<WebApp.DefinitionStages.Blank>,
+public interface WebApps
+    extends SupportsCreating<WebApp.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListing<WebApp>,
         SupportsListingByResourceGroup<WebApp>,

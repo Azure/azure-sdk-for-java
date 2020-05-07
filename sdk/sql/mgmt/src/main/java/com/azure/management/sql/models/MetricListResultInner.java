@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricListResult model.
- */
+/** The MetricListResult model. */
 @Fluent
 public final class MetricListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class MetricListResultInner {
 
     /**
      * Get the value property: The list of metrics for the database.
-     * 
+     *
      * @return the value value.
      */
     public List<MetricInner> value() {
@@ -30,7 +28,7 @@ public final class MetricListResultInner {
 
     /**
      * Set the value property: The list of metrics for the database.
-     * 
+     *
      * @param value the value value to set.
      * @return the MetricListResultInner object itself.
      */

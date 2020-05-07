@@ -7,9 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-/**
- * Utilities for AppService implementation.
- */
+/** Utilities for AppService implementation. */
 class Utils {
 
     /**
@@ -46,8 +44,12 @@ class Utils {
                 }
                 if (segments.length > 1) {
                     String segment = segments[0];
-                    if (!segment.isEmpty() && !segment.contains(".") && !segment.contains(":") && !segment.equals(registryServer)) {
-                        // it appears that first segment of imageAndTag is not registry server, add registry server before it.
+                    if (!segment.isEmpty()
+                        && !segment.contains(".")
+                        && !segment.contains(":")
+                        && !segment.equals(registryServer)) {
+                        // it appears that first segment of imageAndTag is not registry server, add registry server
+                        // before it.
                         imageAndTag = completePrivateRegistryImage(imageAndTag, registryServer, path);
                     }
                 }

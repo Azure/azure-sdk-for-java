@@ -11,22 +11,19 @@ import com.azure.management.network.models.VirtualNetworkGatewayInner;
 import com.azure.management.network.models.VirtualNetworkGatewaysInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.Iterator;
 import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for VirtualNetworkGateways.
- */
+/** Implementation for VirtualNetworkGateways. */
 class VirtualNetworkGatewaysImpl
-        extends GroupableResourcesImpl<
+    extends GroupableResourcesImpl<
         VirtualNetworkGateway,
         VirtualNetworkGatewayImpl,
         VirtualNetworkGatewayInner,
         VirtualNetworkGatewaysInner,
         NetworkManager>
-        implements VirtualNetworkGateways {
+    implements VirtualNetworkGateways {
 
     VirtualNetworkGatewaysImpl(final NetworkManager networkManager) {
         super(networkManager.inner().virtualNetworkGateways(), networkManager);
@@ -45,22 +42,25 @@ class VirtualNetworkGatewaysImpl
     // TODO: Test this
     @Override
     public PagedFlux<VirtualNetworkGateway> listAsync() {
-        PagedIterable<ResourceGroup> resources = new PagedIterable<>(this.manager().getResourceManager().resourceGroups().listAsync());
+        PagedIterable<ResourceGroup> resources =
+            new PagedIterable<>(this.manager().resourceManager().resourceGroups().listAsync());
         Iterator<ResourceGroup> iterator = resources.iterator();
 
-        Function<String, Mono<PagedResponse<VirtualNetworkGatewayInner>>> fetcher = (continuation) -> {
-            if (continuation == null) {
-                if (iterator.hasNext()) {
-                    return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
+        Function<String, Mono<PagedResponse<VirtualNetworkGatewayInner>>> fetcher =
+            (continuation) -> {
+                if (continuation == null) {
+                    if (iterator.hasNext()) {
+                        return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
+                    } else {
+                        return Mono.empty();
+                    }
                 } else {
-                    return Mono.empty();
+                    return inner().listByResourceGroupSinglePageAsync(continuation);
                 }
-            } else {
-                return inner().listByResourceGroupSinglePageAsync(continuation);
-            }
-        };
+            };
 
-        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation)).mapPage(inner -> wrapModel(inner));
+        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation))
+            .mapPage(inner -> wrapModel(inner));
     }
 
     @Override
@@ -100,4 +100,3 @@ class VirtualNetworkGatewaysImpl
         return new VirtualNetworkGatewayImpl(inner.getName(), inner, this.manager());
     }
 }
-

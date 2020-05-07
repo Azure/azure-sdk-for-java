@@ -12,23 +12,20 @@ import com.azure.management.network.models.ApplicationGatewayRedirectConfigurati
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Implementation for ApplicationGatewayRedirectConfiguration.
- */
+/** Implementation for ApplicationGatewayRedirectConfiguration. */
 class ApplicationGatewayRedirectConfigurationImpl
-        extends ChildResourceImpl<ApplicationGatewayRedirectConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayRedirectConfiguration,
+    extends ChildResourceImpl<ApplicationGatewayRedirectConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayRedirectConfiguration,
         ApplicationGatewayRedirectConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayRedirectConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayRedirectConfiguration.Update {
 
-    ApplicationGatewayRedirectConfigurationImpl(ApplicationGatewayRedirectConfigurationInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayRedirectConfigurationImpl(
+        ApplicationGatewayRedirectConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -98,10 +95,7 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withTargetUrl(String url) {
-        this.inner()
-                .withTargetUrl(url)
-                .withTargetListener(null)
-                .withIncludePath(null);
+        this.inner().withTargetUrl(url).withTargetListener(null).withIncludePath(null);
         return this;
     }
 
@@ -111,9 +105,7 @@ class ApplicationGatewayRedirectConfigurationImpl
             this.inner().withTargetListener(null);
         } else {
             SubResource ref = new SubResource().setId(this.parent().futureResourceId() + "/httpListeners/" + name);
-            this.inner()
-                    .withTargetListener(ref)
-                    .withTargetUrl(null);
+            this.inner().withTargetListener(ref).withTargetUrl(null);
         }
 
         return this;

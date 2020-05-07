@@ -9,11 +9,8 @@ import com.azure.management.network.models.NextHopResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of NextHop.
- */
-public class NextHopImpl extends ExecutableImpl<NextHop>
-        implements NextHop, NextHop.Definition {
+/** Implementation of NextHop. */
+public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, NextHop.Definition {
     private final NetworkWatcherImpl parent;
     private NextHopParameters parameters = new NextHopParameters();
     private NextHopResultInner result;
@@ -88,9 +85,14 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
 
     @Override
     public Mono<NextHop> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
-                .map(nextHopResultInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
+            .map(
+                nextHopResultInner -> {
                     NextHopImpl.this.result = nextHopResultInner;
                     return NextHopImpl.this;
                 });

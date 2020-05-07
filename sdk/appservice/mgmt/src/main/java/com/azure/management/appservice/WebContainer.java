@@ -3,13 +3,11 @@
 
 package com.azure.management.appservice;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
- * Defines values for Java web container.
- */
+/** Defines values for Java web container. */
 public final class WebContainer extends ExpandableStringEnum<WebContainer> {
     /** Static value tomcat 7.0 newest for WebContainer. */
     public static final WebContainer TOMCAT_7_0_NEWEST = WebContainer.fromString("tomcat 7.0");
@@ -76,6 +74,7 @@ public final class WebContainer extends ExpandableStringEnum<WebContainer> {
 
     /**
      * Finds or creates a Web container based on the specified name.
+     *
      * @param name a name
      * @return a WebContainer instance
      */
@@ -83,9 +82,7 @@ public final class WebContainer extends ExpandableStringEnum<WebContainer> {
         return fromString(name, WebContainer.class);
     }
 
-    /**
-     * @return known Web container types
-     */
+    /** @return known Web container types */
     public static Collection<WebContainer> values() {
         return values(WebContainer.class);
     }

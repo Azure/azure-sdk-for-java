@@ -3,15 +3,12 @@
 
 package com.azure.management.network;
 
-
-
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-/**
- * Defines values for PublicIPSkuType.
- */
+/** Defines values for PublicIPSkuType. */
 public final class PublicIPSkuType {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, PublicIPSkuType> VALUES_BY_NAME = new HashMap<>();
@@ -23,11 +20,9 @@ public final class PublicIPSkuType {
     public static final PublicIPSkuType STANDARD = new PublicIPSkuType(PublicIPAddressSkuName.STANDARD);
 
     /** The actual serialized value for a PublicIPSkuType instance. */
-    private PublicIPAddressSkuName skuName;
+    private final PublicIPAddressSkuName skuName;
 
-    /**
-     * @return predefined publicIP SKU types
-     */
+    /** @return predefined publicIP SKU types */
     public static PublicIPSkuType[] values() {
         Collection<PublicIPSkuType> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new PublicIPSkuType[valuesCollection.size()]);
@@ -35,18 +30,18 @@ public final class PublicIPSkuType {
 
     /**
      * Creates a PublicIPSkuType from sku name.
+     *
      * @param skuName the sku name
      */
     private PublicIPSkuType(PublicIPAddressSkuName skuName) {
         this.skuName = skuName;
         if (skuName != null) {
-            VALUES_BY_NAME.put(skuName.toString().toLowerCase(), this);
+            VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
         }
     }
 
     /**
-     * Parses a value into a SKU type and creates a new PublicIPSkuType instance if not
-     * found among the existing ones.
+     * Parses a value into a SKU type and creates a new PublicIPSkuType instance if not found among the existing ones.
      *
      * @param pipSku a sku
      * @return the PublicIPSkuType
@@ -58,7 +53,7 @@ public final class PublicIPSkuType {
         if (pipSku.name() == null) {
             return null;
         }
-        PublicIPSkuType result = VALUES_BY_NAME.get(pipSku.name().toString().toLowerCase());
+        PublicIPSkuType result = VALUES_BY_NAME.get(pipSku.name().toString().toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {
@@ -66,9 +61,7 @@ public final class PublicIPSkuType {
         }
     }
 
-    /**
-     * @return the PublicIPAddressSku associated with the PublicIPAddressSkuType.
-     */
+    /** @return the PublicIPAddressSku associated with the PublicIPAddressSkuType. */
     public PublicIPAddressSku sku() {
         return (new PublicIPAddressSku()).withName(this.skuName);
     }
@@ -84,7 +77,7 @@ public final class PublicIPSkuType {
             return false;
         } else if (obj == this) {
             return true;
-        } else  if (skuName == null) {
+        } else if (skuName == null) {
             return ((PublicIPSkuType) obj).skuName == null;
         } else {
             return skuName.equals(((PublicIPSkuType) obj).skuName);

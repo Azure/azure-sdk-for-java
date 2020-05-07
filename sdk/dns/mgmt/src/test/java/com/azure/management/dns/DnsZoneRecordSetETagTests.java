@@ -3,21 +3,21 @@
 
 package com.azure.management.dns;
 
-
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.CloudError;
 import com.azure.core.management.CloudException;
-import com.azure.management.RestClient;
+import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
-import com.azure.management.dns.implementation.DnsZoneManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class DnsZoneRecordSetETagTests extends TestBase {
-    private String RG_NAME = "";
+    private String rgName = "";
 
     public DnsZoneRecordSetETagTests() {
         super(TestBase.RunCondition.BOTH);
@@ -27,19 +27,16 @@ public class DnsZoneRecordSetETagTests extends TestBase {
     protected DnsZoneManager zoneManager;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSdkContext(sdkContext)
-                .withSubscription(defaultSubscription);
-        zoneManager = DnsZoneManager
-                .authenticate(restClient, defaultSubscription, sdkContext);
-        RG_NAME = generateRandomResourceName("dnsetagtest", 15);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        resourceManager =
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
+        zoneManager = DnsZoneManager.authenticate(httpPipeline, profile, sdkContext);
+        rgName = generateRandomResourceName("dnsetagtest", 15);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -47,16 +44,18 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
-                .withETagCheck()
-                .create();
+        DnsZone dnsZone =
+            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(dnsZone.eTag());
 
-        Runnable runnable = () -> zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
-                .withETagCheck()
-                .create();
+        Runnable runnable =
+            () ->
+                zoneManager
+                    .zones()
+                    .define(topLevelDomain)
+                    .withNewResourceGroup(rgName, region)
+                    .withETagCheck()
+                    .create();
         ensureETagExceptionIsThrown(runnable);
     }
 
@@ -65,19 +64,13 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        final DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
-                .withETagCheck()
-                .create();
+        final DnsZone dnsZone =
+            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(dnsZone.eTag());
 
-        Runnable runnable = () -> dnsZone.update()
-                .withETagCheck(dnsZone.eTag() + "-foo")
-                .apply();
+        Runnable runnable = () -> dnsZone.update().withETagCheck(dnsZone.eTag() + "-foo").apply();
         ensureETagExceptionIsThrown(runnable);
-        dnsZone.update()
-                .withETagCheck(dnsZone.eTag())
-                .apply();
+        dnsZone.update().withETagCheck(dnsZone.eTag()).apply();
     }
 
     @Test
@@ -85,10 +78,8 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        final DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
-                .withETagCheck()
-                .create();
+        final DnsZone dnsZone =
+            zoneManager.zones().define(topLevelDomain).withNewResourceGroup(rgName, region).withETagCheck().create();
         Assertions.assertNotNull(dnsZone.eTag());
 
         Runnable runnable = () -> zoneManager.zones().deleteById(dnsZone.id(), dnsZone.eTag() + "-foo");
@@ -101,31 +92,34 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+        DnsZone dnsZone =
+            zoneManager
+                .zones()
+                .define(topLevelDomain)
+                .withNewResourceGroup(rgName, region)
                 .withPrivateAccess()
                 .defineARecordSet("www")
-                    .withIPv4Address("23.96.104.40")
-                    .withIPv4Address("24.97.105.41")
-                    .withTimeToLive(7200)
-                    .withETagCheck()
-                    .attach()
+                .withIPv4Address("23.96.104.40")
+                .withIPv4Address("24.97.105.41")
+                .withTimeToLive(7200)
+                .withETagCheck()
+                .attach()
                 .defineAaaaRecordSet("www")
-                    .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                    .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                    .withETagCheck()
-                    .attach()
+                .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+                .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+                .withETagCheck()
+                .attach()
                 .defineCaaRecordSet("caaName")
-                    .withRecord(4, "sometag", "someValue")
-                    .attach()
+                .withRecord(4, "sometag", "someValue")
+                .attach()
                 .defineCNameRecordSet("documents")
-                    .withAlias("doc.contoso.com")
-                    .withETagCheck()
-                    .attach()
+                .withAlias("doc.contoso.com")
+                .withETagCheck()
+                .attach()
                 .defineCNameRecordSet("userguide")
-                    .withAlias("doc.contoso.com")
-                    .withETagCheck()
-                    .attach()
+                .withAlias("doc.contoso.com")
+                .withETagCheck()
+                .attach()
                 .create();
 
         // Check A records
@@ -154,40 +148,42 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assertions.assertEquals(4, (long) caaRecordSet1.records().get(0).flags());
         Assertions.assertTrue(caaRecordSet1.fqdn().startsWith("caaname.www.contoso"));
 
-        Assertions.assertEquals(ZoneType.PRIVATE , dnsZone.accessType());
+        Assertions.assertEquals(ZoneType.PRIVATE, dnsZone.accessType());
 
-        Exception  compositeException = null;
+        Exception compositeException = null;
         try {
-            zoneManager.zones().define(topLevelDomain)
-                    .withNewResourceGroup(RG_NAME, region)
-                    .withPrivateAccess()
-                    .defineARecordSet("www")
-                        .withIPv4Address("23.96.104.40")
-                        .withIPv4Address("24.97.105.41")
-                        .withTimeToLive(7200)
-                        .withETagCheck()
-                        .attach()
-                    .defineAaaaRecordSet("www")
-                        .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                        .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                        .withETagCheck()
-                        .attach()
-                    .defineCNameRecordSet("documents")
-                        .withAlias("doc.contoso.com")
-                        .withETagCheck()
-                        .attach()
-                    .defineCNameRecordSet("userguide")
-                        .withAlias("doc.contoso.com")
-                        .withETagCheck()
-                        .attach()
-                    .create();
+            zoneManager
+                .zones()
+                .define(topLevelDomain)
+                .withNewResourceGroup(rgName, region)
+                .withPrivateAccess()
+                .defineARecordSet("www")
+                .withIPv4Address("23.96.104.40")
+                .withIPv4Address("24.97.105.41")
+                .withTimeToLive(7200)
+                .withETagCheck()
+                .attach()
+                .defineAaaaRecordSet("www")
+                .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+                .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+                .withETagCheck()
+                .attach()
+                .defineCNameRecordSet("documents")
+                .withAlias("doc.contoso.com")
+                .withETagCheck()
+                .attach()
+                .defineCNameRecordSet("userguide")
+                .withAlias("doc.contoso.com")
+                .withETagCheck()
+                .attach()
+                .create();
         } catch (Exception exception) {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);
 
         Assertions.assertEquals(5, compositeException.getSuppressed().length);
-        for(int i = 0; i < 4; ++i) {
+        for (int i = 0; i < 4; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
             Assertions.assertTrue(exception instanceof CloudException);
             CloudError cloudError = ((CloudException) exception).getValue();
@@ -202,19 +198,22 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+        DnsZone dnsZone =
+            zoneManager
+                .zones()
+                .define(topLevelDomain)
+                .withNewResourceGroup(rgName, region)
                 .defineARecordSet("www")
-                    .withIPv4Address("23.96.104.40")
-                    .withIPv4Address("24.97.105.41")
-                    .withTimeToLive(7200)
-                    .withETagCheck()
-                    .attach()
+                .withIPv4Address("23.96.104.40")
+                .withIPv4Address("24.97.105.41")
+                .withTimeToLive(7200)
+                .withETagCheck()
+                .attach()
                 .defineAaaaRecordSet("www")
-                    .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                    .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                    .withETagCheck()
-                    .attach()
+                .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+                .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+                .withETagCheck()
+                .attach()
                 .create();
 
         // Check A records
@@ -235,20 +234,21 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         //
         Exception compositeException = null;
         try {
-            dnsZone.update()
+            dnsZone
+                .update()
                 .updateARecordSet("www")
-                    .withETagCheck(aRecordSet.eTag() + "-foo")
-                    .parent()
+                .withETagCheck(aRecordSet.eTag() + "-foo")
+                .parent()
                 .updateAaaaRecordSet("www")
-                    .withETagCheck(aaaaRecordSet.eTag() + "-foo")
-                    .parent()
+                .withETagCheck(aaaaRecordSet.eTag() + "-foo")
+                .parent()
                 .apply();
         } catch (Exception exception) {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);
         Assertions.assertEquals(3, compositeException.getSuppressed().length);
-        for(int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 2; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
             Assertions.assertTrue(exception instanceof CloudException);
             CloudError cloudError = ((CloudException) exception).getValue();
@@ -257,15 +257,16 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
         }
         // Try update with correct etags
-        dnsZone.update()
-                .updateARecordSet("www")
-                    .withIPv4Address("24.97.105.45")
-                    .withETagCheck(aRecordSet.eTag())
-                    .parent()
-                .updateAaaaRecordSet("www")
-                    .withETagCheck(aaaaRecordSet.eTag())
-                    .parent()
-                .apply();
+        dnsZone
+            .update()
+            .updateARecordSet("www")
+            .withIPv4Address("24.97.105.45")
+            .withETagCheck(aRecordSet.eTag())
+            .parent()
+            .updateAaaaRecordSet("www")
+            .withETagCheck(aaaaRecordSet.eTag())
+            .parent()
+            .apply();
 
         // Check A records
         aRecordSets = dnsZone.aRecordSets().list();
@@ -286,19 +287,22 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         final Region region = Region.US_EAST;
         final String topLevelDomain = "www.contoso" + generateRandomResourceName("z", 10) + ".com";
 
-        DnsZone dnsZone = zoneManager.zones().define(topLevelDomain)
-                .withNewResourceGroup(RG_NAME, region)
+        DnsZone dnsZone =
+            zoneManager
+                .zones()
+                .define(topLevelDomain)
+                .withNewResourceGroup(rgName, region)
                 .defineARecordSet("www")
-                    .withIPv4Address("23.96.104.40")
-                    .withIPv4Address("24.97.105.41")
-                    .withTimeToLive(7200)
-                    .withETagCheck()
-                    .attach()
+                .withIPv4Address("23.96.104.40")
+                .withIPv4Address("24.97.105.41")
+                .withTimeToLive(7200)
+                .withETagCheck()
+                .attach()
                 .defineAaaaRecordSet("www")
-                    .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
-                    .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
-                    .withETagCheck()
-                    .attach()
+                .withIPv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
+                .withIPv6Address("2002:0db9:85a4:0000:0000:8a2e:0371:7335")
+                .withETagCheck()
+                .attach()
                 .create();
 
         // Check A records
@@ -317,16 +321,17 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         //
         Exception compositeException = null;
         try {
-            dnsZone.update()
-                    .withoutARecordSet("www", aRecordSet.eTag() + "-foo")
-                    .withoutAaaaRecordSet("www", aaaaRecordSet.eTag() + "-foo")
-                    .apply();
+            dnsZone
+                .update()
+                .withoutARecordSet("www", aRecordSet.eTag() + "-foo")
+                .withoutAaaaRecordSet("www", aaaaRecordSet.eTag() + "-foo")
+                .apply();
         } catch (Exception exception) {
             compositeException = exception;
         }
         Assertions.assertNotNull(compositeException);
         Assertions.assertEquals(3, compositeException.getSuppressed().length);
-        for(int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 2; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
             Assertions.assertTrue(exception instanceof CloudException);
             CloudError cloudError = ((CloudException) exception).getValue();
@@ -335,10 +340,11 @@ public class DnsZoneRecordSetETagTests extends TestBase {
             Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
         }
         // Try delete with correct etags
-        dnsZone.update()
-                .withoutARecordSet("www", aRecordSet.eTag())
-                .withoutAaaaRecordSet("www", aaaaRecordSet.eTag())
-                .apply();
+        dnsZone
+            .update()
+            .withoutARecordSet("www", aRecordSet.eTag())
+            .withoutAaaaRecordSet("www", aaaaRecordSet.eTag())
+            .apply();
 
         // Check A records
         aRecordSets = dnsZone.aRecordSets().list();
@@ -350,8 +356,8 @@ public class DnsZoneRecordSetETagTests extends TestBase {
     }
 
     /**
-     * Runs the action and assert that action throws CloudException with CloudError.Code
-     * property set to 'PreconditionFailed'.
+     * Runs the action and assert that action throws CloudException with CloudError.Code property set to
+     * 'PreconditionFailed'.
      *
      * @param runnable runnable to run
      */
@@ -371,7 +377,9 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         }
         Assertions.assertTrue(isCloudExceptionThrown, "Expected CloudException is not thrown");
         Assertions.assertTrue(isCloudErrorSet, "Expected CloudError property is not set in CloudException");
-        Assertions.assertTrue(isPreconditionFailedCodeSet, "Expected PreconditionFailed code is not set indicating ETag concurrency check failure");
+        Assertions
+            .assertTrue(
+                isPreconditionFailedCodeSet,
+                "Expected PreconditionFailed code is not set indicating ETag concurrency check failure");
     }
 }
-

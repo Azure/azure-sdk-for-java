@@ -1,17 +1,15 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
-//package com.azure.management;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import com.microsoft.azure.management.search.*;
-//import org.junit.Assert;
+// package com.azure.management;
 //
-//import java.util.List;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import com.microsoft.azure.management.search.*;
+// import org.junit.Assert;
 //
-//public class TestSearchService {
+// import java.util.List;
+//
+// public class TestSearchService {
 //
 //    /**
 //     * Search service test.
@@ -246,4 +244,4 @@
 //        System.out.println(stringBuilder);
 //    }
 //
-//}
+// }

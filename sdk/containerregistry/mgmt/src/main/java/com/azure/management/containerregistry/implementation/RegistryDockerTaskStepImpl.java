@@ -8,18 +8,16 @@ import com.azure.management.containerregistry.DockerTaskStep;
 import com.azure.management.containerregistry.OverridingArgument;
 import com.azure.management.containerregistry.RegistryDockerTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
+import com.azure.management.containerregistry.TaskStepProperties;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-class RegistryDockerTaskStepImpl
-        extends RegistryTaskStepImpl
-        implements
-        RegistryDockerTaskStep,
+class RegistryDockerTaskStepImpl extends RegistryTaskStepImpl
+    implements RegistryDockerTaskStep,
         RegistryDockerTaskStep.Definition,
         RegistryDockerTaskStep.Update,
         HasInner<DockerTaskStep> {
@@ -32,7 +30,8 @@ class RegistryDockerTaskStepImpl
         super(taskImpl.inner().step());
         this.inner = new DockerTaskStep();
         if (taskImpl.inner().step() != null && !(taskImpl.inner().step() instanceof DockerTaskStep)) {
-            throw new IllegalArgumentException("Constructor for RegistryDockerTaskStepImpl invoked for class that is not DockerTaskStep");
+            throw new IllegalArgumentException(
+                "Constructor for RegistryDockerTaskStepImpl invoked for class that is not DockerTaskStep");
         }
         this.taskImpl = taskImpl;
         this.dockerTaskStepUpdateParameters = new DockerBuildStepUpdateParameters();
@@ -40,7 +39,7 @@ class RegistryDockerTaskStepImpl
 
     @Override
     public List<String> imageNames() {
-        DockerTaskStep dockerTaskStep = (DockerTaskStep) this.taskImpl.inner().step();
+        DockerTaskStep dockerTaskStep = dockerTaskStep();
         if (dockerTaskStep.imageNames() == null) {
             return Collections.unmodifiableList(new ArrayList<String>());
         }
@@ -49,29 +48,38 @@ class RegistryDockerTaskStepImpl
 
     @Override
     public boolean isPushEnabled() {
-        DockerTaskStep dockerTaskStep = (DockerTaskStep) this.taskImpl.inner().step();
+        DockerTaskStep dockerTaskStep = dockerTaskStep();
         return Utils.toPrimitiveBoolean(dockerTaskStep.isPushEnabled());
     }
 
     @Override
     public boolean noCache() {
-        DockerTaskStep dockerTaskStep = (DockerTaskStep) this.taskImpl.inner().step();
+        DockerTaskStep dockerTaskStep = dockerTaskStep();
         return Utils.toPrimitiveBoolean(dockerTaskStep.noCache());
     }
 
     @Override
     public String dockerFilePath() {
-        DockerTaskStep dockerTaskStep = (DockerTaskStep) this.taskImpl.inner().step();
+        DockerTaskStep dockerTaskStep = dockerTaskStep();
         return dockerTaskStep.dockerFilePath();
     }
 
     @Override
     public List<Argument> arguments() {
-        DockerTaskStep dockerTaskStep = (DockerTaskStep) this.taskImpl.inner().step();
+        DockerTaskStep dockerTaskStep = dockerTaskStep();
         if (dockerTaskStep.arguments() == null) {
             return Collections.unmodifiableList(new ArrayList<Argument>());
         }
         return Collections.unmodifiableList(dockerTaskStep.arguments());
+    }
+
+    private DockerTaskStep dockerTaskStep() {
+        TaskStepProperties step = this.taskImpl.inner().step();
+        if (step instanceof DockerTaskStep) {
+            return (DockerTaskStep) step;
+        } else {
+            return new DockerTaskStep();
+        }
     }
 
     @Override
@@ -103,7 +111,6 @@ class RegistryDockerTaskStepImpl
         }
         return this;
     }
-
 
     @Override
     public RegistryDockerTaskStepImpl withCacheEnabled(boolean enabled) {
@@ -152,7 +159,6 @@ class RegistryDockerTaskStepImpl
         }
         return this;
     }
-
 
     @Override
     public RegistryTask.DefinitionStages.SourceTriggerDefinition attach() {

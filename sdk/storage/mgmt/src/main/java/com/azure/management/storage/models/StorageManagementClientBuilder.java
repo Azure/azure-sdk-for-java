@@ -12,9 +12,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
 
-/**
- * A builder for creating a new instance of the StorageManagementClientImpl type.
- */
+/** A builder for creating a new instance of the StorageManagementClientImpl type. */
 @ServiceClientBuilder(serviceClients = {StorageManagementClientImpl.class})
 public final class StorageManagementClientBuilder {
     /*
@@ -24,7 +22,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the StorageManagementClientBuilder.
      */
@@ -40,7 +38,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the StorageManagementClientBuilder.
      */
@@ -56,7 +54,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the StorageManagementClientBuilder.
      */
@@ -72,7 +70,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     * 
+     *
      * @param environment the environment value.
      * @return the StorageManagementClientBuilder.
      */
@@ -88,7 +86,7 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     * 
+     *
      * @param pipeline the pipeline value.
      * @return the StorageManagementClientBuilder.
      */
@@ -99,10 +97,10 @@ public final class StorageManagementClientBuilder {
 
     /**
      * Builds an instance of StorageManagementClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of StorageManagementClientImpl.
      */
-    public StorageManagementClientImpl build() {
+    public StorageManagementClientImpl buildClient() {
         if (host == null) {
             this.host = "https://management.azure.com";
         }
@@ -113,7 +111,10 @@ public final class StorageManagementClientBuilder {
             this.environment = AzureEnvironment.AZURE;
         }
         if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build();
+            this.pipeline =
+                new HttpPipelineBuilder()
+                    .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                    .build();
         }
         StorageManagementClientImpl client = new StorageManagementClientImpl(pipeline, environment);
         client.setSubscriptionId(this.subscriptionId);

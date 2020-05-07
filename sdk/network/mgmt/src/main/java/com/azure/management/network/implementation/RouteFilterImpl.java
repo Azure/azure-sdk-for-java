@@ -6,38 +6,30 @@ import com.azure.management.network.Access;
 import com.azure.management.network.ExpressRouteCircuitPeering;
 import com.azure.management.network.RouteFilter;
 import com.azure.management.network.RouteFilterRule;
+import com.azure.management.network.RouteFilterRuleType;
+import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.RouteFilterInner;
 import com.azure.management.network.models.RouteFilterRuleInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
-/**
- * Implementation for RouteFilter and its create and update interfaces.
- */
+/** Implementation for RouteFilter and its create and update interfaces. */
 class RouteFilterImpl
-        extends GroupableParentResourceImpl<
-        RouteFilter,
-        RouteFilterInner,
-        RouteFilterImpl,
-        NetworkManager>
-        implements
-        RouteFilter,
-        RouteFilter.Definition,
-        RouteFilter.Update {
+    extends GroupableParentResourceImpl<RouteFilter, RouteFilterInner, RouteFilterImpl, NetworkManager>
+    implements RouteFilter, RouteFilter.Definition, RouteFilter.Update {
     private static final String RULE_TYPE = "Community";
 
     private Map<String, RouteFilterRule> rules;
     private Map<String, ExpressRouteCircuitPeering> peerings;
 
-    RouteFilterImpl(
-            final String name,
-            final RouteFilterInner innerModel,
-            final NetworkManager networkManager) {
+    RouteFilterImpl(final String name, final RouteFilterInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -55,6 +47,16 @@ class RouteFilterImpl
                 this.rules.put(inner.name(), new RouteFilterRuleImpl(inner, this));
             }
         }
+
+        if (this.inner().peerings() != null) {
+            this.peerings = this.inner().peerings().stream().collect(Collectors.toMap(
+                ExpressRouteCircuitPeeringInner::name,
+                peering -> new ExpressRouteCircuitPeeringImpl(this, peering,
+                    manager().inner().expressRouteCircuitPeerings(), peering.peeringType())
+            ));
+        } else {
+            this.peerings = new HashMap<>();
+        }
     }
 
     @Override
@@ -64,17 +66,23 @@ class RouteFilterImpl
 
     @Override
     protected Mono<RouteFilterInner> getInnerAsync() {
-        // FIXME: parameter - expand
-        return this.manager().inner().routeFilters().getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .routeFilters()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<RouteFilter> refreshAsync() {
-        return super.refreshAsync().map(routeFilter -> {
-            RouteFilterImpl impl = (RouteFilterImpl) routeFilter;
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                routeFilter -> {
+                    RouteFilterImpl impl = (RouteFilterImpl) routeFilter;
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
@@ -107,7 +115,7 @@ class RouteFilterImpl
     public RouteFilterRuleImpl defineRule(String name) {
         RouteFilterRuleInner inner = new RouteFilterRuleInner();
         inner.withName(name);
-        inner.withRouteFilterRuleType(RULE_TYPE);
+        inner.withRouteFilterRuleType(RouteFilterRuleType.COMMUNITY);
         inner.withAccess(Access.ALLOW);
         return new RouteFilterRuleImpl(inner, this);
     }

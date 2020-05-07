@@ -6,18 +6,13 @@ import com.azure.management.appservice.Address;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.Contact;
 import com.azure.management.appservice.DomainContact;
-import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
+import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- *  Implementation for {@link DomainContact} and its create and update interfaces.
- */
-class DomainContactImpl
-    extends ChildResourceImpl<Contact, AppServiceDomainImpl, AppServiceDomain>
-    implements
-        DomainContact,
-        DomainContact.Definition<AppServiceDomain.DefinitionStages.WithCreate> {
+/** Implementation for {@link DomainContact} and its create and update interfaces. */
+class DomainContactImpl extends ChildResourceImpl<Contact, AppServiceDomainImpl, AppServiceDomain>
+    implements DomainContact, DomainContact.Definition<AppServiceDomain.DefinitionStages.WithCreate> {
 
     DomainContactImpl(Contact inner, AppServiceDomainImpl parent) {
         super(inner, parent);
@@ -28,7 +23,6 @@ class DomainContactImpl
     public String name() {
         return firstName() + " " + lastName();
     }
-
 
     @Override
     public Address addressMailing() {

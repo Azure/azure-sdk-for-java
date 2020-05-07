@@ -3,22 +3,23 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import java.io.File;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-
 public class WarDeployTests extends AppServiceTest {
-    private String WEBAPP_NAME = "";
+    private String webappName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME = "JAVA" + generateRandomResourceName("webapp-", 20);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        webappName = "JAVA" + generateRandomResourceName("webapp-", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Test
@@ -29,9 +30,12 @@ public class WarDeployTests extends AppServiceTest {
             // https://api.travis-ci.org/v3/job/427936160/log.txt
             //
             // Create web app
-            WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
+            WebApp webApp =
+                appServiceManager
+                    .webApps()
+                    .define(webappName)
                     .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(RG_NAME)
+                    .withNewResourceGroup(rgName)
                     .withNewWindowsPlan(PricingTier.STANDARD_S1)
                     .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                     .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
@@ -41,7 +45,7 @@ public class WarDeployTests extends AppServiceTest {
             webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
 
             if (!isPlaybackMode()) {
-                Response<String> response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net");
+                Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
                 Assertions.assertEquals(200, response.getStatusCode());
                 String body = response.getValue();
                 Assertions.assertNotNull(body);
@@ -53,9 +57,12 @@ public class WarDeployTests extends AppServiceTest {
     @Test
     public void canDeployMultipleWars() throws Exception {
         // Create web app
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(webappName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
                 .withWebContainer(WebContainer.TOMCAT_9_0_NEWEST)
@@ -66,13 +73,13 @@ public class WarDeployTests extends AppServiceTest {
             webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()));
             webApp.warDeploy(new File(WarDeployTests.class.getResource("/helloworld.war").getPath()), "app2");
 
-            Response<String> response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net");
+            Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
             Assertions.assertTrue(body.contains("Azure Samples Hello World"));
 
-            response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net/app2");
+            response = curl("http://" + webappName + "." + "azurewebsites.net/app2/");
             Assertions.assertEquals(200, response.getStatusCode());
             body = response.getValue();
             Assertions.assertNotNull(body);
