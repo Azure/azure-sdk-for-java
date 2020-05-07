@@ -710,11 +710,12 @@ public class CosmosAsyncDatabase {
                                                 }
 
                                                 Offer existingOffer = offerFeedResponse.getResults().get(0);
-                                                ModelBridgeInternal.updateOfferFromProperties(existingOffer,
+                                                Offer updatedOffer =
+                                                    ModelBridgeInternal.updateOfferFromProperties(existingOffer,
                                                                                               throughputProperties);
 
                                                 return this.getDocClientWrapper()
-                                                           .replaceOffer(existingOffer)
+                                                           .replaceOffer(updatedOffer)
                                                            .single();
                                             })
                                             .map(ModelBridgeInternal::createThroughputRespose));

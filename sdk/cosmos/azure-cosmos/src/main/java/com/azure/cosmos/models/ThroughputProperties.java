@@ -85,14 +85,9 @@ public class ThroughputProperties {
     /**
      * Get an updated offer based on the properties.
      */
-    Offer updateOfferFromProperties(Offer offer) {
-
-        if (this.getAutoscaleMaxThroughput() > 0) {
-            offer.updateAutoscaleThroughput(this.getAutoscaleMaxThroughput());
-        } else {
-            offer.setThroughput(this.getManualThroughput());
-        }
-        return offer;
+    Offer updateOfferFromProperties(Offer oldOffer) {
+        oldOffer.updateContent(this.offer);
+        return oldOffer;
     }
 
 }

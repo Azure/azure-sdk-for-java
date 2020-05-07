@@ -687,10 +687,11 @@ public class CosmosAsyncContainer {
                                                 }
 
                                                 Offer existingOffer = offerFeedResponse.getResults().get(0);
-                                                ModelBridgeInternal.updateOfferFromProperties(existingOffer,
+                                                Offer updatedOffer =
+                                                    ModelBridgeInternal.updateOfferFromProperties(existingOffer,
                                                                                               throughputProperties);
                                                 return this.database.getDocClientWrapper()
-                                                           .replaceOffer(existingOffer)
+                                                           .replaceOffer(updatedOffer)
                                                            .single();
                                             }).map(ModelBridgeInternal::createThroughputRespose));
     }

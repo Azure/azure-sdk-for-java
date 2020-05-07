@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -123,12 +124,13 @@ public class DatabaseCrudTest extends TestSuiteBase {
 
         ThroughputResponse readThroughputResponse = database.readThroughput().block();
         assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
-        database.createContainer("testCol", "/myPk").block();
+        String collectionId = UUID.randomUUID().toString();
+        database.createContainer(collectionId, "/myPk").block();
+        // Replace
         int tagetThroughput = 6000;
         properties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
-        // Enable later
-//        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
-//        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
+        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
+        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
         safeDeleteDatabase(client.getDatabase(databaseName));
 
     }

@@ -242,4 +242,7 @@ public class Offer extends Resource {
         this.getOfferAutoScaleSettings().setMaxThroughput(maxAutoscaleThroughput);
     }
 
+    public void updateContent(Offer offer) {
+        this.setContent(offer.getContent());
+    }
 }

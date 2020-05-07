@@ -378,8 +378,9 @@ public class CollectionCrudTest extends TestSuiteBase {
         CosmosAsyncDatabase database = client.createDatabase(databaseName)
                                            .block()
                                            .getDatabase();
+        String collectionId = UUID.randomUUID().toString();
 
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionId, "/myPk");
         CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
                                                                   new CosmosContainerRequestOptions())
                                         .block()
@@ -392,9 +393,8 @@ public class CollectionCrudTest extends TestSuiteBase {
         // Replace
         int tagetThroughput = 6000;
         throughputProperties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
-        // Enable later
-//        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
-//        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
+        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
+        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
         safeDeleteDatabase(client.getDatabase(databaseName));
     }
 
