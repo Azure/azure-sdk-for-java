@@ -145,7 +145,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         if (this.inner().networkSecurityGroup() == null) {
             return null;
         }
-        return this.inner().networkSecurityGroup().getId();
+        return this.inner().networkSecurityGroup().id();
     }
 
     @Override
@@ -165,7 +165,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
         if (this.inner().virtualMachine() == null) {
             return null;
         }
-        return this.inner().virtualMachine().getId();
+        return this.inner().virtualMachine().id();
     }
 
     @Override

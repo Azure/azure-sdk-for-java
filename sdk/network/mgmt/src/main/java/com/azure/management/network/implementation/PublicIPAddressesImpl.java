@@ -42,6 +42,6 @@ class PublicIPAddressesImpl
         if (inner == null) {
             return null;
         }
-        return new PublicIPAddressImpl(inner.getId(), inner, this.manager());
+        return new PublicIPAddressImpl(inner.id(), inner, this.manager());
     }
 }

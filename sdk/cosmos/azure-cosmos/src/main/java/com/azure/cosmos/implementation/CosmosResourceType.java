@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +42,7 @@ public enum CosmosResourceType {
      * @param cosmosResourceType String value of cosmos resource type
      * @return CosmosResourceType Enum Cosmos Resource Type
      */
-    static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
+    public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
         // this is 100x faster than org.apache.commons.lang3.EnumUtils.getEnum(String)
         // for more detail refer to https://github.com/moderakh/azure-cosmosdb-benchmark
         return cosmosResourceTypeMap.get(cosmosResourceType);

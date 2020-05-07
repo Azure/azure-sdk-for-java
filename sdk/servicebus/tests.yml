@@ -10,4 +10,4 @@ jobs:
           safeName: azuremessagingservicebus
       EnvVars:
         AZURE_TEST_MODE: RECORD
-        AZURE_LOG_LEVEL: 3
+        AZURE_LOG_LEVEL: 2

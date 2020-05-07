@@ -47,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
+    protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
@@ -275,15 +276,16 @@ public abstract class IntegrationTestBase extends TestBase {
         }
     }
 
-    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(boolean useCredentials,
-        MessagingEntityType entityType,
+    protected ServiceBusSessionReceiverClientBuilder getSessionReceiverBuilder(
+        boolean useCredentials, MessagingEntityType entityType,
+        Function<ServiceBusClientBuilder, ServiceBusClientBuilder> onBuilderCreate,
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onReceiverCreate) {
         switch (entityType) {
             case QUEUE:
                 final String queueName = getSessionQueueName();
                 assertNotNull(queueName, "'queueName' cannot be null.");
 
-                final ServiceBusSessionReceiverClientBuilder builder = getBuilder(useCredentials)
+                final ServiceBusSessionReceiverClientBuilder builder = onBuilderCreate.apply(getBuilder(useCredentials))
                     .sessionReceiver()
                     .queueName(queueName);
                 return onReceiverCreate.apply(builder);
@@ -294,7 +296,8 @@ public abstract class IntegrationTestBase extends TestBase {
                 assertNotNull(topicName, "'topicName' cannot be null.");
                 assertNotNull(subscriptionName, "'subscriptionName' cannot be null.");
 
-                final ServiceBusSessionReceiverClientBuilder builder2 = getBuilder(useCredentials).sessionReceiver()
+                final ServiceBusSessionReceiverClientBuilder builder2 = onBuilderCreate.apply(getBuilder(useCredentials))
+                    .sessionReceiver()
                     .topicName(topicName).subscriptionName(subscriptionName);
                 return onReceiverCreate.apply(builder2);
             default:

@@ -41,8 +41,8 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
         final Map<String, String> ipConfigNames = new TreeMap<>();
         if (this.inner().backendIPConfigurations() != null) {
             for (NetworkInterfaceIPConfigurationInner inner : this.inner().backendIPConfigurations()) {
-                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.getId());
-                String ipConfigName = ResourceUtils.nameFromResourceId(inner.getId());
+                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
+                String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
                 ipConfigNames.put(nicId, ipConfigName);
             }
         }
@@ -55,7 +55,7 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
         final Map<String, LoadBalancingRule> rules = new TreeMap<>();
         if (this.inner().loadBalancingRules() != null) {
             for (SubResource inner : this.inner().loadBalancingRules()) {
-                String name = ResourceUtils.nameFromResourceId(inner.getId());
+                String name = ResourceUtils.nameFromResourceId(inner.id());
                 LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);

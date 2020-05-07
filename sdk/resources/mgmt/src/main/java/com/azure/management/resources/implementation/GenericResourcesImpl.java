@@ -193,11 +193,11 @@ final class GenericResourcesImpl
         if (inner == null) {
             return null;
         }
-        return new GenericResourceImpl(inner.getId(), inner, this.manager())
-                .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.getId()))
-                .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.getId()))
-                .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.getId()))
-                .withParentResourceId(ResourceUtils.parentResourceIdFromResourceId(inner.getId()));
+        return new GenericResourceImpl(inner.id(), inner, this.manager())
+                .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
+                .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
+                .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
+                .withParentResourceId(ResourceUtils.parentResourceIdFromResourceId(inner.id()));
     }
 
     @Override

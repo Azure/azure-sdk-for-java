@@ -34,7 +34,7 @@ class AppServiceDomainImpl
 
     AppServiceDomainImpl(String name, DomainInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        inner().setLocation("global");
+        inner().withLocation("global");
         if (inner().managedHostNames() != null) {
             this.hostNameMap =
                 inner().managedHostNames().stream().collect(Collectors.toMap(HostName::name, Function.identity()));

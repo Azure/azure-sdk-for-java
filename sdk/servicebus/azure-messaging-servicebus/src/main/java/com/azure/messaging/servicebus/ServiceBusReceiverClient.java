@@ -83,22 +83,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Abandon a {@link ServiceBusReceivedMessage message} with its lock token. This will make the message available
-     * again for processing. Abandoning a message will increase the delivery count on the message.
-     *
-     * @param lockToken Lock token of the message.
-     * @param sessionId Session id of the message to abandon. {@code null} if there is no session.
-     *
-     * @throws NullPointerException if {@code lockToken} is null.
-     * @throws UnsupportedOperationException if the receiver was opened in {@link ReceiveMode#RECEIVE_AND_DELETE}
-     *     mode.
-     * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
-     */
-    public void abandon(MessageLockToken lockToken, String sessionId) {
-        asyncClient.abandon(lockToken, sessionId).block(operationTimeout);
-    }
-
-    /**
      * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
      * This will make the message available again for processing. Abandoning a message will increase the delivery count
      * on the message.

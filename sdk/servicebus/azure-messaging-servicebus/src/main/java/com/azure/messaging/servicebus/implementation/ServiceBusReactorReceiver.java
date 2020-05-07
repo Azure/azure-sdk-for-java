@@ -11,7 +11,6 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
@@ -77,18 +76,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
         TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
-        this(entityPath, receiver, handler, tokenManager, provider, timeout, retryPolicy, null, false);
-    }
-
-    public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy,
-        String sessionId) {
-        this(entityPath, receiver, handler, tokenManager, provider, timeout, retryPolicy, sessionId, true);
-    }
-
-    private ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy,
-        String sessionId, boolean isSessionReceiver) {
         super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
         this.receiver = receiver;
         this.handler = handler;
@@ -97,13 +84,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         this.timeout = timeout;
         this.retryPolicy = retryPolicy;
         this.subscription = Flux.interval(timeout).subscribe(i -> cleanupWorkItems());
-
-        if (!isSessionReceiver) {
-            this.sessionIdMono = Mono.empty();
-            this.sessionLockedUntil = Mono.just(Instant.EPOCH);
-            return;
-        }
-
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
             .flatMap(state -> {
@@ -116,11 +96,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 }
 
                 final String actualSessionId = String.valueOf(value);
-                if (!CoreUtils.isNullOrEmpty(sessionId) && !sessionId.equals(actualSessionId)) {
-                    logger.warning("entityPath[{}], sessionId[{}]. expectedSessionId[{}]. Expected id does not match.",
-                        entityPath, sessionId, actualSessionId);
-                }
-
                 return Mono.just(actualSessionId);
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
@@ -133,8 +108,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
                     return MessageUtils.convertDotNetTicksToInstant(ticks);
                 } else {
-                    logger.info("entityPath[{}], linkName[{}]. expectedSessionId[{}]. Locked until not set.",
-                        entityPath, getLinkName(), sessionId);
+                    logger.info("entityPath[{}], linkName[{}]. Locked until not set.", entityPath, getLinkName());
 
                     return Instant.EPOCH;
                 }

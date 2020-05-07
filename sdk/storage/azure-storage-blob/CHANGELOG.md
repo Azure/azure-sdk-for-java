@@ -3,6 +3,9 @@
 ## 12.7.0-beta.1 (Unreleased)
 
 
+## 12.6.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
 ## 12.6.0 (2020-04-06)
 - Fixed a bug that would prevent client initialization against Azurite in some containerized environments.
 - Fixed a bug that would prevent progress from being reported when uploading small files.
@@ -16,11 +19,11 @@
 - Fixed a bug in ReliableDownload that would cause multiple subscriber errors.
 - Added logic to ReliableDownload to retry on TimeoutException
 - Added default timeout to download stream to timeout if a certain amount of time passes without seeing any data.
-- Fixed a bug that would cause IOExceptions to be swallowed in BlobClient.upload(InputStream, long) 
+- Fixed a bug that would cause IOExceptions to be swallowed in BlobClient.upload(InputStream, long)
 
 ## 12.4.0 (2020-02-12)
 - Added ability to access BlobProperties from BlobInputStream.
-- Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range. 
+- Modified downloadToFile to populate BlobProperties.blobSize to be the actual blob size instead of the content length of the first range.
 - Added upload methods on BlobClient to upload from an InputStream.
 
 - Added support for the 2019-07-07 service version.
@@ -86,11 +89,11 @@ and
 - Replaced URL parameters with String on appendBlockFromUrl, beginCopy, copyFromUrl, stageBlockFromUrl, uploadPagesFromUrl, and copyIncremental
 - Added support for emulator endpoints
 - Added support for additional connection string configurations and support for use development connection
-- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem, 
+- Changed constructors for AppendBlobItem, BlockBlobItem, PageBlobItem,
 - Renamed listBlobsFlat to listBlobs and listBlobHierarchy to listBlobsByHierarchy
 - Replaced startCopyFromUrl with beginCopy and return poller
 - Renamed BlobContainerSasPermission and BlobSasPermission getters to use has prefix
-- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions. 
+- Replaced BlobAccessConditions, AppendBlobAccessConditions, and PageBlobAccessConditions with BlobRequestConditions, AppendBlobRequestConditions, and PageBlobRequestConditions.
 - Removed ModifiedAccessConditions and SourceModifiedAccessConditions in favor of RequestConditions, removed BlobContainerAccessConditions in favor of BlobRequestConditions.
 - Removed AppendPositionAccessConditions, LeaseAccessConditions, and SequenceNumberAccessConditions
 - Renamed LeaseClient, LeaseAsyncClient, and LeaseClientBuilder to BlobLeaseClient, BlobLeaseAsyncClient, and BlobLeaseClientBuilder
@@ -118,12 +121,12 @@ and
 - Added `LeaseClient` and `LeaseAsyncClient` to the specialized package and removed the leasing methods from `BlobClient`, `BlobAsyncClient`, `ContainerClient`, and `ContainerAsyncClient`.
 - Added `blocksize` parameter to sync `blockBlobClient`.
 - Use Primitives for `exist` API return type.
-- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`. 
+- Removed a `create` and `appendBlockFromUrl` overload API in `AppendBlob`.
 - Fixed `create` method name in PageBlob.
 - Renamed `setTier` to `setAccessTier` from `BlobAsyncClientBase` and `BlobClientBase` classes.
 - Added `ParallelTransferOptions` to buffered upload, upload from file and download to file methods.
 - Removed `Metadata` class and uses Map<String, String> for `matadata` field of `BlobProperties` and `ContainerProperties`.
-- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens. 
+- Removed SAS token generation APIs from clients, use BlobServiceSasSignatureValues to generate SAS tokens.
 - Removed `SASTokenCredential`, `SASTokenCredentialPolicy` and the corresponding `credential(SASTokenCredential)` method in client builder, and added sasToken(String) instead.
 
 ## 12.0.0-preview.3 (2019-09-10)
