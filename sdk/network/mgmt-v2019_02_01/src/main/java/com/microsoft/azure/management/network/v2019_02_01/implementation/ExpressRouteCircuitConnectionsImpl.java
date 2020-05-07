@@ -64,10 +64,14 @@ class ExpressRouteCircuitConnectionsImpl extends WrapperImpl<ExpressRouteCircuit
     public Observable<ExpressRouteCircuitConnection> getAsync(String resourceGroupName, String circuitName, String peeringName, String connectionName) {
         ExpressRouteCircuitConnectionsInner client = this.inner();
         return client.getAsync(resourceGroupName, circuitName, peeringName, connectionName)
-        .map(new Func1<ExpressRouteCircuitConnectionInner, ExpressRouteCircuitConnection>() {
+        .flatMap(new Func1<ExpressRouteCircuitConnectionInner, Observable<ExpressRouteCircuitConnection>>() {
             @Override
-            public ExpressRouteCircuitConnection call(ExpressRouteCircuitConnectionInner inner) {
-                return wrapModel(inner);
+            public Observable<ExpressRouteCircuitConnection> call(ExpressRouteCircuitConnectionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ExpressRouteCircuitConnection)wrapModel(inner));
+                }
             }
        });
     }
