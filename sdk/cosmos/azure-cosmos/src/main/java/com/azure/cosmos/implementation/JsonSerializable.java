@@ -191,7 +191,6 @@ public class JsonSerializable {
         } else if (value instanceof JsonSerializableWrapper) {
             JsonSerializableWrapper castedValue = (JsonSerializableWrapper) value;
             ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(castedValue);
-
             this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag);
         }
         else {
@@ -219,6 +218,12 @@ public class JsonSerializable {
                 castedValue.populatePropertyBag();
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
                                     : this.getMapper().createObjectNode());
+            } else if (childValue instanceof JsonSerializableWrapper) {
+                // JsonSerializable
+                JsonSerializableWrapper castedValue = (JsonSerializableWrapper) childValue;
+                ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(castedValue);
+                targetArray.add(ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag != null ?
+                    ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag : this.getMapper().createObjectNode());
             } else {
                 // POJO, JsonNode, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
