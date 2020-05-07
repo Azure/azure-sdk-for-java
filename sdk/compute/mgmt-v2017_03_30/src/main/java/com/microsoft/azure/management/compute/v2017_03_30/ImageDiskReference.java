@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ImageDiskReference {
     /**
-     * A relative uri containing either a Platform Imgage Repository or user
+     * A relative uri containing either a Platform Image Repository or user
      * image reference.
      */
     @JsonProperty(value = "id", required = true)
@@ -30,7 +30,7 @@ public class ImageDiskReference {
     private Integer lun;
 
     /**
-     * Get the id value.
+     * Get a relative uri containing either a Platform Image Repository or user image reference.
      *
      * @return the id value
      */
@@ -39,7 +39,7 @@ public class ImageDiskReference {
     }
 
     /**
-     * Set the id value.
+     * Set a relative uri containing either a Platform Image Repository or user image reference.
      *
      * @param id the id value to set
      * @return the ImageDiskReference object itself.
@@ -50,7 +50,7 @@ public class ImageDiskReference {
     }
 
     /**
-     * Get the lun value.
+     * Get if the disk is created from an image's data disk, this is an index that indicates which of the data disks in the image to use. For OS disks, this field is null.
      *
      * @return the lun value
      */
@@ -59,7 +59,7 @@ public class ImageDiskReference {
     }
 
     /**
-     * Set the lun value.
+     * Set if the disk is created from an image's data disk, this is an index that indicates which of the data disks in the image to use. For OS disks, this field is null.
      *
      * @param lun the lun value to set
      * @return the ImageDiskReference object itself.
