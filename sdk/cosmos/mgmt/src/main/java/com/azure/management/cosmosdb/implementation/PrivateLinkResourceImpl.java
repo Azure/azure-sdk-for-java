@@ -16,17 +16,17 @@ public class PrivateLinkResourceImpl extends WrapperImpl<PrivateLinkResourceInne
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override

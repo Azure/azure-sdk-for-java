@@ -33,7 +33,7 @@ class ExpressRouteCircuitsImpl
         if (inner == null) {
             return null;
         }
-        return new ExpressRouteCircuitImpl(inner.getName(), inner, this.manager());
+        return new ExpressRouteCircuitImpl(inner.name(), inner, this.manager());
     }
 
     @Override

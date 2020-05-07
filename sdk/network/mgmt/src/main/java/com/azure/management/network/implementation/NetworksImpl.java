@@ -68,6 +68,6 @@ class NetworksImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkImpl(inner.getName(), inner, this.manager());
+        return new NetworkImpl(inner.name(), inner, this.manager());
     }
 }

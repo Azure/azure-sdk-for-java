@@ -30,7 +30,7 @@ class ActionGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ActionGroupImpl(inner.getName(), inner, this.manager());
+        return new ActionGroupImpl(inner.name(), inner, this.manager());
     }
 
     @Override

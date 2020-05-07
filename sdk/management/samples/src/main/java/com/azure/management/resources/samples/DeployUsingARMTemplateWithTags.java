@@ -77,7 +77,7 @@ public final class DeployUsingARMTemplateWithTags {
             // Getting created resources
             for (DeploymentOperation operation : operations) {
                 if (operation.targetResource() != null) {
-                    genericResources.add(azure.genericResources().getById(operation.targetResource().getId()));
+                    genericResources.add(azure.genericResources().getById(operation.targetResource().id()));
                 }
             }
 

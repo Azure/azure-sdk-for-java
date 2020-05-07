@@ -94,7 +94,7 @@ class ApplicationGatewayListenerImpl
             return null;
         }
 
-        String name = ResourceUtils.nameFromResourceId(certRef.getId());
+        String name = ResourceUtils.nameFromResourceId(certRef.id());
         return this.parent().sslCertificates().get(name);
     }
 
@@ -118,7 +118,7 @@ class ApplicationGatewayListenerImpl
     @Override
     public String frontendPortName() {
         if (this.inner().frontendPort() != null) {
-            return ResourceUtils.nameFromResourceId(this.inner().frontendPort().getId());
+            return ResourceUtils.nameFromResourceId(this.inner().frontendPort().id());
         } else {
             return null;
         }
@@ -130,7 +130,7 @@ class ApplicationGatewayListenerImpl
         if (frontendInner == null) {
             return null;
         } else {
-            final String frontendName = ResourceUtils.nameFromResourceId(frontendInner.getId());
+            final String frontendName = ResourceUtils.nameFromResourceId(frontendInner.id());
             return this.parent().frontends().get(frontendName);
         }
     }
@@ -147,7 +147,7 @@ class ApplicationGatewayListenerImpl
 
     private ApplicationGatewayListenerImpl withFrontend(String name) {
         SubResource frontendRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
+            new SubResource().withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
         this.inner().withFrontendIPConfiguration(frontendRef);
         return this;
     }
@@ -156,7 +156,7 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withFrontendPort(String name) {
-        SubResource portRef = new SubResource().setId(this.parent().futureResourceId() + "/frontendPorts/" + name);
+        SubResource portRef = new SubResource().withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
         this.inner().withFrontendPort(portRef);
         return this;
     }
@@ -176,7 +176,7 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withSslCertificate(String name) {
-        SubResource certRef = new SubResource().setId(this.parent().futureResourceId() + "/sslCertificates/" + name);
+        SubResource certRef = new SubResource().withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
         this.inner().withSslCertificate(certRef);
         return this;
     }
