@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Contains helper methods for message conversions and reading status codes.
+ * Contains helper methods for message conversions, reading status codes, and getting delivery state.
  */
 public final class MessageUtils {
     static final UUID ZERO_LOCK_TOKEN = new UUID(0L, 0L);
@@ -47,6 +47,7 @@ public final class MessageUtils {
      * Converts a .NET GUID to its Java UUID representation.
      *
      * @param dotNetBytes .NET GUID to convert.
+     *
      * @return the equivalent UUID.
      */
     static UUID convertDotNetBytesToUUID(byte[] dotNetBytes) {

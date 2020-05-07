@@ -42,14 +42,14 @@ class VirtualMachineExtensionImpl
     protected static VirtualMachineExtensionImpl newVirtualMachineExtension(
         String name, VirtualMachineImpl parent, VirtualMachineExtensionsInner client) {
         VirtualMachineExtensionInner inner = new VirtualMachineExtensionInner();
-        inner.setLocation(parent.regionName());
+        inner.withLocation(parent.regionName());
         VirtualMachineExtensionImpl extension = new VirtualMachineExtensionImpl(name, parent, inner, client);
         return extension;
     }
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -98,7 +98,7 @@ class VirtualMachineExtensionImpl
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().getTags();
+        Map<String, String> tags = this.inner().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -178,23 +178,23 @@ class VirtualMachineExtensionImpl
 
     @Override
     public final VirtualMachineExtensionImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<>(tags));
+        this.inner().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public final VirtualMachineExtensionImpl withTag(String key, String value) {
-        if (this.inner().getTags() == null) {
-            this.inner().setTags(new HashMap<>());
+        if (this.inner().tags() == null) {
+            this.inner().withTags(new HashMap<>());
         }
-        this.inner().getTags().put(key, value);
+        this.inner().tags().put(key, value);
         return this;
     }
 
     @Override
     public final VirtualMachineExtensionImpl withoutTag(String key) {
-        if (this.inner().getTags() != null) {
-            this.inner().getTags().remove(key);
+        if (this.inner().tags() != null) {
+            this.inner().tags().remove(key);
         }
         return this;
     }
@@ -209,9 +209,9 @@ class VirtualMachineExtensionImpl
     protected Mono<VirtualMachineExtensionInner> getInnerAsync() {
         String name;
         if (this.isReference()) {
-            name = ResourceUtils.nameFromResourceId(this.inner().getId());
+            name = ResourceUtils.nameFromResourceId(this.inner().id());
         } else {
-            name = this.inner().getName();
+            name = this.inner().name();
         }
         return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), name);
     }
@@ -235,7 +235,7 @@ class VirtualMachineExtensionImpl
     public Mono<VirtualMachineExtension> updateResourceAsync() {
         this.nullifySettingsIfEmpty();
         if (this.isReference()) {
-            String extensionName = ResourceUtils.nameFromResourceId(this.inner().getId());
+            String extensionName = ResourceUtils.nameFromResourceId(this.inner().id());
             return this
                 .client
                 .getAsync(this.parent().resourceGroupName(), this.parent().name(), extensionName)
@@ -281,7 +281,7 @@ class VirtualMachineExtensionImpl
      *     on a specific VM will return fully expanded extension details.
      */
     public boolean isReference() {
-        return this.inner().getName() == null;
+        return this.inner().name() == null;
     }
 
     // Helper methods

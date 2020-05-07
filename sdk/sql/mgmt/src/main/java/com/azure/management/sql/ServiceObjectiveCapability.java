@@ -95,7 +95,7 @@ public final class ServiceObjectiveCapability {
      *
      * @return the id value.
      */
-    public UUID getId() {
+    public UUID id() {
         return this.id;
     }
 

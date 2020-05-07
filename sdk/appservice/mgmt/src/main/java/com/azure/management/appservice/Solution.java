@@ -58,7 +58,7 @@ public final class Solution {
      *
      * @return the id value.
      */
-    public Double getId() {
+    public Double id() {
         return this.id;
     }
 

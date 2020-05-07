@@ -76,7 +76,7 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
         if (vaultInner == null) {
             return null;
         }
-        return new VaultImpl(vaultInner.getName(), vaultInner, this.manager(), graphRbacManager);
+        return new VaultImpl(vaultInner.name(), vaultInner, this.manager(), graphRbacManager);
     }
 
     @Override
@@ -148,7 +148,7 @@ class VaultsImpl extends GroupableResourcesImpl<Vault, VaultImpl, VaultInner, Va
                                 .withTenantId(UUID.fromString(tenantId)));
                     return inner()
                         .createOrUpdateAsync(resourceGroupName, vaultName, parameters)
-                        .map(inner -> (Vault) new VaultImpl(inner.getId(), inner, manager, graphRbacManager));
+                        .map(inner -> (Vault) new VaultImpl(inner.id(), inner, manager, graphRbacManager));
                 });
     }
 }

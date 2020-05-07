@@ -269,7 +269,7 @@ public class VpnSiteInner extends Resource {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

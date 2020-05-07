@@ -190,33 +190,33 @@ public final class CosmosContainerProperties extends ResourceWrapper {
     }
 
     /**
-     * Sets the analytical storage time to live in seconds for items in a container from the Azure Cosmos DB service.
+     * Sets the analytical store time to live in seconds for items in a container from the Azure Cosmos DB service.
      *
      * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
-     * By default, AnalyticalStorageTimeToLive is set to 0 meaning the analytical store is turned off for the container;
+     * By default, AnalyticalStoreTimeToLive is set to 0 meaning the analytical store is turned off for the container;
      * -1 means documents in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
-     * @param timeToLive the analytical storage time to live in seconds.
+     * @param timeToLive the analytical store time to live in seconds.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setAnalyticalStorageTimeToLiveInSeconds(Integer timeToLive) {
+    public CosmosContainerProperties setAnalyticalStoreTimeToLiveInSeconds(Integer timeToLive) {
         this.documentCollection.setAnalyticalStorageTimeToLiveInSeconds(timeToLive);
 
         return this;
     }
 
     /**
-     * Gets the analytical storage time to live in seconds for items in a container from the Azure Cosmos DB service.
+     * Gets the analytical store time to live in seconds for items in a container from the Azure Cosmos DB service.
      *
      * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
-     * By default, AnalyticalStorageTimeToLive is set to 0 meaning the analytical store is turned off for the container;
+     * By default, AnalyticalStoreTimeToLive is set to 0 meaning the analytical store is turned off for the container;
      * -1 means documents in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
      * @return analytical ttl
      */
-    public Integer getAnalyticalStorageTimeToLiveInSeconds() {
+    public Integer getAnalyticalStoreTimeToLiveInSeconds() {
         return this.documentCollection.getAnalyticalStorageTimeToLiveInSeconds();
     }
 
