@@ -17,6 +17,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -43,6 +44,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
         new AtomicReference<>();
+
+    private final AtomicReference<EmitterProcessor<SynchronousMessageSubscriber>> workQueueProcessor =
+        new AtomicReference<>(EmitterProcessor.create(false));
+
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -627,20 +632,29 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
         synchronized (lock) {
             final long id = idGenerator.getAndIncrement();
-            EmitterProcessor<ServiceBusReceivedMessageContext> emitterProcessor = messageProcessor.get();
 
             final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
                 emitter);
             final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
-            logger.info("[{}]: Started synchronous message subscriber.", id);
 
+            EmitterProcessor<SynchronousMessageSubscriber> workProcessor = workQueueProcessor.get();
+            workProcessor.sink().next(syncSubscriber);
+
+            EmitterProcessor<ServiceBusReceivedMessageContext> emitterProcessor = messageProcessor.get();
             if (emitterProcessor == null) {
                 emitterProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
                     .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
                 messageProcessor.set(emitterProcessor);
             }
 
-            emitterProcessor.subscribe(syncSubscriber);
+            EmitterProcessor<ServiceBusReceivedMessageContext> finalEmitterProcessor = emitterProcessor;
+            workProcessor
+                .map(currentWork -> {
+                    logger.info("[{}]: Started synchronous message subscriber.", id);
+                    finalEmitterProcessor.subscribe(currentWork);
+                     return currentWork;
+                })
+                .subscribe();
         }
     }
 }
