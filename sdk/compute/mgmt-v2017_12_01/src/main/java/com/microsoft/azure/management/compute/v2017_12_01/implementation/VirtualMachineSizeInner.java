@@ -52,7 +52,7 @@ public class VirtualMachineSizeInner {
     private Integer maxDataDiskCount;
 
     /**
-     * Get the name value.
+     * Get the name of the virtual machine size.
      *
      * @return the name value
      */
@@ -61,7 +61,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the name value.
+     * Set the name of the virtual machine size.
      *
      * @param name the name value to set
      * @return the VirtualMachineSizeInner object itself.
@@ -72,7 +72,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Get the numberOfCores value.
+     * Get the number of cores supported by the virtual machine size.
      *
      * @return the numberOfCores value
      */
@@ -81,7 +81,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the numberOfCores value.
+     * Set the number of cores supported by the virtual machine size.
      *
      * @param numberOfCores the numberOfCores value to set
      * @return the VirtualMachineSizeInner object itself.
@@ -92,7 +92,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Get the osDiskSizeInMB value.
+     * Get the OS disk size, in MB, allowed by the virtual machine size.
      *
      * @return the osDiskSizeInMB value
      */
@@ -101,7 +101,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the osDiskSizeInMB value.
+     * Set the OS disk size, in MB, allowed by the virtual machine size.
      *
      * @param osDiskSizeInMB the osDiskSizeInMB value to set
      * @return the VirtualMachineSizeInner object itself.
@@ -112,7 +112,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Get the resourceDiskSizeInMB value.
+     * Get the resource disk size, in MB, allowed by the virtual machine size.
      *
      * @return the resourceDiskSizeInMB value
      */
@@ -121,7 +121,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the resourceDiskSizeInMB value.
+     * Set the resource disk size, in MB, allowed by the virtual machine size.
      *
      * @param resourceDiskSizeInMB the resourceDiskSizeInMB value to set
      * @return the VirtualMachineSizeInner object itself.
@@ -132,7 +132,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Get the memoryInMB value.
+     * Get the amount of memory, in MB, supported by the virtual machine size.
      *
      * @return the memoryInMB value
      */
@@ -141,7 +141,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the memoryInMB value.
+     * Set the amount of memory, in MB, supported by the virtual machine size.
      *
      * @param memoryInMB the memoryInMB value to set
      * @return the VirtualMachineSizeInner object itself.
@@ -152,7 +152,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Get the maxDataDiskCount value.
+     * Get the maximum number of data disks that can be attached to the virtual machine size.
      *
      * @return the maxDataDiskCount value
      */
@@ -161,7 +161,7 @@ public class VirtualMachineSizeInner {
     }
 
     /**
-     * Set the maxDataDiskCount value.
+     * Set the maximum number of data disks that can be attached to the virtual machine size.
      *
      * @param maxDataDiskCount the maxDataDiskCount value to set
      * @return the VirtualMachineSizeInner object itself.
