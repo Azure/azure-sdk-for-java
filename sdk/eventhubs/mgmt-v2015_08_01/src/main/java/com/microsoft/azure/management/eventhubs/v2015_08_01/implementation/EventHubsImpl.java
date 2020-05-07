@@ -67,10 +67,14 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
     public Observable<EventHubResource> getAsync(String resourceGroupName, String namespaceName, String eventHubName) {
         EventHubsInner client = this.inner();
         return client.getAsync(resourceGroupName, namespaceName, eventHubName)
-        .map(new Func1<EventHubResourceInner, EventHubResource>() {
+        .flatMap(new Func1<EventHubResourceInner, Observable<EventHubResource>>() {
             @Override
-            public EventHubResource call(EventHubResourceInner inner) {
-                return wrapModel(inner);
+            public Observable<EventHubResource> call(EventHubResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((EventHubResource)wrapModel(inner));
+                }
             }
        });
     }
@@ -107,10 +111,14 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
     public Observable<EventhubNamespaceSharedAccessAuthorizationRuleResource> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
         EventHubsInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
-        .map(new Func1<SharedAccessAuthorizationRuleResourceInner, EventhubNamespaceSharedAccessAuthorizationRuleResource>() {
+        .flatMap(new Func1<SharedAccessAuthorizationRuleResourceInner, Observable<EventhubNamespaceSharedAccessAuthorizationRuleResource>>() {
             @Override
-            public EventhubNamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
-                return wrapEventhubNamespaceSharedAccessAuthorizationRuleResourceModel(inner);
+            public Observable<EventhubNamespaceSharedAccessAuthorizationRuleResource> call(SharedAccessAuthorizationRuleResourceInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((EventhubNamespaceSharedAccessAuthorizationRuleResource)wrapEventhubNamespaceSharedAccessAuthorizationRuleResourceModel(inner));
+                }
             }
        });
     }
@@ -140,9 +148,9 @@ class EventHubsImpl extends WrapperImpl<EventHubsInner> implements EventHubs {
     }
 
     @Override
-    public Observable<NamespaceSharedAccessAuthorizationRuleResource> posttAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
+    public Observable<NamespaceSharedAccessAuthorizationRuleResource> postAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String eventHubName, String authorizationRuleName) {
         EventHubsInner client = this.inner();
-        return client.posttAuthorizationRuleAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
+        return client.postAuthorizationRuleAsync(resourceGroupName, namespaceName, eventHubName, authorizationRuleName)
         .map(new Func1<SharedAccessAuthorizationRuleResourceInner, NamespaceSharedAccessAuthorizationRuleResource>() {
             @Override
             public NamespaceSharedAccessAuthorizationRuleResource call(SharedAccessAuthorizationRuleResourceInner inner) {
