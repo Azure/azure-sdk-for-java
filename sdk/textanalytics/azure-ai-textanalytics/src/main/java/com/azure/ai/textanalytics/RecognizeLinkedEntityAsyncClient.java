@@ -14,7 +14,7 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCodeValue;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -69,8 +69,9 @@ class RecognizeLinkedEntityAsyncClient {
     Mono<LinkedEntityCollection> recognizeLinkedEntities(String document, String language) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            return recognizeLinkedEntitiesBatch(
-                    Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+            final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
+            textDocumentInput.setLanguage(language);
+            return recognizeLinkedEntitiesBatch(Collections.singletonList(textDocumentInput), null)
                     .map(entitiesResult -> {
                         if (entitiesResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
@@ -147,7 +148,7 @@ class RecognizeLinkedEntityAsyncClient {
                 null,
                 mapLinkedEntity(documentLinkedEntities.getEntities()),
                 new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
+                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
                         warning.getMessage()))
                     .collect(Collectors.toList()))
             )));

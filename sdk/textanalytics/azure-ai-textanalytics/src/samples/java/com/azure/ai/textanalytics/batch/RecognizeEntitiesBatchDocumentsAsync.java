@@ -28,14 +28,14 @@ public class RecognizeEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.", "en"),
-            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.", "en")
+            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft."),
+            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.")
         );
 
         // Request options: show statistics and model version

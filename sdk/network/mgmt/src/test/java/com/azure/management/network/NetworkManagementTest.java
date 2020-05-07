@@ -3,11 +3,12 @@
 
 package com.azure.management.network;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.keyvault.implementation.KeyVaultManager;
 import com.azure.management.msi.implementation.MSIManager;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.core.TestBase;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.implementation.ResourceManager;
 
 public class NetworkManagementTest extends TestBase {
@@ -18,17 +19,17 @@ public class NetworkManagementTest extends TestBase {
     protected String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javanwmrg", 15);
 
         resourceManager =
-            ResourceManager.authenticate(restClient).withSdkContext(sdkContext).withSubscription(defaultSubscription);
+            ResourceManager.authenticate(httpPipeline, profile).withSdkContext(sdkContext).withDefaultSubscription();
 
-        networkManager = NetworkManager.authenticate(restClient, defaultSubscription, sdkContext);
+        networkManager = NetworkManager.authenticate(httpPipeline, profile, sdkContext);
 
-        keyVaultManager = KeyVaultManager.authenticate(restClient, domain, defaultSubscription, sdkContext);
+        keyVaultManager = KeyVaultManager.authenticate(httpPipeline, profile, sdkContext);
 
-        msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
+        msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
     }
 
     @Override

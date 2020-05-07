@@ -106,15 +106,6 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public TextAnalyticsServiceVersion getServiceVersion() {
-        return serviceVersion;
-    }
-
-    /**
      * Returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *
@@ -437,7 +428,11 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeEntitiesResult> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeEntitiesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
     }
 
     /**
@@ -605,7 +600,11 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return recognizeLinkedEntitiesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
     }
 
     /**
@@ -772,7 +771,11 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<ExtractKeyPhraseResult> extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return extractKeyPhrasesBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
     }
 
     /**
@@ -946,7 +949,11 @@ public final class TextAnalyticsAsyncClient {
     public TextAnalyticsPagedFlux<AnalyzeSentimentResult> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         return analyzeSentimentBatch(
-            mapByIndex(documents, (index, value) -> new TextDocumentInput(index, value, language)), options);
+            mapByIndex(documents, (index, value) -> {
+                final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
+                textDocumentInput.setLanguage(language);
+                return textDocumentInput;
+            }), options);
     }
 
     /**

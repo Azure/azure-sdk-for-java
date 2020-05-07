@@ -49,7 +49,7 @@ interface SecretService {
                                              @PathParam("secret-name") String secretName,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
-                                             @BodyParam("body") SecretRequestParameters parameters,
+                                             @BodyParam("application/json") SecretRequestParameters parameters,
                                              @HeaderParam("Content-Type") String type,
                                              Context context);
 
@@ -87,7 +87,7 @@ interface SecretService {
                                                   @PathParam("secret-version") String secretVersion,
                                                   @QueryParam("api-version") String apiVersion,
                                                   @HeaderParam("accept-language") String acceptLanguage,
-                                                  @BodyParam("body") SecretRequestParameters parameters,
+                                                  @BodyParam("application/json") SecretRequestParameters parameters,
                                                   @HeaderParam("Content-Type") String type,
                                                   Context context);
 

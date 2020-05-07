@@ -3,7 +3,11 @@
 
 package com.azure.management.appservice.samples;
 
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.Configuration;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
@@ -20,9 +24,6 @@ import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
-import java.io.File;
-
-
 /**
  * Azure App Service basic sample for managing web apps.
  *  - Create a Cosmos DB with credentials stored in a Key Vault
@@ -37,9 +38,11 @@ public final class ManageWebAppCosmosDbByMsi {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
+     * @param credential the credential to use
+     * @param clientId the client ID
      * @return true if sample runs successfully
      */
-    public static boolean runSample(Azure azure) {
+    public static boolean runSample(Azure azure, TokenCredential credential, String clientId) {
         // New resources
         final Region region         = Region.US_WEST;
         final String appName        = azure.sdkContext().randomResourceName("webapp1-", 20);
@@ -68,15 +71,12 @@ public final class ManageWebAppCosmosDbByMsi {
             //============================================================
             // Create a key vault
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-            final ApplicationTokenCredential credential = ApplicationTokenCredential.fromFile(credFile);
-
             Vault vault = azure.vaults()
                     .define(vaultName)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .defineAccessPolicy()
-                        .forServicePrincipal(credential.getClientId())
+                        .forServicePrincipal(clientId)
                         .allowSecretAllPermissions()
                         .attach()
                     .create();
@@ -86,6 +86,7 @@ public final class ManageWebAppCosmosDbByMsi {
             SecretClient client = new SecretClientBuilder()
                     .vaultUrl(vault.vaultUri())
                     .credential(credential)
+                    .httpClient(vault.manager().httpPipeline().getHttpClient())
                     .buildClient();
 
             //============================================================
@@ -171,17 +172,21 @@ public final class ManageWebAppCosmosDbByMsi {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
+            final Configuration configuration = Configuration.getGlobalConfiguration();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
-            runSample(azure);
+            runSample(azure, credential, configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID));
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

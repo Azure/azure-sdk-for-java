@@ -3,6 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -78,6 +79,9 @@ import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,11 +89,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 /** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
@@ -476,16 +479,12 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetPublicIPAddressConfiguration virtualMachinePublicIpConfig() {
         VirtualMachineScaleSetIPConfiguration nicConfig = this.primaryNicDefaultIPConfiguration();
-        if (nicConfig != null) {
-            return nicConfig.publicIPAddressConfiguration();
-        } else {
-            return null;
-        }
+        return nicConfig.publicIPAddressConfiguration();
     }
 
     @Override
     public VirtualMachineEvictionPolicyTypes virtualMachineEvictionPolicy() {
-        if (this.inner().virtualMachineProfile() != null) {
+        if (this.inner() != null &&  this.inner().virtualMachineProfile() != null) {
             return this.inner().virtualMachineProfile().evictionPolicy();
         } else {
             return null;
@@ -601,6 +600,16 @@ public class VirtualMachineScaleSetImpl
             .networkManager
             .networkInterfaces()
             .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(), this.name(), virtualMachineInstanceId);
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
+        String virtualMachineInstanceId) {
+        return this.
+            networkManager
+            .networkInterfaces()
+            .listByVirtualMachineScaleSetInstanceIdAsync(
+                this.resourceGroupName(), this.name(), virtualMachineInstanceId);
     }
 
     // Fluent setters
@@ -1035,8 +1044,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withCapacity(int capacity) {
-        this.inner().sku().withCapacity(new Long(capacity));
+    public VirtualMachineScaleSetImpl withCapacity(long capacity) {
+        this.inner().sku().withCapacity(capacity);
         return this;
     }
 
@@ -1935,7 +1944,8 @@ public class VirtualMachineScaleSetImpl
 
         String secondLoadBalancerId = null;
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (!subResource.getId().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
+            if (!subResource.getId().toLowerCase(Locale.ROOT)
+                    .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
                 secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.getId());
                 break;
             }
@@ -1943,7 +1953,8 @@ public class VirtualMachineScaleSetImpl
 
         if (secondLoadBalancerId == null) {
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (!subResource.getId().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
+                if (!subResource.getId().toLowerCase(Locale.ROOT)
+                        .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
                     secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.getId());
                     break;
                 }
@@ -2119,7 +2130,8 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer, VirtualMachineScaleSetIPConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (subResource.getId().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+            if (subResource.getId().toLowerCase(Locale.ROOT)
+                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2133,7 +2145,8 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer, VirtualMachineScaleSetIPConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-            if (subResource.getId().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+            if (subResource.getId().toLowerCase(Locale.ROOT)
+                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }

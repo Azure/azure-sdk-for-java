@@ -29,14 +29,14 @@ public class RecognizeLinkedEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park.", "en"),
-            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.", "en")
+            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park."),
+            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.")
         );
 
         // Request options: show statistics and model version

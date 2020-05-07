@@ -75,15 +75,6 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return The service version the client is using.
-     */
-    public TextAnalyticsServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
-    }
-
-    /**
      * Returns the detected language and a confidence score between zero and one. Scores close to one indicate 100%
      * certainty that the identified language is true.
      *

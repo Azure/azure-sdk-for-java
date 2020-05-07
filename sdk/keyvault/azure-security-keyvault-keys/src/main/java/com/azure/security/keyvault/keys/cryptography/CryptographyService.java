@@ -43,7 +43,7 @@ interface CryptographyService {
                                   @PathParam("key-version") String keyVersion,
                                   @QueryParam("api-version") String apiVersion,
                                   @HeaderParam("accept-language") String acceptLanguage,
-                                  @BodyParam("body") KeyOperationParameters parameters,
+                                  @BodyParam("application/json") KeyOperationParameters parameters,
                                   @HeaderParam("Content-Type") String type,
                                   Context context);
 
@@ -57,7 +57,7 @@ interface CryptographyService {
                                 @PathParam("key-version") String keyVersion,
                                 @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("body") KeyOperationParameters parameters,
+                                @BodyParam("application/json") KeyOperationParameters parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
@@ -72,7 +72,7 @@ interface CryptographyService {
                                 @PathParam("key-version") String keyVersion,
                                 @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("body") KeySignRequest parameters,
+                                @BodyParam("application/json") KeySignRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
@@ -86,7 +86,7 @@ interface CryptographyService {
                                 @PathParam("key-version") String keyVersion,
                                 @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("body") KeyVerifyRequest parameters,
+                                @BodyParam("application/json") KeyVerifyRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
@@ -101,7 +101,7 @@ interface CryptographyService {
                                 @PathParam("key-version") String keyVersion,
                                 @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("body") KeyWrapUnwrapRequest parameters,
+                                @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
@@ -115,7 +115,7 @@ interface CryptographyService {
                                 @PathParam("key-version") String keyVersion,
                                 @QueryParam("api-version") String apiVersion,
                                 @HeaderParam("accept-language") String acceptLanguage,
-                                @BodyParam("body") KeyWrapUnwrapRequest parameters,
+                                @BodyParam("application/json") KeyWrapUnwrapRequest parameters,
                                 @HeaderParam("Content-Type") String type,
                                 Context context);
 
@@ -153,7 +153,7 @@ interface CryptographyService {
                                              @PathParam("secret-name") String secretName,
                                              @QueryParam("api-version") String apiVersion,
                                              @HeaderParam("accept-language") String acceptLanguage,
-                                             @BodyParam("body") SecretRequestParameters parameters,
+                                             @BodyParam("application/json") SecretRequestParameters parameters,
                                              @HeaderParam("Content-Type") String type,
                                              Context context);
 }

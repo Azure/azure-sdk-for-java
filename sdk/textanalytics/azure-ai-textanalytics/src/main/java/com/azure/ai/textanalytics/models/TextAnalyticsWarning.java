@@ -13,7 +13,7 @@ public final class TextAnalyticsWarning {
     /*
      * Error code.
      */
-    private final WarningCodeValue code;
+    private final WarningCode code;
 
     /*
      * Warning message.
@@ -26,7 +26,7 @@ public final class TextAnalyticsWarning {
      * @param code The warning code value
      * @param message The warning message.
      */
-    public TextAnalyticsWarning(WarningCodeValue code, String message) {
+    public TextAnalyticsWarning(WarningCode code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -36,7 +36,7 @@ public final class TextAnalyticsWarning {
      *
      * @return the code value.
      */
-    public WarningCodeValue getCode() {
+    public WarningCode getCode() {
         return this.code;
     }
 

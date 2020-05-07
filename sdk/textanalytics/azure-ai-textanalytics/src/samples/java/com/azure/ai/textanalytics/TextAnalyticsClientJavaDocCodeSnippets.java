@@ -41,7 +41,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             .build();
 
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .pipeline(pipeline)
             .buildClient();
@@ -54,7 +54,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void createTextAnalyticsClient() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
         // END: com.azure.ai.textanalytics.TextAnalyticsClient.instantiation
@@ -460,8 +460,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void recognizeLinkedEntitiesBatchMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.", "en"),
-            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.", "en")
+            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park."),
+            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.")
         );
 
         textAnalyticsClient.recognizeLinkedEntitiesBatch(textDocumentInputs,
@@ -606,8 +606,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void extractBatchKeyPhrasesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "My cat might need to see a veterinarian.", "en"),
-            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.", "en")
+            new TextDocumentInput("1", "My cat might need to see a veterinarian."),
+            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.")
         );
 
         // Extracting batch key phrases
@@ -817,8 +817,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void analyzeBatchSentimentMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.", "en"),
-            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.", "en")
+            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi."),
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.")
         );
 
         // Analyzing batch sentiments

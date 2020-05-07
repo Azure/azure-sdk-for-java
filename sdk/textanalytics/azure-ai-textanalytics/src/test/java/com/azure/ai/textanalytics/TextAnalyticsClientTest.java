@@ -31,7 +31,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
-import static com.azure.ai.textanalytics.models.WarningCodeValue.LONG_WORDS_IN_DOCUMENT;
+import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;

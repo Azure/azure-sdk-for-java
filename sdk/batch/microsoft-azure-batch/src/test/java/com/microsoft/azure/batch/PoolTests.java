@@ -24,7 +24,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             Assert.assertNotNull(livePool);
         }
         // Need VNet to allow security to inject NSGs
-        NetworkConfiguration networkConfiguration = createNetworkConfiguration();
+        networkConfiguration = createNetworkConfiguration();
     }
 
     @AfterClass

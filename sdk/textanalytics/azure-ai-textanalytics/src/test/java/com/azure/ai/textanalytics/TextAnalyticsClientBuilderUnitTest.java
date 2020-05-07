@@ -49,18 +49,6 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
-     * Test for null API key
-     */
-    @Test
-    public void nullApiKey() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            final AzureKeyCredential credential = null;
-            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(credential);
-        });
-    }
-
-    /**
      * Test for empty Api Key without any other authentication
      */
     @Test
@@ -69,14 +57,26 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
+     * Test for null API key
+     */
+    @Test
+    public void nullApiKey() {
+        AzureKeyCredential azureKeyCredential = null;
+        assertThrows(NullPointerException.class, () -> {
+            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(azureKeyCredential);
+        });
+    }
+
+    /**
      * Test for null AAD credential
      */
     @Test
     public void nullAADCredential() {
+        TokenCredential tokenCredential = null;
         assertThrows(NullPointerException.class, () -> {
             final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            TokenCredential credential = null;
-            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(credential);
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(tokenCredential);
         });
     }
 }

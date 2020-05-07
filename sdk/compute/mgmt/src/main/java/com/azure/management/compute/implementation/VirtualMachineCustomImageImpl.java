@@ -17,12 +17,13 @@ import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineCustomImage;
 import com.azure.management.compute.models.ImageInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** The implementation for VirtualMachineCustomImage. */
 class VirtualMachineCustomImageImpl
@@ -258,7 +259,7 @@ class VirtualMachineCustomImageImpl
                 }
                 Integer i = 0;
                 while (usedLuns.contains(i)) {
-                    i++;
+                    i += 1;
                 }
                 imageDisk.withLun(i);
                 usedLuns.add(i);

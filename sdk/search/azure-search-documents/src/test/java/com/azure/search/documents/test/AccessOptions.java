@@ -3,38 +3,37 @@
 
 package com.azure.search.documents.test;
 
-import com.azure.core.http.MatchConditions;
 import com.azure.search.documents.models.RequestOptions;
 
 /**
  * Contains common options for the Search service.
  */
 public class AccessOptions {
-    private MatchConditions accessCondition;
+    private boolean onlyIfUnchanged;
     private RequestOptions requestOptions;
 
-    public AccessOptions(MatchConditions accessCondition, RequestOptions requestOptions) {
-        this.accessCondition = accessCondition;
+    public AccessOptions(boolean onlyIfUnchanged, RequestOptions requestOptions) {
+        this.onlyIfUnchanged = onlyIfUnchanged;
         this.requestOptions = requestOptions;
     }
 
-    public AccessOptions(MatchConditions accessCondition) {
-        this(accessCondition, null);
+    public AccessOptions(boolean onlyIfUnchanged) {
+        this(onlyIfUnchanged, null);
     }
 
-    public MatchConditions getAccessCondition() {
-        return this.accessCondition;
+    public boolean getOnlyIfUnchanged() {
+        return this.onlyIfUnchanged;
     }
 
     public RequestOptions getRequestOptions() {
         return this.requestOptions;
     }
 
-    public void setAccessCondition(MatchConditions accessCondition) {
-        this.accessCondition = accessCondition;
+    public void setAccessCondition(boolean onlyIfUnchanged) {
+        this.onlyIfUnchanged = onlyIfUnchanged;
     }
 
-    public void setRequestOptions(RequestOptions requestOptions) {
+    public void setOnlyIfUnchanged(RequestOptions requestOptions) {
         this.requestOptions = requestOptions;
     }
 }

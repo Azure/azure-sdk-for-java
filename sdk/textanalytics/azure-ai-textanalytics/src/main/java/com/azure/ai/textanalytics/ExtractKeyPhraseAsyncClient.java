@@ -15,7 +15,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCodeValue;
+import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -71,13 +71,13 @@ class ExtractKeyPhraseAsyncClient {
     Mono<KeyPhrasesCollection> extractKeyPhrasesSingleText(String document, String language) {
         try {
             Objects.requireNonNull(document, "'document' cannot be null.");
-            return extractKeyPhrases(
-                    Collections.singletonList(new TextDocumentInput("0", document, language)), null)
+            final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
+            textDocumentInput.setLanguage(language);
+            return extractKeyPhrases(Collections.singletonList(textDocumentInput), null)
                     .map(keyPhraseResult -> {
                         if (keyPhraseResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(keyPhraseResult.getError()));
                         }
-
                         return new KeyPhrasesCollection(keyPhraseResult.getKeyPhrases(),
                             keyPhraseResult.getKeyPhrases().getWarnings());
                     }).last();
@@ -149,7 +149,7 @@ class ExtractKeyPhraseAsyncClient {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
                 new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCodeValue.fromString(warning.getCode().toString()),
+                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
                         warning.getMessage()))
                     .collect(Collectors.toList()))));
         }
