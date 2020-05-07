@@ -21,7 +21,7 @@ public interface Favorites extends SupportsCreating<ApplicationInsightsComponent
     /**
      * Get a single favorite by its FavoriteId, defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -32,7 +32,7 @@ public interface Favorites extends SupportsCreating<ApplicationInsightsComponent
     /**
      * Gets a list of favorites defined within an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -42,7 +42,7 @@ public interface Favorites extends SupportsCreating<ApplicationInsightsComponent
     /**
      * Remove a favorite that is associated to an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param favoriteId The Id of a specific favorite defined in the Application Insights component
      * @throws IllegalArgumentException thrown if parameters fail the validation

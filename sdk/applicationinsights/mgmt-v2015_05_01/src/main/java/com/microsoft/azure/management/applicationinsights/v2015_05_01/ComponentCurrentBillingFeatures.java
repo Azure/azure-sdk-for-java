@@ -20,7 +20,7 @@ public interface ComponentCurrentBillingFeatures extends HasInner<ComponentCurre
     /**
      * Returns current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -30,7 +30,7 @@ public interface ComponentCurrentBillingFeatures extends HasInner<ComponentCurre
     /**
      * Update current billing features for an Application Insights component.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param billingFeaturesProperties Properties that need to be specified to update billing features for an Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation
