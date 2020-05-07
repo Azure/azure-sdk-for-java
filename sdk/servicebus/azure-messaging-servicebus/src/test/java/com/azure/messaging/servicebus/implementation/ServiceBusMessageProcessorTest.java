@@ -127,7 +127,7 @@ class ServiceBusMessageProcessorTest {
 
                 logger.info("Now: {}", Instant.now());
                 try {
-                    TimeUnit.SECONDS.sleep(8);
+                    TimeUnit.SECONDS.sleep(15);
                 } catch (InterruptedException ignored) {
                 }
                 logger.info("After: {}", Instant.now());
@@ -211,7 +211,7 @@ class ServiceBusMessageProcessorTest {
     @Test
     void autoRenewOperationErrors() {
         // Arrange
-        final Duration maxRenewDuration = Duration.ofSeconds(10);
+        final Duration maxRenewDuration = Duration.ofSeconds(20);
         final String lock1 = UUID.randomUUID().toString();
         final String lock2 = UUID.randomUUID().toString();
         when(message1.getLockToken()).thenReturn(lock1);
@@ -234,7 +234,7 @@ class ServiceBusMessageProcessorTest {
 
                 logger.info("Now: {}", Instant.now());
                 try {
-                    TimeUnit.SECONDS.sleep(3);
+                    TimeUnit.SECONDS.sleep(10);
                 } catch (InterruptedException ignored) {
                 }
                 logger.info("After: {}", Instant.now());

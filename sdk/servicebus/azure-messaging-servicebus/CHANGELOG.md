@@ -1,7 +1,14 @@
 # Release History
 
-## 7.0.0-beta.2 (Unreleased)
+## 7.0.0-beta.2 (2020-05-07)
 
+- Add support for receiving messages from specific sessions
+- Add support for processing messages from multiple sessions
+- Add missing schedule and cancel APIs in ServiceBusSenderClient
+- Add support to send a collection of messages at once
+- Change return type from `ServiceBusReceivedMessage` to `ServiceBusReceivedMessageContext` when calling `receive()`
+- Fix message settlement to occur on receive link
+- Various bug fixes
 
 ## 7.0.0-beta.1 (2020-04-06)
 
