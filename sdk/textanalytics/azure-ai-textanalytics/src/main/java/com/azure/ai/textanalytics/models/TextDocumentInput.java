@@ -3,15 +3,11 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.http.rest.PagedFlux;
-
 import java.util.Locale;
 
 /**
  * Contains an input document to be analyzed by the service.
  */
-@Immutable
 public final class TextDocumentInput {
 
     /*
