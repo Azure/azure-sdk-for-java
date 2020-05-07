@@ -1,5 +1,13 @@
 # Release History
 
+## 1.1.2 (2020-05-07)
+
+- Fixes dependency version of `azure-core`.
+
+## 1.1.1 (2020-05-07)
+
+- Bug fix to get link size from service the first time before sending message from `ReactorSender`.
+
 ## 1.1.0 (2020-05-04)
 
 - Update proton-j dependencies to support larger web socket frame and module name.
