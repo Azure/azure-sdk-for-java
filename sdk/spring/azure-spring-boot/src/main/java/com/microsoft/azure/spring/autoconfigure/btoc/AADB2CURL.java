@@ -7,6 +7,9 @@ import org.springframework.util.Assert;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+/**
+ * To get AAD B2C URLs for configuration.
+ */
 public final class AADB2CURL {
 
     private AADB2CURL() {

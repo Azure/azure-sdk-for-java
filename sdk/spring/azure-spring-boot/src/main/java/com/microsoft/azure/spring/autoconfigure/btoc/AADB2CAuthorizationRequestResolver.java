@@ -18,6 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class handles the OAuth2 authorization procession for AAD B2C authorization.
+ * <p>
+ * Forgotten password redirection to password-reset page is added on the base of default OAuth2 authorization resolve.
+ */
 public class AADB2CAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
     private static final String REQUEST_BASE_URI =

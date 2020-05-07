@@ -3,6 +3,7 @@
 package com.microsoft.azure.spring.autoconfigure.btoc;
 
 import com.microsoft.azure.telemetry.TelemetrySender;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
@@ -32,6 +33,14 @@ import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.TENANT_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
+/**
+ * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication B2C.
+ * <p>
+ * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id, client-secret, reply-url and sign-up-or-sign-in} property provided.
+ * <p>
+ * A client registration repository service {@link InMemoryClientRegistrationRepository} will be auto-configured by specifying
+ * {@literal azure.activedirectory.b2c.oidc-enabled} property as true or ignore it.
+ */
 @Configuration
 @ConditionalOnWebApplication
 @ConditionalOnResource(resources = "classpath:aadb2c.enable.config")

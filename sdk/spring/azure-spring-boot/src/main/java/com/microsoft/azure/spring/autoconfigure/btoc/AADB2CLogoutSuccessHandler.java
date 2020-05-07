@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Get the url of successful logout and handle the navigation on logout.
+ */
 public class AADB2CLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
 
     private final AADB2CProperties properties;

@@ -12,6 +12,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.constraints.NotBlank;
 import java.net.MalformedURLException;
 
+/**
+ * Configuration properties for Azure Active Directory B2C.
+ */
 @Validated
 @ConfigurationProperties(prefix = AADB2CProperties.PREFIX)
 public class AADB2CProperties {

@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.microsoft.azure.spring.autoconfigure.btoc;
 
+/**
+ * Throw runtime exception for configuration.
+ */
 public class AADB2CConfigurationException extends RuntimeException {
 
     public AADB2CConfigurationException(String message) {

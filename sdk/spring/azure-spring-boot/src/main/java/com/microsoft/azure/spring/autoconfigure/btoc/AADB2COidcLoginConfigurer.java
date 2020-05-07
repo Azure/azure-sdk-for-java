@@ -5,6 +5,9 @@ package com.microsoft.azure.spring.autoconfigure.btoc;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
+/**
+ * Configure B2C OAUTH2 login properties.
+ */
 public class AADB2COidcLoginConfigurer extends AbstractHttpConfigurer<AADB2COidcLoginConfigurer, HttpSecurity> {
 
     private final AADB2CProperties properties;
