@@ -596,7 +596,8 @@ public class JsonSerializable {
             return (T) new CosmosItemProperties(this.propertyBag);
         }
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
-                || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
+                || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)
+                || JsonSerializableWrapper.class.isAssignableFrom(c)) {
             return c.cast(this.get(Constants.Properties.VALUE));
         }
         if (List.class.isAssignableFrom(c)) {

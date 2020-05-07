@@ -248,7 +248,7 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
     }
 
     @Override
-    public void populatePropertyBag() {
+    protected void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
