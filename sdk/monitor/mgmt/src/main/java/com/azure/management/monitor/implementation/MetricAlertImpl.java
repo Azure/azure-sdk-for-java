@@ -101,7 +101,7 @@ class MetricAlertImpl
                 new IllegalArgumentException("Static condition and dynamic condition cannot co-exist"));
         }
 
-        this.inner().setLocation("global");
+        this.inner().withLocation("global");
         if (!this.conditions.isEmpty()) {
             if (!multipleResource) {
                 MetricAlertSingleResourceMultipleMetricCriteria crit =

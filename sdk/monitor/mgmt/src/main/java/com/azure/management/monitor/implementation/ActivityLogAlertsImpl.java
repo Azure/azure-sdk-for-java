@@ -29,7 +29,7 @@ class ActivityLogAlertsImpl
         if (inner == null) {
             return null;
         }
-        return new ActivityLogAlertImpl(inner.getName(), inner, this.manager());
+        return new ActivityLogAlertImpl(inner.name(), inner, this.manager());
     }
 
     @Override

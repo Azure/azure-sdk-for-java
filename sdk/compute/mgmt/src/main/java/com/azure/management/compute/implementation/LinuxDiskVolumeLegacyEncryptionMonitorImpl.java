@@ -116,7 +116,7 @@ class LinuxDiskVolumeLegacyEncryptionMonitorImpl implements DiskVolumeEncryption
         return computeManager
             .inner()
             .virtualMachineExtensions()
-            .getAsync(rgName, vmName, extension.getName(), "instanceView")
+            .getAsync(rgName, vmName, extension.name(), "instanceView")
             .onErrorResume(e -> Mono.empty());
     }
 

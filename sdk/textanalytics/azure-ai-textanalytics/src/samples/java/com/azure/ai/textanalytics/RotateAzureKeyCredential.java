@@ -9,7 +9,7 @@ import com.azure.core.exception.HttpResponseException;
 /**
  * Sample demonstrates how to rotate the existing API key of text analytics client
  */
-public class RotateApiKey {
+public class RotateAzureKeyCredential {
 
     /**
      * Main method to invoke this demo about how to rotate the existing API key of text analytics client.
@@ -17,9 +17,9 @@ public class RotateApiKey {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 

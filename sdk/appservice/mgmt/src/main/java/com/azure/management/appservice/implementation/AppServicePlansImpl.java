@@ -29,7 +29,7 @@ class AppServicePlansImpl
         if (inner == null) {
             return null;
         }
-        return new AppServicePlanImpl(inner.getName(), inner, this.manager());
+        return new AppServicePlanImpl(inner.name(), inner, this.manager());
     }
 
     @Override

@@ -49,7 +49,7 @@ class LoadBalancerInboundNatPoolImpl extends ChildResourceImpl<InboundNatPool, L
         return this
             .parent()
             .frontends()
-            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIPConfiguration().getId()));
+            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIPConfiguration().id()));
     }
 
     @Override

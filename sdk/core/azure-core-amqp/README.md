@@ -16,7 +16,7 @@ own AMQP client library that abstracts from the underlying transport library's i
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-amqp</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

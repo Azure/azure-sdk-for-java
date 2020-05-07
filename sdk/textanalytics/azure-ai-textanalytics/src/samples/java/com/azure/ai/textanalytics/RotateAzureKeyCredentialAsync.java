@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to rotate the existing API key of text analytics client
  */
-public class RotateApiKeyAsync {
+public class RotateAzureKeyCredentialAsync {
 
     /**
      * Main method to invoke this demo about how to rotate the existing API key of text analytics client.
@@ -18,9 +18,9 @@ public class RotateApiKeyAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
