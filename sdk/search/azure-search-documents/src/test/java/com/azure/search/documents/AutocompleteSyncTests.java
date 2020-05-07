@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.AutocompleteItem;
@@ -36,9 +37,17 @@ public class AutocompleteSyncTests extends SearchIndexClientTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
     }
 
+    private SearchIndexClient getSearchIndexClient(HttpClient httpClient, SearchServiceVersion serviceVersion) {
+        return getSearchIndexClientBuilder(HOTELS_INDEX_NAME)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .serviceVersion(serviceVersion)
+            .buildClient();
+    }
+
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.search.documents.TestHelpers#getTestParameters")
-    public void canAutocompleteThrowsWhenGivenBadSuggesterName() {
+        public void canAutocompleteThrowsWhenGivenBadSuggesterName(HttpClient httpClient, SearchServiceVersion serviceVersion) {
+        client = getSearchIndexClient(httpClient, serviceVersion);
         AutocompleteOptions params = new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM);
 
         PagedIterableBase<AutocompleteItem, AutocompletePagedResponse> results = client

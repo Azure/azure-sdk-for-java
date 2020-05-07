@@ -511,14 +511,10 @@ public abstract class SearchServiceTestBase extends TestBase {
             .endpoint(azureSearchResources.getEndpoint())
             .indexName(indexName);
 
-        if (interceptorManager.isPlaybackMode()) {
-            return builder.httpClient(interceptorManager.getPlaybackClient());
-        }
-
         builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
             .credential(searchApiKeyCredential);
 
-        if (!liveMode()) {
+        if (liveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
@@ -610,6 +606,10 @@ public abstract class SearchServiceTestBase extends TestBase {
     }
 
     static boolean liveMode() {
+        return setupTestMode() == TestMode.LIVE;
+    }
+
+    static boolean recordMode() {
         return setupTestMode() == TestMode.LIVE;
     }
 
