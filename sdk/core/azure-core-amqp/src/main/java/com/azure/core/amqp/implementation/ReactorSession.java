@@ -336,7 +336,7 @@ public class ReactorSession implements AmqpSession {
         sender.open();
 
         final ReactorSender reactorSender = new ReactorSender(entityPath, sender, sendLinkHandler, provider,
-            tokenManager, messageSerializer, timeout, retry, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
+            tokenManager, messageSerializer, timeout, retry);
 
         final Disposable subscription = reactorSender.getEndpointStates().subscribe(state -> {
         }, error -> {
