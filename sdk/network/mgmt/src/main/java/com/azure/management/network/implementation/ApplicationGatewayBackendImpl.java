@@ -53,8 +53,8 @@ class ApplicationGatewayBackendImpl
         final Map<String, String> ipConfigNames = new TreeMap<>();
         if (this.inner().backendIPConfigurations() != null) {
             for (NetworkInterfaceIPConfigurationInner inner : this.inner().backendIPConfigurations()) {
-                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.getId());
-                String ipConfigName = ResourceUtils.nameFromResourceId(inner.getId());
+                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
+                String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
                 ipConfigNames.put(nicId, ipConfigName);
             }
         }

@@ -499,7 +499,7 @@ class StorageAccountImpl
     public Mono<StorageAccount> createResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
         createParameters.withLocation(this.regionName());
-        createParameters.withTags(this.inner().getTags());
+        createParameters.withTags(this.inner().tags());
         final StorageAccountsInner client = this.manager().inner().storageAccounts();
         return this
             .manager()
@@ -517,7 +517,7 @@ class StorageAccountImpl
     @Override
     public Mono<StorageAccount> updateResourceAsync() {
         this.networkRulesHelper.setDefaultActionIfRequired();
-        updateParameters.withTags(this.inner().getTags());
+        updateParameters.withTags(this.inner().tags());
         return this
             .manager()
             .inner()

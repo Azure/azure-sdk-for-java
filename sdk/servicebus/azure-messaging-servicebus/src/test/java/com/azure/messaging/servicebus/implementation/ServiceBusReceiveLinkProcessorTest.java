@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.test.StepVerifier;
@@ -65,8 +66,8 @@ class ServiceBusReceiveLinkProcessorTest {
     private ArgumentCaptor<Supplier<Integer>> creditSupplierCaptor;
 
     private final AmqpErrorContext amqpErrorContext = new AmqpErrorContext("test-context");
-    private final DirectProcessor<AmqpEndpointState> endpointProcessor = DirectProcessor.create();
-    private final DirectProcessor<Message> messageProcessor = DirectProcessor.create();
+    private final EmitterProcessor<AmqpEndpointState> endpointProcessor = EmitterProcessor.create();
+    private final EmitterProcessor<Message> messageProcessor = EmitterProcessor.create();
     private final FluxSink<Message> messageProcessorSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
     private ServiceBusReceiveLinkProcessor linkProcessor;
 
@@ -288,7 +289,9 @@ class ServiceBusReceiveLinkProcessorTest {
         final ServiceBusReceiveLinkProcessor processor = createSink(connections).subscribeWith(linkProcessor);
         final FluxSink<AmqpEndpointState> endpointSink = endpointProcessor.sink();
 
-        when(link2.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
+        when(link2.getEndpointStates()).thenReturn(Flux.defer(() -> Flux.create(e -> {
+            e.next(AmqpEndpointState.ACTIVE);
+        })));
         when(link2.receive()).thenReturn(Flux.just(message2));
 
         final AmqpException amqpException = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-error",
@@ -581,8 +584,8 @@ class ServiceBusReceiveLinkProcessorTest {
     }
 
     /**
-     * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only
-     * that number is consumed.
+     * Verifies that when we request back pressure amounts, if it only requests a certain number of events, only that
+     * number is consumed.
      */
     @Test
     void backpressureRequestOnlyEmitsThatAmount() {

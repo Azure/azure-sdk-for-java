@@ -63,12 +63,12 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().getId() : null;
+        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
     }
 
     @Override
     public String routeTableId() {
-        return (this.inner().routeTable() != null) ? this.inner().routeTable().getId() : null;
+        return (this.inner().routeTable() != null) ? this.inner().routeTable().id() : null;
     }
 
     @Override
@@ -216,8 +216,8 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         }
 
         for (IPConfigurationInner ipConfigRef : ipConfigRefs) {
-            String nicID = ResourceUtils.parentResourceIdFromResourceId(ipConfigRef.getId());
-            String ipConfigName = ResourceUtils.nameFromResourceId(ipConfigRef.getId());
+            String nicID = ResourceUtils.parentResourceIdFromResourceId(ipConfigRef.id());
+            String ipConfigName = ResourceUtils.nameFromResourceId(ipConfigRef.id());
             // Check if NIC already cached
             NetworkInterface nic = nics.get(nicID.toLowerCase(Locale.ROOT));
             if (nic == null) {

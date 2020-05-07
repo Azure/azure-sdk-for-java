@@ -65,8 +65,6 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    // TODO (DANOBLE) UserDefinedFunctionUpsertReplaceTest initialization consistently times out in CI environments.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6383
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_UserDefinedFunctionUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();

@@ -216,6 +216,6 @@ public class VirtualMachineScaleSetsImpl
             return null;
         }
         return new VirtualMachineScaleSetImpl(
-            inner.getName(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
+            inner.name(), inner, this.manager(), this.storageManager, this.networkManager, this.rbacManager);
     }
 }

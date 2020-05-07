@@ -38,6 +38,6 @@ class ApplicationSecurityGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ApplicationSecurityGroupImpl(inner.getName(), inner, this.manager());
+        return new ApplicationSecurityGroupImpl(inner.name(), inner, this.manager());
     }
 }

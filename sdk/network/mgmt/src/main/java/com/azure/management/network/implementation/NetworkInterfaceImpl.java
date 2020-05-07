@@ -82,7 +82,7 @@ class NetworkInterfaceImpl
             .manager()
             .inner()
             .networkInterfaces()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Setters (fluent)
@@ -282,7 +282,7 @@ class NetworkInterfaceImpl
     @Override
     public String virtualMachineId() {
         if (this.inner().virtualMachine() != null) {
-            return this.inner().virtualMachine().getId();
+            return this.inner().virtualMachine().id();
         } else {
             return null;
         }
@@ -347,7 +347,7 @@ class NetworkInterfaceImpl
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().getId() : null;
+        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
     }
 
     @Override
