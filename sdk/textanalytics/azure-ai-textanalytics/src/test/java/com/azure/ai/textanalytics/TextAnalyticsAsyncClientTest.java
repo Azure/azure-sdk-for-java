@@ -413,7 +413,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(keyPhrasesResult -> {
                     keyPhrasesResult.getWarnings().forEach(warning -> {
                         assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
                     });
                 })
                 .verifyComplete()
@@ -427,7 +427,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .assertNext(keyPhrasesResult -> {
                     keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
                         assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
                     });
                 })
                 .expectNextCount(1)

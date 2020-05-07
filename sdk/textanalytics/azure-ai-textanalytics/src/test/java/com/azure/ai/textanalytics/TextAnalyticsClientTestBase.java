@@ -614,7 +614,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertNull(actualValue.getError());
             } else {
                 assertNotNull(actualValue.getError());
-                assertEquals(expectedValue.getError().getCode(), actualValue.getError().getCode());
+                assertEquals(expectedValue.getError().getErrorCode(), actualValue.getError().getErrorCode());
 
                 validateErrorDocument(expectedValue.getError(), actualValue.getError());
             }
@@ -675,7 +675,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
      * @param actualError the Error returned from the API.
      */
     static void validateErrorDocument(TextAnalyticsError expectedError, TextAnalyticsError actualError) {
-        assertEquals(expectedError.getCode(), actualError.getCode());
+        assertEquals(expectedError.getErrorCode(), actualError.getErrorCode());
         assertEquals(expectedError.getMessage(), actualError.getMessage());
         assertEquals(expectedError.getTarget(), actualError.getTarget());
     }

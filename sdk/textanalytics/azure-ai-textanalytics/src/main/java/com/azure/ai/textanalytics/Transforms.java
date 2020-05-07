@@ -115,7 +115,7 @@ final class Transforms {
      */
     static TextAnalyticsException toTextAnalyticsException(
         com.azure.ai.textanalytics.models.TextAnalyticsError error) {
-        return new TextAnalyticsException(error.getMessage(), error.getCode().toString(), error.getTarget());
+        return new TextAnalyticsException(error.getMessage(), error.getErrorCode().toString(), error.getTarget());
     }
 
     /**

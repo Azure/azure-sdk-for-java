@@ -378,7 +378,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         extractKeyPhrasesWarningRunner(input ->
             client.extractKeyPhrases(input).getWarnings().forEach(warning -> {
                 assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
             }));
     }
 
@@ -388,7 +388,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             client.extractKeyPhrasesBatch(inputs, null, Context.NONE).forEach(keyPhrasesResult ->
                 keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
                     assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getCode()));
+                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
                 })
             ));
     }

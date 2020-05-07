@@ -36,7 +36,7 @@ public final class TextAnalyticsWarning {
      *
      * @return the code value.
      */
-    public WarningCode getCode() {
+    public WarningCode getWarningCode() {
         return this.code;
     }
 
