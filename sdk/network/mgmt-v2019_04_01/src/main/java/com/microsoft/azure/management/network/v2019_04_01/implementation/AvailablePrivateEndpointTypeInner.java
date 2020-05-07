@@ -15,6 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class AvailablePrivateEndpointTypeInner {
     /**
+     * The name of the service and resource.
+     */
+    @JsonProperty(value = "name")
+    private String name;
+
+    /**
      * A unique identifier of the AvailablePrivateEndpoint Type resource.
      */
     @JsonProperty(value = "id")
@@ -29,8 +35,28 @@ public class AvailablePrivateEndpointTypeInner {
     /**
      * The name of the service and resource.
      */
-    @JsonProperty(value = "serviceName")
-    private String serviceName;
+    @JsonProperty(value = "resourceName")
+    private String resourceName;
+
+    /**
+     * Get the name of the service and resource.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name of the service and resource.
+     *
+     * @param name the name value to set
+     * @return the AvailablePrivateEndpointTypeInner object itself.
+     */
+    public AvailablePrivateEndpointTypeInner withName(String name) {
+        this.name = name;
+        return this;
+    }
 
     /**
      * Get a unique identifier of the AvailablePrivateEndpoint Type resource.
@@ -75,20 +101,20 @@ public class AvailablePrivateEndpointTypeInner {
     /**
      * Get the name of the service and resource.
      *
-     * @return the serviceName value
+     * @return the resourceName value
      */
-    public String serviceName() {
-        return this.serviceName;
+    public String resourceName() {
+        return this.resourceName;
     }
 
     /**
      * Set the name of the service and resource.
      *
-     * @param serviceName the serviceName value to set
+     * @param resourceName the resourceName value to set
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
-    public AvailablePrivateEndpointTypeInner withServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public AvailablePrivateEndpointTypeInner withResourceName(String resourceName) {
+        this.resourceName = resourceName;
         return this;
     }
 
