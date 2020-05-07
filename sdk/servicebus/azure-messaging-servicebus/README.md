@@ -3,7 +3,7 @@
 Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple
 applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and
 state. Data is transferred between different applications and services using messages. If you would like to know more
-about Azure Service Bus, you may wish to review: [What is Service Bus][product_docs]?
+about Azure Service Bus, you may wish to review: [What is Service Bus][product_docs]
 
 The Azure Service Bus client library allows for sending and receiving of Azure Service Bus messages and may be used to:
 - Transfer business data, such as sales or purchase orders, journals, or inventory movements.
@@ -66,7 +66,7 @@ with it.
 
 #### Create Service Bus clients using a connection string
 
-The easiest means for doing so is to use a connection string, which automatically created when creating a Service Bus
+The easiest means for authenticating is to use a connection string, which automatically created when creating a Service Bus
 namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
 [get a Service Bus connection string][service_bus_connection_string].
 
@@ -95,7 +95,7 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
 
 #### Create a Service Bus client using Microsoft Identity platform (formerly Azure Active Directory)
 
-Azure SDK for Java supports an Azure Identity package, making it simple to get credentials from the Microsoft identity
+Azure SDK for Java supports the Azure Identity package, making it simple to get credentials from the Microsoft identity
 platform. First, add the package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -138,7 +138,7 @@ on which actual message transmission takes place. The namespace often serves as 
 * A **[queue][queue_concept]** allows for the sending and receiving of messages, ordered first-in-first-out. It is often
   used for point-to-point communication.
 * A **[topic][topic_concept]** is better suited to publisher and subscriber scenarios. A topic publishes messages to
-  _subscriptions_, of which, multiple can exist simultaneously.
+  subscriptions, of which, multiple can exist simultaneously.
 * A **[subscription][subscription_concept]** receives messages from a topic. Each subscription is independent and
   receives a copy of the message sent to the topic.
 
@@ -326,7 +326,7 @@ exception occurred and if possible, how to mitigate this exception. A list of al
 [OASIS AMQP Version 1.0 Transport Errors][oasis_amqp_v1_error].
 
 The recommended way to solve the specific exception the AMQP exception represents is to follow the
-[Service Bus Messaging Exceptions][servicebus_messaging_exceptions] guidance.
+[Service Bus Messaging Exceptions][] guidance.
 
 ## Next steps
 
@@ -358,7 +358,7 @@ Guidelines](./../../../CONTRIBUTING.md) for more information.
 [samples_readme]: ./src/samples/README.md
 [service_bus_connection_string]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
 [servicebus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
-[servicebus_messsaging_exceptions]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
+[servicebus_messaging_exceptions]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
 [servicebus_roles]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java

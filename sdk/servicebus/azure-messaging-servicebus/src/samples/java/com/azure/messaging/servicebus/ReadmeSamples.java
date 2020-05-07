@@ -164,7 +164,7 @@ public class ReadmeSamples {
     }
 
     /**
-     * Create session receiver for "greetings"
+     * Create session receiver for the first available session.
      */
     public void unnamedSessionReceiver() {
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
