@@ -4,6 +4,7 @@
 package com.azure.storage.blob.changefeed.models;
 
 import com.azure.storage.blob.models.BlobType;
+import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 
 import java.util.Map;
@@ -45,6 +46,10 @@ public class BlobChangefeedEventData {
     public static BlobChangefeedEventData fromRecord(Object d) {
         AvroSchema.checkType("data", d, Map.class);
         Map<?, ?> data = (Map<?, ?>) d;
+
+        if (!data.get(AvroConstants.RECORD).equals("BlobChangeEventData")) {
+            throw new IllegalArgumentException("Not a valid BlobChangefeedEventData.");
+        }
 
         Object api = data.get("api");
         Object clientRequestId = data.get("clientRequestId");
@@ -128,5 +133,25 @@ public class BlobChangefeedEventData {
 
     public String getSequencer() {
         return sequencer;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BlobChangefeedEventData)) return false;
+        BlobChangefeedEventData that = (BlobChangefeedEventData) o;
+        return getApi().equals(that.getApi())
+            && getClientRequestId().equals(that.getClientRequestId())
+            && getRequestId().equals(that.getRequestId())
+            && geteTag().equals(that.geteTag())
+            && getContentType().equals(that.getContentType())
+            && getContentLength().equals(that.getContentLength())
+            && getBlobType() == that.getBlobType()
+            && getContentOffset().equals(that.getContentOffset()) &&
+            getDestinationUrl().equals(that.getDestinationUrl()) &&
+            getSourceUrl().equals(that.getSourceUrl()) &&
+            getBlobUrl().equals(that.getBlobUrl()) &&
+            getRecursive().equals(that.getRecursive())
+            && getSequencer().equals(that.getSequencer());
     }
 }

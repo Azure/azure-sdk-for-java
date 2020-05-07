@@ -8,13 +8,16 @@ public class ShardCursor {
 
     private long objectBlockIndex;
 
-    public ShardCursor(String chunkPath, long blockOffset, long objectBlockIndex) {
+    public ShardCursor() {
+    }
+
+    ShardCursor(String chunkPath, long blockOffset, long objectBlockIndex) {
         this.chunkPath = chunkPath;
         this.blockOffset = blockOffset;
         this.objectBlockIndex = objectBlockIndex;
     }
 
-    public ShardCursor(ShardCursor value) {
+    ShardCursor(ShardCursor value) {
         this.chunkPath = value.getChunkPath();
         this.blockOffset = value.getBlockOffset();
         this.objectBlockIndex = value.getObjectBlockIndex();
@@ -45,5 +48,20 @@ public class ShardCursor {
     public ShardCursor setObjectBlockIndex(long objectBlockIndex) {
         this.objectBlockIndex = objectBlockIndex;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if (!(other instanceof ShardCursor)) {
+            return false;
+        }
+
+        ShardCursor otherCursor = (ShardCursor) other;
+        return this.chunkPath.equals(otherCursor.getChunkPath())
+            && this.blockOffset == otherCursor.getBlockOffset()
+            && this.objectBlockIndex == otherCursor.getObjectBlockIndex();
     }
 }

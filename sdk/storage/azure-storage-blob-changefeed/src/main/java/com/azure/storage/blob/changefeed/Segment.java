@@ -89,9 +89,10 @@ class Segment {
             /* Initialize the map appropriately. */
             shardCursors.put(shardPath, null);
             /* They all need to share the same shardCursors. */
-            shards.add(new Shard(client, shardPath, cfCursor.toShardCursor(shardPath, shardCursors), userCursor)
+            shards.add(new ShardFactory().getShard(client, shardPath, cfCursor.toShardCursor(shardPath, shardCursors),
+                userCursor.getShardCursor(shardPath))
                 .getEvents());
-            
+
             /* If a user cursor was provided, figure out the index of the current shard. */
             if (userCursor != null) {
                 if (shardPath.equals(userCursor.getShardPath())) {

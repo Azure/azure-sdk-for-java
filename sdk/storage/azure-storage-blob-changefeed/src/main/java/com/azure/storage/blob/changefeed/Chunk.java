@@ -5,13 +5,12 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
-import com.azure.storage.internal.avro.implementation.AvroReader;
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -26,65 +25,89 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class Chunk {
 
-    private final BlobAsyncClient client; /* Chunk blob */
+    private static final long DEFAULT_HEADER_SIZE = 4 * Constants.KB;
+    private static final long DEFAULT_BODY_SIZE = Constants.MB;
 
-    private final String chunkPath;
+    private final BlobAsyncClient client; /* Chunk blob. */
+    private final String chunkPath; /* Chunk path. */
 
     private final ChangefeedCursor shardCursor; /* Cursor associated with parent shard. */
 
-    private final ChangefeedCursor userCursor; /* Cursor provided by user. */
-    private final ShardCursor userShardCursor; /* Shard cursor provided by user. */
+    private final long blockOffset; /* blockOffset to start reading chunk. */
 
-    private long blockOffset;
+    private final long objectBlockIndex;
 
-    private long objectBlockIndex;
+    private final AvroReaderFactory avroReaderFactory;
+    private final BlobLazyDownloaderFactory blobLazyDownloaderFactory;
 
     /**
-     * Creates a new Chunk with the associated path and cursors.
+     * Creates a new Chunk.
      */
-    Chunk(BlobContainerAsyncClient client, String chunkPath, ChangefeedCursor shardCursor,
-        ChangefeedCursor userCursor) {
+    Chunk(BlobContainerAsyncClient client, String chunkPath, ChangefeedCursor shardCursor, long blockOffset,
+        long objectBlockIndex, AvroReaderFactory avroReaderFactory,
+        BlobLazyDownloaderFactory blobLazyDownloaderFactory) {
+
         this.client = client.getBlobAsyncClient(chunkPath);
         this.chunkPath = chunkPath;
         this.shardCursor = shardCursor;
 
-        this.userCursor = userCursor;
-        this.userShardCursor = this.userCursor == null ? null : userCursor.shardCursors.get(shardCursor.shardPath);
+        this.blockOffset = blockOffset;
+        this.objectBlockIndex = objectBlockIndex;
 
-        if (userCursor != null && this.userShardCursor != null) {
-            this.blockOffset = userShardCursor.getBlockOffset();
-            this.objectBlockIndex = userShardCursor.getObjectBlockIndex();
-        }
+        this.avroReaderFactory = avroReaderFactory;
+        this.blobLazyDownloaderFactory = blobLazyDownloaderFactory;
     }
 
     Flux<BlobChangefeedEventWrapper> getEvents() {
-        return readEvents()
-            /* Map each object into an event. */
-            .map(this::wrapObject);
+            /* Read relevant avro objects. */
+        return readAvroObjects()
+            /* Convert AvroObjects into BlobChangefeedEventWrappers. */
+            .map(avroObject -> {
+                /* Unwrap AvroObject. */
+                long blockOffset = avroObject.getBlockOffset();
+                long objectBlockIndex = avroObject.getObjectBlockIndex();
+                Object object = avroObject.getObject();
+
+                /* Get the event cursor associated with this event. */
+                ChangefeedCursor eventCursor = shardCursor.toEventCursor(chunkPath, blockOffset, objectBlockIndex);
+                BlobChangefeedEvent event = BlobChangefeedEvent.fromRecord(object);
+
+                /* Wrap the event and cursor. */
+                return new BlobChangefeedEventWrapper(event, eventCursor);
+            });
     }
 
-    private Flux<AvroObject> readEvents() {
-        if (userCursor == null || userShardCursor == null) {
+    private Flux<AvroObject> readAvroObjects() {
+        if (blockOffset == 0) {
             /* Read events like normal. */
-            Flux<ByteBuffer> avro = new BlobLazyDownloader(client, Constants.MB, 0).download();
-            return AvroReader.readAvro(avro);
+            Flux<ByteBuffer> avro = blobLazyDownloaderFactory.getBlobLazyDownloader(client, DEFAULT_BODY_SIZE, blockOffset)
+                .download();
+            return avroReaderFactory.getAvroReader(avro)
+                .readAvroObjects();
         } else {
             /* Read header and body separately. */
-            Flux<ByteBuffer> avroHeader = new BlobLazyDownloader(client, 4 * Constants.KB, 0)
+            Flux<ByteBuffer> avroHeader =
+                blobLazyDownloaderFactory.getBlobLazyDownloader(client, DEFAULT_HEADER_SIZE)
                 .download();
-            Flux<ByteBuffer> avroBody = new BlobLazyDownloader(client, Constants.MB, blockOffset)
+            Flux<ByteBuffer> avroBody =
+                blobLazyDownloaderFactory.getBlobLazyDownloader(client, DEFAULT_BODY_SIZE, blockOffset)
                 .download();
 
             AtomicBoolean pass = new AtomicBoolean();
-
-            return AvroReader.readAvro(avroHeader, avroBody, blockOffset)
-                /* Pass through events that are emitted after the userCursors offset and index. */
+            return avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset)
+                .readAvroObjects()
+                /* The Avro Parser should start emitting objects in the blockOffset. */
+                /* Pass through events that are emitted after the desired objectBlockIndex. Note: the object at
+                   objectBlockIndex is not inclusive since that is the last object that was emitted to the CF user. */
                 .filter(avroObject -> {
                     if (pass.get()) {
                         return true;
                     } else {
-                        if (blockOffset == avroObject.getBlockOffset()
-                            && objectBlockIndex == avroObject.getObjectBlockIndex()) {
+                        assert blockOffset == avroObject.getBlockOffset()
+                            : String.format("Expected objects in block %d, but got objects in block %d.",
+                            blockOffset, avroObject.getBlockOffset());
+
+                        if (objectBlockIndex == avroObject.getObjectBlockIndex()) {
                             pass.set(true);
                         }
                         return false;
@@ -92,16 +115,4 @@ class Chunk {
                 });
         }
     }
-
-    private BlobChangefeedEventWrapper wrapObject(AvroObject avroObject) {
-        long blockOffset = avroObject.getBlockOffset();
-        long objectBlockIndex = avroObject.getObjectBlockIndex();
-        Object object = avroObject.getObject();
-
-        ChangefeedCursor eventCursor = shardCursor.toEventCursor(chunkPath, blockOffset, objectBlockIndex);
-        BlobChangefeedEvent event = BlobChangefeedEvent.fromRecord(object);
-
-        return new BlobChangefeedEventWrapper(event, eventCursor);
-    }
-
 }

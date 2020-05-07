@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.changefeed.models;
 
+import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 
@@ -36,6 +37,10 @@ public class BlobChangefeedEvent {
     public static BlobChangefeedEvent fromRecord(Object r) {
         AvroSchema.checkType("record", r, Map.class);
         Map<?, ?> record = (Map<?, ?>) r;
+
+        if (!record.get(AvroConstants.RECORD).equals("BlobChangeEvent")) {
+            throw new IllegalArgumentException("Not a valid BlobChangefeedEvent.");
+        }
 
         Object topic = record.get("topic");
         Object subject = record.get("subject");
@@ -130,5 +135,20 @@ public class BlobChangefeedEvent {
 
     public String getMetadataVersion() {
         return metadataVersion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BlobChangefeedEvent)) return false;
+        BlobChangefeedEvent event = (BlobChangefeedEvent) o;
+        return getTopic().equals(event.getTopic())
+            && getSubject().equals(event.getSubject())
+            && getEventType().equals(event.getEventType())
+            && getEventTime().equals(event.getEventTime())
+            && getId().equals(event.getId())
+            && getData().equals(event.getData())
+            && getDataVersion().equals(event.getDataVersion())
+            && getMetadataVersion().equals(event.getMetadataVersion());
     }
 }

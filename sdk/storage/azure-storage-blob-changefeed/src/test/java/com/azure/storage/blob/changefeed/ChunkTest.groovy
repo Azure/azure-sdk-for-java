@@ -1,116 +1,220 @@
 package com.azure.storage.blob.changefeed
 
-import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
+import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData
-import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType
-import com.azure.storage.blob.models.BlobType
-import org.mockito.Mockito
+import com.azure.storage.internal.avro.implementation.AvroObject
+import com.azure.storage.internal.avro.implementation.AvroReader
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory
+import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
-import reactor.util.function.Tuple2
-import spock.lang.Specification
 import spock.lang.Unroll
 
-import java.nio.channels.AsynchronousFileChannel
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.*
 
-class ChunkTest extends Specification {
+class ChunkTest extends HelperSpec {
 
     BlobContainerAsyncClient mockContainer
-    String chunkPath
+    BlobAsyncClient mockBlob
+    AvroReaderFactory mockAvroReaderFactory
+    AvroReader mockAvroReader
+    BlobLazyDownloaderFactory mockBlobLazyDownloaderFactory
+    BlobLazyDownloader mockBlobLazyDownloader
+
+    String chunkPath = "chunkPath"
+    String shardPath = "shardPath"
+    ChangefeedCursor shardCursor
+
+    List<Map<String, Object>> mockRecords
+    List<AvroObject> mockAvroObjects
 
     def setup() {
-        chunkPath = "changefeed_1000.avro"
-        ClassLoader classLoader = getClass().getClassLoader()
-        File f = new File(classLoader.getResource(chunkPath).getFile())
-        Path path = Paths.get(f.getAbsolutePath())
+        mockContainer = mock(BlobContainerAsyncClient.class)
+        mockBlob = mock(BlobAsyncClient.class)
+        mockAvroReaderFactory = mock(AvroReaderFactory.class)
+        mockAvroReader = mock(AvroReader.class)
+        mockBlobLazyDownloaderFactory = mock(BlobLazyDownloaderFactory.class)
+        mockBlobLazyDownloader = mock(BlobLazyDownloader.class)
 
-        BlobAsyncClient mockBlob = Mockito.mock(BlobAsyncClient.class);
-        Mockito.when(mockBlob.download())
-            .thenReturn(FluxUtil.readFile(AsynchronousFileChannel.open(path, StandardOpenOption.READ)))
-
-        mockContainer = Mockito.mock(BlobContainerAsyncClient.class)
-        Mockito.when(mockContainer.getBlobAsyncClient(chunkPath))
+        when(mockContainer.getBlobAsyncClient(anyString()))
             .thenReturn(mockBlob)
+        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(any(BlobAsyncClient.class), anyLong(), anyLong()))
+            .thenReturn(mockBlobLazyDownloader)
+        when(mockBlobLazyDownloader.download())
+            .thenReturn(Flux.empty())
+
+        Map<String, ShardCursor> shardCursors = new HashMap<>()
+        shardCursors.put(shardPath, null)
+        shardCursor = new ChangefeedCursor("endTime", "segmentTime", shardCursors, shardPath)
+
+        mockRecords = new LinkedList<>()
+        mockAvroObjects = new LinkedList<>()
+
+        getEvents()
+        getAvroObjects()
     }
 
-    @Unroll
-    def "getEvents"() {
+    def getEvents() {
+        for (int i = 0; i < 10; i++) {
+            mockRecords.add(getMockChangefeedEventRecord(mockEvents.get(i)))
+        }
+    }
+
+    def getAvroObjects() {
+        mockAvroObjects.add(new AvroObject(1234, 0, mockRecords.get(0)))
+        mockAvroObjects.add(new AvroObject(1234, 1, mockRecords.get(1)))
+        mockAvroObjects.add(new AvroObject(1234, 2, mockRecords.get(2)))
+        mockAvroObjects.add(new AvroObject(1234, 3, mockRecords.get(3)))
+        mockAvroObjects.add(new AvroObject(5678, 0, mockRecords.get(4)))
+        mockAvroObjects.add(new AvroObject(5678, 1, mockRecords.get(5)))
+        mockAvroObjects.add(new AvroObject(5678, 2, mockRecords.get(6)))
+        mockAvroObjects.add(new AvroObject(5678, 3, mockRecords.get(7)))
+        mockAvroObjects.add(new AvroObject(9101, 0, mockRecords.get(8)))
+        mockAvroObjects.add(new AvroObject(9101, 1, mockRecords.get(9)))
+    }
+
+    /* Tests no user cursor. */
+    def "getEvents min"() {
         setup:
-        def shardCursor = new ChangefeedCursor("endTime", "segmentTime", "shardPath", chunkPath, null)
-        def userCursor = cursorOffset == 0 ? null : shardCursor.toEventCursor(cursorOffset - 1)
-        Chunk c = new Chunk(mockContainer, chunkPath, shardCursor, userCursor)
+        when(mockAvroReaderFactory.getAvroReader(any(Flux.class)))
+            .thenReturn(mockAvroReader)
+        when(mockAvroReader.readAvroObjects())
+            .thenReturn(Flux.fromIterable(mockAvroObjects))
 
         when:
-        def sv = StepVerifier.create(
-            c.getEvents()
-                .index()
-        )
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
+        Chunk chunk = factory.getChunk(mockContainer, chunkPath, shardCursor, 0, 0)
+        def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
-        int counter = 0
-        while (counter < count) {
-            assert sv
-                .expectNextMatches({ tuple -> this.&verifyTuple(tuple, shardCursor, cursorOffset) })
-            counter++
-        }
-        assert sv.verifyComplete()
+        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
+            .verifyComplete()
+
+        verify(mockContainer).getBlobAsyncClient(chunkPath) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, Chunk.DEFAULT_BODY_SIZE, 0) || true
+        verify(mockBlobLazyDownloader).download() || true
+        verify(mockAvroReaderFactory).getAvroReader(Flux.empty()) || true
+        verify(mockAvroReader).readAvroObjects() || true
+    }
+
+    /* Tests user cursor. */
+    @Unroll
+    def "getEvents cursor"() {
+        setup:
+        when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong()))
+            .thenReturn(mockAvroReader)
+        when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(any(BlobAsyncClient.class), anyLong()))
+            .thenReturn(mockBlobLazyDownloader)
+        when(mockAvroReader.readAvroObjects())
+            .thenReturn(Flux.fromIterable(mockAvroObjects.subList(avroBlockIndex, 10)))
+
+        when:
+        ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
+        Chunk chunk = factory.getChunk(mockContainer, chunkPath, shardCursor, blockOffset, objectBlockIndex)
+        def sv = StepVerifier.create(chunk.getEvents().index())
+
+        then:
+        if (offset < 1)
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 0) })
+        if (offset < 2)
+            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 1) })
+        if (offset < 3)
+            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 2) })
+        if (offset < 4)
+            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 3) })
+        if (offset < 5)
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 0) })
+        if (offset < 6)
+            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 1) })
+        if (offset < 7)
+            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 2) })
+        if (offset < 8)
+            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 3) })
+        if (offset < 9)
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 9101, 0) })
+        if (offset < 10)
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 9101, 1) })
+
+        sv.verifyComplete()
+
+        verify(mockContainer).getBlobAsyncClient(chunkPath) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, Chunk.DEFAULT_BODY_SIZE, blockOffset) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, Chunk.DEFAULT_HEADER_SIZE) || true
+        verify(mockBlobLazyDownloader, times(2)).download() || true
+        verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset) || true
+        verify(mockAvroReader).readAvroObjects() || true
 
         where:
-        cursorOffset || count
-        0            || 1000     /* All events (min case) */
-        1            || 999      /* Tests that cursor validation works. */
-        101          || 899
-        500          || 500
-        899          || 101
-        999          || 1
-        1000         || 0        /* No events */
+        avroBlockIndex | blockOffset | objectBlockIndex || offset
+        /* First block. */
+        0              | 1234        | 0                || 1            /* Stooped at first event. */
+        0              | 1234        | 1                || 2            /* Stopped at middle event. */
+        0              | 1234        | 2                || 3            /* Stopped at middle event. */
+        0              | 1234        | 3                || 4            /* Stopped at last event. */
+        /* Middle block. */
+        4              | 5678        | 0                || 5
+        4              | 5678        | 1                || 6
+        4              | 5678        | 2                || 7
+        4              | 5678        | 3                || 8
+        /* Last block. */
+        8              | 9101        | 0                || 9            /* 1 event expected. */
+        8              | 9101        | 1                || 10           /* No events expected here. */
     }
 
-    boolean verifyTuple(Tuple2<Long, BlobChangefeedEventWrapper> tuple2, ChangefeedCursor shardCursor, long cursorOffset) {
-        def index = tuple2.getT1() + cursorOffset
-        def wrapper = tuple2.getT2()
-        def cursor = wrapper.getCursor()
-        def event = wrapper.getEvent()
-        def verify = true
-        verify &= event.getTopic() == "/subscriptions/ba45b233-e2ef-4169-8808-49eb0d8eba0d/resourceGroups/XClient/providers/Microsoft.Storage/storageAccounts/seanchangefeedstage"
-        verify &= event.getSubject() == "/blobServices/default/containers/test-container/blobs/" + index
-        verify &= event.getEventType() == BlobChangefeedEventType.BLOB_CREATED
-        verify &= event.getEventTime() != null
-        verify &= event.getId() != null
-        verify &= validData(event.getData())
-        verify &= event.getDataVersion() == null
-        verify &= event.getMetadataVersion() == null
-        verify &= cursor.getObjectBlockIndex() == index
-        verify &= shardCursorEqual(cursor, shardCursor)
-
+    boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
+        boolean verify = true
+        verify &= wrapper.getCursor().getShardCursor(shardPath).getBlockOffset() == blockOffset
+        verify &= wrapper.getCursor().getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
+        verify &= wrapper.getCursor().getShardCursor(shardPath).getChunkPath() == chunkPath
+        verify &= wrapper.getEvent().equals(mockEvents.get(index as int))
         return verify
     }
 
-    boolean shardCursorEqual(ChangefeedCursor cursor, ChangefeedCursor shardCursor) {
-        return cursor.getEndTime().equals(shardCursor.getEndTime()) && cursor.getSegmentTime().equals(shardCursor.getSegmentTime()) && cursor.getShardPath().equals(shardCursor.getShardPath()) && cursor.getChunkPath().equals(shardCursor.getChunkPath())
+    Map<String, Object> getMockChangefeedEventRecord(BlobChangefeedEvent event) {
+        Map<String, Object> cfEvent = new HashMap<>()
+        cfEvent.put('$record', "BlobChangeEvent")
+        cfEvent.put("schemaVersion", 1)
+        cfEvent.put("topic", event.getTopic())
+        cfEvent.put("subject", event.getSubject())
+        cfEvent.put("eventType", event.getEventType().toString())
+        cfEvent.put("eventTime", event.getEventTime().toString())
+        cfEvent.put("id", event.getId())
+        cfEvent.put("data", getMockChangefeedEventDataRecord(event.getData()))
+        cfEvent.put("dataVersion", event.getDataVersion())
+        cfEvent.put("metadataVersion", event.getMetadataVersion())
+        return cfEvent
     }
 
-    boolean validData(BlobChangefeedEventData data) {
-        def verify = true
-        verify &= data.getApi() == "PutBlob"
-        verify &= data.getClientRequestId() != null
-        verify &= data.getRequestId() != null
-        verify &= data.geteTag() != null
-        verify &= data.getContentType() == "application/octet-stream"
-        verify &= data.getContentLength() != null
-        verify &= data.getBlobType() == BlobType.BLOCK_BLOB
-        verify &= data.getContentOffset() == null
-        verify &= data.getDestinationUrl() == null
-        verify &= data.getSourceUrl() == null
-        verify &= data.getBlobUrl() == ""
-        verify &= data.getRecursive() == null
-        verify &= data.getSequencer() != null
-        return verify
+    Map<String, Object> getMockChangefeedEventDataRecord(BlobChangefeedEventData data) {
+        Map<String, Object> cfEventData = new HashMap<>()
+        cfEventData.put('$record', "BlobChangeEventData")
+        cfEventData.put("api", data.getApi().toString())
+        cfEventData.put("clientRequestId", data.getClientRequestId())
+        cfEventData.put("requestId", data.getRequestId())
+        cfEventData.put("etag", data.geteTag())
+        cfEventData.put("contentType", data.getContentType())
+        cfEventData.put("contentLength", data.getContentLength())
+        cfEventData.put("contentOffset", data.getContentOffset())
+        cfEventData.put("blobType", data.getBlobType().toString())
+        cfEventData.put("destinationUrl", data.getDestinationUrl())
+        cfEventData.put("sourceUrl", data.getSourceUrl())
+        cfEventData.put("url", data.getBlobUrl())
+        cfEventData.put("sequencer", data.getSequencer())
+        cfEventData.put("recursive", data.getRecursive())
+        return cfEventData
     }
 }

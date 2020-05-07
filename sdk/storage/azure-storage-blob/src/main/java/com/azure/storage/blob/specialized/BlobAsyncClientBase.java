@@ -66,7 +66,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroObject;
-import com.azure.storage.internal.avro.implementation.AvroReader;
+import com.azure.storage.internal.avro.implementation.AvroReaderFactory;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 import com.azure.storage.internal.avro.implementation.schema.primitive.AvroNullSchema;
 import reactor.core.publisher.Flux;
@@ -1607,7 +1607,7 @@ public class BlobAsyncClientBase {
      * @return The parsed quick query reactive stream.
      */
     private Flux<ByteBuffer> parse(Flux<ByteBuffer> avro, Function<Object, Mono<ByteBuffer>> objectHandler) {
-        return AvroReader.readAvro(avro)
+        return new AvroReaderFactory().getAvroReader(avro).readAvroObjects()
             .map(AvroObject::getObject)
             .concatMap(objectHandler);
     }

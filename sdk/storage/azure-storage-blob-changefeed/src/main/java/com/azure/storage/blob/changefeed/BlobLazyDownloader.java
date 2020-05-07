@@ -18,17 +18,23 @@ class BlobLazyDownloader {
 
     private final BlobAsyncClient client; /* Client to download from. */
     private final long blockSize;
-    private long offset;
+    private BlobRange range;
 
     BlobLazyDownloader(BlobAsyncClient client, long blockSize, long offset) {
         this.client = client;
         this.blockSize = blockSize;
-        this.offset = offset;
+        this.range = new BlobRange(offset);
     }
 
+    BlobLazyDownloader(BlobAsyncClient client, long blockSize) {
+        this.client = client;
+        this.blockSize = blockSize;
+        this.range = new BlobRange(0, blockSize);
+    }
+
+    /* TODO (gapra) : Tests Lazy downloader to only download part of blob. */
     /*TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but wasnt immediately obvious to me */
     public Flux<ByteBuffer> download() {
-        BlobRange blobRange = new BlobRange(offset);
         ParallelTransferOptions options = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize);
         BlobRequestConditions requestConditions = new BlobRequestConditions();
@@ -36,7 +42,7 @@ class BlobLazyDownloader {
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range ->
             client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
 
-        return ChunkedDownloadUtils.getSetupMono(blobRange, options, requestConditions,
+        return ChunkedDownloadUtils.getSetupMono(range, options, requestConditions,
             downloadFunc, Schedulers.immediate())
             .flatMapMany(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
@@ -60,7 +66,7 @@ class BlobLazyDownloader {
                         long modifier = chunkNum.longValue() * options.getBlockSizeLong();
                         long chunkSizeActual = Math.min(options.getBlockSizeLong(),
                             newCount - modifier);
-                        BlobRange chunkRange = new BlobRange(blobRange.getOffset() + modifier, chunkSizeActual);
+                        BlobRange chunkRange = new BlobRange(range.getOffset() + modifier, chunkSizeActual);
 
                         // Make the download call.
                         return client.downloadWithResponse(chunkRange, null, finalConditions, false)

@@ -12,11 +12,13 @@ import java.nio.ByteBuffer
 class BlobLazyDownloaderTest extends APISpec {
 
     BlobAsyncClient bc
+    BlobLazyDownloaderFactory factory
 
     def setup() {
         def cc = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
         cc.create().block()
         bc = cc.getBlobAsyncClient(generateBlobName())
+        factory = new BlobLazyDownloaderFactory()
     }
 
     byte[] downloadHelper(BlobLazyDownloader downloader) {
@@ -59,7 +61,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(Constants.KB)
 
         when:
-        byte[] output = downloadHelper(new BlobLazyDownloader(bc, Constants.KB, offset))
+        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc, Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
@@ -80,7 +82,7 @@ class BlobLazyDownloaderTest extends APISpec {
         byte[] input = uploadHelper(size)
 
         when:
-        byte[] output = downloadHelper(new BlobLazyDownloader(bc, Constants.KB, offset))
+        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc, Constants.KB, offset))
 
         then:
         for (int i = 0; i < input.length - offset; i++) {
@@ -99,9 +101,31 @@ class BlobLazyDownloaderTest extends APISpec {
         uploadHelper(Constants.KB)
 
         when:
-        downloadHelper(new BlobLazyDownloader(bc, Constants.KB, Constants.KB * 2))
+        downloadHelper(factory.getBlobLazyDownloader(bc, Constants.KB, Constants.KB * 2))
 
         then:
         thrown(BlobStorageException)
+    }
+
+    /* Tests case for downloading only the header. */
+    @Unroll
+    def "download partial"() {
+        setup:
+        byte[] input = uploadHelper(uploadSize)
+
+        when:
+        byte[] output = downloadHelper(factory.getBlobLazyDownloader(bc, downloadSize))
+
+        then:
+        assert output.length == downloadSize
+        for (int i = 0; i < downloadSize; i++) {
+            assert output[i] == input[i]
+        }
+
+        where:
+        uploadSize     | downloadSize       || _
+        Constants.MB   | Constants.KB       || _
+        Constants.MB   | 4 * Constants.KB   || _
+        Constants.MB   | Constants.MB       || _
     }
 }

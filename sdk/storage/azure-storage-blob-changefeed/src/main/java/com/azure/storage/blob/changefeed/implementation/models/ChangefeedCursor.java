@@ -25,8 +25,8 @@ public class ChangefeedCursor {
 
     private String endTime;
     private String segmentTime; /* curr segment */
-    public Map<String, ShardCursor> shardCursors; /* shards under segment. */
-    public String shardPath; /* current shard. */
+    private Map<String, ShardCursor> shardCursors; /* shards under segment. */
+    private String shardPath; /* current shard. */
 
     /**
      * Default constructor (used to serialize and deserialize).
@@ -93,6 +93,14 @@ public class ChangefeedCursor {
      */
     public Map<String, ShardCursor> getShardCursors() {
         return shardCursors;
+    }
+
+    /**
+     * @param shardPath the shard path.
+     * @return the shard cursor associated with the shard path.
+     */
+    public ShardCursor getShardCursor(String shardPath) {
+        return shardCursors.get(shardPath);
     }
 
     /**

@@ -2,77 +2,98 @@ package com.azure.storage.blob.changefeed
 
 import com.azure.core.http.rest.PagedFlux
 import com.azure.core.http.rest.PagedResponse
+import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
-import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
+import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.ListBlobsOptions
-import org.mockito.Mockito
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Specification
-import spock.lang.Unroll
 
-import java.util.function.Function
+import java.util.function.Supplier
 
-class ShardTest extends Specification {
+import static org.mockito.ArgumentMatchers.*
+import static org.mockito.Mockito.mock
+import static org.mockito.Mockito.when
+
+class ShardTest extends HelperSpec {
 
     BlobContainerAsyncClient mockContainer
-    String shardPath
+    BlobAsyncClient mockBlob
+    ChunkFactory mockChunkFactory
+    Chunk mockChunk0
+    Chunk mockChunk1
+    Chunk mockChunk2
+
+    String shardPath = "shardPath"
+    ChangefeedCursor segmentCursor
+
 
     def setup() {
-        shardPath = "shardPath"
-        mockContainer = Mockito.mock(BlobContainerAsyncClient.class)
-//        ClassLoader classLoader = getClass().getClassLoader()
-//        File f = new File(classLoader.getResource(chunkPath).getFile())
-//        Path path = Paths.get(f.getAbsolutePath())
+        mockContainer = mock(BlobContainerAsyncClient.class)
+        mockBlob = mock(BlobAsyncClient.class)
+        mockChunkFactory = mock(ChunkFactory.class)
+        mockChunk0 = mock(Chunk.class)
+        mockChunk1 = mock(Chunk.class)
+        mockChunk2 = mock(Chunk.class)
+
+        def mockPagedResponse = mock(PagedResponse.class)
+        when(mockPagedResponse.getValue())
+            .thenReturn(List.of(new BlobItem().setName("chunk0"), new BlobItem().setName("chunk1"), new BlobItem().setName("chunk2")))
+        def mockSupplier = mock(Supplier.class)
+        when(mockSupplier.get())
+            .thenReturn(Mono.just(mockPagedResponse))
+        def mockPagedFlux = new PagedFlux(mockSupplier)
+
+        Map<String, ShardCursor> shardCursors = new HashMap<>()
+        shardCursors.put(shardPath, null)
+        segmentCursor = new ChangefeedCursor("endTime", "segmentTime", shardCursors, shardPath)
+
+        when(mockContainer.listBlobs(any(ListBlobsOptions.class)))
+            .thenReturn(mockPagedFlux)
+
+        when(mockChunkFactory.getChunk(any(BlobContainerAsyncClient.class), eq("chunk0"), any(ChangefeedCursor.class), anyLong(), anyLong()))
+            .thenReturn(mockChunk0)
+        when(mockChunkFactory.getChunk(any(BlobContainerAsyncClient.class), eq("chunk1"), any(ChangefeedCursor.class), anyLong(), anyLong()))
+            .thenReturn(mockChunk1)
+        when(mockChunkFactory.getChunk(any(BlobContainerAsyncClient.class), eq("chunk2"), any(ChangefeedCursor.class), anyLong(), anyLong()))
+            .thenReturn(mockChunk2)
+
+        when(mockChunk0.getEvents())
+            .thenReturn(Flux.fromIterable(getMockEventWrappers("chunk0")))
+        when(mockChunk1.getEvents())
+            .thenReturn(Flux.fromIterable(getMockEventWrappers("chunk1")))
+        when(mockChunk2.getEvents())
+            .thenReturn(Flux.fromIterable(getMockEventWrappers("chunk2")))
     }
 
-    @Unroll
-    def "getEvents"() {
+    List<BlobChangefeedEventWrapper> getMockEventWrappers(String chunkPath) {
+        List<BlobChangefeedEventWrapper> mockEventWrappers = new LinkedList<>()
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(0), segmentCursor.toEventCursor(chunkPath, 1234, 0)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(1), segmentCursor.toEventCursor(chunkPath, 1234, 1)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(2), segmentCursor.toEventCursor(chunkPath, 1234, 2)))
+        return mockEventWrappers
+    }
+
+
+    /* Tests no user cursor. */
+    def "getEvents min"() {
         setup:
-        List<BlobItem> chunks = new ArrayList<>()
-        for(int i = 0; i < numChunks; i++) {
-            chunks.add(new BlobItem().setName("chunk" + i))
-        }
-        PagedResponse<BlobItem> mockPagedResponse = Mockito.mock(PagedResponse.class)
-        Mockito.when(mockPagedResponse.getValue())
-            .thenReturn(chunks)
-        Function<String, Mono<PagedResponse<BlobItem>>> func = { marker ->
-            mockPagedResponse
-        }
-        Mockito.when(mockContainer.listBlobs(new ListBlobsOptions().setPrefix(shardPath)))
-            .thenReturn(new PagedFlux<>({ marker -> func.apply(null) } ))
-
-        def segmentCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, null, null)
-        def userCursor = null
-
-        Shard shard = Mockito.spy(new Shard(mockContainer, shardPath, segmentCursor, userCursor))
-        for (BlobItem chunk: chunks) {
-            List<BlobChangefeedEventWrapper> wrappers = new ArrayList<>()
-            for (int i = 0; i < 10; i++) {
-                def event = new BlobChangefeedEvent(null, i as String, null, null, null, null, null, null)
-                def cursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, chunk.getName(), null)
-                wrappers.add(new BlobChangefeedEventWrapper(event, cursor))
-            }
-            Mockito.doReturn(Flux.fromIterable(wrappers)).when(shard).getEventsForChunk(chunk.getName())
-        }
 
         when:
-        def sv = StepVerifier.create(
-            shard.getEvents()
-                .index()
-        )
+        ShardFactory shardFactory = new ShardFactory(mockChunkFactory)
+        Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, null)
+
+        def sv = StepVerifier.create(shard.getEvents())
 
         then:
-        sv.expectNextCount(count)
-            .verifyComplete()
 
-        where:
-        numChunks || count
-        1         || 10     /* No chunks -> no events. */
+        sv.expectNextCount(9)
+        .verifyComplete()
 
     }
+
 }
