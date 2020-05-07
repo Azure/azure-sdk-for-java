@@ -1,4 +1,4 @@
-# Azure AAD B2C Spring Boot Starter client library for Java
+# Azure AD B2C Spring Boot Starter client library for Java
 ## Overview
 
 Azure Active Directory (Azure AD) B2C is an identity management service that enables you to customize and control how
@@ -108,87 +108,71 @@ respectively. Specify your user flow **Name** and **User attributes and claims**
 9. Create a new Java file named *HelloController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2CWebController.java#L21-L53 -->
+```java
+@Controller
+public class AADB2CWebController {
 
-    ```java
-    package sample.aad.controller;
-    
-    import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-    import org.springframework.security.oauth2.core.user.OAuth2User;
-    import org.springframework.stereotype.Controller;
-    import org.springframework.ui.Model;
-    import org.springframework.web.bind.annotation.GetMapping;
-    
-    @Controller
-    public class WebController {
-    
-        private void initializeModel(Model model, OAuth2AuthenticationToken token) {
-            if (token != null) {
-                final OAuth2User user = token.getPrincipal();
-    
-                model.addAttribute("grant_type", user.getAuthorities());
-                model.addAllAttributes(user.getAttributes());
-            }
-        }
-    
-        @GetMapping(value = "/")
-        public String index(Model model, OAuth2AuthenticationToken token) {
-            initializeModel(model, token);
-    
-            return "home";
-        }
-    
-        @GetMapping(value = "/greeting")
-        public String greeting(Model model, OAuth2AuthenticationToken token) {
-            initializeModel(model, token);
-    
-            return "greeting";
-        }
-    
-        @GetMapping(value = "/home")
-        public String home(Model model, OAuth2AuthenticationToken token) {
-            initializeModel(model, token);
-    
-            return "home";
+    private void initializeModel(Model model, OAuth2AuthenticationToken token) {
+        if (token != null) {
+            final OAuth2User user = token.getPrincipal();
+
+            model.addAttribute("grant_type", user.getAuthorities());
+            model.addAllAttributes(user.getAttributes());
         }
     }
-    ```
+
+    @GetMapping(value = "/")
+    public String index(Model model, OAuth2AuthenticationToken token) {
+        initializeModel(model, token);
+
+        return "home";
+    }
+
+    @GetMapping(value = "/greeting")
+    public String greeting(Model model, OAuth2AuthenticationToken token) {
+        initializeModel(model, token);
+
+        return "greeting";
+    }
+
+    @GetMapping(value = "/home")
+    public String home(Model model, OAuth2AuthenticationToken token) {
+        initializeModel(model, token);
+
+        return "home";
+    }
+}
+```
 
 11. Create a folder named *security* in the Java source folder for your application.
 
 12. Create a new Java file named *WebSecurityConfig.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2COidcLoginConfigSample.java#L20-L38 -->
+```java
+@EnableWebSecurity
+public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
 
-    ```java
-    package sample.aad.security;
-    
-    import com.microsoft.azure.spring.autoconfigure.btoc.AADB2COidcLoginConfigurer;
-    import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-    import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-    import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-    
-    @EnableWebSecurity
-    public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
-    
-        private final AADB2COidcLoginConfigurer configurer;
-    
-        public WebSecurityConfiguration(AADB2COidcLoginConfigurer configurer) {
-            this.configurer = configurer;
-        }
-    
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests()
-                    .anyRequest()
-                    .authenticated()
-                    .and()
-                    .apply(configurer)
-            ;
-        }
+    private final AADB2COidcLoginConfigurer configurer;
+
+    public AADB2COidcLoginConfigSample(AADB2COidcLoginConfigurer configurer) {
+        this.configurer = configurer;
     }
-    ```
-14. Copy the `greeting.html` and `home.html` from [Azure AD B2C Spring Boot Sample](https://github.com/Microsoft/azure-spring-boot/tree/master/azure-spring-boot-samples/azure-active-directory-b2c-oidc-spring-boot-sample/src/main/resources/templates), and replace the
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .apply(configurer)
+        ;
+    }
+}
+```
+14. Copy the `greeting.html` and `home.html` from [Azure AD B2C Spring Boot Sample](../azure-spring-boot-samples/azure-spring-boot-sample-active-directory-b2c-oidc/src/main/resources/templates), and replace the
 `${your-profile-edit-user-flow}` and `${your-password-reset-user-flow}` with your user flow name
 respectively that completed earlier.
 
@@ -210,7 +194,12 @@ you should be redirected to login page.
 
 4. After you have logged in successfully, you should see the sample `home page` from the browser.
 
-### Allow telemetry
+## Key concepts
+
+## Troubleshooting
+
+## Next steps
+#### Allow telemetry
 
 Microsoft would like to collect data about how users use this Spring boot starter. Microsoft uses this information to improve our tooling experience. Participation is voluntary. If you don't want to participate, just simply disable it by setting below configuration in `application.properties`.
 
@@ -221,12 +210,6 @@ azure.activedirectory.b2c.allow-telemetry=false
 When telemetry is enabled, an HTTP request will be sent to URL `https://dc.services.visualstudio.com/v2/track`. So please make sure it's not blocked by your firewall.
 
 Find more information about Azure Service Privacy Statement, please check [Microsoft Online Services Privacy Statement](https://www.microsoft.com/en-us/privacystatement/OnlineServices/Default.aspx).
-
-## Key concepts
-
-## Troubleshooting
-
-## Next steps
 
 ## Contributing
 
