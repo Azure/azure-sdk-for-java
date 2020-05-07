@@ -67,7 +67,9 @@ public final class BlobContainerListDetails {
 
     /**
      * @return the listing flags
-     * @deprecated use {@link #toIncludeTypes()}
+     * @deprecated {@link BlobContainerListDetails} now contains multiple options.
+     * In order to retrieve all of them use {@link #toIncludeTypes()}. Otherwise this will only convert result of
+     * {{@link #setRetrieveMetadata(boolean)}} for backwards compatibility.
      */
     @Deprecated
     public ListBlobContainersIncludeType toIncludeType() {
@@ -78,7 +80,11 @@ public final class BlobContainerListDetails {
     }
 
     /**
-     * @return the listing flags
+     * Converts this {@link BlobContainerListDetails} into list of {@link ListBlobContainersIncludeType}
+     * that contains only options selected. If no option is selected then null is returned.
+     *
+     * @return a list of selected options converted into {@link ListBlobContainersIncludeType}, null if none
+     * of options has been selected.
      */
     public List<ListBlobContainersIncludeType> toIncludeTypes() {
         if (this.retrieveMetadata || this.retrieveDeleted) {
