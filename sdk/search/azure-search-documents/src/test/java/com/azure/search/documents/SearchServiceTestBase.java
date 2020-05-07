@@ -64,6 +64,12 @@ public abstract class SearchServiceTestBase extends TestBase {
     private static final String FAKE_DESCRIPTION = "Some data source";
     private static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
 
+    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
+        .get("AZURE_SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
+
+    private static final String API_KEY = Configuration.getGlobalConfiguration()
+        .get("AZURE_SEARCH_SERVICE_API_KEY", "apiKey");
+
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
     //
@@ -89,9 +95,6 @@ public abstract class SearchServiceTestBase extends TestBase {
     static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
 
-    protected String endpoint;
-    AzureKeyCredential searchApiKeyCredential;
-
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
         return getSearchServiceClientBuilderWithHttpPipelinePolicies(null);
     }
@@ -105,7 +108,7 @@ public abstract class SearchServiceTestBase extends TestBase {
     SearchServiceClientBuilder getSearchServiceClientBuilderWithHttpPipelinePolicies(
         List<HttpPipelinePolicy> policies) {
         SearchServiceClientBuilder builder = new SearchServiceClientBuilder()
-            .endpoint(endpoint);
+            .endpoint(ENDPOINT);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
@@ -115,7 +118,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
         addPolicies(builder, policies);
         builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-            .credential(searchApiKeyCredential);
+            .credential(new AzureKeyCredential(API_KEY));
 
         if (!liveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -432,7 +435,7 @@ public abstract class SearchServiceTestBase extends TestBase {
      */
     DataSource createBlobDataSource() {
         String storageConnectionString = Configuration.getGlobalConfiguration()
-            .get("AZURE_SEARCH_STORAGE_NAME", "connectionString");
+            .get("AZURE_SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
         String blobContainerName = Configuration.getGlobalConfiguration()
             .get("AZURE_SEARCH_STORAGE_CONTAINER_NAME", "container");
 
@@ -445,7 +448,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE_ENDPOINT"))
+            .endpoint(ENDPOINT)
             .indexName(indexName);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -453,7 +456,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
 
         builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-            .credential(searchApiKeyCredential);
+            .credential(new AzureKeyCredential(API_KEY));
 
         if (!liveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

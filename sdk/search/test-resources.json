@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
       "baseName": {
@@ -19,7 +19,8 @@
       "searchApiVersion": "2015-08-19",
       "searchServiceName": "[concat('azsjavasearch', parameters('baseName'))]",
       "storageApiVersion": "2019-06-01",
-      "storageAccountName": "[concat('azsjavastorage', parameters('baseName'))]"
+      "storageAccountName": "[concat('azsjavastorage', parameters('baseName'))]",
+      "storageContainerName": "[concat('azsjavacontainer', parameters('baseName'))]"
     },
     "resources": [
       {
@@ -28,8 +29,8 @@
         "apiVersion": "[variables('searchApiVersion')]",
         "location": "[variables('location')]",
         "properties": {
-          "replicaCount": "1",
-          "partitionCount": "1"
+          "replicaCount": 1,
+          "partitionCount": 1
         },
         "sku": {
           "name": "basic"
@@ -66,6 +67,17 @@
           },
           "accessTier": "Hot"
         }
+      },
+      {
+        "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
+        "name": "concat(variables('storageAccountName'), '/default/', variables('storageContainerName'))",
+        "apiVersion": "[variables('storageApiVersion')]",
+        "properties": {
+          "publicAccess": "None"
+        },
+        "dependsOn": [
+          "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+        ]
       }
     ],
     "outputs": {
@@ -84,6 +96,10 @@
       "AZURE_SEARCH_STORAGE_CONNECTION_STRING": {
         "type": "string",
         "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+      },
+      "AZURE_SEARCH_STORAGE_CONTAINER_NAME": {
+        "type": "string",
+        "value": "[variables('storageContainerName')]"
       }
     }
 }

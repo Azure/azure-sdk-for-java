@@ -5,6 +5,7 @@ package com.azure.search.documents.models;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +19,7 @@ public class ScoringParameterTests {
 
     @Test
     public void testConstructorWithMap() {
-        List<String> parameters = Arrays.asList("hello", "tests");
+        List<String> parameters = new ArrayList<>(Arrays.asList("hello", "tests"));
         ScoringParameter scoringParameter = new ScoringParameter("test", parameters);
         List<String> scoringParameterValues = scoringParameter.getValues();
         for (int i = 0; i< parameters.size(); i++) {

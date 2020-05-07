@@ -3,9 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.util.Configuration;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.models.Index;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -74,28 +71,9 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         }
     }
 
-    SearchIndexClientBuilder getClientBuilder() {
-        SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(endpoint)
-            .indexName(SearchTestBase.HOTELS_INDEX_NAME);
-        if (interceptorManager.isPlaybackMode()) {
-            return builder.httpClient(interceptorManager.getPlaybackClient());
-        }
-        builder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-            .credential(searchApiKeyCredential);
-        if (!liveMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy());
-        }
-        return builder;
-    }
-
     protected void setupIndex(Index index) {
         if (!interceptorManager.isPlaybackMode()) {
-            new SearchServiceClientBuilder()
-                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE_ENDPOINT"))
-                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration()
-                    .get("AZURE_SEARCH_SERVICE_API_KEY")))
-                .buildClient()
-                .createOrUpdateIndex(index);
+            getSearchServiceClientBuilder().buildClient().createOrUpdateIndex(index);
         }
     }
 
@@ -106,12 +84,7 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
                     .getResourceAsStream(jsonFile)));
                 Index index = new ObjectMapper().readValue(indexData, Index.class);
 
-                new SearchServiceClientBuilder()
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration()
-                        .get("AZURE_SEARCH_SERVICE_API_KEY")))
-                    .buildClient()
-                    .createOrUpdateIndex(index);
+                getSearchServiceClientBuilder().buildClient().createOrUpdateIndex(index);
             } catch (IOException ex) {
                 throw new UncheckedIOException(ex);
             }
