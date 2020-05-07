@@ -1,0 +1,87 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net/jtcrestorecontainererror0338130165ab070c414f7c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "3d94770e-59be-410a-8458-c7bff8b4ba2a"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "ETag" : "0x8D7F2A5CDF77BBA",
+      "Last-Modified" : "Thu, 07 May 2020 16:43:43 GMT",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a74ffe38-701e-00d7-6a8e-24a714000000",
+      "Date" : "Thu, 07 May 2020 16:43:42 GMT",
+      "x-ms-client-request-id" : "3d94770e-59be-410a-8458-c7bff8b4ba2a"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net/jtcrestorecontainererror1131888688b2ef70964e19?restype=container&comp=undelete",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "c6099992-452c-490e-88c9-b6a7cdefb9e4"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "ContainerNotFound",
+      "retry-after" : "0",
+      "Content-Length" : "226",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "a74ffe3f-701e-00d7-6f8e-24a714000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Error><Code>ContainerNotFound</Code><Message>The specified container does not exist.\nRequestId:a74ffe3f-701e-00d7-6f8e-24a714000000\nTime:2020-05-07T16:43:43.7890977Z</Message></Error>",
+      "Date" : "Thu, 07 May 2020 16:43:42 GMT",
+      "x-ms-client-request-id" : "c6099992-452c-490e-88c9-b6a7cdefb9e4",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net?prefix=jtcrestorecontainererror&comp=list",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "98bfe9e2-2915-4107-afc0-d2fc08db56c7"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "a74ffe51-701e-00d7-7c8e-24a714000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest.blob.core.windows.net/\"><Prefix>jtcrestorecontainererror</Prefix><Containers><Container><Name>jtcrestorecontainererror0338130165ab070c414f7c</Name><Properties><Last-Modified>Thu, 07 May 2020 16:43:43 GMT</Last-Modified><Etag>\"0x8D7F2A5CDF77BBA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 07 May 2020 16:43:43 GMT",
+      "x-ms-client-request-id" : "98bfe9e2-2915-4107-afc0-d2fc08db56c7",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net/jtcrestorecontainererror0338130165ab070c414f7c?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "2058793f-ff55-40f2-8c31-ae43336e6cdf"
+    },
+    "Response" : {
+      "x-ms-version" : "2019-12-12",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "Content-Length" : "0",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "a74ffe62-701e-00d7-0d8e-24a714000000",
+      "Date" : "Thu, 07 May 2020 16:43:43 GMT",
+      "x-ms-client-request-id" : "2058793f-ff55-40f2-8c31-ae43336e6cdf"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "jtcrestorecontainererror0338130165ab070c414f7c", "jtcrestorecontainererror1131888688b2ef70964e19", "jtcrestorecontainererror2261117564ff90b57d414d" ]
+}
