@@ -502,6 +502,9 @@ public final class ModelBridgeInternal {
     }
 
     public static Resource getResourceFromResourceWrapper(ResourceWrapper resourceWrapper) {
+        if (resourceWrapper == null) {
+            return null;
+        }
         return resourceWrapper.getResource();
     }
 
