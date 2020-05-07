@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
@@ -34,7 +33,7 @@ public class Offer extends Resource {
     public Offer(String jsonString) {
         super(jsonString);
     }
-    
+
     /**
      * Gets the self-link of a resource to which the resource offer applies.
      *

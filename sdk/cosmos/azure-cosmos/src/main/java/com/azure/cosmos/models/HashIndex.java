@@ -61,11 +61,11 @@ public final class HashIndex extends Index {
     public DataType getDataType() {
         DataType result = null;
         try {
-            result = DataType.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.DATA_TYPE)));
+            result = DataType.valueOf(StringUtils.upperCase(this.getJsonSerializable().getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
             // Ignore exception and let the caller handle null value.
-            this.getLogger().warn("INVALID index dataType value {}.",
-                super.getString(Constants.Properties.DATA_TYPE));
+            this.getJsonSerializable().getLogger().warn("INVALID index dataType value {}.",
+                this.getJsonSerializable().getString(Constants.Properties.DATA_TYPE));
         }
         return result;
     }
@@ -77,7 +77,7 @@ public final class HashIndex extends Index {
      * @return the Hash Index.
      */
     public HashIndex setDataType(DataType dataType) {
-        super.set(Constants.Properties.DATA_TYPE, dataType.toString());
+        this.getJsonSerializable().set(Constants.Properties.DATA_TYPE, dataType.toString());
         return this;
     }
 
@@ -87,7 +87,7 @@ public final class HashIndex extends Index {
      * @return the precision.
      */
     public int getPrecision() {
-        return super.getInt(Constants.Properties.PRECISION);
+        return this.getJsonSerializable().getInt(Constants.Properties.PRECISION);
     }
 
     /**
@@ -97,11 +97,11 @@ public final class HashIndex extends Index {
      * @return the Hash Index.
      */
     public HashIndex setPrecision(int precision) {
-        super.set(Constants.Properties.PRECISION, precision);
+        this.getJsonSerializable().set(Constants.Properties.PRECISION, precision);
         return this;
     }
 
     boolean hasPrecision() {
-        return super.has(Constants.Properties.PRECISION);
+        return this.getJsonSerializable().has(Constants.Properties.PRECISION);
     }
 }

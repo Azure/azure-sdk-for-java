@@ -20,12 +20,14 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.RequestVerb;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
@@ -483,4 +485,31 @@ public final class ModelBridgeInternal {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
+    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializableWrapper jsonSerializableWrapper) {
+        return jsonSerializableWrapper.getJsonSerializable().serializeJsonToByteBuffer();
+    }
+
+    public static JsonSerializableWrapper instantiateJsonSerializableWrapper(ObjectNode objectNode, Class<?> klassType) {
+        try {
+            return (JsonSerializableWrapper) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static void populatePropertyBagJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
+        jsonSerializableWrapper.populatePropertyBag();
+    }
+
+    public static Resource getResourceFromResourceWrapper(ResourceWrapper resourceWrapper) {
+        return resourceWrapper.getResource();
+    }
+
+    public static JsonSerializable getJsonSerializableFromIndex(Index index) {
+        return index.getJsonSerializable();
+    }
+
+    public static JsonSerializable getJsonSerializableFromJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
+        return jsonSerializableWrapper.getJsonSerializable();
+    }
 }

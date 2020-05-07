@@ -4,9 +4,10 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * specifies which
  * document property is used as the partition key in a collection that has multiple partitions.
  */
-public final class PartitionKeyDefinition extends JsonSerializable {
+public final class PartitionKeyDefinition extends JsonSerializableWrapper{
     private List<String> paths;
     private PartitionKind kind;
     private Optional<PartitionKeyDefinitionVersion> versionOptional;
@@ -27,6 +28,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      * Constructor. Creates a new instance of the PartitionKeyDefinition object.
      */
     public PartitionKeyDefinition() {
+        this.jsonSerializable = new JsonSerializable();
         this.setKind(PartitionKind.HASH);
     }
 
@@ -37,7 +39,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      * @param jsonString the JSON string that represents the partition key definition.
      */
     PartitionKeyDefinition(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
     /**
@@ -47,7 +49,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public PartitionKind getKind() {
         if (this.kind == null) {
-            this.kind = super.getObject(Constants.Properties.PARTITION_KIND, PartitionKind.class, true);
+            this.kind = this.jsonSerializable.getObject(Constants.Properties.PARTITION_KIND, PartitionKind.class, true);
         }
 
         return this.kind;
@@ -71,7 +73,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public PartitionKeyDefinitionVersion getVersion() {
         if (this.versionOptional == null) {
-            Object versionObject = super.getObject(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, Object.class);
+            Object versionObject = this.jsonSerializable.getObject(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, Object.class);
             if (versionObject == null) {
                 this.versionOptional = Optional.empty();
             } else {
@@ -110,8 +112,8 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     public List<String> getPaths() {
         if (this.paths == null) {
-            if (super.has(Constants.Properties.PARTITION_KEY_PATHS)) {
-                paths = super.getList(Constants.Properties.PARTITION_KEY_PATHS, String.class);
+            if (this.jsonSerializable.has(Constants.Properties.PARTITION_KEY_PATHS)) {
+                paths = this.jsonSerializable.getList(Constants.Properties.PARTITION_KEY_PATHS, String.class);
             } else {
                 paths = new ArrayList<>();
             }
@@ -143,8 +145,8 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      */
     Boolean isSystemKey() {
         if (this.systemKey == null) {
-            if (super.has(Constants.Properties.SYSTEM_KEY)) {
-                this.systemKey = super.getBoolean(Constants.Properties.SYSTEM_KEY);
+            if (this.jsonSerializable.has(Constants.Properties.SYSTEM_KEY)) {
+                this.systemKey = this.jsonSerializable.getBoolean(Constants.Properties.SYSTEM_KEY);
             } else {
                 this.systemKey = false;
             }
@@ -163,16 +165,16 @@ public final class PartitionKeyDefinition extends JsonSerializable {
 
     @Override
     protected void populatePropertyBag() {
-        super.populatePropertyBag();
+        this.jsonSerializable.populatePropertyBag();
         if (this.kind != null) {
-            super.set(Constants.Properties.PARTITION_KIND, kind.toString());
+            this.jsonSerializable.set(Constants.Properties.PARTITION_KIND, kind.toString());
         }
         if (this.paths != null) {
-            super.set(Constants.Properties.PARTITION_KEY_PATHS, paths);
+            this.jsonSerializable.set(Constants.Properties.PARTITION_KEY_PATHS, paths);
         }
 
         if (this.versionOptional != null && versionOptional.isPresent()) {
-            super.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, versionOptional.get().toString());
+            this.jsonSerializable.set(Constants.Properties.PARTITION_KEY_DEFINITION_VERSION, versionOptional.get().toString());
         }
     }
 }
