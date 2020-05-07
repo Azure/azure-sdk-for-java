@@ -3,10 +3,11 @@
 
 package com.azure.search.documents;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.util.Configuration;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.models.Index;
-import com.azure.search.documents.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,8 +23,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
@@ -50,17 +49,9 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         waitForIndexing();
     }
 
-    List<Map<String, Object>> uploadDocumentsJson(SearchIndexAsyncClient client, String dataJson) {
-        List<Map<String, Object>> documents =
-            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() { });
-
-        uploadDocuments(client, documents);
-        return documents;
-    }
-
     List<Map<String, Object>> uploadDocumentsJson(SearchIndexClient client, String dataJson) {
         List<Map<String, Object>> documents =
-            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() { });
+            readJsonFileToList(dataJson, new TypeReference<List<Map<String, Object>>>() {});
 
         uploadDocuments(client, documents);
 
@@ -83,9 +74,9 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
         }
     }
 
-    SearchIndexClientBuilder getClientBuilder(String indexName) {
+    SearchIndexClientBuilder getClientBuilder() {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder().endpoint(endpoint)
-            .indexName(indexName);
+            .indexName(SearchTestBase.HOTELS_INDEX_NAME);
         if (interceptorManager.isPlaybackMode()) {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
@@ -99,25 +90,30 @@ public class SearchIndexClientTestBase extends SearchServiceTestBase {
 
     protected void setupIndex(Index index) {
         if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                endpoint,
-                searchApiKeyCredential.getKey());
-
-            searchIndexService.initializeAndCreateIndex(index);
+            new SearchServiceClientBuilder()
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration()
+                    .get("AZURE_SEARCH_SERVICE_API_KEY")))
+                .buildClient()
+                .createOrUpdateIndex(index);
         }
     }
 
     void setupIndexFromJsonFile(String jsonFile) {
         if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchIndexService searchIndexService = new SearchIndexService(
-                endpoint,
-                searchApiKeyCredential.getKey());
             try {
-                searchIndexService.initializeAndCreateIndex(jsonFile);
-            } catch (IOException e) {
-                fail(e.getMessage());
+                Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+                    .getResourceAsStream(jsonFile)));
+                Index index = new ObjectMapper().readValue(indexData, Index.class);
+
+                new SearchServiceClientBuilder()
+                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE_ENDPOINT"))
+                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration()
+                        .get("AZURE_SEARCH_SERVICE_API_KEY")))
+                    .buildClient()
+                    .createOrUpdateIndex(index);
+            } catch (IOException ex) {
+                throw new UncheckedIOException(ex);
             }
         }
     }

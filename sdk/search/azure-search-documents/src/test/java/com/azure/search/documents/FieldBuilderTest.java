@@ -149,7 +149,7 @@ public class FieldBuilderTest {
     }
 
     private List<Field> sortByFieldName(List<Field> fields) {
-        Collections.sort(fields, Comparator.comparing(Field::getName));
+        fields.sort(Comparator.comparing(Field::getName));
         return fields;
     }
 }

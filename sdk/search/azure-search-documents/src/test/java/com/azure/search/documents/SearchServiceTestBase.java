@@ -37,14 +37,10 @@ import com.azure.search.documents.models.Suggester;
 import com.azure.search.documents.models.TagScoringFunction;
 import com.azure.search.documents.models.TagScoringParameters;
 import com.azure.search.documents.models.TextWeights;
-import com.azure.search.documents.test.environment.setup.AzureSearchResources;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.microsoft.azure.AzureEnvironment;
 import io.netty.handler.codec.http.HttpResponseStatus;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
@@ -93,44 +89,8 @@ public abstract class SearchServiceTestBase extends TestBase {
     static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
 
-    private String searchServiceName;
     protected String endpoint;
     AzureKeyCredential searchApiKeyCredential;
-    private static final boolean IS_DEBUG = false;
-
-    static AzureSearchResources azureSearchResources;
-
-    @BeforeAll
-    public static void beforeAll() {
-        azureSearchResources = AzureSearchResources.initializeAzureResources();
-        if (!playbackMode()) {
-            azureSearchResources.initialize();
-            azureSearchResources.createResourceGroup();
-        }
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        if (IS_DEBUG) {
-            azureSearchResources.deleteResourceGroup();
-        }
-    }
-
-    @Override
-    protected void beforeTest() {
-        if (!interceptorManager.isPlaybackMode()) {
-            azureSearchResources.createService(testResourceNamer);
-            searchApiKeyCredential = new AzureKeyCredential(azureSearchResources.getSearchAdminKey());
-        }
-        searchServiceName = azureSearchResources.getSearchServiceName();
-        endpoint = azureSearchResources.getEndpoint();
-    }
-
-    @Override
-    protected void afterTest() {
-        super.afterTest();
-        azureSearchResources.deleteService();
-    }
 
     protected SearchServiceClientBuilder getSearchServiceClientBuilder() {
         return getSearchServiceClientBuilderWithHttpPipelinePolicies(null);
@@ -467,48 +427,25 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     /**
      * create a new blob data source object
+     *
      * @return the created data source
      */
     DataSource createBlobDataSource() {
-        String storageConnString = "connectionString";
-        String blobContainerDatasourceName = "container";
-        if (!interceptorManager.isPlaybackMode()) {
-
-            // First, we create a storage account
-            storageConnString = azureSearchResources.createStorageAccount(testResourceNamer);
-            // Next, we create the blobs container
-            blobContainerDatasourceName =
-                azureSearchResources.createBlobContainer(storageConnString, testResourceNamer);
-        }
+        String storageConnectionString = Configuration.getGlobalConfiguration()
+            .get("AZURE_SEARCH_STORAGE_NAME", "connectionString");
+        String blobContainerName = Configuration.getGlobalConfiguration()
+            .get("AZURE_SEARCH_STORAGE_CONTAINER_NAME", "container");
 
         // create the new data source object for this storage account and container
-        return DataSources.createFromAzureBlobStorage(
-            BLOB_DATASOURCE_NAME,
-            storageConnString,
-            blobContainerDatasourceName,
-            "/",
-            "real live blob",
-            new SoftDeleteColumnDeletionDetectionPolicy()
+        return DataSources.createFromAzureBlobStorage(BLOB_DATASOURCE_NAME, storageConnectionString,
+            blobContainerName, "/", "real live blob", new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue")
-        );
-    }
-
-    private static AzureEnvironment getDogfoodEnvironment() {
-        HashMap<String, String> configuration = new HashMap<>();
-        configuration.put("portalUrl", "http://df.onecloud.azure-test.net");
-        configuration.put("managementEndpointUrl", "https://management.core.windows.net/");
-        configuration.put("resourceManagerEndpointUrl", "https://api-dogfood.resources.windows-int.net/");
-        configuration.put("activeDirectoryEndpointUrl", "https://login.windows-ppe.net/");
-        configuration.put("activeDirectoryResourceId", "https://management.core.windows.net/");
-        configuration.put("activeDirectoryGraphResourceId", "https://graph.ppe.windows.net/");
-        configuration.put("activeDirectoryGraphApiVersion", "2013-04-05");
-        return new AzureEnvironment(configuration);
+                .setSoftDeleteMarkerValue("someValue"));
     }
 
     protected SearchIndexClientBuilder getSearchIndexClientBuilder(String indexName) {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
-            .endpoint(azureSearchResources.getEndpoint())
+            .endpoint(Configuration.getGlobalConfiguration().get("AZURE_SEARCH_SERVICE_ENDPOINT"))
             .indexName(indexName);
 
         if (interceptorManager.isPlaybackMode()) {
@@ -550,6 +487,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     /**
      * Constructs a request options object with client request Id.
+     *
      * @return a RequestOptions object with ClientRequestId.
      */
     protected RequestOptions generateRequestOptions() {
@@ -611,10 +549,6 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     static boolean liveMode() {
         return setupTestMode() == TestMode.LIVE;
-    }
-
-    static boolean playbackMode() {
-        return setupTestMode() == TestMode.PLAYBACK;
     }
 
     static TestMode setupTestMode() {

@@ -47,14 +47,14 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Index, AccessOptions, Index> createOrUpdateIndexFunc = (Index index, AccessOptions ac) ->
+    private final BiFunction<Index, AccessOptions, Index> createOrUpdateIndexFunc = (Index index, AccessOptions ac) ->
         createOrUpdateIndex(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
-    private Supplier<Index> newIndexFunc = this::createTestIndex;
+    private final Supplier<Index> newIndexFunc = this::createTestIndex;
 
-    private Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
+    private final Function<Index, Index> mutateIndexFunc = this::mutateCorsOptionsInIndex;
 
-    private BiConsumer<Index, AccessOptions> deleteIndexFunc =
+    private final BiConsumer<Index, AccessOptions> deleteIndexFunc =
         (Index index, AccessOptions ac) ->
             client.deleteIndexWithResponse(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
                 Context.NONE);

@@ -69,6 +69,9 @@ import com.azure.search.documents.models.UaxUrlEmailTokenizer;
 import com.azure.search.documents.models.UniqueTokenFilter;
 import com.azure.search.documents.models.WordDelimiterTokenFilter;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -79,8 +82,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -104,9 +105,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
 
     private static void getAllCharFilterName() {
         charFilterNames = new ArrayList<>();
-        for (CharFilterName name : CharFilterName.values()) {
-            charFilterNames.add(name);
-        }
+        charFilterNames.addAll(CharFilterName.values());
     }
 
     @Test

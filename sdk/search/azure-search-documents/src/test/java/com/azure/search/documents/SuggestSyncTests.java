@@ -312,7 +312,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
     @Test
     public void testCanSuggestWithSelectedFields() {
         createHotelIndex();
-        client = getClientBuilder(HOTELS_INDEX_NAME).buildClient();
+        client = getClientBuilder().buildClient();
 
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 

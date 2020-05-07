@@ -63,16 +63,16 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Skillset, AccessOptions, Skillset> createOrUpdateSkillsetFunc =
+    private final BiFunction<Skillset, AccessOptions, Skillset> createOrUpdateSkillsetFunc =
         (Skillset skillset, AccessOptions ac) ->
             createSkillset(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
-    private Supplier<Skillset> newSkillsetFunc =
+    private final Supplier<Skillset> newSkillsetFunc =
         () -> createSkillsetWithOcrDefaultSettings(false);
 
-    private Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
+    private final Function<Skillset, Skillset> mutateSkillsetFunc = this::mutateSkillsInSkillset;
 
-    private BiConsumer<Skillset, AccessOptions> deleteSkillsetFunc = (Skillset skillset, AccessOptions ac) ->
+    private final BiConsumer<Skillset, AccessOptions> deleteSkillsetFunc = (Skillset skillset, AccessOptions ac) ->
         client.deleteSkillsetWithResponse(skillset, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
             Context.NONE);
 

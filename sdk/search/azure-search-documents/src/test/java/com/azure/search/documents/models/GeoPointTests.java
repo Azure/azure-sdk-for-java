@@ -6,9 +6,10 @@ package com.azure.search.documents.models;
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchIndexClient;
 import com.azure.search.documents.SearchIndexClientTestBase;
-import com.azure.search.documents.util.SearchPagedResponse;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SearchPagedResponse;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,19 +34,17 @@ public class GeoPointTests extends SearchIndexClientTestBase {
 
     private SearchIndexClient client;
 
-    @SuppressWarnings("unchecked")
-    private List<Map<String, Object>> uploadDocuments() throws Exception {
-        Reader docsData = new InputStreamReader(
-            getClass().getClassLoader().getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS));
+    private void uploadDocuments() throws Exception {
+        Reader docsData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+            .getResourceAsStream(GeoPointTests.DATA_JSON_HOTELS)));
 
         ObjectMapper mapper = new ObjectMapper();
         SerializationUtil.configureMapper(mapper);
-        List<Map<String, Object>> documents = mapper.readValue(docsData, List.class);
+        List<Map<String, Object>> documents = mapper.readValue(docsData,
+            new TypeReference<List<Map<String, Object>>>() {});
         client.uploadDocuments(documents);
 
         waitForIndexing();
-
-        return documents;
     }
 
     @Test

@@ -1,8 +1,89 @@
 {
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
-    "parameters": {},
-    "variables": {},
-    "resources": [],
-    "outputs": {}
+    "parameters": {
+      "baseName": {
+        "type": "string"
+      },
+      "searchEndpointSuffix": {
+        "type": "string",
+        "defaultValue": "search.windows.net"
+      },
+      "storageEndpointSuffix": {
+        "type": "string",
+        "defaultValue": "core.windows.net"
+      }
+    },
+    "variables": {
+      "location": "[resourceGroup().location]",
+      "searchApiVersion": "2015-08-19",
+      "searchServiceName": "[concat('azsjavasearch', parameters('baseName'))]",
+      "storageApiVersion": "2019-06-01",
+      "storageAccountName": "[concat('azsjavastorage', parameters('baseName'))]"
+    },
+    "resources": [
+      {
+        "name": "[variables('searchServiceName')]",
+        "type": "Microsoft.Search/searchServices",
+        "apiVersion": "[variables('searchApiVersion')]",
+        "location": "[variables('location')]",
+        "properties": {
+          "replicaCount": "1",
+          "partitionCount": "1"
+        },
+        "sku": {
+          "name": "basic"
+        }
+      },
+      {
+        "type": "Microsoft.Storage/storageAccounts",
+        "apiVersion": "[variables('storageApiVersion')]",
+        "name": "[variables('storageAccountName')]",
+        "location": "[variables('location')]",
+        "sku": {
+          "name": "Standard_RAGRS",
+          "tier": "Standard"
+        },
+        "kind": "StorageV2",
+        "properties": {
+          "networkAcls": {
+            "bypass": "AzureServices",
+            "virtualNetworkRules": [],
+            "ipRules": [],
+            "defaultAction": "Allow"
+          },
+          "supportsHttpsTrafficOnly": true,
+          "encryption": {
+            "services": {
+              "file": {
+                "enabled": true
+              },
+              "blob": {
+                "enabled": true
+              }
+            },
+            "keySource": "Microsoft.Storage"
+          },
+          "accessTier": "Hot"
+        }
+      }
+    ],
+    "outputs": {
+      "AZURE_SEARCH_SERVICE_ENDPOINT": {
+        "type": "string",
+        "value": "[concat('https://', variables('searchServiceName'), '.', variables('searchEndpointSuffix')]"
+      },
+      "AZURE_SEARCH_SERVICE_API_KEY": {
+        "type": "string",
+        "value": "[listKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), variables('searviceApiVersion')).keys[0].value]"
+      },
+      "AZURE_SEARCH_STORAGE_NAME": {
+        "type": "string",
+        "value": "[variables('storageAccountName')]"
+      },
+      "AZURE_SEARCH_STORAGE_CONNECTION_STRING": {
+        "type": "string",
+        "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
+      }
+    }
 }

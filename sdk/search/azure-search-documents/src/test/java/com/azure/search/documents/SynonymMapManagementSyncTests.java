@@ -29,17 +29,17 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<SynonymMap, AccessOptions, SynonymMap> createOrUpdateSynonymMapFunc =
+    private final BiFunction<SynonymMap, AccessOptions, SynonymMap> createOrUpdateSynonymMapFunc =
         (SynonymMap synonymMap, AccessOptions accessOptions) ->
             createOrUpdateSynonymMap(synonymMap, accessOptions.getOnlyIfUnchanged(), accessOptions.getRequestOptions());
 
-    private Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
+    private final Supplier<SynonymMap> newSynonymMapFunc = this::createTestSynonymMap;
 
-    private Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
+    private final Function<SynonymMap, SynonymMap> mutateSynonymMapFunc = this::mutateSynonymsInSynonymMap;
 
-    private BiConsumer<SynonymMap, AccessOptions> deleteSynonymMapFunc = (SynonymMap synonymMap, AccessOptions ac) ->
-            client.deleteSynonymMapWithResponse(synonymMap, ac.getOnlyIfUnchanged(),
-                ac.getRequestOptions(), Context.NONE);
+    private final BiConsumer<SynonymMap, AccessOptions> deleteSynonymMapFunc =
+        (SynonymMap synonymMap, AccessOptions ac) -> client.deleteSynonymMapWithResponse(synonymMap,
+            ac.getOnlyIfUnchanged(), ac.getRequestOptions(), Context.NONE);
 
     private SynonymMap createOrUpdateSynonymMap(
         SynonymMap sm, Boolean onlyIfUnchanged, RequestOptions ro) {

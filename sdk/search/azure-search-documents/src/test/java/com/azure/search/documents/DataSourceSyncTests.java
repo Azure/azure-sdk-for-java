@@ -42,17 +42,17 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<DataSource, AccessOptions, DataSource> createOrUpdateDataSourceFunc =
+    private final BiFunction<DataSource, AccessOptions, DataSource> createOrUpdateDataSourceFunc =
         (DataSource ds, AccessOptions ac) ->
             createOrUpdateDataSource(ds, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
-    private Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
+    private final Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
 
-    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) -> 
+    private final Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) ->
         ds.setDescription("somethingnew");
 
-    private BiConsumer<DataSource, AccessOptions> deleteDataSourceFunc = (DataSource dataSource, AccessOptions ac) ->
-        client.deleteDataSourceWithResponse(dataSource,
+    private final BiConsumer<DataSource, AccessOptions> deleteDataSourceFunc =
+        (DataSource dataSource, AccessOptions ac) -> client.deleteDataSourceWithResponse(dataSource,
             ac.getOnlyIfUnchanged(), ac.getRequestOptions(), Context.NONE);
 
     @Override

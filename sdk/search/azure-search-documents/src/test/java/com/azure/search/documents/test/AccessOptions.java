@@ -10,7 +10,7 @@ import com.azure.search.documents.models.RequestOptions;
  */
 public class AccessOptions {
     private boolean onlyIfUnchanged;
-    private RequestOptions requestOptions;
+    private final RequestOptions requestOptions;
 
     public AccessOptions(boolean onlyIfUnchanged, RequestOptions requestOptions) {
         this.onlyIfUnchanged = onlyIfUnchanged;
@@ -33,7 +33,4 @@ public class AccessOptions {
         this.onlyIfUnchanged = onlyIfUnchanged;
     }
 
-    public void setOnlyIfUnchanged(RequestOptions requestOptions) {
-        this.requestOptions = requestOptions;
-    }
 }

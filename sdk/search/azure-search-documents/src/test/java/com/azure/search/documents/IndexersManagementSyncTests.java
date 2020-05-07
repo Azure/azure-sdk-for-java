@@ -61,17 +61,17 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
-    private BiFunction<Indexer, AccessOptions, Indexer> createOrUpdateIndexerFunc =
+    private final BiFunction<Indexer, AccessOptions, Indexer> createOrUpdateIndexerFunc =
         (Indexer indexer, AccessOptions ac) ->
             createOrUpdateIndexer(indexer, ac.getOnlyIfUnchanged(), ac.getRequestOptions());
 
-    private Supplier<Indexer> newIndexerFunc =
+    private final Supplier<Indexer> newIndexerFunc =
         () -> createBaseTestIndexerObject("name").setDataSourceName(SQL_DATASOURCE_NAME);
 
-    private Function<Indexer, Indexer> mutateIndexerFunc =
+    private final Function<Indexer, Indexer> mutateIndexerFunc =
         (Indexer indexer) -> indexer.setDescription("ABrandNewDescription");
 
-    private BiConsumer<Indexer, AccessOptions> deleteIndexerFunc =
+    private final BiConsumer<Indexer, AccessOptions> deleteIndexerFunc =
         (Indexer indexer, AccessOptions ac) ->
             client.deleteIndexerWithResponse(indexer, ac.getOnlyIfUnchanged(),
                 ac.getRequestOptions(), Context.NONE);
