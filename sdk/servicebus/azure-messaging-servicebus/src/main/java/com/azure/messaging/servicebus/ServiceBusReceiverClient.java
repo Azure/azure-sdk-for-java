@@ -620,7 +620,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus.
+     * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus
+     * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
