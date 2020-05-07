@@ -971,6 +971,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Function.identity(),
                 builder -> builder.sessionId(sessionId)).buildAsyncClient();
             this.receiver2 = getSessionReceiverBuilder(false, entityType,
+                Function.identity(),
                 builder -> builder.sessionId(sessionId2)).buildAsyncClient();
 
             this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
