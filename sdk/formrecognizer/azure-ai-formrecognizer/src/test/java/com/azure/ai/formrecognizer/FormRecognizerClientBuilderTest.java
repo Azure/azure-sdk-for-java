@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.ErrorResponseException;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -12,6 +13,8 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -19,6 +22,7 @@ import java.util.function.Function;
 
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.validateAccountProperties;
+import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.VALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.getExpectedAccountProperties;
@@ -31,87 +35,95 @@ public class FormRecognizerClientBuilderTest extends TestBase {
     /**
      * Test client builder with invalid API key
      */
-    @Test
-    public void clientBuilderWithInvalidApiKeyCredential() {
-        clientBuilderWithInvalidApiKeyCredentialRunner(clientBuilder -> (input, output) ->
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+     public void clientBuilderWithInvalidApiKeyCredential(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithInvalidApiKeyCredentialRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
             assertThrows(output.getClass(), () -> clientBuilder.buildClient().beginRecognizeContentFromUrl(input)));
     }
 
     /**
      * Test client with invalid API key but update to valid key and make call to server.
      */
-    @Test
-    public void clientBuilderWithRotateToValidKey() {
-        clientBuilderWithRotateToValidKeyRunner(clientBuilder -> (input) ->
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+     public void clientBuilderWithRotateToValidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithRotateToValidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
 
     /**
      * Test client with valid API key but update to invalid key and make call to server.
      */
-    @Test
-    public void clientBuilderWithRotateToInvalidKey() {
-        clientBuilderWithRotateToInvalidKeyRunner(clientBuilder -> (input, output) ->
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+     public void clientBuilderWithRotateToInvalidKey(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithRotateToInvalidKeyRunner(httpClient, serviceVersion, clientBuilder -> (input, output) ->
             assertThrows(output.getClass(), () -> clientBuilder.buildClient().beginRecognizeContentFromUrl(input)));
     }
 
     /**
      * Test for null service version, which would take take the default service version by default
      */
-    @Test
-    public void clientBuilderWithNullServiceVersion() {
-        clientBuilderWithNullServiceVersionRunner(clientBuilder -> (input) ->
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+     public void clientBuilderWithNullServiceVersion(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithNullServiceVersionRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
 
     /**
      * Test for default pipeline in client builder
      */
-    @Test
-    public void clientBuilderWithDefaultPipeline() {
-        clientBuilderWithDefaultPipelineRunner(clientBuilder -> (input) ->
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+     public void clientBuilderWithDefaultPipeline(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        clientBuilderWithDefaultPipelineRunner(httpClient, serviceVersion, clientBuilder -> (input) ->
             validateAccountProperties(getExpectedAccountProperties(), clientBuilder.buildClient().getFormTrainingClient().getAccountProperties()));
     }
 
     // Client builder runner
-    void clientBuilderWithInvalidApiKeyCredentialRunner(
+    void clientBuilderWithInvalidApiKeyCredentialRunner(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
-        final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(),
+        final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion, getEndpoint(),
             new AzureKeyCredential(INVALID_KEY));
         testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
     }
 
-    void clientBuilderWithRotateToInvalidKeyRunner(
+    void clientBuilderWithRotateToInvalidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, BiConsumer<String, ErrorResponseException>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(getApiKey());
-        final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(), credential);
+        final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
+            getEndpoint(), credential);
         // Update to invalid key
         credential.update(INVALID_KEY);
         testRunner.apply(clientBuilder).accept(VALID_URL, new ErrorResponseException("", null));
     }
 
-    void clientBuilderWithRotateToValidKeyRunner(
+    void clientBuilderWithRotateToValidKeyRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
         final AzureKeyCredential credential = new AzureKeyCredential(INVALID_KEY);
-        final FormRecognizerClientBuilder clientBuilder = createClientBuilder(getEndpoint(), credential);
+        final FormRecognizerClientBuilder clientBuilder = createClientBuilder(httpClient, serviceVersion,
+            getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
         testRunner.apply(clientBuilder).accept(VALID_URL);
     }
 
-    void clientBuilderWithNullServiceVersionRunner(
+    void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder =
-            createClientBuilder(getEndpoint(), new AzureKeyCredential(getApiKey()))
+            createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
         testRunner.apply(clientBuilder).accept(VALID_URL);
     }
 
-    void clientBuilderWithDefaultPipelineRunner(
+    void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
         Function<FormRecognizerClientBuilder, Consumer<String>> testRunner) {
         final FormRecognizerClientBuilder clientBuilder =
-            createClientBuilder(getEndpoint(), new AzureKeyCredential(getApiKey()))
+            createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         testRunner.apply(clientBuilder).accept(VALID_URL);
@@ -131,16 +143,16 @@ public class FormRecognizerClientBuilderTest extends TestBase {
      *
      * @return {@link FormRecognizerClientBuilder}
      */
-    FormRecognizerClientBuilder createClientBuilder(String endpoint, AzureKeyCredential credential) {
+    FormRecognizerClientBuilder createClientBuilder(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
+        String endpoint, AzureKeyCredential credential) {
         final FormRecognizerClientBuilder clientBuilder = new FormRecognizerClientBuilder()
             .credential(credential)
-            .endpoint(endpoint);
+            .endpoint(endpoint)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .serviceVersion(serviceVersion);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        } else {
-            clientBuilder.httpClient(new NettyAsyncHttpClientBuilder().wiretap(true).build())
-                .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         return clientBuilder;

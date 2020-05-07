@@ -261,91 +261,75 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     @Test
-    abstract void recognizeReceiptSourceUrl();
+    abstract void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptSourceUrlTextDetails();
+    abstract void recognizeReceiptSourceUrlTextDetails(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptData();
+    abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataTextDetails();
+    abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataTextDetailsWithNullData();
+    abstract void recognizeReceiptDataTextDetailsWithNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataWithContentTypeAutoDetection();
+    abstract void recognizeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutData();
+    abstract void recognizeLayoutData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutDataWithNullData();
+    abstract void recognizeLayoutDataWithNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutDataWithContentTypeAutoDetection();
+    abstract void recognizeLayoutDataWithContentTypeAutoDetection(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutSourceUrl();
+    abstract void recognizeLayoutSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutInvalidSourceUrl();
+    abstract void recognizeLayoutInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledData();
+    abstract void recognizeCustomFormLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUnlabeledData();
+    abstract void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataWithNullValues();
+    abstract void recognizeCustomFormLabeledDataWithNullValues(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection();
+    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormInvalidSourceUrl();
+    abstract void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
-    void validateUSReceiptData(USReceipt actualRecognizedReceipt,
-        boolean includeTextDetails) {
+    void validateUSReceiptData(USReceipt actualRecognizedReceipt, boolean includeTextDetails) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = analyzeResult.getReadResults();
         DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
         final Map<String, FieldValue> expectedReceiptFields = documentResult.getFields();
-        validatePageRangeData(documentResult.getPageRange().get(0),
-            actualRecognizedReceipt.getRecognizedForm().getPageRange());
-        validatePageRangeData(documentResult.getPageRange().get(1),
-            actualRecognizedReceipt.getRecognizedForm().getPageRange());
-        assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(),
-            actualRecognizedReceipt.getReceiptType().getType());
-        assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(),
-            actualRecognizedReceipt.getReceiptType().getConfidence());
-        validateFieldValueTransforms(expectedReceiptFields.get("MerchantName"),
-            actualRecognizedReceipt.getMerchantName(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("MerchantPhoneNumber"),
-            actualRecognizedReceipt.getMerchantPhoneNumber(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("MerchantAddress"),
-            actualRecognizedReceipt.getMerchantAddress(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("Total"),
-            actualRecognizedReceipt.getTotal(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"),
-            actualRecognizedReceipt.getSubtotal(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("Tax"),
-            actualRecognizedReceipt.getTax(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"),
-            actualRecognizedReceipt.getTransactionDate(),
-            readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"),
-            actualRecognizedReceipt.getTransactionTime(),
-            readResults, includeTextDetails);
-        validateReceiptItemsData(expectedReceiptFields.get("Items").getValueArray(),
-            actualRecognizedReceipt.getReceiptItems(), readResults, includeTextDetails);
+        validatePageRangeData(documentResult.getPageRange().get(0), actualRecognizedReceipt.getRecognizedForm().getPageRange());
+        validatePageRangeData(documentResult.getPageRange().get(1), actualRecognizedReceipt.getRecognizedForm().getPageRange());
+        assertEquals(expectedReceiptFields.get("ReceiptType").getValueString(), actualRecognizedReceipt.getReceiptType().getType());
+        assertEquals(expectedReceiptFields.get("ReceiptType").getConfidence(), actualRecognizedReceipt.getReceiptType().getConfidence());
+        validateFieldValueTransforms(expectedReceiptFields.get("MerchantName"), actualRecognizedReceipt.getMerchantName(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("MerchantPhoneNumber"), actualRecognizedReceipt.getMerchantPhoneNumber(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("MerchantAddress"), actualRecognizedReceipt.getMerchantAddress(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("Total"), actualRecognizedReceipt.getTotal(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"), actualRecognizedReceipt.getSubtotal(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceipt.getTax(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"), actualRecognizedReceipt.getTransactionDate(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"), actualRecognizedReceipt.getTransactionTime(), readResults, includeTextDetails);
+        validateReceiptItemsData(expectedReceiptFields.get("Items").getValueArray(), actualRecognizedReceipt.getReceiptItems(), readResults, includeTextDetails);
     }
 
-    void validateLayoutDataResults(IterableStream<FormPage> actualFormPages,
-        boolean includeTextDetails) {
+    void validateLayoutDataResults(IterableStream<FormPage> actualFormPages, boolean includeTextDetails) {
         AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         final List<PageResult> pageResults = analyzeResult.getPageResults();
         final List<ReadResult> readResults = analyzeResult.getReadResults();
@@ -361,26 +345,22 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
                 validateFormLineData(readResult.getLines(), actualFormPage.getLines());
             }
             if (pageResults != null) {
-                validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults,
-                    includeTextDetails);
+                validateFormTableData(pageResults.get(i).getTables(), actualFormPage.getTables(), readResults, includeTextDetails);
             }
         }
     }
 
-    void validateReceiptResultData(IterableStream<RecognizedReceipt> actualResult,
-        boolean includeTextDetails) {
+    void validateReceiptResultData(IterableStream<RecognizedReceipt> actualResult, boolean includeTextDetails) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         List<RecognizedReceipt> actualReceiptList = actualResult.stream().collect(Collectors.toList());
         for (int i = 0; i < actualReceiptList.size(); i++) {
             final RecognizedReceipt actualReceipt = actualReceiptList.get(i);
             assertEquals("en-US", actualReceipt.getReceiptLocale());
-            validateLabeledData(actualReceipt.getRecognizedForm(), includeTextDetails,
-                rawResponse.getReadResults(), rawResponse.getDocumentResults().get(i));
+            validateLabeledData(actualReceipt.getRecognizedForm(), includeTextDetails, rawResponse.getReadResults(), rawResponse.getDocumentResults().get(i));
         }
     }
 
-    void validateRecognizedResult(IterableStream<RecognizedForm> actualForms,
-        boolean includeTextDetails, boolean isLabeled) {
+    void validateRecognizedResult(IterableStream<RecognizedForm> actualForms, boolean includeTextDetails, boolean isLabeled) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = rawResponse.getReadResults();
         List<PageResult> pageResults = rawResponse.getPageResults();
@@ -390,11 +370,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         for (int i = 0; i < actualFormList.size(); i++) {
             validateLayoutDataResults(actualFormList.get(i).getPages(), includeTextDetails);
             if (isLabeled) {
-                validateLabeledData(actualFormList.get(i), includeTextDetails, readResults,
-                    documentResults.get(i));
+                validateLabeledData(actualFormList.get(i), includeTextDetails, readResults, documentResults.get(i));
             } else {
-                validateUnLabeledResult(actualFormList.get(i), includeTextDetails, readResults,
-                    pageResults.get(i), pageResults);
+                validateUnLabeledResult(actualFormList.get(i), includeTextDetails, readResults, pageResults.get(i), pageResults);
             }
         }
     }
