@@ -8,6 +8,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
+import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
@@ -19,6 +20,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
+import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ListBlobsOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
@@ -1422,5 +1424,31 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "Restore Container"() {
+        given:
+        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc1.create()
+        def blobName = generateBlobName()
+        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
+        cc1.delete()
+        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+            new ListBlobContainersOptions()
+                .setPrefix(cc1.getBlobContainerName())
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
+            null).first()
+
+        if (!playbackMode()) {
+            Thread.sleep(30000)
+        }
+
+        when:
+        def cc2 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
+        cc2.restore(blobContainerItem.getName(), blobContainerItem.getVersion())
+
+        then:
+        cc2.listBlobs().size() == 1
+        cc2.listBlobs().first().getName() == blobName
     }
 }
