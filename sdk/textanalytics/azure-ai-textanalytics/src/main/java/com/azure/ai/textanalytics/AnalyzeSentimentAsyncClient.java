@@ -35,7 +35,7 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
-import static com.azure.ai.textanalytics.implementation.Utility.getMockHttpResponse;
+import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
@@ -122,7 +122,9 @@ class AnalyzeSentimentAsyncClient {
              *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
              */
             if (documentError.getId().isEmpty()) {
-                throw logger.logExceptionAsError(new HttpResponseException(getMockHttpResponse(response)));
+                throw logger.logExceptionAsError(
+                    new HttpResponseException(documentError.getError().getInnererror().getMessage(),
+                    getEmptyErrorIdHttpResponse(response), documentError.getError().getInnererror().getCode()));
             }
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError()), null));

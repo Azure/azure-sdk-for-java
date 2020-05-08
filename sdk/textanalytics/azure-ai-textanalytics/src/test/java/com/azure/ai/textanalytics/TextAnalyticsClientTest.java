@@ -245,9 +245,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesTooManyDocuments() {
-        recognizeEntitiesTooManyDocumentsRunner(inputs ->
-            assertThrows(HttpResponseException.class,
-                () -> client.recognizeEntitiesBatch(inputs).stream().findFirst().get()));
+        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs).stream().findFirst().get());
+            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+        });
     }
 
     // Recognize linked entity
@@ -320,9 +323,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeLinkedEntitiesTooManyDocuments() {
-        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs ->
-            assertThrows(HttpResponseException.class,
-                () -> client.recognizeLinkedEntitiesBatch(inputs).stream().findFirst().get()));
+        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs).stream().findFirst().get());
+            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+        });
     }
 
     // Extract key phrase

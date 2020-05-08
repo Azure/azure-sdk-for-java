@@ -268,7 +268,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesTooManyDocuments() {
         recognizeEntitiesTooManyDocumentsRunner(inputs -> {
             StepVerifier.create(client.recognizeEntitiesBatch(inputs))
-                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException exception = (HttpResponseException) ex;
+                    assertEquals(HttpResponseException.class, exception.getClass());
+                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+                });
         });
     }
 
@@ -348,7 +353,12 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesTooManyDocuments() {
         recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
             StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs))
-                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException exception = (HttpResponseException) ex;
+                    assertEquals(HttpResponseException.class, exception.getClass());
+                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+                });
         });
     }
 

@@ -45,7 +45,7 @@ public final class Utility {
      * @param response A {@link SimpleResponse} with any type
      * @return A mock {@link HttpResponse} that only return status code 400.
      */
-    public static HttpResponse getMockHttpResponse(SimpleResponse<?> response) {
+    public static HttpResponse getEmptyErrorIdHttpResponse(SimpleResponse<?> response) {
         return new HttpResponse(response.getRequest()) {
             @Override
             public int getStatusCode() {

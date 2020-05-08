@@ -78,7 +78,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     private final String clientName = properties.getOrDefault(NAME, "UnknownName");
     private final String clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
     static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when RecognizeEntitiesResult returned with an error: Document text is empty. ErrorCodeValue: {invalidDocument}";
+    static final String EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE = "The number of documents in the request have exceeded the data limitations. See https://aka.ms/text-analytics-data-limits for additional information";
     static final String INVALID_COUNTRY_HINT_EXPECTED_EXCEPTION_MESSAGE = "Country hint is not valid. Please specify an ISO 3166-1 alpha-2 two letter country code. ErrorCodeValue: {invalidCountryHint}";
+    static final String INVALID_DOCUMENT_BATCH = "invalidDocumentBatch";
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_EXPECTED_EXCEPTION_MESSAGE = "Document text is empty. ErrorCodeValue: {invalidDocument}";
