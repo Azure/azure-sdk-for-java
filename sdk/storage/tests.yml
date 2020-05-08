@@ -29,6 +29,9 @@ jobs:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
+      AdditionalModules:
+        - name: azure-messaging-eventhubs
+          groupId: com.azure
       TimeoutInMinutes: 120
       EnvVars:
         AZURE_TEST_MODE: LIVE
