@@ -21,7 +21,7 @@ public interface VirtualNetworkRules extends SupportsCreating<VirtualNetworkRule
     /**
      * Gets a virtual network rule.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -32,7 +32,7 @@ public interface VirtualNetworkRules extends SupportsCreating<VirtualNetworkRule
     /**
      * Gets a list of virtual network rules in a server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -42,7 +42,7 @@ public interface VirtualNetworkRules extends SupportsCreating<VirtualNetworkRule
     /**
      * Deletes the virtual network rule with the given name.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation
