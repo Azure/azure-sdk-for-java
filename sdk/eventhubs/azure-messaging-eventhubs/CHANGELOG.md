@@ -2,7 +2,7 @@
 
 ## 5.1.0 (2020-05-07)
 - Add support for sending a collection of events as a single batch from `EventHubProducerClient` and `EventHubProducerAsyncClient`.
-- Updated dependency version of `azure-core-amqp` to `1.1.1`.
+- Updated dependency version of `azure-core-amqp` to `1.1.2`.
 
 ## 5.1.0-beta.1 (2020-04-08)
 - Add support for heartbeat for single process event function in Event Processor Client.
