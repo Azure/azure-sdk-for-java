@@ -8,13 +8,13 @@ import com.azure.management.appservice.samples.ManageFunctionAppWithDomainSsl;
 import com.azure.management.appservice.samples.ManageLinuxWebAppBasic;
 import com.azure.management.appservice.samples.ManageLinuxWebAppSqlConnection;
 import com.azure.management.appservice.samples.ManageLinuxWebAppWithDomainSsl;
-import com.azure.management.appservice.samples.ManageLinuxWebAppWithTrafficManager;
+//import com.azure.management.appservice.samples.ManageLinuxWebAppWithTrafficManager;
 import com.azure.management.appservice.samples.ManageWebAppBasic;
 import com.azure.management.appservice.samples.ManageWebAppSlots;
 import com.azure.management.appservice.samples.ManageWebAppSourceControlAsync;
 import com.azure.management.appservice.samples.ManageWebAppSqlConnection;
 import com.azure.management.appservice.samples.ManageWebAppWithDomainSsl;
-import com.azure.management.appservice.samples.ManageWebAppWithTrafficManager;
+//import com.azure.management.appservice.samples.ManageWebAppWithTrafficManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -48,10 +48,10 @@ public class AppServiceSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageWebAppWithDomainSsl.runSample(azure));
     }
 
-    @Test
-    public void testManageWebAppWithTrafficManager() {
-        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
-    }
+//    @Test
+//    public void testManageWebAppWithTrafficManager() {
+//        Assertions.assertTrue(ManageWebAppWithTrafficManager.runSample(azure));
+//    }
 
     @Test
     public void testManageLinuxWebAppBasic() {
@@ -69,10 +69,10 @@ public class AppServiceSampleTests extends SamplesTestBase {
         Assertions.assertTrue(ManageLinuxWebAppWithDomainSsl.runSample(azure));
     }
 
-    @Test
-    public void testManageLinuxWebAppWithTrafficManager() {
-        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
-    }
+//    @Test
+//    public void testManageLinuxWebAppWithTrafficManager() {
+//        Assertions.assertTrue(ManageLinuxWebAppWithTrafficManager.runSample(azure));
+//    }
 
     @Test
     public void testManageFunctionAppBasic() {

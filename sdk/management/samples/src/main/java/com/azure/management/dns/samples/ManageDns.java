@@ -49,7 +49,6 @@ public class ManageDns {
     public static boolean runSample(Azure azure) {
         final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = azure.sdkContext().randomResourceName("rgNEMV_", 24);
-        final String appServicePlanName       = azure.sdkContext().randomResourceName("jplan1_", 15);
         final String webAppName               = azure.sdkContext().randomResourceName("webapp1-", 20);
 
         try {
