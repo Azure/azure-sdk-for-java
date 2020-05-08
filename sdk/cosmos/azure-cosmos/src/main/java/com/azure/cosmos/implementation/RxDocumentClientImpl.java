@@ -918,6 +918,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.OFFER_TYPE, options.getOfferType());
         }
 
+        if (options.getOfferThroughput() == null) {
+            if (options.getThroughputProperties() != null) {
+                Offer offer = ModelBridgeInternal.getOfferFromThroughputProperties(options.getThroughputProperties());
+                final OfferAutoscaleSettings offerAutoscaleSettings = offer.getOfferAutoScaleSettings();
+                OfferAutoscaleAutoUpgradeProperties autoscaleAutoUpgradeProperties = null;
+                if (offerAutoscaleSettings != null) {
+                     autoscaleAutoUpgradeProperties
+                        = offer.getOfferAutoScaleSettings().getAutoscaleAutoUpgradeProperties();
+                }
+                if (offer.hasOfferThroughput() &&
+                        (offerAutoscaleSettings != null && offerAutoscaleSettings.getMaxThroughput() >= 0 ||
+                             autoscaleAutoUpgradeProperties != null &&
+                                 autoscaleAutoUpgradeProperties
+                                     .getAutoscaleThroughputProperties()
+                                     .getIncrementPercent() >= 0)) {
+                    throw new IllegalArgumentException("Autoscale provisioned throughput can not be configured with "
+                                                           + "fixed offer");
+                }
+
+                if (offer.hasOfferThroughput()) {
+                    headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
+                } else if (offer.getOfferAutoScaleSettings() != null) {
+                    headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
+                                ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                }
+            }
+        }
+
         if (options.isPopulateQuotaInfo()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
