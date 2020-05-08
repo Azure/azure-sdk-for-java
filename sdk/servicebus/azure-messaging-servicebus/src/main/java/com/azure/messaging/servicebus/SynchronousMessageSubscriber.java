@@ -98,6 +98,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         super.dispose();
     }
 
+    SynchronousReceiveWork getWork(){
+        return work;
+    }
+
     private static final class ReceiveTimeoutTask extends TimerTask {
         private final ClientLogger logger = new ClientLogger(ReceiveTimeoutTask.class);
         private final long workId;

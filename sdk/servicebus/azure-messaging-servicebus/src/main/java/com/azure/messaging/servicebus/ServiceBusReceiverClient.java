@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -17,7 +18,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -42,12 +42,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
-    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
+    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageSource =
         new AtomicReference<>();
-
     private final AtomicReference<EmitterProcessor<SynchronousMessageSubscriber>> workQueueProcessor =
         new AtomicReference<>(EmitterProcessor.create(false));
-
+    private final AtomicReference<Disposable> workSubscriber = new AtomicReference<>();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -618,7 +617,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        EmitterProcessor<ServiceBusReceivedMessageContext> processor = messageProcessor.getAndSet(null);
+        EmitterProcessor<ServiceBusReceivedMessageContext> processor = messageSource.getAndSet(null);
         if (processor != null) {
             processor.onComplete();
         }
@@ -638,23 +637,34 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
             EmitterProcessor<SynchronousMessageSubscriber> workProcessor = workQueueProcessor.get();
-            workProcessor.sink().next(syncSubscriber);
+            workProcessor.onNext(syncSubscriber);
 
-            EmitterProcessor<ServiceBusReceivedMessageContext> emitterProcessor = messageProcessor.get();
-            if (emitterProcessor == null) {
-                emitterProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                    .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
-                messageProcessor.set(emitterProcessor);
+            // We can have only one subscriber. if subscriber for processing each request is started.
+            Disposable thisWorkSubscriber = workSubscriber.get();
+            if (thisWorkSubscriber != null) {
+                logger.info("[{}]: Receive request is placed in queue to process.", id);
+                return;
             }
 
-            EmitterProcessor<ServiceBusReceivedMessageContext> finalEmitterProcessor = emitterProcessor;
-            workProcessor
-                .map(currentWork -> {
-                    logger.info("[{}]: Started synchronous message subscriber.", id);
-                    finalEmitterProcessor.subscribe(currentWork);
-                     return currentWork;
-                })
-                .subscribe();
+            // make sure message source processor exists.
+            EmitterProcessor<ServiceBusReceivedMessageContext> source = messageSource.get();
+            if (source == null) {
+                source = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                    .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
+                messageSource.set(source);
+                logger.info("Created source for receiving messages.");
+            }
+
+            // start processing receive requests
+            EmitterProcessor<ServiceBusReceivedMessageContext> finalSource = source;
+            thisWorkSubscriber = workProcessor
+                .subscribe(currentWork -> finalSource.subscribe(currentWork), error -> {
+                    logger.error("Error in processing messages [{}]", error);
+                }, () -> {
+                    logger.info("Receiving messages completed.");
+                });
+
+            workSubscriber.set(thisWorkSubscriber);
         }
     }
 }

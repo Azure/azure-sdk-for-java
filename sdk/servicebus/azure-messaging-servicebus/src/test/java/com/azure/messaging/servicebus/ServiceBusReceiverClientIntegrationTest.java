@@ -104,7 +104,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessages = 1;
+        final int maxMessages = 2;
         final int totalReceive = 3;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
