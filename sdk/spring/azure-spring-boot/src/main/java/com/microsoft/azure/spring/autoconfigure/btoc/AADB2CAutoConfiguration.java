@@ -34,7 +34,7 @@ import static com.microsoft.azure.telemetry.TelemetryData.TENANT_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
 /**
- * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication B2C.
+ * {@link EnableAutoConfiguration Auto-configuration} for AAD B2C Authentication.
  * <p>
  * The configuration will not be activated if no {@literal azure.activedirectory.b2c.tenant-id, client-id, client-secret, reply-url and sign-up-or-sign-in} property provided.
  * <p>
