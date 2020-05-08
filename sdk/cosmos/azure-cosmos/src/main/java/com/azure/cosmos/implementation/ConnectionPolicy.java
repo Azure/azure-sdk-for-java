@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.ConnectionConfig;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
@@ -31,7 +30,7 @@ public final class ConnectionPolicy {
     private ThrottlingRetryOptions throttlingRetryOptions;
     private boolean endpointDiscoveryEnabled;
     private List<String> preferredRegions;
-    private boolean usingMultipleWriteRegions;
+    private boolean multipleWriteRegionsEnabled;
     private Boolean readRequestsFallbackEnabled;
 
     //  Gateway connection config properties
@@ -51,7 +50,7 @@ public final class ConnectionPolicy {
      * Constructor.
      */
     public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
-        this(gatewayConnectionConfig, null);
+        this(ConnectionMode.GATEWAY);
         this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
         this.maxPoolSize = gatewayConnectionConfig.getMaxPoolSize();
         this.requestTimeout = gatewayConnectionConfig.getRequestTimeout();
@@ -59,7 +58,7 @@ public final class ConnectionPolicy {
     }
 
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
-        this(directConnectionConfig, null);
+        this(ConnectionMode.DIRECT);
         this.connectionTimeout = directConnectionConfig.getConnectionTimeout();
         this.idleChannelTimeout = directConnectionConfig.getIdleChannelTimeout();
         this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
@@ -67,16 +66,14 @@ public final class ConnectionPolicy {
         this.maxRequestsPerChannel = directConnectionConfig.getMaxRequestsPerChannel();
     }
 
-    //  Because ConnectionConfig is parent class of GatewayConnectionConfig and DirectConnectionConfig
-    //  Second param - ignored - is just to identify this constructor as another constructor
-    private ConnectionPolicy(ConnectionConfig connectionConfig, Boolean ignored) {
-        this.connectionMode = connectionConfig.getConnectionMode();
-        this.throttlingRetryOptions = connectionConfig.getThrottlingRetryOptions();
-        this.userAgentSuffix = connectionConfig.getUserAgentSuffix();
-        this.preferredRegions = connectionConfig.getPreferredRegions();
-        this.endpointDiscoveryEnabled = connectionConfig.isEndpointDiscoveryEnabled();
-        this.usingMultipleWriteRegions = connectionConfig.isUsingMultipleWriteRegions();
-        this.readRequestsFallbackEnabled = connectionConfig.isReadRequestsFallbackEnabled();
+    private ConnectionPolicy(ConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
+        //  Default values
+        this.throttlingRetryOptions = new ThrottlingRetryOptions();
+        this.readRequestsFallbackEnabled = null;
+        this.userAgentSuffix = "";
+        this.endpointDiscoveryEnabled = true;
+        this.multipleWriteRegionsEnabled = true;
     }
 
     /**
@@ -264,8 +261,8 @@ public final class ConnectionPolicy {
      *
      * @return flag to enable writes on any regions for geo-replicated database accounts.
      */
-    public boolean isUsingMultipleWriteRegions() {
-        return this.usingMultipleWriteRegions;
+    public boolean isMultipleWriteRegionsEnabled() {
+        return this.multipleWriteRegionsEnabled;
     }
 
     /**
@@ -297,12 +294,12 @@ public final class ConnectionPolicy {
      * DEFAULT value is false indicating that writes are only directed to
      * first region in PreferredRegions property.
      *
-     * @param usingMultipleWriteRegions flag to enable writes on any regions for geo-replicated
+     * @param multipleWriteRegionsEnabled flag to enable writes on any regions for geo-replicated
      * database accounts.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setUsingMultipleWriteRegions(boolean usingMultipleWriteRegions) {
-        this.usingMultipleWriteRegions = usingMultipleWriteRegions;
+    public ConnectionPolicy setMultipleWriteRegionsEnabled(boolean multipleWriteRegionsEnabled) {
+        this.multipleWriteRegionsEnabled = multipleWriteRegionsEnabled;
         return this;
     }
 
@@ -475,7 +472,7 @@ public final class ConnectionPolicy {
             ", throttlingRetryOptions=" + throttlingRetryOptions +
             ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
             ", preferredRegions=" + preferredRegions +
-            ", usingMultipleWriteRegions=" + usingMultipleWriteRegions +
+            ", multipleWriteRegionsEnabled=" + multipleWriteRegionsEnabled +
             ", inetSocketProxyAddress=" + inetSocketProxyAddress +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectionTimeout=" + connectionTimeout +

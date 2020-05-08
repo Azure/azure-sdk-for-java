@@ -1062,10 +1062,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setThrottlingRetryOptions(options);
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                         .keyCredential(cosmosKeyCredential)
-                                        .connectionModeGateway(gatewayConnectionConfig)
+                                        .gatewayMode(gatewayConnectionConfig)
+                                        .throttlingRetryOptions(options)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(ConsistencyLevel.SESSION);
     }
@@ -1073,11 +1073,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
                                                                        List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setUsingMultipleWriteRegions(multiMasterEnabled);
-        gatewayConnectionConfig.setPreferredRegions(preferredRegions);
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                         .keyCredential(cosmosKeyCredential)
-                                        .connectionModeGateway(gatewayConnectionConfig)
+                                        .gatewayMode(gatewayConnectionConfig)
+                                        .multipleWriteRegionsEnabled(multiMasterEnabled)
+                                        .preferredRegions(preferredRegions)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(consistencyLevel);
     }
@@ -1091,24 +1091,21 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       boolean multiMasterEnabled,
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled) {
-        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
-
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+                                                               .keyCredential(cosmosKeyCredential)
+                                                               .directMode(DirectConnectionConfig.getDefaultConfig())
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                                               .consistencyLevel(consistencyLevel);
         if (preferredRegions != null) {
-            directConnectionConfig.setPreferredRegions(preferredRegions);
+            builder.preferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            directConnectionConfig.setUsingMultipleWriteRegions(true);
+            builder.multipleWriteRegionsEnabled(true);
         }
 
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
-
-        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .keyCredential(cosmosKeyCredential)
-                                                               .connectionModeDirect(directConnectionConfig)
-                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                                               .consistencyLevel(consistencyLevel);
 
         return injectConfigs(builder, configs);
     }

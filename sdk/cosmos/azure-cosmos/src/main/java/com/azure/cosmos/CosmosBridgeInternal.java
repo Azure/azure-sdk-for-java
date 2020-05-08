@@ -60,14 +60,20 @@ public final class CosmosBridgeInternal {
 
         copy.endpoint(builder.getEndpoint())
             .key(builder.getKey())
-            .connectionModeDirect(builder.getDirectConnectionConfig())
-            .connectionModeGateway(builder.getGatewayConnectionConfig())
+            .directMode(builder.getDirectConnectionConfig())
+            .gatewayMode(builder.getGatewayConnectionConfig())
             .consistencyLevel(builder.getConsistencyLevel())
             .keyCredential(builder.getKeyCredential())
             .permissions(builder.getPermissions())
             .authorizationTokenResolver(builder.getAuthorizationTokenResolver())
             .resourceToken(builder.getResourceToken())
-            .contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled());
+            .contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled())
+            .userAgentSuffix(builder.getUserAgentSuffix())
+            .throttlingRetryOptions(builder.getThrottlingRetryOptions())
+            .preferredRegions(builder.getPreferredRegions())
+            .endpointDiscoverEnabled(builder.isEndpointDiscoveryEnabled())
+            .multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled())
+            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 
         return copy;
     }

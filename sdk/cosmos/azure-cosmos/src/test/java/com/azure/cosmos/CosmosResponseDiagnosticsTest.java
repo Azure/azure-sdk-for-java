@@ -45,8 +45,8 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true);
-        gatewayClient = cosmosClientBuilder.connectionModeGateway(GatewayConnectionConfig.getDefaultConfig()).buildClient();
-        directClient = cosmosClientBuilder.connectionModeDirect(DirectConnectionConfig.getDefaultConfig()).buildClient();
+        gatewayClient = cosmosClientBuilder.gatewayMode(GatewayConnectionConfig.getDefaultConfig()).buildClient();
+        directClient = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
@@ -80,7 +80,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
         try {
-            client = cosmosClientBuilder.connectionModeGateway(GatewayConnectionConfig.getDefaultConfig()).buildClient();
+            client = cosmosClientBuilder.gatewayMode(GatewayConnectionConfig.getDefaultConfig()).buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -145,7 +145,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
         try {
-            client = cosmosClientBuilder.connectionModeDirect(DirectConnectionConfig.getDefaultConfig()).buildClient();
+            client = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();

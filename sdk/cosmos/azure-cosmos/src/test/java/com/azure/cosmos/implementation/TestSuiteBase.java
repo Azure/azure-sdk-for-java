@@ -911,8 +911,8 @@ public class TestSuiteBase extends DocumentClientTest {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
-        gatewayConnectionConfig.setThrottlingRetryOptions(options);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
+        connectionPolicy.setThrottlingRetryOptions(options);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -921,10 +921,9 @@ public class TestSuiteBase extends DocumentClientTest {
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setUsingMultipleWriteRegions(multiMasterEnabled);
-        gatewayConnectionConfig.setPreferredRegions(preferredLocations);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        connectionPolicy.setMultipleWriteRegionsEnabled(multiMasterEnabled);
+        connectionPolicy.setPreferredRegions(preferredLocations);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                             .withConnectionPolicy(connectionPolicy)
@@ -943,15 +942,14 @@ public class TestSuiteBase extends DocumentClientTest {
                                                           boolean contentResponseOnWriteEnabled) {
         DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
 
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
         if (preferredRegions != null) {
-            directConnectionConfig.setPreferredRegions(preferredRegions);
+            connectionPolicy.setPreferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            directConnectionConfig.setUsingMultipleWriteRegions(true);
+            connectionPolicy.setMultipleWriteRegionsEnabled(true);
         }
-
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
         Configs configs = Mockito.spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 

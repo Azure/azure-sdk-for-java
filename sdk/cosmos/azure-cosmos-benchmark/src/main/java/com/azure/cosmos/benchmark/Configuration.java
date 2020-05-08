@@ -3,11 +3,8 @@
 
 package com.azure.cosmos.benchmark;
 
-import com.azure.cosmos.ConnectionConfig;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.benchmark.Configuration.Operation.OperationTypeConverter;
 import com.beust.jcommander.IStringConverter;
 import com.beust.jcommander.Parameter;
@@ -258,13 +255,12 @@ class Configuration {
         return documentDataFieldCount;
     }
 
-    ConnectionConfig getConnectionConfig() {
-        if (connectionMode.equals(ConnectionMode.DIRECT)) {
-            return DirectConnectionConfig.getDefaultConfig();
-        }
-        final GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setMaxPoolSize(maxConnectionPoolSize);
-        return gatewayConnectionConfig;
+    Integer getMaxConnectionPoolSize() {
+        return maxConnectionPoolSize;
+    }
+
+    ConnectionMode getConnectionMode() {
+        return connectionMode;
     }
 
     ConsistencyLevel getConsistencyLevel() {

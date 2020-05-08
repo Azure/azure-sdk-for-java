@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -41,13 +42,22 @@ public class CosmosClientBuilder {
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
+    private String userAgentSuffix;
+    private ThrottlingRetryOptions throttlingRetryOptions;
+    private List<String> preferredRegions;
+    private boolean endpointDiscoveryEnabled = true;
+    private boolean multipleWriteRegionsEnabled = true;
+    private Boolean readRequestsFallbackEnabled;
 
     /**
      * Instantiates a new Cosmos client builder.
      */
     public CosmosClientBuilder() {
         //  Build default connection policy with direct default connection config
-        connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+        //  Some default values
+        this.userAgentSuffix = "";
+        this.throttlingRetryOptions = new ThrottlingRetryOptions();
     }
 
     /**
@@ -323,7 +333,7 @@ public class CosmosClientBuilder {
      * @param gatewayConnectionConfig GATEWAY connection configuration
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder connectionModeGateway(GatewayConnectionConfig gatewayConnectionConfig) {
+    public CosmosClientBuilder gatewayMode(GatewayConnectionConfig gatewayConnectionConfig) {
         this.gatewayConnectionConfig = gatewayConnectionConfig;
         return this;
     }
@@ -334,8 +344,114 @@ public class CosmosClientBuilder {
      * @param directConnectionConfig DIRECT connection configuration
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder connectionModeDirect(DirectConnectionConfig directConnectionConfig) {
+    public CosmosClientBuilder directMode(DirectConnectionConfig directConnectionConfig) {
         this.directConnectionConfig = directConnectionConfig;
+        return this;
+    }
+
+    /**
+     * sets the value of the user-agent suffix.
+     *
+     * @param userAgentSuffix The value to be appended to the user-agent header, this is
+     * used for monitoring purposes.
+     *
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder userAgentSuffix(String userAgentSuffix) {
+        this.userAgentSuffix = userAgentSuffix;
+        return this;
+    }
+
+    /**
+     * Sets the retry policy options associated with the DocumentClient instance.
+     * <p>
+     * Properties in the RetryOptions class allow application to customize the built-in
+     * retry policies. This property is optional. When it's not set, the SDK uses the
+     * default values for configuring the retry policies.  See RetryOptions class for
+     * more details.
+     *
+     * @param throttlingRetryOptions the RetryOptions instance.
+     * @return current CosmosClientBuilder
+     * @throws IllegalArgumentException thrown if an error occurs
+     */
+    public CosmosClientBuilder throttlingRetryOptions(ThrottlingRetryOptions throttlingRetryOptions) {
+        this.throttlingRetryOptions = throttlingRetryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the preferred regions for geo-replicated database accounts. For example,
+     * "East US" as the preferred region.
+     * <p>
+     * When EnableEndpointDiscovery is true and PreferredRegions is non-empty,
+     * the SDK will prefer to use the regions in the collection in the order
+     * they are specified to perform operations.
+     * <p>
+     * If EnableEndpointDiscovery is set to false, this property is ignored.
+     *
+     * @param preferredRegions the list of preferred regions.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder preferredRegions(List<String> preferredRegions) {
+        this.preferredRegions = preferredRegions;
+        return this;
+    }
+
+    /**
+     * Sets the flag to enable endpoint discovery for geo-replicated database accounts.
+     * <p>
+     * When EnableEndpointDiscovery is true, the SDK will automatically discover the
+     * current write and read regions to ensure requests are sent to the correct region
+     * based on the capability of the region and the user's preference.
+     * <p>
+     * The default value for this property is true indicating endpoint discovery is enabled.
+     *
+     * @param endpointDiscoveryEnabled true if EndpointDiscovery is enabled.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder endpointDiscoverEnabled(boolean endpointDiscoveryEnabled) {
+        this.endpointDiscoveryEnabled = endpointDiscoveryEnabled;
+        return this;
+    }
+
+    /**
+     * Sets the flag to enable writes on any regions for geo-replicated database accounts in the Azure
+     * Cosmos DB service.
+     * <p>
+     * When the value of this property is true, the SDK will direct write operations to
+     * available writable regions of geo-replicated database account. Writable regions
+     * are ordered by PreferredRegions property. Setting the property value
+     * to true has no effect until EnableMultipleWriteRegions in DatabaseAccount
+     * is also set to true.
+     * <p>
+     * DEFAULT value is false indicating that writes are only directed to
+     * first region in PreferredRegions property.
+     *
+     * @param multipleWriteRegionsEnabled flag to enable writes on any regions for geo-replicated
+     * database accounts.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder multipleWriteRegionsEnabled(boolean multipleWriteRegionsEnabled) {
+        this.multipleWriteRegionsEnabled = multipleWriteRegionsEnabled;
+        return this;
+    }
+
+    /**
+     * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     * <p>
+     * DEFAULT value is null.
+     * <p>
+     * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
+     * The default is false for Bounded Staleness.
+     * 1. {@link #endpointDiscoveryEnabled} is true
+     * 2. the Azure Cosmos DB account has more than one region
+     *
+     * @param readRequestsFallbackEnabled flag to enable reads to go to multiple regions configured on an account of
+     * Azure Cosmos DB service.
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder readRequestsFallbackEnabled(Boolean readRequestsFallbackEnabled) {
+        this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
         return this;
     }
 
@@ -355,6 +471,77 @@ public class CosmosClientBuilder {
      */
     DirectConnectionConfig getDirectConnectionConfig() {
         return directConnectionConfig;
+    }
+
+    /**
+     * Gets the value of user-agent suffix.
+     *
+     * @return the value of user-agent suffix.
+     */
+    String getUserAgentSuffix() {
+        return userAgentSuffix;
+    }
+
+    /**
+     * Gets the retry policy options associated with the DocumentClient instance.
+     *
+     * @return the RetryOptions instance.
+     */
+    ThrottlingRetryOptions getThrottlingRetryOptions() {
+        return throttlingRetryOptions;
+    }
+
+    /**
+     * Gets the preferred regions for geo-replicated database accounts
+     *
+     * @return the list of preferred region.
+     */
+    List<String> getPreferredRegions() {
+        return preferredRegions != null ? preferredRegions : Collections.emptyList();
+    }
+
+    /**
+     * Gets the flag to enable endpoint discovery for geo-replicated database accounts.
+     *
+     * @return whether endpoint discovery is enabled.
+     */
+    boolean isEndpointDiscoveryEnabled() {
+        return endpointDiscoveryEnabled;
+    }
+
+    /**
+     * Gets the flag to enable writes on any regions for geo-replicated database accounts in the Azure
+     * Cosmos DB service.
+     * <p>
+     * When the value of this property is true, the SDK will direct write operations to
+     * available writable regions of geo-replicated database account. Writable regions
+     * are ordered by PreferredRegions property. Setting the property value
+     * to true has no effect until EnableMultipleWriteRegions in DatabaseAccount
+     * is also set to true.
+     * <p>
+     * DEFAULT value is true indicating that writes are directed to
+     * available writable regions of geo-replicated database account.
+     *
+     * @return flag to enable writes on any regions for geo-replicated database accounts.
+     */
+    boolean isMultipleWriteRegionsEnabled() {
+        return multipleWriteRegionsEnabled;
+    }
+
+    /**
+     * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     * <p>
+     * DEFAULT value is null.
+     * <p>
+     * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
+     * The default is false for Bounded Staleness.
+     * 1. {@link #endpointDiscoveryEnabled} is true
+     * 2. the Azure Cosmos DB account has more than one region
+     *
+     * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
+     */
+    Boolean isReadRequestsFallbackEnabled() {
+        return readRequestsFallbackEnabled;
     }
 
     /**
@@ -390,6 +577,12 @@ public class CosmosClientBuilder {
         } else {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
+        this.connectionPolicy.setPreferredRegions(this.preferredRegions);
+        this.connectionPolicy.setUserAgentSuffix(this.userAgentSuffix);
+        this.connectionPolicy.setThrottlingRetryOptions(this.throttlingRetryOptions);
+        this.connectionPolicy.setEndpointDiscoveryEnabled(this.endpointDiscoveryEnabled);
+        this.connectionPolicy.setMultipleWriteRegionsEnabled(this.multipleWriteRegionsEnabled);
+        this.connectionPolicy.setReadRequestsFallbackEnabled(this.readRequestsFallbackEnabled);
     }
 
     private void validateConfig() {

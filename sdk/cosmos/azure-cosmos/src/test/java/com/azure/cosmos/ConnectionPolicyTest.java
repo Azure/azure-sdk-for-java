@@ -39,8 +39,8 @@ public class ConnectionPolicyTest {
     @Test(groups = { "unit" })
     public void usingMultipleWriteRegions() {
         ConnectionPolicy policy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        assertThat(policy.isUsingMultipleWriteRegions()).isEqualTo(true);
-        policy.setUsingMultipleWriteRegions(false);
-        assertThat(policy.isUsingMultipleWriteRegions()).isEqualTo(false);
+        assertThat(policy.isMultipleWriteRegionsEnabled()).isEqualTo(true);
+        policy.setMultipleWriteRegionsEnabled(false);
+        assertThat(policy.isMultipleWriteRegionsEnabled()).isEqualTo(false);
     }
 }

@@ -12,13 +12,19 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     public ClientUnderTestBuilder(CosmosClientBuilder builder) {
         this.configs(builder.configs());
-        this.connectionModeGateway(builder.getGatewayConnectionConfig());
-        this.connectionModeDirect(builder.getDirectConnectionConfig());
+        this.gatewayMode(builder.getGatewayConnectionConfig());
+        this.directMode(builder.getDirectConnectionConfig());
         this.consistencyLevel(builder.getConsistencyLevel());
         this.key(builder.getKey());
         this.endpoint(builder.getEndpoint());
         this.keyCredential(builder.getKeyCredential());
         this.contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled());
+        this.userAgentSuffix(builder.getUserAgentSuffix());
+        this.throttlingRetryOptions(builder.getThrottlingRetryOptions());
+        this.preferredRegions(builder.getPreferredRegions());
+        this.endpointDiscoverEnabled(builder.isEndpointDiscoveryEnabled());
+        this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
+        this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
     }
 
     @Override

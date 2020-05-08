@@ -119,7 +119,7 @@ public class SampleChangeFeedProcessor {
         return new CosmosClientBuilder()
                 .endpoint(SampleConfigurations.HOST)
                 .key(SampleConfigurations.MASTER_KEY)
-                .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
+                .directMode(DirectConnectionConfig.getDefaultConfig())
                 .consistencyLevel(ConsistencyLevel.EVENTUAL)
                 .contentResponseOnWriteEnabled(true)
                 .buildAsyncClient();

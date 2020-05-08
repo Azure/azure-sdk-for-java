@@ -222,7 +222,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
+            .directMode(DirectConnectionConfig.getDefaultConfig())
             .consistencyLevel(ConsistencyLevel.SESSION)
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();

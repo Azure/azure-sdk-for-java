@@ -54,7 +54,7 @@ public class GlobalEndpointManager implements AutoCloseable {
                     ),
                     owner.getServiceEndpoint(),
                     connectionPolicy.isEndpointDiscoveryEnabled(),
-                    connectionPolicy.isUsingMultipleWriteRegions(),
+                    connectionPolicy.isMultipleWriteRegionsEnabled(),
                     configs);
 
             this.owner = owner;

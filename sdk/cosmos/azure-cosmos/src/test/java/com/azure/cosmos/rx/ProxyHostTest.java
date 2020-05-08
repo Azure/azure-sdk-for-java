@@ -73,7 +73,7 @@ public class ProxyHostTest extends TestSuiteBase {
             gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
-                                                            .connectionModeGateway(gatewayConnectionConfig)
+                                                            .gatewayMode(gatewayConnectionConfig)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();
@@ -109,7 +109,7 @@ public class ProxyHostTest extends TestSuiteBase {
             gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
-                                                            .connectionModeGateway(gatewayConnectionConfig)
+                                                            .gatewayMode(gatewayConnectionConfig)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();

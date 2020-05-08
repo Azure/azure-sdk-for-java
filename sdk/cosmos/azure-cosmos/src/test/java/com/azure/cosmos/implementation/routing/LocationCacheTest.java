@@ -153,7 +153,7 @@ public class LocationCacheTest {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
-        connectionPolicy.setUsingMultipleWriteRegions(useMultipleWriteLocations);
+        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
         connectionPolicy.setPreferredRegions(this.preferredLocations);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
