@@ -13,6 +13,7 @@ steps:
 - bash: |
     git config --global user.name "Azure-Fluent"
     git config --global user.email "azfluent@microsoft.com"
+    git tag | xargs git tag -d
 - task: MavenAuthenticate@0
   inputs:
     mavenServiceConnections: azure-libraries-for-java-maven
