@@ -8,15 +8,15 @@
 
 package com.microsoft.azure.management.postgresql.v2017_12_01_preview.implementation;
 
-import com.microsoft.azure.management.postgresql.v2017_12_01_preview.LogFile;
+import com.microsoft.azure.management.postgresql.v2017_12_01_preview.ServerAdministratorResource;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
-import org.joda.time.DateTime;
+import java.util.UUID;
 
-class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
+class ServerAdministratorResourceImpl extends WrapperImpl<ServerAdministratorResourceInner> implements ServerAdministratorResource {
     private final DBforPostgreSQLManager manager;
 
-    LogFileImpl(LogFileInner inner,  DBforPostgreSQLManager manager) {
+    ServerAdministratorResourceImpl(ServerAdministratorResourceInner inner,  DBforPostgreSQLManager manager) {
         super(inner);
         this.manager = manager;
     }
@@ -29,8 +29,8 @@ class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
 
 
     @Override
-    public DateTime createdTime() {
-        return this.inner().createdTime();
+    public String administratorType() {
+        return this.inner().administratorType();
     }
 
     @Override
@@ -39,13 +39,8 @@ class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
     }
 
     @Override
-    public DateTime lastModifiedTime() {
-        return this.inner().lastModifiedTime();
-    }
-
-    @Override
-    public String logFileType() {
-        return this.inner().logFileType();
+    public String login() {
+        return this.inner().login();
     }
 
     @Override
@@ -54,18 +49,18 @@ class LogFileImpl extends WrapperImpl<LogFileInner> implements LogFile {
     }
 
     @Override
-    public Long sizeInKB() {
-        return this.inner().sizeInKB();
+    public UUID sid() {
+        return this.inner().sid();
+    }
+
+    @Override
+    public UUID tenantId() {
+        return this.inner().tenantId();
     }
 
     @Override
     public String type() {
         return this.inner().type();
-    }
-
-    @Override
-    public String url() {
-        return this.inner().url();
     }
 
 }
