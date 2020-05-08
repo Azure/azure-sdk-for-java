@@ -9,7 +9,7 @@ import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.sas.BlobServiceSasVersion;
+import com.azure.storage.blob.sas.BlobSasServiceVersion;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -231,7 +231,7 @@ public class BlobSasImplUtil {
      */
     private void ensureState() {
         if (version == null) {
-            version = BlobServiceSasVersion.getLatest().getVersion();
+            version = BlobSasServiceVersion.getLatest().getVersion();
         }
 
         if (identifier == null) {
