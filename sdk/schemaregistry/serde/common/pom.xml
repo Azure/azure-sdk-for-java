@@ -10,7 +10,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-schemaregistry-serde</artifactId>
-    <version>0.5-preview</version>
+    <version>1.0.0-beta.1</version>
   </parent>
 
   <artifactId>azure-schemaregistry-serde-common</artifactId>
@@ -32,7 +32,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-schemaregistry-client</artifactId>
-      <version>0.5-preview</version>
+      <version>1.0.0-beta.1</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

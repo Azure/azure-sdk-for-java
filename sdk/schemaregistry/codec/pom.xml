@@ -11,13 +11,13 @@
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-schemaregistry-parent</artifactId>
-        <version>0.5-preview</version>
+        <version>1.0.0-beta.1</version>
     </parent>
 
     <groupId>com.azure</groupId>
     <artifactId>azure-schemaregistry-codec</artifactId>
     <packaging>pom</packaging>
-    <version>0.5-preview</version>
+    <version>1.0.0-beta.1</version>
     <name>azure-schemaregistry-codec</name>
 
     <modules>
@@ -25,6 +25,10 @@
     </modules>
 
     <dependencies>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+      </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>

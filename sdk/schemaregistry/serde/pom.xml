@@ -11,13 +11,13 @@
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-schemaregistry-parent</artifactId>
-        <version>0.5-preview</version>
+        <version>1.0.0-beta.1</version>
     </parent>
 
     <groupId>com.azure</groupId>
     <artifactId>azure-schemaregistry-serde</artifactId>
     <packaging>pom</packaging>
-    <version>0.5-preview</version>
+    <version>1.0.0-beta.1</version>
     <name>azure-schemaregistry-serde</name>
 
     <modules>
@@ -26,16 +26,20 @@
     </modules>
 
     <dependencies>
-        <dependency>
-            <groupId>com.azure</groupId>
-            <artifactId>azure-schemaregistry-client</artifactId>
-            <version>0.5-preview</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
+      <dependency>
+        <groupId>com.azure</groupId>
+        <artifactId>azure-core</artifactId>
+      </dependency>
+      <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-schemaregistry-client</artifactId>
+          <version>1.0.0-beta.1</version>
+          <scope>compile</scope>
+      </dependency>
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <scope>test</scope>
+      </dependency>
     </dependencies>
 </project>

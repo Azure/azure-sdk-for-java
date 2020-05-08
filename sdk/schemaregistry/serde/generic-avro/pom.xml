@@ -11,7 +11,7 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-schemaregistry-serde</artifactId>
-    <version>0.5-preview</version>
+    <version>1.0.0-beta.1</version>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -28,12 +28,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-schemaregistry-serde-common</artifactId>
-      <version>0.5-preview</version>
+      <version>1.0.0-beta.1</version>
     </dependency>
       <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-schemaregistry-codec-avro</artifactId>
-          <version>0.5-preview</version>
+          <version>1.0.0-beta.1</version>
           <scope>compile</scope>
       </dependency>
   </dependencies>

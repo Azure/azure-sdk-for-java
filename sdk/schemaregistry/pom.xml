@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
-  <version>0.5-preview</version>
+  <version>1.0.0-beta.1</version>
   <artifactId>azure-schemaregistry-parent</artifactId>
   <packaging>pom</packaging>
   <name>azure-schemaregistry-parent</name>
@@ -31,8 +31,7 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core</artifactId>
-        <version>0.9.8</version>
-        <scope>compile</scope>
+        <version>1.5.0</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>

@@ -10,12 +10,12 @@
   <parent>
     <groupId>com.azure</groupId>
     <artifactId>azure-schemaregistry-parent</artifactId>
-    <version>0.5-preview</version>
+    <version>1.0.0-beta.1</version>
   </parent>
 
   <artifactId>azure-schemaregistry-client</artifactId>
   <packaging>jar</packaging>
-  <version>0.5-preview</version>
+  <version>1.0.0-beta.1</version>
   <name>azure-schemaregistry-client</name>
 
   <dependencies>
@@ -26,19 +26,14 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
       <version>4.1</version>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.10.2</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
     </dependency>
   </dependencies>
 </project>
