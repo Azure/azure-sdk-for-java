@@ -12,6 +12,9 @@ import com.microsoft.azure.management.mariadb.v2018_06_01.ServerServer;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import rx.Observable;
 import org.joda.time.DateTime;
+import java.util.List;
+import com.microsoft.azure.management.mariadb.v2018_06_01.ServerPrivateEndpointConnection;
+import com.microsoft.azure.management.mariadb.v2018_06_01.PublicNetworkAccessEnum;
 import com.microsoft.azure.management.mariadb.v2018_06_01.Sku;
 import com.microsoft.azure.management.mariadb.v2018_06_01.SslEnforcementEnum;
 import com.microsoft.azure.management.mariadb.v2018_06_01.StorageProfile;
@@ -67,6 +70,16 @@ class ServerServerImpl extends WrapperImpl<ServerInner> implements ServerServer 
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public List<ServerPrivateEndpointConnection> privateEndpointConnections() {
+        return this.inner().privateEndpointConnections();
+    }
+
+    @Override
+    public PublicNetworkAccessEnum publicNetworkAccess() {
+        return this.inner().publicNetworkAccess();
     }
 
     @Override

@@ -64,10 +64,14 @@ class VirtualNetworkRulesImpl extends WrapperImpl<VirtualNetworkRulesInner> impl
     public Observable<VirtualNetworkRule> getAsync(String resourceGroupName, String serverName, String virtualNetworkRuleName) {
         VirtualNetworkRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, virtualNetworkRuleName)
-        .map(new Func1<VirtualNetworkRuleInner, VirtualNetworkRule>() {
+        .flatMap(new Func1<VirtualNetworkRuleInner, Observable<VirtualNetworkRule>>() {
             @Override
-            public VirtualNetworkRule call(VirtualNetworkRuleInner inner) {
-                return wrapModel(inner);
+            public Observable<VirtualNetworkRule> call(VirtualNetworkRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((VirtualNetworkRule)wrapModel(inner));
+                }
             }
        });
     }
