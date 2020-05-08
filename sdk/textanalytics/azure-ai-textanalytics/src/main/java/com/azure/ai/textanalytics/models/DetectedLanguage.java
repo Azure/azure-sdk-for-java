@@ -30,7 +30,7 @@ public final class DetectedLanguage {
     private final double confidenceScore;
 
     /**
-     * A {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     * An {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
      */
     private final IterableStream<TextAnalyticsWarning> warnings;
 
@@ -40,7 +40,7 @@ public final class DetectedLanguage {
      * @param name The name of a detected language.
      * @param iso6391Name A two letter representation of the detected language according to the ISO 639-1 standard.
      * @param confidenceScore A confidence score between 0 and 1.
-     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
+     * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public DetectedLanguage(String name, String iso6391Name, double confidenceScore,
                             IterableStream<TextAnalyticsWarning> warnings) {

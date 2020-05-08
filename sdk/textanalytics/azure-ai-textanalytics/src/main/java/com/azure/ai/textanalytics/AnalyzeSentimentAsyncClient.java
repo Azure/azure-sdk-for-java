@@ -4,17 +4,16 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
-import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.SentenceSentiment;
+import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
@@ -36,7 +35,9 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.getMockHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -115,8 +116,16 @@ class AnalyzeSentimentAsyncClient {
             analyzeSentimentResults.add(convertToAnalyzeSentimentResult(documentSentiment));
         }
         for (DocumentError documentError : sentimentResponse.getErrors()) {
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(new HttpResponseException(getMockHttpResponse(response)));
+            }
             analyzeSentimentResults.add(new AnalyzeSentimentResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
         return new TextAnalyticsPagedResponse<>(
             response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -184,12 +193,7 @@ class AnalyzeSentimentAsyncClient {
                     confidenceScorePerLabel.getNeutral(),
                     confidenceScorePerLabel.getPositive()),
                 new IterableStream<>(sentenceSentiments),
-                new IterableStream<>(warnings)),
-                new IterableStream<>(documentSentiment.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                        warning.getMessage()))
-                    .collect(Collectors.toList()))
-        );
+                new IterableStream<>(warnings)));
     }
 
     /**
@@ -213,12 +217,6 @@ class AnalyzeSentimentAsyncClient {
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
             .map(this::toTextAnalyticsPagedResponse)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof TextAnalyticsErrorException) {
-                    TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
-                    return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
-                }
-                return throwable;
-            });
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

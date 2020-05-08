@@ -4,9 +4,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
-
-import java.util.ArrayList;
 
 /**
  * The {@link ExtractKeyPhraseResult} model.
@@ -21,20 +18,18 @@ public final class ExtractKeyPhraseResult extends TextAnalyticsResult {
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
-     * @param keyPhrases A list of key phrases string.
-     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning}.
+     * @param keyPhrases A {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
      */
     public ExtractKeyPhraseResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, IterableStream<String> keyPhrases, IterableStream<TextAnalyticsWarning> warnings) {
+                                  TextAnalyticsError error, KeyPhrasesCollection keyPhrases) {
         super(id, textDocumentStatistics, error);
-        this.keyPhrases = new KeyPhrasesCollection(
-            keyPhrases == null ? new IterableStream<>(new ArrayList<>()) : keyPhrases, warnings);
+        this.keyPhrases = keyPhrases;
     }
 
     /**
-     * Get a list of key phrase string.
+     * Get a {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
      *
-     * @return A list of key phrase string.
+     * @return A {@link KeyPhrasesCollection} contains a list of key phrases and warnings.
      */
     public KeyPhrasesCollection getKeyPhrases() {
         throwExceptionIfError();

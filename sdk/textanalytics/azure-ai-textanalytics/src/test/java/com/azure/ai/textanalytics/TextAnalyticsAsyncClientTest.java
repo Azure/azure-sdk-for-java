@@ -264,6 +264,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+    @Test
+    public void recognizeEntitiesTooManyDocuments() {
+        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
+        });
+    }
+
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
@@ -334,6 +342,14 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null, options).byPage())
                 .assertNext(response -> validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), response))
                 .verifyComplete());
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesTooManyDocuments() {
+        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass()));
+        });
     }
 
     // Key Phrases

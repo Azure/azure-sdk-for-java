@@ -16,8 +16,8 @@ public final class LinkedEntityCollection extends IterableStream<LinkedEntity> {
     /**
      * Creates a {@link LinkedEntityCollection} model that describes a linked entities collection including warnings.
      *
-     * @param entities A {@link IterableStream} of {@link LinkedEntity linked entities}.
-     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
+     * @param entities An {@link IterableStream} of {@link LinkedEntity linked entities}.
+     * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public LinkedEntityCollection(IterableStream<LinkedEntity> entities,
                                   IterableStream<TextAnalyticsWarning> warnings) {

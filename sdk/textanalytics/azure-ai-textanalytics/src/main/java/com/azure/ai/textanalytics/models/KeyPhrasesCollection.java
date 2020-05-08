@@ -16,8 +16,8 @@ public final class KeyPhrasesCollection extends IterableStream<String> {
     /**
      * Creates a {@link KeyPhrasesCollection} model that describes a key phrases collection including warnings.
      *
-     * @param keyPhrases A {@link IterableStream} of key phrases.
-     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
+     * @param keyPhrases An {@link IterableStream} of key phrases.
+     * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public KeyPhrasesCollection(IterableStream<String> keyPhrases, IterableStream<TextAnalyticsWarning> warnings) {
         super(keyPhrases);

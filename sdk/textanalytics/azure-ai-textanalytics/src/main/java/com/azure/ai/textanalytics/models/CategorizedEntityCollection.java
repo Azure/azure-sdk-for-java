@@ -16,8 +16,8 @@ public final class CategorizedEntityCollection extends IterableStream<Categorize
     /**
      * Creates a {@link CategorizedEntityCollection} model that describes a entities collection including warnings.
      *
-     * @param entities A {@link IterableStream} of {@link CategorizedEntity categorized entities}.
-     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
+     * @param entities An {@link IterableStream} of {@link CategorizedEntity categorized entities}.
+     * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public CategorizedEntityCollection(IterableStream<CategorizedEntity> entities,
                                        IterableStream<TextAnalyticsWarning> warnings) {

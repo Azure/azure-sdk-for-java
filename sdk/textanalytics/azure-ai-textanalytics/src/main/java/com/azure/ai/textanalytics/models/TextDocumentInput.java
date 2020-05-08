@@ -36,7 +36,6 @@ public final class TextDocumentInput {
     public TextDocumentInput(String id, String text) {
         this.id = id;
         this.text = text;
-        this.language = "en";
     }
 
     /**

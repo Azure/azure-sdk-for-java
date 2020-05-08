@@ -3,6 +3,16 @@
 
 package com.azure.ai.textanalytics.implementation;
 
+import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.SimpleResponse;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.Objects;
 
@@ -24,5 +34,65 @@ public final class Utility {
         if (!iterator.hasNext()) {
             throw new IllegalArgumentException("'documents' cannot be empty.");
         }
+    }
+
+    /**
+     * Get a mock {@link HttpResponse} that only return status code 400.
+     *
+     * @param response A {@link SimpleResponse} with any type
+     * @return A mock {@link HttpResponse} that only return status code 400.
+     */
+    public static HttpResponse getMockHttpResponse(SimpleResponse<?> response) {
+        return new HttpResponse(response.getRequest()) {
+            @Override
+            public int getStatusCode() {
+                return 400;
+            }
+
+            @Override
+            public String getHeaderValue(String s) {
+                return null;
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return null;
+            }
+
+            @Override
+            public Flux<ByteBuffer> getBody() {
+                return null;
+            }
+
+            @Override
+            public Mono<byte[]> getBodyAsByteArray() {
+                return null;
+            }
+
+            @Override
+            public Mono<String> getBodyAsString() {
+                return null;
+            }
+
+            @Override
+            public Mono<String> getBodyAsString(Charset charset) {
+                return null;
+            }
+        };
+    }
+
+    /**
+     * Mapping a {@link TextAnalyticsErrorException} to {@link HttpResponseException} if exist. Otherwise, return
+     * original {@link Throwable}.
+     *
+     * @param throwable A {@link Throwable}.
+     * @return A {@link HttpResponseException} or the original throwable type.
+     */
+    public static Throwable mapToHttpResponseExceptionIfExist(Throwable throwable) {
+        if (throwable instanceof TextAnalyticsErrorException) {
+            TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
+            return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
+        }
+        return throwable;
     }
 }

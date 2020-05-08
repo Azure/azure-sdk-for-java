@@ -17,6 +17,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BiFunction;
 
@@ -36,10 +37,7 @@ final class Transforms {
      * @return The list holding all the generic items combined.
      */
     static <T> List<T> mapByIndex(Iterable<String> documents, BiFunction<String, String, T> mappingFunction) {
-        // don't do anything if given input 'documents' is null, return null
-        if (documents == null) {
-            return null;
-        }
+        Objects.requireNonNull(documents, "'documents' cannot be null.");
         AtomicInteger i = new AtomicInteger(0);
         List<T> result = new ArrayList<>();
         documents.forEach(document ->

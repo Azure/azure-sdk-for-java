@@ -30,7 +30,8 @@ public class RecognizeLinkedEntities {
                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(),
                 linkedEntity.getDataSource());
             linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                "Matched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                "Matched entity: %s, confidence score: %f.%n",
+                entityMatch.getText(), entityMatch.getConfidenceScore()));
         });
     }
 }

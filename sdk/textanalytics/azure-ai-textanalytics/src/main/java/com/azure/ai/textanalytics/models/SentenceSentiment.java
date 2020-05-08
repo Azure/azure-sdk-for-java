@@ -30,7 +30,7 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the text property: The sentence text.
+     * Get the sentence text property: The sentence text.
      *
      * @return the text value.
      */

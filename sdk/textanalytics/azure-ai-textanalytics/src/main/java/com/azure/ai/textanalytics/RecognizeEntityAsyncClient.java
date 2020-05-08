@@ -4,15 +4,14 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
+import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.EntityCategory;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
@@ -36,7 +35,9 @@ import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.getMockHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -148,19 +149,31 @@ class RecognizeEntityAsyncClient {
                 documentEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentEntities.getStatistics()),
                 null,
-                new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                    new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                        entity.getSubcategory(), entity.getConfidenceScore()))
-                    .collect(Collectors.toList())),
-                new IterableStream<>(documentEntities.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                        warning.getMessage()))
-                    .collect(Collectors.toList()))
+                new CategorizedEntityCollection(
+                    new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
+                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                            entity.getSubcategory(), entity.getConfidenceScore()))
+                        .collect(Collectors.toList())),
+                    new IterableStream<>(documentEntities.getWarnings().stream().map(warning ->
+                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
+                            warning.getMessage()))
+                        .collect(Collectors.toList())))
             )));
         // Document errors
-        entitiesResult.getErrors().forEach(documentError -> recognizeEntitiesResults.add(
-            new RecognizeEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null, null)));
+        entitiesResult.getErrors().forEach(documentError -> {
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(new HttpResponseException(getMockHttpResponse(response)));
+            }
+
+            recognizeEntitiesResults.add(
+                new RecognizeEntitiesResult(documentError.getId(), null,
+                    toTextAnalyticsError(documentError.getError()), null));
+        });
 
         return new TextAnalyticsPagedResponse<>(
             response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -190,12 +203,6 @@ class RecognizeEntityAsyncClient {
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
             .map(this::toTextAnalyticsPagedResponse)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof TextAnalyticsErrorException) {
-                    TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
-                    return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
-                }
-                return throwable;
-            });
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

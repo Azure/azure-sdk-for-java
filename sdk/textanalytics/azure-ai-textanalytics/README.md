@@ -229,7 +229,7 @@ documentSentiment.getSentences().forEach(sentenceSentiment ->
 ```java
 String document = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
-System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
+System.out.printf("Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n",
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
 ```
 
@@ -238,7 +238,7 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
 ```java
 String document = "Satya Nadella is the CEO of Microsoft";
 textAnalyticsClient.recognizeEntities(document).forEach(entity ->
-    System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, score: %f.%n",
+    System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, confidence score: %f.%n",
         entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
 ```
 
@@ -251,8 +251,8 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-    linkedEntity.getMatches().forEach(linkedEntityMatch ->
-        System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
+    linkedEntity.getMatches().forEach(match ->
+        System.out.printf("Text: %s, confidence score: %f.%n", match.getText(), match.getConfidenceScore()));
 });
 ```
 ### Extract key phrases

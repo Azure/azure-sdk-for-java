@@ -3,7 +3,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
 
 /**
  * The {@link DetectLanguageResult} model.
@@ -19,10 +18,9 @@ public final class DetectLanguageResult extends TextAnalyticsResult {
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      * @param primaryLanguage The detected primary language.
-     * @param warnings A {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
     public DetectLanguageResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, DetectedLanguage primaryLanguage, IterableStream<TextAnalyticsWarning> warnings) {
+                                TextAnalyticsError error, DetectedLanguage primaryLanguage) {
         super(id, textDocumentStatistics, error);
         this.primaryLanguage = primaryLanguage;
     }

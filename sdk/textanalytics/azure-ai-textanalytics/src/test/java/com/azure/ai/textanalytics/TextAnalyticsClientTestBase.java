@@ -43,6 +43,7 @@ import com.azure.core.util.CoreUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -170,6 +171,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     @Test
     abstract void recognizeEntitiesForListLanguageHint();
 
+    @Test
+    abstract void recognizeEntitiesTooManyDocuments();
+
     // Linked Entities
     @Test
     abstract void recognizeLinkedEntitiesForTextInput();
@@ -188,6 +192,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeLinkedEntitiesForListLanguageHint();
+
+    @Test
+    abstract void recognizeLinkedEntitiesTooManyDocuments();
 
     // Key Phrases
     @Test
@@ -303,6 +310,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
     }
 
+    void recognizeEntitiesTooManyDocumentsRunner(
+        Consumer<List<String>> testRunner) {
+        final String documentInput = CATEGORIZED_ENTITY_INPUTS.get(0);
+        // max num of document size is 5
+        testRunner.accept(
+            Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
+    }
+
     // Linked Entity runner
     void recognizeBatchStringLinkedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
@@ -330,6 +345,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void recognizeBatchLinkedEntityDuplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(getDuplicateTextDocumentInputs());
+    }
+
+    void recognizeLinkedEntitiesTooManyDocumentsRunner(
+        Consumer<List<String>> testRunner) {
+        final String documentInput = LINKED_ENTITY_INPUTS.get(0);
+        // max num of document size is 5
+        testRunner.accept(
+            Arrays.asList(documentInput, documentInput, documentInput, documentInput, documentInput, documentInput));
     }
 
     // Key Phrases runner

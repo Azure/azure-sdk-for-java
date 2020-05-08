@@ -243,6 +243,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
+    @Test
+    public void recognizeEntitiesTooManyDocuments() {
+        recognizeEntitiesTooManyDocumentsRunner(inputs ->
+            assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs).stream().findFirst().get()));
+    }
+
     // Recognize linked entity
 
     @Test
@@ -309,6 +316,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         recognizeBatchStringLinkedEntitiesShowStatsRunner((inputs, options) ->
             client.recognizeLinkedEntitiesBatch(inputs, null, options).iterableByPage().forEach(pagedResponse ->
                 validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesTooManyDocuments() {
+        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs ->
+            assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs).stream().findFirst().get()));
     }
 
     // Extract key phrase

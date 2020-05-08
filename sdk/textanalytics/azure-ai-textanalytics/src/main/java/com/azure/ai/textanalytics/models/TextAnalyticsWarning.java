@@ -11,7 +11,7 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class TextAnalyticsWarning {
     /*
-     * Error code.
+     * Warning error code.
      */
     private final WarningCode code;
 
@@ -32,9 +32,9 @@ public final class TextAnalyticsWarning {
     }
 
     /**
-     * Get the code property: Error code.
+     * Get the warning code property: warning code, such as 'LongWordsInDocument'.
      *
-     * @return the code value.
+     * @return the warning code value.
      */
     public WarningCode getWarningCode() {
         return this.code;

@@ -53,8 +53,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
             System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                 batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-
-
+            
             AtomicInteger counter = new AtomicInteger();
             for (RecognizeLinkedEntitiesResult entitiesResult : pagedResponse.getElements()) {
                 // Recognized linked entities from documents
@@ -69,7 +68,8 @@ public class RecognizeLinkedEntitiesBatchDocuments {
                         System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                             linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
                         linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
-                            "\tMatched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                            "\tMatched entity: %s, confidence score: %f.%n",
+                            entityMatch.getText(), entityMatch.getConfidenceScore()));
                     });
                 }
             }

@@ -4,16 +4,15 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
-import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
+import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
@@ -32,7 +31,9 @@ import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRAC
 import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.getMockHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -124,16 +125,21 @@ class DetectLanguageAsyncClient {
                 null,
                 new DetectedLanguage(detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
-                    new IterableStream<>(warnings)),
-                new IterableStream<>(documentLanguage.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                        warning.getMessage()))
-                    .collect(Collectors.toList()))));
+                    new IterableStream<>(warnings))));
         }
-
+        // Document errors
         for (DocumentError documentError : languageResult.getErrors()) {
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(new HttpResponseException(getMockHttpResponse(response)));
+            }
+
             detectLanguageResults.add(new DetectLanguageResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null, null));
+                toTextAnalyticsError(documentError.getError()), null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -168,12 +174,7 @@ class DetectLanguageAsyncClient {
                     response.getValue()))
                 .doOnError(error -> logger.warning("Failed to detect language - {}", error))
                 .map(this::toTextAnalyticsPagedResponse)
-                .onErrorMap(throwable -> {
-                    if (throwable instanceof TextAnalyticsErrorException) {
-                        TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
-                        return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
-                    }
-                    return throwable;
-                });
+                .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
+
     }
 }

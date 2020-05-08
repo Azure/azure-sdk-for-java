@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -35,7 +34,9 @@ import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.getMockHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -146,16 +147,28 @@ class RecognizeLinkedEntityAsyncClient {
                 documentLinkedEntities.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentLinkedEntities.getStatistics()),
                 null,
-                mapLinkedEntity(documentLinkedEntities.getEntities()),
-                new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                        warning.getMessage()))
-                    .collect(Collectors.toList()))
+                new LinkedEntityCollection(
+                    mapLinkedEntity(documentLinkedEntities.getEntities()),
+                    new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
+                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
+                            warning.getMessage()))
+                        .collect(Collectors.toList())))
             )));
         // Document errors
-        entityLinkingResult.getErrors().forEach(documentError -> linkedEntitiesResults.add(
-            new RecognizeLinkedEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null, null)));
+        entityLinkingResult.getErrors().forEach(documentError -> {
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(new HttpResponseException(getMockHttpResponse(response)));
+            }
+
+            linkedEntitiesResults.add(
+                new RecognizeLinkedEntitiesResult(documentError.getId(), null,
+                    toTextAnalyticsError(documentError.getError()), null));
+        });
 
         return new TextAnalyticsPagedResponse<>(
             response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -200,12 +213,6 @@ class RecognizeLinkedEntityAsyncClient {
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
             .map(this::toTextAnalyticsPagedResponse)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof TextAnalyticsErrorException) {
-                    TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
-                    return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
-                }
-                return throwable;
-            });
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

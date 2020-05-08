@@ -8,7 +8,6 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
-import com.azure.ai.textanalytics.implementation.models.TextAnalyticsErrorException;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -37,7 +36,9 @@ import static com.azure.ai.textanalytics.Transforms.toMultiLanguageInput;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
 import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.getMockHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
+import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -147,21 +148,28 @@ class ExtractKeyPhraseAsyncClient {
                 documentId,
                 documentKeyPhrases.getStatistics() == null ? null
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
-                    new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                        warning.getMessage()))
-                    .collect(Collectors.toList()))));
+                new KeyPhrasesCollection(
+                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
+                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
+                            warning.getMessage()))
+                        .collect(Collectors.toList())))));
         }
-
+        // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            final TextAnalyticsError error =
-                toTextAnalyticsError(documentError.getError());
+            /*
+             *  TODO: Remove this after service update to throw exception.
+             *  Currently, service sets max limit of document size to 5, if the input documents size > 5, it will
+             *  have an id = "", empty id. In the future, they will remove this and throw HttpResponseException.
+             */
+            if (documentError.getId().isEmpty()) {
+                throw logger.logExceptionAsError(new HttpResponseException(getMockHttpResponse(response)));
+            }
 
+            final TextAnalyticsError error = toTextAnalyticsError(documentError.getError());
             final String documentId = documentError.getId();
-
             keyPhraseResultList.add(new ExtractKeyPhraseResult(
-                documentId, null, error, null, null));
+                documentId, null, error, null));
         }
 
         return new TextAnalyticsPagedResponse<>(
@@ -195,12 +203,6 @@ class ExtractKeyPhraseAsyncClient {
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
             .map(this::toTextAnalyticsPagedResponse)
-            .onErrorMap(throwable -> {
-                if (throwable instanceof TextAnalyticsErrorException) {
-                    TextAnalyticsErrorException errorException = (TextAnalyticsErrorException) throwable;
-                    return new HttpResponseException(errorException.getMessage(), errorException.getResponse());
-                }
-                return throwable;
-            });
+            .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }
