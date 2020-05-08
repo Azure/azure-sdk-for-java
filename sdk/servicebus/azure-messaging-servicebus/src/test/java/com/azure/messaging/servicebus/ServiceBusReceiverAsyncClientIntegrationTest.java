@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.test.StepVerifierOptions;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -714,27 +715,36 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messages).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.receive(options).limitRequest(firstBatch))
+            StepVerifier.create(receiver.receive(options))
             .assertNext(message -> {
+                assertNotNull(message);
                 receiver.complete(message.getMessage()).block(smallDuration);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
+                assertNotNull(message);
                 receiver.complete(message.getMessage()).block(smallDuration);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+                .thenCancel()
+                .verify();
 
-        StepVerifier.create(receiver2.receive(options).limitRequest(secondBatch))
+        receiver.close();
+
+        StepVerifier.create(receiver2.receive(options))
             .assertNext(message -> {
+                assertNotNull(message);
                 receiver2.complete(message.getMessage()).block(smallDuration);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
+                assertNotNull(message);
                 receiver2.complete(message.getMessage()).block(smallDuration);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .thenCancel()
+            .verify();
+
     }
 
     /**
@@ -764,21 +774,25 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messages).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.receive().limitRequest(firstBatch))
+        StepVerifier.create(receiver.receive(), firstBatch)
             .assertNext(message -> {
+                assertNotNull(message);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
+                assertNotNull(message);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
             .verify();
 
-        StepVerifier.create(receiver2.receive().limitRequest(secondBatch))
+        StepVerifier.create(receiver2.receive(), secondBatch)
             .assertNext(message -> {
                 messagesPending.decrementAndGet();
+                assertNotNull(message);
             })
             .assertNext(message -> {
+                assertNotNull(message);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
@@ -832,7 +846,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, isSessionEnabled);
 
         // Assert & Act
-        StepVerifier.create(receiver.receive().limitRequest(firstBatch))
+        StepVerifier.create(receiver.receive(), firstBatch)
             .assertNext(message -> {
                 assertNotNull(message);
                 messagesPending.decrementAndGet();
@@ -841,9 +855,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(message);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .thenCancel()
+            .verify();
 
-        StepVerifier.create(receiver2.receive().limitRequest(secondBatch))
+        StepVerifier.create(receiver2.receive(), secondBatch)
             .assertNext(message -> {
                 assertNotNull(message);
                 messagesPending.decrementAndGet();
@@ -852,7 +867,8 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 assertNotNull(message);
                 messagesPending.decrementAndGet();
             })
-            .verifyComplete();
+            .thenCancel()
+            .verify();
     }
 
     /**
