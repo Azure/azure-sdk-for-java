@@ -237,8 +237,8 @@ There are four ways of settling messages:
   - Abandon - releases the receiver's lock on the message allowing for the message to be received by other receivers.
   - Defer - defers the message from being received by normal means. In order to receive deferred messages, the sequence 
 number of the message needs to be retained.
-  - DeadLetter - moves the message to the Dead Letter queue. This will prevent the message from being received again. 
-In order to receive messages from the Dead Letter queue, a receiver scoped to the Dead Letter queue is needed.
+  - Dead-letter - moves the message to the [dead-letter queue](https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues). This will prevent the message from being received again. 
+In order to receive messages from the dead-letter queue, a receiver scoped to the dead-letter queue is needed.
 
 
 ### Send and receive from session enabled queues or topics
