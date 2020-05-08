@@ -4,8 +4,6 @@
 package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.http.ProxyOptions;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
@@ -109,10 +107,7 @@ public abstract class SearchTestBase extends TestBase {
         }
 
         addPolicies(builder, policies);
-        builder.httpClient(new NettyAsyncHttpClientBuilder()
-            .proxy(ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration()))
-            .build())
-            .credential(new AzureKeyCredential(API_KEY))
+        builder.credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -142,10 +137,7 @@ public abstract class SearchTestBase extends TestBase {
             return builder.httpClient(interceptorManager.getPlaybackClient());
         }
 
-        builder.httpClient(new NettyAsyncHttpClientBuilder()
-            .proxy(ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration()))
-            .build())
-            .credential(new AzureKeyCredential(API_KEY))
+        builder.credential(new AzureKeyCredential(API_KEY))
             .retryPolicy(new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30))));
 
         if (!interceptorManager.isLiveMode()) {
@@ -449,7 +441,7 @@ public abstract class SearchTestBase extends TestBase {
             .get("AZURE_SEARCH_STORAGE_CONTAINER_NAME", "container");
 
         // create the new data source object for this storage account and container
-        return DataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME. 32),
+        return DataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32),
             storageConnectionString, blobContainerName, "/", "real live blob",
             new SoftDeleteColumnDeletionDetectionPolicy()
                 .setSoftDeleteColumnName("fieldName")

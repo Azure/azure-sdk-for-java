@@ -75,7 +75,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         super.afterTest();
 
         for (String skillset : skillsetsToDelete) {
-            client.deleteSynonymMap(skillset);
+            client.deleteSkillset(skillset);
         }
     }
 

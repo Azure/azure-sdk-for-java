@@ -272,7 +272,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         client.createIndexer(initial);
         indexersToDelete.add(initial.getName());
 
-        Indexer updated = createIndexerWithDifferentDescription(createIndex(), createDataSource());
+        Indexer updated = createIndexerWithDifferentDescription(indexName, dataSourceName);
         Indexer indexerResponse = client.createOrUpdateIndexer(updated);
 
         // verify the returned updated indexer is as expected

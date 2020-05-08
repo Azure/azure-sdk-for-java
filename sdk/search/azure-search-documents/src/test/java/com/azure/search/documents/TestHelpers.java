@@ -9,8 +9,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchErrorException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,14 +22,21 @@ import org.reactivestreams.Publisher;
 import reactor.test.StepVerifier;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
@@ -238,5 +247,56 @@ public final class TestHelpers {
 
     public static <T> T convertToType(Object document, Class<T> cls) {
         return OBJECT_MAPPER.convertValue(document, cls);
+    }
+
+    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+    public static final String HOTEL_INDEX_NAME = "hotels";
+
+    public static final String BLOB_DATASOURCE_NAME = "azs-java-live-blob";
+    public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
+    public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
+
+    public static <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
+        client.uploadDocuments(uploadDoc);
+        waitForIndexing();
+    }
+
+    public static <T> void uploadDocuments(SearchIndexAsyncClient client, List<T> uploadDoc) {
+        client.uploadDocuments(uploadDoc).block();
+        waitForIndexing();
+    }
+
+    public static <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
+        client.uploadDocuments(Collections.singletonList(uploadDoc));
+        waitForIndexing();
+    }
+
+    public static <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
+        client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
+        waitForIndexing();
+    }
+
+    public static List<Map<String, Object>> uploadDocumentsJson(SearchIndexClient client, String dataJson) {
+        List<Map<String, Object>> documents = readJsonFileToList(dataJson);
+        uploadDocuments(client, documents);
+
+        return documents;
+    }
+
+    private static List<Map<String, Object>> readJsonFileToList(String filename) {
+        Reader reader = new InputStreamReader(Objects.requireNonNull(ServiceResourceHelpers.class.getClassLoader()
+            .getResourceAsStream(filename)));
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        SerializationUtil.configureMapper(objectMapper);
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            return objectMapper.readValue(reader, new TypeReference<List<Map<String, Object>>>() {
+            });
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }
