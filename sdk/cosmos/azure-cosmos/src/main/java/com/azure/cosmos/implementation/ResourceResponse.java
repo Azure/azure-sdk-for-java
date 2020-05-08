@@ -358,6 +358,17 @@ public final class ResourceResponse<T extends Resource> {
         return cosmosResponseRequestDiagnosticStatistics.toString();
     }
 
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    public String getETag() {
+        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
+    }
+
     long getCurrentQuotaHeader(String headerName) {
         if (this.usageHeaders.size() == 0 &&
                 !StringUtils.isEmpty(this.getMaxResourceQuota()) &&

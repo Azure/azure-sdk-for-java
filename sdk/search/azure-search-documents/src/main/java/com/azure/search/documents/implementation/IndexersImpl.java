@@ -69,42 +69,42 @@ public final class IndexersImpl {
         @Post("indexers('{indexerName}')/search.reset")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> reset(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Void>> reset(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Post("indexers('{indexerName}')/search.run")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> run(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Void>> run(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Put("indexers('{indexerName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Indexer>> createOrUpdate(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Indexer indexer, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Indexer>> createOrUpdate(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Indexer indexer, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Delete("indexers('{indexerName}')")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<Response<Void>> delete(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("indexers('{indexerName}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Indexer>> get(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Indexer>> get(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("indexers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<ListIndexersResult>> list(@HostParam("endpoint") String endpoint, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<ListIndexersResult>> list(@HostParam("endpoint") String endpoint, @QueryParam("$select") String select, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Post("indexers")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Indexer>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Indexer indexer, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Indexer>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Indexer indexer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("indexers('{indexerName}')/search.status")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<IndexerExecutionInfo>> getStatus(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<IndexerExecutionInfo>> getStatus(@PathParam("indexerName") String indexerName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
     }
 
     /**
@@ -117,8 +117,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithRestResponseAsync(String indexerName, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final UUID xMsClientRequestId = null;
-        return service.reset(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.reset(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -132,11 +134,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.reset(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.reset(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -149,8 +153,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runWithRestResponseAsync(String indexerName, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final UUID xMsClientRequestId = null;
-        return service.run(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.run(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -164,11 +170,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> runWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.run(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.run(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -182,11 +190,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Indexer>> createOrUpdateWithRestResponseAsync(String indexerName, Indexer indexer, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final String prefer = "return=representation";
         final UUID xMsClientRequestId = null;
-        return service.createOrUpdate(indexerName, this.client.getEndpoint(), indexer, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.createOrUpdate(indexerName, this.client.getEndpoint(), indexer, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -203,12 +213,14 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Indexer>> createOrUpdateWithRestResponseAsync(String indexerName, Indexer indexer, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final String prefer = "return=representation";
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.createOrUpdate(indexerName, this.client.getEndpoint(), indexer, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.createOrUpdate(indexerName, this.client.getEndpoint(), indexer, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -221,10 +233,12 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithRestResponseAsync(String indexerName, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final String ifMatch = null;
         final String ifNoneMatch = null;
         final UUID xMsClientRequestId = null;
-        return service.delete(indexerName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.delete(indexerName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -240,11 +254,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithRestResponseAsync(String indexerName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.delete(indexerName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.delete(indexerName, this.client.getEndpoint(), ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -257,8 +273,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Indexer>> getWithRestResponseAsync(String indexerName, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final UUID xMsClientRequestId = null;
-        return service.get(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.get(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -272,11 +290,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Indexer>> getWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.get(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.get(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -288,9 +308,11 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListIndexersResult>> listWithRestResponseAsync(Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final String select = null;
         final UUID xMsClientRequestId = null;
-        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -304,11 +326,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ListIndexersResult>> listWithRestResponseAsync(String select, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.list(this.client.getEndpoint(), select, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -321,8 +345,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Indexer>> createWithRestResponseAsync(Indexer indexer, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final UUID xMsClientRequestId = null;
-        return service.create(this.client.getEndpoint(), indexer, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.create(this.client.getEndpoint(), indexer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -336,11 +362,13 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Indexer>> createWithRestResponseAsync(Indexer indexer, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.create(this.client.getEndpoint(), indexer, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.create(this.client.getEndpoint(), indexer, this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -353,8 +381,10 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<IndexerExecutionInfo>> getStatusWithRestResponseAsync(String indexerName, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         final UUID xMsClientRequestId = null;
-        return service.getStatus(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.getStatus(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 
     /**
@@ -368,10 +398,12 @@ public final class IndexersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<IndexerExecutionInfo>> getStatusWithRestResponseAsync(String indexerName, RequestOptions requestOptions, Context context) {
+		final String accept = "application/json;odata.metadata=minimal";
+
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.getStatus(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.getStatus(indexerName, this.client.getEndpoint(), this.client.getApiVersion(), accept, xMsClientRequestId, context);
     }
 }

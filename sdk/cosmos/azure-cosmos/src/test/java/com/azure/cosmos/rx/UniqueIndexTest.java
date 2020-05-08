@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.models.ExcludedPath;
-import com.azure.cosmos.models.HashIndex;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingMode;
@@ -224,7 +223,9 @@ public class UniqueIndexTest extends TestSuiteBase {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
-            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

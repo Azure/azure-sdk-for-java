@@ -10,7 +10,6 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -78,6 +77,7 @@ public interface AsyncDocumentClient {
         CosmosKeyCredential cosmosKeyCredential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
+        boolean contentResponseOnWriteEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -159,6 +159,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+            this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+            return this;
+        }
+
         /**
          * This method will accept functional interface TokenResolver which helps in generation authorization
          * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
@@ -181,22 +186,23 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
+                        && this.cosmosKeyCredential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
-                        "resource token, permissionFeed, tokenResolver and cosmos key credential");
+                        "resource token, permissionFeed and cosmos key credential");
             ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
-                                                                   masterKeyOrResourceToken,
-                                                                   permissionFeed,
-                                                                   connectionPolicy,
-                                                                   desiredConsistencyLevel,
-                                                                   configs,
-                                                                   cosmosAuthorizationTokenResolver,
-                                                                   cosmosKeyCredential,
-                                                                   sessionCapturingOverride,
-                                                                   transportClientSharing);
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                desiredConsistencyLevel,
+                configs,
+                cosmosAuthorizationTokenResolver,
+                cosmosKeyCredential,
+                sessionCapturingOverride,
+                transportClientSharing,
+                contentResponseOnWriteEnabled);
             client.init();
             return client;
         }

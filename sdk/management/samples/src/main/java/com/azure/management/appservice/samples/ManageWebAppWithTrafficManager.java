@@ -1,45 +1,45 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
-package com.azure.management.appservice.samples;
-
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.management.Azure;
-import com.azure.management.resources.fluentcore.profile.AzureProfile;
-
+//
+//package com.azure.management.appservice.samples;
+//
+//import com.azure.core.credential.TokenCredential;
+//import com.azure.core.http.policy.HttpLogDetailLevel;
+//import com.azure.core.management.AzureEnvironment;
+//import com.azure.identity.DefaultAzureCredentialBuilder;
+//import com.azure.management.Azure;
+//import com.azure.management.resources.fluentcore.profile.AzureProfile;
+//
 //import com.azure.management.trafficmanager.TrafficManagerProfile;
 //import com.azure.management.trafficmanager.TrafficRoutingMethod;
-
-
-/**
- * Azure App Service sample for managing web apps.
- *  - Create a domain
- *  - Create a self-signed certificate for the domain
- *  - Create 3 app service plans in 3 different regions
- *  - Create 5 web apps under the 3 plans, bound to the domain and the certificate
- *  - Create a traffic manager in front of the web apps
- *  - Scale up the app service plans to twice the capacity
- */
-public final class ManageWebAppWithTrafficManager {
+//
+//
+///**
+// * Azure App Service sample for managing web apps.
+// *  - Create a domain
+// *  - Create a self-signed certificate for the domain
+// *  - Create 3 app service plans in 3 different regions
+// *  - Create 5 web apps under the 3 plans, bound to the domain and the certificate
+// *  - Create a traffic manager in front of the web apps
+// *  - Scale up the app service plans to twice the capacity
+// */
+//public final class ManageWebAppWithTrafficManager {
 //    private static String rgName;
-    // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-    private static final String CERT_PASSWORD = "StrongPass!12";
-
-    private static Azure azure;
+//    [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
+//    private static final String CERT_PASSWORD = "StrongPass!12";
+//
+//    private static Azure azure;
 //    private static AppServiceDomain domain;
 //    private static String pfxPath;
-
-    /**
-     * Main function which runs the actual sample.
-     * @param azure instance of the azure client
-     * @return true if sample runs successfully
-     */
-    public static boolean runSample(Azure azure) {
-        System.out.println("removed later");
-        return true;
+//
+//    /**
+//     * Main function which runs the actual sample.
+//     * @param azure instance of the azure client
+//     * @return true if sample runs successfully
+//     */
+//    public static boolean runSample(Azure azure) {
+//        System.out.println("removed later");
+//        return true;
 //        RG_NAME = azure.sdkContext().randomResourceName("rgNEMV_", 24);
 //
 //        if (ManageWebAppWithTrafficManager.azure == null) {
@@ -230,38 +230,7 @@ public final class ManageWebAppWithTrafficManager {
 //        }
 //
 //        return false;
-    }
-    /**
-     * Main entry point.
-     * @param args the parameters
-     */
-    public static void main(String[] args) {
-        try {
-
-            //=============================================================
-            // Authenticate
-
-            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
-            final TokenCredential credential = new DefaultAzureCredentialBuilder()
-                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
-                .build();
-
-            Azure azure = Azure
-                .configure()
-                .withLogLevel(HttpLogDetailLevel.BASIC)
-                .authenticate(credential, profile)
-                .withDefaultSubscription();
-
-            // Print selected subscription
-            System.out.println("Selected subscription: " + azure.subscriptionId());
-
-            runSample(azure);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
+//
 //    private static AppServicePlan createAppServicePlan(String name, Region region) {
 //        return azure.appServicePlans().define(name)
 //                .withRegion(region)
@@ -287,4 +256,4 @@ public final class ManageWebAppWithTrafficManager {
 //                    .attach()
 //                .create();
 //    }
-}
+//}

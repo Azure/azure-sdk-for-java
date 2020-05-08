@@ -57,7 +57,7 @@ public final class DeploymentImpl extends
 
     DeploymentImpl(DeploymentExtendedInner innerModel, String name, final ResourceManager resourceManager) {
         super(name, innerModel);
-        this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.getId());
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(innerModel.id());
         this.resourceManager = resourceManager;
         this.objectMapper = new ObjectMapper();
         this.deploymentWhatIf = new DeploymentWhatIf();
@@ -354,7 +354,7 @@ public final class DeploymentImpl extends
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -364,7 +364,7 @@ public final class DeploymentImpl extends
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

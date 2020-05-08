@@ -51,15 +51,17 @@ public class MultiMasterScenario {
 
         for (String region : regions) {
             ConnectionPolicy policy = new ConnectionPolicy();
-            policy.setUsingMultipleWriteLocations(true);
-            policy.setPreferredLocations(Collections.singletonList(region));
+            policy.setUsingMultipleWriteRegions(true);
+            policy.setPreferredRegions(Collections.singletonList(region));
 
             AsyncDocumentClient client =
                     new AsyncDocumentClient.Builder()
                             .withMasterKeyOrResourceToken(this.accountKey)
                             .withServiceEndpoint(this.accountEndpoint)
                             .withConsistencyLevel(ConsistencyLevel.EVENTUAL)
-                            .withConnectionPolicy(policy).build();
+                            .withConnectionPolicy(policy)
+                            .withContentResponseOnWriteEnabled(true)
+                            .build();
 
 
             workers.add(new Worker(client, databaseName, basicCollectionName));

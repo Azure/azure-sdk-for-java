@@ -5,7 +5,7 @@ package com.azure.management.network;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Netowork usage units. */
+/** Network usage units. */
 public class NetworkUsageUnit extends ExpandableStringEnum<NetworkUsageUnit> {
     /** Static value Count for NetworkUsageUnit. */
     public static final NetworkUsageUnit COUNT = fromString("Count");

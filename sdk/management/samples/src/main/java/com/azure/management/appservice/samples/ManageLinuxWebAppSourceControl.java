@@ -127,10 +127,10 @@ public final class ManageLinuxWebAppSourceControl {
 
             // warm up
             System.out.println("Warming up " + app2Url + "/helloworld...");
-            Utils.curl("http://" + app2Url + "/helloworld");
+            Utils.curl("http://" + app2Url + "/helloworld/");
             SdkContext.sleep(5000);
             System.out.println("CURLing " + app2Url + "/helloworld...");
-            System.out.println(Utils.curl("http://" + app2Url + "/helloworld"));
+            System.out.println(Utils.curl("http://" + app2Url + "/helloworld/"));
 
             //============================================================
             // Create a 3rd web app with a public GitHub repo in Azure-Samples

@@ -3,6 +3,7 @@
 
 package com.azure.core.test;
 
+import com.azure.core.http.ContentType;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
 import com.azure.core.util.DateTimeRfc1123;
@@ -99,7 +100,7 @@ public final class RestProxyTestsWireMockServer {
         private static ResponseDefinition createBytesResponse(String urlPath) {
             int bodySize = Integer.parseInt(urlPath.split("/", 3)[2]);
             Map<String, String> rawHeaders = getBaseHttpHeaders();
-            rawHeaders.put("Content-Type", "application/octet-stream");
+            rawHeaders.put("Content-Type", ContentType.APPLICATION_OCTET_STREAM);
             rawHeaders.put("Content-Length", String.valueOf(bodySize));
 
             byte[] body = new byte[bodySize];

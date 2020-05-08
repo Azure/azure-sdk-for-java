@@ -67,11 +67,16 @@ public class EventProcessorClient {
      * @param tracerProvider The tracer implementation.
      * @param processError Error handler for any errors that occur outside the context of a partition.
      * @param initialPartitionEventPosition Map of initial event positions for partition ids.
+     * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
+     * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
+     * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
+     * single events.
      */
     EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
         boolean trackLastEnqueuedEventProperties, TracerProvider tracerProvider, Consumer<ErrorContext> processError,
-        Map<String, EventPosition> initialPartitionEventPosition) {
+        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
+        boolean batchReceiveMode) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
         Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
@@ -87,7 +92,8 @@ public class EventProcessorClient {
 
         logger.info("The instance ID for this event processors is {}", this.identifier);
         this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition);
+            eventHubClientBuilder, trackLastEnqueuedEventProperties, tracerProvider, initialPartitionEventPosition,
+            maxBatchSize, maxWaitTime, batchReceiveMode);
         this.partitionBasedLoadBalancer =
             new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
                 this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
@@ -154,8 +160,8 @@ public class EventProcessorClient {
     }
 
     /**
-     * Returns {@code true} if the event processor is running. If the event processor is already running, calling
-     * {@link #start()} has no effect.
+     * Returns {@code true} if the event processor is running. If the event processor is already running, calling {@link
+     * #start()} has no effect.
      *
      * @return {@code true} if the event processor is running.
      */

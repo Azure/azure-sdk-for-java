@@ -37,7 +37,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
         VirtualNetworkRuleInner inner =
             this.sqlServerManager.inner().virtualNetworkRules().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
-            ? new SqlVirtualNetworkRuleImpl(resourceGroupName, sqlServerName, inner.getName(), inner, sqlServerManager)
+            ? new SqlVirtualNetworkRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager)
             : null;
     }
 
@@ -52,7 +52,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
             .map(
                 inner ->
                     new SqlVirtualNetworkRuleImpl(
-                        resourceGroupName, sqlServerName, inner.getName(), inner, sqlServerManager));
+                        resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
                 .virtualNetworkRules()
                 .get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null)
-            ? new SqlVirtualNetworkRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServerManager)
+            ? new SqlVirtualNetworkRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServerManager)
             : null;
     }
 
@@ -82,7 +82,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
             .map(
                 inner ->
                     new SqlVirtualNetworkRuleImpl(
-                        inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+                        inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 
     @Override
@@ -103,7 +103,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
             virtualNetworkRuleSet
                 .add(
                     new SqlVirtualNetworkRuleImpl(
-                        resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
+                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(virtualNetworkRuleSet);
     }
@@ -119,7 +119,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
             .mapPage(
                 inner ->
                     new SqlVirtualNetworkRuleImpl(
-                        resourceGroupName, sqlServerName, inner.getName(), inner, sqlServerManager));
+                        resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
                 virtualNetworkRuleSet
                     .add(
                         new SqlVirtualNetworkRuleImpl(
-                            inner.getName(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
+                            inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(virtualNetworkRuleSet);
@@ -151,7 +151,7 @@ public class SqlVirtualNetworkRuleOperationsImpl extends SqlChildrenOperationsIm
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
                 inner ->
-                    new SqlVirtualNetworkRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServerManager));
+                    new SqlVirtualNetworkRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServerManager));
     }
 
     @Override

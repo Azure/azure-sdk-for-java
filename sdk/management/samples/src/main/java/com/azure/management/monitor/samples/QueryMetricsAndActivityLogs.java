@@ -4,6 +4,7 @@
 package com.azure.management.monitor.samples;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
@@ -84,7 +85,7 @@ public final class QueryMetricsAndActivityLogs {
                     storageAccountKeys.get(0).value());
 
             // Add some blob transaction events
-            addBlobTransactions(storageConnectionString);
+            addBlobTransactions(storageConnectionString, storageAccount.manager().httpPipeline().getHttpClient());
 
             OffsetDateTime recordDateTime = azure.sdkContext().dateTimeNow();
             // get metric definitions for storage account.
@@ -197,7 +198,7 @@ public final class QueryMetricsAndActivityLogs {
         }
     }
 
-    private static void addBlobTransactions(String storageConnectionString) throws IOException {
+    private static void addBlobTransactions(String storageConnectionString, HttpClient httpClient) throws IOException {
         // Get the script to upload
         //
         try (InputStream scriptFileAsStream = QueryMetricsAndActivityLogs.class.getResourceAsStream("/install_apache.sh")) {
@@ -213,6 +214,7 @@ public final class QueryMetricsAndActivityLogs {
             BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
                 .connectionString(storageConnectionString)
                 .containerName("scripts")
+                .httpClient(httpClient)
                 .buildClient();
 
             blobContainerClient.create();
@@ -220,6 +222,7 @@ public final class QueryMetricsAndActivityLogs {
             // Get the service properties.
             BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
                 .connectionString(storageConnectionString)
+                .httpClient(httpClient)
                 .buildClient();
             BlobServiceProperties serviceProps = blobServiceClient.getProperties();
 

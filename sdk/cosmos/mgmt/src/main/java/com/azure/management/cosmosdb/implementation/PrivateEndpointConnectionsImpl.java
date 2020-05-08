@@ -71,7 +71,7 @@ class PrivateEndpointConnectionsImpl
             .mapPage(
                 inner -> {
                     PrivateEndpointConnectionImpl childResource =
-                        new PrivateEndpointConnectionImpl(inner.getName(), self.getParent(), inner, client);
+                        new PrivateEndpointConnectionImpl(inner.name(), self.getParent(), inner, client);
                     self.addPrivateEndpointConnection(childResource);
                     return childResource;
                 });
@@ -85,7 +85,7 @@ class PrivateEndpointConnectionsImpl
             .map(
                 inner -> {
                     PrivateEndpointConnectionImpl childResource =
-                        new PrivateEndpointConnectionImpl(inner.getName(), getParent(), inner, client);
+                        new PrivateEndpointConnectionImpl(inner.name(), getParent(), inner, client);
                     self.addPrivateEndpointConnection(childResource);
                     return childResource;
                 });

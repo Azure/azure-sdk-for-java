@@ -22,7 +22,7 @@ public class TrainModelWithLabels {
         // Instantiate a client that will be used to call the service.
 
         FormTrainingClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildClient().getFormTrainingClient();
 

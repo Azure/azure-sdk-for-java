@@ -152,7 +152,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
         webAppMsiHandler = new WebAppMsiHandler(manager.rbacManager(), this);
         normalizeProperties();
-        isInCreateMode = inner() == null || inner().getId() == null;
+        isInCreateMode = inner() == null || inner().id() == null;
         if (!isInCreateMode) {
             initializeKuduClient();
         }
@@ -190,7 +190,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             @Override
             public String resourceId() {
                 if (inner() != null) {
-                    return inner().getId();
+                    return inner().id();
                 } else {
                     return null;
                 }

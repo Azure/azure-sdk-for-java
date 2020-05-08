@@ -4,7 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.Permission;
+import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
@@ -39,6 +39,7 @@ public class CosmosClientBuilder {
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
+    private boolean contentResponseOnWriteEnabled;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -139,7 +140,7 @@ public class CosmosClientBuilder {
      * @param cosmosAuthorizationTokenResolver the token resolver
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder authorizationTokenResolver(
+    CosmosClientBuilder authorizationTokenResolver(
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver) {
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         return this;
@@ -292,6 +293,41 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false (which is by default), this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it
+     * on the client.
+     *
+     * By-default, this is false.
+     *
+     * @return a boolean indicating whether resource will be included in the response or not
+     */
+    boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
+    }
+
+    /**
+     * Sets the boolean to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false (which is by default), this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it on the client.
+     *
+     * This feature does not impact RU usage for read or write operations.
+     *
+     * By-default, this is false.
+     *
+     * @param contentResponseOnWriteEnabled a boolean indicating whether resource will be included in the response or not
+     * @return current cosmosClientBuilder
+     */
+    public CosmosClientBuilder contentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+        return this;
+    }
+
+    /**
      * Builds a cosmos configuration object with the provided properties
      *
      * @return CosmosAsyncClient
@@ -306,9 +342,8 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty())
-                && this.cosmosAuthorizationTokenResolver == null && this.cosmosKeyCredential == null,
-            "cannot buildAsyncClient client without any one of key, resource token, permissions, token resolver, and "
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.cosmosKeyCredential == null,
+            "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");
