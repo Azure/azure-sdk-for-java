@@ -11,22 +11,19 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>schemaregistry-codec</artifactId>
+    <artifactId>azure-schemaregistry-codec</artifactId>
     <version>0.5-preview</version>
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>schemaregistry-codec-avro</artifactId>
+  <artifactId>azure-schemaregistry-codec-avro</artifactId>
   <version>0.5-preview</version>
-
-  <name>schemaregistry-codec-avro</name>
+  <name>azure-schemaregistry-codec-avro</name>
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.avro</groupId>
@@ -35,7 +32,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>schemaregistry-serde-common</artifactId>
+      <artifactId>azure-schemaregistry-serde-common</artifactId>
       <version>0.5-preview</version>
       <scope>compile</scope>
     </dependency>

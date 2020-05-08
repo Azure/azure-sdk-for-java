@@ -9,13 +9,13 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>schemaregistry-serde</artifactId>
+    <artifactId>azure-schemaregistry-serde</artifactId>
     <version>0.5-preview</version>
   </parent>
 
-  <artifactId>schemaregistry-serde-common</artifactId>
+  <artifactId>azure-schemaregistry-serde-common</artifactId>
   <packaging>jar</packaging>
-  <name>schemaregistry-serde-common</name>
+  <name>azure-schemaregistry-serde-common</name>
 
   <dependencies>
     <dependency>
@@ -31,7 +31,7 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>schemaregistry-client</artifactId>
+      <artifactId>azure-schemaregistry-client</artifactId>
       <version>0.5-preview</version>
     </dependency>
     <dependency>

@@ -10,15 +10,15 @@
 
     <parent>
         <groupId>com.azure</groupId>
-        <artifactId>schemaregistry-parent</artifactId>
+        <artifactId>azure-schemaregistry-parent</artifactId>
         <version>0.5-preview</version>
     </parent>
 
     <groupId>com.azure</groupId>
-    <artifactId>schemaregistry-codec</artifactId>
+    <artifactId>azure-schemaregistry-codec</artifactId>
     <packaging>pom</packaging>
     <version>0.5-preview</version>
-    <name>schemaregistry-codec</name>
+    <name>azure-schemaregistry-codec</name>
 
     <modules>
         <module>codec-avro</module>

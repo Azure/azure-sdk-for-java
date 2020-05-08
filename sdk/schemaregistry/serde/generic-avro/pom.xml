@@ -10,13 +10,13 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>schemaregistry-serde</artifactId>
+    <artifactId>azure-schemaregistry-serde</artifactId>
     <version>0.5-preview</version>
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>schemaregistry-serde-avro</artifactId>
-  <name>schemaregistry-serde-avro</name>
+  <artifactId>azure-schemaregistry-serde-avro</artifactId>
+  <name>azure-schemaregistry-serde-avro</name>
 
   <dependencies>
     <dependency>
@@ -27,12 +27,12 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>schemaregistry-serde-common</artifactId>
+      <artifactId>azure-schemaregistry-serde-common</artifactId>
       <version>0.5-preview</version>
     </dependency>
       <dependency>
           <groupId>com.azure</groupId>
-          <artifactId>schemaregistry-codec-avro</artifactId>
+          <artifactId>azure-schemaregistry-codec-avro</artifactId>
           <version>0.5-preview</version>
           <scope>compile</scope>
       </dependency>

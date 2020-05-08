@@ -9,14 +9,14 @@
 
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>schemaregistry-parent</artifactId>
+    <artifactId>azure-schemaregistry-parent</artifactId>
     <version>0.5-preview</version>
   </parent>
 
-  <artifactId>schemaregistry-client</artifactId>
+  <artifactId>azure-schemaregistry-client</artifactId>
   <packaging>jar</packaging>
   <version>0.5-preview</version>
-  <name>schemaregistry-client</name>
+  <name>azure-schemaregistry-client</name>
 
   <dependencies>
     <dependency>

@@ -10,15 +10,15 @@
 
     <parent>
         <groupId>com.azure</groupId>
-        <artifactId>schemaregistry-parent</artifactId>
+        <artifactId>azure-schemaregistry-parent</artifactId>
         <version>0.5-preview</version>
     </parent>
 
     <groupId>com.azure</groupId>
-    <artifactId>schemaregistry-serde</artifactId>
+    <artifactId>azure-schemaregistry-serde</artifactId>
     <packaging>pom</packaging>
     <version>0.5-preview</version>
-    <name>schemaregistry-serde</name>
+    <name>azure-schemaregistry-serde</name>
 
     <modules>
         <module>common</module>
@@ -28,7 +28,7 @@
     <dependencies>
         <dependency>
             <groupId>com.azure</groupId>
-            <artifactId>schemaregistry-client</artifactId>
+            <artifactId>azure-schemaregistry-client</artifactId>
             <version>0.5-preview</version>
             <scope>compile</scope>
         </dependency>
