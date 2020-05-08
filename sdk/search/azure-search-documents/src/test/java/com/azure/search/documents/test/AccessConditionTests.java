@@ -6,8 +6,8 @@ package com.azure.search.documents.test;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.models.SearchErrorException;
-import io.netty.handler.codec.http.HttpResponseStatus;
 
+import java.net.HttpURLConnection;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -66,10 +66,9 @@ public class AccessConditionTests {
         // Try to delete again and expect to fail
         try {
             deleteFunc.accept(updatedSource, accessOptions);
-            fail("deleteFunc should have failed due to non existent resource");
-        } catch (Exception exc) {
-            assertEquals(SearchErrorException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
+            fail("deleteFunc should have failed due to non existent resource.");
+        } catch (SearchErrorException ex) {
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }
 
@@ -97,10 +96,9 @@ public class AccessConditionTests {
         try {
             accessOptions = new AccessOptions(true);
             deleteFunc.accept(staleResource, accessOptions);
-            fail("deleteFunc should have failed due to selected AccessCondition");
-        } catch (Exception exc) {
-            assertEquals(SearchErrorException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
+            fail("deleteFunc should have failed due to precondition.");
+        } catch (SearchErrorException ex) {
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
         // Get the new eTag
@@ -176,10 +174,9 @@ public class AccessConditionTests {
         // Update and check the eTags were changed
         try {
             createOrUpdateDefinition.apply(newResource, accessOptions);
-            fail("createOrUpdateDefinition should have failed due to selected AccessCondition");
-        } catch (Exception exc) {
-            assertEquals(SearchErrorException.class, exc.getClass());
-            assertEquals(HttpResponseStatus.PRECONDITION_FAILED.code(), ((SearchErrorException) exc).getResponse().getStatusCode());
+            fail("createOrUpdateDefinition should have failed due to precondition.");
+        } catch (SearchErrorException ex) {
+            assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
         // Check eTags

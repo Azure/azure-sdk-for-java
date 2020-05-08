@@ -29,15 +29,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class SearchIndexAsyncClientImplTest extends SearchTestBase {
-
-    private static final String INDEX_NAME = "hotels";
     private SearchIndexAsyncClient asyncClient;
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        createHotelIndex();
-        asyncClient = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
+        asyncClient = getSearchIndexClientBuilder(createHotelIndex()).buildAsyncClient();
+    }
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+
+        getSearchServiceClientBuilder().buildClient().deleteIndex(asyncClient.getIndexName());
     }
 
     @Test
