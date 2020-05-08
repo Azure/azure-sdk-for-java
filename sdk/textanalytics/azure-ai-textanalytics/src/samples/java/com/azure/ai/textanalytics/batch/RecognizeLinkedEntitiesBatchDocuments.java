@@ -35,8 +35,8 @@ public class RecognizeLinkedEntitiesBatchDocuments {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park."),
-            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.")
+            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
         // Request options: show statistics and model version
@@ -53,7 +53,7 @@ public class RecognizeLinkedEntitiesBatchDocuments {
             TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
             System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                 batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-            
+
             AtomicInteger counter = new AtomicInteger();
             for (RecognizeLinkedEntitiesResult entitiesResult : pagedResponse.getElements()) {
                 // Recognized linked entities from documents

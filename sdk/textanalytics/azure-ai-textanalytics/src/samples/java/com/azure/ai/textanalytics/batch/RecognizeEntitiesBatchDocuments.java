@@ -35,8 +35,8 @@ public class RecognizeEntitiesBatchDocuments {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft."),
-            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.")
+            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.").setLanguage("en"),
+            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en")
         );
 
         // Request options: show statistics and model version

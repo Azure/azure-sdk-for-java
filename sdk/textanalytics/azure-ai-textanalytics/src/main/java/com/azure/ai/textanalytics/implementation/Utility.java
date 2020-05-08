@@ -27,6 +27,9 @@ public final class Utility {
      * Verify that list of documents are not null or empty. Otherwise, throw exception.
      *
      * @param documents A list of documents.
+     *
+     * @throws NullPointerException if {@code documents} is {@code null}.
+     * @throws IllegalArgumentException if {@code documents} is empty.
      */
     public static void inputDocumentsValidation(Iterable<?> documents) {
         Objects.requireNonNull(documents, "'documents' cannot be null.");

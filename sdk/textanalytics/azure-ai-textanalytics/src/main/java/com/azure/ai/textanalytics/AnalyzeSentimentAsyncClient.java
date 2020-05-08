@@ -50,7 +50,7 @@ class AnalyzeSentimentAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@link AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
+     * Create an {@link AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
      * analysis endpoint.
      *
      * @param service The proxy service used to perform REST calls.

@@ -1,7 +1,21 @@
 # Release History
 
 ## 1.0.0-beta.5 (Unreleased)
+**New features**
+- Added Text property and `getText()` to `SentenceSentiment`.
+- `Warnings` property added to each document-level response object returned from the endpoints. It is a list of `TextAnalyticsWarnings`.
+
+**Breaking changes**
 - Rename `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
+- Removed `getGraphemeLength()` and `getGraphemeOffset()` from `CategorizedEntity`, `SentenceSentiment`, and `LinkedEntityMatch`.
+- `getGraphemeCount()` in `TextDocumentStatistics` has been renamed to `getCharacterCount()`.
+- `getScore()` in `DetectedLanguage` has been renamed to `getConfidenceScore()`.
+- `getSubCategory()` in `CategorizedEntity` has been renamed to `getSubcategory()`.
+- `getLinkedEntityMatches()` in `LinkedEntity` has been renamed to `getMatches()`.
+- `getCode()` in `TextAnalyticsException` and `TextAnalyticsError` has been renamed to `getErrorCode()`.
+- `getCode()` in `TextAnalyticsWarning` has been renamed to `getWarningCode()`.
+- Async client returns errors, mono error or flux error but no longer throws exception. Sync client throws exceptions only.
+- Deprecated `TextDocumentInput(String id, String text, String language)` constructor, but added `setLanguage()` setter since `language` is optional.
 
 ## 1.0.0-beta.4 (2020-04-07)
 - Throws an illegal argument exception when the given list of documents is an empty list.

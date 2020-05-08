@@ -243,7 +243,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String)}
      */
     @Test
@@ -270,7 +270,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -298,7 +298,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
      * given for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -379,7 +379,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String)}
      */
     @Test
@@ -406,7 +406,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -434,7 +434,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
      * given for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -515,7 +515,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, String)}
      */
     @Test
@@ -542,7 +542,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -570,7 +570,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
      * given for {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -651,7 +651,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String)}
      */
     @Test
@@ -678,7 +678,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of documents is given for
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
      * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
@@ -706,7 +706,7 @@ public class DocumentInputAsyncTest {
     }
 
     /**
-     * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
+     * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
      * given for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test

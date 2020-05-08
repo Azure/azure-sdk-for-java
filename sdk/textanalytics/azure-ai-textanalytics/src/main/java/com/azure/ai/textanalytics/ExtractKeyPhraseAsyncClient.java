@@ -52,7 +52,7 @@ class ExtractKeyPhraseAsyncClient {
     private final TextAnalyticsClientImpl service;
 
     /**
-     * Create a {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
+     * Create an {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
      * keyphrase endpoint.
      *
      * @param service The proxy service used to perform REST calls.

@@ -73,9 +73,12 @@ public final class TextDocumentInput {
      * for Spanish etc. If not set, use "en" for English as default.
      *
      * @param language Optional. This is the 2 letter ISO 639-1 representation of a language.
+     *
+     * @return The object {@link TextDocumentInput} itself.
      */
-    public void setLanguage(String language) {
+    public TextDocumentInput setLanguage(String language) {
         this.language = language;
+        return this;
     }
 
     @Override

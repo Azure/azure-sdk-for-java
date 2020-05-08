@@ -34,8 +34,8 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park."),
-            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.")
+            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
         // Request options: show statistics and model version

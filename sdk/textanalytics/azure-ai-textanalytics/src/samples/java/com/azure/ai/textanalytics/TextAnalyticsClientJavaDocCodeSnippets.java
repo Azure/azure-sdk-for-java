@@ -309,8 +309,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void recognizeBatchEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week."),
-            new TextDocumentInput("1", "I work at Microsoft.")
+            new TextDocumentInput("0", "I had a wonderful trip to Seattle last week.").setLanguage("en"),
+            new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en")
         );
 
         textAnalyticsClient.recognizeEntitiesBatch(textDocumentInputs,
@@ -464,8 +464,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void recognizeLinkedEntitiesBatchMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park."),
-            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.")
+            new TextDocumentInput("1", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("2", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
         textAnalyticsClient.recognizeLinkedEntitiesBatch(textDocumentInputs,
@@ -611,8 +611,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void extractBatchKeyPhrasesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "My cat might need to see a veterinarian."),
-            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.")
+            new TextDocumentInput("1", "My cat might need to see a veterinarian.").setLanguage("en"),
+            new TextDocumentInput("2", "The pitot tube is used to measure airspeed.").setLanguage("en")
         );
 
         // Extracting batch key phrases
@@ -822,8 +822,8 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
     public void analyzeBatchSentimentMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions-Context
         List<TextDocumentInput> textDocumentInputs = Arrays.asList(
-            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi."),
-            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.")
+            new TextDocumentInput("1", "The hotel was dark and unclean. The restaurant had amazing gnocchi.").setLanguage("en"),
+            new TextDocumentInput("2", "The restaurant had amazing gnocchi. The hotel was dark and unclean.").setLanguage("en")
         );
 
         // Analyzing batch sentiments

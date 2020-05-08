@@ -12,7 +12,6 @@ import com.azure.core.util.IterableStream;
 @Immutable
 public final class DetectedLanguage {
     /**
-     *
      * Long name of a detected language (e.g. English, French).
      */
     private final String name;
