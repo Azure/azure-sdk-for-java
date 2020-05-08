@@ -57,7 +57,7 @@ steps:
 - bash: |
     git log -2
     git push https://$(GITHUB_TOKEN)@github.com/azure-fluent/azure-sdk-for-java HEAD:refs/heads/$(VERSION) -f
-    python3 tools/pull-request.py azure azure-sdk-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
+    python3 eng/mgmt/pull-request.py azure azure-sdk-for-java "Release $(VERSION)" "azure-fluent:$(VERSION)"
   displayName: Create pull request
   env:
     GITHUB_TOKEN: $(GITHUB_TOKEN)
