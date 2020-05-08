@@ -22,7 +22,7 @@ steps:
   displayName: Build package with pom.xml
   condition: and(succeeded(), eq(variables['Snapshot'], true))
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'sdk/management/pom.xml'
     mavenOptions: ''
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
@@ -34,7 +34,7 @@ steps:
   displayName: Uploaded package
   condition: and(succeeded(), eq(variables['Snapshot'], true))
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'sdk/management/pom.xml'
     mavenOptions: ''
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
@@ -46,7 +46,7 @@ steps:
   displayName: Auto build release with new version
   condition: ne(variables['Snapshot'], true)
   inputs:
-    mavenPomFile: 'pom.xml'
+    mavenPomFile: 'sdk/management/pom.xml'
     mavenOptions: '-Xmx3072m -Dversion=$(VERSION) -DdevVersion=$(DEVVERSION)-SNAPSHOT'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
