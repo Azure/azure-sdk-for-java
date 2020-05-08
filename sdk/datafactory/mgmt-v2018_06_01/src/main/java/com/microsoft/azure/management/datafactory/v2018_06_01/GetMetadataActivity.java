@@ -34,6 +34,18 @@ public class GetMetadataActivity extends ExecutionActivity {
     private List<Object> fieldList;
 
     /**
+     * GetMetadata activity store settings.
+     */
+    @JsonProperty(value = "typeProperties.storeSettings")
+    private StoreReadSettings storeSettings;
+
+    /**
+     * GetMetadata activity format settings.
+     */
+    @JsonProperty(value = "typeProperties.formatSettings")
+    private FormatReadSettings formatSettings;
+
+    /**
      * Get getMetadata activity dataset reference.
      *
      * @return the dataset value
@@ -70,6 +82,46 @@ public class GetMetadataActivity extends ExecutionActivity {
      */
     public GetMetadataActivity withFieldList(List<Object> fieldList) {
         this.fieldList = fieldList;
+        return this;
+    }
+
+    /**
+     * Get getMetadata activity store settings.
+     *
+     * @return the storeSettings value
+     */
+    public StoreReadSettings storeSettings() {
+        return this.storeSettings;
+    }
+
+    /**
+     * Set getMetadata activity store settings.
+     *
+     * @param storeSettings the storeSettings value to set
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity withStoreSettings(StoreReadSettings storeSettings) {
+        this.storeSettings = storeSettings;
+        return this;
+    }
+
+    /**
+     * Get getMetadata activity format settings.
+     *
+     * @return the formatSettings value
+     */
+    public FormatReadSettings formatSettings() {
+        return this.formatSettings;
+    }
+
+    /**
+     * Set getMetadata activity format settings.
+     *
+     * @param formatSettings the formatSettings value to set
+     * @return the GetMetadataActivity object itself.
+     */
+    public GetMetadataActivity withFormatSettings(FormatReadSettings formatSettings) {
+        this.formatSettings = formatSettings;
         return this;
     }
 

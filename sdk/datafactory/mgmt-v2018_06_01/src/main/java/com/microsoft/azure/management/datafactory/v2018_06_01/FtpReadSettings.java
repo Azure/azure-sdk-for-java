@@ -40,6 +40,19 @@ public class FtpReadSettings extends StoreReadSettings {
     private Object wildcardFileName;
 
     /**
+     * Indicates whether to enable partition discovery.
+     */
+    @JsonProperty(value = "enablePartitionDiscovery")
+    private Boolean enablePartitionDiscovery;
+
+    /**
+     * Specify the root path where partition discovery starts from. Type:
+     * string (or Expression with resultType string).
+     */
+    @JsonProperty(value = "partitionRootPath")
+    private Object partitionRootPath;
+
+    /**
      * Point to a text file that lists each file (relative path to the path
      * configured in the dataset) that you want to copy. Type: string (or
      * Expression with resultType string).
@@ -110,6 +123,46 @@ public class FtpReadSettings extends StoreReadSettings {
      */
     public FtpReadSettings withWildcardFileName(Object wildcardFileName) {
         this.wildcardFileName = wildcardFileName;
+        return this;
+    }
+
+    /**
+     * Get indicates whether to enable partition discovery.
+     *
+     * @return the enablePartitionDiscovery value
+     */
+    public Boolean enablePartitionDiscovery() {
+        return this.enablePartitionDiscovery;
+    }
+
+    /**
+     * Set indicates whether to enable partition discovery.
+     *
+     * @param enablePartitionDiscovery the enablePartitionDiscovery value to set
+     * @return the FtpReadSettings object itself.
+     */
+    public FtpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
+        this.enablePartitionDiscovery = enablePartitionDiscovery;
+        return this;
+    }
+
+    /**
+     * Get specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @return the partitionRootPath value
+     */
+    public Object partitionRootPath() {
+        return this.partitionRootPath;
+    }
+
+    /**
+     * Set specify the root path where partition discovery starts from. Type: string (or Expression with resultType string).
+     *
+     * @param partitionRootPath the partitionRootPath value to set
+     * @return the FtpReadSettings object itself.
+     */
+    public FtpReadSettings withPartitionRootPath(Object partitionRootPath) {
+        this.partitionRootPath = partitionRootPath;
         return this;
     }
 
