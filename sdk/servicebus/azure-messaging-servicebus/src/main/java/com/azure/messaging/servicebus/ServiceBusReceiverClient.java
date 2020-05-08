@@ -44,8 +44,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
     private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageSource =
         new AtomicReference<>();
+
+    /* To hold each recive as work item to be processed.*/
     private final AtomicReference<EmitterProcessor<SynchronousMessageSubscriber>> workQueueProcessor =
         new AtomicReference<>(EmitterProcessor.create(false));
+
+    /*Subscriber which will process each work item in sequence.*/
     private final AtomicReference<Disposable> workSubscriber = new AtomicReference<>();
 
     /**
@@ -649,16 +653,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             // make sure message source processor exists.
             EmitterProcessor<ServiceBusReceivedMessageContext> source = messageSource.get();
             if (source == null) {
-                source = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                source = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
                     .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
                 messageSource.set(source);
-                logger.info("Created source for receiving messages.");
+                logger.verbose("Created source for receiving messages from [{}]", asyncClient.getEntityPath());
             }
 
             // start processing receive requests
             EmitterProcessor<ServiceBusReceivedMessageContext> finalSource = source;
             thisWorkSubscriber = workProcessor
-                .subscribe(currentWork -> finalSource.subscribe(currentWork), error -> {
+                .subscribe(currentWork -> {
+                    logger.info("Start processing messages for [{}]." , currentWork.getWork().getId());
+                    finalSource.subscribe(currentWork);
+                }, error -> {
                     logger.error("Error in processing messages [{}]", error);
                 }, () -> {
                     logger.info("Receiving messages completed.");
