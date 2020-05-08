@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.util.function.BiConsumer;
 
 /**
  * Utility method class.
@@ -172,5 +173,17 @@ public final class Utility {
         }
         throw LOGGER.logExceptionAsError(
             new RuntimeException("Failed to parse operation header for result Id from: " + operationLocation));
+    }
+
+    /**
+     * Given an iterable will apply the indexing function to it and return the index and each item of the iterable.
+     *
+     * @param iterable the list to apply the mapping function to.
+     * @param biConsumer the function which accepts the index and the each value of the iterable.
+     * @param <T> the type of items being returned.
+     */
+    public static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
+        int[] index = new int[]{0};
+        iterable.forEach(element -> biConsumer.accept(index[0]++, element));
     }
 }

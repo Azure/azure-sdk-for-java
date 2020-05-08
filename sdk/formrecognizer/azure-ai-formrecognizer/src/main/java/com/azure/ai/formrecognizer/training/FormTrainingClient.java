@@ -1,8 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer;
+package com.azure.ai.formrecognizer.training;
 
+import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
+import com.azure.ai.formrecognizer.FormRecognizerClient;
+import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
@@ -24,7 +28,7 @@ import java.time.Duration;
  * subscription account information.
  *
  * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.initialization}
+ * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.initialization}
  *
  * @see FormRecognizerClientBuilder
  * @see FormRecognizerClient
@@ -45,15 +49,6 @@ public class FormTrainingClient {
     }
 
     /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FormRecognizerServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
-    }
-
-    /**
      * Create and train a custom model.
      * <p>Models are trained using documents that are of the following content
      * type - 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
@@ -63,7 +58,7 @@ public class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.beginTraining#string-boolean}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean}
      *
      * @param fileSourceUrl source URL parameter that is either an externally accessible
      * Azure storage blob container Uri (preferably a Shared Access Signature Uri).
@@ -86,7 +81,7 @@ public class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration}
      *
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure storage
      * blob container Uri (preferably a Shared Access Signature Uri).
@@ -113,7 +108,7 @@ public class FormTrainingClient {
      * Get detailed information for a specified custom model id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getCustomModel#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModel#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -128,7 +123,7 @@ public class FormTrainingClient {
      * Get detailed information for a specified custom model id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getCustomModelWithResponse#string-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModelWithResponse#string-Context}
      *
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -144,7 +139,7 @@ public class FormTrainingClient {
      * Get account information for all custom models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getAccountProperties}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties}
      *
      * @return The account information.
      */
@@ -157,7 +152,7 @@ public class FormTrainingClient {
      * Get account information for all custom models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getAccountPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountPropertiesWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -172,7 +167,7 @@ public class FormTrainingClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.deleteModel#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModel#string}
      *
      * @param modelId The UUID string format model identifier.
      */
@@ -185,7 +180,7 @@ public class FormTrainingClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.deleteModelWithResponse#string-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModelWithResponse#string-Context}
      *
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -201,7 +196,7 @@ public class FormTrainingClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos}
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
@@ -214,7 +209,7 @@ public class FormTrainingClient {
      * List information for all models with taking {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.

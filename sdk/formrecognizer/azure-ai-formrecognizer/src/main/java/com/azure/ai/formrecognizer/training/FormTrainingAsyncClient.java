@@ -1,8 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer;
+package com.azure.ai.formrecognizer.training;
 
+import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
+import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
+import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.TrainRequest;
@@ -49,7 +52,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * subscription account information.
  *
  * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.initialization}
+ * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization}
  *
  * @see FormRecognizerClientBuilder
  * @see FormRecognizerAsyncClient
@@ -91,7 +94,7 @@ public class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.beginTraining#string-boolean}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean}
      *
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
@@ -115,7 +118,7 @@ public class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.beginTraining#string-boolean-boolean-string-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-boolean-string-Duration}
      *
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
@@ -147,7 +150,7 @@ public class FormTrainingAsyncClient {
      * Get detailed information for a specified custom model id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModel#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModel#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -162,7 +165,7 @@ public class FormTrainingAsyncClient {
      * Get detailed information for a specified custom model id with Http response
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getCustomModelWithResponse#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -187,7 +190,7 @@ public class FormTrainingAsyncClient {
      * Get account information for all custom models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountProperties}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties}
      *
      * @return The account information.
      */
@@ -200,7 +203,7 @@ public class FormTrainingAsyncClient {
      * Get account information.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse}
      *
      * @return A {@link Response} containing the requested account information details.
      */
@@ -224,7 +227,7 @@ public class FormTrainingAsyncClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModel#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModel#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -239,7 +242,7 @@ public class FormTrainingAsyncClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.deleteModelWithResponse#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -265,7 +268,7 @@ public class FormTrainingAsyncClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingAsyncClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getModelInfos}
      *
      * @return {@link PagedFlux} of {@link CustomFormModelInfo}.
      */

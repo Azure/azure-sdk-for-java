@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer;
+package com.azure.ai.formrecognizer.training;
 
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
@@ -26,7 +26,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.Transforms.forEachWithIndex;
+import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 
 /**
  * Helper class to convert service level custom form related models to SDK exposed models.
