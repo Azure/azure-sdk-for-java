@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DatabaseAccountManagerInternal;
@@ -130,7 +131,7 @@ public class GlobalEndPointManagerTest {
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void refreshLocationAsyncForConnectivityIssueWithPreferredRegions() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
         List<String> preferredRegions = new ArrayList<>();
         preferredRegions.add("East US");
@@ -223,7 +224,7 @@ public class GlobalEndPointManagerTest {
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void backgroundRefreshForMultiMaster() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteRegions(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson4);
@@ -242,7 +243,7 @@ public class GlobalEndPointManagerTest {
      */
     @Test(groups = {"unit"}, timeOut = TIMEOUT)
     public void startRefreshLocationTimerAsync() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteRegions(true);
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);
@@ -338,7 +339,7 @@ public class GlobalEndPointManagerTest {
     }
 
     private GlobalEndpointManager getGlobalEndPointManager() throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(true);
         connectionPolicy.setUsingMultipleWriteRegions(true); // currently without this proper, background refresh will not work
         DatabaseAccount databaseAccount = new DatabaseAccount(dbAccountJson1);

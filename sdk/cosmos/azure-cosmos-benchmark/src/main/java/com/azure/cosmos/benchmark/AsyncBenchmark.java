@@ -4,11 +4,15 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Meter;
@@ -61,13 +65,18 @@ abstract class AsyncBenchmark<T> {
     Timer latency;
 
     AsyncBenchmark(Configuration cfg) {
-        cosmosClient = new CosmosClientBuilder()
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cfg.getServiceEndpoint())
             .key(cfg.getMasterKey())
-            .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
-            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()))
-            .buildAsyncClient();
+            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()));
+        ConnectionConfig connectionConfig = cfg.getConnectionConfig();
+        if (connectionConfig.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+            cosmosClientBuilder = cosmosClientBuilder.connectionModeDirect((DirectConnectionConfig) connectionConfig);
+        } else {
+            cosmosClientBuilder = cosmosClientBuilder.connectionModeGateway((GatewayConnectionConfig) connectionConfig);
+        }
+        cosmosClient = cosmosClientBuilder.buildAsyncClient();
         configuration = cfg;
         logger = LoggerFactory.getLogger(this.getClass());
 

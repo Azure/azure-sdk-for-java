@@ -1,7 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.ThrottlingRetryOptions;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -12,40 +18,65 @@ import java.util.List;
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
  */
 public final class ConnectionPolicy {
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
-    // defaultMediaRequestTimeout is based upon the blob client timeout and the
-    // retry policy.
-    private static final Duration DEFAULT_MEDIA_REQUEST_TIMEOUT = Duration.ofSeconds(300);
-    private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
 
-    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
+    //  Constants
+    public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+    public static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    public static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
-    private static ConnectionPolicy defaultPolicy = null;
-    private Duration requestTimeout;
-    private final Duration mediaRequestTimeout;
+    private static final ConnectionPolicy defaultPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+
     private ConnectionMode connectionMode;
-    private int maxPoolSize;
-    private Duration idleConnectionTimeout;
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
-    private boolean endpointDiscoveryEnabled = true;
+    private boolean endpointDiscoveryEnabled;
     private List<String> preferredRegions;
-    private boolean usingMultipleWriteRegions = true;
-    private InetSocketAddress inetSocketProxyAddress;
+    private boolean usingMultipleWriteRegions;
     private Boolean readRequestsFallbackEnabled;
+
+    //  Gateway connection config properties
+    private int maxPoolSize = DEFAULT_MAX_POOL_SIZE;
+    private Duration requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+    private Duration idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
+    private InetSocketAddress inetSocketProxyAddress;
+
+    //  Direct connection config properties
+    private Duration connectionTimeout;
+    private Duration idleChannelTimeout;
+    private Duration idleEndpointTimeout;
+    private int maxChannelsPerEndpoint;
+    private int maxRequestsPerChannel;
 
     /**
      * Constructor.
      */
-    public ConnectionPolicy() {
-        this.connectionMode = ConnectionMode.DIRECT;
-        this.readRequestsFallbackEnabled = null;
-        this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-        this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
-        this.mediaRequestTimeout = DEFAULT_MEDIA_REQUEST_TIMEOUT;
-        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
-        this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.userAgentSuffix = "";
+    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
+        this(gatewayConnectionConfig, null);
+        this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
+        this.maxPoolSize = gatewayConnectionConfig.getMaxPoolSize();
+        this.requestTimeout = gatewayConnectionConfig.getRequestTimeout();
+        this.inetSocketProxyAddress = gatewayConnectionConfig.getProxy();
+    }
+
+    public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
+        this(directConnectionConfig, null);
+        this.connectionTimeout = directConnectionConfig.getConnectionTimeout();
+        this.idleChannelTimeout = directConnectionConfig.getIdleChannelTimeout();
+        this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
+        this.maxChannelsPerEndpoint = directConnectionConfig.getMaxChannelsPerEndpoint();
+        this.maxRequestsPerChannel = directConnectionConfig.getMaxRequestsPerChannel();
+    }
+
+    //  Because ConnectionConfig is parent class of GatewayConnectionConfig and DirectConnectionConfig
+    //  Second param - ignored - is just to identify this constructor as another constructor
+    private ConnectionPolicy(ConnectionConfig connectionConfig, Boolean ignored) {
+        this.connectionMode = connectionConfig.getConnectionMode();
+        this.throttlingRetryOptions = connectionConfig.getThrottlingRetryOptions();
+        this.userAgentSuffix = connectionConfig.getUserAgentSuffix();
+        this.preferredRegions = connectionConfig.getPreferredRegions();
+        this.endpointDiscoveryEnabled = connectionConfig.isEndpointDiscoveryEnabled();
+        this.usingMultipleWriteRegions = connectionConfig.isUsingMultipleWriteRegions();
+        this.readRequestsFallbackEnabled = connectionConfig.isReadRequestsFallbackEnabled();
     }
 
     /**
@@ -54,9 +85,6 @@ public final class ConnectionPolicy {
      * @return the default connection policy.
      */
     public static ConnectionPolicy getDefaultPolicy() {
-        if (ConnectionPolicy.defaultPolicy == null) {
-            ConnectionPolicy.defaultPolicy = new ConnectionPolicy();
-        }
         return ConnectionPolicy.defaultPolicy;
     }
 
@@ -346,20 +374,115 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    /**
+     * Gets the direct connection timeout
+     * @return direct connection timeout
+     */
+    public Duration getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    /**
+     *  Sets the direct connection timeout
+     * @param connectionTimeout the connection timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setConnectionTimeout(Duration connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the idle channel timeout
+     * @return idle channel timeout
+     */
+    public Duration getIdleChannelTimeout() {
+        return idleChannelTimeout;
+    }
+
+    /**
+     * Sets the idle channel timeout
+     * @param idleChannelTimeout idle channel timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setIdleChannelTimeout(Duration idleChannelTimeout) {
+        this.idleChannelTimeout = idleChannelTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the idle endpoint timeout
+     * @return the idle endpoint timeout
+     */
+    public Duration getIdleEndpointTimeout() {
+        return idleEndpointTimeout;
+    }
+
+    /**
+     * Sets the idle endpoint timeout
+     * @param idleEndpointTimeout the idle endpoint timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setIdleEndpointTimeout(Duration idleEndpointTimeout) {
+        this.idleEndpointTimeout = idleEndpointTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the max channels per endpoint
+     * @return the max channels per endpoint
+     */
+    public int getMaxChannelsPerEndpoint() {
+        return maxChannelsPerEndpoint;
+    }
+
+    /**
+     * Sets the max channels per endpoint
+     * @param maxChannelsPerEndpoint the max channels per endpoint
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setMaxChannelsPerEndpoint(int maxChannelsPerEndpoint) {
+        this.maxChannelsPerEndpoint = maxChannelsPerEndpoint;
+        return this;
+    }
+
+    /**
+     * Gets the max requests per endpoint
+     * @return the max requests per endpoint
+     */
+    public int getMaxRequestsPerChannel() {
+        return maxRequestsPerChannel;
+    }
+
+    /**
+     * Sets the max requests per endpoint
+     * @param maxRequestsPerChannel the max requests per endpoint
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setMaxRequestsPerChannel(int maxRequestsPerChannel) {
+        this.maxRequestsPerChannel = maxRequestsPerChannel;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "ConnectionPolicy{"
-                   + "requestTimeout=" + requestTimeout
-                   + ", mediaRequestTimeout=" + mediaRequestTimeout
-                   + ", connectionMode=" + connectionMode
-                   + ", maxPoolSize=" + maxPoolSize
-                   + ", idleConnectionTimeout=" + idleConnectionTimeout
-                   + ", userAgentSuffix='" + userAgentSuffix + '\''
-                   + ", retryOptions=" + throttlingRetryOptions
-                   + ", enableEndpointDiscovery=" + endpointDiscoveryEnabled
-                   + ", preferredRegions=" + preferredRegions
-                   + ", usingMultipleWriteRegions=" + usingMultipleWriteRegions
-                   + ", inetSocketProxyAddress=" + inetSocketProxyAddress
-                   + '}';
+        return "ConnectionPolicy{" +
+            "requestTimeout=" + requestTimeout +
+            ", connectionMode=" + connectionMode +
+            ", maxPoolSize=" + maxPoolSize +
+            ", idleConnectionTimeout=" + idleConnectionTimeout +
+            ", userAgentSuffix='" + userAgentSuffix + '\'' +
+            ", throttlingRetryOptions=" + throttlingRetryOptions +
+            ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
+            ", preferredRegions=" + preferredRegions +
+            ", usingMultipleWriteRegions=" + usingMultipleWriteRegions +
+            ", inetSocketProxyAddress=" + inetSocketProxyAddress +
+            ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
+            ", connectionTimeout=" + connectionTimeout +
+            ", idleChannelTimeout=" + idleChannelTimeout +
+            ", idleEndpointTimeout=" + idleEndpointTimeout +
+            ", maxChannelsPerEndpoint=" + maxChannelsPerEndpoint +
+            ", maxRequestsPerChannel=" + maxRequestsPerChannel +
+            '}';
     }
 }

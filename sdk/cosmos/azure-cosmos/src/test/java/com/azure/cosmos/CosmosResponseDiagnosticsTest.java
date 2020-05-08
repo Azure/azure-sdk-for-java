@@ -45,12 +45,8 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .contentResponseOnWriteEnabled(true);
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        gatewayClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
-        connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-        directClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
+        gatewayClient = cosmosClientBuilder.connectionModeGateway(GatewayConnectionConfig.getDefaultConfig()).buildClient();
+        directClient = cosmosClientBuilder.connectionModeDirect(DirectConnectionConfig.getDefaultConfig()).buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
@@ -84,9 +80,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-            client = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();
+            client = cosmosClientBuilder.connectionModeGateway(GatewayConnectionConfig.getDefaultConfig()).buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -151,7 +145,7 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
         try {
-            client = cosmosClientBuilder.connectionPolicy(new ConnectionPolicy()).buildClient();
+            client = cosmosClientBuilder.connectionModeDirect(DirectConnectionConfig.getDefaultConfig()).buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();

@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
@@ -59,7 +60,8 @@ public final class CosmosBridgeInternal {
 
         copy.endpoint(builder.getEndpoint())
             .key(builder.getKey())
-            .connectionPolicy(builder.getConnectionPolicy())
+            .connectionModeDirect(builder.getDirectConnectionConfig())
+            .connectionModeGateway(builder.getGatewayConnectionConfig())
             .consistencyLevel(builder.getConsistencyLevel())
             .keyCredential(builder.getKeyCredential())
             .permissions(builder.getPermissions())

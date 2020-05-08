@@ -12,7 +12,8 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     public ClientUnderTestBuilder(CosmosClientBuilder builder) {
         this.configs(builder.configs());
-        this.connectionPolicy(builder.getConnectionPolicy());
+        this.connectionModeGateway(builder.getGatewayConnectionConfig());
+        this.connectionModeDirect(builder.getDirectConnectionConfig());
         this.consistencyLevel(builder.getConsistencyLevel());
         this.key(builder.getKey());
         this.endpoint(builder.getEndpoint());
@@ -22,6 +23,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     @Override
     public CosmosAsyncClient buildAsyncClient() {
+        CosmosAsyncClient cosmosAsyncClient = super.buildAsyncClient();
         RxDocumentClientUnderTest rxClient;
         try {
             rxClient = new RxDocumentClientUnderTest(
@@ -35,7 +37,6 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        CosmosAsyncClient cosmosAsyncClient = super.buildAsyncClient();
         ReflectionUtils.setAsyncDocumentClient(cosmosAsyncClient, rxClient);
         return cosmosAsyncClient;
     }

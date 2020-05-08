@@ -4,6 +4,7 @@ package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
@@ -16,12 +17,10 @@ import java.util.List;
  *
  * <pre>
  * {@code
- * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
- * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
  * CosmosAsyncClient client = new CosmosClientBuilder()
  *         .endpoint(serviceEndpoint)
  *         .key(key)
- *         .connectionPolicy(connectionPolicy)
+ *         .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
  *         .consistencyLevel(ConsistencyLevel.SESSION)
  *         .buildAsyncClient();
  * }
@@ -33,6 +32,8 @@ public class CosmosClientBuilder {
     private String serviceEndpoint;
     private String keyOrResourceToken;
     private ConnectionPolicy connectionPolicy;
+    private GatewayConnectionConfig gatewayConnectionConfig;
+    private DirectConnectionConfig directConnectionConfig;
     private ConsistencyLevel desiredConsistencyLevel;
     private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
@@ -45,6 +46,8 @@ public class CosmosClientBuilder {
      * Instantiates a new Cosmos client builder.
      */
     public CosmosClientBuilder() {
+        //  Build default connection policy with direct default connection config
+        connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
     }
 
     /**
@@ -77,12 +80,10 @@ public class CosmosClientBuilder {
      *
      * <pre>
      * {@code
-     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-     * getConnectionPolicy.getConnectionMode(ConnectionMode.DIRECT);
      * CosmosAsyncClient client1 = new CosmosClientBuilder()
      *         .endpoint(serviceEndpoint1)
      *         .key(key1)
-     *         .connectionPolicy(connectionPolicy)
+     *         .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
      *         .consistencyLevel(ConsistencyLevel.SESSION)
      *         .connectionReuseAcrossClientsEnabled(true)
      *         .buildAsyncClient();
@@ -90,7 +91,7 @@ public class CosmosClientBuilder {
      * CosmosAsyncClient client2 = new CosmosClientBuilder()
      *         .endpoint(serviceEndpoint2)
      *         .key(key2)
-     *         .connectionPolicy(connectionPolicy)
+     *         .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
      *         .consistencyLevel(ConsistencyLevel.SESSION)
      *         .connectionReuseAcrossClientsEnabled(true)
      *         .buildAsyncClient();
@@ -262,17 +263,6 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Sets the {@link ConnectionPolicy} to be used
-     *
-     * @param connectionPolicy {@link ConnectionPolicy}
-     * @return current Builder
-     */
-    public CosmosClientBuilder connectionPolicy(ConnectionPolicy connectionPolicy) {
-        this.connectionPolicy = connectionPolicy;
-        return this;
-    }
-
-    /**
      * Gets the {@link CosmosKeyCredential} to be used
      *
      * @return cosmosKeyCredential
@@ -328,6 +318,46 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the GATEWAY connection configuration to be used.
+     *
+     * @param gatewayConnectionConfig GATEWAY connection configuration
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder connectionModeGateway(GatewayConnectionConfig gatewayConnectionConfig) {
+        this.gatewayConnectionConfig = gatewayConnectionConfig;
+        return this;
+    }
+
+    /**
+     * Sets the DIRECT connection configuration to be used.
+     *
+     * @param directConnectionConfig DIRECT connection configuration
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder connectionModeDirect(DirectConnectionConfig directConnectionConfig) {
+        this.directConnectionConfig = directConnectionConfig;
+        return this;
+    }
+
+    /**
+     * Gets the GATEWAY connection configuration to be used.
+     *
+     * @return gateway connection config
+     */
+    public GatewayConnectionConfig getGatewayConnectionConfig() {
+        return gatewayConnectionConfig;
+    }
+
+    /**
+     * Gets the DIRECT connection configuration to be used.
+     *
+     * @return direct connection config
+     */
+    public DirectConnectionConfig getDirectConnectionConfig() {
+        return directConnectionConfig;
+    }
+
+    /**
      * Builds a cosmos configuration object with the provided properties
      *
      * @return CosmosAsyncClient
@@ -335,7 +365,31 @@ public class CosmosClientBuilder {
     public CosmosAsyncClient buildAsyncClient() {
 
         validateConfig();
+        buildConnectionPolicy();
         return new CosmosAsyncClient(this);
+    }
+
+    /**
+     * Builds a cosmos sync client object with the provided properties
+     *
+     * @return CosmosClient
+     */
+    public CosmosClient buildClient() {
+
+        validateConfig();
+        buildConnectionPolicy();
+        return new CosmosClient(this);
+    }
+
+    //  Connection policy has to be built before it can be used by this builder
+    private void buildConnectionPolicy() {
+        if (this.directConnectionConfig != null && this.gatewayConnectionConfig != null) {
+            throw new IllegalArgumentException("cannot build connection policy without direct or gateway connection config");
+        } else if (this.directConnectionConfig != null) {
+            this.connectionPolicy = new ConnectionPolicy(directConnectionConfig);
+        } else {
+            this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
+        }
     }
 
     private void validateConfig() {
@@ -347,17 +401,10 @@ public class CosmosClientBuilder {
                 + "cosmos key credential");
         ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");
-    }
-
-    /**
-     * Builds a cosmos sync client object with the provided properties
-     *
-     * @return CosmosClient
-     */
-    public CosmosClient buildClient() {
-
-        validateConfig();
-        return new CosmosClient(this);
+        ifThrowIllegalArgException(directConnectionConfig == null && gatewayConnectionConfig == null,
+            "cannot buildAsyncClient client without connection config");
+        ifThrowIllegalArgException(directConnectionConfig != null && gatewayConnectionConfig != null,
+            "cannot buildAsyncClient client with both gateway and direct connection config");
     }
 
     Configs configs() {

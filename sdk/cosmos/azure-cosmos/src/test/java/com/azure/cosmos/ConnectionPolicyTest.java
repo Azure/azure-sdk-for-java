@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -21,7 +22,7 @@ public class ConnectionPolicyTest {
 
     @Test(groups = { "unit" }, dataProvider = "connectionModeArgProvider")
     public void connectionMode(ConnectionMode connectionMode) {
-        ConnectionPolicy policy = new ConnectionPolicy();
+        ConnectionPolicy policy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         policy.setConnectionMode(connectionMode);
 
         assertThat(policy.getConnectionMode()).isEqualTo(connectionMode);
@@ -37,7 +38,7 @@ public class ConnectionPolicyTest {
 
     @Test(groups = { "unit" })
     public void usingMultipleWriteRegions() {
-        ConnectionPolicy policy = new ConnectionPolicy();
+        ConnectionPolicy policy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         assertThat(policy.isUsingMultipleWriteRegions()).isEqualTo(true);
         policy.setUsingMultipleWriteRegions(false);
         assertThat(policy.isUsingMultipleWriteRegions()).isEqualTo(false);

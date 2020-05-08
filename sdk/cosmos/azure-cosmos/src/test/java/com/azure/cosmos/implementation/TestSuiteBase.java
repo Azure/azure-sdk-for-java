@@ -3,10 +3,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.DataType;
@@ -907,11 +908,11 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static protected Builder createGatewayHouseKeepingDocumentClient() {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
-        connectionPolicy.setThrottlingRetryOptions(options);
+        gatewayConnectionConfig.setThrottlingRetryOptions(options);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
@@ -919,10 +920,11 @@ public class TestSuiteBase extends DocumentClientTest {
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        gatewayConnectionConfig.setUsingMultipleWriteRegions(multiMasterEnabled);
+        gatewayConnectionConfig.setPreferredRegions(preferredLocations);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
-        connectionPolicy.setPreferredRegions(preferredLocations);
         return new Builder().withServiceEndpoint(TestConfigurations.HOST)
                             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                             .withConnectionPolicy(connectionPolicy)
@@ -939,17 +941,17 @@ public class TestSuiteBase extends DocumentClientTest {
                                                           boolean multiMasterEnabled,
                                                           List<String> preferredRegions,
                                                           boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+        DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
 
         if (preferredRegions != null) {
-            connectionPolicy.setPreferredRegions(preferredRegions);
+            directConnectionConfig.setPreferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            connectionPolicy.setUsingMultipleWriteRegions(true);
+            directConnectionConfig.setUsingMultipleWriteRegions(true);
         }
 
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(directConnectionConfig);
         Configs configs = Mockito.spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
 

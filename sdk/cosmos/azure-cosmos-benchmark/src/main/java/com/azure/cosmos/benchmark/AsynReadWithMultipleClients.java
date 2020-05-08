@@ -4,11 +4,15 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionConfig;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -220,14 +224,19 @@ public class AsynReadWithMultipleClients<T> {
                 if (hostAndKey.length >= 2) {
                     String endpoint = hostAndKey[0].substring(hostAndKey[0].indexOf(ACCOUNT_ENDPOINT_TAG) + ACCOUNT_ENDPOINT_TAG.length());
                     String key = hostAndKey[1].substring(hostAndKey[1].indexOf(ACCOUNT_KEY_TAG) + ACCOUNT_KEY_TAG.length());
-                    CosmosAsyncClient asyncClient = new CosmosClientBuilder()
+                    ConnectionConfig connectionConfig = configuration.getConnectionConfig();
+                    CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
                         .endpoint(endpoint)
                         .key(key)
-                        .connectionPolicy(configuration.getConnectionPolicy())
                         .consistencyLevel(configuration.getConsistencyLevel())
                         .connectionReuseAcrossClientsEnabled(true)
-                        .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()))
-                        .buildAsyncClient();
+                        .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));
+                    if (connectionConfig.getConnectionMode().equals(ConnectionMode.DIRECT)) {
+                        cosmosClientBuilder = cosmosClientBuilder.connectionModeDirect((DirectConnectionConfig) connectionConfig);
+                    } else {
+                        cosmosClientBuilder = cosmosClientBuilder.connectionModeGateway((GatewayConnectionConfig) connectionConfig);
+                    }
+                    CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();
                     List<PojoizedJson> docsToRead = new ArrayList<>();
                     CosmosAsyncDatabase cosmosAsyncDatabase = null;
                     CosmosAsyncContainer cosmosAsyncContainer = null;
