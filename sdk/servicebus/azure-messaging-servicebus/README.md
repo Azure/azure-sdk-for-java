@@ -103,7 +103,7 @@ platform. First, add the package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -141,6 +141,23 @@ on which actual message transmission takes place. The namespace often serves as 
   subscriptions, of which, multiple can exist simultaneously.
 * A **[subscription][subscription_concept]** receives messages from a topic. Each subscription is independent and
   receives a copy of the message sent to the topic.
+
+To interact with these resources, one should be familiar with the following SDK concepts:
+
+* A `ServiceBusSenderClient` is scoped to a particular queue or topic, and is created using the 
+`ServiceBusClientBuilder`.  The sender allows you to send messages to a queue or topic. It also allows for scheduling 
+messages to be available for delivery at a specified date.
+
+* A `ServiceBusReceiverClient` is scoped to a particular queue or subscription, and is created using the 
+`ServiceBusClientBuilder`. The receiver allows you to receive messages from a queue or subscription. It also allows the messages to be 
+settled after receiving them. There are four ways of settling messages:
+
+* Complete - causes the message to be deleted from the queue or topic.
+* Abandon - releases the receiver's lock on the message allowing for the message to be received by other receivers.
+* Defer - defers the message from being received by normal means. In order to receive deferred messages, the sequence 
+number of the message needs to be retained.
+* DeadLetter - moves the message to the Dead Letter queue. This will prevent the message from being received again. 
+In order to receive messages from the Dead Letter queue, a receiver scoped to the Dead Letter queue is needed.
 
 ## Examples
 
