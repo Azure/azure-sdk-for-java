@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerServer;
 
 class ReplicasImpl extends WrapperImpl<ReplicasInner> implements Replicas {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    ReplicasImpl(MySQLManager manager) {
+    ReplicasImpl(DBforMySQLManager manager) {
         super(manager.inner().replicas());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 
