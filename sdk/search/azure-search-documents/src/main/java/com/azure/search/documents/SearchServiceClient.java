@@ -6,10 +6,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.indexes.SearchSynonymMapClient;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ServiceStatistics;
@@ -46,11 +46,11 @@ public final class SearchServiceClient {
     }
 
     /**
-     * Initializes a new {@link SearchDataSourceClient} using the same configuration as the SearchServiceClient.
+     * Initializes a new {@link SearchIndexerDataSourceClient} using the same configuration as the SearchServiceClient.
      *
-     * @return a {@link SearchDataSourceClient} created from the service client configuration.
+     * @return a {@link SearchIndexerDataSourceClient} created from the service client configuration.
      */
-    public SearchDataSourceClient getDataSourceClient() {
+    public SearchIndexerDataSourceClient getSearchIndexerDataSourceClient() {
         return asyncClient.prepareBuilder().buildDataSourceClient();
     }
 
@@ -73,11 +73,11 @@ public final class SearchServiceClient {
     }
 
     /**
-     * Initializes a new {@link SearchSkillsetClient} using the same configuration as the SearchServiceClient.
+     * Initializes a new {@link SearchIndexerSkillsetClient} using the same configuration as the SearchServiceClient.
      *
-     * @return a {@link SearchSkillsetClient} created from the service client configuration.
+     * @return a {@link SearchIndexerSkillsetClient} created from the service client configuration.
      */
-    public SearchSkillsetClient getSkillsetClient() {
+    public SearchIndexerSkillsetClient getSearchIndexerSkillsetClient() {
         return asyncClient.prepareBuilder().buildSkillsetClient();
     }
 

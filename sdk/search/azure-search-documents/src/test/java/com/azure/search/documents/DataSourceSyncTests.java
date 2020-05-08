@@ -7,7 +7,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.DataSources;
-import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.models.DataSourceCredentials;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
@@ -41,7 +41,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     private static final String FAKE_COSMOS_CONNECTION_STRING =
         "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase";
 
-    private SearchDataSourceClient client;
+    private SearchIndexerDataSourceClient client;
 
     // commonly used lambda definitions
     private BiFunction<SearchIndexerDataSource, AccessOptions, SearchIndexerDataSource> createOrUpdateDataSourceFunc =
@@ -60,7 +60,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient().getDataSourceClient();
+        client = getSearchServiceClientBuilder().buildClient().getSearchIndexerDataSourceClient();
     }
 
     private SearchIndexerDataSource createOrUpdateDataSource(SearchIndexerDataSource datasource, Boolean onlyIfUnchanged,

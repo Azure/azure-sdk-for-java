@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -13,6 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SynonymMap;
 import reactor.core.publisher.Mono;
@@ -28,15 +29,23 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Asynchronous Client to manage and query synonym map, as well as manage other resources,
  * on a Cognitive Search service.
  */
-@ServiceClient(builder = SearchServiceResourceClientBuilder.class, isAsync = true)
-public class SearchSynonymMapAsyncClient extends SearchServiceResourceAsyncClientBase {
+public class SearchSynonymMapAsyncClient {
     /**
      * The logger to be used
      */
     private final ClientLogger logger = new ClientLogger(SearchSynonymMapAsyncClient.class);
 
+    /**
+     * The underlying AutoRest client used to interact with the Search service
+     */
+    private final SearchServiceRestClientImpl restClient;
+
     SearchSynonymMapAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
-        super(endpoint, serviceVersion, httpPipeline);
+        this.restClient = new SearchServiceRestClientBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(httpPipeline)
+            .build();
     }
     /**
      * Creates a new Azure Cognitive Search synonym map.

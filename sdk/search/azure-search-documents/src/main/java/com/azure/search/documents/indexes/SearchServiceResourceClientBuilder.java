@@ -37,29 +37,29 @@ import java.util.Objects;
  * This class provides a fluent builder API to help aid the configuration and instantiation of search resource
  * clients,
  * e.g.
- * {@link SearchDataSourceClient}, {@link SearchDataSourceAsyncClient}.
+ * {@link SearchIndexerDataSourceClient}, {@link SearchIndexerDataSourceAsyncClient}.
  * {@link SearchIndexClient}, {@link SearchIndexAsyncClient}.
  * {@link SearchIndexerClient}, {@link SearchIndexerAsyncClient}.
- * {@link SearchSkillsetClient}, {@link SearchSkillsetAsyncClient}.
+ * {@link SearchIndexerSkillsetClient}, {@link SearchIndexerSkillsetAsyncClient}.
  * {@link SearchSynonymMapClient}, {@link SearchSynonymMapAsyncClient}.
  * These clients are used to perform operations that are specific to search resource type.
  *
- * @see SearchDataSourceClient
- * @see SearchDataSourceAsyncClient
+ * @see SearchIndexerDataSourceClient
+ * @see SearchIndexerDataSourceAsyncClient
  * @see SearchIndexClient
  * @see SearchIndexAsyncClient
  * @see SearchIndexerClient
  * @see SearchIndexerAsyncClient
- * @see SearchSkillsetClient
- * @see SearchSkillsetAsyncClient
+ * @see SearchIndexerSkillsetClient
+ * @see SearchIndexerSkillsetAsyncClient
  * @see SearchSynonymMapClient
  * @see SearchSynonymMapAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {
-    SearchDataSourceClient.class, SearchDataSourceAsyncClient.class,
+    SearchIndexerDataSourceClient.class, SearchIndexerDataSourceAsyncClient.class,
     SearchIndexClient.class, SearchIndexAsyncClient.class,
     SearchIndexerClient.class, SearchIndexerAsyncClient.class,
-    SearchSkillsetClient.class, SearchSkillsetAsyncClient.class,
+    SearchIndexerSkillsetClient.class, SearchIndexerSkillsetAsyncClient.class,
     SearchSynonymMapClient.class, SearchSynonymMapAsyncClient.class
 })
 public class SearchServiceResourceClientBuilder {
@@ -102,40 +102,40 @@ public class SearchServiceResourceClientBuilder {
     }
 
     /**
-     * Creates a {@link SearchDataSourceClient} based on options set in the Builder. Every time
-     * {@code buildDataSourceClient()} is called a new instance of {@link SearchDataSourceClient} is created.
+     * Creates a {@link SearchIndexerDataSourceClient} based on options set in the Builder. Every time
+     * {@code buildDataSourceClient()} is called a new instance of {@link SearchIndexerDataSourceClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline},
      * {@link #serviceVersion(SearchServiceVersion)} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link SearchDataSourceClient client}. All other builder settings are ignored.
+     * are used to create the {@link SearchIndexerDataSourceClient client}. All other builder settings are ignored.
      * </p>
      * @return A SearchDataSourceClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchDataSourceClient buildDataSourceClient() {
-        return new SearchDataSourceClient(buildDataSourceAsyncClient());
+    public SearchIndexerDataSourceClient buildDataSourceClient() {
+        return new SearchIndexerDataSourceClient(buildDataSourceAsyncClient());
     }
 
     /**
-     * Creates a {@link SearchDataSourceAsyncClient} based on options set in the Builder. Every time {@code
-     * buildDataSourceAsyncClient()} is called a new instance of {@link SearchDataSourceAsyncClient} is created.
+     * Creates a {@link SearchIndexerDataSourceAsyncClient} based on options set in the Builder. Every time {@code
+     * buildDataSourceAsyncClient()} is called a new instance of {@link SearchIndexerDataSourceAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline},
      * {@link #serviceVersion(SearchServiceVersion)} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link SearchDataSourceAsyncClient client}. All other builder settings are
+     * are used to create the {@link SearchIndexerDataSourceAsyncClient client}. All other builder settings are
      * ignored.
      * </p>
      * @return A SearchDataSourceAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchDataSourceAsyncClient buildDataSourceAsyncClient() {
+    public SearchIndexerDataSourceAsyncClient buildDataSourceAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
-        return new SearchDataSourceAsyncClient(endpoint, buildVersion, getHttpPipeline());
+        return new SearchIndexerDataSourceAsyncClient(endpoint, buildVersion, getHttpPipeline());
     }
 
     /**
@@ -211,39 +211,39 @@ public class SearchServiceResourceClientBuilder {
     }
 
     /**
-     * Creates a {@link SearchSkillsetClient} based on options set in the Builder. Every time
-     * {@code buildSkillsetAsyncClient()} is called a new instance of {@link SearchSkillsetClient} is created.
+     * Creates a {@link SearchIndexerSkillsetClient} based on options set in the Builder. Every time
+     * {@code buildSkillsetAsyncClient()} is called a new instance of {@link SearchIndexerSkillsetClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline},
      * {@link #serviceVersion(SearchServiceVersion)} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link SearchSkillsetClient client}. All other builder settings are ignored.
+     * are used to create the {@link SearchIndexerSkillsetClient client}. All other builder settings are ignored.
      * </p>
      * @return A SearchSkillsetClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchSkillsetClient buildSkillsetClient() {
-        return new SearchSkillsetClient(buildSkillsetAsyncClient());
+    public SearchIndexerSkillsetClient buildSkillsetClient() {
+        return new SearchIndexerSkillsetClient(buildSkillsetAsyncClient());
     }
 
     /**
-     * Creates a {@link SearchSkillsetAsyncClient} based on options set in the Builder. Every time {@code
-     * buildSkillsetAsyncClient()} is called a new instance of {@link SearchSkillsetAsyncClient} is created.
+     * Creates a {@link SearchIndexerSkillsetAsyncClient} based on options set in the Builder. Every time {@code
+     * buildSkillsetAsyncClient()} is called a new instance of {@link SearchIndexerSkillsetAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline},
      * {@link #serviceVersion(SearchServiceVersion)} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link SearchSkillsetAsyncClient client}. All other builder settings are ignored.
+     * are used to create the {@link SearchIndexerSkillsetAsyncClient client}. All other builder settings are ignored.
      * </p>
      * @return A SearchSkillsetAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchSkillsetAsyncClient buildSkillsetAsyncClient() {
+    public SearchIndexerSkillsetAsyncClient buildSkillsetAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
-        return new SearchSkillsetAsyncClient(endpoint, buildVersion, getHttpPipeline());
+        return new SearchIndexerSkillsetAsyncClient(endpoint, buildVersion, getHttpPipeline());
     }
 
     /**

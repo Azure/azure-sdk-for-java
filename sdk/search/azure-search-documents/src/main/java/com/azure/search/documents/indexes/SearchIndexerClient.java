@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -15,7 +14,6 @@ import com.azure.search.documents.models.SearchIndexerStatus;
  * Synchronous Client to manage and query search indexer, as well as manage other resources,
  * on a Cognitive Search service.
  */
-@ServiceClient(builder = SearchServiceResourceClientBuilder.class)
 public class SearchIndexerClient {
     private final SearchIndexerAsyncClient asyncClient;
 

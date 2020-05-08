@@ -6,7 +6,7 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.models.ConditionalSkill;
 import com.azure.search.documents.models.DefaultCognitiveServicesAccount;
 import com.azure.search.documents.models.EntityCategory;
@@ -61,7 +61,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     private static final String CONTEXT_VALUE = "/document";
     private static final String OCR_SKILLSET_NAME = "ocr-skillset";
 
-    private SearchSkillsetClient skillsetClient;
+    private SearchIndexerSkillsetClient skillsetClient;
 
     // commonly used lambda definitions
     private BiFunction<SearchIndexerSkillset, AccessOptions, SearchIndexerSkillset> createOrUpdateSkillsetFunc =
@@ -87,7 +87,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        skillsetClient = getSearchServiceClientBuilder().buildClient().getSkillsetClient();
+        skillsetClient = getSearchServiceClientBuilder().buildClient().getSearchIndexerSkillsetClient();
     }
 
     @Test

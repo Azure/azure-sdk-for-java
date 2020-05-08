@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -14,11 +13,10 @@ import com.azure.search.documents.models.SearchIndexerDataSource;
  * Synchronous Client to manage and query data source, as well as manage other resources,
  * on a Cognitive Search service.
  */
-@ServiceClient(builder = SearchServiceResourceClientBuilder.class)
-public class SearchDataSourceClient {
-    private final SearchDataSourceAsyncClient asyncClient;
+public class SearchIndexerDataSourceClient {
+    private final SearchIndexerDataSourceAsyncClient asyncClient;
 
-    SearchDataSourceClient(SearchDataSourceAsyncClient asyncClient) {
+    protected SearchIndexerDataSourceClient(SearchIndexerDataSourceAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
     }
 

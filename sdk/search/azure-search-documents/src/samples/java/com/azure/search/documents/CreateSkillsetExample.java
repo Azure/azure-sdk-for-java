@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OcrSkill;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
@@ -34,13 +34,13 @@ public class CreateSkillsetExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-        SearchSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
         createOcrSkillset(skillsetClient);
         createCustomSkillset(skillsetClient);
         cleanupSkillset(skillsetClient);
     }
 
-    private static void createOcrSkillset(SearchSkillsetClient skillsetClient) {
+    private static void createOcrSkillset(SearchIndexerSkillsetClient skillsetClient) {
         // Sample OCR definition
         // https://docs.microsoft.com/en-us/azure/search/cognitive-search-skill-ocr#sample-definition
 
@@ -86,7 +86,7 @@ public class CreateSkillsetExample {
         System.out.println("\n");
     }
 
-    private static void createCustomSkillset(SearchSkillsetClient skillsetClient) {
+    private static void createCustomSkillset(SearchIndexerSkillsetClient skillsetClient) {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("Ocp-Apim-Subscription-Key", "foobar");
 
@@ -125,7 +125,7 @@ public class CreateSkillsetExample {
         System.out.println(String.format("ETag: %s", createdSkillset.getETag()));
     }
 
-    private static void cleanupSkillset(SearchSkillsetClient skillsetClient) {
+    private static void cleanupSkillset(SearchIndexerSkillsetClient skillsetClient) {
         skillsetClient.deleteSkillset(OCR_SKILLSET_NAME);
         skillsetClient.deleteSkillset(CUSTOME_SKILLSET_NAME);
     }

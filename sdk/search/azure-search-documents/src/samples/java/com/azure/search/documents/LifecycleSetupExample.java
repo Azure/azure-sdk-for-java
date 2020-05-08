@@ -5,10 +5,10 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.models.DataSourceCredentials;
 import com.azure.search.documents.models.EntityRecognitionSkill;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
@@ -59,7 +59,7 @@ public class LifecycleSetupExample {
     public static void main(String[] args) {
         SearchServiceClient client = createServiceClient();
         // Create a data source for a Cosmos DB database
-        SearchIndexerDataSource dataSource = createCosmosDataSource(client.getDataSourceClient());
+        SearchIndexerDataSource dataSource = createCosmosDataSource(client.getSearchIndexerDataSourceClient());
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
@@ -67,7 +67,7 @@ public class LifecycleSetupExample {
         System.out.println("Created Index " + index.getName());
 
         // Create a skillset for Cognitive Services
-        SearchIndexerSkillset skillset = createSkillset(client.getSkillsetClient());
+        SearchIndexerSkillset skillset = createSkillset(client.getSearchIndexerSkillsetClient());
         System.out.println("Created Skillset " + skillset.getName());
 
         // Create an indexer that uses the skillset and data source and loads the index
@@ -109,7 +109,7 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndexer(indexer);
     }
 
-    private static SearchIndexerSkillset createSkillset(SearchSkillsetClient client) {
+    private static SearchIndexerSkillset createSkillset(SearchIndexerSkillsetClient client) {
         List<InputFieldMappingEntry> inputs = Collections.singletonList(
             new InputFieldMappingEntry()
                 .setName("text")
@@ -190,7 +190,7 @@ public class LifecycleSetupExample {
         return client.createOrUpdateIndex(index);
     }
 
-    private static SearchIndexerDataSource createCosmosDataSource(SearchDataSourceClient client) {
+    private static SearchIndexerDataSource createCosmosDataSource(SearchIndexerDataSourceClient client) {
 
         SearchIndexerDataContainer dataContainer = new SearchIndexerDataContainer().setName(COSMOS_COLLECTION_NAME);
         HighWaterMarkChangeDetectionPolicy highWaterMarkChangeDetectionPolicy =

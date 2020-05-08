@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -14,11 +13,10 @@ import com.azure.search.documents.models.SearchIndexerSkillset;
  * Synchronous Client to manage and query skillset, as well as manage other resources,
  * on a Cognitive Search service.
  */
-@ServiceClient(builder = SearchServiceResourceClientBuilder.class)
-public class SearchSkillsetClient {
-    private final SearchSkillsetAsyncClient asyncClient;
+public class SearchIndexerSkillsetClient {
+    private final SearchIndexerSkillsetAsyncClient asyncClient;
 
-    SearchSkillsetClient(SearchSkillsetAsyncClient searchServiceAsyncClient) {
+    SearchIndexerSkillsetClient(SearchIndexerSkillsetAsyncClient searchServiceAsyncClient) {
         this.asyncClient = searchServiceAsyncClient;
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.indexes;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
@@ -13,6 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchIndexerDataSource;
 import reactor.core.publisher.Mono;
@@ -28,15 +29,23 @@ import static com.azure.core.util.FluxUtil.withContext;
  * Synchronous Client to manage and query data source, as well as manage other resources,
  * on a Cognitive Search service.
  */
-@ServiceClient(builder = SearchServiceResourceClientBuilder.class, isAsync = true)
-public class SearchDataSourceAsyncClient extends SearchServiceResourceAsyncClientBase {
+public class SearchIndexerDataSourceAsyncClient {
     /**
      * The logger to be used
      */
-    private final ClientLogger logger = new ClientLogger(SearchDataSourceAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(SearchIndexerDataSourceAsyncClient.class);
 
-    SearchDataSourceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
-        super(endpoint, serviceVersion, httpPipeline);
+    /**
+     * The underlying AutoRest client used to interact with the Search service
+     */
+    private final SearchServiceRestClientImpl restClient;
+
+    SearchIndexerDataSourceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+        this.restClient = new SearchServiceRestClientBuilder()
+            .endpoint(endpoint)
+            .apiVersion(serviceVersion.getVersion())
+            .pipeline(httpPipeline)
+            .build();
     }
 
     /**

@@ -9,11 +9,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
 import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
-import com.azure.search.documents.indexes.SearchDataSourceAsyncClient;
-import com.azure.search.documents.indexes.SearchIndexAsyncClient;;
+import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceAsyncClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetAsyncClient;
 import com.azure.search.documents.indexes.SearchServiceResourceClientBuilder;
-import com.azure.search.documents.indexes.SearchSkillsetAsyncClient;
 import com.azure.search.documents.indexes.SearchSynonymMapAsyncClient;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ServiceStatistics;
@@ -23,6 +23,8 @@ import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
+
+;
 
 /**
  * Asynchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
@@ -55,7 +57,7 @@ public final class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+    protected SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
@@ -77,17 +79,6 @@ public final class SearchServiceAsyncClient {
     }
 
     /**
-     * Initializes a new {@link SearchAsyncClient} using the given Index name and the same configuration as the
-     * SearchServiceAsyncClient.
-     *
-     * @param indexName the name of the Index for the client
-     * @return a {@link SearchAsyncClient} created from the service client configuration
-     */
-    public SearchAsyncClient getSearchAsyncClient(String indexName) {
-        return new SearchAsyncClient(endpoint, indexName, serviceVersion, httpPipeline);
-    }
-
-    /**
      * Gets search service version.
      *
      * @return the search service version value.
@@ -106,12 +97,23 @@ public final class SearchServiceAsyncClient {
     }
 
     /**
-     * Initializes a new {@link SearchDataSourceAsyncClient} using the same configuration as the
+     * Initializes a new {@link SearchAsyncClient} using the given Index name and the same configuration as the
      * SearchServiceAsyncClient.
      *
-     * @return a {@link SearchDataSourceAsyncClient} created from the service client configuration.
+     * @param indexName the name of the Index for the client
+     * @return a {@link SearchAsyncClient} created from the service client configuration
      */
-    public SearchDataSourceAsyncClient getDataSourceAsyncClient() {
+    public SearchAsyncClient getSearchAsyncClient(String indexName) {
+        return new SearchAsyncClient(endpoint, indexName, serviceVersion, httpPipeline);
+    }
+
+    /**
+     * Initializes a new {@link SearchIndexerDataSourceAsyncClient} using the same configuration as the
+     * SearchServiceAsyncClient.
+     *
+     * @return a {@link SearchIndexerDataSourceAsyncClient} created from the service client configuration.
+     */
+    public SearchIndexerDataSourceAsyncClient getSearchIndexerDataSourceAsyncClient() {
         return prepareBuilder().buildDataSourceAsyncClient();
     }
 
@@ -134,11 +136,11 @@ public final class SearchServiceAsyncClient {
     }
 
     /**
-     * Initializes a new {@link SearchSkillsetAsyncClient} using the same configuration as the SearchServiceAsyncClient.
+     * Initializes a new {@link SearchIndexerSkillsetAsyncClient} using the same configuration as the SearchServiceAsyncClient.
      *
-     * @return a {@link SearchSkillsetAsyncClient} created from the service client configuration.
+     * @return a {@link SearchIndexerSkillsetAsyncClient} created from the service client configuration.
      */
-    public SearchSkillsetAsyncClient getSkillsetAsyncAsyncClient() {
+    public SearchIndexerSkillsetAsyncClient getSearchIndexerSkillsetAsyncClient() {
         return prepareBuilder().buildSkillsetAsyncClient();
     }
 

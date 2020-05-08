@@ -5,7 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.indexes.models.IndexDocumentsResult;
 import com.azure.search.documents.models.Hotel;
 import com.azure.search.documents.models.InputFieldMappingEntry;
@@ -45,7 +45,7 @@ public class RefineSearchCapabilitiesExample {
 
     public static void main(String[] args) {
         SearchServiceClient serviceClient = createServiceClient();
-        SearchSkillsetClient skillsetClient = serviceClient.getSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = serviceClient.getSearchIndexerSkillsetClient();
         SearchClient indexClient = createIndexClient();
 
         // Add a synonym map to an index field
@@ -92,7 +92,7 @@ public class RefineSearchCapabilitiesExample {
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
 
-        client.getSkillsetClient().createOrUpdateSkillset(skillset);
+        client.getSearchIndexerSkillsetClient().createOrUpdateSkillset(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
 
         SearchIndexer indexer = client.getSearchIndexerClient()

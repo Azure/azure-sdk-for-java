@@ -7,10 +7,10 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.models.FieldMapping;
 import com.azure.search.documents.models.IndexerExecutionResult;
 import com.azure.search.documents.models.IndexerExecutionStatus;
@@ -63,10 +63,10 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         new CustomQueryPipelinePolicy("mock_status", "inProgress");
 
     private SearchServiceClient serviceClient;
-    private SearchDataSourceClient dataSourceClient;
+    private SearchIndexerDataSourceClient dataSourceClient;
     private SearchIndexerClient searchIndexerClient;
     private SearchIndexClient searchIndexClient;
-    private SearchSkillsetClient searchSkillsetClient;
+    private SearchIndexerSkillsetClient searchSkillsetClient;
 
     // commonly used lambda definitions
     private BiFunction<SearchIndexer, AccessOptions, SearchIndexer> createOrUpdateIndexerFunc =
@@ -177,10 +177,10 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     protected void beforeTest() {
         super.beforeTest();
         serviceClient = getSearchServiceClientBuilder().buildClient();
-        dataSourceClient = serviceClient.getDataSourceClient();
+        dataSourceClient = serviceClient.getSearchIndexerDataSourceClient();
         searchIndexClient = serviceClient.getSearchIndexClient();
         searchIndexerClient = serviceClient.getSearchIndexerClient();
-        searchSkillsetClient = serviceClient.getSkillsetClient();
+        searchSkillsetClient = serviceClient.getSearchIndexerSkillsetClient();
     }
 
     @Test
@@ -308,7 +308,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             Collections.singletonList(MOCK_STATUS_PIPELINE_POLICY))
             .buildClient();
         searchIndexClient = serviceClient.getSearchIndexClient();
-        dataSourceClient = serviceClient.getDataSourceClient();
+        dataSourceClient = serviceClient.getSearchIndexerDataSourceClient();
         searchIndexerClient = serviceClient.getSearchIndexerClient();
 
         createDataSourceAndIndex();

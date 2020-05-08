@@ -6,7 +6,7 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.models.DataSourceCredentials;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
@@ -40,7 +40,7 @@ public class DataSourceExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-        SearchDataSourceClient dataSourceClient = client.getDataSourceClient();
+        SearchIndexerDataSourceClient dataSourceClient = client.getSearchIndexerDataSourceClient();
         /*
          * Store the names of the created data sources so that we can delete them later
          * without affecting other resources.
@@ -71,7 +71,7 @@ public class DataSourceExample {
         }
     }
 
-    private static void deleteDataSource(SearchDataSourceClient client, String dataSourceName) {
+    private static void deleteDataSource(SearchIndexerDataSourceClient client, String dataSourceName) {
         try {
             client.deleteDataSource(dataSourceName);
         } catch (Exception ex) {
@@ -93,7 +93,7 @@ public class DataSourceExample {
     }
 
     private static String createDataSource(
-        SearchDataSourceClient dataSourceClient,
+        SearchIndexerDataSourceClient dataSourceClient,
         SearchIndexerDataSourceType type,
         String connectionString,
         SearchIndexerDataContainer container,
@@ -108,7 +108,7 @@ public class DataSourceExample {
         return dataSource.getName();
     }
 
-    private static String createTableStorageDataSource(SearchDataSourceClient client) {
+    private static String createTableStorageDataSource(SearchIndexerDataSourceClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.AZURE_TABLE,
@@ -120,7 +120,7 @@ public class DataSourceExample {
         );
     }
 
-    private static String createCosmosDataSource(SearchDataSourceClient client) {
+    private static String createCosmosDataSource(SearchIndexerDataSourceClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.COSMOS_DB,
@@ -132,7 +132,7 @@ public class DataSourceExample {
         );
     }
 
-    private static String createBlobDataSource(SearchDataSourceClient client) {
+    private static String createBlobDataSource(SearchIndexerDataSourceClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.AZURE_BLOB,
@@ -144,7 +144,7 @@ public class DataSourceExample {
         );
     }
 
-    private static String createSqlDataSource(SearchDataSourceClient client) {
+    private static String createSqlDataSource(SearchIndexerDataSourceClient client) {
         return createDataSource(
             client,
             SearchIndexerDataSourceType.AZURE_SQL,

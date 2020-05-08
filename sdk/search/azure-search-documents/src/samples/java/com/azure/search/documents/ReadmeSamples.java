@@ -8,11 +8,10 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.SearchDataSourceClient;
+import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
-import com.azure.search.documents.indexes.SearchServiceResourceClientBuilder;
-import com.azure.search.documents.indexes.SearchSkillsetClient;
+import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
 import com.azure.search.documents.indexes.SearchSynonymMapClient;
 import com.azure.search.documents.indexes.models.SearchOptions;
 import com.azure.search.documents.indexes.models.SearchResult;
@@ -41,9 +40,9 @@ public class ReadmeSamples {
     private String indexName = "index name";
     private SearchServiceClient searchServiceClient = new SearchServiceClientBuilder().buildClient();
     private SearchIndexClient searchIndexClient = searchServiceClient.getSearchIndexClient();
-    private SearchDataSourceClient dataSourceClient = searchServiceClient.getDataSourceClient();
+    private SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getSearchIndexerDataSourceClient();
     private SearchIndexerClient searchIndexerClient = searchServiceClient.getSearchIndexerClient();
-    private SearchSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
+    private SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
     private SearchSynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
     private SearchClient searchClient = new SearchClientBuilder().buildClient();
 
@@ -78,38 +77,43 @@ public class ReadmeSamples {
     }
 
     public void createIndexClient() {
-        SearchIndexClient searchIndexClient = new SearchServiceResourceClientBuilder()
+        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .buildSearchIndexClient();
+            .buildClient();
+        SearchIndexClient searchIndexclient = searchServiceClient.getSearchIndexClient();
     }
 
     public void createDataSourceClient() {
-        SearchDataSourceClient dataSourceClient = new SearchServiceResourceClientBuilder()
+        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .buildDataSourceClient();
+            .buildClient();
+        SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getSearchIndexerDataSourceClient();
     }
 
     public void createIndexerClient() {
-        SearchIndexerClient searchIndexerClient = new SearchServiceResourceClientBuilder()
+        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .buildSearchIndexerClient();
+            .buildClient();
+        SearchIndexerClient searchIndexerClient = searchServiceClient.getSearchIndexerClient();
     }
 
     public void createSkillsetClient() {
-        SearchSkillsetClient skillsetClient = new SearchServiceResourceClientBuilder()
+        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .buildSkillsetClient();
+            .buildClient();
+        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
     }
 
     public void createSynonymMapClient() {
-        SearchSynonymMapClient synonymMapClient = new SearchServiceResourceClientBuilder()
+        SearchServiceClient searchServiceClient = new SearchServiceClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
-            .buildSynonymMapClient();
+            .buildClient();
+        SearchSynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
     }
 
     public void customHeaders() {
