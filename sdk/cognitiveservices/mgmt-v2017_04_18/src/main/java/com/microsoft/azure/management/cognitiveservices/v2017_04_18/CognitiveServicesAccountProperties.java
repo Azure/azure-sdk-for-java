@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18;
 
 import java.util.List;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -59,6 +60,21 @@ public class CognitiveServicesAccountProperties {
      */
     @JsonProperty(value = "userOwnedStorage")
     private List<UserOwnedStorage> userOwnedStorage;
+
+    /**
+     * The private endpoint connection associated with the Cognitive Services
+     * account.
+     */
+    @JsonProperty(value = "privateEndpointConnections")
+    private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /**
+     * Whether or not public endpoint access is allowed for this account. Value
+     * is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible
+     * values include: 'Enabled', 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /**
      * The api properties for special APIs.
@@ -170,6 +186,46 @@ public class CognitiveServicesAccountProperties {
      */
     public CognitiveServicesAccountProperties withUserOwnedStorage(List<UserOwnedStorage> userOwnedStorage) {
         this.userOwnedStorage = userOwnedStorage;
+        return this;
+    }
+
+    /**
+     * Get the private endpoint connection associated with the Cognitive Services account.
+     *
+     * @return the privateEndpointConnections value
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Set the private endpoint connection associated with the Cognitive Services account.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set
+     * @return the CognitiveServicesAccountProperties object itself.
+     */
+    public CognitiveServicesAccountProperties withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        this.privateEndpointConnections = privateEndpointConnections;
+        return this;
+    }
+
+    /**
+     * Get whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @return the publicNetworkAccess value
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set whether or not public endpoint access is allowed for this account. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. Possible values include: 'Enabled', 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set
+     * @return the CognitiveServicesAccountProperties object itself.
+     */
+    public CognitiveServicesAccountProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }
 
