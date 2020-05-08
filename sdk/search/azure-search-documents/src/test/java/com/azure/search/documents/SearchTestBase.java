@@ -28,6 +28,7 @@ import com.azure.search.documents.models.MagnitudeScoringParameters;
 import com.azure.search.documents.models.ScoringFunctionAggregation;
 import com.azure.search.documents.models.ScoringFunctionInterpolation;
 import com.azure.search.documents.models.ScoringProfile;
+import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.azure.search.documents.models.Suggester;
 import com.azure.search.documents.models.TagScoringFunction;
 import com.azure.search.documents.models.TagScoringParameters;
@@ -45,6 +46,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.search.documents.ServiceResourceHelpers.BLOB_DATASOURCE_NAME;
 import static com.azure.search.documents.ServiceResourceHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.ServiceResourceHelpers.SQL_DATASOURCE_NAME;
 
@@ -438,6 +440,20 @@ public abstract class SearchTestBase extends TestBase {
         return DataSources.createFromAzureSql(testResourceNamer.randomName(SQL_DATASOURCE_NAME, 32),
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND, "GeoNamesRI", FAKE_DESCRIPTION, dataChangeDetectionPolicy,
             dataDeletionDetectionPolicy);
+    }
+
+    protected DataSource createBlobDataSource() {
+        String storageConnectionString = Configuration.getGlobalConfiguration()
+            .get("AZURE_SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
+        String blobContainerName = Configuration.getGlobalConfiguration()
+            .get("AZURE_SEARCH_STORAGE_CONTAINER_NAME", "container");
+
+        // create the new data source object for this storage account and container
+        return DataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME. 32),
+            storageConnectionString, blobContainerName, "/", "real live blob",
+            new SoftDeleteColumnDeletionDetectionPolicy()
+                .setSoftDeleteColumnName("fieldName")
+                .setSoftDeleteMarkerValue("someValue"));
     }
 
     protected String randomIndexName(String indexNameBase) {

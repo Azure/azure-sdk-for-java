@@ -1,13 +1,10 @@
 package com.azure.search.documents;
 
-import com.azure.core.util.Configuration;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.ResourceCounter;
 import com.azure.search.documents.models.ServiceCounters;
 import com.azure.search.documents.models.ServiceLimits;
 import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,19 +73,6 @@ public final class ServiceResourceHelpers {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-    }
-
-    public static DataSource createBlobDataSource() {
-        String storageConnectionString = Configuration.getGlobalConfiguration()
-            .get("AZURE_SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-        String blobContainerName = Configuration.getGlobalConfiguration()
-            .get("AZURE_SEARCH_STORAGE_CONTAINER_NAME", "container");
-
-        // create the new data source object for this storage account and container
-        return DataSources.createFromAzureBlobStorage(BLOB_DATASOURCE_NAME, storageConnectionString,
-            blobContainerName, "/", "real live blob", new SoftDeleteColumnDeletionDetectionPolicy()
-                .setSoftDeleteColumnName("fieldName")
-                .setSoftDeleteMarkerValue("someValue"));
     }
 
     public static ServiceStatistics getExpectedServiceStatistics() {
