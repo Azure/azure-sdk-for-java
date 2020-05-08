@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
  * Represents a base class that contains a {@link JsonSerializable}.
  */
 public abstract class JsonSerializableWrapper {
+
     JsonSerializable jsonSerializable;
 
     /**
@@ -21,6 +22,6 @@ public abstract class JsonSerializableWrapper {
     }
 
     void populatePropertyBag() {
-        this.getJsonSerializable().populatePropertyBag();
+        this.jsonSerializable.populatePropertyBag();
     }
 }

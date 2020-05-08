@@ -486,6 +486,7 @@ public final class ModelBridgeInternal {
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializableWrapper jsonSerializableWrapper) {
+        jsonSerializableWrapper.populatePropertyBag();
         return jsonSerializableWrapper.getJsonSerializable().serializeJsonToByteBuffer();
     }
 
