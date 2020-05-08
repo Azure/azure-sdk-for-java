@@ -661,15 +661,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
             // start processing receive requests
             EmitterProcessor<ServiceBusReceivedMessageContext> finalSource = source;
-            thisWorkSubscriber = workProcessor
-                .subscribe(currentWork -> {
-                    logger.info("Start processing messages for [{}]." , currentWork.getWork().getId());
-                    finalSource.subscribe(currentWork);
-                }, error -> {
-                    logger.error("Error in processing messages [{}]", error);
-                }, () -> {
-                    logger.info("Receiving messages completed.");
-                });
+            thisWorkSubscriber = workProcessor.subscribe(currentWork -> {
+                logger.info("Start receiving messages for [{}].", currentWork.getWork().getId());
+                finalSource.subscribe(currentWork);
+            },
+                error -> logger.error("Error in processing messages [{}].", error),
+                () -> logger.info("Receiving messages completed."));
 
             workSubscriber.set(thisWorkSubscriber);
         }

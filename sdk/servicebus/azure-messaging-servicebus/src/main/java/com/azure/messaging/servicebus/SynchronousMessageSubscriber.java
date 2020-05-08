@@ -98,7 +98,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         super.dispose();
     }
 
-    SynchronousReceiveWork getWork(){
+    SynchronousReceiveWork getWork() {
         return work;
     }
 
