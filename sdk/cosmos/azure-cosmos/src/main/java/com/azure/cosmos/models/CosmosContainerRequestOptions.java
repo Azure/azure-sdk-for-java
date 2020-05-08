@@ -14,6 +14,7 @@ public final class CosmosContainerRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
     private AccessCondition accessCondition;
+    private ThroughputProperties throughputProperties;
 
     /**
      * Gets the throughput in the form of Request Units per second when creating a cosmos container.
@@ -119,6 +120,11 @@ public final class CosmosContainerRequestOptions {
         return this;
     }
 
+    CosmosContainerRequestOptions setThroughputProperties(ThroughputProperties throughputProperties) {
+        this.throughputProperties = throughputProperties;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
         options.setAccessCondition(accessCondition);
@@ -126,6 +132,7 @@ public final class CosmosContainerRequestOptions {
         options.setPopulateQuotaInfo(populateQuotaInfo);
         options.setSessionToken(sessionToken);
         options.setConsistencyLevel(consistencyLevel);
+        options.setThroughputProperties(this.throughputProperties);
         return options;
     }
 }
