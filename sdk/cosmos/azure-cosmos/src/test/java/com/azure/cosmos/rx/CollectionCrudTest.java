@@ -369,63 +369,25 @@ public class CollectionCrudTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readReplaceAutoscaleThroughput() throws Exception {
-        final String databaseName = CosmosDatabaseForTest.generateId();
-        int initalThroughput = 5000;
-        ThroughputProperties throughputProperties =
-            ThroughputProperties.createAutoscaledThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName)
-                                           .block()
-                                           .getDatabase();
-        String collectionId = UUID.randomUUID().toString();
-
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties(collectionId, "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
-                                                                  new CosmosContainerRequestOptions())
-                                        .block()
-                                        .getContainer();
-
-        // Read
-        ThroughputResponse readThroughputResponse = container.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
-
-        // Replace
-        int tagetThroughput = 6000;
-        throughputProperties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
-        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-    }
-
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void readReplaceManualThroughput() throws Exception {
+    public void replaceProvisionedThroughput(){
         final String databaseName = CosmosDatabaseForTest.generateId();
-        int initalThroughput = 5000;
-        ThroughputProperties throughputProperties =
-            ThroughputProperties.createManualThroughput(initalThroughput);
         CosmosAsyncDatabase database = client.createDatabase(databaseName)
                                            .block()
                                            .getDatabase();
-
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
-        CosmosAsyncContainer container = database.createContainer(containerProperties, throughputProperties,
+        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
                                                                   new CosmosContainerRequestOptions())
                                              .block()
                                              .getContainer();
+        Integer throughput = container.readProvisionedThroughput().block();
 
-        // Read
-        ThroughputResponse readThroughputResponse = container.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
+        assertThat(throughput).isEqualTo(1000);
 
-        // Replace
-        int tagetThroughput = 6000;
-        throughputProperties = ThroughputProperties.createManualThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = container.replaceThroughput(throughputProperties).block();
-        assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-
+        throughput = container.replaceProvisionedThroughput(2000).block();
+        assertThat(throughput).isEqualTo(2000);
     }
+
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {

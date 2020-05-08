@@ -113,50 +113,6 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateFailure(deleteObservable, validator);
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readReplaceAutoscaleThroughput() throws Exception {
-        final String databaseName = CosmosDatabaseForTest.generateId();
-        int initalThroughput = 5000;
-        ThroughputProperties properties = ThroughputProperties.createAutoscaledThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName, properties)
-                                           .block()
-                                           .getDatabase();
-
-        ThroughputResponse readThroughputResponse = database.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(initalThroughput);
-        String collectionId = UUID.randomUUID().toString();
-        database.createContainer(collectionId, "/myPk").block();
-        // Replace
-        int tagetThroughput = 6000;
-        properties = ThroughputProperties.createAutoscaledThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
-        assertThat(replaceResponse.getProperties().getAutoscaleMaxThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void readReplaceManualThroughput() throws Exception {
-        final String databaseName = CosmosDatabaseForTest.generateId();
-        int initalThroughput = 5000;
-        ThroughputProperties properties = ThroughputProperties.createManualThroughput(initalThroughput);
-        CosmosAsyncDatabase database = client.createDatabase(databaseName, properties)
-                                           .block()
-                                           .getDatabase();
-
-        ThroughputResponse readThroughputResponse = database.readThroughput().block();
-        assertThat(readThroughputResponse.getProperties().getManualThroughput()).isEqualTo(initalThroughput);
-        database.createContainer("testCol", "/myPk").block();
-        int tagetThroughput = 6000;
-        properties = ThroughputProperties.createManualThroughput(tagetThroughput);
-        ThroughputResponse replaceResponse = database.replaceThroughput(properties).block();
-        assertThat(replaceResponse.getProperties().getManualThroughput()).isEqualTo(tagetThroughput);
-        safeDeleteDatabase(client.getDatabase(databaseName));
-
-    }
-
-
-
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_DatabaseCrudTest() {
         client = getClientBuilder().buildAsyncClient();
