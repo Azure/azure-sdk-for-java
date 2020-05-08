@@ -718,6 +718,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
+            <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
             <properties>
               <configurationParameters>
