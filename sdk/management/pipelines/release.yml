@@ -9,6 +9,9 @@ pr: none
 pool:
   vmImage: 'ubuntu-18.04'
 
+variables:
+  - template: ../../../eng/pipelines/templates/variables/globals.yml
+
 steps:
 - bash: |
     git config --global user.name "Azure-Fluent"
@@ -17,6 +20,18 @@ steps:
 - task: MavenAuthenticate@0
   inputs:
     mavenServiceConnections: azure-libraries-for-java-maven
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: eng/code-quality-reports/pom.xml
+    options: '$(DefaultOptions) -DskipTests=true -DpackageOutputDirectory=$(Build.ArtifactStagingDirectory)" -am'
+    mavenOptions: '$(LoggingOptions)'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: false
+    goals: 'install'
+  displayName: 'install sdk-build-tools'
 
 - task: Maven@3
   displayName: Build package with pom.xml
