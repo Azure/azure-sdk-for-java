@@ -18,7 +18,7 @@ class DiagnosticSettingsCategoryImpl extends WrapperImpl<DiagnosticSettingsCateg
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override

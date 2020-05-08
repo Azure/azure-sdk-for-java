@@ -1,8 +1,18 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.6.0-beta.1 (Unreleased)
+
+
+## 1.5.0 (2020-05-04)
 
 - Fixed issue where `FluxUtil.toReactorContext` would include `null` values which aren't allowed in Reactor's `Context`.
+- Added `CoreUtils.bomAwareToString` that handles converting a `byte[]` to a String based on a leading byte order mark or using the passed `Content-Type`.
+- Updated percent encoding logic to properly handle `UTF-8` characters.
+- Added new constructors for `AzureException`, `HttpRequestException`, and `HttpResponseException`.
+- Deprecated `ClientLogger.logThowableAsWarning`, replaced with `ClientLogger.logThrowableAsWarning`.
+- Added utility method `FluxUtil.toFluxByteBuffer` which converts an `InputStream` into `Flux<ByteBuffer>`.
+- Updated Reactor Core dependency.
+- Added support for serialization and deserialization of discriminator types.
 
 ## 1.4.0 (2020-04-03)
 
@@ -37,13 +47,13 @@
 
 ## 1.2.0 (2020-01-07)
 
-- Ignore null headers and allow full url paths 
+- Ignore null headers and allow full url paths
 - Add missing HTTP request methods to HttpMethod enum
 - Support custom header with AddHeaderPolicy
 - Support custom header name in RequestIDPolicy
 - Prevent HttpLoggingPolicy Consuming Body
-- Hide secret info from log info 
-- Ensure HTTPS is used when authenticating with tokens 
+- Hide secret info from log info
+- Ensure HTTPS is used when authenticating with tokens
 - Reduce Prefetch Limit for PagedIterable and IterableStream
 - Add Iterable<T> overload for IterableStream<T>
 

@@ -22,7 +22,7 @@ public class ManageCustomModelsAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormTrainingAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient().getFormTrainingAsyncClient();
 

@@ -47,7 +47,9 @@ public class ReceiveMessageAzureIdentityAsyncSample {
             .buildAsyncClient();
 
         Disposable subscription = receiverAsyncClient.receive()
-            .subscribe(message -> {
+            .subscribe(context -> {
+                ServiceBusReceivedMessage message = context.getMessage();
+
                 System.out.println("Received Message Id:" + message.getMessageId());
                 System.out.println("Received Message:" + new String(message.getBody()));
             },

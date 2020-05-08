@@ -51,7 +51,7 @@ class VirtualMachineDataDiskImpl extends WrapperImpl<DataDisk> implements Virtua
         if (this.inner().managedDisk() == null) {
             return null;
         }
-        return this.inner().managedDisk().getId();
+        return this.inner().managedDisk().id();
     }
 
     @Override

@@ -18,7 +18,7 @@ class SynchronousReceiveWork {
     private final AtomicInteger remaining;
     private final int numberToReceive;
     private final Duration timeout;
-    private final FluxSink<ServiceBusReceivedMessage> emitter;
+    private final FluxSink<ServiceBusReceivedMessageContext> emitter;
 
     private volatile Throwable error = null;
 
@@ -31,7 +31,7 @@ class SynchronousReceiveWork {
      * @param emitter Sink to publish received messages to.
      */
     SynchronousReceiveWork(long id, int numberToReceive, Duration timeout,
-        FluxSink<ServiceBusReceivedMessage> emitter) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;
@@ -81,7 +81,7 @@ class SynchronousReceiveWork {
      *
      * @param message Event to publish downstream.
      */
-    void next(ServiceBusReceivedMessage message) {
+    void next(ServiceBusReceivedMessageContext message) {
         try {
             emitter.next(message);
             remaining.decrementAndGet();

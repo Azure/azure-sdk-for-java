@@ -85,7 +85,7 @@ public final class DeployUsingARMTemplate {
                 for (DeploymentOperation operation : operations) {
                     if (operation.targetResource() != null) {
                         String operationTxt = String.format("id:%s name:%s type: %s provisioning-state:%s code: %s msg: %s",
-                                operation.targetResource().getId(),
+                                operation.targetResource().id(),
                                 operation.targetResource().resourceName(),
                                 operation.targetResource().resourceType(),
                                 operation.provisioningState(),

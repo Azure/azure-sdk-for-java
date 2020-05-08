@@ -58,7 +58,7 @@ class SnapshotsImpl
         if (inner == null) {
             return null;
         }
-        return new SnapshotImpl(inner.getName(), inner, this.manager());
+        return new SnapshotImpl(inner.name(), inner, this.manager());
     }
 
     @Override

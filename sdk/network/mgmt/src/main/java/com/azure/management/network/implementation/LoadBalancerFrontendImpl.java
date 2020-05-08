@@ -50,7 +50,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -60,7 +60,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.getId());
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -83,7 +83,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
 
     @Override
     public String publicIPAddressId() {
-        return this.inner().publicIPAddress().getId();
+        return this.inner().publicIPAddress().id();
     }
 
     @Override
@@ -96,7 +96,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
         final Map<String, LoadBalancingRule> rules = new TreeMap<>();
         if (this.inner().loadBalancingRules() != null) {
             for (SubResource innerRef : this.inner().loadBalancingRules()) {
-                String name = ResourceUtils.nameFromResourceId(innerRef.getId());
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
@@ -112,7 +112,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
         final Map<String, LoadBalancerInboundNatPool> pools = new TreeMap<>();
         if (this.inner().inboundNatPools() != null) {
             for (SubResource innerRef : this.inner().inboundNatPools()) {
-                String name = ResourceUtils.nameFromResourceId(innerRef.getId());
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancerInboundNatPool pool = this.parent().inboundNatPools().get(name);
                 if (pool != null) {
                     pools.put(name, pool);
@@ -128,7 +128,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
         final Map<String, LoadBalancerInboundNatRule> rules = new TreeMap<>();
         if (this.inner().inboundNatRules() != null) {
             for (SubResource innerRef : this.inner().inboundNatRules()) {
-                String name = ResourceUtils.nameFromResourceId(innerRef.getId());
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancerInboundNatRule rule = this.parent().inboundNatRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
@@ -149,7 +149,7 @@ class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIPConfiguration
     @Override
     public LoadBalancerFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubnetInner subnetRef = new SubnetInner();
-        subnetRef.setId(parentNetworkResourceId + "/subnets/" + subnetName);
+        subnetRef.withId(parentNetworkResourceId + "/subnets/" + subnetName);
         this
             .inner()
             .withSubnet(subnetRef)

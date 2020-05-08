@@ -11,7 +11,6 @@ import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
@@ -35,14 +34,15 @@ import reactor.core.publisher.MonoSink;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.MessageUtils.LOCK_TOKEN_SIZE;
@@ -76,18 +76,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
     public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
         TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy) {
-        this(entityPath, receiver, handler, tokenManager, provider, timeout, retryPolicy, null, false);
-    }
-
-    public ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy,
-        String sessionId) {
-        this(entityPath, receiver, handler, tokenManager, provider, timeout, retryPolicy, sessionId, true);
-    }
-
-    private ServiceBusReactorReceiver(String entityPath, Receiver receiver, ReceiveLinkHandler handler,
-        TokenManager tokenManager, ReactorProvider provider, Duration timeout, AmqpRetryPolicy retryPolicy,
-        String sessionId, boolean isSessionReceiver) {
         super(entityPath, receiver, handler, tokenManager, provider.getReactorDispatcher());
         this.receiver = receiver;
         this.handler = handler;
@@ -95,30 +83,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         this.isSettled = receiver.getSenderSettleMode() == SenderSettleMode.SETTLED;
         this.timeout = timeout;
         this.retryPolicy = retryPolicy;
-        this.subscription = Flux.interval(timeout).subscribe(i -> {
-            logger.verbose("linkName[{}]: Cleaning timed out update work tasks.", entityPath);
-
-            pendingUpdates.forEach((key, value) -> {
-                if (value == null || !value.hasTimedout()) {
-                    return;
-                }
-
-                pendingUpdates.remove(key);
-                final Throwable error = value.getLastException() != null
-                    ? value.getLastException()
-                    : new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR, "Update disposition request timed out.",
-                    handler.getErrorContext(receiver));
-
-                completeWorkItem(key, null, value.getSink(), error);
-            });
-        });
-
-        if (!isSessionReceiver) {
-            this.sessionIdMono = Mono.empty();
-            this.sessionLockedUntil = Mono.just(Instant.EPOCH);
-            return;
-        }
-
+        this.subscription = Flux.interval(timeout).subscribe(i -> cleanupWorkItems());
         this.sessionIdMono = getEndpointStates().filter(x -> x == AmqpEndpointState.ACTIVE)
             .next()
             .flatMap(state -> {
@@ -131,11 +96,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 }
 
                 final String actualSessionId = String.valueOf(value);
-                if (!CoreUtils.isNullOrEmpty(sessionId) && !sessionId.equals(actualSessionId)) {
-                    logger.warning("entityPath[{}], sessionId[{}]. expectedSessionId[{}]. Expected id does not match.",
-                        entityPath, sessionId, actualSessionId);
-                }
-
                 return Mono.just(actualSessionId);
             })
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
@@ -148,8 +108,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                     final long ticks = (long) receiver.getRemoteProperties().get(LOCKED_UNTIL_UTC);
                     return MessageUtils.convertDotNetTicksToInstant(ticks);
                 } else {
-                    logger.info("entityPath[{}], linkName[{}]. expectedSessionId[{}]. Locked until not set.",
-                        entityPath, getLinkName(), sessionId);
+                    logger.info("entityPath[{}], linkName[{}]. Locked until not set.", entityPath, getLinkName());
 
                     return Instant.EPOCH;
                 }
@@ -157,6 +116,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             .cache(value -> Duration.ofMillis(Long.MAX_VALUE), error -> Duration.ZERO, () -> Duration.ZERO);
     }
 
+    @Override
     public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
@@ -171,7 +131,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 "Delivery not on receive link.")));
         }
 
-        final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(deliveryState, timeout);
+        final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
         final Mono<Void> result = Mono.create(sink -> {
             workItem.start(sink);
             try {
@@ -212,13 +172,26 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             return;
         }
 
-        if (!pendingUpdates.isEmpty()) {
-            final List<Mono<Void>> pending = pendingUpdates.values().stream()
-                .map(UpdateDispositionWorkItem::getMono)
-                .collect(Collectors.toList());
+        cleanupWorkItems();
 
-            logger.info("Waiting for pending updates to complete.");
-            Mono.when(pending).block(timeout);
+        if (!pendingUpdates.isEmpty()) {
+            final List<Mono<Void>> pending = new ArrayList<>();
+            final StringJoiner builder = new StringJoiner(", ");
+
+            for (UpdateDispositionWorkItem workItem : pendingUpdates.values()) {
+                if (workItem.hasTimedout()) {
+                    continue;
+                }
+
+                pending.add(workItem.getMono());
+                builder.add(workItem.getLockToken());
+            }
+
+            logger.info("Waiting for pending updates to complete. Locks: {}", builder.toString());
+            try {
+                Mono.when(pending).block(timeout);
+            } catch (IllegalStateException ignored) {
+            }
         }
 
         subscription.dispose();
@@ -352,6 +325,23 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
     }
 
+    private void cleanupWorkItems() {
+        logger.verbose("linkName[{}]: Cleaning timed out update work tasks.", getLinkName());
+        pendingUpdates.forEach((key, value) -> {
+            if (value == null || !value.hasTimedout()) {
+                return;
+            }
+
+            pendingUpdates.remove(key);
+            final Throwable error = value.getLastException() != null
+                ? value.getLastException()
+                : new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR, "Update disposition request timed out.",
+                handler.getErrorContext(receiver));
+
+            completeWorkItem(key, null, value.getSink(), error);
+        });
+    }
+
     private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error) {
         final boolean isSettled = delivery != null && delivery.remotelySettled();
         if (isSettled) {
@@ -374,6 +364,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     private static final class UpdateDispositionWorkItem {
+        private final String lockToken;
         private final DeliveryState state;
         private final Duration timeout;
         private final AtomicInteger retryAttempts = new AtomicInteger();
@@ -384,7 +375,8 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         private MonoSink<Void> sink;
         private Throwable throwable;
 
-        private UpdateDispositionWorkItem(DeliveryState state, Duration timeout) {
+        private UpdateDispositionWorkItem(String lockToken, DeliveryState state, Duration timeout) {
+            this.lockToken = lockToken;
             this.state = state;
             this.timeout = timeout;
         }
@@ -431,6 +423,10 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
         private DeliveryState getDeliveryState() {
             return state;
+        }
+
+        public String getLockToken() {
+            return lockToken;
         }
     }
 }

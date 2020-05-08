@@ -29,7 +29,7 @@ class AutoscaleSettingsImpl
         if (inner == null) {
             return null;
         }
-        return new AutoscaleSettingImpl(inner.getName(), inner, this.manager());
+        return new AutoscaleSettingImpl(inner.name(), inner, this.manager());
     }
 
     @Override

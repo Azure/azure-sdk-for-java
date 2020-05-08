@@ -43,19 +43,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.45.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.49.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http2</artifactId>
-      <version>4.1.45.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-codec-http2;external_dependency} -->
+      <version>4.1.49.Final</version> <!-- {x-version-update;io.netty:netty-codec-http2;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
-      <version>4.1.45.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-handler;external_dependency} -->
+      <version>4.1.49.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -68,13 +68,13 @@ Licensed under the MIT License.
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-epoll</artifactId>
       <classifier>linux-x86_64</classifier>
-      <version>4.1.45.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-transport-native-epoll;external_dependency} -->
+      <version>4.1.49.Final</version> <!-- {x-version-update;io.netty:netty-transport-native-epoll;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler-proxy</artifactId>
-      <version>4.1.45.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-handler-proxy;external_dependency} -->
+      <version>4.1.49.Final</version> <!-- {x-version-update;io.netty:netty-handler-proxy;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>commons-beanutils</groupId>
@@ -93,7 +93,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -119,7 +119,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.5.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -233,7 +233,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -247,7 +247,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.5.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>0.9.7.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -307,13 +307,13 @@ Licensed under the MIT License.
                 <include>com.google.code.findbugs:jsr305:[3.0.2]</include> <!-- {x-include-update;com.google.code.findbugs:jsr305;external_dependency} -->
                 <include>io.dropwizard.metrics:metrics-core:[4.1.0]</include> <!-- {x-include-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
                 <include>io.micrometer:micrometer-core:[1.2.0]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
-                <include>io.netty:netty-codec-http:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-codec-http;external_dependency} -->
-                <include>io.netty:netty-codec-http2:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-codec-http2;external_dependency} -->
-                <include>io.netty:netty-handler:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-handler;external_dependency} -->
-                <include>io.netty:netty-handler-proxy:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-handler-proxy;external_dependency} -->
-                <include>io.netty:netty-transport-native-epoll:[4.1.45.Final]</include> <!-- {x-include-update;cosmos_io.netty:netty-transport-native-epoll;external_dependency} -->
-                <include>io.projectreactor:reactor-core:[3.3.3.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
-                <include>io.projectreactor.netty:reactor-netty:[0.9.5.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+                <include>io.netty:netty-codec-http:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http;external_dependency} -->
+                <include>io.netty:netty-codec-http2:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-codec-http2;external_dependency} -->
+                <include>io.netty:netty-handler:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-handler;external_dependency} -->
+                <include>io.netty:netty-handler-proxy:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-handler-proxy;external_dependency} -->
+                <include>io.netty:netty-transport-native-epoll:[4.1.49.Final]</include> <!-- {x-include-update;io.netty:netty-transport-native-epoll;external_dependency} -->
+                <include>io.projectreactor:reactor-core:[3.3.5.RELEASE]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
+                <include>io.projectreactor.netty:reactor-netty:[0.9.7.RELEASE]</include> <!-- {x-include-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
                 <include>org.slf4j:slf4j-api:[1.7.28]</include> <!-- {x-include-update;org.slf4j:slf4j-api;external_dependency} -->
               </includes>
             </bannedDependencies>

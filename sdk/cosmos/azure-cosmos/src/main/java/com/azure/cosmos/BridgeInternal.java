@@ -221,11 +221,11 @@ public final class BridgeInternal {
     }
 
     public static boolean getUseMultipleWriteLocations(ConnectionPolicy policy) {
-        return policy.isUsingMultipleWriteLocations();
+        return policy.isUsingMultipleWriteRegions();
     }
 
     public static void setUseMultipleWriteLocations(ConnectionPolicy policy, boolean value) {
-        policy.setUsingMultipleWriteLocations(value);
+        policy.setUsingMultipleWriteRegions(value);
     }
 
     public static <E extends CosmosClientException> Uri getRequestUri(CosmosClientException cosmosClientException) {

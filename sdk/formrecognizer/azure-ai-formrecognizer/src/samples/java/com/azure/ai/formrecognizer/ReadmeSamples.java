@@ -31,26 +31,26 @@ public class ReadmeSamples {
     private FormTrainingClient formTrainingClient = formRecognizerClient.getFormTrainingClient();
 
     /**
-     * Code snippet for getting sync client using the API key authentication.
+     * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
-    public void useApiKeySyncClient() {
+    public void useAzureKeyCredentialSyncClient() {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
     }
 
     /**
-     * Code snippet for rotating API key of the client
+     * Code snippet for rotating AzureKeyCredential of the client
      */
-    public void rotatingApiKey() {
-        AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+    public void rotatingAzureKeyCredential() {
+        AzureKeyCredential credential = new AzureKeyCredential("{key}");
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint("{endpoint}")
             .buildClient();
 
-        credential.update("{new_api_key}");
+        credential.update("{new_key}");
     }
 
     public void recognizeCustomForm() {

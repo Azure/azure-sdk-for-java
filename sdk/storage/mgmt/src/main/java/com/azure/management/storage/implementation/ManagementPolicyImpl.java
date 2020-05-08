@@ -40,13 +40,13 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
     }
 
     ManagementPolicyImpl(ManagementPolicyInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.accountName = inner.getName();
+        this.accountName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
         //
         this.cpolicy = new ManagementPolicySchema();
         this.upolicy = new ManagementPolicySchema();
@@ -91,7 +91,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     private void resetCreateUpdateParameters() {
@@ -101,7 +101,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -111,7 +111,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -121,7 +121,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
