@@ -25,7 +25,7 @@ public interface Accounts extends SupportsCreating<CognitiveServicesAccount.Defi
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -35,7 +35,7 @@ public interface Accounts extends SupportsCreating<CognitiveServicesAccount.Defi
     /**
      * Regenerates the specified account key for the specified Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param keyName key name to generate (Key1|Key2). Possible values include: 'Key1', 'Key2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -46,7 +46,7 @@ public interface Accounts extends SupportsCreating<CognitiveServicesAccount.Defi
     /**
      * List available SKUs for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -56,7 +56,7 @@ public interface Accounts extends SupportsCreating<CognitiveServicesAccount.Defi
     /**
      * Get usages for the requested Cognitive Services account.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
