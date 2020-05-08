@@ -29,7 +29,6 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .authenticated()
             .and()
-            .apply(configurer)
-        ;
+            .apply(configurer);
     }
 }

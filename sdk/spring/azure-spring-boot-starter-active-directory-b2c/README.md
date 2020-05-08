@@ -108,7 +108,7 @@ respectively. Specify your user flow **Name** and **User attributes and claims**
 9. Create a new Java file named *AADB2CWebController.java* in the *controller* folder and open it in a text editor.
 
 10. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2CWebController.java#L21-L53 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2CWebController.java#L18-L50 -->
 ```java
 @Controller
 public class AADB2CWebController {
@@ -150,7 +150,7 @@ public class AADB2CWebController {
 12. Create a new Java file named *AADB2COidcLoginConfigSample.java* in the *security* folder and open it in a text editor.
 
 13. Enter the following code, then save and close the file:
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2COidcLoginConfigSample.java#L20-L38 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/btoc/AADB2COidcLoginConfigSample.java#L17-L34 -->
 ```java
 @EnableWebSecurity
 public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
@@ -167,8 +167,7 @@ public class AADB2COidcLoginConfigSample extends WebSecurityConfigurerAdapter {
             .anyRequest()
             .authenticated()
             .and()
-            .apply(configurer)
-        ;
+            .apply(configurer);
     }
 }
 ```
