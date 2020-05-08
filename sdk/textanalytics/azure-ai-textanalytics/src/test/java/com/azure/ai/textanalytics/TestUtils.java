@@ -310,15 +310,15 @@ final class TestUtils {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(TextAnalyticsServiceVersion serviceVersion) {
-        String SERVICE_VERSION_FROM_ENV =
+        String serviceVersionFromEnv =
             Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
-        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return TextAnalyticsServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
             return true;
         }
-        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }

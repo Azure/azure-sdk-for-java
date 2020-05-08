@@ -14,6 +14,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -28,7 +29,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
-import org.junit.jupiter.params.provider.Arguments;
 
 import static com.azure.core.test.TestBase.AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL;
 import static com.azure.core.test.TestBase.getHttpClients;
@@ -136,15 +136,15 @@ final class TestUtils {
      * @return Boolean indicates whether filters out the service version or not.
      */
     private static boolean shouldServiceVersionBeTested(FormRecognizerServiceVersion serviceVersion) {
-        String SERVICE_VERSION_FROM_ENV =
+        String serviceVersionFromEnv =
             Configuration.getGlobalConfiguration().get(AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS);
-        if (CoreUtils.isNullOrEmpty(SERVICE_VERSION_FROM_ENV)) {
+        if (CoreUtils.isNullOrEmpty(serviceVersionFromEnv)) {
             return FormRecognizerServiceVersion.getLatest().equals(serviceVersion);
         }
-        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(SERVICE_VERSION_FROM_ENV)) {
+        if (AZURE_TEST_SERVICE_VERSIONS_VALUE_ALL.equalsIgnoreCase(serviceVersionFromEnv)) {
             return true;
         }
-        String[] configuredServiceVersionList = SERVICE_VERSION_FROM_ENV.split(",");
+        String[] configuredServiceVersionList = serviceVersionFromEnv.split(",");
         return Arrays.stream(configuredServiceVersionList).anyMatch(configuredServiceVersion ->
             serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
     }

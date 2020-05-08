@@ -23,6 +23,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import static com.azure.ai.formrecognizer.TestUtils.CUSTOM_FORM_FILE_LENGTH;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.formrecognizer.TestUtils.FORM_LOCAL_URL;
+import static com.azure.ai.formrecognizer.TestUtils.INVALID_KEY;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_SOURCE_URL_ERROR;
 import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
 import static com.azure.ai.formrecognizer.TestUtils.LAYOUT_FILE_LENGTH;
@@ -40,13 +41,14 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     private FormRecognizerClient getFormRecognizerClient(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         FormRecognizerClientBuilder builder = new FormRecognizerClientBuilder()
+            .endpoint(getEndpoint())
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(serviceVersion);
-        if (getTestMode() != TestMode.PLAYBACK) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .credential(new AzureKeyCredential(getApiKey()));
-        }
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
+        AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
+            ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
+        builder.credential(credential);
         return builder.buildClient();
     }
     /**

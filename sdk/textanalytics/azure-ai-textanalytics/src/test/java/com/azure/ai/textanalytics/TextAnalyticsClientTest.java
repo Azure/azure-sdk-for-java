@@ -15,6 +15,7 @@ import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedIterable;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -33,6 +34,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
+import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
@@ -48,17 +50,20 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     private TextAnalyticsClient getTextAnalyticsClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
-        return clientSetup(credential -> {
-            TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
-                .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                .serviceVersion(serviceVersion);
-            if (getTestMode() != TestMode.PLAYBACK) {
-                builder.addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-            }
-            return builder.buildClient();
-        });
+        TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder()
+            .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion);
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        return builder.buildClient();
     }
     // Detect language
 

@@ -9,7 +9,6 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -139,12 +138,12 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         clientBuilderWithDefaultCountryHintForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input, output) -> {
-            final List<DetectLanguageResult> result =
-                clientBuilder.buildClient().detectLanguageBatch(input).stream().collect(Collectors.toList());
-            for (int i = 0; i < result.size(); i++) {
-                validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
-            }
-        });
+                final List<DetectLanguageResult> result =
+                    clientBuilder.buildClient().detectLanguageBatch(input).stream().collect(Collectors.toList());
+                for (int i = 0; i < result.size(); i++) {
+                    validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
+                }
+            });
     }
 
     /**
@@ -156,12 +155,12 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         clientBuilderWithNewCountryHintForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input, output) -> {
-            final List<DetectLanguageResult> result =
-                clientBuilder.buildClient().detectLanguageBatch(input, "US").stream().collect(Collectors.toList());
-            for (int i = 0; i < result.size(); i++) {
-                validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
-            }
-        });
+                final List<DetectLanguageResult> result =
+                    clientBuilder.buildClient().detectLanguageBatch(input, "US").stream().collect(Collectors.toList());
+                for (int i = 0; i < result.size(); i++) {
+                    validatePrimaryLanguage(output.get(i), result.get(i).getPrimaryLanguage());
+                }
+            });
     }
 
     /**
@@ -193,12 +192,12 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
         TextAnalyticsServiceVersion serviceVersion) {
         clientBuilderWithDefaultLanguageForBatchOperationRunner(httpClient, serviceVersion,
             clientBuilder -> (input, output) -> {
-            final List<ExtractKeyPhraseResult> result =
-                clientBuilder.buildClient().extractKeyPhrasesBatch(input).stream().collect(Collectors.toList());
-            for (int i = 0; i < result.size(); i++) {
-                validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
-            }
-        });
+                final List<ExtractKeyPhraseResult> result =
+                    clientBuilder.buildClient().extractKeyPhrasesBatch(input).stream().collect(Collectors.toList());
+                for (int i = 0; i < result.size(); i++) {
+                    validateKeyPhrases(output.get(i), result.get(i).getKeyPhrases().stream().collect(Collectors.toList()));
+                }
+            });
     }
 
     /**
