@@ -17,14 +17,14 @@ import java.util.List;
 import com.microsoft.azure.management.mysql.v2017_12_01.PerformanceTierProperties;
 
 class LocationBasedPerformanceTiersImpl extends WrapperImpl<LocationBasedPerformanceTiersInner> implements LocationBasedPerformanceTiers {
-    private final MySQLManager manager;
+    private final DBforMySQLManager manager;
 
-    LocationBasedPerformanceTiersImpl(MySQLManager manager) {
+    LocationBasedPerformanceTiersImpl(DBforMySQLManager manager) {
         super(manager.inner().locationBasedPerformanceTiers());
         this.manager = manager;
     }
 
-    public MySQLManager manager() {
+    public DBforMySQLManager manager() {
         return this.manager;
     }
 
