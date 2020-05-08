@@ -40,6 +40,13 @@ public class ConnectivityParameters {
     private ProtocolConfiguration protocolConfiguration;
 
     /**
+     * Preferred IP version of the connection. Possible values include: 'IPv4',
+     * 'IPv6'.
+     */
+    @JsonProperty(value = "preferredIPVersion")
+    private IPVersion preferredIPVersion;
+
+    /**
      * Get describes the source of the connection.
      *
      * @return the source value
@@ -116,6 +123,26 @@ public class ConnectivityParameters {
      */
     public ConnectivityParameters withProtocolConfiguration(ProtocolConfiguration protocolConfiguration) {
         this.protocolConfiguration = protocolConfiguration;
+        return this;
+    }
+
+    /**
+     * Get preferred IP version of the connection. Possible values include: 'IPv4', 'IPv6'.
+     *
+     * @return the preferredIPVersion value
+     */
+    public IPVersion preferredIPVersion() {
+        return this.preferredIPVersion;
+    }
+
+    /**
+     * Set preferred IP version of the connection. Possible values include: 'IPv4', 'IPv6'.
+     *
+     * @param preferredIPVersion the preferredIPVersion value to set
+     * @return the ConnectivityParameters object itself.
+     */
+    public ConnectivityParameters withPreferredIPVersion(IPVersion preferredIPVersion) {
+        this.preferredIPVersion = preferredIPVersion;
         return this;
     }
 
