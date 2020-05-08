@@ -20,10 +20,15 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.search.documents.ServiceResourceHelpers.uploadDocument;
+import static com.azure.search.documents.ServiceResourceHelpers.uploadDocuments;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
+public class SearchIndexAsyncClientImplTest extends SearchTestBase {
 
     private static final String INDEX_NAME = "hotels";
     private SearchIndexAsyncClient asyncClient;
@@ -129,9 +134,7 @@ public class SearchIndexAsyncClientImplTest extends SearchIndexClientTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "ThisFieldDoesNotExist");
 
         uploadDocument(asyncClient, hotelDoc);
-        assertHttpResponseExceptionAsync(
-            asyncClient.getDocumentWithResponse("2", selectedFields, null)
-        );
+        assertHttpResponseExceptionAsync(asyncClient.getDocumentWithResponse("2", selectedFields, null));
     }
 
     @Test

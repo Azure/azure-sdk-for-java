@@ -25,6 +25,7 @@ import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -35,7 +36,10 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.ServiceResourceHelpers.HOTEL_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class IndexManagementSyncTests extends SearchServiceTestBase {
+public class IndexManagementSyncTests extends SearchTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
@@ -157,7 +161,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void getIndexThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getIndex("thisindexdoesnotexist"),
-            HttpResponseStatus.NOT_FOUND,
+            HttpURLConnection.HTTP_NOT_FOUND,
             "No index with the name 'thisindexdoesnotexist' was found in the service"
         );
     }
@@ -368,7 +372,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             .setType(DataType.EDM_STRING)
             .setSearchable(Boolean.TRUE)
             .setFilterable(Boolean.TRUE);
-        addFieldToIndex(existingIndex, hotelWebSiteField);
+        existingIndex.getFields().add(hotelWebSiteField);
 
         Field hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setHidden(true);
@@ -417,7 +421,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
         assertHttpResponseException(
             () -> client.createOrUpdateIndex(existingIndex),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             String.format("Fields that were already present in an index (%s) cannot be "
                     + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
                 existingFieldName)

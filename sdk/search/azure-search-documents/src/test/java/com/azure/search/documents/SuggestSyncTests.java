@@ -14,9 +14,9 @@ import com.azure.search.documents.util.SuggestPagedResponse;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -29,14 +29,17 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.SearchTestBase.HOTELS_DATA_JSON;
-import static com.azure.search.documents.SearchTestBase.HOTELS_INDEX_NAME;
+import static com.azure.search.documents.ServiceResourceHelpers.uploadDocuments;
+import static com.azure.search.documents.ServiceResourceHelpers.uploadDocumentsJson;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.convertToType;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SuggestSyncTests extends SearchIndexClientTestBase {
+public class SuggestSyncTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
     private static final String BOOKS_INDEX_NAME = "books";
 
@@ -197,7 +200,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
         assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "The specified suggester name 'Suggester does not exist' does not exist in this index definition.");
     }
 
@@ -213,7 +216,7 @@ public class SuggestSyncTests extends SearchIndexClientTestBase {
 
         assertHttpResponseException(
             () -> suggestResultIterator.iterableByPage().iterator().next(),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "Invalid expression: Syntax error at position 7 in 'This is not a valid orderby.'");
     }
 

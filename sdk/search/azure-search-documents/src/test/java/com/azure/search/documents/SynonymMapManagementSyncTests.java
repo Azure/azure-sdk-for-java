@@ -13,6 +13,7 @@ import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
@@ -20,12 +21,14 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
+public class SynonymMapManagementSyncTests extends SearchTestBase {
     private SearchServiceClient client;
 
     // commonly used lambda definitions
@@ -78,7 +81,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
 
         assertHttpResponseException(
             () -> client.createSynonymMap(expectedSynonymMap),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "Syntax error in line 1: 'a => b => c'. Only one explicit mapping (=>) can be specified in a synonym rule."
         );
     }
@@ -110,7 +113,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
 
         assertHttpResponseException(
             () -> client.getSynonymMapWithResponse(synonymMapName, generateRequestOptions(), Context.NONE),
-            HttpResponseStatus.NOT_FOUND,
+            HttpURLConnection.HTTP_NOT_FOUND,
             exceptionMessage);
     }
 
@@ -121,7 +124,7 @@ public class SynonymMapManagementSyncTests extends SearchServiceTestBase {
 
         assertHttpResponseException(
             () -> client.getSynonymMapWithResponse(synonymMapName, generateRequestOptions(), Context.NONE),
-            HttpResponseStatus.NOT_FOUND,
+            HttpURLConnection.HTTP_NOT_FOUND,
             exceptionMessage);
     }
 

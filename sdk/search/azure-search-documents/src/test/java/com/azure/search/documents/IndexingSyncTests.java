@@ -21,6 +21,7 @@ import com.azure.search.documents.test.environment.models.LoudHotel;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +36,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertToType;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -43,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class IndexingSyncTests extends SearchIndexClientTestBase {
+public class IndexingSyncTests extends SearchTestBase {
     private static final String INDEX_NAME = "hotels";
     private static final String BOOKS_INDEX_NAME = "books";
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
@@ -53,7 +58,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
     @Test
     public void countingDocsOfNewIndexGivesZero() {
         createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = getSearchIndexClientBuilder( INDEX_NAME).buildClient();
 
         assertEquals(0L, client.getDocumentCount());
     }
@@ -267,7 +272,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         assertHttpResponseException(
             () -> client.uploadDocuments(docs),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "The request is invalid. Details: actions : 0: Document key cannot be missing or empty."
         );
     }
@@ -953,7 +958,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             new Hotel()
                 .hotelId("1")
                 .category("")
-                .lastRenovationDate(DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
+                .lastRenovationDate(ServiceResourceHelpers.DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
                 .location(GeoPoint.create(-90, -180))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
@@ -967,7 +972,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
+                .lastRenovationDate(ServiceResourceHelpers.DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
                 .location(GeoPoint.create(90, 180))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)

@@ -11,9 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
+import static com.azure.search.documents.ServiceResourceHelpers.getExpectedServiceStatistics;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 
-public class SearchServiceSyncTests extends SearchServiceTestBase {
+public class SearchServiceSyncTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinition() {
@@ -27,7 +29,8 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
+        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
+            Context.NONE).getValue();
         assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
@@ -36,7 +39,8 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
-        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions, Context.NONE);
+        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
+            Context.NONE);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if

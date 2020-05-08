@@ -39,6 +39,7 @@ import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -50,13 +51,15 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class SkillsetManagementSyncTests extends SearchServiceTestBase {
+public class SkillsetManagementSyncTests extends SearchTestBase {
     private static final String CONTEXT_VALUE = "/document";
     private static final String OCR_SKILLSET_NAME = "ocr-skillset";
 
@@ -310,7 +313,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
     public void getSkillsetThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getSkillset("thisdoesnotexist"),
-            HttpResponseStatus.NOT_FOUND,
+            HttpURLConnection.HTTP_NOT_FOUND,
             "No skillset with the name 'thisdoesnotexist' was found in service"
         );
     }
@@ -468,7 +471,7 @@ public class SkillsetManagementSyncTests extends SearchServiceTestBase {
 
         assertHttpResponseException(
             () -> client.createSkillset(skillset),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "Skill '#1' is not allowed to have recursively defined inputs");
     }
 

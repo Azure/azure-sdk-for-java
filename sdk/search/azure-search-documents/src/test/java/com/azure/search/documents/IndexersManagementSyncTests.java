@@ -45,7 +45,12 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static com.azure.search.documents.ServiceResourceHelpers.BLOB_DATASOURCE_NAME;
+import static com.azure.search.documents.ServiceResourceHelpers.SQL_DATASOURCE_NAME;
+import static com.azure.search.documents.ServiceResourceHelpers.createBlobDataSource;
+import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -53,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class IndexersManagementSyncTests extends SearchServiceTestBase {
+public class IndexersManagementSyncTests extends SearchTestBase {
     private static final String TARGET_INDEX_NAME = "indexforindexers";
     private static final HttpPipelinePolicy MOCK_STATUS_PIPELINE_POLICY =
         new CustomQueryPipelinePolicy("mock_status", "inProgress");
@@ -243,7 +248,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
 
         assertHttpResponseException(
             () -> client.createIndexer(indexer),
-            HttpResponseStatus.BAD_REQUEST,
+            HttpURLConnection.HTTP_BAD_REQUEST,
             "This indexer refers to a data source 'thisdatasourcedoesnotexist' that doesn't exist");
     }
 
@@ -292,9 +297,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
         // When an indexer is created, the execution info may not be available immediately. Hence, a
         // pipeline policy that injects a "mock_status" query string is added to the client, which results in service
         // returning a well-known mock response
-        client = getSearchServiceClientBuilderWithHttpPipelinePolicies(
-            Collections.singletonList(MOCK_STATUS_PIPELINE_POLICY))
-            .buildClient();
+        client = getSearchServiceClientBuilder(MOCK_STATUS_PIPELINE_POLICY).buildClient();
 
         createDataSourceAndIndex();
 
@@ -505,7 +508,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     public void getIndexerThrowsOnNotFound() {
         assertHttpResponseException(
             () -> client.getIndexer("thisindexerdoesnotexist"),
-            HttpResponseStatus.NOT_FOUND,
+            HttpURLConnection.HTTP_NOT_FOUND,
             "Indexer 'thisindexerdoesnotexist' was not found");
     }
 

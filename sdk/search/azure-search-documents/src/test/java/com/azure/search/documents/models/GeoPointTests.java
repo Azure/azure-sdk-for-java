@@ -5,7 +5,7 @@ package com.azure.search.documents.models;
 
 import com.azure.core.util.Context;
 import com.azure.search.documents.SearchIndexClient;
-import com.azure.search.documents.SearchIndexClientTestBase;
+import com.azure.search.documents.SearchTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
@@ -23,13 +23,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GeoPointTests extends SearchIndexClientTestBase {
-
-    private static final String INDEX_NAME_HOTELS = "hotels";
+public class GeoPointTests extends SearchTestBase {
     private static final String DATA_JSON_HOTELS = "HotelsDataArray.json";
 
     private SearchIndexClient client;
@@ -47,10 +46,14 @@ public class GeoPointTests extends SearchIndexClientTestBase {
         waitForIndexing();
     }
 
+    @Override
+    protected void afterTest() {
+        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
+    }
+
     @Test
     public void canDeserializeGeoPoint() throws Exception {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME_HOTELS).buildClient();
+        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
@@ -89,8 +92,7 @@ public class GeoPointTests extends SearchIndexClientTestBase {
                     .setSortable(true)
             ));
 
-        setupIndex(index);
-        client = getSearchIndexClientBuilder(index.getName()).buildClient();
+        client = getSearchIndexClientBuilder(setupIndex(index)).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 
