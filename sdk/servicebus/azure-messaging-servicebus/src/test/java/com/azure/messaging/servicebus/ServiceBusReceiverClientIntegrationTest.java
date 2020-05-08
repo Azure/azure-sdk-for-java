@@ -11,6 +11,8 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.ParallelFlux;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -101,7 +104,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void receiveByTwoSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
+    void multipleReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 2;
@@ -134,6 +137,63 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
 
         assertEquals(totalReceive * maxMessages, totalReceivedCount);
+    }
+
+    /**
+     * Verifies that we can only call receive() multiple times.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        final int maxMessages = 1;
+        final int totalReceive = 2;
+        final Duration shortTimeOut = Duration.ofSeconds(8);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        for (int i = 0; i < totalReceive * maxMessages; ++i) {
+            sendMessage(message);
+        }
+
+        // Act & Assert
+        System.out.println("!!!! Creating receivers ");
+
+        Thread t1 = new Thread(()-> {
+            IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.receive(maxMessages, shortTimeOut);
+            int receivedMessageCount = 0;
+            for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
+
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receiver.complete(receivedMessage.getMessage());
+                messagesPending.decrementAndGet();
+                ++receivedMessageCount;
+            }
+            assertEquals(maxMessages, receivedMessageCount);
+        });
+        Thread t2 = new Thread(()-> {
+            IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.receive(maxMessages, shortTimeOut);
+            int receivedMessageCount = 0;
+            for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receiver.complete(receivedMessage.getMessage());
+                messagesPending.decrementAndGet();
+                ++receivedMessageCount;
+            }
+            assertEquals(maxMessages, receivedMessageCount);
+        });
+
+        t1.start();
+        TimeUnit.SECONDS.sleep(1);
+        t2.start();
+        t1.join();
+        t2.join();
+        System.out.println("!!!! Parallel receivers ");
+
+        System.out.println("!!!! Parallel receiver() called " + receiver.receiveCalled);
+        //assertEquals( maxMessages, receivedMessageCount);
     }
 
     /**
