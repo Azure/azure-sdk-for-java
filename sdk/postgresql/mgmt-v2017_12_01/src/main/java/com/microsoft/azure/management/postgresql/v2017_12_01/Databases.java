@@ -21,7 +21,7 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
     /**
      * Gets information about a database.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -32,7 +32,7 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
     /**
      * List all the databases in a given server.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -42,7 +42,7 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
     /**
      * Deletes a database.
      *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation
