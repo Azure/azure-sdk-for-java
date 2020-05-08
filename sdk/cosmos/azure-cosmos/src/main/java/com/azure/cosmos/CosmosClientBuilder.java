@@ -344,7 +344,7 @@ public class CosmosClientBuilder {
      *
      * @return gateway connection config
      */
-    public GatewayConnectionConfig getGatewayConnectionConfig() {
+    GatewayConnectionConfig getGatewayConnectionConfig() {
         return gatewayConnectionConfig;
     }
 
@@ -353,7 +353,7 @@ public class CosmosClientBuilder {
      *
      * @return direct connection config
      */
-    public DirectConnectionConfig getDirectConnectionConfig() {
+    DirectConnectionConfig getDirectConnectionConfig() {
         return directConnectionConfig;
     }
 
