@@ -56,6 +56,12 @@ public class RunInner extends ProxyResource {
     private RunType runType;
 
     /**
+     * The dedicated agent pool for the run.
+     */
+    @JsonProperty(value = "properties.agentPoolName")
+    private String agentPoolName;
+
+    /**
      * The time the run was scheduled.
      */
     @JsonProperty(value = "properties.createTime")
@@ -233,6 +239,26 @@ public class RunInner extends ProxyResource {
      */
     public RunInner withRunType(RunType runType) {
         this.runType = runType;
+        return this;
+    }
+
+    /**
+     * Get the dedicated agent pool for the run.
+     *
+     * @return the agentPoolName value
+     */
+    public String agentPoolName() {
+        return this.agentPoolName;
+    }
+
+    /**
+     * Set the dedicated agent pool for the run.
+     *
+     * @param agentPoolName the agentPoolName value to set
+     * @return the RunInner object itself.
+     */
+    public RunInner withAgentPoolName(String agentPoolName) {
+        this.agentPoolName = agentPoolName;
         return this;
     }
 
