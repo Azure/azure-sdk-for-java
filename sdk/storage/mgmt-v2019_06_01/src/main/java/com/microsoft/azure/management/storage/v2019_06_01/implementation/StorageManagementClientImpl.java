@@ -8,17 +8,46 @@
 
 package com.microsoft.azure.management.storage.v2019_06_01.implementation;
 
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.AzureServiceFuture;
+import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.LongRunningFinalState;
 import com.microsoft.azure.LongRunningOperationOptions;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
+import com.microsoft.rest.Validator;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.PATCH;
+import retrofit2.http.Path;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.http.Url;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * Initializes a new instance of the StorageManagementClientImpl class.
  */
 public class StorageManagementClientImpl extends AzureServiceClient {
+    /** The Retrofit service to perform REST calls. */
+    private StorageManagementClientService service;
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -304,6 +333,32 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The QueueServicesInner object to access its operations.
+     */
+    private QueueServicesInner queueServices;
+
+    /**
+     * Gets the QueueServicesInner object to access its operations.
+     * @return the QueueServicesInner object.
+     */
+    public QueueServicesInner queueServices() {
+        return this.queueServices;
+    }
+
+    /**
+     * The TableServicesInner object to access its operations.
+     */
+    private TableServicesInner tableServices;
+
+    /**
+     * Gets the TableServicesInner object to access its operations.
+     * @return the TableServicesInner object.
+     */
+    public TableServicesInner tableServices() {
+        return this.tableServices;
+    }
+
+    /**
      * Initializes an instance of StorageManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -351,7 +406,10 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.blobContainers = new BlobContainersInner(restClient().retrofit(), this);
         this.fileServices = new FileServicesInner(restClient().retrofit(), this);
         this.fileShares = new FileSharesInner(restClient().retrofit(), this);
+        this.queueServices = new QueueServicesInner(restClient().retrofit(), this);
+        this.tableServices = new TableServicesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
+        initializeService();
     }
 
     /**
@@ -363,4 +421,1774 @@ public class StorageManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("%s (%s, %s, auto-generated)", super.userAgent(), "StorageManagementClient", "2019-06-01");
     }
+
+    private void initializeService() {
+        service = restClient().retrofit().create(StorageManagementClientService.class);
+    }
+
+    /**
+     * The interface defining all the services for StorageManagementClient to be
+     * used by Retrofit to perform actually REST calls.
+     */
+    interface StorageManagementClientService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient listQueueService" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices")
+        Observable<Response<ResponseBody>> listQueueService(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient putQueue" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
+        Observable<Response<ResponseBody>> putQueue(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("queueName") String queueName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body StorageQueueInner queue, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient patchQueue" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
+        Observable<Response<ResponseBody>> patchQueue(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("queueName") String queueName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body StorageQueueInner queue, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient getQueue" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}")
+        Observable<Response<ResponseBody>> getQueue(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("queueName") String queueName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient deleteQueue" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues/{queueName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteQueue(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("queueName") String queueName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient listQueueMethod" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/queueServices/default/queues")
+        Observable<Response<ResponseBody>> listQueueMethod(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$maxpagesize") String maxpagesize, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient listTableService" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices")
+        Observable<Response<ResponseBody>> listTableService(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient putTable" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
+        Observable<Response<ResponseBody>> putTable(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient patchTable" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
+        Observable<Response<ResponseBody>> patchTable(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient getTable" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}")
+        Observable<Response<ResponseBody>> getTable(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient deleteTable" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables/{tableName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteTable(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Path("tableName") String tableName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient queryTable" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/tableServices/default/tables")
+        Observable<Response<ResponseBody>> queryTable(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient listQueueMethodNext" })
+        @GET
+        Observable<Response<ResponseBody>> listQueueMethodNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.v2019_06_01.StorageManagementClient queryTableNext" })
+        @GET
+        Observable<Response<ResponseBody>> queryTableNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * List all queue services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ListQueueServicesInner object if successful.
+     */
+    public ListQueueServicesInner listQueueService(String resourceGroupName, String accountName) {
+        return listQueueServiceWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * List all queue services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ListQueueServicesInner> listQueueServiceAsync(String resourceGroupName, String accountName, final ServiceCallback<ListQueueServicesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listQueueServiceWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * List all queue services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListQueueServicesInner object
+     */
+    public Observable<ListQueueServicesInner> listQueueServiceAsync(String resourceGroupName, String accountName) {
+        return listQueueServiceWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<ListQueueServicesInner>, ListQueueServicesInner>() {
+            @Override
+            public ListQueueServicesInner call(ServiceResponse<ListQueueServicesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List all queue services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListQueueServicesInner object
+     */
+    public Observable<ServiceResponse<ListQueueServicesInner>> listQueueServiceWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.listQueueService(resourceGroupName, accountName, this.subscriptionId(), this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListQueueServicesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ListQueueServicesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ListQueueServicesInner> clientResponse = listQueueServiceDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ListQueueServicesInner> listQueueServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ListQueueServicesInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ListQueueServicesInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageQueueInner object if successful.
+     */
+    public StorageQueueInner putQueue(String resourceGroupName, String accountName, String queueName) {
+        return putQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageQueueInner> putQueueAsync(String resourceGroupName, String accountName, String queueName, final ServiceCallback<StorageQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(putQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName), serviceCallback);
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<StorageQueueInner> putQueueAsync(String resourceGroupName, String accountName, String queueName) {
+        return putQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).map(new Func1<ServiceResponse<StorageQueueInner>, StorageQueueInner>() {
+            @Override
+            public StorageQueueInner call(ServiceResponse<StorageQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<ServiceResponse<StorageQueueInner>> putQueueWithServiceResponseAsync(String resourceGroupName, String accountName, String queueName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        final Map<String, String> metadata = null;
+        StorageQueueInner queue = new StorageQueueInner();
+        queue.withMetadata(null);
+        return service.putQueue(resourceGroupName, accountName, this.subscriptionId(), queueName, this.apiVersion(), this.acceptLanguage(), queue, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageQueueInner> clientResponse = putQueueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageQueueInner object if successful.
+     */
+    public StorageQueueInner putQueue(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        return putQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName, metadata).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageQueueInner> putQueueAsync(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, final ServiceCallback<StorageQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(putQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName, metadata), serviceCallback);
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<StorageQueueInner> putQueueAsync(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        return putQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName, metadata).map(new Func1<ServiceResponse<StorageQueueInner>, StorageQueueInner>() {
+            @Override
+            public StorageQueueInner call(ServiceResponse<StorageQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<ServiceResponse<StorageQueueInner>> putQueueWithServiceResponseAsync(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(metadata);
+        StorageQueueInner queue = new StorageQueueInner();
+        queue.withMetadata(metadata);
+        return service.putQueue(resourceGroupName, accountName, this.subscriptionId(), queueName, this.apiVersion(), this.acceptLanguage(), queue, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageQueueInner> clientResponse = putQueueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<StorageQueueInner> putQueueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<StorageQueueInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<StorageQueueInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageQueueInner object if successful.
+     */
+    public StorageQueueInner patchQueue(String resourceGroupName, String accountName, String queueName) {
+        return patchQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageQueueInner> patchQueueAsync(String resourceGroupName, String accountName, String queueName, final ServiceCallback<StorageQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(patchQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName), serviceCallback);
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<StorageQueueInner> patchQueueAsync(String resourceGroupName, String accountName, String queueName) {
+        return patchQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).map(new Func1<ServiceResponse<StorageQueueInner>, StorageQueueInner>() {
+            @Override
+            public StorageQueueInner call(ServiceResponse<StorageQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<ServiceResponse<StorageQueueInner>> patchQueueWithServiceResponseAsync(String resourceGroupName, String accountName, String queueName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        final Map<String, String> metadata = null;
+        StorageQueueInner queue = new StorageQueueInner();
+        queue.withMetadata(null);
+        return service.patchQueue(resourceGroupName, accountName, this.subscriptionId(), queueName, this.apiVersion(), this.acceptLanguage(), queue, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageQueueInner> clientResponse = patchQueueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageQueueInner object if successful.
+     */
+    public StorageQueueInner patchQueue(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        return patchQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName, metadata).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageQueueInner> patchQueueAsync(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata, final ServiceCallback<StorageQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(patchQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName, metadata), serviceCallback);
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<StorageQueueInner> patchQueueAsync(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        return patchQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName, metadata).map(new Func1<ServiceResponse<StorageQueueInner>, StorageQueueInner>() {
+            @Override
+            public StorageQueueInner call(ServiceResponse<StorageQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a new queue with the specified queue name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param metadata A name-value pair that represents queue metadata.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<ServiceResponse<StorageQueueInner>> patchQueueWithServiceResponseAsync(String resourceGroupName, String accountName, String queueName, Map<String, String> metadata) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(metadata);
+        StorageQueueInner queue = new StorageQueueInner();
+        queue.withMetadata(metadata);
+        return service.patchQueue(resourceGroupName, accountName, this.subscriptionId(), queueName, this.apiVersion(), this.acceptLanguage(), queue, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageQueueInner> clientResponse = patchQueueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<StorageQueueInner> patchQueueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<StorageQueueInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<StorageQueueInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageQueueInner object if successful.
+     */
+    public StorageQueueInner getQueue(String resourceGroupName, String accountName, String queueName) {
+        return getQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageQueueInner> getQueueAsync(String resourceGroupName, String accountName, String queueName, final ServiceCallback<StorageQueueInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName), serviceCallback);
+    }
+
+    /**
+     * Gets the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<StorageQueueInner> getQueueAsync(String resourceGroupName, String accountName, String queueName) {
+        return getQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).map(new Func1<ServiceResponse<StorageQueueInner>, StorageQueueInner>() {
+            @Override
+            public StorageQueueInner call(ServiceResponse<StorageQueueInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageQueueInner object
+     */
+    public Observable<ServiceResponse<StorageQueueInner>> getQueueWithServiceResponseAsync(String resourceGroupName, String accountName, String queueName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.getQueue(resourceGroupName, accountName, this.subscriptionId(), queueName, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageQueueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageQueueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageQueueInner> clientResponse = getQueueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<StorageQueueInner> getQueueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<StorageQueueInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<StorageQueueInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteQueue(String resourceGroupName, String accountName, String queueName) {
+        deleteQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteQueueAsync(String resourceGroupName, String accountName, String queueName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName), serviceCallback);
+    }
+
+    /**
+     * Deletes the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteQueueAsync(String resourceGroupName, String accountName, String queueName) {
+        return deleteQueueWithServiceResponseAsync(resourceGroupName, accountName, queueName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the queue with the specified queue name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param queueName A queue name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of lowercase alphanumeric and dash(-) characters only, it should begin and end with an alphanumeric character and it cannot have two consecutive dash(-) characters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteQueueWithServiceResponseAsync(String resourceGroupName, String accountName, String queueName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (queueName == null) {
+            throw new IllegalArgumentException("Parameter queueName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteQueue(resourceGroupName, accountName, this.subscriptionId(), queueName, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteQueueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteQueueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ListQueueInner&gt; object if successful.
+     */
+    public PagedList<ListQueueInner> listQueueMethod(final String resourceGroupName, final String accountName) {
+        ServiceResponse<Page<ListQueueInner>> response = listQueueMethodSinglePageAsync(resourceGroupName, accountName).toBlocking().single();
+        return new PagedList<ListQueueInner>(response.body()) {
+            @Override
+            public Page<ListQueueInner> nextPage(String nextPageLink) {
+                return listQueueMethodNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ListQueueInner>> listQueueMethodAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<ListQueueInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueueMethodSinglePageAsync(resourceGroupName, accountName),
+            new Func1<String, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(String nextPageLink) {
+                    return listQueueMethodNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListQueueInner&gt; object
+     */
+    public Observable<Page<ListQueueInner>> listQueueMethodAsync(final String resourceGroupName, final String accountName) {
+        return listQueueMethodWithServiceResponseAsync(resourceGroupName, accountName)
+            .map(new Func1<ServiceResponse<Page<ListQueueInner>>, Page<ListQueueInner>>() {
+                @Override
+                public Page<ListQueueInner> call(ServiceResponse<Page<ListQueueInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListQueueInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ListQueueInner>>> listQueueMethodWithServiceResponseAsync(final String resourceGroupName, final String accountName) {
+        return listQueueMethodSinglePageAsync(resourceGroupName, accountName)
+            .concatMap(new Func1<ServiceResponse<Page<ListQueueInner>>, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(ServiceResponse<Page<ListQueueInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueueMethodNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ListQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ListQueueInner>>> listQueueMethodSinglePageAsync(final String resourceGroupName, final String accountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        final String maxpagesize = null;
+        final String filter = null;
+        return service.listQueueMethod(resourceGroupName, accountName, this.subscriptionId(), this.apiVersion(), maxpagesize, filter, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ListQueueInner>> result = listQueueMethodDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ListQueueInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response
+     * @param filter Optional, When specified, only the queues with a name starting with the given filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ListQueueInner&gt; object if successful.
+     */
+    public PagedList<ListQueueInner> listQueueMethod(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+        ServiceResponse<Page<ListQueueInner>> response = listQueueMethodSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter).toBlocking().single();
+        return new PagedList<ListQueueInner>(response.body()) {
+            @Override
+            public Page<ListQueueInner> nextPage(String nextPageLink) {
+                return listQueueMethodNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response
+     * @param filter Optional, When specified, only the queues with a name starting with the given filter will be listed.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ListQueueInner>> listQueueMethodAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter, final ListOperationCallback<ListQueueInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueueMethodSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(String nextPageLink) {
+                    return listQueueMethodNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response
+     * @param filter Optional, When specified, only the queues with a name starting with the given filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListQueueInner&gt; object
+     */
+    public Observable<Page<ListQueueInner>> listQueueMethodAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+        return listQueueMethodWithServiceResponseAsync(resourceGroupName, accountName, maxpagesize, filter)
+            .map(new Func1<ServiceResponse<Page<ListQueueInner>>, Page<ListQueueInner>>() {
+                @Override
+                public Page<ListQueueInner> call(ServiceResponse<Page<ListQueueInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response
+     * @param filter Optional, When specified, only the queues with a name starting with the given filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListQueueInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ListQueueInner>>> listQueueMethodWithServiceResponseAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+        return listQueueMethodSinglePageAsync(resourceGroupName, accountName, maxpagesize, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ListQueueInner>>, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(ServiceResponse<Page<ListQueueInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueueMethodNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+    ServiceResponse<PageImpl1<ListQueueInner>> * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+    ServiceResponse<PageImpl1<ListQueueInner>> * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+    ServiceResponse<PageImpl1<ListQueueInner>> * @param maxpagesize Optional, a maximum number of queues that should be included in a list queue response
+    ServiceResponse<PageImpl1<ListQueueInner>> * @param filter Optional, When specified, only the queues with a name starting with the given filter will be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ListQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ListQueueInner>>> listQueueMethodSinglePageAsync(final String resourceGroupName, final String accountName, final String maxpagesize, final String filter) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.listQueueMethod(resourceGroupName, accountName, this.subscriptionId(), this.apiVersion(), maxpagesize, filter, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ListQueueInner>> result = listQueueMethodDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ListQueueInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<ListQueueInner>> listQueueMethodDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl1<ListQueueInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<ListQueueInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List all table services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ListTableServicesInner object if successful.
+     */
+    public ListTableServicesInner listTableService(String resourceGroupName, String accountName) {
+        return listTableServiceWithServiceResponseAsync(resourceGroupName, accountName).toBlocking().single().body();
+    }
+
+    /**
+     * List all table services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<ListTableServicesInner> listTableServiceAsync(String resourceGroupName, String accountName, final ServiceCallback<ListTableServicesInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listTableServiceWithServiceResponseAsync(resourceGroupName, accountName), serviceCallback);
+    }
+
+    /**
+     * List all table services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListTableServicesInner object
+     */
+    public Observable<ListTableServicesInner> listTableServiceAsync(String resourceGroupName, String accountName) {
+        return listTableServiceWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<ListTableServicesInner>, ListTableServicesInner>() {
+            @Override
+            public ListTableServicesInner call(ServiceResponse<ListTableServicesInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * List all table services for the storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ListTableServicesInner object
+     */
+    public Observable<ServiceResponse<ListTableServicesInner>> listTableServiceWithServiceResponseAsync(String resourceGroupName, String accountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.listTableService(resourceGroupName, accountName, this.subscriptionId(), this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListTableServicesInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ListTableServicesInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ListTableServicesInner> clientResponse = listTableServiceDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ListTableServicesInner> listTableServiceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ListTableServicesInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ListTableServicesInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TableInner object if successful.
+     */
+    public TableInner putTable(String resourceGroupName, String accountName, String tableName) {
+        return putTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TableInner> putTableAsync(String resourceGroupName, String accountName, String tableName, final ServiceCallback<TableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(putTableWithServiceResponseAsync(resourceGroupName, accountName, tableName), serviceCallback);
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<TableInner> putTableAsync(String resourceGroupName, String accountName, String tableName) {
+        return putTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).map(new Func1<ServiceResponse<TableInner>, TableInner>() {
+            @Override
+            public TableInner call(ServiceResponse<TableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<ServiceResponse<TableInner>> putTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.putTable(resourceGroupName, accountName, this.subscriptionId(), tableName, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TableInner> clientResponse = putTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TableInner> putTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<TableInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<TableInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TableInner object if successful.
+     */
+    public TableInner patchTable(String resourceGroupName, String accountName, String tableName) {
+        return patchTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TableInner> patchTableAsync(String resourceGroupName, String accountName, String tableName, final ServiceCallback<TableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(patchTableWithServiceResponseAsync(resourceGroupName, accountName, tableName), serviceCallback);
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<TableInner> patchTableAsync(String resourceGroupName, String accountName, String tableName) {
+        return patchTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).map(new Func1<ServiceResponse<TableInner>, TableInner>() {
+            @Override
+            public TableInner call(ServiceResponse<TableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a new table with the specified table name, under the specified account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<ServiceResponse<TableInner>> patchTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.patchTable(resourceGroupName, accountName, this.subscriptionId(), tableName, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TableInner> clientResponse = patchTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TableInner> patchTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<TableInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<TableInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the TableInner object if successful.
+     */
+    public TableInner getTable(String resourceGroupName, String accountName, String tableName) {
+        return getTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<TableInner> getTableAsync(String resourceGroupName, String accountName, String tableName, final ServiceCallback<TableInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getTableWithServiceResponseAsync(resourceGroupName, accountName, tableName), serviceCallback);
+    }
+
+    /**
+     * Gets the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<TableInner> getTableAsync(String resourceGroupName, String accountName, String tableName) {
+        return getTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).map(new Func1<ServiceResponse<TableInner>, TableInner>() {
+            @Override
+            public TableInner call(ServiceResponse<TableInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the TableInner object
+     */
+    public Observable<ServiceResponse<TableInner>> getTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.getTable(resourceGroupName, accountName, this.subscriptionId(), tableName, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TableInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TableInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TableInner> clientResponse = getTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TableInner> getTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<TableInner, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<TableInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void deleteTable(String resourceGroupName, String accountName, String tableName) {
+        deleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableName), serviceCallback);
+    }
+
+    /**
+     * Deletes the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteTableAsync(String resourceGroupName, String accountName, String tableName) {
+        return deleteTableWithServiceResponseAsync(resourceGroupName, accountName, tableName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes the table with the specified table name, under the specified account if it exists.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteTableWithServiceResponseAsync(String resourceGroupName, String accountName, String tableName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (tableName == null) {
+            throw new IllegalArgumentException("Parameter tableName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.deleteTable(resourceGroupName, accountName, this.subscriptionId(), tableName, this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteTableDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.serializerAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TableInner&gt; object if successful.
+     */
+    public PagedList<TableInner> queryTable(final String resourceGroupName, final String accountName) {
+        ServiceResponse<Page<TableInner>> response = queryTableSinglePageAsync(resourceGroupName, accountName).toBlocking().single();
+        return new PagedList<TableInner>(response.body()) {
+            @Override
+            public Page<TableInner> nextPage(String nextPageLink) {
+                return queryTableNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<TableInner>> queryTableAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<TableInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            queryTableSinglePageAsync(resourceGroupName, accountName),
+            new Func1<String, Observable<ServiceResponse<Page<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TableInner>>> call(String nextPageLink) {
+                    return queryTableNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TableInner&gt; object
+     */
+    public Observable<Page<TableInner>> queryTableAsync(final String resourceGroupName, final String accountName) {
+        return queryTableWithServiceResponseAsync(resourceGroupName, accountName)
+            .map(new Func1<ServiceResponse<Page<TableInner>>, Page<TableInner>>() {
+                @Override
+                public Page<TableInner> call(ServiceResponse<Page<TableInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TableInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TableInner>>> queryTableWithServiceResponseAsync(final String resourceGroupName, final String accountName) {
+        return queryTableSinglePageAsync(resourceGroupName, accountName)
+            .concatMap(new Func1<ServiceResponse<Page<TableInner>>, Observable<ServiceResponse<Page<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TableInner>>> call(ServiceResponse<Page<TableInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(queryTableNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+    ServiceResponse<PageImpl1<TableInner>> * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
+    ServiceResponse<PageImpl1<TableInner>> * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TableInner>>> queryTableSinglePageAsync(final String resourceGroupName, final String accountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (this.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        return service.queryTable(resourceGroupName, accountName, this.subscriptionId(), this.apiVersion(), this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TableInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<TableInner>> result = queryTableDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TableInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<TableInner>> queryTableDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl1<TableInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<TableInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;ListQueueInner&gt; object if successful.
+     */
+    public PagedList<ListQueueInner> listQueueMethodNext(final String nextPageLink) {
+        ServiceResponse<Page<ListQueueInner>> response = listQueueMethodNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ListQueueInner>(response.body()) {
+            @Override
+            public Page<ListQueueInner> nextPage(String nextPageLink) {
+                return listQueueMethodNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ListQueueInner>> listQueueMethodNextAsync(final String nextPageLink, final ServiceFuture<List<ListQueueInner>> serviceFuture, final ListOperationCallback<ListQueueInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listQueueMethodNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(String nextPageLink) {
+                    return listQueueMethodNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListQueueInner&gt; object
+     */
+    public Observable<Page<ListQueueInner>> listQueueMethodNextAsync(final String nextPageLink) {
+        return listQueueMethodNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ListQueueInner>>, Page<ListQueueInner>>() {
+                @Override
+                public Page<ListQueueInner> call(ServiceResponse<Page<ListQueueInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;ListQueueInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ListQueueInner>>> listQueueMethodNextWithServiceResponseAsync(final String nextPageLink) {
+        return listQueueMethodNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ListQueueInner>>, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(ServiceResponse<Page<ListQueueInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listQueueMethodNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the queues under the specified storage account.
+     *
+    ServiceResponse<PageImpl1<ListQueueInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;ListQueueInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ListQueueInner>>> listQueueMethodNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listQueueMethodNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ListQueueInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ListQueueInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ListQueueInner>> result = listQueueMethodNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ListQueueInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<ListQueueInner>> listQueueMethodNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl1<ListQueueInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<ListQueueInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;TableInner&gt; object if successful.
+     */
+    public PagedList<TableInner> queryTableNext(final String nextPageLink) {
+        ServiceResponse<Page<TableInner>> response = queryTableNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<TableInner>(response.body()) {
+            @Override
+            public Page<TableInner> nextPage(String nextPageLink) {
+                return queryTableNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<TableInner>> queryTableNextAsync(final String nextPageLink, final ServiceFuture<List<TableInner>> serviceFuture, final ListOperationCallback<TableInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            queryTableNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TableInner>>> call(String nextPageLink) {
+                    return queryTableNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TableInner&gt; object
+     */
+    public Observable<Page<TableInner>> queryTableNextAsync(final String nextPageLink) {
+        return queryTableNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TableInner>>, Page<TableInner>>() {
+                @Override
+                public Page<TableInner> call(ServiceResponse<Page<TableInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;TableInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TableInner>>> queryTableNextWithServiceResponseAsync(final String nextPageLink) {
+        return queryTableNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<TableInner>>, Observable<ServiceResponse<Page<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TableInner>>> call(ServiceResponse<Page<TableInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(queryTableNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets a list of all the tables under the specified storage account.
+     *
+    ServiceResponse<PageImpl1<TableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;TableInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TableInner>>> queryTableNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.queryTableNext(nextUrl, this.acceptLanguage(), this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TableInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TableInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<TableInner>> result = queryTableNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TableInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<TableInner>> queryTableNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<PageImpl1<TableInner>, CloudException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<TableInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
 }
