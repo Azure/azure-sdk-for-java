@@ -11,8 +11,6 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.ParallelFlux;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -137,6 +135,63 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         }
 
         assertEquals(totalReceive * maxMessages, totalReceivedCount);
+    }
+
+    /**
+     * Verifies that we can only call receive() multiple times.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        final int maxMessagesEachReceive = 2;
+        final int totalReceiver = 10;
+        final Duration shortTimeOut = Duration.ofSeconds(8);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        for (int i = 0; i < totalReceiver * maxMessagesEachReceive; ++i) {
+            sendMessage(message);
+        }
+
+        // Act & Assert
+        AtomicInteger totalReceivedMessages = new AtomicInteger();
+        List<Thread> receiverThreads = new ArrayList<>();
+        for (int i = 0; i< totalReceiver; ++i) {
+            int finalI = i;
+            Thread thread = new Thread(() -> {
+                IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.receive(maxMessagesEachReceive, shortTimeOut);
+                int receivedMessageCount = 0;
+                long lastSequenceReceiver = 0;
+                for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
+                    logger.verbose("Receiver [{}}] Received SQ: " ,(finalI + 1)  ,receivedMessage.getMessage().getSequenceNumber());
+                    assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                    receiver.complete(receivedMessage.getMessage());
+                    assertTrue( receivedMessage.getMessage().getSequenceNumber() > lastSequenceReceiver);
+                    lastSequenceReceiver = receivedMessage.getMessage().getSequenceNumber();
+                    messagesPending.decrementAndGet();
+                    ++receivedMessageCount;
+                }
+                totalReceivedMessages.addAndGet(receivedMessageCount);
+                assertEquals(maxMessagesEachReceive, receivedMessageCount);
+                logger.verbose("!!!! Receiver [{}}] . Test Completed receivers  ", (finalI + 1) );
+            });
+            receiverThreads.add(thread);
+        }
+
+        receiverThreads.forEach(t -> t.start());
+
+        TimeUnit.SECONDS.sleep(1);
+        receiverThreads.forEach(t -> {
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        assertEquals( totalReceiver * maxMessagesEachReceive, totalReceivedMessages.get());
     }
 
     /**
