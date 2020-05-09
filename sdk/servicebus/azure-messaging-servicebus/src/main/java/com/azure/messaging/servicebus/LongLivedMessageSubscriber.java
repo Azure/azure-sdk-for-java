@@ -2,11 +2,12 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
+import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
+import reactor.core.publisher.Mono;
 
 import java.util.Queue;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -14,17 +15,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
 
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
-    private final Timer timer = new Timer();
-    private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private Disposable timeoutOperation;
+    private final AtomicBoolean isDisposed = new AtomicBoolean(false);
     private Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
     private SynchronousReceiveWork currentWork = null;
     private final AtomicInteger wip = new AtomicInteger();
     private volatile Subscription subscription;
+    private long prefetch;
 
 
-    LongLivedMessageSubscriber(/*SynchronousReceiveWork work*/) {
-        //this.work = Objects.requireNonNull(work, "'work' cannot be null.");
-        workQueue = new
+    LongLivedMessageSubscriber(long prefetch) {
+        this.prefetch = prefetch;
     }
 
     /**
@@ -37,13 +38,6 @@ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessag
         if (this.subscription == null) {
             this.subscription = subscription;
         }
-
-        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", currentWork.getId(), currentWork.getNumberOfEvents(),
-            currentWork.getTimeout());
-
-        //subscription.request(work.getNumberOfEvents());
-
-        //timer.schedule(new LongLivedMessageSubscriber.ReceiveTimeoutTask(work.getId(), this::dispose), work.getTimeout().toMillis());
     }
 
     /**
@@ -54,13 +48,79 @@ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessag
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessageContext value) {
-        currentWork.next(value);
+        if (!currentWork.isTerminal()) {
+            currentWork.next(value);
+        } else {
+            logger.error("[{}] received message but no subscriber Sequence number [{}].", currentWork.getId(), value.getMessage().getSequenceNumber());
+            // throw error since we can not send this to current receive.
+        }
+
+        logger.info("[{}] received message with Sequence Number [{}].", currentWork.getId(), value.getMessage().getSequenceNumber());
 
         if (currentWork.isTerminal()) {
             logger.info("[{}] Completed. Closing Flux and cancelling subscription.", currentWork.getId());
-            dispose();
+            completeCurrentWork(currentWork);
         }
     }
+
+
+    private void completeCurrentWork(SynchronousReceiveWork currentWork) {
+
+        if (isTerminated()) {
+            return;
+        }
+
+        currentWork.complete();
+
+        if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
+            timeoutOperation.dispose();
+        }
+        if (wip.decrementAndGet() != 0) {
+            logger.warning("There is another worker in drainLoop. But there should only be 1 worker. Value:"+wip.get());
+        }
+
+        // After current work finished and there more receive requests
+        if (workQueue.size() > 0 ) {
+            drain();
+        }
+    }
+
+    void queueWork(SynchronousReceiveWork work) {
+        workQueue.add(work);
+        drain();
+    }
+
+    private void drain() {
+        // If someone is already in this loop, then we are already clearing the queue.
+        if (!wip.compareAndSet(0, 1)) {
+            return;
+        }
+        // Drain queue..
+        Disposable drainQueueDisposable = Mono.just(true)
+            .subscribe(l -> {
+                drainQueue();
+            });
+    }
+
+    private void drainQueue() {
+        if (isTerminated()) {
+            return;
+        }
+        currentWork = workQueue.poll();
+        if (currentWork == null) {
+            return;
+        }
+        subscription.request(currentWork.getNumberOfEvents());
+
+        // timer to complete the current in case of timeout trigger
+        timeoutOperation = Mono.delay(currentWork.getTimeout())
+            .subscribe(l -> {
+                if (!currentWork.isTerminal()) {
+                    completeCurrentWork(currentWork);
+                }
+            });
+    }
+
 
     @Override
     protected void hookOnComplete() {
@@ -94,56 +154,13 @@ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessag
 
         currentWork.complete();
         subscription.cancel();
-        timer.cancel();
+        if (timeoutOperation != null && !timeoutOperation.isDisposed() ) {
+            timeoutOperation.dispose();
+        }
         super.dispose();
     }
 
-    private static final class ReceiveTimeoutTask extends TimerTask {
-        private final ClientLogger logger = new ClientLogger(LongLivedMessageSubscriber.ReceiveTimeoutTask.class);
-        private final long workId;
-        private final Runnable onTimeout;
-
-        ReceiveTimeoutTask(long workId, Runnable onTimeout) {
-            this.workId = workId;
-            this.onTimeout = onTimeout;
-        }
-
-        @Override
-        public void run() {
-            logger.info("[{}] Timeout encountered, disposing of subscriber.", workId);
-            onTimeout.run();
-        }
-    }
-
-    void queueWork(SynchronousReceiveWork work) {
-
-
-        this.subscription.request(work.getNumberOfEvents());
-
-        timer.schedule(new LongLivedMessageSubscriber.ReceiveTimeoutTask(work.getId(), this::finishWork), work.getTimeout().toMillis());
-    }
-
-    void startWork(SynchronousReceiveWork work) {
-        workQueue.add(work);
-        drain();
-    }
-
-    void finishWork() {
-
-    }
-
-    private void drain() {
-        // If someone is already in this loop, then we are already clearing the queue.
-        if (!wip.compareAndSet(0, 1)) {
-            return;
-        }
-
-        try {
-            drainQueue();
-        } finally {
-            if (wip.decrementAndGet() != 0) {
-                logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
-            }
-        }
+    private boolean isTerminated(){
+        return isDisposed.get();
     }
 }

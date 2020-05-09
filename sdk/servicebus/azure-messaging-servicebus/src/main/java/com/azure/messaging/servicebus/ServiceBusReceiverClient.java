@@ -9,12 +9,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -47,13 +45,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageSource =
         new AtomicReference<>();
 
-    /* To hold each recive as work item to be processed.*/
-    private final AtomicReference<EmitterProcessor<SynchronousMessageSubscriber>> workQueueProcessor =
-        new AtomicReference<>(EmitterProcessor.create(false));
-
-
-    /*Subscriber which will process each work item in sequence.*/
-    private final AtomicReference<Disposable> workSubscriber = new AtomicReference<>();
+    /* To hold each receive work item to be processed.*/
+    private final AtomicReference<LongLivedMessageSubscriber> longLivedMessageSubscriber = new AtomicReference<>();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -624,14 +617,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        EmitterProcessor<ServiceBusReceivedMessageContext> processor = messageSource.getAndSet(null);
-        if (processor != null) {
-            processor.onComplete();
+        LongLivedMessageSubscriber messageSubscriber = longLivedMessageSubscriber.getAndSet(null);
+        if (messageSubscriber != null) {
+            messageSubscriber.dispose();
         }
     }
 
-    public int receiveCalled = 0;
-    private LongLivedMessageSubscriber longLivedMessageSubscriber;
     /**
      * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus
      * entity.
@@ -639,92 +630,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
                                    FluxSink<ServiceBusReceivedMessageContext> emitter) {
         synchronized (lock) {
-            ++receiveCalled;
             final long id = idGenerator.getAndIncrement();
-
             final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
                 emitter);
-            final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
 
-            EmitterProcessor<SynchronousMessageSubscriber> workProcessor = workQueueProcessor.get();
-
-            workProcessor.onNext(syncSubscriber);
-
-            // We can have only one subscriber. if subscriber for processing each request is started.
-            Disposable thisWorkSubscriber = workSubscriber.get();
-            if (thisWorkSubscriber != null) {
-                logger.info("[{}]: Receive request is placed in queue to process.", id);
-                return;
-            }
-
-            // make sure message source processor exists.
-            //EmitterProcessor<ServiceBusReceivedMessageContext> source = messageSource.get();
-
-
-            if (longLivedMessageSubscriber == null) {
-                longLivedMessageSubscriber = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                    .subscribeWith(new LongLivedMessageSubscriber());
-                    //.subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
-
-                //messageSource.set(source);
-
+            LongLivedMessageSubscriber messageSubscriber = longLivedMessageSubscriber.get();
+            if (messageSubscriber == null) {
+                messageSubscriber = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                    .subscribeWith(new LongLivedMessageSubscriber(asyncClient.getReceiverOptions().getPrefetchCount()));
                 logger.verbose("Created source for receiving messages from [{}]", asyncClient.getEntityPath());
             }
-            longLivedMessageSubscriber.queueWork(work);
-
-            // start processing receive requests
-            /*EmitterProcessor<ServiceBusReceivedMessageContext> finalSource = source;
-            thisWorkSubscriber = workProcessor.subscribe(currentWork -> {
-                    logger.info("Start receiving messages for [{}].", currentWork.getWork().getId());
-                    finalSource.subscribe(currentWork);
-                },
-                error -> logger.error("Error in processing messages [{}].", error),
-                () -> logger.info("Receiving messages completed."));
-
-            workSubscriber.set(thisWorkSubscriber);*/
+            messageSubscriber.queueWork(work);
+            longLivedMessageSubscriber.set(messageSubscriber);
         }
     }
 
-    private void queueWork_working(int maximumMessageCount, Duration maxWaitTime,
-        FluxSink<ServiceBusReceivedMessageContext> emitter) {
-        synchronized (lock) {
-            ++receiveCalled;
-            final long id = idGenerator.getAndIncrement();
-
-            final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
-                emitter);
-            final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
-
-            EmitterProcessor<SynchronousMessageSubscriber> workProcessor = workQueueProcessor.get();
-
-            workProcessor.onNext(syncSubscriber);
-
-            // We can have only one subscriber. if subscriber for processing each request is started.
-            Disposable thisWorkSubscriber = workSubscriber.get();
-            if (thisWorkSubscriber != null) {
-                logger.info("[{}]: Receive request is placed in queue to process.", id);
-                return;
-            }
-
-            // make sure message source processor exists.
-            EmitterProcessor<ServiceBusReceivedMessageContext> source = messageSource.get();
-            if (source == null) {
-                source = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                    .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
-                messageSource.set(source);
-                logger.verbose("Created source for receiving messages from [{}]", asyncClient.getEntityPath());
-            }
-
-            // start processing receive requests
-            EmitterProcessor<ServiceBusReceivedMessageContext> finalSource = source;
-            thisWorkSubscriber = workProcessor.subscribe(currentWork -> {
-                logger.info("Start receiving messages for [{}].", currentWork.getWork().getId());
-                finalSource.subscribe(currentWork);
-            },
-                error -> logger.error("Error in processing messages [{}].", error),
-                () -> logger.info("Receiving messages completed."));
-
-            workSubscriber.set(thisWorkSubscriber);
-        }
-    }
 }
