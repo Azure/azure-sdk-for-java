@@ -26,8 +26,8 @@ public class CustomDomain {
      * Indicates whether indirect CName validation is enabled. Default value is
      * false. This should only be set on updates.
      */
-    @JsonProperty(value = "useSubDomain")
-    private Boolean useSubDomain;
+    @JsonProperty(value = "useSubDomainName")
+    private Boolean useSubDomainName;
 
     /**
      * Get gets or sets the custom domain name assigned to the storage account. Name is the CNAME source.
@@ -52,20 +52,20 @@ public class CustomDomain {
     /**
      * Get indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
      *
-     * @return the useSubDomain value
+     * @return the useSubDomainName value
      */
-    public Boolean useSubDomain() {
-        return this.useSubDomain;
+    public Boolean useSubDomainName() {
+        return this.useSubDomainName;
     }
 
     /**
      * Set indicates whether indirect CName validation is enabled. Default value is false. This should only be set on updates.
      *
-     * @param useSubDomain the useSubDomain value to set
+     * @param useSubDomainName the useSubDomainName value to set
      * @return the CustomDomain object itself.
      */
-    public CustomDomain withUseSubDomain(Boolean useSubDomain) {
-        this.useSubDomain = useSubDomain;
+    public CustomDomain withUseSubDomainName(Boolean useSubDomainName) {
+        this.useSubDomainName = useSubDomainName;
         return this;
     }
 
