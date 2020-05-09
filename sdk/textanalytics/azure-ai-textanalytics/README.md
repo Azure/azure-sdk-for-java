@@ -24,7 +24,7 @@ and includes six main functions:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -137,18 +137,18 @@ and supported text encoding.
 
 ### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
-prediction or predictions about a single document. An operation's result type also may optionally include information
-about the input document and how it was processed. An operation result contains a `isError` property that allows to
-identify if an operation executed was successful or unsuccessful for the given document. When the operation results
-an error, you can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
-If you are interested in how many characters are in your document, or the number of operation transactions that have gone
-through, simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
+prediction or predictions about a single document and a list of warnings inside of it. An operation's result type also 
+may optionally include information about the input document and how it was processed. An operation result contains a 
+`isError` property that allows to identify if an operation executed was successful or unsuccessful for the given
+document. When the operation results an error, you can simply call `getError()` to get `TextAnalyticsError` which 
+contains the reason why it is unsuccessful. If you are interested in how many characters are in your document, 
+or the number of operation transactions that have gone through, simply call `getStatistics()` to get the
+`TextDocumentStatistics` which contains both information. 
 
 ### Return value collection
-An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
-the result of a Text Analytics analyzing sentiment operation. `DocumentResultCollection` includes the model version of
-the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
-the list of item can be retrieved by streaming or iterating the list.
+An operation result collection, such as `TextAnalyticsPagedResponse<AnalyzeSentimentResult>`, which is the collection of 
+the result of a Text Analytics analyzing sentiment operation. For `TextAnalyticsPagedResponse` includes the model
+version of the operation and statistics of the batch documents. 
 
 ### Operation on multiple documents
 For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
