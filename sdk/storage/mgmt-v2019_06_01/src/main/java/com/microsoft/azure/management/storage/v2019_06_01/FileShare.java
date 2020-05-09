@@ -96,7 +96,7 @@ public interface FileShare extends HasInner<FileShareInner>, Indexable, Updatabl
     /**
      * @return the shareUsageBytes value.
      */
-    Integer shareUsageBytes();
+    Long shareUsageBytes();
 
     /**
      * @return the type value.
