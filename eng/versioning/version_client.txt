@@ -42,6 +42,10 @@ com.azure:azure-storage-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-storage-queue;12.5.1;12.6.0-beta.1
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-test-watcher;1.0.0-beta.1;1.0.0-beta.1
+com.microsoft.azure:azure-spring-boot;2.2.4;2.2.5-beta.1
+com.microsoft.azure:azure-spring-boot-starter;2.2.4;2.2.5-beta.1
+com.microsoft.azure:azure-active-directory-spring-boot-starter;2.2.4;2.2.5-beta.1
+com.microsoft.azure:azure-keyvault-secrets-spring-boot-starter;2.2.4;2.2.5-beta.1
 
 # Unreleased dependencies: Copy the entry from above, prepend "unreleased_" and remove the current
 # version. Unreleased dependencies are only valid for dependency versions.
