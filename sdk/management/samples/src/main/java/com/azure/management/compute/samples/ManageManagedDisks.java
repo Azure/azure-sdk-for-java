@@ -72,7 +72,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [with an implicit Managed OS disk and explicit Managed data disk]");
+            System.out.println("Created VM [with an implicit Managed OS disk and explicit Managed data disk]: " + linuxVM1.id());
 
             // Creation is simplified with implicit creation of managed disks without specifying all the disk details. You will notice that you do not require storage accounts
             // ::== Update the VM
@@ -186,7 +186,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [from custom image]");
+            System.out.println("Created VM [from custom image]: " + linuxVM3.id());
 
             // Create a VM from a VHD (Create Virtual Machine Using Specialized VHD)
 
@@ -207,7 +207,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [by attaching un-managed disk]");
+            System.out.println("Created VM [by attaching un-managed disk]: " + linuxVM4.id());
 
             // Create a Snapshot (Create Virtual Machine using specialized disks from snapshot)
 
@@ -292,7 +292,7 @@ public final class ManageManagedDisks {
                     .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                     .create();
 
-            System.out.println("Created VM [with specialized OS managed disk]");
+            System.out.println("Created VM [with specialized OS managed disk]: " + linuxVM6.id());
 
             // ::== Migrate a VM to managed disks with a single reboot
 

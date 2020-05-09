@@ -27,7 +27,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -71,7 +70,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         if (pending > 0) {
             try {
                 IterableStream<ServiceBusReceivedMessageContext> removedMessage = receiveAndDeleteReceiver.receive(
-                    pending + BUFFER_MESSAGES_TO_REMOVE, Duration.ofSeconds(15));
+                    pending, Duration.ofSeconds(15));
 
                 removedMessage.stream().forEach(context -> {
                     ServiceBusReceivedMessage message = context.getMessage();
@@ -98,7 +97,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
-     * Verifies that we can only call receive() once only.
+     * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
@@ -106,16 +105,35 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 1;
-        final Duration shortTimeOut = Duration.ofSeconds(5);
+        final int totalReceive = 3;
+        final Duration shortTimeOut = Duration.ofSeconds(8);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        for (int i = 0; i < totalReceive * maxMessages; ++i) {
+            sendMessage(message);
+        }
 
         // Act & Assert
-        final IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(maxMessages, shortTimeOut);
+        IterableStream<ServiceBusReceivedMessageContext> messages;
 
-        final long receivedMessages = messages.stream().count();
-        assertEquals(0L, receivedMessages);
+        int receivedMessageCount;
+        int totalReceivedCount = 0;
+        for (int i = 0; i < totalReceive; ++i) {
+            messages = receiver.receive(maxMessages, shortTimeOut);
+            receivedMessageCount = 0;
+            for (ServiceBusReceivedMessageContext receivedMessage : messages) {
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receiver.complete(receivedMessage.getMessage());
+                messagesPending.decrementAndGet();
+                ++receivedMessageCount;
+            }
+            assertEquals(maxMessages, receivedMessageCount);
+            totalReceivedCount += receivedMessageCount;
+        }
 
-        // Second time user try to receive, it should throw exception.
-        assertThrows(IllegalStateException.class, () -> receiver.receive(maxMessages, shortTimeOut));
+        assertEquals(totalReceive * maxMessages, totalReceivedCount);
     }
 
     /**
@@ -580,10 +598,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             receiver = getReceiverBuilder(false, entityType).buildClient();
-
-            receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
-                Function.identity(),
-                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+            receiveAndDeleteReceiver = getReceiverBuilder(false, entityType).
+                receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
     }

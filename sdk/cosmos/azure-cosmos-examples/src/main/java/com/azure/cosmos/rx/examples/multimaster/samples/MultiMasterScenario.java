@@ -59,7 +59,9 @@ public class MultiMasterScenario {
                             .withMasterKeyOrResourceToken(this.accountKey)
                             .withServiceEndpoint(this.accountEndpoint)
                             .withConsistencyLevel(ConsistencyLevel.EVENTUAL)
-                            .withConnectionPolicy(policy).build();
+                            .withConnectionPolicy(policy)
+                            .withContentResponseOnWriteEnabled(true)
+                            .build();
 
 
             workers.add(new Worker(client, databaseName, basicCollectionName));

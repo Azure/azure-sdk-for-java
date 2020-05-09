@@ -95,7 +95,7 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         if (subnetRef == null) {
             return null;
         }
-        return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+        return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
     }
 
     public Network getNetwork() {
@@ -112,7 +112,7 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         if (subnetRef == null) {
             return null;
         }
-        return ResourceUtils.nameFromResourceId(subnetRef.getId());
+        return ResourceUtils.nameFromResourceId(subnetRef.id());
     }
 
     @Override
@@ -132,13 +132,13 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
         final List<LoadBalancerBackend> backends = new ArrayList<>();
         for (BackendAddressPoolInner backendRef : backendRefs) {
-            String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.getId());
+            String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
             LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase(Locale.ROOT));
             if (loadBalancer == null) {
                 loadBalancer = this.networkManager.loadBalancers().getById(loadBalancerId);
                 loadBalancers.put(loadBalancerId.toLowerCase(Locale.ROOT), loadBalancer);
             }
-            String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
             backends.add(loadBalancer.backends().get(backendName));
         }
         return Collections.unmodifiableList(backends);
@@ -153,13 +153,13 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
         final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
         final List<LoadBalancerInboundNatRule> rules = new ArrayList<>();
         for (InboundNatRuleInner ref : inboundNatPoolRefs) {
-            String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.getId());
+            String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.id());
             LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId.toLowerCase(Locale.ROOT));
             if (loadBalancer == null) {
                 loadBalancer = this.networkManager.loadBalancers().getById(loadBalancerId);
                 loadBalancers.put(loadBalancerId.toLowerCase(Locale.ROOT), loadBalancer);
             }
-            String ruleName = ResourceUtils.nameFromResourceId(ref.getId());
+            String ruleName = ResourceUtils.nameFromResourceId(ref.id());
             rules.add(loadBalancer.inboundNatRules().get(ruleName));
         }
         return Collections.unmodifiableList(rules);

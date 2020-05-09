@@ -6,10 +6,9 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -26,11 +25,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -102,7 +103,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0, null),
             client.detectLanguage("This is a test English Text"));
     }
 
@@ -120,7 +121,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageFaultyText() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
         validatePrimaryLanguage(client.detectLanguage("!@#%%"), primaryLanguage);
     }
 
@@ -139,7 +140,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageEmptyCountryHint() {
-        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0, null),
             client.detectLanguage("Este es un documento  escrito en Español", ""));
     }
 
@@ -148,7 +149,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectLanguageNoneCountryHint() {
-        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0, null),
             client.detectLanguage("Este es un documento  escrito en Español", "none"));
     }
 
@@ -168,12 +169,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @Test
     public void recognizeEntitiesForTextInput() {
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
-
         final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
-        validateCategorizedEntity(categorizedEntity1, entities.get(0));
-        validateCategorizedEntity(categorizedEntity2, entities.get(1));
+        validateCategorizedEntities(getCategorizedEntitiesList1(), entities);
     }
 
     @Test
@@ -188,9 +185,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     }
 
     @Test
+    public void recognizeEntitiesDuplicateIdInput() {
+        recognizeCategorizedEntityDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
+    }
+
+    @Test
     public void recognizeEntitiesBatchInputSingleError() {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
+            TextAnalyticsPagedIterable<RecognizeEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
             response.forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
@@ -237,11 +243,21 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
+    @Test
+    public void recognizeEntitiesTooManyDocuments() {
+        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs).stream().findFirst().get());
+            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+        });
+    }
+
     // Recognize linked entity
 
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
+        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0);
         final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle",
             new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
@@ -259,6 +275,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
         assertFalse(client.recognizeLinkedEntities("!@#%%").iterator().hasNext());
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesDuplicateIdInput() {
+        recognizeBatchLinkedEntityDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     @Test
@@ -296,6 +321,16 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
 
+    @Test
+    public void recognizeLinkedEntitiesTooManyDocuments() {
+        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs).stream().findFirst().get());
+            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+        });
+    }
+
     // Extract key phrase
 
     @Test
@@ -312,6 +347,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForFaultyText() {
         assertFalse(client.extractKeyPhrases("!@#%%").iterator().hasNext());
+    }
+
+    @Test
+    public void extractKeyPhrasesDuplicateIdInput() {
+        extractBatchKeyPhrasesDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.extractKeyPhrasesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     @Test
@@ -349,6 +393,26 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
+    @Test
+    public void extractKeyPhrasesWarning() {
+        extractKeyPhrasesWarningRunner(input ->
+            client.extractKeyPhrases(input).getWarnings().forEach(warning -> {
+                assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+            }));
+    }
+
+    @Test
+    public void extractKeyPhrasesBatchWarning() {
+        extractKeyPhrasesBatchWarningRunner(inputs ->
+            client.extractKeyPhrasesBatch(inputs, null, Context.NONE).forEach(keyPhrasesResult ->
+                keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
+                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+                })
+            ));
+    }
+
     // Sentiment
 
     /**
@@ -360,9 +424,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
-            )));
+                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
@@ -386,13 +450,25 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
-            )));
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 
         validateAnalyzedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
+    }
+
+    /**
+     * Test analyzing sentiment for a duplicate ID list.
+     */
+    @Test
+    public void analyseSentimentDuplicateIdInput() {
+        analyseBatchSentimentDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.analyzeSentimentBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     /**

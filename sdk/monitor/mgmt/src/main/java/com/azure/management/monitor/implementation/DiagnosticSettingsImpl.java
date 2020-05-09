@@ -56,7 +56,7 @@ class DiagnosticSettingsImpl
         if (inner == null) {
             return null;
         }
-        return new DiagnosticSettingImpl(inner.getName(), inner, this.manager());
+        return new DiagnosticSettingImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -126,7 +126,7 @@ class DiagnosticSettingsImpl
                     .diagnosticSettings()
                     .listAsync(resourceId)
                     .map(DiagnosticSettingsResourceCollectionInner::value))
-            .mapPage(inner -> new DiagnosticSettingImpl(inner.getName(), inner, this.manager()));
+            .mapPage(inner -> new DiagnosticSettingImpl(inner.name(), inner, this.manager()));
     }
 
     @Override

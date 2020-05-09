@@ -32,7 +32,7 @@ public class PrivateEndpointConnectionImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override

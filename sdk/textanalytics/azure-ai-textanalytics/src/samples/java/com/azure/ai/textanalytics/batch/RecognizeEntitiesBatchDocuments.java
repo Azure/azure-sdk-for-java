@@ -5,7 +5,7 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -29,20 +29,20 @@ public class RecognizeEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.", "en"),
-            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.", "en")
+            new TextDocumentInput("A", "Satya Nadella is the CEO of Microsoft.").setLanguage("en"),
+            new TextDocumentInput("B", "Elon Musk is the CEO of SpaceX and Tesla.").setLanguage("en")
         );
 
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
-        Iterable<TextAnalyticsPagedResponse<RecognizeCategorizedEntitiesResult>> entitiesBatchResult =
+        Iterable<TextAnalyticsPagedResponse<RecognizeEntitiesResult>> entitiesBatchResult =
             client.recognizeEntitiesBatch(documents, requestOptions, Context.NONE).iterableByPage();
 
         // Recognizing entities for each document in a batch of documents
@@ -56,7 +56,7 @@ public class RecognizeEntitiesBatchDocuments {
 
             // Recognized entities for each document in a batch of documents
             AtomicInteger counter = new AtomicInteger();
-            for (RecognizeCategorizedEntitiesResult entitiesResult : pagedResponse.getElements()) {
+            for (RecognizeEntitiesResult entitiesResult : pagedResponse.getElements()) {
                 // Recognized entities for each document in a batch of documents
                 System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                 if (entitiesResult.isError()) {
@@ -65,8 +65,8 @@ public class RecognizeEntitiesBatchDocuments {
                 } else {
                     // Valid document
                     entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                        "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore())
+                        "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())
                     );
                 }
             }
