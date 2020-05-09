@@ -40,7 +40,8 @@ public class SearchIndexerDataSourceAsyncClient {
      */
     private final SearchServiceRestClientImpl restClient;
 
-    SearchIndexerDataSourceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+    SearchIndexerDataSourceAsyncClient(String endpoint, SearchServiceVersion serviceVersion,
+        HttpPipeline httpPipeline) {
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
@@ -54,8 +55,8 @@ public class SearchIndexerDataSourceAsyncClient {
      * @param dataSource The definition of the {@link SearchIndexerDataSource} to create or update.
      * @return the data source that was created or updated.
      */
-    public Mono<SearchIndexerDataSource> createOrUpdateDataSource(SearchIndexerDataSource dataSource) {
-        return createOrUpdateDataSourceWithResponse(dataSource, false, null).map(Response::getValue);
+    public Mono<SearchIndexerDataSource> createOrUpdate(SearchIndexerDataSource dataSource) {
+        return createOrUpdateWithResponse(dataSource, false, null).map(Response::getValue);
     }
 
     /**
@@ -68,13 +69,13 @@ public class SearchIndexerDataSourceAsyncClient {
      * help with debugging
      * @return a data source response.
      */
-    public Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(
+    public Mono<Response<SearchIndexerDataSource>> createOrUpdateWithResponse(
         SearchIndexerDataSource dataSource, boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateWithResponse(dataSource, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> createOrUpdateDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    Mono<Response<SearchIndexerDataSource>> createOrUpdateWithResponse(SearchIndexerDataSource dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null.");
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
@@ -95,8 +96,8 @@ public class SearchIndexerDataSourceAsyncClient {
      * @param dataSource The definition of the dataSource to create.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<SearchIndexerDataSource> createDataSource(SearchIndexerDataSource dataSource) {
-        return createDataSourceWithResponse(dataSource, null).map(Response::getValue);
+    public Mono<SearchIndexerDataSource> create(SearchIndexerDataSource dataSource) {
+        return createWithResponse(dataSource, null).map(Response::getValue);
     }
 
     /**
@@ -107,12 +108,12 @@ public class SearchIndexerDataSourceAsyncClient {
      * help with debugging.
      * @return a Mono which performs the network request upon subscription.
      */
-    public Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Mono<Response<SearchIndexerDataSource>> createWithResponse(SearchIndexerDataSource dataSource,
         RequestOptions requestOptions) {
-        return withContext(context -> this.createDataSourceWithResponse(dataSource, requestOptions, context));
+        return withContext(context -> this.createWithResponse(dataSource, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerDataSource>> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    Mono<Response<SearchIndexerDataSource>> createWithResponse(SearchIndexerDataSource dataSource,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.dataSources()
@@ -163,31 +164,28 @@ public class SearchIndexerDataSourceAsyncClient {
      * @return a list of SearchIndexerDataSource
      */
     public PagedFlux<SearchIndexerDataSource> listDataSources() {
-        return listDataSources(null, null);
+        return listDataSources(null);
     }
 
     /**
      * List all SearchIndexerDataSource from an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of SearchIndexerDataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @return a list of SearchIndexerDataSource
      */
-    public PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listDataSourcesWithResponse(select, requestOptions, context)));
+                withContext(context -> this.listDataSourcesWithResponse(null, requestOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> this.listDataSourcesWithResponse(select, requestOptions, context));
+            return new PagedFlux<>(() -> this.listDataSourcesWithResponse(null, requestOptions, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -212,9 +210,9 @@ public class SearchIndexerDataSourceAsyncClient {
      * @param dataSourceName the name of the {@link SearchIndexerDataSource} for deletion
      * @return a void Mono
      */
-    public Mono<Void> deleteDataSource(String dataSourceName) {
+    public Mono<Void> delete(String dataSourceName) {
         return withContext(context ->
-            deleteDataSourceWithResponse(dataSourceName, null, null, context).flatMap(FluxUtil::toMono));
+            deleteWithResponse(dataSourceName, null, null, context).flatMap(FluxUtil::toMono));
     }
 
     /**
@@ -227,15 +225,15 @@ public class SearchIndexerDataSourceAsyncClient {
      * help with debugging
      * @return a mono response
      */
-    public Mono<Response<Void>> deleteDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Mono<Response<Void>> deleteWithResponse(SearchIndexerDataSource dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         Objects.requireNonNull(dataSource, "'DataSource' cannot be null");
         String etag = onlyIfUnchanged ? dataSource.getETag() : null;
         return withContext(context ->
-            deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context));
+            deleteWithResponse(dataSource.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteDataSourceWithResponse(String dataSourceName, String etag, RequestOptions requestOptions,
+    Mono<Response<Void>> deleteWithResponse(String dataSourceName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.dataSources()

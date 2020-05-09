@@ -55,8 +55,8 @@ public class SearchIndexerAsyncClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
-    public Mono<SearchIndexer> createIndexer(SearchIndexer indexer) {
-        return createIndexerWithResponse(indexer, null).map(Response::getValue);
+    public Mono<SearchIndexer> create(SearchIndexer indexer) {
+        return createWithResponse(indexer, null).map(Response::getValue);
     }
 
     /**
@@ -67,12 +67,12 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer,
+    public Mono<Response<SearchIndexer>> createWithResponse(SearchIndexer indexer,
         RequestOptions requestOptions) {
-        return withContext(context -> createIndexerWithResponse(indexer, requestOptions, context));
+        return withContext(context -> createWithResponse(indexer, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexer>> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
+    Mono<Response<SearchIndexer>> createWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.indexers()
@@ -89,8 +89,8 @@ public class SearchIndexerAsyncClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
-    public Mono<SearchIndexer> createOrUpdateIndexer(SearchIndexer indexer) {
-        return createOrUpdateIndexerWithResponse(indexer, false, null).map(Response::getValue);
+    public Mono<SearchIndexer> createOrUpdate(SearchIndexer indexer) {
+        return createOrUpdateWithResponse(indexer, false, null).map(Response::getValue);
     }
 
     /**
@@ -103,13 +103,13 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response containing the created Indexer.
      */
-    public Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer,
+    public Mono<Response<SearchIndexer>> createOrUpdateWithResponse(SearchIndexer indexer,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateWithResponse(indexer, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexer>> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
+    Mono<Response<SearchIndexer>> createOrUpdateWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
@@ -160,29 +160,27 @@ public class SearchIndexerAsyncClient {
      * @return all Indexers from the Search service.
      */
     public PagedFlux<SearchIndexer> listIndexers() {
-        return listIndexers(null, null);
+        return listIndexers(null);
     }
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list
-     * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @return a response containing all Indexers from the Search service.
      */
-    public PagedFlux<SearchIndexer> listIndexers(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexersWithResponse(select, requestOptions, context)));
+                withContext(context -> this.listIndexersWithResponse(null, requestOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndexer> listIndexers(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> this.listIndexersWithResponse(select, requestOptions, context));
+            return new PagedFlux<>(() -> this.listIndexersWithResponse(null, requestOptions, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -207,8 +205,8 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to delete
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndexer(String indexerName) {
-        return withContext(context -> deleteIndexerWithResponse(indexerName, null, null, context)
+    public Mono<Void> delete(String indexerName) {
+        return withContext(context -> deleteWithResponse(indexerName, null, null, context)
             .flatMap(FluxUtil::toMono));
     }
 
@@ -222,11 +220,11 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(indexer, "'Indexer' cannot be null");
         String etag = onlyIfUnchanged ? indexer.getETag() : null;
-        return withContext(context -> deleteIndexerWithResponse(indexer.getName(), etag, requestOptions, context));
+        return withContext(context -> deleteWithResponse(indexer.getName(), etag, requestOptions, context));
     }
 
     /**
@@ -239,7 +237,7 @@ public class SearchIndexerAsyncClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    Mono<Response<Void>> deleteIndexerWithResponse(String indexerName, String etag, RequestOptions requestOptions,
+    Mono<Response<Void>> deleteWithResponse(String indexerName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.indexers()
@@ -256,8 +254,8 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to reset
      * @return a response signalling completion.
      */
-    public Mono<Void> resetIndexer(String indexerName) {
-        return resetIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> reset(String indexerName) {
+        return resetWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -268,11 +266,11 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(context -> resetIndexerWithResponse(indexerName, requestOptions, context));
+    public Mono<Response<Void>> resetWithResponse(String indexerName, RequestOptions requestOptions) {
+        return withContext(context -> resetWithResponse(indexerName, requestOptions, context));
     }
 
-    Mono<Response<Void>> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
+    Mono<Response<Void>> resetWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexers()
                 .resetWithRestResponseAsync(indexerName, requestOptions, context)
@@ -288,8 +286,8 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer to run
      * @return a response signalling completion.
      */
-    public Mono<Void> runIndexer(String indexerName) {
-        return runIndexerWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
+    public Mono<Void> run(String indexerName) {
+        return runWithResponse(indexerName, null).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -300,11 +298,11 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions) {
-        return withContext(context -> runIndexerWithResponse(indexerName, requestOptions, context));
+    public Mono<Response<Void>> runWithResponse(String indexerName, RequestOptions requestOptions) {
+        return withContext(context -> runWithResponse(indexerName, requestOptions, context));
     }
 
-    Mono<Response<Void>> runIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
+    Mono<Response<Void>> runWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, context)
                 .map(Function.identity());
@@ -319,8 +317,8 @@ public class SearchIndexerAsyncClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return the indexer execution info.
      */
-    public Mono<SearchIndexerStatus> getIndexerStatus(String indexerName) {
-        return getIndexerStatusWithResponse(indexerName, null).map(Response::getValue);
+    public Mono<SearchIndexerStatus> getStatus(String indexerName) {
+        return getStatusWithResponse(indexerName, null).map(Response::getValue);
     }
 
     /**
@@ -331,12 +329,12 @@ public class SearchIndexerAsyncClient {
      * help with debugging
      * @return a response with the indexer execution info.
      */
-    public Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName,
+    public Mono<Response<SearchIndexerStatus>> getStatusWithResponse(String indexerName,
         RequestOptions requestOptions) {
-        return withContext(context -> getIndexerStatusWithResponse(indexerName, requestOptions, context));
+        return withContext(context -> getStatusWithResponse(indexerName, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerStatus>> getIndexerStatusWithResponse(String indexerName, RequestOptions requestOptions,
+    Mono<Response<SearchIndexerStatus>> getStatusWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.indexers()

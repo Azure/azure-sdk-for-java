@@ -57,8 +57,8 @@ public class SearchIndexAsyncClient {
      * @param index definition of the index to create.
      * @return the created Index.
      */
-    public Mono<SearchIndex> createIndex(SearchIndex index) {
-        return createIndexWithResponse(index, null).map(Response::getValue);
+    public Mono<SearchIndex> create(SearchIndex index) {
+        return createWithResponse(index, null).map(Response::getValue);
     }
 
     /**
@@ -69,11 +69,11 @@ public class SearchIndexAsyncClient {
      * help with debugging
      * @return a response containing the created Index.
      */
-    public Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions) {
-        return withContext(context -> createIndexWithResponse(index, requestOptions, context));
+    public Mono<Response<SearchIndex>> createWithResponse(SearchIndex index, RequestOptions requestOptions) {
+        return withContext(context -> createWithResponse(index, requestOptions, context));
     }
 
-    Mono<Response<SearchIndex>> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
+    Mono<Response<SearchIndex>> createWithResponse(SearchIndex index, RequestOptions requestOptions,
         Context context) {
         Objects.requireNonNull(index, "'Index' cannot be null");
         try {
@@ -123,8 +123,8 @@ public class SearchIndexAsyncClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    public Mono<GetIndexStatisticsResult> getIndexStatistics(String indexName) {
-        return getIndexStatisticsWithResponse(indexName, null).map(Response::getValue);
+    public Mono<GetIndexStatisticsResult> getStatistics(String indexName) {
+        return getStatisticsWithResponse(indexName, null).map(Response::getValue);
     }
 
     /**
@@ -135,12 +135,12 @@ public class SearchIndexAsyncClient {
      * help with debugging
      * @return a response containing the index statistics result.
      */
-    public Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+    public Mono<Response<GetIndexStatisticsResult>> getStatisticsWithResponse(String indexName,
         RequestOptions requestOptions) {
-        return withContext(context -> getIndexStatisticsWithResponse(indexName, requestOptions, context));
+        return withContext(context -> getStatisticsWithResponse(indexName, requestOptions, context));
     }
 
-    Mono<Response<GetIndexStatisticsResult>> getIndexStatisticsWithResponse(String indexName,
+    Mono<Response<GetIndexStatisticsResult>> getStatisticsWithResponse(String indexName,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.indexes()
@@ -163,24 +163,22 @@ public class SearchIndexAsyncClient {
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a reactive response emitting the list of indexes.
      */
-    public PagedFlux<SearchIndex> listIndexes(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndex> listIndexes(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> this.listIndexesWithResponse(select, requestOptions, context)));
+                withContext(context -> this.listIndexesWithResponse(null, requestOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
     }
 
-    PagedFlux<SearchIndex> listIndexes(String select, RequestOptions requestOptions, Context context) {
+    PagedFlux<SearchIndex> listIndexes(RequestOptions requestOptions, Context context) {
         try {
-            return new PagedFlux<>(() -> this.listIndexesWithResponse(select, requestOptions, context));
+            return new PagedFlux<>(() -> this.listIndexesWithResponse(null, requestOptions, context));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -205,8 +203,8 @@ public class SearchIndexAsyncClient {
      * @param index the definition of the {@link SearchIndex} to create or update.
      * @return the index that was created or updated.
      */
-    public Mono<SearchIndex> createOrUpdateIndex(SearchIndex index) {
-        return createOrUpdateIndexWithResponse(index, false, false, null).map(Response::getValue);
+    public Mono<SearchIndex> createOrUpdate(SearchIndex index) {
+        return createOrUpdateWithResponse(index, false, false, null).map(Response::getValue);
     }
 
     /**
@@ -223,13 +221,13 @@ public class SearchIndexAsyncClient {
      * help with debugging
      * @return a response containing the index that was created or updated
      */
-    public Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
+    public Mono<Response<SearchIndex>> createOrUpdateWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SearchIndex>> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
+    Mono<Response<SearchIndex>> createOrUpdateWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         try {
             Objects.requireNonNull(index, "'Index' cannot null.");
@@ -249,8 +247,8 @@ public class SearchIndexAsyncClient {
      * @param indexName the name of the index to delete
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteIndex(String indexName) {
-        return withContext(context -> deleteIndexWithResponse(indexName, null, null, null)
+    public Mono<Void> delete(String indexName) {
+        return withContext(context -> deleteWithResponse(indexName, null, null, null)
             .flatMap(FluxUtil::toMono));
     }
 
@@ -264,14 +262,14 @@ public class SearchIndexAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteWithResponse(SearchIndex index, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(index, "'Index' cannot be null.");
         String etag = onlyIfUnchanged ? index.getETag() : null;
-        return withContext(context -> deleteIndexWithResponse(index.getName(), etag, requestOptions, context));
+        return withContext(context -> deleteWithResponse(index.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteIndexWithResponse(String indexName, String etag, RequestOptions requestOptions,
+    Mono<Response<Void>> deleteWithResponse(String indexName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.indexes()

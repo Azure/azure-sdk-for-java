@@ -26,8 +26,8 @@ public class SearchIndexerSkillsetClient {
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
      */
-    public SearchIndexerSkillset createSkillset(SearchIndexerSkillset skillset) {
-        return createSkillsetWithResponse(skillset, null, Context.NONE).getValue();
+    public SearchIndexerSkillset create(SearchIndexerSkillset skillset) {
+        return createWithResponse(skillset, null, Context.NONE).getValue();
     }
 
     /**
@@ -39,9 +39,9 @@ public class SearchIndexerSkillsetClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Skillset.
      */
-    public Response<SearchIndexerSkillset> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+    public Response<SearchIndexerSkillset> createWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.createSkillsetWithResponse(skillset, requestOptions, context).block();
+        return asyncClient.createWithResponse(skillset, requestOptions, context).block();
     }
 
     /**
@@ -74,22 +74,19 @@ public class SearchIndexerSkillsetClient {
      * @return the list of skillsets.
      */
     public PagedIterable<SearchIndexerSkillset> listSkillsets() {
-        return listSkillsets(null, null, Context.NONE);
+        return listSkillsets(null, Context.NONE);
     }
 
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the skillset definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of skillsets.
      */
-    public PagedIterable<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions,
-        Context context) {
-        return new PagedIterable<>(asyncClient.listSkillsets(select, requestOptions, context));
+    public PagedIterable<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSkillsets(null, requestOptions, context));
     }
 
     /**
@@ -98,8 +95,8 @@ public class SearchIndexerSkillsetClient {
      * @param skillset the {@link SearchIndexerSkillset} to create or update.
      * @return the skillset that was created or updated.
      */
-    public SearchIndexerSkillset createOrUpdateSkillset(SearchIndexerSkillset skillset) {
-        return createOrUpdateSkillsetWithResponse(skillset, false, null, Context.NONE).getValue();
+    public SearchIndexerSkillset createOrUpdate(SearchIndexerSkillset skillset) {
+        return createOrUpdateWithResponse(skillset, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -113,9 +110,9 @@ public class SearchIndexerSkillsetClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the skillset that was created or updated.
      */
-    public Response<SearchIndexerSkillset> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+    public Response<SearchIndexerSkillset> createOrUpdateWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, context)
+        return asyncClient.createOrUpdateWithResponse(skillset, onlyIfUnchanged, requestOptions, context)
             .block();
     }
 
@@ -124,8 +121,8 @@ public class SearchIndexerSkillsetClient {
      *
      * @param skillsetName the name of the skillset to delete
      */
-    public void deleteSkillset(String skillsetName) {
-        deleteSkillsetWithResponse(new SearchIndexerSkillset().setName(skillsetName), false, null, Context.NONE);
+    public void delete(String skillsetName) {
+        deleteWithResponse(new SearchIndexerSkillset().setName(skillsetName), false, null, Context.NONE);
     }
 
     /**
@@ -139,10 +136,10 @@ public class SearchIndexerSkillsetClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
+    public Response<Void> deleteWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? skillset.getETag() : null;
-        return asyncClient.deleteSkillsetWithResponse(skillset.getName(), etag, requestOptions, context).block();
+        return asyncClient.deleteWithResponse(skillset.getName(), etag, requestOptions, context).block();
     }
 
     /**

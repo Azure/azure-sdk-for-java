@@ -59,7 +59,7 @@ public class LifecycleSetupExample {
     public static void main(String[] args) {
         SearchServiceClient client = createServiceClient();
         // Create a data source for a Cosmos DB database
-        SearchIndexerDataSource dataSource = createCosmosDataSource(client.getSearchIndexerDataSourceClient());
+        SearchIndexerDataSource dataSource = createCosmosDataSource(client.getDataSourceClient());
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
@@ -67,7 +67,7 @@ public class LifecycleSetupExample {
         System.out.println("Created Index " + index.getName());
 
         // Create a skillset for Cognitive Services
-        SearchIndexerSkillset skillset = createSkillset(client.getSearchIndexerSkillsetClient());
+        SearchIndexerSkillset skillset = createSkillset(client.getSkillsetClient());
         System.out.println("Created Skillset " + skillset.getName());
 
         // Create an indexer that uses the skillset and data source and loads the index
@@ -79,8 +79,8 @@ public class LifecycleSetupExample {
         System.out.println("Updated Indexer Schedule " + indexer.getName());
 
         // Clean up resources.
-        client.getSearchIndexClient().deleteIndex(INDEX_NAME);
-        client.getSearchIndexerClient().deleteIndexer(INDEXER_NAME);
+        client.getSearchIndexClient().delete(INDEX_NAME);
+        client.getSearchIndexerClient().delete(INDEXER_NAME);
     }
 
     private static SearchServiceClient createServiceClient() {
@@ -95,7 +95,7 @@ public class LifecycleSetupExample {
             .setInterval(Duration.ofMinutes(10));
         indexer.setSchedule(indexingSchedule);
 
-        client.createOrUpdateIndexer(indexer);
+        client.createOrUpdate(indexer);
     }
 
     private static SearchIndexer createIndexer(SearchIndexerClient client, SearchIndexerDataSource dataSource,
@@ -106,7 +106,7 @@ public class LifecycleSetupExample {
             .setSkillsetName(skillset.getName())
             .setTargetIndexName(index.getName());
 
-        return client.createOrUpdateIndexer(indexer);
+        return client.createOrUpdate(indexer);
     }
 
     private static SearchIndexerSkillset createSkillset(SearchIndexerSkillsetClient client) {
@@ -136,7 +136,7 @@ public class LifecycleSetupExample {
             .setSkills(Collections.singletonList(skill));
 
 
-        return client.createOrUpdateSkillset(skillset);
+        return client.createOrUpdate(skillset);
     }
 
     private static SearchIndex createIndex(SearchIndexClient client) {
@@ -187,7 +187,7 @@ public class LifecycleSetupExample {
             .setName(SUGGESTER_NAME)
             .setSourceFields(Collections.singletonList("Tags"))));
 
-        return client.createOrUpdateIndex(index);
+        return client.createOrUpdate(index);
     }
 
     private static SearchIndexerDataSource createCosmosDataSource(SearchIndexerDataSourceClient client) {
@@ -204,7 +204,7 @@ public class LifecycleSetupExample {
             .setContainer(dataContainer)
             .setDataChangeDetectionPolicy(highWaterMarkChangeDetectionPolicy);
 
-        return client.createOrUpdateDataSource(dataSource);
+        return client.createOrUpdate(dataSource);
     }
 
 

@@ -66,7 +66,7 @@ java: true
 namespace: com.azure.search.documents.indexes
 title: SearchIndexRestClient
 models-subpackage: implementation.models
-custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchResult,SearchRequest,SearchOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
+custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchResult,SearchOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult
 custom-types-subpackage: models
 ```
 
@@ -400,6 +400,7 @@ directive:
       where: $
       transform: >-
         return $
+         .replace(/(import com\.azure\.search\.documents\.indexes\.models\.QueryType\;)/g, "$1\nimport com.azure.search.documents.indexes.models.ScoringParameter;")
          .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
          .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
          .replace(/(public SearchRequest setScoringParameters\(List\<String\> scoringParameters\) \{)/g, "public SearchRequest setScoringParameters(List<ScoringParameter> scoringParameters) {")

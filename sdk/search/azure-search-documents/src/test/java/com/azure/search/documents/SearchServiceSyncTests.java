@@ -19,7 +19,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
     public void getServiceStatsReturnsCorrectDefinition() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
+        ServiceStatistics serviceStatistics = serviceClient.getStatistics();
         assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
 
@@ -27,7 +27,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
+        ServiceStatistics serviceStatistics = serviceClient.getStatisticsWithResponse(generateRequestOptions(),
             Context.NONE).getValue();
         assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
     }
@@ -37,7 +37,7 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
-        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
+        Response<ServiceStatistics> response = serviceClient.getStatisticsWithResponse(requestOptions,
             Context.NONE);
 
         /*

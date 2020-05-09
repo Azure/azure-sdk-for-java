@@ -41,9 +41,9 @@ public class CreateIndexExample {
                         .setName("Cuisine")
                         .setType(SearchFieldDataType.STRING)));
         // Create index.
-        indexClient.createIndex(newIndex);
+        indexClient.create(newIndex);
 
         // Cleanup index resource.
-        indexClient.deleteIndex(INDEX_NAME);
+        indexClient.delete(INDEX_NAME);
     }
 }

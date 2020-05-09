@@ -45,7 +45,7 @@ public class RefineSearchCapabilitiesExample {
 
     public static void main(String[] args) {
         SearchServiceClient serviceClient = createServiceClient();
-        SearchIndexerSkillsetClient skillsetClient = serviceClient.getSearchIndexerSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = serviceClient.getSkillsetClient();
         SearchClient indexClient = createIndexClient();
 
         // Add a synonym map to an index field
@@ -92,17 +92,17 @@ public class RefineSearchCapabilitiesExample {
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
 
-        client.getSearchIndexerSkillsetClient().createOrUpdateSkillset(skillset);
+        client.getSkillsetClient().createOrUpdate(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
 
         SearchIndexer indexer = client.getSearchIndexerClient()
             .getIndexer(INDEXER_NAME).setSkillsetName(skillsetName);
-        client.getSearchIndexerClient().createOrUpdateIndexer(indexer);
+        client.getSearchIndexerClient().createOrUpdate(indexer);
         System.out.printf("Updated Indexer %s with  Skillset %s%n", INDEXER_NAME, skillsetName);
     }
 
     private static void getServiceStatistics(SearchServiceClient client) {
-        ServiceStatistics statistics = client.getServiceStatistics();
+        ServiceStatistics statistics = client.getStatistics();
         ServiceCounters counters = statistics.getCounters();
         ServiceLimits limits = statistics.getLimits();
 
@@ -130,14 +130,14 @@ public class RefineSearchCapabilitiesExample {
             .setName(synonymMapName)
             .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
 
-        client.getSynonymMapClient().createOrUpdateSynonymMap(synonymMap);
+        client.getSynonymMapClient().createOrUpdate(synonymMap);
 
         SearchIndex index = client.getSearchIndexClient().getIndex(INDEX_NAME);
         List<SearchField> fields = index.getFields();
         fields.get(1).setSynonymMaps(Collections.singletonList(synonymMapName));
         index.setFields(fields);
 
-        client.getSearchIndexClient().createOrUpdateIndex(index);
+        client.getSearchIndexClient().createOrUpdate(index);
         System.out.printf("Updated index %s with synonym map %s on field %s%n", INDEX_NAME, synonymMapName, "HotelName");
     }
 

@@ -49,14 +49,14 @@ public class RunningSearchSolutionExample {
         SearchClient searchClient = createIndexClient();
 
         // get index statistics
-        GetIndexStatisticsResult indexStatistics = indexClient.getIndexStatistics(INDEX_NAME);
+        GetIndexStatisticsResult indexStatistics = indexClient.getStatistics(INDEX_NAME);
         System.out.printf("Index %s: Document Count = %d, Storage Size = %d%n", INDEX_NAME, indexStatistics.getDocumentCount(), indexStatistics.getStorageSize());
 
         // run indexer
-        indexerClient.runIndexer(INDEXER_NAME);
+        indexerClient.run(INDEXER_NAME);
 
         // get indexer status
-        SearchIndexerStatus indexerStatus = indexerClient.getIndexerStatus(INDEXER_NAME);
+        SearchIndexerStatus indexerStatus = indexerClient.getStatus(INDEXER_NAME);
         System.out.printf("Indexer %s status = %s%n", INDEXER_NAME, indexerStatus.getStatus());
 
         // run a search query

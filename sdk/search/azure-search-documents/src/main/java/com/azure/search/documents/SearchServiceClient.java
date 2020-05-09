@@ -50,7 +50,7 @@ public final class SearchServiceClient {
      *
      * @return a {@link SearchIndexerDataSourceClient} created from the service client configuration.
      */
-    public SearchIndexerDataSourceClient getSearchIndexerDataSourceClient() {
+    public SearchIndexerDataSourceClient getDataSourceClient() {
         return asyncClient.prepareBuilder().buildDataSourceClient();
     }
 
@@ -77,7 +77,7 @@ public final class SearchServiceClient {
      *
      * @return a {@link SearchIndexerSkillsetClient} created from the service client configuration.
      */
-    public SearchIndexerSkillsetClient getSearchIndexerSkillsetClient() {
+    public SearchIndexerSkillsetClient getSkillsetClient() {
         return asyncClient.prepareBuilder().buildSkillsetClient();
     }
 
@@ -113,8 +113,8 @@ public final class SearchServiceClient {
      *
      * @return the search service statistics result.
      */
-    public ServiceStatistics getServiceStatistics() {
-        return getServiceStatisticsWithResponse(null, Context.NONE).getValue();
+    public ServiceStatistics getStatistics() {
+        return getStatisticsWithResponse(null, Context.NONE).getValue();
     }
 
     /**
@@ -125,8 +125,8 @@ public final class SearchServiceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the search service statistics result.
      */
-    public Response<ServiceStatistics> getServiceStatisticsWithResponse(RequestOptions requestOptions,
+    public Response<ServiceStatistics> getStatisticsWithResponse(RequestOptions requestOptions,
         Context context) {
-        return asyncClient.getServiceStatisticsWithResponse(requestOptions, context).block();
+        return asyncClient.getStatisticsWithResponse(requestOptions, context).block();
     }
 }

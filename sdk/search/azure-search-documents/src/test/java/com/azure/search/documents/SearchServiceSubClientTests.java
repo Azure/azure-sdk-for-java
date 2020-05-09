@@ -63,7 +63,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchService();
         try {
             // this is expected to fail
-            serviceClient.getSearchIndexClient().deleteIndex("thisindexdoesnotexist");
+            serviceClient.getSearchIndexClient().delete("thisindexdoesnotexist");
         } catch (Exception e) {
             // deleting the index should fail as it does not exist
         }
@@ -78,7 +78,7 @@ public class SearchServiceSubClientTests extends SearchServiceTestBase {
         SearchServiceAsyncClient serviceClient = getAsyncSearchService();
         try {
             // this is expected to fail
-            serviceClient.getSearchIndexAsyncClient().deleteIndex("thisindexdoesnotexist");
+            serviceClient.getSearchIndexAsyncClient().delete("thisindexdoesnotexist");
         } catch (Exception e) {
             // deleting the index should fail as it does not exist
         }

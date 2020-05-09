@@ -59,11 +59,11 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
 
     private BiConsumer<SearchIndex, AccessOptions> deleteIndexFunc =
         (SearchIndex index, AccessOptions ac) ->
-            searchIndexClient.deleteIndexWithResponse(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
+            searchIndexClient.deleteWithResponse(index, ac.getOnlyIfUnchanged(), ac.getRequestOptions(),
                 Context.NONE);
 
     private SearchIndex createOrUpdateIndex(SearchIndex index, Boolean onlyIfUnchanged, RequestOptions requestOptions) {
-        return searchIndexClient.createOrUpdateIndexWithResponse(index, false, onlyIfUnchanged,
+        return searchIndexClient.createOrUpdateWithResponse(index, false, onlyIfUnchanged,
             requestOptions, Context.NONE).getValue();
     }
 
@@ -78,7 +78,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createIndexReturnsCorrectDefinition() {
         SearchIndex index = createTestIndex();
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
         assertObjectEquals(index, createdIndex, true, "etag");
     }
 
@@ -86,7 +86,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createIndexReturnsCorrectDefinitionWithResponse() {
         SearchIndex index = createTestIndex();
 
-        Response<SearchIndex> createIndexResponse = searchIndexClient.createIndexWithResponse(index.setName("hotel2"),
+        Response<SearchIndex> createIndexResponse = searchIndexClient.createWithResponse(index.setName("hotel2"),
             generateRequestOptions(), Context.NONE);
         assertObjectEquals(index, createIndexResponse.getValue(), true, "etag");
     }
@@ -106,7 +106,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
                 )
             ));
 
-        SearchIndex indexResponse = searchIndexClient.createIndex(index);
+        SearchIndex indexResponse = searchIndexClient.create(index);
         ScoringProfile scoringProfile = indexResponse.getScoringProfiles().get(0);
         assertNull(indexResponse.getCorsOptions().getMaxAgeInSeconds());
         assertEquals(ScoringFunctionAggregation.SUM, scoringProfile.getFunctionAggregation());
@@ -129,7 +129,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             + "Each index must have exactly one key field.", indexName);
 
         try {
-            searchIndexClient.createIndex(index);
+            searchIndexClient.create(index);
             fail("createOrUpdateSearchIndex did not throw an expected Exception");
         } catch (Exception ex) {
             assertEquals(SearchErrorException.class, ex.getClass());
@@ -141,7 +141,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void getIndexReturnsCorrectDefinition() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         SearchIndex createdIndex = searchIndexClient.getIndex(index.getName());
         assertObjectEquals(index, createdIndex, true, "etag");
@@ -150,7 +150,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void getIndexReturnsCorrectDefinitionWithResponse() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         Response<SearchIndex> getIndexResponse = searchIndexClient.getIndexWithResponse(index.getName(), generateRequestOptions(),
             Context.NONE);
@@ -209,25 +209,25 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
                     .setType(SearchFieldDataType.STRING)
                     .setKey(true)
             ));
-        Response<Void> deleteResponse = searchIndexClient.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
+        Response<Void> deleteResponse = searchIndexClient.deleteWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
 
-        Response<SearchIndex> createResponse = searchIndexClient.createIndexWithResponse(index, generateRequestOptions(), Context.NONE);
+        Response<SearchIndex> createResponse = searchIndexClient.createWithResponse(index, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createResponse.getStatusCode());
 
         // Delete the same index twice
-        deleteResponse = searchIndexClient.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = searchIndexClient.deleteWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NO_CONTENT.code(), deleteResponse.getStatusCode());
 
-        deleteResponse = searchIndexClient.deleteIndexWithResponse(index, false, generateRequestOptions(), Context.NONE);
+        deleteResponse = searchIndexClient.deleteWithResponse(index, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.NOT_FOUND.code(), deleteResponse.getStatusCode());
     }
 
     @Test
     public void canCreateAndDeleteIndex() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createIndex(index);
-        searchIndexClient.deleteIndex(index.getName());
+        searchIndexClient.create(index);
+        searchIndexClient.delete(index.getName());
 
         assertThrows(SearchErrorException.class, () -> searchIndexClient.getIndex(index.getName()));
     }
@@ -237,8 +237,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         SearchIndex index1 = createTestIndex();
         SearchIndex index2 = createTestIndex().setName("hotels2");
 
-        searchIndexClient.createIndex(index1);
-        searchIndexClient.createIndex(index2);
+        searchIndexClient.create(index1);
+        searchIndexClient.create(index2);
 
         PagedIterable<SearchIndex> actual = searchIndexClient.listIndexes();
         List<SearchIndex> result = actual.stream().collect(Collectors.toList());
@@ -253,11 +253,11 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         SearchIndex index1 = createTestIndex();
         SearchIndex index2 = createTestIndex().setName("hotels2");
 
-        searchIndexClient.createIndex(index1);
-        searchIndexClient.createIndex(index2);
+        searchIndexClient.create(index1);
+        searchIndexClient.create(index2);
 
-        PagedIterable<SearchIndex> selectedFieldListResponse = searchIndexClient.listIndexes("name",
-            generateRequestOptions(), Context.NONE);
+        PagedIterable<SearchIndex> selectedFieldListResponse =
+            searchIndexClient.listSearchIndexNames(generateRequestOptions(), Context.NONE);
         List<SearchIndex> result = selectedFieldListResponse.stream().collect(Collectors.toList());
 
         result.forEach(res -> {
@@ -282,7 +282,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void canAddSynonymFieldProperty() {
         String synonymMapName = "names";
         SynonymMap synonymMap = new SynonymMap().setName(synonymMapName).setSynonyms("hotel,motel");
-        synonymMapClient.createSynonymMap(synonymMap);
+        synonymMapClient.create(synonymMap);
 
         SearchIndex index = new SearchIndex()
             .setName(HOTEL_INDEX_NAME)
@@ -297,7 +297,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
                     .setSynonymMaps(Collections.singletonList(synonymMapName))
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         List<String> actualSynonym = index.getFields().get(1).getSynonymMaps();
         List<String> expectedSynonym = createdIndex.getFields().get(1).getSynonymMaps();
@@ -311,20 +311,20 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             .setName(synonymMapName)
             .setSynonyms("hotel,motel");
 
-        synonymMapClient.createSynonymMap(synonymMap);
+        synonymMapClient.create(synonymMap);
 
         // Create an index
         SearchIndex index = createTestIndex();
         SearchField hotelNameField = getFieldByName(index, "HotelName");
         hotelNameField.setSynonymMaps(Collections.singletonList(synonymMapName));
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         // Update an existing index
         SearchIndex existingIndex = searchIndexClient.getIndex(index.getName());
         hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setSynonymMaps(Collections.emptyList());
 
-        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(existingIndex,
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdateWithResponse(existingIndex,
             true, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
@@ -340,7 +340,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             .setDefaultScoringProfile(null)
             .setCorsOptions(initialIndex.getCorsOptions().setAllowedOrigins("*"));
 
-        SearchIndex index = searchIndexClient.createIndex(initialIndex);
+        SearchIndex index = searchIndexClient.create(initialIndex);
 
         // Now update the index.
         String[] allowedOrigins = fullFeaturedIndex.getCorsOptions()
@@ -350,14 +350,14 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             .setDefaultScoringProfile(fullFeaturedIndex.getDefaultScoringProfile())
             .setCorsOptions(index.getCorsOptions().setAllowedOrigins(allowedOrigins));
 
-        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndex(index);
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdate(index);
 
         assertObjectEquals(fullFeaturedIndex, updatedIndex, true, "etag", "@odata.etag");
 
         // Modify the fields on an existing index
         SearchIndex existingIndex = searchIndexClient.getIndex(fullFeaturedIndex.getName());
 
-        SynonymMap synonymMap = synonymMapClient.createSynonymMap(new SynonymMap()
+        SynonymMap synonymMap = synonymMapClient.create(new SynonymMap()
             .setName("names")
             .setSynonyms("hotel,motel")
         );
@@ -377,7 +377,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         SearchField hotelNameField = getFieldByName(existingIndex, "HotelName");
         hotelNameField.setHidden(true);
 
-        updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(existingIndex,
+        updatedIndex = searchIndexClient.createOrUpdateWithResponse(existingIndex,
             true, false, generateRequestOptions(), Context.NONE).getValue();
 
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
@@ -386,7 +386,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void canUpdateSuggesterWithNewIndexFields() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         SearchIndex existingIndex = searchIndexClient.getIndex(index.getName());
 
@@ -402,7 +402,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
             .setSourceFields(Arrays.asList("HotelAmenities", "HotelRewards"))
         ));
 
-        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(existingIndex,
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdateWithResponse(existingIndex,
             true, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(existingIndex, updatedIndex, true, "etag", "@odata.etag");
     }
@@ -410,7 +410,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void createOrUpdateIndexThrowsWhenUpdatingSuggesterWithExistingIndexFields() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         SearchIndex existingIndex = searchIndexClient.getIndex(index.getName());
         String existingFieldName = "Category";
@@ -420,7 +420,7 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
         ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createOrUpdateIndex(existingIndex),
+            () -> searchIndexClient.createOrUpdate(existingIndex),
             HttpResponseStatus.BAD_REQUEST,
             String.format("Fields that were already present in an index (%s) cannot be "
                     + "referenced by a new suggester. Only new fields added in the same index update operation are allowed.",
@@ -432,13 +432,13 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExist() {
         SearchIndex expected = createTestIndex();
 
-        SearchIndex actual = searchIndexClient.createOrUpdateIndex(expected);
+        SearchIndex actual = searchIndexClient.createOrUpdate(expected);
         assertObjectEquals(expected, actual, true, "etag");
 
-        actual = searchIndexClient.createOrUpdateIndex(expected.setName("hotel1"));
+        actual = searchIndexClient.createOrUpdate(expected.setName("hotel1"));
         assertObjectEquals(expected, actual, true, "etag");
 
-        SearchIndex res = searchIndexClient.createOrUpdateIndex(expected.setName("hotel2"));
+        SearchIndex res = searchIndexClient.createOrUpdate(expected.setName("hotel2"));
         assertEquals(expected.getName(), res.getName());
     }
 
@@ -446,15 +446,15 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     public void createOrUpdateIndexCreatesWhenIndexDoesNotExistWithResponse() {
         SearchIndex expected = createTestIndex();
 
-        SearchIndex actual = searchIndexClient.createOrUpdateIndexWithResponse(expected, false, false,
+        SearchIndex actual = searchIndexClient.createOrUpdateWithResponse(expected, false, false,
             generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(expected, actual, true, "etag");
 
-        actual = searchIndexClient.createOrUpdateIndexWithResponse(expected.setName("hotel1"),
+        actual = searchIndexClient.createOrUpdateWithResponse(expected.setName("hotel1"),
             false, false, generateRequestOptions(), Context.NONE).getValue();
         assertObjectEquals(expected, actual, true, "etag");
 
-        Response<SearchIndex> createOrUpdateResponse = searchIndexClient.createOrUpdateIndexWithResponse(expected.setName("hotel2"),
+        Response<SearchIndex> createOrUpdateResponse = searchIndexClient.createOrUpdateWithResponse(expected.setName("hotel2"),
             false, false, generateRequestOptions(), Context.NONE);
         assertEquals(HttpResponseStatus.CREATED.code(), createOrUpdateResponse.getStatusCode());
     }
@@ -486,8 +486,8 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void canCreateAndGetIndexStats() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createOrUpdateIndex(index);
-        GetIndexStatisticsResult indexStatistics = searchIndexClient.getIndexStatistics(index.getName());
+        searchIndexClient.createOrUpdate(index);
+        GetIndexStatisticsResult indexStatistics = searchIndexClient.getStatistics(index.getName());
         assertEquals(0, indexStatistics.getDocumentCount());
         assertEquals(0, indexStatistics.getStorageSize());
     }
@@ -495,9 +495,9 @@ public class IndexManagementSyncTests extends SearchServiceTestBase {
     @Test
     public void canCreateAndGetIndexStatsWithResponse() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createOrUpdateIndex(index);
+        searchIndexClient.createOrUpdate(index);
 
-        Response<GetIndexStatisticsResult> indexStatisticsResponse = searchIndexClient.getIndexStatisticsWithResponse(index.getName(),
+        Response<GetIndexStatisticsResult> indexStatisticsResponse = searchIndexClient.getStatisticsWithResponse(index.getName(),
             generateRequestOptions(), Context.NONE);
         assertEquals(0, indexStatisticsResponse.getValue().getDocumentCount());
         assertEquals(0, indexStatisticsResponse.getValue().getStorageSize());

@@ -27,8 +27,8 @@ public class SearchIndexerClient {
      * @param indexer definition of the indexer to create.
      * @return the created Indexer.
      */
-    public SearchIndexer createIndexer(SearchIndexer indexer) {
-        return createIndexerWithResponse(indexer, null, Context.NONE).getValue();
+    public SearchIndexer create(SearchIndexer indexer) {
+        return createWithResponse(indexer, null, Context.NONE).getValue();
     }
 
     /**
@@ -40,9 +40,9 @@ public class SearchIndexerClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Indexer.
      */
-    public Response<SearchIndexer> createIndexerWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
+    public Response<SearchIndexer> createWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
         Context context) {
-        return asyncClient.createIndexerWithResponse(indexer, requestOptions, context).block();
+        return asyncClient.createWithResponse(indexer, requestOptions, context).block();
     }
 
     /**
@@ -51,8 +51,8 @@ public class SearchIndexerClient {
      * @param indexer The definition of the indexer to create or update.
      * @return a response containing the created Indexer.
      */
-    public SearchIndexer createOrUpdateIndexer(SearchIndexer indexer) {
-        return createOrUpdateIndexerWithResponse(indexer, false, null, Context.NONE).getValue();
+    public SearchIndexer createOrUpdate(SearchIndexer indexer) {
+        return createOrUpdateWithResponse(indexer, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -66,9 +66,9 @@ public class SearchIndexerClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return A response object containing the Indexer.
      */
-    public Response<SearchIndexer> createOrUpdateIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
+    public Response<SearchIndexer> createOrUpdateWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateIndexerWithResponse(indexer, onlyIfUnchanged, requestOptions, context).block();
+        return asyncClient.createOrUpdateWithResponse(indexer, onlyIfUnchanged, requestOptions, context).block();
     }
 
     /**
@@ -77,20 +77,18 @@ public class SearchIndexerClient {
      * @return all Indexers from the Search service.
      */
     public PagedIterable<SearchIndexer> listIndexers() {
-        return listIndexers(null, null, Context.NONE);
+        return listIndexers(null, Context.NONE);
     }
 
     /**
      * Lists all indexers available for an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of the indexers to retrieve. Specified as a comma-separated list
-     * of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Additional parameters for the operation.
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return all Indexers from the Search service.
      */
-    public PagedIterable<SearchIndexer> listIndexers(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexers(select, requestOptions, context));
+    public PagedIterable<SearchIndexer> listIndexers(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexers(requestOptions, context));
     }
 
     /**
@@ -122,8 +120,8 @@ public class SearchIndexerClient {
      *
      * @param indexerName the name of the indexer to delete
      */
-    public void deleteIndexer(String indexerName) {
-        deleteIndexerWithResponse(new SearchIndexer().setName(indexerName), false, null, Context.NONE);
+    public void delete(String indexerName) {
+        deleteWithResponse(new SearchIndexer().setName(indexerName), false, null, Context.NONE);
     }
 
     /**
@@ -137,10 +135,10 @@ public class SearchIndexerClient {
      * @param context the context
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexerWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
+    public Response<Void> deleteWithResponse(SearchIndexer indexer, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? indexer.getETag() : null;
-        return asyncClient.deleteIndexerWithResponse(indexer.getName(), etag, requestOptions, context).block();
+        return asyncClient.deleteWithResponse(indexer.getName(), etag, requestOptions, context).block();
     }
 
     /**
@@ -148,8 +146,8 @@ public class SearchIndexerClient {
      *
      * @param indexerName the name of the indexer to reset
      */
-    public void resetIndexer(String indexerName) {
-        resetIndexerWithResponse(indexerName, null, Context.NONE);
+    public void reset(String indexerName) {
+        resetWithResponse(indexerName, null, Context.NONE);
     }
 
     /**
@@ -161,8 +159,8 @@ public class SearchIndexerClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> resetIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
-        return asyncClient.resetIndexerWithResponse(indexerName, requestOptions, context).block();
+    public Response<Void> resetWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
+        return asyncClient.resetWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**
@@ -170,8 +168,8 @@ public class SearchIndexerClient {
      *
      * @param indexerName the name of the indexer to run
      */
-    public void runIndexer(String indexerName) {
-        runIndexerWithResponse(indexerName, null, Context.NONE);
+    public void run(String indexerName) {
+        runWithResponse(indexerName, null, Context.NONE);
     }
 
     /**
@@ -183,8 +181,8 @@ public class SearchIndexerClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> runIndexerWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
-        return asyncClient.runIndexerWithResponse(indexerName, requestOptions, context).block();
+    public Response<Void> runWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
+        return asyncClient.runWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**
@@ -193,8 +191,8 @@ public class SearchIndexerClient {
      * @param indexerName the name of the indexer for which to retrieve status
      * @return a response with the indexer execution info.
      */
-    public SearchIndexerStatus getIndexerStatus(String indexerName) {
-        return getIndexerStatusWithResponse(indexerName, null, Context.NONE).getValue();
+    public SearchIndexerStatus getStatus(String indexerName) {
+        return getStatusWithResponse(indexerName, null, Context.NONE).getValue();
     }
 
     /**
@@ -206,9 +204,9 @@ public class SearchIndexerClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response with the indexer execution info.
      */
-    public Response<SearchIndexerStatus> getIndexerStatusWithResponse(String indexerName,
+    public Response<SearchIndexerStatus> getStatusWithResponse(String indexerName,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.getIndexerStatusWithResponse(indexerName, requestOptions, context).block();
+        return asyncClient.getStatusWithResponse(indexerName, requestOptions, context).block();
     }
 
     /**

@@ -34,7 +34,7 @@ public class CreateSkillsetExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
         createOcrSkillset(skillsetClient);
         createCustomSkillset(skillsetClient);
         cleanupSkillset(skillsetClient);
@@ -77,7 +77,7 @@ public class CreateSkillsetExample {
 
         System.out.println(String.format("Creating OCR skillset '%s'", skillset.getName()));
 
-        SearchIndexerSkillset createdSkillset = skillsetClient.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = skillsetClient.create(skillset);
 
         System.out.println("Created OCR skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));
@@ -118,7 +118,7 @@ public class CreateSkillsetExample {
 
         System.out.println(String.format("Creating custom skillset '%s'", skillset.getName()));
 
-        SearchIndexerSkillset createdSkillset = skillsetClient.createSkillset(skillset);
+        SearchIndexerSkillset createdSkillset = skillsetClient.create(skillset);
 
         System.out.println("Created custom skillset");
         System.out.println(String.format("Name: %s", createdSkillset.getName()));
@@ -126,7 +126,7 @@ public class CreateSkillsetExample {
     }
 
     private static void cleanupSkillset(SearchIndexerSkillsetClient skillsetClient) {
-        skillsetClient.deleteSkillset(OCR_SKILLSET_NAME);
-        skillsetClient.deleteSkillset(CUSTOME_SKILLSET_NAME);
+        skillsetClient.delete(OCR_SKILLSET_NAME);
+        skillsetClient.delete(CUSTOME_SKILLSET_NAME);
     }
 }

@@ -26,8 +26,8 @@ public class SearchSynonymMapClient {
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
-    public SynonymMap createSynonymMap(SynonymMap synonymMap) {
-        return createSynonymMapWithResponse(synonymMap, null, Context.NONE).getValue();
+    public SynonymMap create(SynonymMap synonymMap) {
+        return createWithResponse(synonymMap, null, Context.NONE).getValue();
     }
 
     /**
@@ -39,9 +39,9 @@ public class SearchSynonymMapClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created SynonymMap.
      */
-    public Response<SynonymMap> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
+    public Response<SynonymMap> createWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
         Context context) {
-        return asyncClient.createSynonymMapWithResponse(synonymMap, requestOptions, context).block();
+        return asyncClient.createWithResponse(synonymMap, requestOptions, context).block();
     }
 
     /**
@@ -74,21 +74,19 @@ public class SearchSynonymMapClient {
      * @return the list of synonym maps.
      */
     public PagedIterable<SynonymMap> listSynonymMaps() {
-        return listSynonymMaps(null, null, Context.NONE);
+        return listSynonymMaps(null, Context.NONE);
     }
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of synonym maps.
      */
-    public PagedIterable<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listSynonymMaps(select, requestOptions, context));
+    public PagedIterable<SynonymMap> listSynonymMaps(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listSynonymMaps(null, requestOptions, context));
     }
 
     /**
@@ -97,8 +95,8 @@ public class SearchSynonymMapClient {
      * @param synonymMap the definition of the synonym map to create or update
      * @return the synonym map that was created or updated.
      */
-    public SynonymMap createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMapWithResponse(synonymMap, false, null, Context.NONE).getValue();
+    public SynonymMap createOrUpdate(SynonymMap synonymMap) {
+        return createOrUpdateWithResponse(synonymMap, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -112,9 +110,9 @@ public class SearchSynonymMapClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the synonym map that was created or updated.
      */
-    public Response<SynonymMap> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
+    public Response<SynonymMap> createOrUpdateWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context)
+        return asyncClient.createOrUpdateWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context)
             .block();
     }
 
@@ -123,8 +121,8 @@ public class SearchSynonymMapClient {
      *
      * @param synonymMapName the name of the synonym map to delete
      */
-    public void deleteSynonymMap(String synonymMapName) {
-        deleteSynonymMapWithResponse(new SynonymMap().setName(synonymMapName), false, null, Context.NONE);
+    public void delete(String synonymMapName) {
+        deleteWithResponse(new SynonymMap().setName(synonymMapName), false, null, Context.NONE);
     }
 
     /**
@@ -138,10 +136,10 @@ public class SearchSynonymMapClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
+    public Response<Void> deleteWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
-        return asyncClient.deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context)
+        return asyncClient.deleteWithResponse(synonymMap.getName(), etag, requestOptions, context)
             .block();
     }
 

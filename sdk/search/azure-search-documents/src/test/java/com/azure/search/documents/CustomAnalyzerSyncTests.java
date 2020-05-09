@@ -143,7 +143,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                     .setName(customCharFilterName.toString())
             ));
 
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         SearchClient searchClient = searchServiceClient.getSearchClient(index.getName());
 
@@ -171,7 +171,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     public void canUseAllAnalyzerNamesInIndexDefinition() {
         SearchIndex  index = prepareIndexWithAllLexicalAnalyzerNames();
 
-        SearchIndex  res = searchIndexClient.createIndex(index);
+        SearchIndex  res = searchIndexClient.create(index);
 
         assertObjectEquals(index, res, true, "etag");
 
@@ -199,7 +199,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     @Test
     public void canAnalyze() {
         SearchIndex  index = createTestIndex();
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         AnalyzeRequest request = new AnalyzeRequest()
             .setText("One two")
@@ -231,7 +231,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     @Test
     public void canAnalyzeWithAllPossibleNames() {
         SearchIndex index = createTestIndex();
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         LexicalAnalyzerName.values()
             .stream()
@@ -259,12 +259,12 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     public void addingCustomAnalyzerThrowsHttpExceptionByDefault() {
         SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         addLexicalAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createOrUpdateIndex(index),
+            () -> searchIndexClient.createOrUpdate(index),
             HttpResponseStatus.BAD_REQUEST,
             "Index update not allowed because it would cause downtime."
         );
@@ -274,10 +274,10 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     public void canAddCustomAnalyzerWithIndexDowntime() {
         SearchIndex index = createTestIndex()
             .setAnalyzers(Collections.singletonList(new StopAnalyzer().setName("a1")));
-        searchIndexClient.createIndex(index);
+        searchIndexClient.create(index);
 
         addLexicalAnalyzerToIndex(index, new StopAnalyzer().setName("a2"));
-        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndexWithResponse(index,
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdateWithResponse(index,
             true, false, generateRequestOptions(), Context.NONE).getValue();
 
         assertAnalysisComponentsEqual(index, updatedIndex);
@@ -287,9 +287,9 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     public void canCreateAllAnalysisComponents() {
         SearchIndex index = prepareIndexWithAllAnalysisComponentTypes();
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
         assertAnalysisComponentsEqual(index, createdIndex);
-        searchIndexClient.deleteIndex(index.getName());
+        searchIndexClient.delete(index.getName());
 
         // We have to split up analysis components into two indexes, one where any components with optional properties
         // have defaults that are zero or null, and another where we need to specify the default values we
@@ -302,9 +302,9 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         List<SearchIndex> splittedExpectedIndexWithSpecialDefaults = splitIndex(expectedIndexWithSpecialDefaults);
         for (int j = 0; j < splittedIndexWithSpecialDefaults.size(); j++) {
             SearchIndex expected = splittedExpectedIndexWithSpecialDefaults.get(j);
-            SearchIndex actual = searchIndexClient.createIndex(expected);
+            SearchIndex actual = searchIndexClient.create(expected);
             assertAnalysisComponentsEqual(expected, actual);
-            searchIndexClient.deleteIndex(actual.getName());
+            searchIndexClient.delete(actual.getName());
         }
     }
 
@@ -312,7 +312,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
     public void canUseAllAnalysisComponentNames() {
         SearchIndex index = prepareIndexWithAllAnalysisComponentNames();
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
         assertCustomAnalysisComponentsEqual(index, createdIndex);
     }
 
@@ -326,7 +326,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setFlags(new ArrayList<>(RegexFlags.values()))
                 .setName(generateName())));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -336,7 +336,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         SearchIndex index = createTestIndex()
             .setAnalyzers(null);
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -346,7 +346,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         SearchIndex index = createTestIndex()
             .setAnalyzers(new ArrayList<>());
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -359,7 +359,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
+            () -> searchIndexClient.create(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -373,7 +373,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
+            () -> searchIndexClient.create(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -386,7 +386,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new PatternAnalyzer().setLowerCaseTerms(null).setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -398,7 +398,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new PatternAnalyzer().setPattern(null).setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -410,7 +410,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new PatternAnalyzer().setPattern("").setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -422,7 +422,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 new PatternAnalyzer().setFlags(null).setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -435,7 +435,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
+            () -> searchIndexClient.create(index),
             HttpResponseStatus.BAD_REQUEST,
             "Values of property \\\"flags\\\" must belong to the set of allowed values"
         );
@@ -448,7 +448,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setStopwords(null)
                 .setName(generateName())));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -460,7 +460,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setStopwords(new ArrayList<>())
                 .setName(generateName())));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -474,7 +474,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setGroup(0)
                 .setName(generateName())));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -484,7 +484,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         SearchIndex index = createTestIndex()
             .setTokenizers(null);
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -494,7 +494,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         SearchIndex index = createTestIndex()
             .setTokenizers(new ArrayList<>());
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -507,7 +507,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
+            () -> searchIndexClient.create(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -521,7 +521,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
+            () -> searchIndexClient.create(index),
             HttpResponseStatus.BAD_REQUEST,
             "The name field is required."
         );
@@ -534,7 +534,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setPattern(null).setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -546,7 +546,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setPattern("").setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -558,7 +558,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setFlags(null).setName(generateName())
             ));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
         System.out.println(RegexFlags.values());
@@ -572,7 +572,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
             ));
 
         assertHttpResponseException(
-            () -> searchIndexClient.createIndex(index),
+            () -> searchIndexClient.create(index),
             HttpResponseStatus.BAD_REQUEST,
             "Values of property \\\"flags\\\" must belong to the set of allowed values"
         );
@@ -585,7 +585,7 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
                 .setGroup(null)
                 .setName(generateName())));
 
-        SearchIndex createdIndex = searchIndexClient.createIndex(index);
+        SearchIndex createdIndex = searchIndexClient.create(index);
 
         assertAnalysisComponentsEqual(index, createdIndex);
     }
@@ -595,9 +595,9 @@ public class CustomAnalyzerSyncTests extends SearchServiceTestBase {
         List<SearchIndex> indexes = prepareIndexesWithAllAnalysisComponentOptions();
 
         indexes.forEach(expectedIndex -> {
-            SearchIndex createdIndex = searchIndexClient.createIndex(expectedIndex);
+            SearchIndex createdIndex = searchIndexClient.create(expectedIndex);
             assertAnalysisComponentsEqual(expectedIndex, createdIndex);
-            searchIndexClient.deleteIndex(createdIndex.getName());
+            searchIndexClient.delete(createdIndex.getName());
         });
     }
 

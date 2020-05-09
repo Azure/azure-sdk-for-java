@@ -26,8 +26,8 @@ public class SearchIndexerDataSourceClient {
      * @param dataSource The definition of the data source to create or update.
      * @return the data source that was created or updated.
      */
-    public SearchIndexerDataSource createOrUpdateDataSource(SearchIndexerDataSource dataSource) {
-        return createOrUpdateDataSourceWithResponse(dataSource, false, null, Context.NONE).getValue();
+    public SearchIndexerDataSource createOrUpdate(SearchIndexerDataSource dataSource) {
+        return createOrUpdateWithResponse(dataSource, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -41,9 +41,9 @@ public class SearchIndexerDataSourceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created or updated.
      */
-    public Response<SearchIndexerDataSource> createOrUpdateDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Response<SearchIndexerDataSource> createOrUpdateWithResponse(SearchIndexerDataSource dataSource,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateDataSourceWithResponse(dataSource, onlyIfUnchanged, requestOptions, context)
+        return asyncClient.createOrUpdateWithResponse(dataSource, onlyIfUnchanged, requestOptions, context)
             .block();
     }
 
@@ -53,8 +53,8 @@ public class SearchIndexerDataSourceClient {
      * @param dataSource The definition of the data source to create
      * @return the data source that was created.
      */
-    public SearchIndexerDataSource createDataSource(SearchIndexerDataSource dataSource) {
-        return createDataSourceWithResponse(dataSource, null, Context.NONE).getValue();
+    public SearchIndexerDataSource create(SearchIndexerDataSource dataSource) {
+        return createWithResponse(dataSource, null, Context.NONE).getValue();
     }
 
     /**
@@ -66,9 +66,9 @@ public class SearchIndexerDataSourceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing data source that was created.
      */
-    public Response<SearchIndexerDataSource> createDataSourceWithResponse(SearchIndexerDataSource dataSource,
+    public Response<SearchIndexerDataSource> createWithResponse(SearchIndexerDataSource dataSource,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.createDataSourceWithResponse(dataSource, requestOptions, context).block();
+        return asyncClient.createWithResponse(dataSource, requestOptions, context).block();
     }
 
     /**
@@ -101,23 +101,19 @@ public class SearchIndexerDataSourceClient {
      * @return a list of SearchIndexerDataSource
      */
     public PagedIterable<SearchIndexerDataSource> listDataSources() {
-        return listDataSources(null, null, Context.NONE);
+        return listDataSources(null, Context.NONE);
     }
 
     /**
      * List all SearchIndexerDataSource from an Azure Cognitive Search service.
      *
-     * @param select Selects which top-level properties of SearchIndexerDataSource definitions to retrieve.
-     * Specified as a comma-separated list of JSON property names, or '*' for all properties.
-     * The default is all properties.
      * @param requestOptions Additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
      * @return a response containing the list of SearchIndexerDataSource.
      */
-    public PagedIterable<SearchIndexerDataSource> listDataSources(String select, RequestOptions requestOptions,
-        Context context) {
-        return new PagedIterable<>(asyncClient.listDataSources(select, requestOptions, context));
+    public PagedIterable<SearchIndexerDataSource> listDataSources(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listDataSources(requestOptions, context));
     }
 
     /**
@@ -125,8 +121,8 @@ public class SearchIndexerDataSourceClient {
      *
      * @param dataSourceName the name of the data source to be deleted
      */
-    public void deleteDataSource(String dataSourceName) {
-        deleteDataSourceWithResponse(new SearchIndexerDataSource().setName(dataSourceName), false,
+    public void delete(String dataSourceName) {
+        deleteWithResponse(new SearchIndexerDataSource().setName(dataSourceName), false,
             null, Context.NONE);
     }
 
@@ -141,10 +137,10 @@ public class SearchIndexerDataSourceClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return an empty response
      */
-    public Response<Void> deleteDataSourceWithResponse(SearchIndexerDataSource dataSource, boolean onlyIfUnchanged,
+    public Response<Void> deleteWithResponse(SearchIndexerDataSource dataSource, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? dataSource.getETag() : null;
-        return asyncClient.deleteDataSourceWithResponse(dataSource.getName(), etag, requestOptions, context).block();
+        return asyncClient.deleteWithResponse(dataSource.getName(), etag, requestOptions, context).block();
     }
 
     /**

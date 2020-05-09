@@ -15,7 +15,7 @@ import com.azure.search.documents.models.SearchIndexerDataSourceType;
 /**
  * Utility class that aids in the creation of {@link SearchIndexerDataSource DataSources}.
  */
-public final class DataSources {
+public final class SearchIndexerDataSources {
 
     /**
      * Creates a new {@link SearchIndexerDataSource} to connect to an Azure SQL database.
@@ -268,6 +268,6 @@ public final class DataSources {
             .setDataDeletionDetectionPolicy(dataDeletionDetectionPolicy);
     }
 
-    private DataSources() {
+    private SearchIndexerDataSources() {
     }
 }

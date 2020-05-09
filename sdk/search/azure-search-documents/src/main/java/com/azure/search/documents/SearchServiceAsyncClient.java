@@ -24,8 +24,6 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
-;
-
 /**
  * Asynchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
  */
@@ -57,7 +55,8 @@ public final class SearchServiceAsyncClient {
      */
     private final HttpPipeline httpPipeline;
 
-    protected SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
+    SearchServiceAsyncClient(String endpoint, SearchServiceVersion serviceVersion,
+        HttpPipeline httpPipeline) {
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.httpPipeline = httpPipeline;
@@ -113,7 +112,7 @@ public final class SearchServiceAsyncClient {
      *
      * @return a {@link SearchIndexerDataSourceAsyncClient} created from the service client configuration.
      */
-    public SearchIndexerDataSourceAsyncClient getSearchIndexerDataSourceAsyncClient() {
+    public SearchIndexerDataSourceAsyncClient getDataSourceAsyncClient() {
         return prepareBuilder().buildDataSourceAsyncClient();
     }
 
@@ -136,11 +135,12 @@ public final class SearchServiceAsyncClient {
     }
 
     /**
-     * Initializes a new {@link SearchIndexerSkillsetAsyncClient} using the same configuration as the SearchServiceAsyncClient.
+     * Initializes a new {@link SearchIndexerSkillsetAsyncClient} using the same configuration as the
+     * SearchServiceAsyncClient.
      *
      * @return a {@link SearchIndexerSkillsetAsyncClient} created from the service client configuration.
      */
-    public SearchIndexerSkillsetAsyncClient getSearchIndexerSkillsetAsyncClient() {
+    public SearchIndexerSkillsetAsyncClient getSkillsetAsyncClient() {
         return prepareBuilder().buildSkillsetAsyncClient();
     }
 
@@ -169,8 +169,8 @@ public final class SearchServiceAsyncClient {
      *
      * @return the search service statistics result.
      */
-    public Mono<ServiceStatistics> getServiceStatistics() {
-        return getServiceStatisticsWithResponse(null).map(Response::getValue);
+    public Mono<ServiceStatistics> getStatistics() {
+        return getStatisticsWithResponse(null).map(Response::getValue);
     }
 
 
@@ -181,11 +181,11 @@ public final class SearchServiceAsyncClient {
      * help with debugging
      * @return the search service statistics result.
      */
-    public Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions) {
-        return withContext(context -> getServiceStatisticsWithResponse(requestOptions, context));
+    public Mono<Response<ServiceStatistics>> getStatisticsWithResponse(RequestOptions requestOptions) {
+        return withContext(context -> getStatisticsWithResponse(requestOptions, context));
     }
 
-    Mono<Response<ServiceStatistics>> getServiceStatisticsWithResponse(RequestOptions requestOptions, Context context) {
+    Mono<Response<ServiceStatistics>> getStatisticsWithResponse(RequestOptions requestOptions, Context context) {
         try {
             return restClient.getServiceStatisticsWithRestResponseAsync(requestOptions, context)
                 .map(Function.identity());

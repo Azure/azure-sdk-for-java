@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.DataSources;
+import com.azure.search.documents.indexes.SearchIndexerDataSources;
 import com.azure.search.documents.models.CorsOptions;
 import com.azure.search.documents.models.DataChangeDetectionPolicy;
 import com.azure.search.documents.models.DataDeletionDetectionPolicy;
@@ -452,7 +452,7 @@ public abstract class SearchServiceTestBase extends TestBase {
 
     SearchIndexerDataSource createTestSqlDataSourceObject(DataDeletionDetectionPolicy deletionDetectionPolicy,
         DataChangeDetectionPolicy changeDetectionPolicy) {
-        return DataSources.createFromAzureSql(
+        return SearchIndexerDataSources.createFromAzureSql(
             SearchServiceTestBase.SQL_DATASOURCE_NAME,
             AZURE_SQL_CONN_STRING_READONLY_PLAYGROUND,
             "GeoNamesRI",
@@ -483,7 +483,7 @@ public abstract class SearchServiceTestBase extends TestBase {
         }
 
         // create the new data source object for this storage account and container
-        return DataSources.createFromAzureBlobStorage(
+        return SearchIndexerDataSources.createFromAzureBlobStorage(
             BLOB_DATASOURCE_NAME,
             storageConnString,
             blobContainerDatasourceName,

@@ -264,5 +264,6 @@ public final class FieldBuilder {
         return SearchFieldDataType.COMPLEX;
     }
 
-    private FieldBuilder(){}
+    private FieldBuilder() {
+    }
 }

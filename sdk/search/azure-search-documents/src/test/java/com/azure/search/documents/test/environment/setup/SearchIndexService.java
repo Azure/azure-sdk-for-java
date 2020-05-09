@@ -46,7 +46,7 @@ public class SearchIndexService {
 
         if (index != null) {
             this.indexName = index.getName();
-            searchIndexClient.createOrUpdateIndex(index);
+            searchIndexClient.createOrUpdate(index);
         }
     }
 
@@ -63,7 +63,7 @@ public class SearchIndexService {
             Reader indexData = new InputStreamReader(getClass().getClassLoader().getResourceAsStream(indexDataFileName));
             SearchIndex index = new ObjectMapper().readValue(indexData, SearchIndex.class);
             this.indexName = index.getName();
-            searchIndexClient.createOrUpdateIndex(index);
+            searchIndexClient.createOrUpdate(index);
         }
     }
 

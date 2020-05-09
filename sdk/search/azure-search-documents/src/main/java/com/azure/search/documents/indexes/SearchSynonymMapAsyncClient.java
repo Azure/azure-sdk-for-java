@@ -53,8 +53,8 @@ public class SearchSynonymMapAsyncClient {
      * @param synonymMap the definition of the synonym map to create
      * @return the created {@link SynonymMap}.
      */
-    public Mono<SynonymMap> createSynonymMap(SynonymMap synonymMap) {
-        return createSynonymMapWithResponse(synonymMap, null).map(Response::getValue);
+    public Mono<SynonymMap> create(SynonymMap synonymMap) {
+        return createWithResponse(synonymMap, null).map(Response::getValue);
     }
 
     /**
@@ -65,12 +65,12 @@ public class SearchSynonymMapAsyncClient {
      * help with debugging
      * @return a response containing the created SynonymMap.
      */
-    public Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap,
+    public Mono<Response<SynonymMap>> createWithResponse(SynonymMap synonymMap,
         RequestOptions requestOptions) {
-        return withContext(context -> createSynonymMapWithResponse(synonymMap, requestOptions, context));
+        return withContext(context -> createWithResponse(synonymMap, requestOptions, context));
     }
 
-    Mono<Response<SynonymMap>> createSynonymMapWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
+    Mono<Response<SynonymMap>> createWithResponse(SynonymMap synonymMap, RequestOptions requestOptions,
         Context context) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         try {
@@ -121,22 +121,20 @@ public class SearchSynonymMapAsyncClient {
      * @return a reactive response emitting the list of synonym maps.
      */
     public PagedFlux<SynonymMap> listSynonymMaps() {
-        return listSynonymMaps(null, null);
+        return listSynonymMaps(null);
     }
 
     /**
      * Lists all synonym maps available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the synonym maps to retrieve. Specified as a comma-separated
-     * list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a reactive response emitting the list of synonym maps.
      */
-    public PagedFlux<SynonymMap> listSynonymMaps(String select, RequestOptions requestOptions) {
+    public PagedFlux<SynonymMap> listSynonymMaps(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSynonymMapsWithResponse(select, requestOptions, context)));
+                withContext(context -> listSynonymMapsWithResponse(null, requestOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -169,8 +167,8 @@ public class SearchSynonymMapAsyncClient {
      * @param synonymMap the definition of the {@link SynonymMap} to create or update
      * @return the synonym map that was created or updated.
      */
-    public Mono<SynonymMap> createOrUpdateSynonymMap(SynonymMap synonymMap) {
-        return createOrUpdateSynonymMapWithResponse(synonymMap, false, null).map(Response::getValue);
+    public Mono<SynonymMap> createOrUpdate(SynonymMap synonymMap) {
+        return createOrUpdateWithResponse(synonymMap, false, null).map(Response::getValue);
     }
 
     /**
@@ -183,13 +181,13 @@ public class SearchSynonymMapAsyncClient {
      * help with debugging
      * @return a response containing the synonym map that was created or updated.
      */
-    public Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
+    public Mono<Response<SynonymMap>> createOrUpdateWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateSynonymMapWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateWithResponse(synonymMap, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SynonymMap>> createOrUpdateSynonymMapWithResponse(SynonymMap synonymMap,
+    Mono<Response<SynonymMap>> createOrUpdateWithResponse(SynonymMap synonymMap,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
@@ -209,8 +207,8 @@ public class SearchSynonymMapAsyncClient {
      * @param synonymMapName the name of the {@link SynonymMap} to delete
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteSynonymMap(String synonymMapName) {
-        return withContext(context -> deleteSynonymMapWithResponse(synonymMapName, null, null, context)
+    public Mono<Void> delete(String synonymMapName) {
+        return withContext(context -> deleteWithResponse(synonymMapName, null, null, context)
             .flatMap(FluxUtil::toMono));
     }
 
@@ -224,15 +222,15 @@ public class SearchSynonymMapAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSynonymMapWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteWithResponse(SynonymMap synonymMap, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null");
         String etag = onlyIfUnchanged ? synonymMap.getETag() : null;
         return withContext(context ->
-            deleteSynonymMapWithResponse(synonymMap.getName(), etag, requestOptions, context));
+            deleteWithResponse(synonymMap.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteSynonymMapWithResponse(String synonymMapName, String etag,
+    Mono<Response<Void>> deleteWithResponse(String synonymMapName, String etag,
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.synonymMaps()

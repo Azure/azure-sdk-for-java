@@ -285,7 +285,7 @@ public class IndexingSyncTests extends SearchIndexClientTestBase {
 
         if (!interceptorManager.isPlaybackMode()) {
             SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-            searchServiceClient.getSearchIndexClient().createOrUpdateIndex(indexWithReservedName);
+            searchServiceClient.getSearchIndexClient().createOrUpdate(indexWithReservedName);
         }
 
         client = getSearchIndexClientBuilder(indexName).buildClient();

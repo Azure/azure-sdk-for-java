@@ -54,8 +54,8 @@ public class SearchIndexerSkillsetAsyncClient {
      * @param skillset definition of the skillset containing one or more cognitive skills
      * @return the created Skillset.
      */
-    public Mono<SearchIndexerSkillset> createSkillset(SearchIndexerSkillset skillset) {
-        return createSkillsetWithResponse(skillset, null).map(Response::getValue);
+    public Mono<SearchIndexerSkillset> create(SearchIndexerSkillset skillset) {
+        return createWithResponse(skillset, null).map(Response::getValue);
     }
 
     /**
@@ -66,12 +66,12 @@ public class SearchIndexerSkillsetAsyncClient {
      * help with debugging
      * @return a response containing the created Skillset.
      */
-    public Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+    public Mono<Response<SearchIndexerSkillset>> createWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions) {
-        return withContext(context -> createSkillsetWithResponse(skillset, requestOptions, context));
+        return withContext(context -> createWithResponse(skillset, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerSkillset>> createSkillsetWithResponse(SearchIndexerSkillset skillset,
+    Mono<Response<SearchIndexerSkillset>> createWithResponse(SearchIndexerSkillset skillset,
         RequestOptions requestOptions,
         Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
@@ -124,22 +124,20 @@ public class SearchIndexerSkillsetAsyncClient {
      * @return a reactive response emitting the list of skillsets.
      */
     public PagedFlux<SearchIndexerSkillset> listSkillsets() {
-        return listSkillsets(null, null);
+        return listSkillsets(null);
     }
 
     /**
      * Lists all skillsets available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the skillset definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @return a reactive response emitting the list of skillsets.
      */
-    public PagedFlux<SearchIndexerSkillset> listSkillsets(String select, RequestOptions requestOptions) {
+    public PagedFlux<SearchIndexerSkillset> listSkillsets(RequestOptions requestOptions) {
         try {
             return new PagedFlux<>(() ->
-                withContext(context -> listSkillsetsWithResponse(select, requestOptions, context)));
+                withContext(context -> listSkillsetsWithResponse(null, requestOptions, context)));
         } catch (RuntimeException ex) {
             return pagedFluxError(logger, ex);
         }
@@ -173,8 +171,8 @@ public class SearchIndexerSkillsetAsyncClient {
      * @param skillset the definition of the skillset to create or update
      * @return the skillset that was created or updated.
      */
-    public Mono<SearchIndexerSkillset> createOrUpdateSkillset(SearchIndexerSkillset skillset) {
-        return createOrUpdateSkillsetWithResponse(skillset, false, null).map(Response::getValue);
+    public Mono<SearchIndexerSkillset> createOrUpdate(SearchIndexerSkillset skillset) {
+        return createOrUpdateWithResponse(skillset, false, null).map(Response::getValue);
     }
 
     /**
@@ -187,13 +185,13 @@ public class SearchIndexerSkillsetAsyncClient {
      * help with debugging
      * @return a response containing the skillset that was created or updated.
      */
-    public Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+    public Mono<Response<SearchIndexerSkillset>> createOrUpdateWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, RequestOptions requestOptions) {
         return withContext(context ->
-            createOrUpdateSkillsetWithResponse(skillset, onlyIfUnchanged, requestOptions, context));
+            createOrUpdateWithResponse(skillset, onlyIfUnchanged, requestOptions, context));
     }
 
-    Mono<Response<SearchIndexerSkillset>> createOrUpdateSkillsetWithResponse(SearchIndexerSkillset skillset,
+    Mono<Response<SearchIndexerSkillset>> createOrUpdateWithResponse(SearchIndexerSkillset skillset,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
@@ -213,8 +211,8 @@ public class SearchIndexerSkillsetAsyncClient {
      * @param skillsetName the name of the skillset to delete
      * @return a response signalling completion.
      */
-    public Mono<Void> deleteSkillset(String skillsetName) {
-        return withContext(context -> deleteSkillsetWithResponse(skillsetName, null, null, context)
+    public Mono<Void> delete(String skillsetName) {
+        return withContext(context -> deleteWithResponse(skillsetName, null, null, context)
             .flatMap(FluxUtil::toMono));
     }
 
@@ -228,15 +226,15 @@ public class SearchIndexerSkillsetAsyncClient {
      * help with debugging
      * @return a response signalling completion.
      */
-    public Mono<Response<Void>> deleteSkillsetWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
+    public Mono<Response<Void>> deleteWithResponse(SearchIndexerSkillset skillset, boolean onlyIfUnchanged,
         RequestOptions requestOptions) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String etag = onlyIfUnchanged ? skillset.getETag() : null;
         return withContext(context ->
-            deleteSkillsetWithResponse(skillset.getName(), etag, requestOptions, context));
+            deleteWithResponse(skillset.getName(), etag, requestOptions, context));
     }
 
-    Mono<Response<Void>> deleteSkillsetWithResponse(String skillsetName, String etag, RequestOptions requestOptions,
+    Mono<Response<Void>> deleteWithResponse(String skillsetName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
             return restClient.skillsets()

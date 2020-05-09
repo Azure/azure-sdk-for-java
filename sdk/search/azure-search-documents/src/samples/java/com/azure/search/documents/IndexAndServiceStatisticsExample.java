@@ -57,7 +57,7 @@ public class IndexAndServiceStatisticsExample {
     }
 
     private static void getServiceStatistics(SearchServiceClient client) {
-        ServiceStatistics serviceStatistics = client.getServiceStatistics();
+        ServiceStatistics serviceStatistics = client.getStatistics();
 
         System.out.println(":" + serviceStatistics);
         ObjectMapper objectMapper = new ObjectMapper();
@@ -108,8 +108,8 @@ public class IndexAndServiceStatisticsExample {
 
     private static void getIndexStatistics(SearchIndexClient client) {
         SearchIndex testIndex = createTestIndex();
-        SearchIndex index = client.createOrUpdateIndex(testIndex);
-        GetIndexStatisticsResult result = client.getIndexStatistics(index.getName());
+        SearchIndex index = client.createOrUpdate(testIndex);
+        GetIndexStatisticsResult result = client.getStatistics(index.getName());
         long documentCount = result.getDocumentCount();
         long storageSize = result.getStorageSize();
 

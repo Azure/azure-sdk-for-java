@@ -40,9 +40,9 @@ public class ReadmeSamples {
     private String indexName = "index name";
     private SearchServiceClient searchServiceClient = new SearchServiceClientBuilder().buildClient();
     private SearchIndexClient searchIndexClient = searchServiceClient.getSearchIndexClient();
-    private SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getSearchIndexerDataSourceClient();
+    private SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getDataSourceClient();
     private SearchIndexerClient searchIndexerClient = searchServiceClient.getSearchIndexerClient();
-    private SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
+    private SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
     private SearchSynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
     private SearchClient searchClient = new SearchClientBuilder().buildClient();
 
@@ -89,7 +89,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
-        SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getSearchIndexerDataSourceClient();
+        SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getDataSourceClient();
     }
 
     public void createIndexerClient() {
@@ -105,7 +105,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
-        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
     }
 
     public void createSynonymMapClient() {
@@ -123,7 +123,7 @@ public class ReadmeSamples {
         headers.put("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
         SearchIndex index = new SearchIndex().setName(indexName);
-        searchIndexClient.createIndexWithResponse(
+        searchIndexClient.createWithResponse(
             index,
             new RequestOptions(),
             new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers));
@@ -154,7 +154,7 @@ public class ReadmeSamples {
                         .setName("Cuisine")
                         .setType(SearchFieldDataType.STRING)));
         // Create index.
-        searchIndexClient.createIndex(newIndex);
+        searchIndexClient.create(newIndex);
     }
 
     public void uploadDocumentWithSyncClient() {

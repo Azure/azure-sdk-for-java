@@ -40,7 +40,7 @@ public class DataSourceExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-        SearchIndexerDataSourceClient dataSourceClient = client.getSearchIndexerDataSourceClient();
+        SearchIndexerDataSourceClient dataSourceClient = client.getDataSourceClient();
         /*
          * Store the names of the created data sources so that we can delete them later
          * without affecting other resources.
@@ -73,7 +73,7 @@ public class DataSourceExample {
 
     private static void deleteDataSource(SearchIndexerDataSourceClient client, String dataSourceName) {
         try {
-            client.deleteDataSource(dataSourceName);
+            client.delete(dataSourceName);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }
@@ -101,7 +101,7 @@ public class DataSourceExample {
 
         SearchIndexerDataSource dataSource = createSampleDatasource(type, connectionString, container, dataChangeDetectionPolicy);
         try {
-            dataSourceClient.createOrUpdateDataSource(dataSource);
+            dataSourceClient.createOrUpdate(dataSource);
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }

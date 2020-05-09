@@ -3,7 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.indexes.DataSources;
+import com.azure.search.documents.indexes.SearchIndexerDataSources;
 import com.azure.search.documents.models.DataSourceCredentials;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.models.SearchIndexerDataContainer;
@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Unit Test DataSources utility class
  */
-public class DataSourcesTest {
+public class SearchIndexerDataSourcesTest {
 
     @Test
     public void canCreateSqlDataSource() {
@@ -25,7 +25,7 @@ public class DataSourcesTest {
             .setCredentials(new DataSourceCredentials()
                 .setConnectionString("connectionString"))
             .setContainer(new SearchIndexerDataContainer().setName("table"));
-        SearchIndexerDataSource actual = DataSources.createFromAzureSql(
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromAzureSql(
             "sql", "connectionString", "table");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
@@ -41,7 +41,7 @@ public class DataSourcesTest {
                 .setConnectionString("connectionString"))
             .setContainer(new SearchIndexerDataContainer()
                 .setName("container"));
-        SearchIndexerDataSource actual = DataSources.createFromAzureBlobStorage(
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromAzureBlobStorage(
             "storageBlob", "connectionString", "container");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
@@ -57,7 +57,7 @@ public class DataSourcesTest {
                 .setConnectionString("connectionString"))
             .setContainer(new SearchIndexerDataContainer()
             .setName("table"));
-        SearchIndexerDataSource actual = DataSources.createFromAzureTableStorage(
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromAzureTableStorage(
             "storageTable", "connectionString", "table");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
@@ -74,7 +74,7 @@ public class DataSourcesTest {
             .setContainer(new SearchIndexerDataContainer()
                 .setName("collection"));
 
-        SearchIndexerDataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection", false);
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }
@@ -91,7 +91,7 @@ public class DataSourcesTest {
                 .setName("collection"))
             .setDataChangeDetectionPolicy(new HighWaterMarkChangeDetectionPolicy().setHighWaterMarkColumnName("_ts"));
 
-        SearchIndexerDataSource actual = DataSources.createFromCosmos("cosmos", "connectionString", "collection");
+        SearchIndexerDataSource actual = SearchIndexerDataSources.createFromCosmos("cosmos", "connectionString", "collection");
 
         TestHelpers.assertObjectEquals(expected, actual, false, "etag");
     }

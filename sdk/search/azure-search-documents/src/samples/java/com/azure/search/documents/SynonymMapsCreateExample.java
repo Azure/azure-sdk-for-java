@@ -45,14 +45,14 @@ public class SynonymMapsCreateExample {
         System.out.println("Complete....\n");
 
         // Clean up resources
-        synonymMapClient.deleteSynonymMap(synonymMapName);
+        synonymMapClient.delete(synonymMapName);
     }
 
     private static void createSynonymMap(SearchSynonymMapClient synonymMapClient, String synonymMapName) {
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
             .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");
-        synonymMapClient.createSynonymMap(synonymMap);
+        synonymMapClient.create(synonymMap);
     }
 
     private static void assignSynonymMapToIndex(String synonymMapName) {

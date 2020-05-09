@@ -69,7 +69,7 @@ public class CreateIndexerExample {
             .setSchedule(indexingSchedule);
 
         System.out.println(String.format("Creating Indexer: %s", indexer.getName()));
-        Response<SearchIndexer> response = indexerAsyncClient.createOrUpdateIndexerWithResponse(
+        Response<SearchIndexer> response = indexerAsyncClient.createOrUpdateWithResponse(
             indexer, false, new RequestOptions()
         ).block();
 

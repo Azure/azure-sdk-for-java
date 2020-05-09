@@ -174,7 +174,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
             SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
 
             // Create a new SynonymMap
-            searchServiceClient.getSynonymMapClient().createSynonymMap(new SynonymMap()
+            searchServiceClient.getSynonymMapClient().create(new SynonymMap()
                 .setName(name)
                 .setSynonyms(synonyms));
 
@@ -186,7 +186,7 @@ public abstract class SearchTestBase extends SearchIndexClientTestBase {
                 .findFirst().get().setSynonymMaps(Collections.singletonList(name));
 
             // Update the index with the SynonymMap
-            searchIndexClient.createOrUpdateIndex(hotelsIndex);
+            searchIndexClient.createOrUpdate(hotelsIndex);
 
             // Wait for the index to update with the SynonymMap
             try {

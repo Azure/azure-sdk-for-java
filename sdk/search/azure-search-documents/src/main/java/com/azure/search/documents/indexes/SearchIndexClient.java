@@ -30,8 +30,8 @@ public class SearchIndexClient {
      * @param index definition of the index to create
      * @return the created Index.
      */
-    public SearchIndex createIndex(SearchIndex index) {
-        return createIndexWithResponse(index, null, Context.NONE).getValue();
+    public SearchIndex create(SearchIndex index) {
+        return createWithResponse(index, null, Context.NONE).getValue();
     }
 
     /**
@@ -43,9 +43,9 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the created Index.
      */
-    public Response<SearchIndex> createIndexWithResponse(SearchIndex index, RequestOptions requestOptions,
+    public Response<SearchIndex> createWithResponse(SearchIndex index, RequestOptions requestOptions,
         Context context) {
-        return asyncClient.createIndexWithResponse(index, requestOptions, context).block();
+        return asyncClient.createWithResponse(index, requestOptions, context).block();
     }
 
     /**
@@ -78,8 +78,8 @@ public class SearchIndexClient {
      * @param indexName the name of the index for which to retrieve statistics
      * @return the index statistics result.
      */
-    public GetIndexStatisticsResult getIndexStatistics(String indexName) {
-        return getIndexStatisticsWithResponse(indexName, null, Context.NONE).getValue();
+    public GetIndexStatisticsResult getStatistics(String indexName) {
+        return getStatisticsWithResponse(indexName, null, Context.NONE).getValue();
     }
 
     /**
@@ -91,9 +91,9 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the index statistics result.
      */
-    public Response<GetIndexStatisticsResult> getIndexStatisticsWithResponse(String indexName,
+    public Response<GetIndexStatisticsResult> getStatisticsWithResponse(String indexName,
         RequestOptions requestOptions, Context context) {
-        return asyncClient.getIndexStatisticsWithResponse(indexName, requestOptions, context).block();
+        return asyncClient.getStatisticsWithResponse(indexName, requestOptions, context).block();
     }
 
     /**
@@ -102,21 +102,19 @@ public class SearchIndexClient {
      * @return the list of indexes.
      */
     public PagedIterable<SearchIndex> listIndexes() {
-        return listIndexes(null, null, Context.NONE);
+        return listIndexes(null, Context.NONE);
     }
 
     /**
      * Lists all indexes available for an Azure Cognitive Search service.
      *
-     * @param select selects which top-level properties of the index definitions to retrieve. Specified as a
-     * comma-separated list of JSON property names, or '*' for all properties. The default is all properties
      * @param requestOptions additional parameters for the operation. Contains the tracking ID sent with the request to
      * help with debugging
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return the list of indexes.
      */
-    public PagedIterable<SearchIndex> listIndexes(String select, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(asyncClient.listIndexes(select, requestOptions, context));
+    public PagedIterable<SearchIndex> listIndexes(RequestOptions requestOptions, Context context) {
+        return new PagedIterable<>(asyncClient.listIndexes(requestOptions, context));
     }
 
     /**
@@ -125,8 +123,8 @@ public class SearchIndexClient {
      * @param index the definition of the index to create or update
      * @return the index that was created or updated.
      */
-    public SearchIndex createOrUpdateIndex(SearchIndex index) {
-        return createOrUpdateIndexWithResponse(index, false, false, null, Context.NONE).getValue();
+    public SearchIndex createOrUpdate(SearchIndex index) {
+        return createOrUpdateWithResponse(index, false, false, null, Context.NONE).getValue();
     }
 
     /**
@@ -144,9 +142,9 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the HTTP pipeline during the service call
      * @return a response containing the Index that was created or updated.
      */
-    public Response<SearchIndex> createOrUpdateIndexWithResponse(SearchIndex index, boolean allowIndexDowntime,
+    public Response<SearchIndex> createOrUpdateWithResponse(SearchIndex index, boolean allowIndexDowntime,
         boolean onlyIfUnchanged, RequestOptions requestOptions, Context context) {
-        return asyncClient.createOrUpdateIndexWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions,
+        return asyncClient.createOrUpdateWithResponse(index, allowIndexDowntime, onlyIfUnchanged, requestOptions,
             context).block();
     }
 
@@ -155,8 +153,8 @@ public class SearchIndexClient {
      *
      * @param indexName the name of the index to delete
      */
-    public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(new SearchIndex().setName(indexName), false, null, Context.NONE);
+    public void delete(String indexName) {
+        deleteWithResponse(new SearchIndex().setName(indexName), false, null, Context.NONE);
     }
 
     /**
@@ -170,10 +168,10 @@ public class SearchIndexClient {
      * @param context additional context that is passed through the Http pipeline during the service call
      * @return a response signalling completion.
      */
-    public Response<Void> deleteIndexWithResponse(SearchIndex index, boolean onlyIfUnchanged,
+    public Response<Void> deleteWithResponse(SearchIndex index, boolean onlyIfUnchanged,
         RequestOptions requestOptions, Context context) {
         String etag = onlyIfUnchanged ? index.getETag() : null;
-        return asyncClient.deleteIndexWithResponse(index.getName(), etag, requestOptions, context).block();
+        return asyncClient.deleteWithResponse(index.getName(), etag, requestOptions, context).block();
     }
 
     /**
