@@ -21,14 +21,18 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedCategorizedEntities;
+import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
@@ -113,7 +117,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
      */
     @Test
     public void detectSingleTextLanguage() {
-        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguage("English", "en", 1.0, null);
         StepVerifier.create(client.detectLanguage("This is a test English Text"))
             .assertNext(response -> validatePrimaryLanguage(primaryLanguage, response))
             .verifyComplete();
@@ -146,7 +150,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageFaultyText() {
         StepVerifier.create(client.detectLanguage("!@#%%"))
             .assertNext(response -> validatePrimaryLanguage(
-                new DetectedLanguage("(Unknown)", "(Unknown)", 0.0), response))
+                new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null), response))
             .verifyComplete();
     }
 
@@ -167,7 +171,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageEmptyCountryHint() {
         StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", ""))
             .assertNext(response -> validatePrimaryLanguage(
-                new DetectedLanguage("Spanish", "es", 0.0), response))
+                new DetectedLanguage("Spanish", "es", 0.0, null), response))
             .verifyComplete();
     }
 
@@ -178,15 +182,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguageNoneCountryHint() {
         StepVerifier.create(client.detectLanguage("Este es un documento  escrito en Español", "none"))
             .assertNext(response -> validatePrimaryLanguage(
-                new DetectedLanguage("Spanish", "es", 0.0), response))
+                new DetectedLanguage("Spanish", "es", 0.0, null), response))
             .verifyComplete();
     }
 
     // Entities
     @Test
     public void recognizeEntitiesForTextInput() {
-        StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week.").byPage())
-            .assertNext(response -> validateCategorizedEntities(getExpectedCategorizedEntities(), response))
+        StepVerifier.create(client.recognizeEntities("I had a wonderful trip to Seattle last week."))
+            .assertNext(response -> validateCategorizedEntities(getCategorizedEntitiesList1(),
+                response.stream().collect(Collectors.toList())))
             .verifyComplete();
     }
 
@@ -200,8 +205,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeEntities("!@#%%"))
-            .expectNextCount(0)
+            .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
             .verifyComplete();
+    }
+
+    @Test
+    public void recognizeEntitiesDuplicateIdInput() {
+        recognizeCategorizedEntityDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
     @Test
@@ -252,14 +264,27 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+    @Test
+    public void recognizeEntitiesTooManyDocuments() {
+        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
+            StepVerifier.create(client.recognizeEntitiesBatch(inputs))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException exception = (HttpResponseException) ex;
+                    assertEquals(HttpResponseException.class, exception.getClass());
+                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+                });
+        });
+    }
+
     // Linked Entities
     @Test
     public void recognizeLinkedEntitiesForTextInput() {
-        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
+        final LinkedEntityMatch linkedEntityMatch = new LinkedEntityMatch("Seattle", 0.0);
         final LinkedEntity linkedEntity = new LinkedEntity("Seattle", new IterableStream<>(Collections.singletonList(linkedEntityMatch)), "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
 
         StepVerifier.create(client.recognizeLinkedEntities("I had a wonderful trip to Seattle last week."))
-            .assertNext(response -> validateLinkedEntity(linkedEntity, response))
+            .assertNext(response -> validateLinkedEntity(linkedEntity, response.iterator().next()))
             .verifyComplete();
     }
 
@@ -273,8 +298,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void recognizeLinkedEntitiesForFaultyText() {
         StepVerifier.create(client.recognizeLinkedEntities("!@#%%"))
-            .expectNextCount(0)
+            .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
             .verifyComplete();
+    }
+
+    @Test
+    public void recognizeLinkedEntitiesDuplicateIdInput() {
+        recognizeBatchLinkedEntityDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
     @Test
@@ -317,11 +349,24 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+    @Test
+    public void recognizeLinkedEntitiesTooManyDocuments() {
+        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
+            StepVerifier.create(client.recognizeLinkedEntitiesBatch(inputs))
+                .verifyErrorSatisfies(ex -> {
+                    HttpResponseException exception = (HttpResponseException) ex;
+                    assertEquals(HttpResponseException.class, exception.getClass());
+                    assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+                    assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+                });
+        });
+    }
+
     // Key Phrases
     @Test
     public void extractKeyPhrasesForTextInput() {
         StepVerifier.create(client.extractKeyPhrases("Bonjour tout le monde."))
-            .assertNext(response -> assertEquals("monde", response))
+            .assertNext(response -> assertEquals("monde", response.iterator().next()))
             .verifyComplete();
     }
 
@@ -335,8 +380,15 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     @Test
     public void extractKeyPhrasesForFaultyText() {
         StepVerifier.create(client.extractKeyPhrases("!@#%%"))
-            .expectNextCount(0)
+            .assertNext(result -> assertFalse(result.getWarnings().iterator().hasNext()))
             .verifyComplete();
+    }
+
+    @Test
+    public void extractKeyPhrasesDuplicateIdInput() {
+        extractBatchKeyPhrasesDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
     @Test
@@ -380,6 +432,35 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                 .verifyComplete());
     }
 
+    @Test
+    public void extractKeyPhrasesWarning() {
+        extractKeyPhrasesWarningRunner(
+            input -> StepVerifier.create(client.extractKeyPhrases(input))
+                .assertNext(keyPhrasesResult -> {
+                    keyPhrasesResult.getWarnings().forEach(warning -> {
+                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+                    });
+                })
+                .verifyComplete()
+        );
+    }
+
+    @Test
+    public void extractKeyPhrasesBatchWarning() {
+        extractKeyPhrasesBatchWarningRunner(
+            inputs -> StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null))
+                .assertNext(keyPhrasesResult -> {
+                    keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
+                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+                    });
+                })
+                .expectNextCount(1)
+                .verifyComplete()
+        );
+    }
+
     // Sentiment
 
     /**
@@ -390,9 +471,9 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
-            )));
+                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
 
         StepVerifier
             .create(client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi."))
@@ -418,12 +499,22 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
-            )));
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
 
         StepVerifier.create(client.analyzeSentiment("!@#%%"))
             .assertNext(response -> validateAnalyzedSentiment(expectedDocumentSentiment, response)).verifyComplete();
+    }
+
+    /**
+     * Test analyzing sentiment for a duplicate ID list.
+     */
+    @Test
+    public void analyseSentimentDuplicateIdInput() {
+        analyseBatchSentimentDuplicateIdRunner(inputs ->
+            StepVerifier.create(client.analyzeSentimentBatch(inputs, null))
+                .verifyErrorSatisfies(ex -> assertEquals(HttpResponseException.class, ex.getClass())));
     }
 
     /**
