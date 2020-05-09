@@ -300,7 +300,8 @@
                     <excludePackageNames>
                       *.impl*:
                       *.implementation*:
-                      *.utils
+                      *.utils:
+                      *.samples
                     </excludePackageNames>
                     <groups>
                         <group>
