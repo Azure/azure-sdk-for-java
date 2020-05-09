@@ -47,7 +47,12 @@ stages:
         - name: azure-active-directory-spring-boot-starter
           groupId: com.microsoft.azure
           safeName: azurespringbootstarteractivedirectory
-
+        - name: azure-cosmosdb-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstartercosmosdb
+        - name: azure-data-gremlin-spring-boot-starter
+          groupId: com.microsoft.azure
+          safeName: azurespringbootstarterdatagremlin
 
 
 
