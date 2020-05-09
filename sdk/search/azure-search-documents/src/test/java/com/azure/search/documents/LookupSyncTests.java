@@ -26,10 +26,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-import static com.azure.search.documents.ServiceResourceHelpers.uploadDocument;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
@@ -395,7 +395,7 @@ public class LookupSyncTests extends SearchTestBase {
                 "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(false)
-            .lastRenovationDate(ServiceResourceHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
+            .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
             .rating(5)
             .location(GeoPoint.create(47.678581, -122.131577))
             .rooms(new ArrayList<>());
@@ -423,7 +423,7 @@ public class LookupSyncTests extends SearchTestBase {
             .tags(Arrays.asList("24-hour front desk service", "coffee in lobby", "restaurant"))
             .parkingIncluded(false)
             .smokingAllowed(true)
-            .lastRenovationDate(ServiceResourceHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
+            .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
             .rating(3)
             .location(GeoPoint.create(35.904160, -78.940483))
             .address(new HotelAddress().streetAddress("6910 Fayetteville Rd").city("Durham").stateProvince("NC").country("USA").postalCode("27713"))

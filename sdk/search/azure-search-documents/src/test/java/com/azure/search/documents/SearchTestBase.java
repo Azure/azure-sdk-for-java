@@ -44,9 +44,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.search.documents.ServiceResourceHelpers.BLOB_DATASOURCE_NAME;
-import static com.azure.search.documents.ServiceResourceHelpers.HOTEL_INDEX_NAME;
-import static com.azure.search.documents.ServiceResourceHelpers.SQL_DATASOURCE_NAME;
+import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_NAME;
+import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.SQL_DATASOURCE_NAME;
 
 /**
  * Abstract base class for all Search API tests
@@ -54,10 +54,10 @@ import static com.azure.search.documents.ServiceResourceHelpers.SQL_DATASOURCE_N
 public abstract class SearchTestBase extends TestBase {
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
 
-    private static final String ENDPOINT = Configuration.getGlobalConfiguration()
+    protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
         .get("AZURE_SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
-    private static final String API_KEY = Configuration.getGlobalConfiguration()
+    protected static final String API_KEY = Configuration.getGlobalConfiguration()
         .get("AZURE_SEARCH_SERVICE_API_KEY", "apiKey");
 
     // The connection string we use here, as well as table name and target index schema, use the USGS database
@@ -70,7 +70,6 @@ public abstract class SearchTestBase extends TestBase {
 
     private static final String FAKE_DESCRIPTION = "Some data source";
 
-    static final String HOTELS_INDEX_NAME = "hotels";
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
     static final String HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION = "HotelsDataArrayWithoutFr.json";
 
@@ -80,8 +79,8 @@ public abstract class SearchTestBase extends TestBase {
 
     protected String setupIndexFromJsonFile(String jsonFile) {
         try {
-            Reader indexData = new InputStreamReader(Objects.requireNonNull(ServiceResourceHelpers.class
-                .getClassLoader().getResourceAsStream(jsonFile)));
+            Reader indexData = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+                .getResourceAsStream(jsonFile)));
 
             return setupIndex(new ObjectMapper().readValue(indexData, Index.class));
         } catch (IOException ex) {

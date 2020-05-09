@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.azure.search.documents.ServiceResourceHelpers.HOTEL_INDEX_NAME;
+import static com.azure.search.documents.TestHelpers.HOTEL_INDEX_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
@@ -58,12 +58,18 @@ public class IndexManagementSyncTests extends SearchTestBase {
     protected void afterTest() {
         super.afterTest();
 
+        boolean synonymMapsDeleted = false;
         for (String synonymMap : synonymMapsToDelete) {
             client.deleteSynonymMap(synonymMap);
+            synonymMapsDeleted = true;
         }
 
         for (String index : indexesToDelete) {
             client.deleteIndex(index);
+        }
+
+        if (synonymMapsDeleted) {
+            sleepIfRunningAgainstService(5000);
         }
     }
 

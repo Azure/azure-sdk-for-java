@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.azure.search.documents.ServiceResourceHelpers.BLOB_DATASOURCE_TEST_NAME;
+import static com.azure.search.documents.TestHelpers.BLOB_DATASOURCE_TEST_NAME;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
 import static org.junit.jupiter.api.Assertions.assertEquals;

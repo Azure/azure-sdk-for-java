@@ -428,10 +428,9 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, createOrUpdateResponse.getStatusCode());
 
-        skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED);
+        skillset = createTestOcrSkillSet(2, TextExtractionAlgorithm.PRINTED).setName(skillset.getName());
         createOrUpdateResponse = client.createOrUpdateSkillsetWithResponse(skillset, false, generateRequestOptions(),
             Context.NONE);
-        skillsetsToDelete.add(createOrUpdateResponse.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_OK, createOrUpdateResponse.getStatusCode());
     }
 

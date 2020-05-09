@@ -16,9 +16,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.azure.search.documents.ServiceResourceHelpers.uploadDocumentsJson;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 

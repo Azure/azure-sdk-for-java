@@ -957,7 +957,7 @@ public class IndexingSyncTests extends SearchTestBase {
             new Hotel()
                 .hotelId("1")
                 .category("")
-                .lastRenovationDate(ServiceResourceHelpers.DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
+                .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("0001-01-01T00:00:00Z"))
                 .location(GeoPoint.create(-90, -180))   // South pole, date line from the west
                 .parkingIncluded(false)
                 .rating(Integer.MIN_VALUE)
@@ -971,7 +971,7 @@ public class IndexingSyncTests extends SearchTestBase {
             new Hotel()
                 .hotelId("2")
                 .category("test")   // No meaningful string max since there is no length limit (other than payload size or term length).
-                .lastRenovationDate(ServiceResourceHelpers.DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
+                .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("9999-12-31T11:59:59Z"))
                 .location(GeoPoint.create(90, 180))     // North pole, date line from the east
                 .parkingIncluded(true)
                 .rating(Integer.MAX_VALUE)

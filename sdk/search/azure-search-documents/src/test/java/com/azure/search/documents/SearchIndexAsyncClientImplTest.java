@@ -20,10 +20,10 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.azure.search.documents.ServiceResourceHelpers.uploadDocument;
-import static com.azure.search.documents.ServiceResourceHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocument;
+import static com.azure.search.documents.TestHelpers.uploadDocuments;
 import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;

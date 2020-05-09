@@ -4,6 +4,7 @@
 package com.azure.search.documents;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.models.CoordinateSystem;
 import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.FacetResult;
@@ -47,12 +48,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.azure.search.documents.ServiceResourceHelpers.uploadDocuments;
-import static com.azure.search.documents.ServiceResourceHelpers.uploadDocumentsJson;
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.convertToType;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocuments;
+import static com.azure.search.documents.TestHelpers.uploadDocumentsJson;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -62,6 +63,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchSyncTests extends SearchTestBase {
     private final List<String> indexesToDelete = new ArrayList<>();
+    private String synonymMapToDelete = "";
 
     private SearchIndexClient client;
     private List<Map<String, Object>> hotels;
@@ -73,6 +75,11 @@ public class SearchSyncTests extends SearchTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
         for (String index : indexesToDelete) {
             serviceClient.deleteIndex(index);
+        }
+
+        if (!CoreUtils.isNullOrEmpty(synonymMapToDelete)) {
+            serviceClient.deleteSynonymMap(synonymMapToDelete);
+            sleepIfRunningAgainstService(5000);
         }
     }
 
@@ -260,8 +267,8 @@ public class SearchSyncTests extends SearchTestBase {
             .isEnabled(true)
             .rating(5)
             .ratio(3.14)
-            .startDate(ServiceResourceHelpers.DATE_FORMAT.parse("2010-06-01T00:00:00Z"))
-            .endDate(ServiceResourceHelpers.DATE_FORMAT.parse("2010-06-15T00:00:00Z"))
+            .startDate(TestHelpers.DATE_FORMAT.parse("2010-06-01T00:00:00Z"))
+            .endDate(TestHelpers.DATE_FORMAT.parse("2010-06-15T00:00:00Z"))
             .topLevelBucket(new Bucket().bucketName("A").count(12))
             .buckets(new Bucket[]{new Bucket().bucketName("B").count(20), new Bucket().bucketName("C").count(7)});
 
@@ -286,7 +293,7 @@ public class SearchSyncTests extends SearchTestBase {
 
         // check if deserialization of Date type object is successful
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
-        Date expected = ServiceResourceHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z");
+        Date expected = TestHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z");
 
         SearchPagedIterable results = client.search("Fancy", new SearchOptions(), generateRequestOptions(), Context.NONE);
         assertNotNull(results);
@@ -741,7 +748,23 @@ public class SearchSyncTests extends SearchTestBase {
         hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         String fieldName = "HotelName";
-        prepareHotelsSynonymMap(fieldName);
+        SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
+
+        // Create a new SynonymMap
+        synonymMapToDelete = searchServiceClient.createSynonymMap(new SynonymMap()
+            .setName(testResourceNamer.randomName("names", 32))
+            .setSynonyms("luxury,fancy")).getName();
+
+        // Attach index field to SynonymMap
+        Index hotelsIndex = searchServiceClient.getIndex(client.getIndexName());
+        hotelsIndex.getFields().stream()
+            .filter(f -> fieldName.equals(f.getName()))
+            .findFirst().get().setSynonymMaps(Collections.singletonList(synonymMapToDelete));
+
+        // Update the index with the SynonymMap
+        searchServiceClient.createOrUpdateIndex(hotelsIndex);
+
+        sleepIfRunningAgainstService(5000);
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
@@ -954,34 +977,6 @@ public class SearchSyncTests extends SearchTestBase {
             "LastRenovationDate,interval:year",
             "Rooms/BaseRate,sort:value",
             "Tags,sort:value");
-    }
-
-    void prepareHotelsSynonymMap(String fieldName) {
-        if (!interceptorManager.isPlaybackMode()) {
-            // In RECORDING mode (only), create a new index:
-            SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-
-            // Create a new SynonymMap
-            searchServiceClient.createSynonymMap(new SynonymMap()
-                .setName("names")
-                .setSynonyms("luxury,fancy"));
-
-            // Attach index field to SynonymMap
-            Index hotelsIndex = searchServiceClient.getIndex(HOTELS_INDEX_NAME);
-            hotelsIndex.getFields().stream()
-                .filter(f -> fieldName.equals(f.getName()))
-                .findFirst().get().setSynonymMaps(Collections.singletonList("names"));
-
-            // Update the index with the SynonymMap
-            searchServiceClient.createOrUpdateIndex(hotelsIndex);
-
-            // Wait for the index to update with the SynonymMap
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     void assertListEqualHotelIds(List<String> expected, List<SearchResult> actual) {

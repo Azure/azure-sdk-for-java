@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -25,8 +24,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.UncheckedIOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.net.HttpURLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -60,45 +57,6 @@ public final class TestHelpers {
         OBJECT_MAPPER.setDateFormat(df);
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-    }
-
-    /**
-     * Checks if the passed {@link CharSequence} is {@code null}, empty, or only contains spaces.
-     *
-     * @param charSequence {@link CharSequence} to check for being blank.
-     * @return {@code true} if the {@link CharSequence} is {@code null}, empty, or only contains spaces, otherwise
-     * {@code false}.
-     */
-    public static boolean isBlank(CharSequence charSequence) {
-        if (CoreUtils.isNullOrEmpty(charSequence)) {
-            return true;
-        }
-
-        return charSequence.chars().allMatch(Character::isWhitespace);
-    }
-
-    /**
-     * Gets the {@code "eTag"} value from the passed object.
-     *
-     * @param obj The object that will have its eTag value retrieved.
-     * @return The eTag value if the object has an {@code "eTag"} field, otherwise {@code ""}.
-     */
-    public static String getETag(Object obj) {
-        Class<?> clazz = obj.getClass();
-        try {
-            // Try using the getter method first.
-            return (String) clazz.getMethod("getETag").invoke(obj);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-            try {
-                // Next attempt to get the value from the field directly.
-                Field eTagField = clazz.getField("eTag");
-                eTagField.setAccessible(true);
-                return (String) eTagField.get(obj);
-            } catch (IllegalAccessException | NoSuchFieldException ignored) {
-                // Finally just return empty string since we couldn't access the method or field.
-                return "";
-            }
-        }
     }
 
     /**
@@ -285,7 +243,7 @@ public final class TestHelpers {
     }
 
     private static List<Map<String, Object>> readJsonFileToList(String filename) {
-        Reader reader = new InputStreamReader(Objects.requireNonNull(ServiceResourceHelpers.class.getClassLoader()
+        Reader reader = new InputStreamReader(Objects.requireNonNull(TestHelpers.class.getClassLoader()
             .getResourceAsStream(filename)));
 
         ObjectMapper objectMapper = new ObjectMapper();

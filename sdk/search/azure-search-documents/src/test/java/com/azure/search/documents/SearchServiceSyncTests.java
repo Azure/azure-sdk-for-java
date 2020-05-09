@@ -5,17 +5,15 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ResourceCounter;
 import com.azure.search.documents.models.ServiceCounters;
-import com.azure.search.documents.models.ServiceLimits;
 import com.azure.search.documents.models.ServiceStatistics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static com.azure.search.documents.TestHelpers.assertObjectEquals;
 import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchServiceSyncTests extends SearchTestBase {
 
@@ -23,8 +21,7 @@ public class SearchServiceSyncTests extends SearchTestBase {
     public void getServiceStatsReturnsCorrectDefinition() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
-        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
+        validateServiceStatistics(serviceClient.getServiceStatistics());
     }
 
     @Test
@@ -33,7 +30,7 @@ public class SearchServiceSyncTests extends SearchTestBase {
 
         ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
             Context.NONE).getValue();
-        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
+        validateServiceStatistics(serviceStatistics);
     }
 
     @Test
@@ -55,26 +52,15 @@ public class SearchServiceSyncTests extends SearchTestBase {
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
-        assertObjectEquals(getExpectedServiceStatistics(), response.getValue(), true);
+        validateServiceStatistics(response.getValue());
     }
 
-    private static ServiceStatistics getExpectedServiceStatistics() {
-        ServiceCounters serviceCounters = new ServiceCounters()
-            .setDocumentCounter(new ResourceCounter().setUsage(0).setQuota(null))
-            .setIndexCounter(new ResourceCounter().setUsage(0).setQuota(3L))
-            .setIndexerCounter(new ResourceCounter().setUsage(0).setQuota(3L))
-            .setDataSourceCounter(new ResourceCounter().setUsage(0).setQuota(3L))
-            .setStorageSizeCounter(new ResourceCounter().setUsage(0).setQuota(52428800L))
-            .setSynonymMapCounter(new ResourceCounter().setUsage(0).setQuota(3L));
-
-        ServiceLimits serviceLimits = new ServiceLimits()
-            .setMaxFieldsPerIndex(1000)
-            .setMaxFieldNestingDepthPerIndex(10)
-            .setMaxComplexCollectionFieldsPerIndex(40)
-            .setMaxComplexObjectsInCollectionsPerDocument(3000);
-
-        return new ServiceStatistics()
-            .setCounters(serviceCounters)
-            .setLimits(serviceLimits);
+    private static void validateServiceStatistics(ServiceStatistics serviceStatistics) {
+        ServiceCounters serviceCounters = serviceStatistics.getCounters();
+        assertTrue(serviceCounters.getIndexCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getIndexerCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getDataSourceCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getStorageSizeCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getSynonymMapCounter().getQuota() >= 1);
     }
 }
