@@ -7,21 +7,23 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 
 import java.util.Queue;
-import java.util.Timer;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
-class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
+ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessageContext> {
 
     private final ClientLogger logger = new ClientLogger(SynchronousMessageSubscriber.class);
-    private Disposable timeoutOperation;
     private final AtomicBoolean isDisposed = new AtomicBoolean(false);
+    private final long prefetch;
+    private final AtomicInteger wip = new AtomicInteger();
+
+    private volatile Subscription subscription;
+
     private Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
     private SynchronousReceiveWork currentWork = null;
-    private final AtomicInteger wip = new AtomicInteger();
-    private volatile Subscription subscription;
-    private long prefetch;
+    private Disposable timeoutOperation;
+     private Disposable drainQueueDisposable;
 
 
     LongLivedMessageSubscriber(long prefetch) {
@@ -44,25 +46,20 @@ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessag
      * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will dispose of
      * the subscriber.
      *
-     * @param value Event to publish.
+     * @param message Event to publish.
      */
     @Override
-    protected void hookOnNext(ServiceBusReceivedMessageContext value) {
-        if (!currentWork.isTerminal()) {
-            currentWork.next(value);
-        } else {
-            logger.error("[{}] received message but no subscriber Sequence number [{}].", currentWork.getId(), value.getMessage().getSequenceNumber());
-            // throw error since we can not send this to current receive.
-        }
+    protected void hookOnNext(ServiceBusReceivedMessageContext message) {
 
-        logger.info("[{}] received message with Sequence Number [{}].", currentWork.getId(), value.getMessage().getSequenceNumber());
+        currentWork.next(message);
+
+        logger.verbose("[{}] received message with Sequence Number [{}].", currentWork.getId(), message.getMessage().getSequenceNumber());
 
         if (currentWork.isTerminal()) {
             logger.info("[{}] Completed. Closing Flux and cancelling subscription.", currentWork.getId());
             completeCurrentWork(currentWork);
         }
     }
-
 
     private void completeCurrentWork(SynchronousReceiveWork currentWork) {
 
@@ -71,10 +68,15 @@ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessag
         }
 
         currentWork.complete();
+        logger.verbose("[{}] work completed.", currentWork.getId());
 
         if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
             timeoutOperation.dispose();
         }
+        if (drainQueueDisposable != null && !drainQueueDisposable.isDisposed()) {
+            drainQueueDisposable.dispose();
+        }
+
         if (wip.decrementAndGet() != 0) {
             logger.warning("There is another worker in drainLoop. But there should only be 1 worker. Value:"+wip.get());
         }
@@ -96,7 +98,7 @@ class LongLivedMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessag
             return;
         }
         // Drain queue..
-        Disposable drainQueueDisposable = Mono.just(true)
+        drainQueueDisposable = Mono.just(true)
             .subscribe(l -> {
                 drainQueue();
             });
