@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -226,6 +227,22 @@ public final class ModelBridgeInternal {
     public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
                                                                    Integer offerThroughput) {
         return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
+    }
+
+    public static CosmosDatabaseRequestOptions setOfferProperties(
+        CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
+        ThroughputProperties throughputProperties) {
+        return cosmosDatabaseRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    public static CosmosContainerRequestOptions setOfferProperties(
+        CosmosContainerRequestOptions containerRequestOptions,
+        ThroughputProperties throughputProperties) {
+        return containerRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    public static Offer updateOfferFromProperties(Offer offer, ThroughputProperties properties) {
+        return properties.updateOfferFromProperties(offer);
     }
 
     public static CosmosItemRequestOptions setPartitionKey(CosmosItemRequestOptions cosmosItemRequestOptions,
@@ -487,7 +504,7 @@ public final class ModelBridgeInternal {
 
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializableWrapper jsonSerializableWrapper) {
         jsonSerializableWrapper.populatePropertyBag();
-        return jsonSerializableWrapper.getJsonSerializable().serializeJsonToByteBuffer();
+        return jsonSerializableWrapper.jsonSerializable.serializeJsonToByteBuffer();
     }
 
     public static JsonSerializableWrapper instantiateJsonSerializableWrapper(ObjectNode objectNode, Class<?> klassType) {
@@ -515,5 +532,13 @@ public final class ModelBridgeInternal {
 
     public static JsonSerializable getJsonSerializableFromJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
         return jsonSerializableWrapper.getJsonSerializable();
+    }
+
+    public static Offer getOfferFromThroughputProperties(ThroughputProperties properties) {
+        return properties.getOffer();
+    }
+
+    public static ThroughputResponse createThroughputRespose(ResourceResponse<Offer> offerResourceResponse) {
+        return new ThroughputResponse(offerResourceResponse);
     }
 }

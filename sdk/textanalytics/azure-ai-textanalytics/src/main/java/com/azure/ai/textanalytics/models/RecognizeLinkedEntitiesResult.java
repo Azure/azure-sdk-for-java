@@ -6,14 +6,12 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
-import java.util.ArrayList;
-
 /**
  * The {@link RecognizeLinkedEntitiesResult} model.
  */
 @Immutable
-public final class RecognizeLinkedEntitiesResult extends DocumentResult {
-    private final IterableStream<LinkedEntity> entities;
+public final class RecognizeLinkedEntitiesResult extends TextAnalyticsResult {
+    private final LinkedEntityCollection entities;
 
     /**
      * Creates a {@link RecognizeLinkedEntitiesResult} model that describes recognized linked entities result.
@@ -21,12 +19,12 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
-     * @param entities An {@link IterableStream} of {@link LinkedEntity}.
+     * @param entities A {@link LinkedEntityCollection} contains entities and warnings.
      */
     public RecognizeLinkedEntitiesResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error, IterableStream<LinkedEntity> entities) {
+                                         TextAnalyticsError error, LinkedEntityCollection entities) {
         super(id, textDocumentStatistics, error);
-        this.entities = entities == null ? new IterableStream<>(new ArrayList<>()) : entities;
+        this.entities = entities;
     }
 
     /**
@@ -34,7 +32,7 @@ public final class RecognizeLinkedEntitiesResult extends DocumentResult {
      *
      * @return An {@link IterableStream} of {@link LinkedEntity}.
      */
-    public IterableStream<LinkedEntity> getEntities() {
+    public LinkedEntityCollection getEntities() {
         throwExceptionIfError();
         return entities;
     }

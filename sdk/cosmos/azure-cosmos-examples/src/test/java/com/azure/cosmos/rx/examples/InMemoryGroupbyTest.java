@@ -46,7 +46,8 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 

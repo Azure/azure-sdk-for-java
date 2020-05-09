@@ -15,6 +15,7 @@ import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PermissionMode;
+import com.azure.cosmos.models.ResourceWrapper;
 import com.azure.cosmos.models.SpatialSpec;
 import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.models.TriggerOperation;
@@ -226,7 +227,15 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(T resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
-                    assertThat(getResource(resourceResponse).getETag()).isNotNull();
+                    if (resourceResponse.getProperties() instanceof Resource) {
+                        assertThat(((Resource)resourceResponse.getProperties()).getETag()).isNotNull();
+                    }
+                    if (resourceResponse.getProperties() instanceof ResourceWrapper) {
+                        assertThat(
+                            ModelBridgeInternal.getResourceFromResourceWrapper((ResourceWrapper)resourceResponse
+                                .getProperties()).getETag())
+                            .isNotNull();
+                    }
                 }
             });
             return this;

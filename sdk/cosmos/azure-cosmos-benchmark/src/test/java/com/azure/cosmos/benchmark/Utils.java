@@ -26,9 +26,10 @@ public class Utils {
         options.setMaxRetryWaitTime(Duration.ofSeconds(60));
         connectionPolicy.setThrottlingRetryOptions(options);
         return new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .build();
+                                                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                                                .withConnectionPolicy(connectionPolicy)
+                                                .withContentResponseOnWriteEnabled(true)
+                                                .build();
     }
 
     public static String getCollectionLink(Database db, DocumentCollection collection) {

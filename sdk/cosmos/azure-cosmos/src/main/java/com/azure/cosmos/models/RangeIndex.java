@@ -58,7 +58,7 @@ public final class RangeIndex extends Index {
     public DataType getDataType() {
         DataType result = null;
         try {
-            result = DataType.valueOf(StringUtils.upperCase(this.getJsonSerializable().getString(Constants.Properties.DATA_TYPE)));
+            result = DataType.valueOf(StringUtils.upperCase(this.jsonSerializable.getString(Constants.Properties.DATA_TYPE)));
         } catch (IllegalArgumentException e) {
             this.jsonSerializable.getLogger().warn("INVALID index dataType value {}.",
                 this.jsonSerializable.getString(Constants.Properties.DATA_TYPE));

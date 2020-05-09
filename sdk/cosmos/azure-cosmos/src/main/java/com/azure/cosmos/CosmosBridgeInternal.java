@@ -4,8 +4,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.DocumentCollection;
-import com.azure.cosmos.models.CosmosContainerProperties;
 
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
@@ -66,7 +64,8 @@ public final class CosmosBridgeInternal {
             .keyCredential(builder.getKeyCredential())
             .permissions(builder.getPermissions())
             .authorizationTokenResolver(builder.getAuthorizationTokenResolver())
-            .resourceToken(builder.getResourceToken());
+            .resourceToken(builder.getResourceToken())
+            .contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled());
 
         return copy;
     }

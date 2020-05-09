@@ -75,7 +75,7 @@ public final class CreateVirtualMachinesInParallel {
 
             System.out.println("Created a new resource group - " + resourceGroup.id());
 
-            List<String> publicIpCreatableKeys = new ArrayList<>();
+//            List<String> publicIpCreatableKeys = new ArrayList<>();
             // Prepare a batch of Creatable definitions
             //
             List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
@@ -114,7 +114,7 @@ public final class CreateVirtualMachinesInParallel {
                                 .withExistingResourceGroup(resourceGroup)
                                 .withLeafDomainLabel(azure.sdkContext().randomResourceName("pip", 10));
 
-                    publicIpCreatableKeys.add(publicIPAddressCreatable.key());
+//                    publicIpCreatableKeys.add(publicIPAddressCreatable.key());
 
                     //=============================================================
                     // Create 1 virtual machine creatable
@@ -153,12 +153,12 @@ public final class CreateVirtualMachinesInParallel {
 
             System.out.println("Virtual Machines created: (took " + (stopwatch.getTime() / 1000) + " seconds to create) == " + virtualMachines.size() + " == virtual machines");
 
-            List<String> publicIpResourceIds = new ArrayList<>();
-            for (String publicIpCreatableKey : publicIpCreatableKeys) {
-                PublicIPAddress pip = (PublicIPAddress) virtualMachines.createdRelatedResource(publicIpCreatableKey);
-                publicIpResourceIds.add(pip.id());
-            }
-
+//            List<String> publicIpResourceIds = new ArrayList<>();
+//            for (String publicIpCreatableKey : publicIpCreatableKeys) {
+//                PublicIPAddress pip = (PublicIPAddress) virtualMachines.createdRelatedResource(publicIpCreatableKey);
+//                publicIpResourceIds.add(pip.id());
+//            }
+//
 //            //=============================================================
 //            // Create 1 Traffic Manager Profile
 //            //

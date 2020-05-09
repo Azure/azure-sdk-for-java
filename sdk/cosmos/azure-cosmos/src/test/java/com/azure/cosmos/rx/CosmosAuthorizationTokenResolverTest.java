@@ -239,6 +239,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withTokenResolver(getTokenResolver(null)) //TokenResolver always generating invalid token.
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                     .withPermissionFeed(permissionFeed)
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             RequestOptions requestOptions = new RequestOptions();
             requestOptions.setPartitionKey(new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(resourceResponse.getResource(), "mypk")));
@@ -254,6 +255,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withTokenResolver(getTokenResolver(PermissionMode.READ))
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                     .withPermissionFeed(permissionFeed)
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
             ResourceResponseValidator<Document> sucessValidator = new ResourceResponseValidator.Builder<Document>()
@@ -267,6 +269,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withPermissionFeed(permissionFeed)
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
             validateSuccess(readObservable, sucessValidator);
@@ -278,6 +281,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             readObservable = asyncClientWithTokenResolver.readDocument(resourceResponse.getResource().getSelfLink(), requestOptions);
             validateSuccess(readObservable, sucessValidator);
@@ -418,6 +422,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getBadTokenResolver())
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
 
             RequestOptions options = new RequestOptions();
@@ -445,6 +450,7 @@ public class CosmosAuthorizationTokenResolverTest extends TestSuiteBase {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverWithBlockList(PermissionMode.READ, field, blockListedUser, errorMessage))
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
 
             RequestOptions options = new RequestOptions();
