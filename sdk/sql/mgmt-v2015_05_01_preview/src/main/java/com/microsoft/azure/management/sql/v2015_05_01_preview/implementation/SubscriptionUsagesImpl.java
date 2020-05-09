@@ -43,10 +43,14 @@ class SubscriptionUsagesImpl extends WrapperImpl<SubscriptionUsagesInner> implem
     public Observable<SubscriptionUsage> getAsync(String locationName, String usageName) {
         SubscriptionUsagesInner client = this.inner();
         return client.getAsync(locationName, usageName)
-        .map(new Func1<SubscriptionUsageInner, SubscriptionUsage>() {
+        .flatMap(new Func1<SubscriptionUsageInner, Observable<SubscriptionUsage>>() {
             @Override
-            public SubscriptionUsage call(SubscriptionUsageInner inner) {
-                return wrapSubscriptionUsageModel(inner);
+            public Observable<SubscriptionUsage> call(SubscriptionUsageInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SubscriptionUsage)wrapSubscriptionUsageModel(inner));
+                }
             }
        });
     }

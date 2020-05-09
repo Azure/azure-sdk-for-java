@@ -71,10 +71,14 @@ class SyncMembersImpl extends WrapperImpl<SyncMembersInner> implements SyncMembe
     public Observable<SyncMember> getAsync(String resourceGroupName, String serverName, String databaseName, String syncGroupName, String syncMemberName) {
         SyncMembersInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName, syncGroupName, syncMemberName)
-        .map(new Func1<SyncMemberInner, SyncMember>() {
+        .flatMap(new Func1<SyncMemberInner, Observable<SyncMember>>() {
             @Override
-            public SyncMember call(SyncMemberInner inner) {
-                return wrapModel(inner);
+            public Observable<SyncMember> call(SyncMemberInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((SyncMember)wrapModel(inner));
+                }
             }
        });
     }
