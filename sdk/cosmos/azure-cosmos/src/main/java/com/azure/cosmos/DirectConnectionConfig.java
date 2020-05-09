@@ -15,8 +15,6 @@ public final class DirectConnectionConfig {
     private static final int DEFAULT_MAX_CHANNELS_PER_ENDPOINT = 30;
     private static final int DEFAULT_MAX_REQUESTS_PER_ENDPOINT = 10;
 
-    private static final DirectConnectionConfig defaultConfig = new DirectConnectionConfig();
-
     private Duration connectionTimeout;
     private Duration idleChannelTimeout;
     private Duration idleEndpointTimeout;
@@ -40,7 +38,7 @@ public final class DirectConnectionConfig {
      * @return the default direct connection configuration.
      */
     public static DirectConnectionConfig getDefaultConfig() {
-        return DirectConnectionConfig.defaultConfig;
+        return new DirectConnectionConfig();
     }
 
     //  TODO: (DANOBLE) - To update these docs.

@@ -45,7 +45,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     @Test(groups = { "emulator" })
     public void buildClient_withCustomGatewayConnectionConfig() {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        gatewayConnectionConfig.setMaxPoolSize(100);
+        gatewayConnectionConfig.setMaxConnectionPoolSize(100);
         final List<String> preferredRegions = new ArrayList<>();
         preferredRegions.add("West US");
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
@@ -56,7 +56,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
             .preferredRegions(preferredRegions)
             .userAgentSuffix("custom-gateway-client")
             .multipleWriteRegionsEnabled(false)
-            .endpointDiscoverEnabled(false)
+            .endpointDiscoveryEnabled(false)
             .readRequestsFallbackEnabled(true)
             .gatewayMode(gatewayConnectionConfig);
 
@@ -105,7 +105,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
             .preferredRegions(preferredRegions)
             .userAgentSuffix("custom-direct-client")
             .multipleWriteRegionsEnabled(false)
-            .endpointDiscoverEnabled(false)
+            .endpointDiscoveryEnabled(false)
             .readRequestsFallbackEnabled(true);
 
         CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
@@ -157,7 +157,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
         assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.GATEWAY));
         assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), gatewayConnectionConfig.getIdleConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxPoolSize(), gatewayConnectionConfig.getMaxPoolSize()));
+        assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), gatewayConnectionConfig.getMaxConnectionPoolSize()));
         assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), gatewayConnectionConfig.getRequestTimeout()));
         assertThat(Objects.equals(connectionPolicy.getProxy(), gatewayConnectionConfig.getProxy()));
     }

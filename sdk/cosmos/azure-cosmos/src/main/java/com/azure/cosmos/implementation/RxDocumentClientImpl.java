@@ -360,7 +360,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
                 .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleConnectionTimeout())
-                .withPoolSize(this.connectionPolicy.getMaxPoolSize())
+                .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
                 .withHttpProxy(this.connectionPolicy.getProxy())
                 .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
 

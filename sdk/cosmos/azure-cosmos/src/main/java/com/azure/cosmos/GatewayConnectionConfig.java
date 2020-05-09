@@ -15,10 +15,8 @@ import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_REQUEST_T
  */
 public final class GatewayConnectionConfig {
 
-    private static final GatewayConnectionConfig defaultConfig = new GatewayConnectionConfig();
-
     private Duration requestTimeout;
-    private int maxPoolSize;
+    private int maxConnectionPoolSize;
     private Duration idleConnectionTimeout;
     private InetSocketAddress inetSocketProxyAddress;
 
@@ -27,7 +25,7 @@ public final class GatewayConnectionConfig {
      */
     public GatewayConnectionConfig() {
         this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-        this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
+        this.maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
         this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     }
 
@@ -37,7 +35,7 @@ public final class GatewayConnectionConfig {
      * @return the default gateway connection configuration.
      */
     public static GatewayConnectionConfig getDefaultConfig() {
-        return GatewayConnectionConfig.defaultConfig;
+        return new GatewayConnectionConfig();
     }
 
     /**
@@ -66,19 +64,19 @@ public final class GatewayConnectionConfig {
      *
      * @return connection pool size.
      */
-    public int getMaxPoolSize() {
-        return this.maxPoolSize;
+    public int getMaxConnectionPoolSize() {
+        return this.maxConnectionPoolSize;
     }
 
     /**
      * Sets the value of the connection pool size, the default
      * is 1000.
      *
-     * @param maxPoolSize The value of the connection pool size.
+     * @param maxConnectionPoolSize The value of the connection pool size.
      * @return the {@link GatewayConnectionConfig}.
      */
-    public GatewayConnectionConfig setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
+    public GatewayConnectionConfig setMaxConnectionPoolSize(int maxConnectionPoolSize) {
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
     }
 
@@ -130,7 +128,7 @@ public final class GatewayConnectionConfig {
     public String toString() {
         return "GatewayConnectionConfig{" +
             "requestTimeout=" + requestTimeout +
-            ", maxPoolSize=" + maxPoolSize +
+            ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
             ", inetSocketProxyAddress=" + inetSocketProxyAddress +
             '}';

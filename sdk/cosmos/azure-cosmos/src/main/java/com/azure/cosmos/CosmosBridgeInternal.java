@@ -71,7 +71,7 @@ public final class CosmosBridgeInternal {
             .userAgentSuffix(builder.getUserAgentSuffix())
             .throttlingRetryOptions(builder.getThrottlingRetryOptions())
             .preferredRegions(builder.getPreferredRegions())
-            .endpointDiscoverEnabled(builder.isEndpointDiscoveryEnabled())
+            .endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled())
             .multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled())
             .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
 

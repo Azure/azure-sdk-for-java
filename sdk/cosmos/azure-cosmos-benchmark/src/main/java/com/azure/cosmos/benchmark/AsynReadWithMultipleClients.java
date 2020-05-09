@@ -233,7 +233,7 @@ public class AsynReadWithMultipleClients<T> {
                         cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
                     } else {
                         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-                        gatewayConnectionConfig.setMaxPoolSize(this.configuration.getMaxConnectionPoolSize());
+                        gatewayConnectionConfig.setMaxConnectionPoolSize(this.configuration.getMaxConnectionPoolSize());
                         cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
                     }
                     CosmosAsyncClient asyncClient = cosmosClientBuilder.buildAsyncClient();

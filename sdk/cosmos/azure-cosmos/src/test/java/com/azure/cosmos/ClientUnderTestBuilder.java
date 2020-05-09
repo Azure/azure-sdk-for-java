@@ -22,7 +22,7 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.userAgentSuffix(builder.getUserAgentSuffix());
         this.throttlingRetryOptions(builder.getThrottlingRetryOptions());
         this.preferredRegions(builder.getPreferredRegions());
-        this.endpointDiscoverEnabled(builder.isEndpointDiscoveryEnabled());
+        this.endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled());
         this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
         this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
     }

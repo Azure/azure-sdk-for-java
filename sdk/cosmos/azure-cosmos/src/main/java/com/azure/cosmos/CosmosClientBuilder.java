@@ -47,7 +47,7 @@ public class CosmosClientBuilder {
     private List<String> preferredRegions;
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
-    private Boolean readRequestsFallbackEnabled;
+    private boolean readRequestsFallbackEnabled = true;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -409,7 +409,7 @@ public class CosmosClientBuilder {
      * @param endpointDiscoveryEnabled true if EndpointDiscovery is enabled.
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder endpointDiscoverEnabled(boolean endpointDiscoveryEnabled) {
+    public CosmosClientBuilder endpointDiscoveryEnabled(boolean endpointDiscoveryEnabled) {
         this.endpointDiscoveryEnabled = endpointDiscoveryEnabled;
         return this;
     }
@@ -439,7 +439,7 @@ public class CosmosClientBuilder {
     /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
-     * DEFAULT value is null.
+     * DEFAULT value is true.
      * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
@@ -450,7 +450,7 @@ public class CosmosClientBuilder {
      * Azure Cosmos DB service.
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder readRequestsFallbackEnabled(Boolean readRequestsFallbackEnabled) {
+    public CosmosClientBuilder readRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
         return this;
     }
@@ -531,7 +531,7 @@ public class CosmosClientBuilder {
     /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
-     * DEFAULT value is null.
+     * DEFAULT value is true.
      * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
@@ -540,7 +540,7 @@ public class CosmosClientBuilder {
      *
      * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      */
-    Boolean isReadRequestsFallbackEnabled() {
+    boolean isReadRequestsFallbackEnabled() {
         return readRequestsFallbackEnabled;
     }
 

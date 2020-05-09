@@ -31,10 +31,10 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private List<String> preferredRegions;
     private boolean multipleWriteRegionsEnabled;
-    private Boolean readRequestsFallbackEnabled;
+    private boolean readRequestsFallbackEnabled;
 
     //  Gateway connection config properties
-    private int maxPoolSize = DEFAULT_MAX_POOL_SIZE;
+    private int maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
     private Duration requestTimeout = DEFAULT_REQUEST_TIMEOUT;
     private Duration idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
     private InetSocketAddress inetSocketProxyAddress;
@@ -52,7 +52,7 @@ public final class ConnectionPolicy {
     public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
         this(ConnectionMode.GATEWAY);
         this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
-        this.maxPoolSize = gatewayConnectionConfig.getMaxPoolSize();
+        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.requestTimeout = gatewayConnectionConfig.getRequestTimeout();
         this.inetSocketProxyAddress = gatewayConnectionConfig.getProxy();
     }
@@ -70,8 +70,8 @@ public final class ConnectionPolicy {
         this.connectionMode = connectionMode;
         //  Default values
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
-        this.readRequestsFallbackEnabled = null;
         this.userAgentSuffix = "";
+        this.readRequestsFallbackEnabled = true;
         this.endpointDiscoveryEnabled = true;
         this.multipleWriteRegionsEnabled = true;
     }
@@ -131,19 +131,19 @@ public final class ConnectionPolicy {
      *
      * @return connection pool size.
      */
-    public int getMaxPoolSize() {
-        return this.maxPoolSize;
+    public int getMaxConnectionPoolSize() {
+        return this.maxConnectionPoolSize;
     }
 
     /**
      * Sets the value of the connection pool size, the default
      * is 1000.
      *
-     * @param maxPoolSize The value of the connection pool size.
+     * @param maxConnectionPoolSize The value of the connection pool size.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
+    public ConnectionPolicy setMaxConnectionPoolSize(int maxConnectionPoolSize) {
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
     }
 
@@ -268,7 +268,7 @@ public final class ConnectionPolicy {
     /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
-     * DEFAULT value is null.
+     * DEFAULT value is true.
      * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
@@ -277,7 +277,7 @@ public final class ConnectionPolicy {
      *
      * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      */
-    public Boolean isReadRequestsFallbackEnabled() {
+    public boolean isReadRequestsFallbackEnabled() {
         return this.readRequestsFallbackEnabled;
     }
 
@@ -306,7 +306,7 @@ public final class ConnectionPolicy {
     /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
-     * DEFAULT value is null.
+     * DEFAULT value is true.
      * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
@@ -317,7 +317,7 @@ public final class ConnectionPolicy {
      * Azure Cosmos DB service.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setReadRequestsFallbackEnabled(Boolean readRequestsFallbackEnabled) {
+    public ConnectionPolicy setReadRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
         return this;
     }
@@ -466,7 +466,7 @@ public final class ConnectionPolicy {
         return "ConnectionPolicy{" +
             "requestTimeout=" + requestTimeout +
             ", connectionMode=" + connectionMode +
-            ", maxPoolSize=" + maxPoolSize +
+            ", maxConnectionPoolSize=" + maxConnectionPoolSize +
             ", idleConnectionTimeout=" + idleConnectionTimeout +
             ", userAgentSuffix='" + userAgentSuffix + '\'' +
             ", throttlingRetryOptions=" + throttlingRetryOptions +
