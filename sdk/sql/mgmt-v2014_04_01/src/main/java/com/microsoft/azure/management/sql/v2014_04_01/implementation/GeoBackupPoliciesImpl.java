@@ -63,10 +63,14 @@ class GeoBackupPoliciesImpl extends WrapperImpl<GeoBackupPoliciesInner> implemen
     public Observable<GeoBackupPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         GeoBackupPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<GeoBackupPolicyInner, GeoBackupPolicy>() {
+        .flatMap(new Func1<GeoBackupPolicyInner, Observable<GeoBackupPolicy>>() {
             @Override
-            public GeoBackupPolicy call(GeoBackupPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<GeoBackupPolicy> call(GeoBackupPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((GeoBackupPolicy)wrapModel(inner));
+                }
             }
        });
     }

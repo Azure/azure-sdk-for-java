@@ -16,14 +16,14 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.ProxyResource;
 
 /**
- * Represents a recommented elastic pool.
+ * Represents a recommended elastic pool.
  */
 @JsonFlatten
 public class RecommendedElasticPoolInner extends ProxyResource {
     /**
      * The edition of the recommended elastic pool. The ElasticPoolEdition
      * enumeration contains all the valid editions. Possible values include:
-     * 'Basic', 'Standard', 'Premium'.
+     * 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      */
     @JsonProperty(value = "properties.databaseEdition", access = JsonProperty.Access.WRITE_ONLY)
     private ElasticPoolEdition databaseEdition;
@@ -89,7 +89,7 @@ public class RecommendedElasticPoolInner extends ProxyResource {
     private List<RecommendedElasticPoolMetricInner> metrics;
 
     /**
-     * Get the edition of the recommended elastic pool. The ElasticPoolEdition enumeration contains all the valid editions. Possible values include: 'Basic', 'Standard', 'Premium'.
+     * Get the edition of the recommended elastic pool. The ElasticPoolEdition enumeration contains all the valid editions. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      *
      * @return the databaseEdition value
      */
