@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import reactor.core.Disposable;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
@@ -618,7 +617,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.close();
 
         LongLivedMessageSubscriber messageSubscriber = longLivedMessageSubscriber.getAndSet(null);
-        if (messageSubscriber != null) {
+        if (messageSubscriber != null && !messageSubscriber.isDisposed()) {
             messageSubscriber.dispose();
         }
     }
@@ -637,11 +636,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             LongLivedMessageSubscriber messageSubscriber = longLivedMessageSubscriber.get();
             if (messageSubscriber == null) {
                 messageSubscriber = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                    .subscribeWith(new LongLivedMessageSubscriber(asyncClient.getReceiverOptions().getPrefetchCount()));
+                    .subscribeWith(new LongLivedMessageSubscriber());
                 logger.verbose("Created source for receiving messages from [{}]", asyncClient.getEntityPath());
+                longLivedMessageSubscriber.set(messageSubscriber);
             }
+
             messageSubscriber.queueWork(work);
-            longLivedMessageSubscriber.set(messageSubscriber);
         }
     }
 

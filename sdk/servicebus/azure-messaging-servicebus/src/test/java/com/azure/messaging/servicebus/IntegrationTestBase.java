@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(30);
+    protected static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(10 * 30);
     protected static final Duration TIMEOUT = Duration.ofSeconds(60);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
@@ -313,10 +313,10 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected static Stream<Arguments> messagingEntityWithSessions() {
         return Stream.of(
-            Arguments.of(MessagingEntityType.QUEUE, false)//,
-            //Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
-            //Arguments.of(MessagingEntityType.QUEUE, true),
-            //Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
+            Arguments.of(MessagingEntityType.QUEUE, false),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, false),
+            Arguments.of(MessagingEntityType.QUEUE, true),
+            Arguments.of(MessagingEntityType.SUBSCRIPTION, true)
         );
     }
 
