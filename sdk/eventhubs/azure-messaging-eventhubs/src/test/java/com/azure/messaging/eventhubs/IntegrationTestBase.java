@@ -16,8 +16,10 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.TestInfo;
 import org.mockito.Mockito;
@@ -41,7 +43,7 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
  * Test base for running integration tests.
  */
 public abstract class IntegrationTestBase extends TestBase {
-    protected static final Duration TIMEOUT = Duration.ofSeconds(60);
+    protected static final Duration TIMEOUT = Duration.ofSeconds(45);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
     protected final ClientLogger logger;
 
@@ -59,6 +61,16 @@ public abstract class IntegrationTestBase extends TestBase {
         this.logger = logger;
     }
 
+    @BeforeAll
+    public static void beforeAll() {
+        StepVerifier.setDefaultTimeout(TIMEOUT);
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        StepVerifier.resetDefaultTimeout();
+    }
+
     @BeforeEach
     public void setupTest(TestInfo testInfo) {
         System.out.printf("[%s]: Performing integration test set-up.%n", testInfo.getDisplayName());
@@ -67,9 +79,6 @@ public abstract class IntegrationTestBase extends TestBase {
         skipIfNotRecordMode();
 
         properties = new ConnectionStringProperties(getConnectionString());
-
-        StepVerifier.setDefaultTimeout(TIMEOUT);
-
         beforeTest();
     }
 
@@ -78,9 +87,9 @@ public abstract class IntegrationTestBase extends TestBase {
     @AfterEach
     public void teardownTest(TestInfo testInfo) {
         System.out.printf("[%s]: Performing test clean-up.%n", testInfo.getDisplayName());
-        scheduler.dispose();
-        StepVerifier.resetDefaultTimeout();
         afterTest();
+
+        scheduler.dispose();
 
         // Tear down any inline mocks to avoid memory leaks.
         // https://github.com/mockito/mockito/wiki/What's-new-in-Mockito-2#mockito-2250
@@ -107,7 +116,7 @@ public abstract class IntegrationTestBase extends TestBase {
     /**
      * Gets the configured ProxyConfiguration from environment variables.
      */
-    public ProxyOptions getProxyConfiguration() {
+    protected ProxyOptions getProxyConfiguration() {
         final String address = System.getenv(Configuration.PROPERTY_HTTP_PROXY);
 
         if (address == null) {
@@ -142,11 +151,11 @@ public abstract class IntegrationTestBase extends TestBase {
         return new ProxyOptions(authenticationType, proxy, username, password);
     }
 
-    public String getFullyQualifiedDomainName() {
+    protected String getFullyQualifiedDomainName() {
         return System.getenv(AZURE_EVENTHUBS_FULLY_QUALIFIED_DOMAIN_NAME);
     }
 
-    public String getEventHubName() {
+    protected String getEventHubName() {
         return System.getenv(AZURE_EVENTHUBS_EVENT_HUB_NAME);
     }
 
