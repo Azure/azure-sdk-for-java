@@ -24,6 +24,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     private static final Duration CONNECTION_TIMEOUT = Duration.ofSeconds(100);
     private static final Duration IDLE_CHANNEL_TIMEOUT = Duration.ofSeconds(10);
     private static final Duration IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(20);
+    private static final int MAX_CONNECTION_POOL_SIZE = 500;
 
     @Test(groups = { "emulator" })
     public void buildClient_withDefaultGatewayConnectionConfig() {
@@ -50,6 +51,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         preferredRegions.add("West US");
         gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
         gatewayConnectionConfig.setRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
@@ -106,6 +108,9 @@ public class ConnectionConfigTest extends TestSuiteBase {
             .userAgentSuffix("custom-direct-client")
             .multipleWriteRegionsEnabled(false)
             .endpointDiscoveryEnabled(false)
+            .requestTimeoutGateway(REQUEST_TIME_OUT)
+            .idleConnectionTimeoutGateway(IDLE_CONNECTION_TIME_OUT)
+            .maxConnectionPoolSizeGateway(MAX_CONNECTION_POOL_SIZE)
             .readRequestsFallbackEnabled(true);
 
         CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
@@ -171,6 +176,9 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
         assertThat(Objects.equals(connectionPolicy.getMaxChannelsPerEndpoint(), directConnectionConfig.getMaxChannelsPerEndpoint()));
         assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerChannel(), directConnectionConfig.getMaxRequestsPerChannel()));
+        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), cosmosClientBuilder.getIdleConnectionTimeoutGateway()));
+        assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), cosmosClientBuilder.getMaxConnectionPoolSizeGateway()));
+        assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), cosmosClientBuilder.getRequestTimeoutGateway()));
     }
 
     private void validateCommonConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder) {

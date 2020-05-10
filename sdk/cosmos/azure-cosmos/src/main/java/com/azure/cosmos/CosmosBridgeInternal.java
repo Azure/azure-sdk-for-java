@@ -73,7 +73,10 @@ public final class CosmosBridgeInternal {
             .preferredRegions(builder.getPreferredRegions())
             .endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled())
             .multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled())
-            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
+            .readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled())
+            .idleConnectionTimeoutGateway(builder.getIdleConnectionTimeoutGateway())
+            .maxConnectionPoolSizeGateway(builder.getMaxConnectionPoolSizeGateway())
+            .requestTimeoutGateway(builder.getRequestTimeoutGateway());
 
         return copy;
     }
