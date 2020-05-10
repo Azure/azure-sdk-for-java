@@ -82,6 +82,6 @@ class NetworkInterfacesImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkInterfaceImpl(inner.getName(), inner, this.manager());
+        return new NetworkInterfaceImpl(inner.name(), inner, this.manager());
     }
 }

@@ -56,11 +56,11 @@ class FunctionDeploymentSlotsImpl
                             this
                                 .inner()
                                 .getConfigurationSlotAsync(
-                                    siteInner.resourceGroup(), parent.name(), siteInner.getName()),
+                                    siteInner.resourceGroup(), parent.name(), siteInner.name()),
                             this
                                 .inner()
                                 .getDiagnosticLogsConfigurationSlotAsync(
-                                    siteInner.resourceGroup(), parent.name(), siteInner.getName()),
+                                    siteInner.resourceGroup(), parent.name(), siteInner.name()),
                             (siteConfigResourceInner, logsConfigInner) ->
                                 this.wrapModel(siteInner, siteConfigResourceInner, logsConfigInner)));
     }
@@ -135,6 +135,6 @@ class FunctionDeploymentSlotsImpl
         if (inner == null) {
             return null;
         }
-        return new FunctionDeploymentSlotImpl(inner.getName(), inner, siteConfig, logConfig, parent);
+        return new FunctionDeploymentSlotImpl(inner.name(), inner, siteConfig, logConfig, parent);
     }
 }

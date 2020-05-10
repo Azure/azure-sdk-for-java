@@ -6,10 +6,9 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeCategorizedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -33,6 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.getCategorizedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
@@ -40,6 +40,7 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLangu
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchKeyPhrases;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchLinkedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
+import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -129,11 +130,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     /**
      * Verifies that a single DetectLanguageResult is returned for a document to detect language.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectSingleTextLanguage(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("English", "en", 0.0, null),
             client.detectLanguage("This is a test English Text"));
     }
 
@@ -155,7 +155,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0);
+        DetectedLanguage primaryLanguage = new DetectedLanguage("(Unknown)", "(Unknown)", 0.0, null);
         validatePrimaryLanguage(client.detectLanguage("!@#%%"), primaryLanguage);
     }
 
@@ -178,7 +178,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageEmptyCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0, null),
             client.detectLanguage("Este es un documento  escrito en Español", ""));
     }
 
@@ -189,7 +189,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void detectLanguageNoneCountryHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0),
+        validatePrimaryLanguage(new DetectedLanguage("Spanish", "es", 0.0, null),
             client.detectLanguage("Este es un documento  escrito en Español", "none"));
     }
 
@@ -213,12 +213,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        final CategorizedEntity categorizedEntity1 = new CategorizedEntity("Seattle", EntityCategory.LOCATION, "GPE", 26, 7, 0.0);
-        final CategorizedEntity categorizedEntity2 = new CategorizedEntity("last week", EntityCategory.DATE_TIME, "DateRange", 34, 9, 0.0);
-
         final List<CategorizedEntity> entities = client.recognizeEntities("I had a wonderful trip to Seattle last week.").stream().collect(Collectors.toList());
-        validateCategorizedEntity(categorizedEntity1, entities.get(0));
-        validateCategorizedEntity(categorizedEntity2, entities.get(1));
+        validateCategorizedEntities(getCategorizedEntitiesList1(), entities);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -238,10 +234,21 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeCategorizedEntityDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            TextAnalyticsPagedIterable<RecognizeCategorizedEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
+            TextAnalyticsPagedIterable<RecognizeEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
             response.forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
                 assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
@@ -298,13 +305,25 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     validateCategorizedEntitiesWithPagedResponse(false, getExpectedBatchCategorizedEntities(), pagedResponse)));
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeEntitiesTooManyDocumentsRunner(inputs -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.recognizeEntitiesBatch(inputs).stream().findFirst().get());
+            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+        });
+    }
+
     // Recognize linked entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void recognizeLinkedEntitiesForTextInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0, 7, 26);
+        final LinkedEntityMatch linkedEntityMatch1 = new LinkedEntityMatch("Seattle", 0.0);
         final LinkedEntity linkedEntity1 = new LinkedEntity("Seattle",
             new IterableStream<>(Collections.singletonList(linkedEntityMatch1)),
             "en", "Seattle", "https://en.wikipedia.org/wiki/Seattle", "Wikipedia");
@@ -326,6 +345,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         assertFalse(client.recognizeLinkedEntities("!@#%%").iterator().hasNext());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeBatchLinkedEntityDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -373,6 +403,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validateLinkedEntitiesWithPagedResponse(true, getExpectedBatchLinkedEntities(), pagedResponse)));
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeLinkedEntitiesTooManyDocuments(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () -> client.recognizeLinkedEntitiesBatch(inputs).stream().findFirst().get());
+            assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
+            assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
+        });
+    }
+
     // Extract key phrase
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -395,6 +437,17 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForFaultyText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         assertFalse(client.extractKeyPhrases("!@#%%").iterator().hasNext());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void extractKeyPhrasesDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        extractBatchKeyPhrasesDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.extractKeyPhrasesBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -442,6 +495,30 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 validateExtractKeyPhraseWithPagedResponse(true, getExpectedBatchKeyPhrases(), pagedResponse)));
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        extractKeyPhrasesWarningRunner(input ->
+            client.extractKeyPhrases(input).getWarnings().forEach(warning -> {
+                assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+            }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void extractKeyPhrasesBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        extractKeyPhrasesBatchWarningRunner(inputs ->
+            client.extractKeyPhrasesBatch(inputs, null, Context.NONE).forEach(keyPhrasesResult ->
+                keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
+                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
+                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
+                })
+            ));
+    }
+
     // Sentiment
 
     /**
@@ -455,9 +532,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             TextSentiment.MIXED,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 31, 0),
-                new SentenceSentiment(TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0), 35, 32)
-            )));
+                new SentenceSentiment("", TextSentiment.NEGATIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.POSITIVE, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
         DocumentSentiment analyzeSentimentResult =
             client.analyzeSentiment("The hotel was dark and unclean. The restaurant had amazing gnocchi.");
 
@@ -485,13 +562,27 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         final DocumentSentiment expectedDocumentSentiment = new DocumentSentiment(TextSentiment.NEUTRAL,
             new SentimentConfidenceScores(0.0, 0.0, 0.0),
             new IterableStream<>(Arrays.asList(
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 1, 0),
-                new SentenceSentiment(TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0), 4, 1)
-            )));
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0)),
+                new SentenceSentiment("", TextSentiment.NEUTRAL, new SentimentConfidenceScores(0.0, 0.0, 0.0))
+            )), null);
 
         DocumentSentiment analyzeSentimentResult = client.analyzeSentiment("!@#%%");
 
         validateAnalyzedSentiment(expectedDocumentSentiment, analyzeSentimentResult);
+    }
+
+    /**
+     * Test analyzing sentiment for a duplicate ID list.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyseSentimentDuplicateIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyseBatchSentimentDuplicateIdRunner(inputs -> {
+            HttpResponseException response = assertThrows(HttpResponseException.class,
+                () -> client.analyzeSentimentBatch(inputs, null, Context.NONE).stream().findFirst().get());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
+        });
     }
 
     /**

@@ -39,7 +39,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
         if (this.inner().backendIPConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.nameFromResourceId(this.inner().backendIPConfiguration().getId());
+            return ResourceUtils.nameFromResourceId(this.inner().backendIPConfiguration().id());
         }
     }
 
@@ -53,7 +53,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
         if (this.inner().backendIPConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.parentResourceIdFromResourceId(this.inner().backendIPConfiguration().getId());
+            return ResourceUtils.parentResourceIdFromResourceId(this.inner().backendIPConfiguration().id());
         }
     }
 
@@ -77,7 +77,7 @@ class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInn
         return this
             .parent()
             .frontends()
-            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIPConfiguration().getId()));
+            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIPConfiguration().id()));
     }
 
     @Override

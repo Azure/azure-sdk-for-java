@@ -77,8 +77,6 @@ public class ReadFeedDocumentsTest extends TestSuiteBase {
         validateQuerySuccess(feedObservable.byPage(maxItemCount), validator, FEED_TIMEOUT);
     }
 
-    // TODO (DANOBLE) ReadFeedDocumentsTest initialization consistently times out in CI environments.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6379
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT, alwaysRun = true)
     public void before_ReadFeedDocumentsTest() {
         client = getClientBuilder().buildAsyncClient();

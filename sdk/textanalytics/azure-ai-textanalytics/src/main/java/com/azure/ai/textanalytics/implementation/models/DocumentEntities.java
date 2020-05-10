@@ -26,6 +26,12 @@ public final class DocumentEntities {
     private List<Entity> entities;
 
     /*
+     * Warnings encountered while processing document.
+     */
+    @JsonProperty(value = "warnings", required = true)
+    private List<TextAnalyticsWarning> warnings;
+
+    /*
      * if showStats=true was specified in the request this field will contain
      * information about the document payload.
      */
@@ -34,7 +40,7 @@ public final class DocumentEntities {
 
     /**
      * Get the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -43,7 +49,7 @@ public final class DocumentEntities {
 
     /**
      * Set the id property: Unique, non-empty document identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the DocumentEntities object itself.
      */
@@ -54,7 +60,7 @@ public final class DocumentEntities {
 
     /**
      * Get the entities property: Recognized entities in the document.
-     *
+     * 
      * @return the entities value.
      */
     public List<Entity> getEntities() {
@@ -63,7 +69,7 @@ public final class DocumentEntities {
 
     /**
      * Set the entities property: Recognized entities in the document.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the DocumentEntities object itself.
      */
@@ -73,9 +79,31 @@ public final class DocumentEntities {
     }
 
     /**
+     * Get the warnings property: Warnings encountered while processing
+     * document.
+     * 
+     * @return the warnings value.
+     */
+    public List<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    /**
+     * Set the warnings property: Warnings encountered while processing
+     * document.
+     * 
+     * @param warnings the warnings value to set.
+     * @return the DocumentEntities object itself.
+     */
+    public DocumentEntities setWarnings(List<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
+        return this;
+    }
+
+    /**
      * Get the statistics property: if showStats=true was specified in the
      * request this field will contain information about the document payload.
-     *
+     * 
      * @return the statistics value.
      */
     public DocumentStatistics getStatistics() {
@@ -85,7 +113,7 @@ public final class DocumentEntities {
     /**
      * Set the statistics property: if showStats=true was specified in the
      * request this field will contain information about the document payload.
-     *
+     * 
      * @param statistics the statistics value to set.
      * @return the DocumentEntities object itself.
      */

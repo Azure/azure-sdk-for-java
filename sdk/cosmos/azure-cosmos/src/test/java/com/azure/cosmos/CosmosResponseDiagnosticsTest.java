@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -44,7 +43,8 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         assertThat(this.gatewayClient).isNull();
         cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
-            .key(TestConfigurations.MASTER_KEY);
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true);
         ConnectionPolicy connectionPolicy = new ConnectionPolicy();
         connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         gatewayClient = cosmosClientBuilder.connectionPolicy(connectionPolicy).buildClient();

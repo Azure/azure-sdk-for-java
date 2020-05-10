@@ -43,7 +43,7 @@ public class ApplicationGatewayBackendServerHealthImpl implements ApplicationGat
         if (this.inner().ipConfiguration() == null) {
             return null;
         }
-        String nicIPConfigId = this.inner().ipConfiguration().getId();
+        String nicIPConfigId = this.inner().ipConfiguration().id();
         if (nicIPConfigId == null) {
             return null;
         }

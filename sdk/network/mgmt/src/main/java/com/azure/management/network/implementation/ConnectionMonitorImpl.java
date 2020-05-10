@@ -47,12 +47,12 @@ public class ConnectionMonitorImpl
 
     @Override
     public String location() {
-        return inner().getLocation();
+        return inner().location();
     }
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().getTags();
+        Map<String, String> tags = this.inner().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -137,7 +137,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -150,7 +150,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

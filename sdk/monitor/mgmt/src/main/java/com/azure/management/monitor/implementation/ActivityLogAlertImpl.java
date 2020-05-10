@@ -74,7 +74,7 @@ class ActivityLogAlertImpl
 
     @Override
     public Mono<ActivityLogAlert> createResourceAsync() {
-        this.inner().setLocation("global");
+        this.inner().withLocation("global");
         ActivityLogAlertAllOfCondition condition = new ActivityLogAlertAllOfCondition();
         condition.withAllOf(new ArrayList<ActivityLogAlertLeafCondition>());
         for (Map.Entry<String, String> cds : conditions.entrySet()) {

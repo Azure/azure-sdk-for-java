@@ -237,8 +237,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             USReceiptItem actualReceiptItem = actualReceiptItemList.get(i);
             validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.NAME.toString()),
                 actualReceiptItem.getName(), readResults, includeTextDetails);
-            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.QUANTITY.toString()), actualReceiptItem.getQuantity(), readResults, includeTextDetails);
-            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.TOTAL_PRICE.toString()), actualReceiptItem.getTotalPrice(), readResults, includeTextDetails);
+            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.QUANTITY.toString()),
+                actualReceiptItem.getQuantity(), readResults, includeTextDetails);
+            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.TOTAL_PRICE.toString()),
+                actualReceiptItem.getTotalPrice(), readResults, includeTextDetails);
             validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.PRICE.toString()),
                 actualReceiptItem.getPrice(), readResults, includeTextDetails);
         }
