@@ -32,7 +32,7 @@ import java.util.UUID;
 @Tag(TestUtils.INTEGRATION)
 class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8999;
-    private static final String PARTITION_ID = "1";
+    private static final String PARTITION_ID = "3";
     private static final int NUMBER_OF_EVENTS = 25;
 
     private static ProxyServer proxyServer;

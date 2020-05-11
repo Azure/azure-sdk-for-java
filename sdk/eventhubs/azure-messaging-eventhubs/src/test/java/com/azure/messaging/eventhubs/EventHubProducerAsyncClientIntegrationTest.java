@@ -23,7 +23,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 @Tag(TestUtils.INTEGRATION)
 class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "1";
+    private static final String PARTITION_ID = "2";
 
     private EventHubProducerAsyncClient producer;
 
@@ -90,9 +90,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             new EventData("Event 3".getBytes(UTF_8)));
 
         final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
-            events.forEach(event -> {
-                Assertions.assertTrue(batch.tryAdd(event));
-            });
+            events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
             return batch;
         });
@@ -118,9 +116,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             .map(batch -> {
                 Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
 
-                events.forEach(event -> {
-                    Assertions.assertTrue(batch.tryAdd(event));
-                });
+                events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
                 return batch;
             });
@@ -144,8 +140,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         // Act
         final Mono<Void> onComplete = Mono.when(producer.send(events),
             producer.send(Flux.just(events.get(0))),
-            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("1")),
-            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("0")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("3")),
+            producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("4")),
             producer.send(Flux.fromIterable(events), new SendOptions().setPartitionKey("sandwiches")));
 
         // Assert
@@ -188,7 +184,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
             StepVerifier.create(client.getEventHubProperties())
                 .assertNext(properties -> {
                     Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 })
                 .expectComplete()
                 .verify(TIMEOUT);

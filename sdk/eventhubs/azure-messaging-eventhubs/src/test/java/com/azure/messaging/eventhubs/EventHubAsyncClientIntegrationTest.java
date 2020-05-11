@@ -28,7 +28,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 @Tag(TestUtils.INTEGRATION)
 class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
-    private static final String PARTITION_ID = "3";
+    private static final String PARTITION_ID = "1";
     private IntegrationTestEventData testEventData;
 
     EventHubAsyncClientIntegrationTest() {
@@ -129,20 +129,17 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void getPropertiesWithCredentials() {
         // Arrange
-        final EventHubAsyncClient client = createBuilder(true)
-            .buildAsyncClient();
 
         // Act & Assert
-        try {
+        try (EventHubAsyncClient client = createBuilder(true)
+            .buildAsyncClient()) {
             StepVerifier.create(client.getProperties())
                 .assertNext(properties -> {
                     Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 })
                 .expectComplete()
                 .verify(TIMEOUT);
-        } finally {
-            client.close();
         }
     }
 }

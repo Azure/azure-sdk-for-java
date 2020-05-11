@@ -28,10 +28,7 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        client = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildClient();
+        client = createBuilder().buildClient();
     }
 
     @Override

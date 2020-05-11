@@ -40,7 +40,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 @Tag(TestUtils.INTEGRATION)
 public class BackCompatTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
+    private static final String PARTITION_ID = "2";
     private static final String PAYLOAD = "test-message";
 
     private final MessageSerializer serializer = new EventHubMessageSerializer();

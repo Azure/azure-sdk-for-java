@@ -40,7 +40,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 @Tag(TestUtils.INTEGRATION)
 public class InteropAmqpPropertiesTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
+    private static final String PARTITION_ID = "4";
     private static final String PAYLOAD = "test-message";
 
     private final MessageSerializer serializer = new EventHubMessageSerializer();
@@ -118,9 +118,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         // receive the event we sent.
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime)
             .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData))
-            .assertNext(event -> {
-                validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
-            })
+            .assertNext(event -> validateAmqpProperties(message, expectedAnnotations, applicationProperties, event))
             .expectComplete()
             .verify(TIMEOUT);
     }

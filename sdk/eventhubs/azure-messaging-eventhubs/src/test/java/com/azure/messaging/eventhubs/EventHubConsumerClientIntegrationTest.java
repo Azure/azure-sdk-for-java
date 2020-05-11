@@ -26,16 +26,11 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUM
  */
 @Tag(TestUtils.INTEGRATION)
 public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
-    private final String[] expectedPartitionIds = new String[]{"0", "1", "2"};
+    private static final String PARTITION_ID = "1";
 
     private IntegrationTestEventData testData = null;
-
     private EventHubConsumerClient consumer;
     private EventPosition startingPosition;
-
-    // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
-    // our own.
 
     public EventHubConsumerClientIntegrationTest() {
         super(new ClientLogger(EventHubConsumerClientIntegrationTest.class));
@@ -208,7 +203,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final EventHubProperties properties = consumer.getEventHubProperties();
             Assertions.assertNotNull(properties);
             Assertions.assertEquals(consumer.getEventHubName(), properties.getName());
-            Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+            Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
         } finally {
             dispose(consumer);
         }
@@ -228,7 +223,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
             final IterableStream<String> partitionIds = consumer.getPartitionIds();
             final List<String> collect = partitionIds.stream().collect(Collectors.toList());
 
-            Assertions.assertEquals(3, collect.size());
+            Assertions.assertEquals(NUMBER_OF_PARTITIONS, collect.size());
         } finally {
             dispose(consumer);
         }
@@ -245,7 +240,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         try {
-            for (String partitionId : expectedPartitionIds) {
+            for (String partitionId : EXPECTED_PARTITION_IDS) {
                 final PartitionProperties properties = consumer.getPartitionProperties(partitionId);
                 Assertions.assertEquals(consumer.getEventHubName(), properties.getEventHubName());
                 Assertions.assertEquals(partitionId, properties.getId());

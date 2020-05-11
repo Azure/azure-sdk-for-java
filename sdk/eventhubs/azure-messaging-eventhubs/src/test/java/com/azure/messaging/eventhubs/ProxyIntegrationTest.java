@@ -30,7 +30,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 @Tag(TestUtils.INTEGRATION)
 class ProxyIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
+    private static final String PARTITION_ID = "4";
 
     private EventHubProducerClient sender;
     private SendOptions sendOptions;

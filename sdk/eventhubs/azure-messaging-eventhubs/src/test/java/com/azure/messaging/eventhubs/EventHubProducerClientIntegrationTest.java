@@ -20,7 +20,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 @Tag(TestUtils.INTEGRATION)
 class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "1";
+    private static final String PARTITION_ID = "2";
     private EventHubProducerClient producer;
 
     public EventHubProducerClientIntegrationTest() {
@@ -85,9 +85,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
 
         // Act & Assert
         EventDataBatch batch = producer.createBatch();
-        events.forEach(event -> {
-            Assertions.assertTrue(batch.tryAdd(event));
-        });
+        events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
         producer.send(batch);
     }
@@ -107,9 +105,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
         final EventDataBatch batch = producer.createBatch(options);
 
-        events.forEach(event -> {
-            Assertions.assertTrue(batch.tryAdd(event));
-        });
+        events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
         producer.send(batch);
     }
@@ -128,8 +124,8 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
         // Act
         producer.send(events);
         producer.send(events.get(0));
-        producer.send(events.get(0), new SendOptions().setPartitionId("1"));
-        producer.send(events, new SendOptions().setPartitionId("0"));
+        producer.send(events.get(0), new SendOptions().setPartitionId("2"));
+        producer.send(events, new SendOptions().setPartitionId("3"));
         producer.send(events, new SendOptions().setPartitionKey("sandwiches"));
     }
 

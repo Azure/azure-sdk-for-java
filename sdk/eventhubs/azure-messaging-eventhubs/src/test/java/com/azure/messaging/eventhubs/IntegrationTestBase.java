@@ -38,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.azure.core.amqp.ProxyOptions.PROXY_PASSWORD;
 import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
@@ -47,7 +49,11 @@ import static com.azure.core.amqp.ProxyOptions.PROXY_USERNAME;
  */
 public abstract class IntegrationTestBase extends TestBase {
     // The number of partitions we create in test-resources.json.
+    // Partitions 0 and 1 are used for consume-only operations. 2, 3, and 4 are used to publish or consume events.
     protected static final int NUMBER_OF_PARTITIONS = 5;
+    protected static final List<String> EXPECTED_PARTITION_IDS = IntStream.range(0, NUMBER_OF_PARTITIONS)
+        .mapToObj(String::valueOf)
+        .collect(Collectors.toList());
     protected static final Duration TIMEOUT = Duration.ofSeconds(45);
     protected static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(TIMEOUT);
 
@@ -230,7 +236,7 @@ public abstract class IntegrationTestBase extends TestBase {
                 .buildProducerClient()) {
 
                 producer.getPartitionIds().forEach(partitionId -> {
-                    System.out.printf("--> Adding events to partition: %s%n.", partitionId);
+                    System.out.printf("--> Adding events to partition: %s%n", partitionId);
                     final PartitionProperties partitionProperties = producer.getPartitionProperties(partitionId);
                     final String messageId = UUID.randomUUID().toString();
                     final int numberOfEvents = 15;
