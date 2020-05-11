@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -40,9 +39,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
-
-    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageSource =
-        new AtomicReference<>();
 
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();

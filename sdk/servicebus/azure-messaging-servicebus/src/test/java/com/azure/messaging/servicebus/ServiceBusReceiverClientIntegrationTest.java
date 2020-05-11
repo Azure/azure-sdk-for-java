@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Integration tests for {@link ServiceBusReceiverClient} from queues or subscriptions.
@@ -142,7 +143,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("messagingEntityWithSessions")
     @ParameterizedTest
-    void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+    void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessagesEachReceive = 4;
@@ -185,12 +186,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
         receiverThreads.forEach(t -> t.start());
 
-        TimeUnit.SECONDS.sleep(1);
         receiverThreads.forEach(t -> {
             try {
                 t.join();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                fail("Error in receiving messages: " + e.getMessage());
             }
         });
         assertEquals(totalReceiver * maxMessagesEachReceive, totalReceivedMessages.get());

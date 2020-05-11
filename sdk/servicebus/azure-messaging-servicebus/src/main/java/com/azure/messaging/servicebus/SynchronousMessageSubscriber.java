@@ -44,6 +44,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     protected void hookOnSubscribe(Subscription subscription) {
         this.subscription = subscription;
 
+        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", initialWork.getId(),
+            initialWork.getNumberOfEvents(), initialWork.getTimeout());
+
         // This will trigger subscription.request(N) and queue up the work
         queueWork(initialWork);
     }
@@ -90,6 +93,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     void queueWork(SynchronousReceiveWork work) {
+
+        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
+            work.getTimeout());
         workQueue.add(work);
         drain();
     }
