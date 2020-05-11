@@ -17,12 +17,20 @@ ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilde
     .clientId("<YOUR_CLIENT_ID>")
     .clientSecret("<YOUR_CLIENT_SECRET>")
     .tenantId("<YOUR_TENANT_ID>")
+	.authorityHost("<AZURE_AUTHORITY_HOST>")
     .build();
 ```
 
+Please note, most of credentials require a [service principal registration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/graphrbac/samples/ManageServicePrincipalCredentials.java). Alternatively, you could also register a service principal in the [Azure portal](https://portal.azure.com/).
+
 * AzureProfile
   * The `AzureProfile` is a class holding `AzureEnvironment`, `subscriptionId`, `tenantId` to configure the requests sending to wire. 
-  * The `subscriptionId` is mandantory for most resource management while the `tenantId` would be required only for Graph RBAC. They can be set via [environment variables](https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/identity/azure-identity#environment-variables).
+  * The `subscriptionId` is mandantory for most resource management while the `tenantId` would be required only for Graph RBAC. They can be set via environment variables.
+  
+|variable name|value
+|-|-
+|`AZURE_TENANT_ID`|id of the principal's Azure Active Directory tenant
+|`AZURE_SUBSCRIPTION_ID`|id of the subscription for the Azure resources
 
 Sample code to create a `AzureProfile`:
 
@@ -53,7 +61,7 @@ HttpPipeline httpPipeline = new HttpPipelineBuilder()
 	.build();
 ```
 
-## Basic Authentication
+## Simple Authentication
 
 If you want to authenticate as simple as possible, you only need to provide `TokenCredential` and `AzureProfile`. The library will help build http pipeline internally with [default configuration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/resources/mgmt/src/main/java/com/azure/management/resources/fluentcore/utils/HttpPipelineProvider.java#L43).
 
