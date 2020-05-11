@@ -41,7 +41,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>5.2.0.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.2.5.RELEASE</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -100,7 +100,7 @@
               <includes>
                 <include>com.microsoft.azure:*</include>
                 <include>javax.validation:validation-api:[2.0.1.Final]</include> <!-- {x-include-update;javax.validation:validation-api;external_dependency} -->
-                <include>org.springframework:spring-web:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-web:[5.2.5.RELEASE]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.2.0.RELEASE]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
