@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages?showStats=true",
+    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//languages?showStats=true",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "e4223261-bd5d-4fe2-9554-e4e5446c56f4",
-      "Content-Type" : "application/json; charset=utf-8"
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "e1e1b615-a26b-4c9e-961e-ae73b2168cf1",
+      "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "6",
+      "x-envoy-upstream-service-time" : "3",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=3",
-      "apim-request-id" : "f8999cef-f30b-4ffa-a471-9c8748c9fa47",
-      "x-aml-ta-request-id" : "25923640-7e6f-4e17-93db-625c1851e727",
+      "apim-request-id" : "48410bc9-b67c-4615-8bcf-2cadfe4f2d46",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"statistics\":{\"documentsCount\":3,\"validDocumentsCount\":3,\"erroneousDocumentsCount\":0,\"transactionsCount\":3},\"documents\":[{\"id\":\"0\",\"detectedLanguages\":[{\"name\":\"English\",\"iso6391Name\":\"en\",\"score\":1.0}],\"statistics\":{\"charactersCount\":26,\"transactionsCount\":1}},{\"id\":\"1\",\"detectedLanguages\":[{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"score\":1.0}],\"statistics\":{\"charactersCount\":40,\"transactionsCount\":1}},{\"id\":\"2\",\"detectedLanguages\":[{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"score\":0.0}],\"statistics\":{\"charactersCount\":6,\"transactionsCount\":1}}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Sun, 15 Dec 2019 18:40:59 GMT",
+      "Body" : "{\"statistics\":{\"documentsCount\":3,\"validDocumentsCount\":3,\"erroneousDocumentsCount\":0,\"transactionsCount\":3},\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"English\",\"iso6391Name\":\"en\",\"confidenceScore\":1.0},\"statistics\":{\"charactersCount\":26,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"statistics\":{\"charactersCount\":40,\"transactionsCount\":1},\"warnings\":[]},{\"id\":\"2\",\"detectedLanguage\":{\"name\":\"(Unknown)\",\"iso6391Name\":\"(Unknown)\",\"confidenceScore\":0.0},\"statistics\":{\"charactersCount\":6,\"transactionsCount\":1},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Wed, 29 Apr 2020 17:12:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
