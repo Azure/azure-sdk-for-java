@@ -4,13 +4,13 @@ package com.azure.cosmos.rx;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;

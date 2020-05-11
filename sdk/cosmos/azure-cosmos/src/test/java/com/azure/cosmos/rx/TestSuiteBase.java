@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CompositePath;
@@ -42,7 +43,6 @@ import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.Configs;
@@ -469,19 +469,19 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return BridgeInternal.getProperties(cosmosContainer.createItem(item).block());
     }
 
-    public Flux<CosmosAsyncItemResponse<CosmosItemProperties>> bulkInsert(CosmosAsyncContainer cosmosContainer,
-                                                    List<CosmosItemProperties> documentDefinitionList,
+    public <T> Flux<CosmosAsyncItemResponse<T>> bulkInsert(CosmosAsyncContainer cosmosContainer,
+                                                    List<T> documentDefinitionList,
                                                     int concurrencyLevel) {
-        List<Mono<CosmosAsyncItemResponse<CosmosItemProperties>>> result =
+        List<Mono<CosmosAsyncItemResponse<T>>> result =
             new ArrayList<>(documentDefinitionList.size());
-        for (CosmosItemProperties docDef : documentDefinitionList) {
+        for (T docDef : documentDefinitionList) {
             result.add(cosmosContainer.createItem(docDef));
         }
 
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
-    public List<CosmosItemProperties> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<CosmosItemProperties> documentDefinitionList) {
+    public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
+                                                         List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .map(itemResponse -> itemResponse.getItem())
@@ -541,11 +541,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
@@ -765,7 +765,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @SuppressWarnings("rawtypes")
-    public <T extends Resource, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
+    public <T, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
         throws InterruptedException {
         validateFailure(mono.flux(), validator, subscriberValidationTimeout);
     }
@@ -809,12 +809,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
-    public <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
+    public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                           FeedResponseListValidator<T> validator) {
         validateQuerySuccess(flowable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
+    public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                                  FeedResponseListValidator<T> validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
@@ -826,11 +826,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values());
     }
 
-    public <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
+    public <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
         validateQueryFailure(flowable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
+    public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
                                                                  FailureValidator validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();

@@ -16,7 +16,7 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;

@@ -16,7 +16,6 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;

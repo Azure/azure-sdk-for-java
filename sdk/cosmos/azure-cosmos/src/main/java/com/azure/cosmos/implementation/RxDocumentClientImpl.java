@@ -9,11 +9,9 @@ import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -915,6 +913,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, options.getOfferThroughput().toString());
         } else if (options.getOfferType() != null) {
             headers.put(HttpConstants.HttpHeaders.OFFER_TYPE, options.getOfferType());
+        }
+
+        if (options.getOfferThroughput() == null) {
+            if (options.getThroughputProperties() != null) {
+                Offer offer = ModelBridgeInternal.getOfferFromThroughputProperties(options.getThroughputProperties());
+                final OfferAutoscaleSettings offerAutoscaleSettings = offer.getOfferAutoScaleSettings();
+                OfferAutoscaleAutoUpgradeProperties autoscaleAutoUpgradeProperties = null;
+                if (offerAutoscaleSettings != null) {
+                     autoscaleAutoUpgradeProperties
+                        = offer.getOfferAutoScaleSettings().getAutoscaleAutoUpgradeProperties();
+                }
+                if (offer.hasOfferThroughput() &&
+                        (offerAutoscaleSettings != null && offerAutoscaleSettings.getMaxThroughput() >= 0 ||
+                             autoscaleAutoUpgradeProperties != null &&
+                                 autoscaleAutoUpgradeProperties
+                                     .getAutoscaleThroughputProperties()
+                                     .getIncrementPercent() >= 0)) {
+                    throw new IllegalArgumentException("Autoscale provisioned throughput can not be configured with "
+                                                           + "fixed offer");
+                }
+
+                if (offer.hasOfferThroughput()) {
+                    headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
+                } else if (offer.getOfferAutoScaleSettings() != null) {
+                    headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
+                                ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                }
+            }
         }
 
         if (options.isPopulateQuotaInfo()) {
