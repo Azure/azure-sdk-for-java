@@ -3,18 +3,18 @@
     "Method" : "GET",
     "Uri" : "https://REDACTED.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "cb66885f-0de7-4fe0-8b31-675930a486d8"
+      "x-ms-client-request-id" : "3dd28f80-b178-4e6d-b189-5a5ece366250"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "cb66885f-0de7-4fe0-8b31-675930a486d8",
+      "request-id" : "3dd28f80-b178-4e6d-b189-5a5ece366250",
       "StatusCode" : "404",
-      "Date" : "Mon, 11 May 2020 18:00:22 GMT",
+      "Date" : "Mon, 11 May 2020 20:19:49 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "cb66885f-0de7-4fe0-8b31-675930a486d8",
-      "elapsed-time" : "19",
+      "client-request-id" : "3dd28f80-b178-4e6d-b189-5a5ece366250",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "111",

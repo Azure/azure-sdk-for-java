@@ -101,7 +101,7 @@ public class NettyAsyncHttpClientBuilder {
         AtomicReference<ChallengeHolder> proxyChallengeHolder = new AtomicReference<>();
 
         return new NettyAsyncHttpClient(nettyHttpClient, eventLoopGroup,
-            () -> getProxyHandler(proxyOptions, handler, proxyChallengeHolder), nonProxyHosts, disableBufferCopy);
+            () -> getProxyHandler(handler, proxyChallengeHolder), nonProxyHosts, disableBufferCopy);
     }
 
     /**
@@ -218,7 +218,7 @@ public class NettyAsyncHttpClientBuilder {
     /*
      * Creates a proxy handler based on the passed ProxyOptions.
      */
-    private ProxyHandler getProxyHandler(ProxyOptions proxyOptions, AuthorizationChallengeHandler challengeHandler,
+    private ProxyHandler getProxyHandler(AuthorizationChallengeHandler challengeHandler,
         AtomicReference<ChallengeHolder> proxyChallengeHolder) {
         if (proxyOptions == null) {
             return null;

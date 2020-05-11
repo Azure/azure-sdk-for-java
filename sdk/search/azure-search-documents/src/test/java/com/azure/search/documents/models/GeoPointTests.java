@@ -40,7 +40,8 @@ public class GeoPointTests extends SearchTestBase {
         ObjectMapper mapper = new ObjectMapper();
         SerializationUtil.configureMapper(mapper);
         List<Map<String, Object>> documents = mapper.readValue(docsData,
-            new TypeReference<List<Map<String, Object>>>() {});
+            new TypeReference<List<Map<String, Object>>>() {
+            });
         client.uploadDocuments(documents);
 
         waitForIndexing();
