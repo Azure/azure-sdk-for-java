@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -44,6 +45,7 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFET
  * @see SetPrefetchCountTest
  * @see EventPositionIntegrationTest
  */
+@Tag(TestUtils.INTEGRATION)
 public class EventHubConsumerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID_HEADER = "SENT_PARTITION_ID";
 

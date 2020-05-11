@@ -17,6 +17,7 @@ import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -32,11 +33,12 @@ import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
-import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+@Tag(TestUtils.INTEGRATION)
 public class InteropAmqpPropertiesTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
@@ -75,7 +77,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         final String messageTrackingValue = UUID.randomUUID().toString();
 
         final HashMap<String, Object> applicationProperties = new HashMap<>();
-        applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        applicationProperties.put(MESSAGE_ID, messageTrackingValue);
         applicationProperties.put("first-property", "value-1");
 
         final Message message = Proton.message();

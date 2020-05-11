@@ -29,7 +29,7 @@ import java.util.UUID;
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.OFFSET_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
-import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.getSymbol;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -41,7 +41,7 @@ public class BackCompatTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "0";
     private static final String PAYLOAD = "test-message";
 
-    private MessageSerializer serializer = new EventHubMessageSerializer();
+    private final MessageSerializer serializer = new EventHubMessageSerializer();
     private EventHubProducerAsyncClient producer;
     private EventHubConsumerAsyncClient consumer;
     private SendOptions sendOptions;
@@ -84,7 +84,7 @@ public class BackCompatTest extends IntegrationTestBase {
         applicationProperties.put("intProperty", "3");
 
         // We want to ensure that we fetch the event data corresponding to this test and not some other test case.
-        applicationProperties.put(MESSAGE_TRACKING_ID, messageTrackingValue);
+        applicationProperties.put(MESSAGE_ID, messageTrackingValue);
 
         final Map<Symbol, Object> systemProperties = new HashMap<>();
         systemProperties.put(getSymbol(OFFSET_ANNOTATION_NAME), "100");

@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -14,7 +15,11 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-public class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
+/**
+ * Tests for synchronous {@link EventHubProducerClient}.
+ */
+@Tag(TestUtils.INTEGRATION)
+class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "1";
     private EventHubProducerClient producer;
 
