@@ -53,21 +53,21 @@ public class CosmosTracerTest extends TestSuiteBase {
         client.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
         Mockito.verify(tracer, Mockito.times(1)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
-        Mockito.verify(tracer, Mockito.times(2)).endSpan(Matchers.any(Context.class), Matchers.<Signal<? extends CosmosResponse<? extends Resource>>>any(),
+        Mockito.verify(tracer, Mockito.times(1)).endSpan(Matchers.any(Context.class), Matchers.<Signal<? extends CosmosResponse<? extends Resource>>>any(),
             Matchers.anyInt()); //endSpan invocation is 1 greater than startSpan, because createDatabaseIfNotExists
         // uses public read api
 
         client.readAllDatabases(new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(2)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
-        Mockito.verify(tracer, Mockito.atLeast(3)).endSpan(Matchers.any(Context.class), Matchers.<Signal<? extends CosmosResponse<? extends Resource>>>any(),
+        Mockito.verify(tracer, Mockito.atLeast(2)).endSpan(Matchers.any(Context.class), Matchers.<Signal<? extends CosmosResponse<? extends Resource>>>any(),
             Matchers.anyInt()); //We used atLeast in endSpan because for query we are calling endSpan on every doOnEach
 
         String query = "select * from c where c.id = '" + cosmosAsyncDatabase.getId() + "'";
         client.queryDatabases(query, new FeedOptions()).byPage().single().block();
         Mockito.verify(tracer, Mockito.times(3)).startSpan(Matchers.anyString(), Matchers.anyString(),
             Matchers.anyString(), Matchers.any(Context.class));
-        Mockito.verify(tracer, Mockito.atLeast(4)).endSpan(Matchers.any(Context.class), Matchers.<Signal<? extends CosmosResponse<? extends Resource>>>any(),
+        Mockito.verify(tracer, Mockito.atLeast(3)).endSpan(Matchers.any(Context.class), Matchers.<Signal<? extends CosmosResponse<? extends Resource>>>any(),
             Matchers.anyInt()); //We used atLeast in endSpan because for query we are calling endSpan on every doOnEach
     }
 
