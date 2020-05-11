@@ -27,11 +27,6 @@ import com.microsoft.azure.management.network.v2020_04_01.implementation.P2SVpnG
  */
 public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, GroupableResourceCore<NetworkManager, P2SVpnGatewayInner>, HasResourceGroup, Refreshable<P2SVpnGateway>, Updatable<P2SVpnGateway.Update>, HasManager<NetworkManager> {
     /**
-     * @return the customDnsServers value.
-     */
-    List<String> customDnsServers();
-
-    /**
      * @return the etag value.
      */
     String etag();
@@ -89,18 +84,6 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
         }
 
         /**
-         * The stage of the p2svpngateway definition allowing to specify CustomDnsServers.
-         */
-        interface WithCustomDnsServers {
-            /**
-             * Specifies customDnsServers.
-             * @param customDnsServers List of all customer specified DNS servers IP addresses
-             * @return the next definition stage
-             */
-            WithCreate withCustomDnsServers(List<String> customDnsServers);
-        }
-
-        /**
          * The stage of the p2svpngateway definition allowing to specify P2SConnectionConfigurations.
          */
         interface WithP2SConnectionConfigurations {
@@ -153,31 +136,19 @@ public interface P2SVpnGateway extends HasInner<P2SVpnGatewayInner>, Resource, G
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<P2SVpnGateway>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithCustomDnsServers, DefinitionStages.WithP2SConnectionConfigurations, DefinitionStages.WithVirtualHub, DefinitionStages.WithVpnGatewayScaleUnit, DefinitionStages.WithVpnServerConfiguration {
+        interface WithCreate extends Creatable<P2SVpnGateway>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithP2SConnectionConfigurations, DefinitionStages.WithVirtualHub, DefinitionStages.WithVpnGatewayScaleUnit, DefinitionStages.WithVpnServerConfiguration {
         }
     }
     /**
      * The template for a P2SVpnGateway update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<P2SVpnGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithCustomDnsServers, UpdateStages.WithP2SConnectionConfigurations, UpdateStages.WithVirtualHub, UpdateStages.WithVpnGatewayScaleUnit, UpdateStages.WithVpnServerConfiguration {
+    interface Update extends Appliable<P2SVpnGateway>, Resource.UpdateWithTags<Update>, UpdateStages.WithP2SConnectionConfigurations, UpdateStages.WithVirtualHub, UpdateStages.WithVpnGatewayScaleUnit, UpdateStages.WithVpnServerConfiguration {
     }
 
     /**
      * Grouping of P2SVpnGateway update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the p2svpngateway update allowing to specify CustomDnsServers.
-         */
-        interface WithCustomDnsServers {
-            /**
-             * Specifies customDnsServers.
-             * @param customDnsServers List of all customer specified DNS servers IP addresses
-             * @return the next update stage
-             */
-            Update withCustomDnsServers(List<String> customDnsServers);
-        }
-
         /**
          * The stage of the p2svpngateway update allowing to specify P2SConnectionConfigurations.
          */
