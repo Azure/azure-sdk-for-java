@@ -245,7 +245,9 @@ public class IndexManagementSyncTests extends SearchTestBase {
     @Test
     public void canCreateAndListIndexes() {
         Index index1 = createTestIndex();
+        index1.setName("a" + index1.getName());
         Index index2 = createTestIndex();
+        index1.setName("b" + index1.getName());
 
         client.createIndex(index1);
         indexesToDelete.add(index1.getName());
@@ -263,7 +265,9 @@ public class IndexManagementSyncTests extends SearchTestBase {
     @Test
     public void canListIndexesWithSelectedField() {
         Index index1 = createTestIndex();
+        index1.setName("a" + index1.getName());
         Index index2 = createTestIndex();
+        index1.setName("b" + index1.getName());
 
         client.createIndex(index1);
         indexesToDelete.add(index1.getName());

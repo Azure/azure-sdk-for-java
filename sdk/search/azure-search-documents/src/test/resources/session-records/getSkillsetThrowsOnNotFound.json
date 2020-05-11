@@ -1,20 +1,20 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azsjavagetskillsetthrowsonnotfoundbf2349784b33e860f.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "e34cb499-c842-4114-a0ab-4e0a8ea48d2c"
+      "x-ms-client-request-id" : "c7e88c6a-a419-485e-bcc6-158ebd20cf8a"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "e34cb499-c842-4114-a0ab-4e0a8ea48d2c",
+      "request-id" : "c7e88c6a-a419-485e-bcc6-158ebd20cf8a",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 19:09:51 GMT",
+      "Date" : "Mon, 11 May 2020 18:09:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "e34cb499-c842-4114-a0ab-4e0a8ea48d2c",
-      "elapsed-time" : "39",
+      "client-request-id" : "c7e88c6a-a419-485e-bcc6-158ebd20cf8a",
+      "elapsed-time" : "49",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "158",
@@ -25,5 +25,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavagetskillsetthrowsonnotfoundbf2349784b33e860f" ]
+  "variables" : [ ]
 }

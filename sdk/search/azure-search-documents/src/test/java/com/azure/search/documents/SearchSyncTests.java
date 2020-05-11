@@ -37,6 +37,7 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,7 +67,6 @@ public class SearchSyncTests extends SearchTestBase {
     private String synonymMapToDelete = "";
 
     private SearchIndexClient client;
-    private List<Map<String, Object>> hotels;
 
     @Override
     protected void afterTest() {
@@ -121,14 +121,14 @@ public class SearchSyncTests extends SearchTestBase {
     public void canSearchDynamicDocuments() {
         client = setupClient(this::createHotelIndex);
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
+        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
         SearchPagedIterable searchResults = client.search("*");
         assertNotNull(searchResults);
 
         Iterator<SearchPagedResponse> iterator = searchResults.iterableByPage().iterator();
 
-        List<Map<String, Object>> actualResults = new ArrayList<>();
+        List<Map<String, Object>> actualResults = new ArrayList<>(hotels.size());
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
             assertNull(result.getCount());
@@ -143,6 +143,7 @@ public class SearchSyncTests extends SearchTestBase {
             });
         }
         assertEquals(hotels.size(), actualResults.size());
+        actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.get("HotelId").toString())));
         assertTrue(compareResults(actualResults, hotels));
     }
 
@@ -151,7 +152,7 @@ public class SearchSyncTests extends SearchTestBase {
         client = setupClient(this::createHotelIndex);
 
         // upload large documents batch
-        hotels = createHotelsList(100);
+        List<Map<String, Object>> hotels = createHotelsList(100);
         uploadDocuments(client, hotels);
 
         SearchOptions searchOptions = new SearchOptions().setSelect("HotelId")
@@ -182,7 +183,7 @@ public class SearchSyncTests extends SearchTestBase {
         client = setupClient(this::createHotelIndex);
 
         // upload large documents batch
-        hotels = createHotelsList(3000);
+        List<Map<String, Object>> hotels = createHotelsList(3000);
         uploadDocuments(client, hotels);
 
         SearchOptions searchOptions = new SearchOptions()
@@ -214,14 +215,14 @@ public class SearchSyncTests extends SearchTestBase {
     public void canSearchStaticallyTypedDocuments() {
         client = setupClient(this::createHotelIndex);
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
+        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON_WITHOUT_FR_DESCRIPTION);
 
         SearchPagedIterable results = client.search("*", new SearchOptions(), generateRequestOptions(), Context.NONE);
         assertNotNull(results);
 
         Iterator<SearchPagedResponse> iterator = results.iterableByPage().iterator();
 
-        List<Hotel> actualResults = new ArrayList<>();
+        List<Hotel> actualResults = new ArrayList<>(hotels.size());
         while (iterator.hasNext()) {
             SearchPagedResponse result = iterator.next();
             assertNull(result.getCount());
@@ -232,7 +233,8 @@ public class SearchSyncTests extends SearchTestBase {
             result.getElements().forEach(item -> {
                 assertEquals(1, item.getScore(), 0);
                 assertNull(item.getHighlights());
-                actualResults.add(convertToType(item.getDocument(), Hotel.class));
+                Hotel hotel = convertToType(item.getDocument(), Hotel.class);
+                actualResults.add(hotel);
             });
         }
 
@@ -252,6 +254,7 @@ public class SearchSyncTests extends SearchTestBase {
         }).collect(Collectors.toList());
 
         assertEquals(hotelsList.size(), actualResults.size());
+        actualResults.sort(Comparator.comparing(doc -> Integer.parseInt(doc.hotelId())));
         for (int i = 0; i < hotelsList.size(); i++) {
             assertObjectEquals(hotelsList.get(i), actualResults.get(i), true);
         }
@@ -389,7 +392,7 @@ public class SearchSyncTests extends SearchTestBase {
         String[] expectedResults = new String[]{"1", "9", "3", "4", "5", "10", "2", "6", "7", "8"};
 
         Stream<String> results = client
-            .search("*", new SearchOptions().setOrderBy("Rating desc", "LastRenovationDate asc"),
+            .search("*", new SearchOptions().setOrderBy("Rating desc", "LastRenovationDate asc", "HotelId"),
                 generateRequestOptions(), Context.NONE).stream()
             .map(this::getSearchResultId);
         assertArrayEquals(results.toArray(), expectedResults);
@@ -417,10 +420,10 @@ public class SearchSyncTests extends SearchTestBase {
     public void canSearchWithRangeFacets() {
         client = setupClient(this::createHotelIndex);
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchPagedIterable results = client.search("*", getSearchOptionsForRangeFacets(), generateRequestOptions(),
-            Context.NONE);
+        SearchPagedIterable results = client.search("*", getSearchOptionsForRangeFacets(),
+            generateRequestOptions(), Context.NONE);
 
         for (SearchPagedResponse result : results.iterableByPage()) {
             assertContainHotelIds(hotels, result.getValue());
@@ -436,9 +439,10 @@ public class SearchSyncTests extends SearchTestBase {
     public void canSearchWithValueFacets() {
         client = setupClient(this::createHotelIndex);
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
-        SearchPagedIterable results = client.search("*", getSearchOptionsForValueFacets(), generateRequestOptions(), Context.NONE);
+        SearchPagedIterable results = client.search("*", getSearchOptionsForValueFacets(),
+            generateRequestOptions(), Context.NONE);
 
         for (SearchPagedResponse result : results.iterableByPage()) {
             assertContainHotelIds(hotels, result.getValue());
@@ -563,10 +567,10 @@ public class SearchSyncTests extends SearchTestBase {
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         List<Map<String, Object>> response = getSearchResults(client.search("Cheapest hotel",
-            new SearchOptions(), generateRequestOptions(), Context.NONE));
+            new SearchOptions().setOrderBy("HotelId"), generateRequestOptions(), Context.NONE));
         assertEquals(7, response.size());
         assertEquals(
-            Arrays.asList("2", "10", "3", "4", "5", "1", "9"),
+            Arrays.asList("1", "10", "2", "3", "4", "5", "9"),
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
@@ -574,7 +578,7 @@ public class SearchSyncTests extends SearchTestBase {
     public void canGetResultCountInSearch() {
         client = setupClient(this::createHotelIndex);
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        List<Map<String, Object>> hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         SearchPagedIterable results = client.search("*", new SearchOptions().setIncludeTotalResultCount(true),
             generateRequestOptions(), Context.NONE);
@@ -638,8 +642,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> response = getSearchResults(client.search("hotel",
             searchOptions, generateRequestOptions(), Context.NONE));
         assertEquals(2, response.size());
-        assertEquals(
-            Arrays.asList("2", "1"),
+        assertEquals(Arrays.asList("1", "2"),
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
@@ -745,7 +748,7 @@ public class SearchSyncTests extends SearchTestBase {
     public void canSearchWithSynonyms() {
         client = setupClient(this::createHotelIndex);
 
-        hotels = uploadDocumentsJson(client, HOTELS_DATA_JSON);
+        uploadDocumentsJson(client, HOTELS_DATA_JSON);
 
         String fieldName = "HotelName";
         SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
@@ -946,10 +949,10 @@ public class SearchSyncTests extends SearchTestBase {
 
     void assertContainHotelIds(List<Map<String, Object>> expected, List<SearchResult> actual) {
         assertNotNull(actual);
-        List<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
-            .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toList());
-        List<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
-            .map(item -> (String) item.get("HotelId")).collect(Collectors.toList());
+        Set<String> actualKeys = actual.stream().filter(item -> item.getDocument().containsKey("HotelId"))
+            .map(item -> (String) item.getDocument().get("HotelId")).collect(Collectors.toSet());
+        Set<String> expectedKeys = expected.stream().filter(item -> item.containsKey("HotelId"))
+            .map(item -> (String) item.get("HotelId")).collect(Collectors.toSet());
         assertEquals(expectedKeys, actualKeys);
     }
 

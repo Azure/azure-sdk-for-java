@@ -38,11 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static com.azure.search.documents.TestHelpers.assertHttpResponseException;
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
@@ -53,7 +50,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexersManagementSyncTests extends SearchTestBase {
@@ -161,21 +157,20 @@ public class IndexersManagementSyncTests extends SearchTestBase {
 
         // Create two indexers
         Indexer indexer1 = createBaseTestIndexerObject(indexName, dataSourceName);
+        indexer1.setName("a" + indexer1.getName());
         Indexer indexer2 = createBaseTestIndexerObject(indexName, dataSourceName);
-        Map<String, Indexer> expectedIndexers = new HashMap<>();
-        expectedIndexers.put(indexer1.getName(), indexer1);
+        indexer2.setName("b" + indexer2.getName());
         client.createIndexer(indexer1);
         indexersToDelete.add(indexer1.getName());
-        expectedIndexers.put(indexer2.getName(), indexer2);
         client.createIndexer(indexer2);
         indexersToDelete.add(indexer2.getName());
 
         Iterator<Indexer> indexers = client.listIndexers().iterator();
 
         Indexer returnedIndexer = indexers.next();
-        assertObjectEquals(expectedIndexers.get(returnedIndexer.getName()), returnedIndexer, true, "etag");
+        assertObjectEquals(indexer1, returnedIndexer, true, "etag");
         returnedIndexer = indexers.next();
-        assertObjectEquals(expectedIndexers.get(returnedIndexer.getName()), returnedIndexer, true, "etag");
+        assertObjectEquals(indexer2, returnedIndexer, true, "etag");
         assertFalse(indexers.hasNext());
     }
 
@@ -185,21 +180,22 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         String dataSourceName = createDataSource();
 
         Indexer indexer1 = createBaseTestIndexerObject(indexName, dataSourceName);
+        indexer1.setName("a" + indexer1.getName());
         Indexer indexer2 = createBaseTestIndexerObject(indexName, dataSourceName);
-        Set<String> expectedIndexers = new HashSet<>();
-        expectedIndexers.add(client.createIndexer(indexer1).getName());
+        indexer2.setName("b" + indexer2.getName());
+        client.createIndexer(indexer1);
         indexersToDelete.add(indexer1.getName());
-        expectedIndexers.add(client.createIndexer(indexer2).getName());
+        client.createIndexer(indexer2);
         indexersToDelete.add(indexer2.getName());
 
         Iterator<Indexer> indexersRes = client.listIndexers("name", generateRequestOptions(), Context.NONE).iterator();
 
         Indexer actualIndexer = indexersRes.next();
-        assertTrue(expectedIndexers.contains(actualIndexer.getName()));
+        assertEquals(indexer1.getName(), actualIndexer.getName());
         assertAllIndexerFieldsNullExceptName(actualIndexer);
 
         actualIndexer = indexersRes.next();
-        assertTrue(expectedIndexers.contains(actualIndexer.getName()));
+        assertEquals(indexer2.getName(), actualIndexer.getName());
         assertAllIndexerFieldsNullExceptName(actualIndexer);
 
         assertFalse(indexersRes.hasNext());
@@ -605,7 +601,8 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         Skillset skillset = createSkillsetObject();
         client.createSkillset(skillset);
         skillsetsToDelete.add(skillset.getName());
-        Indexer updated = createIndexerWithDifferentSkillset(indexName, dataSourceName, skillset.getName());
+        Indexer updated = createIndexerWithDifferentSkillset(indexName, dataSourceName, skillset.getName())
+            .setName(initial.getName());
         Indexer indexerResponse = client.createOrUpdateIndexer(updated);
 
         setSameStartTime(updated, indexerResponse);
