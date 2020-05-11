@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.jproxy.SimpleProxy;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -24,6 +25,7 @@ import java.util.List;
 /**
  * Verify we can use jproxy hosted locally to receive messages.
  */
+@Tag(TestUtils.INTEGRATION)
 public class ProxyReceiveTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8899;
 

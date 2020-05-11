@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -25,7 +26,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class ProxySendTest extends IntegrationTestBase {
+/**
+ * Verifies we can publish events through a proxy.
+ */
+@Tag(TestUtils.INTEGRATION)
+class ProxySendTest extends IntegrationTestBase {
     private static final int PROXY_PORT = 8999;
     private static final String PARTITION_ID = "1";
     private static final int NUMBER_OF_EVENTS = 25;
