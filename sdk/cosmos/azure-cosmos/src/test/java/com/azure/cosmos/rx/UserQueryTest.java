@@ -43,7 +43,7 @@ public class UserQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryUsersWithFilter() throws Exception {
 
-        String filterUserId = createdUsers.get(0).getId();
+        String filterUserId = ModelBridgeInternal.invokeGetResource(createdUsers.get(0)).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterUserId);
 
         FeedOptions options = new FeedOptions();
@@ -51,7 +51,7 @@ public class UserQueryTest extends TestSuiteBase {
         CosmosPagedFlux<CosmosUserProperties> queryObservable = createdDatabase.queryUsers(query, options);
 
         List<CosmosUserProperties> expectedUsers = createdUsers.stream()
-                                                               .filter(c -> StringUtils.equals(filterUserId, c.getId()) ).collect(Collectors.toList());
+                                                               .filter(c -> StringUtils.equals(filterUserId, ModelBridgeInternal.invokeGetResource(c).getId()) ).collect(Collectors.toList());
 
         assertThat(expectedUsers).isNotEmpty();
 
@@ -59,7 +59,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(expectedUsers.size())
-                .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -86,7 +86,7 @@ public class UserQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosUserProperties> validator = new FeedResponseListValidator.Builder<CosmosUserProperties>()
                 .totalSize(expectedUsers.size())
-                .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedUsers.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())

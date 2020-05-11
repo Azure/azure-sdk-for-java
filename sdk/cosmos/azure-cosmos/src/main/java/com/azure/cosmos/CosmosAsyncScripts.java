@@ -69,7 +69,7 @@ public class CosmosAsyncScripts {
             options = new CosmosStoredProcedureRequestOptions();
         }
         StoredProcedure sProc = new StoredProcedure();
-        sProc.setId(properties.getId());
+        sProc.setId(ModelBridgeInternal.invokeGetResource(properties).getId());
         sProc.setBody(properties.getBody());
         return database.getDocClientWrapper()
                    .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options))
@@ -173,7 +173,7 @@ public class CosmosAsyncScripts {
     public Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunction(
         CosmosUserDefinedFunctionProperties properties) {
         UserDefinedFunction udf = new UserDefinedFunction();
-        udf.setId(properties.getId());
+        udf.setId(ModelBridgeInternal.invokeGetResource(properties).getId());
         udf.setBody(properties.getBody());
 
         return database.getDocClientWrapper()
@@ -275,7 +275,7 @@ public class CosmosAsyncScripts {
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
         Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
-            ModelBridgeInternal.getResourceFromResourceWrapper(properties)));
+            ModelBridgeInternal.invokeGetResource(properties)));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)

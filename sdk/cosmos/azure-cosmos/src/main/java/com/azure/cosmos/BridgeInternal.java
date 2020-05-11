@@ -317,7 +317,8 @@ public final class BridgeInternal {
     public static CosmosClientException createCosmosClientException(int statusCode, String errorMessage) {
         CosmosClientException cosmosClientException = new CosmosClientException(statusCode, errorMessage, null, null);
         cosmosClientException.setError(new CosmosError());
-        ModelBridgeInternal.setProperty(cosmosClientException.getError(), Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(
+            ModelBridgeInternal.invokeGetJsonSerializable(cosmosClientException.getError()), Constants.Properties.MESSAGE, errorMessage);
         return cosmosClientException;
     }
 

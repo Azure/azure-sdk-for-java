@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos user defined function properties.
  */
-public final class CosmosUserDefinedFunctionProperties extends ResourceWrapper {
+public final class CosmosUserDefinedFunctionProperties {
 
     private UserDefinedFunction userDefinedFunction;
     /**
@@ -61,7 +61,6 @@ public final class CosmosUserDefinedFunctionProperties extends ResourceWrapper {
         return this;
     }
 
-    @Override
     Resource getResource() {
         return this.userDefinedFunction;
     }

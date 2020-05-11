@@ -11,7 +11,7 @@ import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
-import static com.azure.cosmos.models.ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper;
+import static com.azure.cosmos.models.ModelBridgeInternal.invokePopulatePropertyBag;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -174,7 +174,7 @@ public final class DocumentCollection extends Resource {
      * @param timeToLive the analytical storage time to live in seconds.
      * @return the CosmosContainerProperties.
      */
-    public void setAnalyticalStorageTimeToLiveInSeconds(Integer timeToLive) {
+    public void setAnalyticalStoreTimeToLiveInSeconds(Integer timeToLive) {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
@@ -194,7 +194,7 @@ public final class DocumentCollection extends Resource {
      *
      * @return analytical ttl
      */
-    public Integer getAnalyticalStorageTimeToLiveInSeconds() {
+    public Integer getAnalyticalStoreTimeToLiveInSeconds() {
         if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
             return super.getInt(Constants.Properties.ANALYTICAL_STORAGE_TTL);
         }
@@ -316,11 +316,11 @@ public final class DocumentCollection extends Resource {
         }
 
         if (this.partitionKeyDefinition != null) {
-            populatePropertyBagJsonSerializableWrapper(this.partitionKeyDefinition);
+            invokePopulatePropertyBag(this.partitionKeyDefinition);
             setProperty(this, Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
         }
-        populatePropertyBagJsonSerializableWrapper(this.indexingPolicy);
-        populatePropertyBagJsonSerializableWrapper(this.uniqueKeyPolicy);
+        invokePopulatePropertyBag(this.indexingPolicy);
+        invokePopulatePropertyBag(this.uniqueKeyPolicy);
 
         setProperty(this, Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
         setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);

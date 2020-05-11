@@ -8,7 +8,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 /**
  * Represents a SQL parameter in the SqlQuerySpec used for queries in the Azure Cosmos DB database service.
  */
-public final class SqlParameter extends JsonSerializableWrapper{
+public final class SqlParameter {
+    private JsonSerializable jsonSerializable;
 
     /**
      * Initializes a new instance of the SqlParameter class.
@@ -70,4 +71,11 @@ public final class SqlParameter extends JsonSerializableWrapper{
         this.jsonSerializable.set("value", value);
         return this;
     }
+
+    void populatePropertyBag()
+    {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

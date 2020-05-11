@@ -13,7 +13,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
  * "SELECT * FROM c ORDER BY c.age, c.height", then you need to add "/age" and "/height"
  * as composite paths to your composite index.
  */
-public final class CompositePath extends JsonSerializableWrapper{
+public final class CompositePath{
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -88,5 +90,13 @@ public final class CompositePath extends JsonSerializableWrapper{
     public CompositePath setOrder(CompositePathSortOrder order) {
         this.jsonSerializable.set(Constants.Properties.ORDER, order.toString());
         return this;
+    }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() {
+        return this.jsonSerializable;
     }
 }

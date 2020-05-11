@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * script gets executed under ACID transactions on the primary storage partition of the specified collection. For
  * additional details, refer to the server-side JavaScript API documentation.
  */
-public final class CosmosStoredProcedureProperties extends ResourceWrapper{
+public final class CosmosStoredProcedureProperties {
 
     private StoredProcedure storedProcedure;
     /**
@@ -84,7 +84,6 @@ public final class CosmosStoredProcedureProperties extends ResourceWrapper{
                    .collect(Collectors.toList());
     }
 
-    @Override
     Resource getResource() {
         return this.storedProcedure;
     }

@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -38,7 +39,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
         // validate udf creation
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(udf.getId())
+                .withId(ModelBridgeInternal.invokeGetResource(udf).getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
                 .build();
@@ -59,7 +60,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
         //validate udf read
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(udf.getId())
+                .withId(ModelBridgeInternal.invokeGetResource(udf).getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
                 .build();

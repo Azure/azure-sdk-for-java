@@ -47,21 +47,21 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
-        String filterId = createdUDF.get(0).getId();
+        String filterId = ModelBridgeInternal.invokeGetResource(createdUDF.get(0)).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
         int maxItemCount = 5;
         CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryObservable = createdCollection.getScripts().queryUserDefinedFunctions(query, options);
 
-        List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF.stream().filter(sp -> filterId.equals(sp.getId()) ).collect(Collectors.toList());
+        List<CosmosUserDefinedFunctionProperties> expectedDocs = createdUDF.stream().filter(sp -> filterId.equals(ModelBridgeInternal.invokeGetResource(sp).getId()) ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosUserDefinedFunctionProperties> validator = new FeedResponseListValidator.Builder<CosmosUserDefinedFunctionProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -105,7 +105,7 @@ public class UserDefinedFunctionQueryTest extends TestSuiteBase {
                 .Builder<CosmosUserDefinedFunctionProperties>()
                 .exactlyContainsInAnyOrder(expectedDocs
                         .stream()
-                        .map(d -> d.getResourceId())
+                        .map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosUserDefinedFunctionProperties>()

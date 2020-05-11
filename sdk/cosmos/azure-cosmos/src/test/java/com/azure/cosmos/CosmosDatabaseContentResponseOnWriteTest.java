@@ -9,6 +9,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -52,7 +53,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withContentResponseOnWriteDisabled() throws CosmosClientException {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.getId());
+        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
@@ -74,10 +75,10 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
 
     private void validateDatabaseResponse(CosmosDatabaseProperties databaseDefinition, CosmosDatabaseResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
             .as("check Resource Id")
-            .isEqualTo(databaseDefinition.getId());
+            .isEqualTo(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
 
     }
 

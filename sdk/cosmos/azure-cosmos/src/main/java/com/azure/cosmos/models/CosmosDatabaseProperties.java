@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
  * more cosmos items. Since databases are an an administrative resource and the Service Key will be required in
  * order to access and successfully complete any action using the User APIs.
  */
-public final class CosmosDatabaseProperties extends ResourceWrapper{
+public final class CosmosDatabaseProperties {
 
     private Database database;
     /**
@@ -44,7 +44,6 @@ public final class CosmosDatabaseProperties extends ResourceWrapper{
         return results.stream().map(CosmosDatabaseProperties::new).collect(Collectors.toList());
     }
 
-    @Override
     Resource getResource() {
         return this.database;
     }

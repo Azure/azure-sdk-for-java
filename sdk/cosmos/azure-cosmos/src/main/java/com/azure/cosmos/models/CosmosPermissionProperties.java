@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos permission properties.
  */
-public final class CosmosPermissionProperties extends ResourceWrapper{
+public final class CosmosPermissionProperties {
 
     private Permission permission;
     static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
@@ -112,7 +112,6 @@ public final class CosmosPermissionProperties extends ResourceWrapper{
         return new Permission(this.permission.toJson());
     }
 
-    @Override
     Resource getResource() {
         return this.permission;
     }

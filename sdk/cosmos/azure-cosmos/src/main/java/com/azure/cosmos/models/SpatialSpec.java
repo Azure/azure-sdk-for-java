@@ -13,9 +13,11 @@ import java.util.List;
 /**
  * The type Spatial spec.
  */
-public final class SpatialSpec extends JsonSerializableWrapper{
+public final class SpatialSpec {
 
     private List<SpatialType> spatialTypes;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -86,4 +88,10 @@ public final class SpatialSpec extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.TYPES, spatialTypeNames);
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

@@ -27,7 +27,7 @@ public class CosmosAsyncStoredProcedureResponse extends CosmosResponse<CosmosSto
 
         } else {
             super.setProperties(new CosmosStoredProcedureProperties(bodyAsString));
-            storedProcedure = BridgeInternal.createCosmosAsyncStoredProcedure(ModelBridgeInternal.getResourceFromResourceWrapper(this.getProperties()).getId(), cosmosContainer);
+            storedProcedure = BridgeInternal.createCosmosAsyncStoredProcedure(ModelBridgeInternal.invokeGetResource(this.getProperties()).getId(), cosmosContainer);
         }
         storedProcedureResponse = null;
     }

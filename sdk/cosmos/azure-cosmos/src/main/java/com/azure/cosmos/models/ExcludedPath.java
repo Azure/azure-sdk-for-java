@@ -9,7 +9,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 /**
  * Represents an excluded path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
-public final class ExcludedPath extends JsonSerializableWrapper{
+public final class ExcludedPath{
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -46,4 +47,10 @@ public final class ExcludedPath extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

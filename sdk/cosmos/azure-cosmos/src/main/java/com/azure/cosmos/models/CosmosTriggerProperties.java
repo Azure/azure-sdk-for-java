@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos trigger properties.
  */
-public final class CosmosTriggerProperties extends ResourceWrapper{
+public final class CosmosTriggerProperties {
 
     private Trigger trigger;
     /**
@@ -108,7 +108,6 @@ public final class CosmosTriggerProperties extends ResourceWrapper{
                    .collect(Collectors.toList());
     }
 
-    @Override
     Resource getResource() {
         return this.trigger;
     }

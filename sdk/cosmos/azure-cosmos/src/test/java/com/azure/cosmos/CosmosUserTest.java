@@ -6,6 +6,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.CosmosUserResponse;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -68,7 +69,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosUser user = createdDatabase.getUser(userProperties.getId());
+        CosmosUser user = createdDatabase.getUser(ModelBridgeInternal.invokeGetResource(userProperties).getId());
         CosmosUserResponse readResponse = user.read();
         validateResponse(userProperties, readResponse);
     }
@@ -78,7 +79,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosUser user = createdDatabase.getUser(userProperties.getId());
+        CosmosUser user = createdDatabase.getUser(ModelBridgeInternal.invokeGetResource(userProperties).getId());
         CosmosUserResponse delete = user.delete();
 
     }
@@ -104,7 +105,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", userProperties.getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.invokeGetResource(userProperties).getId());
         FeedOptions feedOptions = new FeedOptions();
 
         CosmosPagedIterable<CosmosUserProperties> feedResponseIterator1 =
@@ -121,10 +122,10 @@ public class CosmosUserTest extends TestSuiteBase {
     private void validateResponse(CosmosUserProperties properties,
                                   CosmosUserResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
                 .as("check Resource Id")
-                .isEqualTo(properties.getId());
+                .isEqualTo(ModelBridgeInternal.invokeGetResource(properties).getId());
 
     }
 }

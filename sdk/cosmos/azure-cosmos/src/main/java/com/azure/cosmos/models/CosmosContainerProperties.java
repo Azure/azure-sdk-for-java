@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Being schema-free, the items in a container do not need to share the same structure or fields. Since containers
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-public final class CosmosContainerProperties extends ResourceWrapper {
+public final class CosmosContainerProperties {
 
     private DocumentCollection documentCollection;
 
@@ -201,7 +201,7 @@ public final class CosmosContainerProperties extends ResourceWrapper {
      * @return the CosmosContainerProperties.
      */
     public CosmosContainerProperties setAnalyticalStoreTimeToLiveInSeconds(Integer timeToLive) {
-        this.documentCollection.setAnalyticalStorageTimeToLiveInSeconds(timeToLive);
+        this.documentCollection.setAnalyticalStoreTimeToLiveInSeconds(timeToLive);
 
         return this;
     }
@@ -217,7 +217,7 @@ public final class CosmosContainerProperties extends ResourceWrapper {
      * @return analytical ttl
      */
     public Integer getAnalyticalStoreTimeToLiveInSeconds() {
-        return this.documentCollection.getAnalyticalStorageTimeToLiveInSeconds();
+        return this.documentCollection.getAnalyticalStoreTimeToLiveInSeconds();
     }
 
     DocumentCollection getV2Collection() {
@@ -227,7 +227,6 @@ public final class CosmosContainerProperties extends ResourceWrapper {
         return collection;
     }
 
-    @Override
     Resource getResource() {
         return this.documentCollection;
     }

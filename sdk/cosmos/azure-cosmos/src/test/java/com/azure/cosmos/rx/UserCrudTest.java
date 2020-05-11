@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -43,7 +44,7 @@ public class UserCrudTest extends TestSuiteBase {
 
         // validate user creation
         CosmosResponseValidator<CosmosAsyncUserResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
-                .withId(user.getId())
+                .withId(ModelBridgeInternal.invokeGetResource(user).getId())
                 .notNullEtag()
                 .build();
         validateSuccess(createObservable, validator);
@@ -104,7 +105,7 @@ public class UserCrudTest extends TestSuiteBase {
 
         //validate user upsert
         CosmosResponseValidator<CosmosAsyncUserResponse> validatorForUpsert = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
-                .withId(user.getId())
+                .withId(ModelBridgeInternal.invokeGetResource(user).getId())
                 .notNullEtag()
                 .build();
 
@@ -121,25 +122,25 @@ public class UserCrudTest extends TestSuiteBase {
         CosmosUserProperties readBackUser = createdDatabase.createUser(user).block().getProperties();
 
         // read getUser to validate creation
-        Mono<CosmosAsyncUserResponse> readObservable = createdDatabase.getUser(user.getId()).read();
+        Mono<CosmosAsyncUserResponse> readObservable = createdDatabase.getUser(ModelBridgeInternal.invokeGetResource(user).getId()).read();
 
         //validate user read
         CosmosResponseValidator<CosmosAsyncUserResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
-        .withId(readBackUser.getId())
+        .withId(ModelBridgeInternal.invokeGetResource(readBackUser).getId())
                 .notNullEtag()
                 .build();
 
         validateSuccess(readObservable, validatorForRead);
 
         //update getUser
-        String oldId = readBackUser.getId();
+        String oldId = ModelBridgeInternal.invokeGetResource(readBackUser).getId();
         readBackUser.setId(UUID.randomUUID().toString());
 
         Mono<CosmosAsyncUserResponse> updateObservable = createdDatabase.getUser(oldId).replace(readBackUser);
 
         // validate user replace
         CosmosResponseValidator<CosmosAsyncUserResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncUserResponse>()
-                .withId(readBackUser.getId())
+                .withId(ModelBridgeInternal.invokeGetResource(readBackUser).getId())
                 .notNullEtag()
                 .build();
 

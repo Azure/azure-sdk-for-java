@@ -11,6 +11,7 @@ import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
@@ -116,10 +117,10 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
     private void validateContainerResponse(CosmosContainerProperties containerProperties,
                                            CosmosContainerResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
             .as("check Resource Id")
-            .isEqualTo(containerProperties.getId());
+            .isEqualTo(ModelBridgeInternal.invokeGetResource(containerProperties).getId());
 
     }
 

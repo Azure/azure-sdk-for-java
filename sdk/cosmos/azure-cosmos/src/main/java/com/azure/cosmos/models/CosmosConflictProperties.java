@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos conflict properties.
  */
-public final class CosmosConflictProperties extends ResourceWrapper{
+public final class CosmosConflictProperties {
 
     private Conflict conflict;
 
@@ -63,7 +63,6 @@ public final class CosmosConflictProperties extends ResourceWrapper{
                    .collect(Collectors.toList());
     }
 
-    @Override
     Resource getResource() {
         return this.conflict;
     }

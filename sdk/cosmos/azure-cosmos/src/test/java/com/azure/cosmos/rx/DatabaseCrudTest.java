@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -34,21 +35,21 @@ public class DatabaseCrudTest extends TestSuiteBase {
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.getId());
+        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
 
         // create the database
         Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
-                .withId(databaseDefinition.getId()).build();
+                .withId(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId()).build();
         validateSuccess(createObservable, validator);
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createDatabase_AlreadyExists() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.getId());
+        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
 
         client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block();
 
@@ -86,7 +87,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
     public void deleteDatabase() throws Exception {
         // create the database
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(databaseDefinition.getId());
+        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
         CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
 
         // delete the database

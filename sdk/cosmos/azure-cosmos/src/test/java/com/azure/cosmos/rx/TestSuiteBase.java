@@ -3,9 +3,6 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
@@ -13,26 +10,36 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.JsonSerializable;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.TestNGLogListener;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.TestNGLogListener;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.DataType;
@@ -41,24 +48,15 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.PathParser;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Protocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.cosmos.implementation.guava25.base.CaseFormat;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +76,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -227,7 +224,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
-        String cosmosContainerId = cosmosContainerProperties.getId();
+        String cosmosContainerId = ModelBridgeInternal.invokeGetResource(cosmosContainerProperties).getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         FeedOptions options = new FeedOptions();
@@ -273,7 +270,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
+                return cosmosContainer.getScripts().getTrigger(ModelBridgeInternal.invokeGetResource(trigger).getId()).delete();
             }).then().block();
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
@@ -291,7 +288,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
+                return cosmosContainer.getScripts().getStoredProcedure(ModelBridgeInternal.invokeGetResource(storedProcedure).getId()).delete(new CosmosStoredProcedureRequestOptions());
             }).then().block();
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
@@ -309,7 +306,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
+                return cosmosContainer.getScripts().getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(udf).getId()).delete();
             }).then().block();
 
         logger.info("Finished truncating collection {}.", cosmosContainerId);
@@ -505,12 +502,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosAsyncUser safeCreateUser(CosmosAsyncClient client, String databaseId, CosmosUserProperties user) {
-        deleteUserIfExists(client, databaseId, user.getId());
+        deleteUserIfExists(client, databaseId, ModelBridgeInternal.invokeGetResource(user).getId());
         return createUser(client, databaseId, user);
     }
 
     private static CosmosAsyncContainer safeCreateCollection(CosmosAsyncClient client, String databaseId, CosmosContainerProperties collection, CosmosContainerRequestOptions options) {
-        deleteCollectionIfExists(client, databaseId, collection.getId());
+        deleteCollectionIfExists(client, databaseId, ModelBridgeInternal.invokeGetResource(collection).getId());
         return createCollection(client.getDatabase(databaseId), collection, options);
     }
 
@@ -543,11 +540,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.invokeGetJsonSerializable(stringIndex), "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.invokeGetJsonSerializable(numberIndex), "precision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
@@ -626,7 +623,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static private CosmosAsyncDatabase safeCreateDatabase(CosmosAsyncClient client, CosmosDatabaseProperties databaseSettings) {
-        safeDeleteDatabase(client.getDatabase(databaseSettings.getId()));
+        safeDeleteDatabase(client.getDatabase(ModelBridgeInternal.invokeGetResource(databaseSettings).getId()));
         return client.createDatabase(databaseSettings).block().getDatabase();
     }
 
@@ -685,7 +682,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 .block();
 
             for(CosmosContainerProperties collection: collections) {
-                database.getContainer(collection.getId()).delete().block();
+                database.getContainer(ModelBridgeInternal.invokeGetResource(collection).getId()).delete().block();
             }
         }
     }

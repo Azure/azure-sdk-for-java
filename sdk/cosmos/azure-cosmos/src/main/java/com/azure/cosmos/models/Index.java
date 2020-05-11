@@ -11,7 +11,8 @@ import com.azure.cosmos.implementation.IndexKind;
 /**
  * Represents the index of a collection in the Azure Cosmos DB database service.
  */
-public abstract class Index extends JsonSerializableWrapper{
+public abstract class Index {
+    JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -129,4 +130,10 @@ public abstract class Index extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.INDEX_KIND, indexKind.toString());
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

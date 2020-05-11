@@ -15,13 +15,15 @@ import java.util.List;
 /**
  * Represents the indexing policy configuration for a collection in the Azure Cosmos DB database service.
  */
-public final class IndexingPolicy extends JsonSerializableWrapper {
+public final class IndexingPolicy {
     private static final String DEFAULT_PATH = "/*";
 
     private List<IncludedPath> includedPaths;
     private List<ExcludedPath> excludedPaths;
     private List<List<CompositePath>> compositeIndexes;
     private List<SpatialSpec> spatialIndexes;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -247,8 +249,7 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
+    void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
@@ -272,4 +273,6 @@ public final class IndexingPolicy extends JsonSerializableWrapper {
             this.jsonSerializable.set(Constants.Properties.EXCLUDED_PATHS, this.excludedPaths);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

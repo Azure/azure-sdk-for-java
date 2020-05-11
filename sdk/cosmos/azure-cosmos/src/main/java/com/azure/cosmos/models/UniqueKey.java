@@ -19,8 +19,10 @@ import java.util.List;
  *
  * @see UniqueKeyPolicy
  */
-public final class UniqueKey extends JsonSerializableWrapper{
+public final class UniqueKey {
     private List<String> paths;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Instantiates a new Unique key.
@@ -68,11 +70,12 @@ public final class UniqueKey extends JsonSerializableWrapper{
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
+    void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         if (paths != null) {
             this.jsonSerializable.set(Constants.Properties.PATHS, paths);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

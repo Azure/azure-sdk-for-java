@@ -233,11 +233,11 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         includedPath.setPath("/*");
         List<Index> indexes = new ArrayList<Index>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.invokeGetJsonSerializable(stringIndex), "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.invokeGetJsonSerializable(numberIndex), "precision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);

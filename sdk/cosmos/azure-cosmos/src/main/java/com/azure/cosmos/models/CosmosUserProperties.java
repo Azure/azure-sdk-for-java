@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * The Cosmos user properties.
  */
-public final class CosmosUserProperties extends ResourceWrapper{
+public final class CosmosUserProperties {
 
     private User user;
     /**
@@ -20,11 +20,6 @@ public final class CosmosUserProperties extends ResourceWrapper{
      */
     public CosmosUserProperties() {
         this.user = new User();
-    }
-
-    @Override
-    Resource getResource() {
-        return this.user;
     }
 
     /**
@@ -67,5 +62,9 @@ public final class CosmosUserProperties extends ResourceWrapper{
 
     static List<CosmosUserProperties> getFromV2Results(List<User> results) {
         return results.stream().map(CosmosUserProperties::new).collect(Collectors.toList());
+    }
+
+    Resource getResource() {
+        return this.user;
     }
 }

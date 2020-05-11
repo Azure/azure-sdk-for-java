@@ -48,22 +48,22 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         // read stored procedure to validate creation
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = createdCollection.getScripts()
-                .getStoredProcedure(readBackSp.getId()).read(null);
+                .getStoredProcedure(ModelBridgeInternal.invokeGetResource(readBackSp).getId()).read(null);
 
         // validate stored procedure creation
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
-                .withId(readBackSp.getId()).withStoredProcedureBody("function() {var x = 10;}").notNullEtag().build();
+                .withId(ModelBridgeInternal.invokeGetResource(readBackSp).getId()).withStoredProcedureBody("function() {var x = 10;}").notNullEtag().build();
         validateSuccess(readObservable, validatorForRead);
 
         // update stored procedure
         readBackSp.setBody("function() {var x = 11;}");
 
         Mono<CosmosAsyncStoredProcedureResponse> replaceObservable = createdCollection.getScripts()
-                .getStoredProcedure(readBackSp.getId()).replace(readBackSp);
+                .getStoredProcedure(ModelBridgeInternal.invokeGetResource(readBackSp).getId()).replace(readBackSp);
 
         // validate stored procedure replace
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
-                .withId(readBackSp.getId()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
+                .withId(ModelBridgeInternal.invokeGetResource(readBackSp).getId()).withStoredProcedureBody("function() {var x = 11;}").notNullEtag().build();
         validateSuccess(replaceObservable, validatorForReplace);
     }
 

@@ -13,9 +13,11 @@ import java.util.List;
 /**
  * Represents a SQL query in the Azure Cosmos DB database service.
  */
-public final class SqlQuerySpec extends JsonSerializableWrapper{
+public final class SqlQuerySpec {
 
     private List<SqlParameter> parameters;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Initializes a new instance of the SqlQuerySpec class.
@@ -110,8 +112,7 @@ public final class SqlQuerySpec extends JsonSerializableWrapper{
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
+    void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
         boolean defaultParameters = (this.parameters != null && this.parameters.size() != 0);
 
@@ -121,4 +122,6 @@ public final class SqlQuerySpec extends JsonSerializableWrapper{
             this.jsonSerializable.remove("parameters");
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

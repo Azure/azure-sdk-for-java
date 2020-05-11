@@ -48,7 +48,7 @@ public class ReadFeedStoredProceduresTest extends TestSuiteBase {
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(createdStoredProcedures.size())
                 .exactlyContainsInAnyOrder(
-                        createdStoredProcedures.stream().map(d -> d.getResourceId()).collect(Collectors.toList()))
+                        createdStoredProcedures.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())

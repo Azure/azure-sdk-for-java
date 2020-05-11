@@ -154,7 +154,6 @@ public class CosmosAsyncContainer {
     public Mono<CosmosAsyncContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
-        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
@@ -620,7 +619,7 @@ public class CosmosAsyncContainer {
                    .flatMap(cosmosContainerResponse ->
                                 database.getDocClientWrapper()
                                     .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
+                                                     + ModelBridgeInternal.invokeGetResource(cosmosContainerResponse.getProperties())
                                                            .getResourceId() + "'", new FeedOptions())
                                     .single())
                    .flatMap(offerFeedResponse -> {
@@ -648,7 +647,7 @@ public class CosmosAsyncContainer {
                    .flatMap(cosmosContainerResponse ->
                                 database.getDocClientWrapper()
                                     .queryOffers("select * from c where c.offerResourceId = '"
-                                                     + cosmosContainerResponse.getProperties()
+                                                     + ModelBridgeInternal.invokeGetResource(cosmosContainerResponse.getProperties())
                                                            .getResourceId() + "'", new FeedOptions())
                                     .single())
                    .flatMap(offerFeedResponse -> {
@@ -672,8 +671,7 @@ public class CosmosAsyncContainer {
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
                    .flatMap(response -> this.database.getDocClientWrapper()
-                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response
-                                                                                                      .getProperties()
+                                            .queryOffers(database.getOfferQuerySpecFromResourceId(ModelBridgeInternal.invokeGetResource(response.getProperties())
                                                                                                       .getResourceId())
                                                 , new FeedOptions())
                                             .single()
@@ -704,8 +702,7 @@ public class CosmosAsyncContainer {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> this.database.getDocClientWrapper()
-                                            .queryOffers(database.getOfferQuerySpecFromResourceId(response
-                                                                                                      .getProperties()
+                                            .queryOffers(database.getOfferQuerySpecFromResourceId(ModelBridgeInternal.invokeGetResource(response.getProperties())
                                                                                                       .getResourceId())
                                                 , new FeedOptions())
                                             .single()

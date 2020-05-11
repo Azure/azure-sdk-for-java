@@ -90,7 +90,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
 
-        CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(ModelBridgeInternal.getResourceFromResourceWrapper(storedProcedureDef).getId());
+        CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(ModelBridgeInternal.invokeGetResource(storedProcedureDef).getId());
         CosmosStoredProcedureResponse readResponse = storedProcedure.read();
         validateResponse(storedProcedureDef, readResponse);
 
@@ -107,20 +107,20 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         validateResponse(storedProcedureDef, response);
 
         CosmosStoredProcedureResponse readResponse = container.getScripts()
-                                                                 .getStoredProcedure(storedProcedureDef.getId())
+                                                                 .getStoredProcedure(ModelBridgeInternal.invokeGetResource(storedProcedureDef).getId())
                                                                  .read();
         validateResponse(storedProcedureDef, readResponse);
         //replace
         storedProcedureDef = readResponse.getProperties();
         storedProcedureDef.setBody("function(){ var y = 20;}");
         CosmosStoredProcedureResponse replaceResponse = container.getScripts()
-                                                                    .getStoredProcedure(storedProcedureDef.getId())
+                                                                    .getStoredProcedure(ModelBridgeInternal.invokeGetResource(storedProcedureDef).getId())
                                                                     .replace(storedProcedureDef);
         validateResponse(storedProcedureDef, replaceResponse);
 
         storedProcedureDef.setBody("function(){ var z = 2;}");
         CosmosStoredProcedureResponse replaceResponse2 = container.getScripts()
-                                                                     .getStoredProcedure(storedProcedureDef.getId())
+                                                                     .getStoredProcedure(ModelBridgeInternal.invokeGetResource(storedProcedureDef).getId())
                                                                      .replace(storedProcedureDef,
                                                                              new CosmosStoredProcedureRequestOptions());
         validateResponse(storedProcedureDef, replaceResponse2);
@@ -141,7 +141,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
         container.getScripts()
-            .getStoredProcedure(storedProcedureDef.getId())
+            .getStoredProcedure(ModelBridgeInternal.invokeGetResource(storedProcedureDef).getId())
             .delete();
 
     }
@@ -155,7 +155,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureRequestOptions options = new CosmosStoredProcedureRequestOptions();
         options.setPartitionKey(PartitionKey.NONE);
         CosmosStoredProcedureResponse executeResponse = container.getScripts()
-                                                         .getStoredProcedure(sproc.getId())
+                                                         .getStoredProcedure(ModelBridgeInternal.invokeGetResource(sproc).getId())
                                                          .execute(null, options);
 
         assertThat(executeResponse.getActivityId()).isNotEmpty();
@@ -179,7 +179,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureProperties properties = getCosmosStoredProcedureProperties();
         container.getScripts().createStoredProcedure(properties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", properties.getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.invokeGetResource(properties).getId());
         FeedOptions feedOptions = new FeedOptions();
 
         CosmosPagedIterable<CosmosStoredProcedureProperties> feedResponseIterator1 =
@@ -195,10 +195,10 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
     private void validateResponse(CosmosStoredProcedureProperties properties,
                                   CosmosStoredProcedureResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
                 .as("check Resource Id")
-                .isEqualTo(properties.getId());
+                .isEqualTo(ModelBridgeInternal.invokeGetResource(properties).getId());
 
     }
 }

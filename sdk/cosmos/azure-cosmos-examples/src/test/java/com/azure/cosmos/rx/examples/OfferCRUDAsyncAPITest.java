@@ -144,11 +144,11 @@ public class OfferCRUDAsyncAPITest extends DocumentClientTest {
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.invokeGetJsonSerializable(stringIndex), "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.invokeGetJsonSerializable(numberIndex), "precision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);

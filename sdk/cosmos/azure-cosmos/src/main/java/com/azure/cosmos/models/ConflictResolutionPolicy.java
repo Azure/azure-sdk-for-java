@@ -61,7 +61,9 @@ import com.azure.cosmos.implementation.Strings;
  * }
  * </pre>
  */
-public final class ConflictResolutionPolicy extends JsonSerializableWrapper{
+public final class ConflictResolutionPolicy{
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.
@@ -246,4 +248,10 @@ public final class ConflictResolutionPolicy extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

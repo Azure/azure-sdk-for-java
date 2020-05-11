@@ -291,10 +291,10 @@ public class CosmosContainerTest extends TestSuiteBase {
     private void validateContainerResponse(CosmosContainerProperties containerProperties,
                                            CosmosContainerResponse createResponse) {
         // Basic validation
-        assertThat(createResponse.getProperties().getId()).isNotNull();
-        assertThat(createResponse.getProperties().getId())
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
             .as("check Resource Id")
-            .isEqualTo(containerProperties.getId());
+            .isEqualTo(ModelBridgeInternal.invokeGetResource(containerProperties).getId());
 
     }
 }
