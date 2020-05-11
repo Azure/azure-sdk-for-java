@@ -6,11 +6,11 @@ package com.azure.ai.formrecognizer.training;
 import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
-import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -44,7 +44,8 @@ public class FormTrainingClient {
      *
      * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
      */
-    FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
+    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
+    public FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
         this.client = formTrainingAsyncClient;
     }
 
@@ -69,7 +70,7 @@ public class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
+        return beginTraining(fileSourceUrl, useLabelFile, null, null);
     }
 
     /**
@@ -86,11 +87,7 @@ public class FormTrainingClient {
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure storage
      * blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
-     * @param includeSubFolders to indicate if sub folders within the set of prefix folders will
-     * also need to be included when searching for content to be preprocessed.
-     * @param filePrefix A case-sensitive prefix string to filter documents in the source path
-     * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
-     * sub folders for training.
+     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -99,9 +96,9 @@ public class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
-        boolean includeSubFolders, String filePrefix, Duration pollInterval) {
-        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders,
-            filePrefix, pollInterval).getSyncPoller();
+        TrainingFileFilter trainingFileFilter, Duration pollInterval) {
+        return client.beginTraining(fileSourceUrl, useLabelFile,
+            pollInterval, null).getSyncPoller();
     }
 
     /**

@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 
 import java.time.Duration;
@@ -27,7 +28,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining}
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean}
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
@@ -49,32 +50,34 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining} with options
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, Duration, TrainingFileFilter)}
+     * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-boolean-string-Duration
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient
+        // .beginTraining#string-boolean-boolean-string-Duration
         String trainingSetSource = "{training-set-SAS-URL}";
-        boolean isIncludeSubFolders = false; // {is-include-subfolders}
-        String filePrefix = "{file-prefix}";
-        boolean useLabelFile = true;
+        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix(
+            "Invoice");
 
-        formTrainingAsyncClient.beginTraining(trainingSetSource, useLabelFile, isIncludeSubFolders, filePrefix,
-            Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {
-                // if training polling operation completed, retrieve the final result.
-                recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
-                    System.out.printf("Model Id: %s%n", customFormModel.getModelId());
-                    System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
-                    customFormModel.getSubModels().forEach(customFormSubModel ->
-                        customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                            System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
-                                key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-                });
+        formTrainingAsyncClient.beginTraining(trainingSetSource, true, Duration.ofSeconds(5),
+            trainingFileFilter).subscribe(recognizePollingOperation -> {
+            // if training polling operation completed, retrieve the final result.
+            recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
+                System.out.printf("Model Id: %s%n", customFormModel.getModelId());
+                System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
+                customFormModel.getSubModels().forEach(customFormSubModel ->
+                    customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
+                        System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
+                            key, customFormModelField.getName(), customFormModelField.getAccuracy())));
             });
-        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-boolean-string-Duration
+        });
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient
+        // .beginTraining#string-boolean-boolean-string-Duration
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#getCustomModel}
+     * Code snippet for {@link FormTrainingAsyncClient#getCustomModel(String)}
      */
     public void getCustomModel() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModel#string
@@ -92,7 +95,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#getCustomModelWithResponse}
+     * Code snippet for {@link FormTrainingAsyncClient#getCustomModelWithResponse(String)}
      */
     public void getCustomModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getCustomModelWithResponse#string
@@ -111,7 +114,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#getAccountProperties}
+     * Code snippet for {@link FormTrainingAsyncClient#getAccountProperties()}
      */
     public void getAccountProperties() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties
@@ -124,7 +127,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#getAccountPropertiesWithResponse}
+     * Code snippet for {@link FormTrainingAsyncClient#getAccountPropertiesWithResponse()}
      */
     public void getAccountPropertiesWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse
@@ -150,7 +153,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#deleteModelWithResponse}
+     * Code snippet for {@link FormTrainingAsyncClient#deleteModelWithResponse(String)}
      */
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.deleteModelWithResponse#string
@@ -163,7 +166,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#getModelInfos}
+     * Code snippet for {@link FormTrainingAsyncClient#getModelInfos()}
      */
     public void getModelInfos() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getModelInfos

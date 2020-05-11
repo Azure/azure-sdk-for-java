@@ -4,6 +4,7 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -27,7 +28,7 @@ public final class Utility {
 
     /**
      * Automatically detect byte buffer's content type.
-     *
+     * <p>
      * Given the source: <a href="https://en.wikipedia.org/wiki/Magic_number_(programming)#Magic_numbers_in_files"></a>.
      *
      * @param buffer The byte buffer input.
@@ -36,8 +37,8 @@ public final class Utility {
      */
     public static Mono<ContentType> detectContentType(Flux<ByteBuffer> buffer) {
         byte[] header = new byte[4];
-        int[] written = new int[] {0};
-        ContentType[] contentType = { ContentType.fromString("none")};
+        int[] written = new int[]{0};
+        ContentType[] contentType = {ContentType.fromString("none")};
         return buffer.map(chunk -> {
             final int len = chunk.remaining();
             for (int i = 0; i < len; i++) {
@@ -62,15 +63,15 @@ public final class Utility {
             // current chunk don't have enough bytes so return true to get next Chunk if there is one.
             return true;
         })
-        .takeWhile(doContinue -> doContinue)
-        .then(Mono.defer(() -> {
-            if (contentType[0] != null) {
-                return Mono.just(contentType[0]);
-            } else {
-                return Mono.error(new RuntimeException("Content type could not be detected. "
-                    + "Should use other overload API that takes content type."));
-            }
-        }));
+            .takeWhile(doContinue -> doContinue)
+            .then(Mono.defer(() -> {
+                if (contentType[0] != null) {
+                    return Mono.just(contentType[0]);
+                } else {
+                    return Mono.error(new RuntimeException("Content type could not be detected. "
+                        + "Should use other overload API that takes content type."));
+                }
+            }));
     }
 
     private static boolean isJpeg(byte[] header) {
@@ -86,7 +87,7 @@ public final class Utility {
 
     private static boolean isPng(byte[] header) {
         return header[0] == (byte) 0x89
-            &&  header[1] == (byte) 0x50
+            && header[1] == (byte) 0x50
             && header[2] == (byte) 0x4e
             && header[3] == (byte) 0x47;
     }
@@ -108,6 +109,7 @@ public final class Utility {
      * InputStream.
      *
      * @param inputStream InputStream to back the Flux
+     *
      * @return Flux of ByteBuffer backed by the InputStream
      */
     public static Flux<ByteBuffer> toFluxByteBuffer(InputStream inputStream) {
@@ -131,29 +133,6 @@ public final class Utility {
             .filter(p -> p.readBytes() > 0)
             .map(Pair::buffer)
             .cache();
-    }
-
-    private static class Pair {
-        private ByteBuffer byteBuffer;
-        private int readBytes;
-
-        ByteBuffer buffer() {
-            return this.byteBuffer;
-        }
-
-        int readBytes() {
-            return this.readBytes;
-        }
-
-        Pair buffer(ByteBuffer byteBuffer) {
-            this.byteBuffer = byteBuffer;
-            return this;
-        }
-
-        Pair readBytes(int cnt) {
-            this.readBytes = cnt;
-            return this;
-        }
     }
 
     /**
@@ -185,5 +164,50 @@ public final class Utility {
     public static <T> void forEachWithIndex(Iterable<T> iterable, BiConsumer<Integer, T> biConsumer) {
         int[] index = new int[]{0};
         iterable.forEach(element -> biConsumer.accept(index[0]++, element));
+    }
+
+    /**
+     * Checks user provided {@link TrainingFileFilter} object and returns a default value for file prefix.
+     *
+     * @param trainingFileFilter The user provided {@link TrainingFileFilter} object.
+     *
+     * @return the file prefix value.
+     */
+    public static String getFilePrefix(TrainingFileFilter trainingFileFilter) {
+        return trainingFileFilter != null ? trainingFileFilter.getPrefix() : null;
+    }
+
+    /**
+     * Checks user provided {@link TrainingFileFilter} object and returns a default value for include sub folder.
+     *
+     * @param trainingFileFilter The user provided {@link TrainingFileFilter} object.
+     *
+     * @return the include sub folder boolean.
+     */
+    public static boolean getIncludeSubFolder(TrainingFileFilter trainingFileFilter) {
+        return trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false;
+    }
+
+    private static class Pair {
+        private ByteBuffer byteBuffer;
+        private int readBytes;
+
+        ByteBuffer buffer() {
+            return this.byteBuffer;
+        }
+
+        int readBytes() {
+            return this.readBytes;
+        }
+
+        Pair buffer(ByteBuffer byteBuffer) {
+            this.byteBuffer = byteBuffer;
+            return this;
+        }
+
+        Pair readBytes(int cnt) {
+            this.readBytes = cnt;
+            return this;
+        }
     }
 }

@@ -14,6 +14,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -38,10 +39,12 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.CustomModelTransforms.toCustomFormModel;
-import static com.azure.ai.formrecognizer.CustomModelTransforms.toCustomFormModelInfo;
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.DEFAULT_DURATION;
+import static com.azure.ai.formrecognizer.implementation.Utility.getFilePrefix;
+import static com.azure.ai.formrecognizer.implementation.Utility.getIncludeSubFolder;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
+import static com.azure.ai.formrecognizer.training.CustomModelTransforms.DEFAULT_DURATION;
+import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
+import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModelInfo;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -71,7 +74,8 @@ public class FormTrainingAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
+    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
+    public FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
     }
@@ -105,7 +109,7 @@ public class FormTrainingAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
+        return beginTraining(fileSourceUrl, useLabelFile, null, null);
     }
 
     /**
@@ -123,24 +127,23 @@ public class FormTrainingAsyncClient {
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
-     * @param includeSubFolders to indicate if sub folders within the set of prefix folders will
-     * also need to be included when searching for content to be preprocessed.
-     * @param filePrefix A case-sensitive prefix string to filter documents in the source path
-     * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
-     * sub folders for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
+     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
-        boolean useLabelFile, boolean includeSubFolders, String filePrefix, Duration pollInterval) {
+        boolean useLabelFile, Duration pollInterval, TrainingFileFilter trainingFileFilter) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
-            getTrainingActivationOperation(fileSourceUrl, includeSubFolders, filePrefix, useLabelFile),
+            getTrainingActivationOperation(fileSourceUrl,
+                getIncludeSubFolder(trainingFileFilter),
+                getFilePrefix(trainingFileFilter),
+                useLabelFile),
             createTrainingPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchTrainingModelResultOperation());

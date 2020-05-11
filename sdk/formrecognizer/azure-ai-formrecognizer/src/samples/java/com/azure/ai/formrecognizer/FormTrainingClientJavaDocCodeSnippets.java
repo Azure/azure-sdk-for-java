@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
+import com.azure.ai.formrecognizer.models.TrainingFileFilter;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -29,7 +30,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginTraining}
+     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean)}
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean
@@ -47,17 +48,18 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginTraining} with options
+     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainingFileFilter, Duration)}
+     * with options
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration
         String trainingSetSource = "{training-set-SAS-URL}";
-        boolean isIncludeSubFolders = false; // {is-include-subfolders}
-        String filePrefix = "{file-prefix}";
+        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix(
+            "Invoice");
         boolean useLabelFile = true;
 
         CustomFormModel customFormModel = formTrainingClient.beginTraining(
-            trainingSetSource, useLabelFile, isIncludeSubFolders, filePrefix, Duration.ofSeconds(5)).getFinalResult();
+            trainingSetSource, useLabelFile, trainingFileFilter, Duration.ofSeconds(5)).getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
@@ -69,7 +71,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#getCustomModel}
+     * Code snippet for {@link FormTrainingClient#getCustomModel(String)}
      */
     public void getCustomModel() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModel#string
@@ -85,7 +87,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#getCustomModelWithResponse}
+     * Code snippet for {@link FormTrainingClient#getCustomModelWithResponse(String, Context)}
      */
     public void getCustomModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModelWithResponse#string-Context
@@ -103,7 +105,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#getAccountProperties}
+     * Code snippet for {@link FormTrainingClient#getAccountProperties()}
      */
     public void getAccountProperties() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties
@@ -115,7 +117,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#getAccountPropertiesWithResponse}
+     * Code snippet for {@link FormTrainingClient#getAccountPropertiesWithResponse(Context)}
      */
     public void getAccountPropertiesWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountPropertiesWithResponse#Context
@@ -129,7 +131,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#deleteModel}
+     * Code snippet for {@link FormTrainingClient#deleteModel(String)}
      */
     public void deleteModel() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModel#string
@@ -140,7 +142,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#deleteModelWithResponse}
+     * Code snippet for {@link FormTrainingClient#deleteModelWithResponse(String, Context)}
      */
     public void deleteModelWithResponse() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModelWithResponse#string-Context
@@ -152,7 +154,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#getModelInfos}
+     * Code snippet for {@link FormTrainingClient#getModelInfos()}
      */
     public void getModelInfos() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos

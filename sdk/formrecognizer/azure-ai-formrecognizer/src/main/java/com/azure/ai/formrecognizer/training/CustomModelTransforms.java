@@ -19,6 +19,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,6 +34,7 @@ import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithInde
  */
 final class CustomModelTransforms {
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
+    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private CustomModelTransforms() {
     }

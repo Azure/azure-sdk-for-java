@@ -90,8 +90,7 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             syncPoller.waitForCompletion();
             CustomFormModel trainedModel = syncPoller.getFinalResult();
 
-            StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId(),
-                Context.NONE)).assertNext(customFormModelResponse -> {
+            StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId())).assertNext(customFormModelResponse -> {
                     assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
                     validateCustomModelData(syncPoller.getFinalResult(), false);
                 });
@@ -211,11 +210,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
     /**
      * Test for listing all models information with {@link Context}.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void getModelInfosWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormTrainingAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getModelInfos(Context.NONE))
+    @Test
+    void getModelInfosWithContext() {
+        StepVerifier.create(client.getModelInfos())
             .thenConsumeWhile(modelInfo ->
                 modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
                     && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)
