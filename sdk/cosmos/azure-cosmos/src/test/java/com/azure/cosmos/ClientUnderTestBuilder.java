@@ -25,9 +25,6 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         this.endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled());
         this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
         this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
-        this.idleConnectionTimeoutGateway(builder.getIdleConnectionTimeoutGateway());
-        this.maxConnectionPoolSizeGateway(builder.getMaxConnectionPoolSizeGateway());
-        this.requestTimeoutGateway(builder.getRequestTimeoutGateway());
     }
 
     @Override

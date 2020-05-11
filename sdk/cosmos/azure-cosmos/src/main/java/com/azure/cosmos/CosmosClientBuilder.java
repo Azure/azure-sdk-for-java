@@ -9,13 +9,8 @@ import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
-import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
-
-import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_IDLE_CONNECTION_TIMEOUT;
-import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_MAX_POOL_SIZE;
-import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT;
 
 /**
  * Helper class to buildAsyncClient {@link CosmosAsyncClient} instances
@@ -26,7 +21,7 @@ import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_REQUEST_T
  * CosmosAsyncClient client = new CosmosClientBuilder()
  *         .endpoint(serviceEndpoint)
  *         .key(key)
- *         .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
+ *         .directMode()
  *         .consistencyLevel(ConsistencyLevel.SESSION)
  *         .buildAsyncClient();
  * }
@@ -50,9 +45,6 @@ public class CosmosClientBuilder {
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private List<String> preferredRegions;
-    private Duration requestTimeoutGateway = DEFAULT_REQUEST_TIMEOUT;
-    private Duration idleConnectionTimeoutGateway = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-    private int maxConnectionPoolSizeGateway = DEFAULT_MAX_POOL_SIZE;
     private boolean endpointDiscoveryEnabled = true;
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
@@ -101,7 +93,7 @@ public class CosmosClientBuilder {
      * CosmosAsyncClient client1 = new CosmosClientBuilder()
      *         .endpoint(serviceEndpoint1)
      *         .key(key1)
-     *         .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
+     *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
      *         .connectionReuseAcrossClientsEnabled(true)
      *         .buildAsyncClient();
@@ -109,7 +101,7 @@ public class CosmosClientBuilder {
      * CosmosAsyncClient client2 = new CosmosClientBuilder()
      *         .endpoint(serviceEndpoint2)
      *         .key(key2)
-     *         .connectionModeDirect(DirectConnectionConfig.getDefaultConfig())
+     *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
      *         .connectionReuseAcrossClientsEnabled(true)
      *         .buildAsyncClient();
@@ -336,9 +328,19 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the default GATEWAY connection configuration to be used.
+     *
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder gatewayMode() {
+        this.gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
+        return this;
+    }
+
+    /**
      * Sets the GATEWAY connection configuration to be used.
      *
-     * @param gatewayConnectionConfig GATEWAY connection configuration
+     * @param gatewayConnectionConfig gateway connection configuration
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder gatewayMode(GatewayConnectionConfig gatewayConnectionConfig) {
@@ -347,13 +349,42 @@ public class CosmosClientBuilder {
     }
 
     /**
+     * Sets the default DIRECT connection configuration to be used.
+     *
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder directMode() {
+        this.directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
+        return this;
+    }
+
+    /**
      * Sets the DIRECT connection configuration to be used.
      *
-     * @param directConnectionConfig DIRECT connection configuration
+     * @param directConnectionConfig direct connection configuration
      * @return current CosmosClientBuilder
      */
     public CosmosClientBuilder directMode(DirectConnectionConfig directConnectionConfig) {
         this.directConnectionConfig = directConnectionConfig;
+        return this;
+    }
+
+    /**
+     * Sets the DIRECT connection configuration to be used.
+     * gatewayConnectionConfig - represents basic configuration to be used for gateway client.
+     *
+     * Even in direct connection mode, some of the meta data operations go through gateway client,
+     *
+     * Setting gateway connection config in this API doesn't affect the connection mode,
+     * which will be Direct in this case.
+     *
+     * @param directConnectionConfig direct connection configuration to be used
+     * @param gatewayConnectionConfig gateway connection configuration to be used
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder directMode(DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        this.directConnectionConfig = directConnectionConfig;
+        this.gatewayConnectionConfig = gatewayConnectionConfig;
         return this;
     }
 
@@ -402,42 +433,6 @@ public class CosmosClientBuilder {
      */
     public CosmosClientBuilder preferredRegions(List<String> preferredRegions) {
         this.preferredRegions = preferredRegions;
-        return this;
-    }
-
-    /**
-     * Sets the request timeout for gateway client (time to wait for response from network peer).
-     * The default is 60 seconds.
-     *
-     * @param requestTimeoutGateway the request timeout duration.
-     * @return current CosmosClientBuilder
-     */
-    public CosmosClientBuilder requestTimeoutGateway(Duration requestTimeoutGateway) {
-        this.requestTimeoutGateway = requestTimeoutGateway;
-        return this;
-    }
-
-    /**
-     * Sets the value of the connection pool size for gateway client, the default
-     * is 1000.
-     *
-     * @param maxConnectionPoolSizeGateway The value of the connection pool size.
-     * @return current CosmosClientBuilder
-     */
-    public CosmosClientBuilder maxConnectionPoolSizeGateway(int maxConnectionPoolSizeGateway) {
-        this.maxConnectionPoolSizeGateway = maxConnectionPoolSizeGateway;
-        return this;
-    }
-
-    /**
-     * Sets the value of the timeout for an idle connection for gateway client. After that time,
-     * the connection will be automatically closed.
-     *
-     * @param idleConnectionTimeoutGateway the duration for an idle connection.
-     * @return current CosmosClientBuilder
-     */
-    public CosmosClientBuilder idleConnectionTimeoutGateway(Duration idleConnectionTimeoutGateway) {
-        this.idleConnectionTimeoutGateway = idleConnectionTimeoutGateway;
         return this;
     }
 
@@ -545,34 +540,6 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Gets the request timeout for gateway client (time to wait for response from network peer).
-     *
-     * @return the request timeout duration for gateway.
-     */
-    Duration getRequestTimeoutGateway() {
-        return this.requestTimeoutGateway;
-    }
-
-    /**
-     * Gets the value of the timeout for an idle connection for gateway client, the default is 60
-     * seconds.
-     *
-     * @return Idle connection timeout duration.
-     */
-    Duration getIdleConnectionTimeoutGateway() {
-        return this.idleConnectionTimeoutGateway;
-    }
-
-    /**
-     * Gets the value of the connection pool size for gateway client is using.
-     *
-     * @return connection pool size.
-     */
-    int getMaxConnectionPoolSizeGateway() {
-        return this.maxConnectionPoolSizeGateway;
-    }
-
-    /**
      * Gets the flag to enable endpoint discovery for geo-replicated database accounts.
      *
      * @return whether endpoint discovery is enabled.
@@ -642,14 +609,16 @@ public class CosmosClientBuilder {
 
     //  Connection policy has to be built before it can be used by this builder
     private void buildConnectionPolicy() {
-        if (this.directConnectionConfig != null && this.gatewayConnectionConfig != null) {
+        if (this.directConnectionConfig == null && this.gatewayConnectionConfig == null) {
             throw new IllegalArgumentException("cannot build connection policy without direct or gateway connection config");
         } else if (this.directConnectionConfig != null) {
             this.connectionPolicy = new ConnectionPolicy(directConnectionConfig);
-            //  Set values for gateway client in direct mode
-            this.connectionPolicy.setIdleConnectionTimeout(this.idleConnectionTimeoutGateway);
-            this.connectionPolicy.setRequestTimeout(this.requestTimeoutGateway);
-            this.connectionPolicy.setMaxConnectionPoolSize(this.maxConnectionPoolSizeGateway);
+            //  Check if the user passed additional gateway connection configuration
+            if (this.gatewayConnectionConfig != null) {
+                this.connectionPolicy.setMaxConnectionPoolSize(this.gatewayConnectionConfig.getMaxConnectionPoolSize());
+                this.connectionPolicy.setRequestTimeout(this.gatewayConnectionConfig.getRequestTimeout());
+                this.connectionPolicy.setIdleConnectionTimeout(this.gatewayConnectionConfig.getIdleConnectionTimeout());
+            }
         } else {
             this.connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         }
@@ -672,8 +641,6 @@ public class CosmosClientBuilder {
             "cannot buildAsyncClient client without key credential");
         ifThrowIllegalArgException(directConnectionConfig == null && gatewayConnectionConfig == null,
             "cannot buildAsyncClient client without connection config");
-        ifThrowIllegalArgException(directConnectionConfig != null && gatewayConnectionConfig != null,
-            "cannot buildAsyncClient client with both gateway and direct connection config");
     }
 
     Configs configs() {

@@ -32,7 +32,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .gatewayMode(gatewayConnectionConfig);
+            .gatewayMode();
         CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
 
         AsyncDocumentClient asyncDocumentClient =
@@ -78,7 +78,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .directMode(directConnectionConfig);
+            .directMode();
 
         CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
 
@@ -108,9 +108,6 @@ public class ConnectionConfigTest extends TestSuiteBase {
             .userAgentSuffix("custom-direct-client")
             .multipleWriteRegionsEnabled(false)
             .endpointDiscoveryEnabled(false)
-            .requestTimeoutGateway(REQUEST_TIME_OUT)
-            .idleConnectionTimeoutGateway(IDLE_CONNECTION_TIME_OUT)
-            .maxConnectionPoolSizeGateway(MAX_CONNECTION_POOL_SIZE)
             .readRequestsFallbackEnabled(true);
 
         CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
@@ -125,21 +122,21 @@ public class ConnectionConfigTest extends TestSuiteBase {
     @Test(groups = { "emulator" })
     public void buildClient_withDirectAndGatewayConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
-        GatewayConnectionConfig gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
-        CosmosClient cosmosClient = null;
-        try {
-            cosmosClient = new CosmosClientBuilder()
-                .endpoint(TestConfigurations.HOST)
-                .key(TestConfigurations.MASTER_KEY)
-                .directMode(directConnectionConfig)
-                .gatewayMode(gatewayConnectionConfig)
-                .buildClient();
-            Assertions.failBecauseExceptionWasNotThrown(IllegalArgumentException.class);
-        } catch (Exception e) {
-            assertThat(e instanceof IllegalArgumentException);
-        } finally {
-            safeCloseSyncClient(cosmosClient);
-        }
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+        gatewayConnectionConfig.setMaxConnectionPoolSize(MAX_CONNECTION_POOL_SIZE);
+        gatewayConnectionConfig.setRequestTimeout(REQUEST_TIME_OUT);
+        gatewayConnectionConfig.setIdleConnectionTimeout(IDLE_CONNECTION_TIME_OUT);
+        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .directMode(directConnectionConfig, gatewayConnectionConfig);
+        CosmosClient cosmosClient = cosmosClientBuilder.buildClient();
+        AsyncDocumentClient asyncDocumentClient =
+            CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+        ConnectionPolicy connectionPolicy = asyncDocumentClient.getConnectionPolicy();
+        assertThat(connectionPolicy.getConnectionMode().equals(ConnectionMode.DIRECT));
+        validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
+        safeCloseSyncClient(cosmosClient);
     }
 
     @Test(groups = { "emulator" })
@@ -158,27 +155,24 @@ public class ConnectionConfigTest extends TestSuiteBase {
         }
     }
 
+    private void validateDirectAndGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder,
+                                                          DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+        validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
+        assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.DIRECT));
+        validateDirectConfig(connectionPolicy, directConnectionConfig);
+        validateGatewayConfig(connectionPolicy, gatewayConnectionConfig);
+    }
+
     private void validateGatewayConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder, GatewayConnectionConfig gatewayConnectionConfig) {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
         assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.GATEWAY));
-        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), gatewayConnectionConfig.getIdleConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), gatewayConnectionConfig.getMaxConnectionPoolSize()));
-        assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), gatewayConnectionConfig.getRequestTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getProxy(), gatewayConnectionConfig.getProxy()));
+        validateGatewayConfig(connectionPolicy, gatewayConnectionConfig);
     }
 
     private void validateDirectConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder, DirectConnectionConfig directConnectionConfig) {
         validateCommonConnectionConfig(connectionPolicy, cosmosClientBuilder);
         assertThat(Objects.equals(connectionPolicy.getConnectionMode(), ConnectionMode.DIRECT));
-        assertThat(Objects.equals(connectionPolicy.getConnectionTimeout(), directConnectionConfig.getConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), directConnectionConfig.getIdleChannelTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleChannelTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxChannelsPerEndpoint(), directConnectionConfig.getMaxChannelsPerEndpoint()));
-        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerChannel(), directConnectionConfig.getMaxRequestsPerChannel()));
-        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), cosmosClientBuilder.getIdleConnectionTimeoutGateway()));
-        assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), cosmosClientBuilder.getMaxConnectionPoolSizeGateway()));
-        assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), cosmosClientBuilder.getRequestTimeoutGateway()));
+        validateDirectConfig(connectionPolicy, directConnectionConfig);
     }
 
     private void validateCommonConnectionConfig(ConnectionPolicy connectionPolicy, CosmosClientBuilder cosmosClientBuilder) {
@@ -188,5 +182,21 @@ public class ConnectionConfigTest extends TestSuiteBase {
         assertThat(Objects.equals(connectionPolicy.getPreferredRegions(), cosmosClientBuilder.getPreferredRegions()));
         assertThat(Objects.equals(connectionPolicy.getThrottlingRetryOptions(), cosmosClientBuilder.getThrottlingRetryOptions()));
         assertThat(Objects.equals(connectionPolicy.getUserAgentSuffix(), cosmosClientBuilder.getUserAgentSuffix()));
+    }
+
+    private void validateGatewayConfig(ConnectionPolicy connectionPolicy, GatewayConnectionConfig gatewayConnectionConfig) {
+        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), gatewayConnectionConfig.getIdleConnectionTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getMaxConnectionPoolSize(), gatewayConnectionConfig.getMaxConnectionPoolSize()));
+        assertThat(Objects.equals(connectionPolicy.getRequestTimeout(), gatewayConnectionConfig.getRequestTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getProxy(), gatewayConnectionConfig.getProxy()));
+    }
+
+    private void validateDirectConfig(ConnectionPolicy connectionPolicy, DirectConnectionConfig directConnectionConfig) {
+        assertThat(Objects.equals(connectionPolicy.getConnectionTimeout(), directConnectionConfig.getConnectionTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), directConnectionConfig.getIdleChannelTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleChannelTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getMaxChannelsPerEndpoint(), directConnectionConfig.getMaxChannelsPerEndpoint()));
+        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerChannel(), directConnectionConfig.getMaxRequestsPerChannel()));
     }
 }
