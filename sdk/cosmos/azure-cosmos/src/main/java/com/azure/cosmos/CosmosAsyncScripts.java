@@ -74,9 +74,12 @@ public class CosmosAsyncScripts {
         StoredProcedure sProc = new StoredProcedure();
         sProc.setId(properties.getId());
         sProc.setBody(properties.getBody());
+        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
+            return createStoredProcedureInternal(sProc, options);
+        }
+
         final CosmosStoredProcedureRequestOptions requestOptions = options;
-        return TracerProvider.cosmosWithContext(withContext(context -> createStoredProcedure(sProc, requestOptions, context)),
-            container.getDatabase().getClient().getTracerProvider());
+        return withContext(context -> createStoredProcedureInternal(sProc, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
 
@@ -175,9 +178,11 @@ public class CosmosAsyncScripts {
         UserDefinedFunction udf = new UserDefinedFunction();
         udf.setId(properties.getId());
         udf.setBody(properties.getBody());
+        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
+            return createUserDefinedFunctionInternal(udf);
+        }
 
-        return TracerProvider.cosmosWithContext(withContext(context -> createUserDefinedFunction(udf, context)),
-            container.getDatabase().getClient().getTracerProvider());
+        return withContext(context -> createUserDefinedFunctionInternal(udf, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -271,8 +276,11 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        return TracerProvider.cosmosWithContext(withContext(context -> createTrigger(properties, context)),
-            container.getDatabase().getClient().getTracerProvider());
+        if (!container.getDatabase().getClient().getTracerProvider().isEnabled()) {
+            return createTriggerInternal(properties);
+        }
+
+        return withContext(context -> createTriggerInternal(properties, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -423,33 +431,48 @@ public class CosmosAsyncScripts {
         });
     }
 
-    private Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedure(StoredProcedure sProc,
+    private Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,
                                                                            CosmosStoredProcedureRequestOptions options,
                                                                            Context context) {
         String spanName = "createStoredProcedure." + container.getId();
-        Mono<CosmosAsyncStoredProcedureResponse> responseMono = database.getDocClientWrapper()
-            .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options)).map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, this.container))
-            .single();
+        Mono<CosmosAsyncStoredProcedureResponse> responseMono = createStoredProcedureInternal(sProc, options);
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunction(
+    private Mono<CosmosAsyncStoredProcedureResponse> createStoredProcedureInternal(StoredProcedure sProc,
+                                                                           CosmosStoredProcedureRequestOptions options) {
+        return database.getDocClientWrapper()
+            .createStoredProcedure(container.getLink(), sProc, ModelBridgeInternal.toRequestOptions(options)).map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, this.container))
+            .single();
+    }
+
+    private Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
         UserDefinedFunction udf,
         Context context) {
         String spanName = "createUserDefinedFunction." + container.getId();
-        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = database.getDocClientWrapper()
-            .createUserDefinedFunction(container.getLink(), udf, null).map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response,
-                this.container)).single();
+        Mono<CosmosAsyncUserDefinedFunctionResponse> responseMono = createUserDefinedFunctionInternal(udf);
         return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
     }
 
-    private Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties, Context context) {
+    private Mono<CosmosAsyncUserDefinedFunctionResponse> createUserDefinedFunctionInternal(
+        UserDefinedFunction udf) {
+        return database.getDocClientWrapper()
+            .createUserDefinedFunction(container.getLink(), udf, null).map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response,
+                this.container)).single();
+    }
+
+    private Mono<CosmosAsyncTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties, Context context) {
         String spanName = "createTrigger." + container.getId();
+        Mono<CosmosAsyncTriggerResponse> responseMono = createTriggerInternal(properties);
+        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
+    }
+
+    private Mono<CosmosAsyncTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {
         Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(properties));
-        Mono<CosmosAsyncTriggerResponse> responseMono = database.getDocClientWrapper()
+        return database.getDocClientWrapper()
             .createTrigger(container.getLink(), trigger, null)
             .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, this.container))
             .single();
-        return this.container.getDatabase().getClient().getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(), database.getClient().getServiceEndpoint());
     }
+
 }

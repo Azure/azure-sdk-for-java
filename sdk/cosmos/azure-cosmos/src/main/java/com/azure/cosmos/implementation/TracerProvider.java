@@ -15,6 +15,7 @@ import reactor.core.publisher.Signal;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
@@ -24,6 +25,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 public class TracerProvider {
     private final List<Tracer> tracers = new ArrayList<>();
+    private final boolean isEnabled;
     public final static String DB_TYPE_VALUE = "cosmosdb";
     public final static String DB_TYPE = "db.type";
     public final static String DB_INSTANCE = "db.instance";
@@ -34,6 +36,7 @@ public class TracerProvider {
     public static final String ERROR_STACK = "error.stack";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String MICROSOFT_DOCOMENTDB = "Microsoft.DocumentDB";
+
 
     public final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
         reactor.util.context.Context reactorContext) -> {
@@ -48,21 +51,14 @@ public class TracerProvider {
         }
     };
 
-    public static <T> Mono<T> cosmosWithContext(Mono<T> mono, TracerProvider tracerProvider) {
-        if(tracerProvider.isEnabled()) {
-            return mono.subscriberContext(TracerProvider.callDepthAttributeFunc);
-        } else {
-            return mono;
-        }
-    }
-
     public TracerProvider(Iterable<Tracer> tracers) {
         Objects.requireNonNull(tracers, "'tracers' cannot be null.");
         tracers.forEach(this.tracers::add);
+        isEnabled = this.tracers.size() > 0;
     }
 
     public boolean isEnabled() {
-        return tracers.size() > 0;
+        return isEnabled;
     }
 
     /**
@@ -159,26 +155,23 @@ public class TracerProvider {
                                              String databaseId,
                                              String endpoint,
                                              Function<T, Integer> statusCodeFunc) {
-        final boolean isTracingEnabled = this.isEnabled();
-        final AtomicReference<Context> parentContext = isTracingEnabled
-            ? new AtomicReference<>(Context.NONE)
-            : null;
+        final AtomicReference<Context> parentContext = new AtomicReference<>(Context.NONE);
         CallDepth callDepth = FluxUtil.toReactorContext(context).getOrDefault(COSMOS_CALL_DEPTH,
             CallDepth.ZERO);
         assert callDepth != null;
         final boolean isNestedCall = callDepth.equals(CallDepth.TWO_OR_MORE);
         return resultPublisher
             .doOnSubscribe(ignoredValue -> {
-                if (isTracingEnabled && !isNestedCall) {
+                if (!isNestedCall) {
                     parentContext.set(this.startSpan(spanName, databaseId, endpoint,
                         context));
                 }
             }).doOnSuccess(response -> {
-                if (isTracingEnabled && !isNestedCall) {
+                if (!isNestedCall) {
                     this.endSpan(parentContext.get(), Signal.complete(), statusCodeFunc.apply(response));
                 }
             }).doOnError(throwable -> {
-                if (isTracingEnabled && !isNestedCall) {
+                if (!isNestedCall) {
                     this.endSpan(parentContext.get(), Signal.error(throwable), 0);
                 }
             });

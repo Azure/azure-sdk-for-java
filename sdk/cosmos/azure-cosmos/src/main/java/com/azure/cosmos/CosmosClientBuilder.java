@@ -43,22 +43,12 @@ public class CosmosClientBuilder {
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
 
-    private TracerProvider tracerProvider;
     private boolean contentResponseOnWriteEnabled;
 
     /**
      * Instantiates a new Cosmos client builder.
      */
     public CosmosClientBuilder() {
-        this.tracerProvider = new TracerProvider(ServiceLoader.load(Tracer.class));
-    }
-
-    /**
-     * Get the tracer provider
-     * @return tracerProvider
-     */
-    public TracerProvider getTracerProvider() {
-        return tracerProvider;
     }
 
     /**
@@ -307,6 +297,7 @@ public class CosmosClientBuilder {
     }
 
     /**
+<<<<<<< Updated upstream
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
