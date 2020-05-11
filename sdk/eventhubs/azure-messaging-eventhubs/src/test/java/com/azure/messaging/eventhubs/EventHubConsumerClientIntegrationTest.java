@@ -26,7 +26,7 @@ import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUM
  */
 @Tag(TestUtils.INTEGRATION)
 public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "1";
+    private static final String PARTITION_ID = "0";
 
     private IntegrationTestEventData testData = null;
     private EventHubConsumerClient consumer;
@@ -109,12 +109,16 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void receiveUntilTimeout() {
         // Act
+        final int maximumSize = 100;
+        final int eventSize = testData.getEvents().size();
         final IterableStream<PartitionEvent> receive = consumer.receiveFromPartition(PARTITION_ID,
             100, startingPosition, Duration.ofSeconds(20));
 
         // Assert
         final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
-        Assertions.assertEquals(testData.getEvents().size(), asList.size());
+        final int actual = asList.size();
+        Assertions.assertTrue(eventSize < actual && actual > maximumSize,
+            String.format("Should be between %s and %s. Actual: %s", eventSize, maximumSize, actual));
     }
 
     /**
