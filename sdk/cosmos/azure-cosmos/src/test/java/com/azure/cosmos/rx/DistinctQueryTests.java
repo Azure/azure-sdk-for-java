@@ -192,6 +192,7 @@ public class DistinctQueryTests extends TestSuiteBase {
         );
 
         for (String query : queries) {
+            logger.info("Current distinct query: " + query);
             FeedOptions options = new FeedOptions();
             options.setMaxDegreeOfParallelism(2);
 
