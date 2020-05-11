@@ -6,12 +6,15 @@
 
 This project works with *any Gremlin-compatible* data store, and also with [Azure Cosmos DB](https://docs.microsoft.com/azure/cosmos-db/introduction). Cosmos is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as Graph, MongoDB, and SQL. Spring Data Gremlin provides a delightful experience to interact with Azure Cosmos DB Graph API. 
 
+## Examples
+Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-boot-sample-data-gremlin).
+
 ## Getting started
 
 ### Add the dependency
-`azure-spring-boot-starter-data-gremlin` is published on Maven Central Repository. If you are using Maven, add the following dependency.  
+`azure-data-gremlin-spring-boot-starter` is published on Maven Central Repository. If you are using Maven, add the following dependency.  
 
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-data-gremlin;current})
+[//]: # ({x-version-update-start;com.azure:azure-data-gremlin-spring-boot-starter;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -162,7 +165,7 @@ public interface PersonRepository extends GremlinRepository<Person, String> {
 
 ### Create an Application class
 Here create an application class with all the components
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/gremlin/PersonRepository.java#L10-L27 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/gremlin/SampleApplication.java#L10-L27 -->
 ```java
 @SpringBootApplication
 public class SampleApplication implements CommandLineRunner {

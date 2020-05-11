@@ -38,6 +38,7 @@ Please refer to [sample project here](../azure-spring-boot-samples/azure-spring-
 `azure-cosmosdb-spring-boot-starter` is published on Maven Central Repository.  
 If you are using Maven, add the following dependency.  
 
+[//]: # ({x-version-update-start;com.azure:azure-cosmosdb-spring-boot-starter;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
@@ -45,6 +46,7 @@ If you are using Maven, add the following dependency.
     <version>2.2.5-beta.1</version>
 </dependency>
 ```
+[//]: # ({x-version-update-end})
 
 ### Add the property setting
 
