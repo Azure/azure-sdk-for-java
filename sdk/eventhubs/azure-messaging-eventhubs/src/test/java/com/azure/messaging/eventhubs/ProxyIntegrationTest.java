@@ -3,9 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
@@ -14,6 +14,7 @@ import com.azure.messaging.eventhubs.models.PartitionEvent;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -27,13 +28,14 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  * Tests simple receive and send scenarios through proxy. Requires that {@link Configuration#PROPERTY_HTTP_PROXY}
  * is set.
  */
-public class ProxyIntegrationTest extends IntegrationTestBase {
-    private static final String PARTITION_ID = "0";
+@Tag(TestUtils.INTEGRATION)
+class ProxyIntegrationTest extends IntegrationTestBase {
+    private static final String PARTITION_ID = "4";
 
     private EventHubProducerClient sender;
     private SendOptions sendOptions;
 
-    public ProxyIntegrationTest() {
+    ProxyIntegrationTest() {
         super(new ClientLogger(ProxyIntegrationTest.class));
     }
 
@@ -62,7 +64,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
      * Verifies we can send events through the proxy.
      */
     @Test
-    public void send() {
+    void send() {
         sender.send(new EventData("Hello".getBytes(UTF_8)), sendOptions);
     }
 
@@ -70,7 +72,7 @@ public class ProxyIntegrationTest extends IntegrationTestBase {
      * Verifies we can receive events through the proxy.
      */
     @Test
-    public void receive() {
+    void receive() {
         // Arrange
         final int numberOfEvents = 15;
         final String messageId = UUID.randomUUID().toString();
