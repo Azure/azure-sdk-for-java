@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.JsonSerializableWrapper;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.SerializationFormattingPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -39,7 +38,7 @@ public class JsonSerializable {
     transient ObjectNode propertyBag = null;
     private ObjectMapper om;
 
-    protected JsonSerializable() {
+    public JsonSerializable() {
         this.propertyBag = OBJECT_MAPPER.createObjectNode();
     }
 
@@ -60,7 +59,7 @@ public class JsonSerializable {
      *
      * @param jsonString the json string that represents the JsonSerializable.
      */
-    protected JsonSerializable(String jsonString) {
+    public JsonSerializable(String jsonString) {
         this.propertyBag = fromJson(jsonString);
     }
 
@@ -69,7 +68,7 @@ public class JsonSerializable {
      *
      * @param objectNode the {@link ObjectNode} that represent the {@link JsonSerializable}
      */
-    protected JsonSerializable(ObjectNode objectNode) {
+    public JsonSerializable(ObjectNode objectNode) {
         this.propertyBag = objectNode;
     }
 
@@ -92,7 +91,7 @@ public class JsonSerializable {
         }
     }
 
-    static Object getValue(JsonNode value) {
+    public static Object getValue(JsonNode value) {
         if (value.isValueNode()) {
             switch (value.getNodeType()) {
                 case BOOLEAN:
@@ -129,11 +128,11 @@ public class JsonSerializable {
     }
 
     @JsonIgnore
-    protected Logger getLogger() {
+    public Logger getLogger() {
         return LOGGER;
     }
 
-    protected void populatePropertyBag() {
+    public void populatePropertyBag() {
     }
 
     /**
@@ -142,7 +141,7 @@ public class JsonSerializable {
      * @return the HashMap.
      */
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> getMap() {
+    public Map<String, Object> getMap() {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 
@@ -152,7 +151,7 @@ public class JsonSerializable {
      * @param propertyName the property to look up.
      * @return true if the property exists.
      */
-    protected boolean has(String propertyName) {
+    public boolean has(String propertyName) {
         return this.propertyBag.has(propertyName);
     }
 
@@ -161,7 +160,7 @@ public class JsonSerializable {
      *
      * @param propertyName the property to remove.
      */
-    protected void remove(String propertyName) {
+    public void remove(String propertyName) {
         this.propertyBag.remove(propertyName);
     }
 
@@ -173,7 +172,7 @@ public class JsonSerializable {
      * @param value the value of the property.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    protected <T> void set(String propertyName, T value) {
+    public <T> void set(String propertyName, T value) {
         if (value == null) {
             // Sets null.
             this.propertyBag.putNull(propertyName);
@@ -189,7 +188,12 @@ public class JsonSerializable {
             JsonSerializable castedValue = (JsonSerializable) value;
             castedValue.populatePropertyBag();
             this.propertyBag.set(propertyName, castedValue.propertyBag);
-        } else {
+        } else if (value instanceof JsonSerializableWrapper) {
+            JsonSerializableWrapper castedValue = (JsonSerializableWrapper) value;
+            ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(castedValue);
+            this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag);
+        }
+        else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.
             this.propertyBag.set(propertyName, getMapper().valueToTree(value));
@@ -214,6 +218,12 @@ public class JsonSerializable {
                 castedValue.populatePropertyBag();
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
                                     : this.getMapper().createObjectNode());
+            } else if (childValue instanceof JsonSerializableWrapper) {
+                // JsonSerializable
+                JsonSerializableWrapper castedValue = (JsonSerializableWrapper) childValue;
+                ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(castedValue);
+                targetArray.add(ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag != null ?
+                    ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag : this.getMapper().createObjectNode());
             } else {
                 // POJO, JsonNode, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
@@ -228,7 +238,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the value of the property.
      */
-    protected Object get(String propertyName) {
+    public Object get(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return getValue(this.propertyBag.get(propertyName));
         } else {
@@ -242,7 +252,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the string value.
      */
-    protected String getString(String propertyName) {
+    public String getString(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asText();
         } else {
@@ -260,7 +270,7 @@ public class JsonSerializable {
     // and the compiler will insert automatic unboxing of the Boolean value. If a null value is
     // returned, this will result in a NPE. @Nullable is used indicate that returning null is permitted.
     @Nullable
-    protected Boolean getBoolean(String propertyName) {
+    public Boolean getBoolean(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asBoolean();
         } else {
@@ -274,7 +284,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the boolean value
      */
-    protected Integer getInt(String propertyName) {
+    public Integer getInt(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asInt();
         } else {
@@ -302,7 +312,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the double value.
      */
-    protected Double getDouble(String propertyName) {
+    public Double getDouble(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return this.propertyBag.get(propertyName).asDouble();
         } else {
@@ -325,7 +335,7 @@ public class JsonSerializable {
      */
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
-    protected <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
+    public <T> T getObject(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             JsonNode jsonObj = propertyBag.get(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -344,7 +354,10 @@ public class JsonSerializable {
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 return (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
-            } else {
+            } else if (JsonSerializableWrapper.class.isAssignableFrom(c)) {
+                return (T) ModelBridgeInternal.instantiateJsonSerializableWrapper((ObjectNode) jsonObj, c);
+            }
+            else {
                 // POJO
                 JsonSerializable.checkForValidPOJO(c);
                 try {
@@ -373,7 +386,7 @@ public class JsonSerializable {
      */
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done only after checking values are assignable from Class<T>.
-    protected <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
+    public <T> List<T> getList(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
@@ -381,6 +394,7 @@ public class JsonSerializable {
             boolean isBaseClass = false;
             boolean isEnumClass = false;
             boolean isJsonSerializable = false;
+            boolean isJsonSerializableWrapper = false;
 
             // Check once.
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -390,6 +404,8 @@ public class JsonSerializable {
                 isEnumClass = true;
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 isJsonSerializable = true;
+            } else if (JsonSerializableWrapper.class.isAssignableFrom(c)) {
+                isJsonSerializableWrapper = true;
             } else {
                 JsonSerializable.checkForValidPOJO(c);
             }
@@ -413,6 +429,10 @@ public class JsonSerializable {
                     T t = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) n, c);
                     result.add(t);
 
+                } else if (isJsonSerializableWrapper) {
+                    // JsonSerializableWrapper
+                    T t = (T) ModelBridgeInternal.instantiateJsonSerializableWrapper((ObjectNode) n, c);
+                    result.add(t);
                 } else {
                     // POJO
                     try {
@@ -439,7 +459,7 @@ public class JsonSerializable {
      * before converting to required class.
      * @return the object collection.
      */
-    protected <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
+    public <T> Collection<T> getCollection(String propertyName, Class<T> c, boolean... convertFromCamelCase) {
         return getList(propertyName, c, convertFromCamelCase);
     }
 
@@ -449,7 +469,7 @@ public class JsonSerializable {
      * @param propertyName the property to get.
      * @return the ObjectNode.
      */
-    ObjectNode getObject(String propertyName) {
+    public ObjectNode getObject(String propertyName) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             return (ObjectNode) this.propertyBag.get(propertyName);
         }
@@ -481,7 +501,7 @@ public class JsonSerializable {
      * @param propertyNames that form the path to the property to get.
      * @return the value of the property.
      */
-    protected Object getObjectByPath(List<String> propertyNames) {
+    public Object getObjectByPath(List<String> propertyNames) {
         ObjectNode propBag = this.propertyBag;
         JsonNode value = null;
         String propertyName = null;
@@ -541,7 +561,7 @@ public class JsonSerializable {
      *
      * @return the byte buffer
      */
-    protected ByteBuffer serializeJsonToByteBuffer() {
+    public ByteBuffer serializeJsonToByteBuffer() {
         this.populatePropertyBag();
         return Utils.serializeJsonToByteBuffer(getMapper(), propertyBag);
     }
@@ -574,14 +594,15 @@ public class JsonSerializable {
      */
     @SuppressWarnings("unchecked")
     // Implicit or explicit cast to T is done after checking values are assignable from Class<T>.
-    protected <T> T toObject(Class<T> c) {
+    public <T> T toObject(Class<T> c) {
         // TODO: We have to remove this if we do not want to support CosmosItemProperties anymore, and change all the
         //  tests accordingly
         if (CosmosItemProperties.class.isAssignableFrom(c)) {
             return (T) new CosmosItemProperties(this.propertyBag);
         }
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
-                || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
+                || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)
+                || JsonSerializableWrapper.class.isAssignableFrom(c)) {
             return c.cast(this.get(Constants.Properties.VALUE));
         }
         if (List.class.isAssignableFrom(c)) {
@@ -617,7 +638,7 @@ public class JsonSerializable {
      *
      * @return the JSON string.
      */
-    protected String toJson() {
+    public String toJson() {
         return this.toJson(SerializationFormattingPolicy.NONE);
     }
 
@@ -648,7 +669,7 @@ public class JsonSerializable {
         return toJson(propertyBag);
     }
 
-    protected ObjectNode getPropertyBag() {
+    public ObjectNode getPropertyBag() {
         return this.propertyBag;
     }
 }
