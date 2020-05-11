@@ -3,17 +3,18 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.JsonSerializable;
+
 /**
  * Represents a SQL parameter in the SqlQuerySpec used for queries in the Azure Cosmos DB database service.
  */
-public final class SqlParameter extends JsonSerializable {
-
+public final class SqlParameter extends JsonSerializableWrapper{
 
     /**
      * Initializes a new instance of the SqlParameter class.
      */
     public SqlParameter() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -23,7 +24,7 @@ public final class SqlParameter extends JsonSerializable {
      * @param value the value of the parameter.
      */
     public SqlParameter(String name, Object value) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setName(name);
         this.setValue(value);
     }
@@ -34,7 +35,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the name of the parameter.
      */
     public String getName() {
-        return super.getString("name");
+        return this.jsonSerializable.getString("name");
     }
 
     /**
@@ -44,7 +45,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the SqlParameter.
      */
     public SqlParameter setName(String name) {
-        super.set("name", name);
+        this.jsonSerializable.set("name", name);
         return this;
     }
 
@@ -56,7 +57,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the value of the parameter.
      */
     public <T> T getValue(Class<T> classType) {
-        return super.getObject("value", classType);
+        return this.jsonSerializable.getObject("value", classType);
     }
 
     /**
@@ -66,7 +67,7 @@ public final class SqlParameter extends JsonSerializable {
      * @return the SqlParameter.
      */
     public SqlParameter setValue(Object value) {
-        super.set("value", value);
+        this.jsonSerializable.set("value", value);
         return this;
     }
 }
