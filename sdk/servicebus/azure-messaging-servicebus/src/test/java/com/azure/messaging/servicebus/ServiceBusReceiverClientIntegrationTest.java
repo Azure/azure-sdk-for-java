@@ -105,8 +105,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void multipleReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessages = 2;
-        final int totalReceive = 2;
+        final int maxMessages = 3;
+        final int totalReceive = 10;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
@@ -145,7 +145,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessagesEachReceive = 2;
+        final int maxMessagesEachReceive = 4;
         final int totalReceiver = 10;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
@@ -159,24 +159,26 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Act & Assert
         AtomicInteger totalReceivedMessages = new AtomicInteger();
         List<Thread> receiverThreads = new ArrayList<>();
-        for (int i = 0; i< totalReceiver; ++i) {
+        for (int i = 0; i < totalReceiver; ++i) {
             int finalI = i;
             Thread thread = new Thread(() -> {
-                IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.receive(maxMessagesEachReceive, shortTimeOut);
+                IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.
+                    receive(maxMessagesEachReceive, shortTimeOut);
                 int receivedMessageCount = 0;
                 long lastSequenceReceiver = 0;
                 for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
-                    logger.verbose("Receiver [{}}] Received SQ: " ,(finalI + 1)  ,receivedMessage.getMessage().getSequenceNumber());
+                    logger.verbose("Receiver [{}}] Received Sequence Number: ", (finalI + 1), receivedMessage
+                        .getMessage().getSequenceNumber());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     receiver.complete(receivedMessage.getMessage());
-                    assertTrue( receivedMessage.getMessage().getSequenceNumber() > lastSequenceReceiver);
+                    assertTrue(receivedMessage.getMessage().getSequenceNumber() > lastSequenceReceiver);
                     lastSequenceReceiver = receivedMessage.getMessage().getSequenceNumber();
                     messagesPending.decrementAndGet();
                     ++receivedMessageCount;
                 }
                 totalReceivedMessages.addAndGet(receivedMessageCount);
                 assertEquals(maxMessagesEachReceive, receivedMessageCount);
-                logger.verbose("!!!! Receiver [{}}] . Test Completed receivers  ", (finalI + 1) );
+                logger.verbose("Receiver [{}}] . Test Completed receivers  ", (finalI + 1));
             });
             receiverThreads.add(thread);
         }
@@ -191,7 +193,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 e.printStackTrace();
             }
         });
-        assertEquals( totalReceiver * maxMessagesEachReceive, totalReceivedMessages.get());
+        assertEquals(totalReceiver * maxMessagesEachReceive, totalReceivedMessages.get());
     }
 
     /**

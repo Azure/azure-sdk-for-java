@@ -108,4 +108,12 @@ class SynchronousReceiveWork {
         this.error = error;
         emitter.error(error);
     }
+
+    /**
+     * Indicate is an this work encountered an error.
+     * @return true if an error occured.
+     */
+    Throwable getError() {
+        return this.error;
+    }
 }

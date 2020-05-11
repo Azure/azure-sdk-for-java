@@ -45,7 +45,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         new AtomicReference<>();
 
     /* To hold each receive work item to be processed.*/
-    private final AtomicReference<LongLivedMessageSubscriber> longLivedMessageSubscriber = new AtomicReference<>();
+    private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -482,7 +482,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      */
-    public synchronized IterableStream<ServiceBusReceivedMessageContext> receive(int maxMessages, Duration maxWaitTime) {
+    public synchronized IterableStream<ServiceBusReceivedMessageContext> receive(int maxMessages,
+        Duration maxWaitTime) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
@@ -616,7 +617,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
 
-        LongLivedMessageSubscriber messageSubscriber = longLivedMessageSubscriber.getAndSet(null);
+        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.getAndSet(null);
         if (messageSubscriber != null && !messageSubscriber.isDisposed()) {
             messageSubscriber.dispose();
         }
@@ -627,21 +628,21 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-                                   FluxSink<ServiceBusReceivedMessageContext> emitter) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
         synchronized (lock) {
             final long id = idGenerator.getAndIncrement();
             final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
                 emitter);
 
-            LongLivedMessageSubscriber messageSubscriber = longLivedMessageSubscriber.get();
+            SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
             if (messageSubscriber == null) {
                 messageSubscriber = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                    .subscribeWith(new LongLivedMessageSubscriber(asyncClient.getReceiverOptions().getPrefetchCount()));
-                logger.verbose("Created source for receiving messages from [{}]", asyncClient.getEntityPath());
-                longLivedMessageSubscriber.set(messageSubscriber);
+                    .subscribeWith(new SynchronousMessageSubscriber(asyncClient.getReceiverOptions()
+                        .getPrefetchCount(), work));
+                synchronousMessageSubscriber.set(messageSubscriber);
+            } else {
+                messageSubscriber.queueWork(work);
             }
-
-            messageSubscriber.queueWork(work);
             logger.verbose("[{}] Receive request queued up.", work.getId());
         }
     }
