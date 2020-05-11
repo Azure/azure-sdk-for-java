@@ -7,6 +7,9 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * Configuration properties for Gremlin login, telemetry, ssl.
+ */
 @Validated
 @ConfigurationProperties("gremlin")
 public class GremlinProperties {

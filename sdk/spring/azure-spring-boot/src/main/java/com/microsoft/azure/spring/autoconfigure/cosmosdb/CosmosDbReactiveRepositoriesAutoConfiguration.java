@@ -12,7 +12,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-
+/**
+ * Import {@link CosmosDbReactiveRepositoriesAutoConfigureRegistrar} class as a Bean in Spring.
+ */
 @Configuration
 @ConditionalOnClass({ ReactiveCosmosRepository.class })
 @ConditionalOnMissingBean({ ReactiveCosmosRepositoryFactoryBean.class,

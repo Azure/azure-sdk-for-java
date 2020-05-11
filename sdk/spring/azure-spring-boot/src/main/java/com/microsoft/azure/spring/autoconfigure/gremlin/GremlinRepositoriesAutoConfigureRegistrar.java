@@ -9,6 +9,9 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
 
 import java.lang.annotation.Annotation;
 
+/**
+ * Declare {@link EnableGremlinRepositories} annotation and {@link EnableGremlinRepositoriesConfiguration} configuration for default non-async auto-configuration.
+ */
 public class GremlinRepositoriesAutoConfigureRegistrar extends AbstractRepositoryConfigurationSourceSupport {
 
     @Override

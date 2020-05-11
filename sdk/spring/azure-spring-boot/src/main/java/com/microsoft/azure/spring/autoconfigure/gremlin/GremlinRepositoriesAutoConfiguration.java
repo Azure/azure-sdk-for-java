@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
+/**
+ * Import {@link GremlinRepositoriesAutoConfigureRegistrar} class as a Bean in Spring.
+ */
 @Configuration
 @ConditionalOnClass({GremlinRepository.class})
 @ConditionalOnMissingBean({GremlinRepositoryFactoryBean.class, GremlinRepositoryConfigurationExtension.class})

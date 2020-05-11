@@ -13,6 +13,9 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * Configuration properties for CosmosDB database, consistency, telemetry, connection, query metrics and diagnostics.
+ */
 @Validated
 @ConfigurationProperties("azure.cosmosdb")
 public class CosmosDBProperties {

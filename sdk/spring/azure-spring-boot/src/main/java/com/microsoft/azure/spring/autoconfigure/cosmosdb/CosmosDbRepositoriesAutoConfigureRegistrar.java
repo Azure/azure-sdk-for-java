@@ -10,6 +10,9 @@ import org.springframework.data.repository.config.RepositoryConfigurationExtensi
 
 import java.lang.annotation.Annotation;
 
+/**
+ * Declare {@link EnableCosmosRepositories} annotation and {@link EnableCosmosDbRepositoriesConfiguration} configuration for default non-async auto-configuration.
+ */
 public class CosmosDbRepositoriesAutoConfigureRegistrar extends AbstractRepositoryConfigurationSourceSupport {
     @Override
     protected Class<? extends Annotation> getAnnotation() {

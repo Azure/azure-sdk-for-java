@@ -28,6 +28,9 @@ import java.util.Map;
 import static com.microsoft.azure.telemetry.TelemetryData.SERVICE_NAME;
 import static com.microsoft.azure.telemetry.TelemetryData.getClassPackageSimpleName;
 
+/**
+ * To create Gremlin factory and template for auto-configure Gremlin properties.
+ */
 @Configuration
 @ConditionalOnClass({GremlinFactory.class, GremlinTemplate.class, MappingGremlinConverter.class})
 @ConditionalOnResource(resources = "classpath:gremlin.enable.config")
