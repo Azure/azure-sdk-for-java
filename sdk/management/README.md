@@ -1,6 +1,6 @@
 # Azure management client library for Java
 
-The Azure Management Library for Java is a higher-level, object-oriented API for *managing* Azure resources,
+The Azure Management Libraries for Java is a higher-level, object-oriented API for *managing* Azure resources,
 that is optimized for ease of use, succinctness and consistency.
 
 - [API reference documentation][docs]
@@ -52,6 +52,30 @@ that is optimized for ease of use, succinctness and consistency.
 [//]: # ({x-version-update-end})
 
 Alternatively, [Azure Core OkHttp HTTP client][azure_core_http_okhttp] is another plugin for HTTP client API.
+
+### Authentication
+
+By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
+
+- `AZURE_CLIENT_ID` for Azure client ID.
+- `AZURE_TENANT_ID` for Azure tenant ID.
+- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+
+In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
+
+With above configuration, `azure` client can be authenticated by following code:
+
+```
+AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+TokenCredential credential = new DefaultAzureCredentialBuilder()
+    .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+    .build();
+Azure azure = Azure
+    .authenticate(credential, profile)
+    .withDefaultSubscription();
+```
+
+See [Authentication][authenticate] for more options.
 
 ## Key concepts
 
@@ -167,18 +191,6 @@ or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/question
 An `HttpClient` implementation must exist on the classpath.
 See [Include optional packages](#include-optional-packages).
 
-### Authentication
-
-By default, Azure Active Directory token authentication depends on correct configure of following environment variables.
-
-- `AZURE_CLIENT_ID` for Azure client ID.
-- `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
-
-In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
-
-See [Authenticate][authenticate] for more options.
-
 ### Enabling logging
 
 Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
@@ -217,5 +229,5 @@ If you would like to become an active contributor to this project please follow 
 [azure_core_http_okhttp]: ../core/azure-core-http-okhttp
 [azure_core]: ../core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[authenticate]: AUTH.md
+[authenticate]: docs/AUTH.md
 [reactor]: https://projectreactor.io/
