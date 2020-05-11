@@ -250,8 +250,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
             TextAnalyticsPagedIterable<RecognizeEntitiesResult> response = client.recognizeEntitiesBatch(inputs, null, Context.NONE);
             response.forEach(recognizeEntitiesResult -> {
-                Exception exception = assertThrows(TextAnalyticsException.class, () -> recognizeEntitiesResult.getEntities());
-                assertTrue(exception.getMessage().equals(BATCH_ERROR_EXCEPTION_MESSAGE));
+                Exception exception = assertThrows(TextAnalyticsException.class, recognizeEntitiesResult::getEntities);
+                assertEquals(exception.getMessage(), BATCH_ERROR_EXCEPTION_MESSAGE);
             });
         });
     }
