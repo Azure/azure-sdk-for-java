@@ -98,7 +98,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
-            new AvroReaderFactory().getAvroReader(header, body, blockOffset)
+            new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
                 .readAvroObjects()
                 .map({ avroObject -> avroObject.getObject() })
         )
@@ -177,7 +177,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, chunkSize, 129, fileChannel.size())
         def complexVerifier = StepVerifier.create(
-            new AvroReaderFactory().getAvroReader(header, body, 129)
+            new AvroReaderFactory().getAvroReader(header, body, 129 as long, -1 as long)
                 .readAvroObjects()
                 .map({avroObject -> avroObject.getObject()})
         )
@@ -244,7 +244,7 @@ class AvroReaderTest extends Specification {
         Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
         Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
         def complexVerifier = StepVerifier.create(
-            new AvroReaderFactory().getAvroReader(header, body, blockOffset)
+            new AvroReaderFactory().getAvroReader(header, body, blockOffset, -1 as long)
                 .readAvroObjects()
                 .map({avroObject -> avroObject.getObject()})
                 .map({o -> (String)((Map<String, Object>) o).get("subject")})
@@ -273,6 +273,51 @@ class AvroReaderTest extends Specification {
         462744      | 167        || _
         528587      | 48         || _
         555167      | 0          || _
+    }
+
+    @Unroll
+    def "Parse CF large filterIndex"() {
+        setup:
+        String fileName = "changefeed_large.avro"
+        ClassLoader classLoader = getClass().getClassLoader()
+        File f = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(f.getAbsolutePath())
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
+
+        /* Special use case for Changefeed - parse header and block separate. */
+        when:
+        Flux<ByteBuffer> header = FluxUtil.readFile(fileChannel, 0, 5 * Constants.KB)
+        Flux<ByteBuffer> body = FluxUtil.readFile(fileChannel, blockOffset, fileChannel.size())
+        def complexVerifier = StepVerifier.create(
+            new AvroReaderFactory().getAvroReader(header, body, blockOffset, filterIndex)
+                .readAvroObjects()
+                .map({avroObject -> avroObject.getObject()})
+                .map({o -> (String)((Map<String, Object>) o).get("subject")})
+                .index()
+                .map({ tuple2 -> Tuples.of(tuple2.getT1() + 1000 - numObjects, tuple2.getT2()) })
+        )
+
+        then:
+        int complexCounter = 0
+        while (complexCounter < numObjects) {
+            assert complexVerifier
+                .expectNextMatches({t -> t.getT2() == "/blobServices/default/containers/test-container/blobs/" + t.getT1()})
+            complexCounter++
+        }
+        assert complexVerifier.verifyComplete()
+
+        where:
+        blockOffset | filterIndex | numObjects || _
+        1953        | 0           | 999        || _
+        67686       | 34          | 846        || _
+        133529      | 56          | 705        || _
+        199372      | -1          | 643        || _
+        265215      | 50          | 473        || _
+        331058      | -1          | 405        || _
+        396901      | 10          | 275        || _
+        462744      | 67          | 99         || _
+        528587      | 40          | 7          || _
+        555167      | -1          | 0          || _
     }
 
     def "Parse CF small"() {

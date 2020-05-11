@@ -11,6 +11,9 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * This class contains properties of a BlobChangefeedEvent.
+ */
 public class BlobChangefeedEvent {
 
     private final String topic;
@@ -22,6 +25,18 @@ public class BlobChangefeedEvent {
     private final Long dataVersion;
     private final String metadataVersion;
 
+    /**
+     * Constructs a {@link BlobChangefeedEvent}.
+     *
+     * @param topic The topic.
+     * @param subject The subject.
+     * @param eventType {@link BlobChangefeedEventType}
+     * @param eventTime The {@link OffsetDateTime event time}.
+     * @param id The identifier.
+     * @param data {@link BlobChangefeedEventData}
+     * @param dataVersion The data version.
+     * @param metadataVersion The metadata version.
+     */
     public BlobChangefeedEvent(String topic, String subject, BlobChangefeedEventType eventType,
         OffsetDateTime eventTime, String id, BlobChangefeedEventData data, Long dataVersion, String metadataVersion) {
         this.topic = topic;
@@ -34,22 +49,27 @@ public class BlobChangefeedEvent {
         this.metadataVersion = metadataVersion;
     }
 
-    public static BlobChangefeedEvent fromRecord(Object r) {
-        AvroSchema.checkType("record", r, Map.class);
-        Map<?, ?> record = (Map<?, ?>) r;
+    /**
+     * Constructs a {@link BlobChangefeedEvent}.
+     *
+     * @param record The record.
+     */
+    public static BlobChangefeedEvent fromRecord(Object record) {
+        AvroSchema.checkType("r", record, Map.class);
+        Map<?, ?> r = (Map<?, ?>) record;
 
-        if (!record.get(AvroConstants.RECORD).equals("BlobChangeEvent")) {
+        if (!r.get(AvroConstants.RECORD).equals("BlobChangeEvent")) {
             throw new IllegalArgumentException("Not a valid BlobChangefeedEvent.");
         }
 
-        Object topic = record.get("topic");
-        Object subject = record.get("subject");
-        Object eventType = record.get("eventType");
-        Object eventTime = record.get("eventTime");
-        Object id = record.get("id");
-        Object data = record.get("data");
-        Object dataVersion = record.get("dataVersion");
-        Object metadataVersion = record.get("metadataVersion");
+        Object topic = r.get("topic");
+        Object subject = r.get("subject");
+        Object eventType = r.get("eventType");
+        Object eventTime = r.get("eventTime");
+        Object id = r.get("id");
+        Object data = r.get("data");
+        Object dataVersion = r.get("dataVersion");
+        Object metadataVersion = r.get("metadataVersion");
 
         return new BlobChangefeedEvent(
             nullOrString("topic", topic),
@@ -105,34 +125,58 @@ public class BlobChangefeedEvent {
         return (Boolean) o;
     }
 
+    /**
+     * @return the topic.
+     */
     public String getTopic() {
         return topic;
     }
 
+    /**
+     * @return the subject.
+     */
     public String getSubject() {
         return subject;
     }
 
+    /**
+     * @return {@link BlobChangefeedEventType}
+     */
     public BlobChangefeedEventType getEventType() {
         return eventType;
     }
 
+    /**
+     * @return The {@link OffsetDateTime event time}.
+     */
     public OffsetDateTime getEventTime() {
         return eventTime;
     }
 
+    /**
+     * @return the identifer.
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * @return {@link BlobChangefeedEventData}.
+     */
     public BlobChangefeedEventData getData() {
         return data;
     }
 
+    /**
+     * @return the data version.
+     */
     public Long getDataVersion() {
         return dataVersion;
     }
 
+    /**
+     * @return the metadata version.
+     */
     public String getMetadataVersion() {
         return metadataVersion;
     }

@@ -1,11 +1,18 @@
 package com.azure.storage.blob.changefeed
 
+import com.azure.core.util.FluxUtil
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventType
 import com.azure.storage.blob.models.BlobType
+import reactor.core.publisher.Flux
 import spock.lang.Specification
 
+import java.nio.ByteBuffer
+import java.nio.channels.AsynchronousFileChannel
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardOpenOption
 import java.time.OffsetDateTime
 
 class HelperSpec extends Specification {
@@ -18,6 +25,14 @@ class HelperSpec extends Specification {
             BlobChangefeedEvent event = getMockBlobChangefeedEvent(i)
             mockEvents.add(event)
         }
+    }
+
+    Flux<ByteBuffer> readFile(String fileName) {
+        ClassLoader classLoader = getClass().getClassLoader()
+        File file = new File(classLoader.getResource(fileName).getFile())
+        Path path = Paths.get(file.getAbsolutePath())
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(path, StandardOpenOption.READ)
+        return FluxUtil.readFile(fileChannel)
     }
 
     BlobChangefeedEvent getMockBlobChangefeedEvent(int index) {

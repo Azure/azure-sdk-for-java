@@ -7,33 +7,27 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.publisher.Flux;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Gets events for a shard (parallel writing in a single segment).
+ * A class that represents a Shard in Changefeed.
+ *
+ * A shard is a virtual directory that contains some number of chunks.
  */
 class Shard  {
 
-    /* Changefeed container */
-    private final BlobContainerAsyncClient client;
-
-    /* Segment manifest location. */
-    private final String shardPath;
-
-    /* Cursor associated with parent segment. */
-    private final ChangefeedCursor segmentCursor;
-
-    /* User provided changefeed cursor. */
-    private final ShardCursor userShardCursor;
-
-    /* Chunk factory. */
-    private final ChunkFactory chunkFactory;
+    private final BlobContainerAsyncClient client; /* Changefeed container */
+    private final String shardPath; /* Shard virtual directory path/prefix. */
+    private final ChangefeedCursor segmentCursor; /* Cursor associated with parent segment. */
+    private final ShardCursor userShardCursor; /* User provided cursor for this shard. */
+    private final ChunkFactory chunkFactory; /* Chunk factory. */
 
     /**
-     * Creates a shard with the associated path, cursors and factory.
+     * Creates a new Shard.
      */
     Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor,
         ShardCursor userShardCursor, ChunkFactory chunkFactory) {
@@ -45,16 +39,18 @@ class Shard  {
     }
 
     /**
-     * Get all the events for the Shard.
+     * Get events for the Shard.
      * @return A reactive stream of {@link BlobChangefeedEventWrapper}
      */
     Flux<BlobChangefeedEventWrapper> getEvents() {
+        /* List relevant chunks. */
         return listChunks()
             .concatMap(chunkPath -> {
+                /* Defaults for blockOffset and objectBlockIndex. */
                 long blockOffset = 0;
                 long objectBlockIndex = 0;
-                /* If a user shard cursor was provided and it points to this chunk path,
-                   the chunk should get events based off the blockOffset and objectBlockIndex. */
+                /* If a user cursor was provided and it points to this chunk path, the chunk should get events based
+                   off the blockOffset and objectBlockIndex. */
                 if (userShardCursor != null && userShardCursor.getChunkPath().equals(chunkPath)) {
                     blockOffset = userShardCursor.getBlockOffset();
                     objectBlockIndex = userShardCursor.getObjectBlockIndex();
@@ -65,24 +61,27 @@ class Shard  {
     }
 
     /**
-     * Lists chunks in a shard.
+     * Lists relevant chunks in a shard.
+     * @return A reactive stream of chunks.
      */
     private Flux<String> listChunks() {
         Flux<String> chunks = this.client.listBlobs(new ListBlobsOptions().setPrefix(shardPath))
-            .map(blobItem ->
-                blobItem.getName());
+            .map(BlobItem::getName);
+        /* If no user cursor was provided, just return all chunks without filtering. */
         if (userShardCursor == null) {
             return chunks;
+        /* If a user cursor was provided, filter out chunks that come before the chunk specified in the cursor. */
         } else {
-            /* Only passes through chunks equal to or after the desired chunk. */
-            AtomicBoolean pass = new AtomicBoolean();
+            AtomicBoolean pass = new AtomicBoolean(); /* Whether or not to pass the event through. */
             return chunks.filter(chunkPath -> {
                 if (pass.get()) {
                     return true;
                 } else {
+                    /* If we hit the chunk specified in the user cursor, set pass to true and pass this chunk
+                       and any subsequent chunks through. */
                     if (userShardCursor.getChunkPath().equals(chunkPath)) {
-                        pass.set(true);
-                        return true;
+                        pass.set(true); /* This allows us to pass subsequent chunks through.*/
+                        return true; /* This allows us to pass this chunk through. */
                     } else {
                         return false;
                     }

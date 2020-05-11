@@ -35,10 +35,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      * @param endTime The {@link OffsetDateTime end time}.
      */
     BlobChangefeedPagedFlux(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime) {
-        startTime = startTime == null ? OffsetDateTime.MIN : startTime;
-        endTime = endTime == null ? OffsetDateTime.MAX : endTime;
-
-        this.changefeed = new Changefeed(client, startTime, endTime);
+        this.changefeed = new ChangefeedFactory().getChangefeed(client, startTime, endTime);
     }
 
     /**
@@ -49,7 +46,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      * @param cursor The cursor.
      */
     BlobChangefeedPagedFlux(BlobContainerAsyncClient client, String cursor) {
-        this.changefeed = new Changefeed(client, cursor);
+        this.changefeed = new ChangefeedFactory().getChangefeed(client, cursor);
     }
 
     @Override

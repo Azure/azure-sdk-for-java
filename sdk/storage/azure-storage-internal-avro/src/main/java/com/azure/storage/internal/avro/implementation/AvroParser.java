@@ -47,7 +47,7 @@ public class AvroParser {
     /* Holds objects collected so far. */
     private List<AvroObject> objects;
 
-    private boolean readSeparate; /* Whether or not the Avro Parser will read the Header and Block off different
+    private boolean partialRead; /* Whether or not the Avro Parser will read the Header and Block off different
                                      streams. This is custom functionality for Changefeed. */
 
     private long objectBlockIndex; /* Index of the object in the block. */
@@ -56,10 +56,10 @@ public class AvroParser {
     /**
      * Constructs a new Avro Parser object.
      */
-    AvroParser(boolean readSeparate) {
+    AvroParser(boolean partialRead) {
         this.state = new AvroParserState();
         this.objects = new ArrayList<>();
-        this.readSeparate = readSeparate;
+        this.partialRead = partialRead;
 
         /* Start off by adding the header schema to the stack so we can parse it. */
         AvroHeaderSchema headerSchema = new AvroHeaderSchema(
@@ -69,8 +69,8 @@ public class AvroParser {
         headerSchema.pushToStack();
     }
 
-    Mono<Void> prepareParserToReadBody(long bodyOffset) {
-        if (!this.readSeparate) {
+    Mono<Void> prepareParserToReadBody(long sourceOffset, long thresholdIndex) {
+        if (!this.partialRead) {
             return Mono.error(new IllegalStateException("This method should only be called when parsing header "
                 + "and body separately."));
         }
@@ -78,10 +78,10 @@ public class AvroParser {
             return Mono.error(new IllegalStateException("Expected to read entire header before preparing "
                 + "parser to read body."));
         }
-        this.state = new AvroParserState(bodyOffset);
+        this.state = new AvroParserState(sourceOffset);
         this.objects = new ArrayList<>();
-        /* Read a block. */
-        onBlock(null);
+        /* Read a block. Only populate objects past the indexThreshold. */
+        onBlock(thresholdIndex);
         return Mono.empty();
     }
 
@@ -105,23 +105,33 @@ public class AvroParser {
         this.syncMarker = (byte[]) sync;
 
         /* On reading the header, read a block. */
-        if (!readSeparate) { /* Only do this if we are reading the stream from start to finish. */
-            onBlock(null);
+        if (!partialRead) { /* Only do this if we are reading the stream from start to finish. */
+            onBlock(-1L);
         }
     }
 
     /**
      * Block handler.
      *
-     * @param ignore null
+     * @param index The object index after which to start aggregating events in the block.
+     *                         By default this is 0 to collect all objects in the block.
      */
-    private void onBlock(Object ignore) {
+    private void onBlock(Object index) {
         /* On reading the block, read another block. */
+        AvroSchema.checkType("objectBlockIndex", index, Long.class);
+        long threshold = (Long) index;
+
         this.blockOffset = this.state.getSourceOffset();
         this.objectBlockIndex = 0;
         AvroBlockSchema blockSchema = new AvroBlockSchema(
             this.objectType,
-            o -> this.objects.add(new AvroObject(blockOffset, objectBlockIndex++, o)), /* Object result handler. */
+            o -> {
+                if (objectBlockIndex <= threshold) {
+                    this.objectBlockIndex++;
+                } else {
+                    this.objects.add(new AvroObject(blockOffset, this.objectBlockIndex++, o));
+                }
+            }, /* Object result handler. */
             this.syncMarker,
             this.state,
             this::onBlock
@@ -152,7 +162,7 @@ public class AvroParser {
            to the stack as necessary. */
 
         /* Keep progressing in parsing schemas while able to make progress. */
-        if (this.readSeparate && this.state.isStackEmpty()) {
+        if (this.partialRead && this.state.isStackEmpty()) {
             return Flux.empty();
         }
         AvroSchema schema = this.state.peekFromStack();
@@ -172,7 +182,7 @@ public class AvroParser {
                     throw logger.logExceptionAsError(new IllegalStateException("Expected composite type to be done."));
                 }
             }
-            if (this.readSeparate && this.state.isStackEmpty()) {
+            if (this.partialRead && this.state.isStackEmpty()) {
                 break;
             }
             schema = this.state.peekFromStack();

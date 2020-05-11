@@ -9,6 +9,9 @@ import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 
 import java.util.Map;
 
+/**
+ * This class contains properties of a BlobChangefeedEventData.
+ */
 public class BlobChangefeedEventData {
 
     private final String api;
@@ -25,6 +28,23 @@ public class BlobChangefeedEventData {
     private final Boolean recursive;
     private final String sequencer;
 
+    /**
+     * Constructs a {@link BlobChangefeedEventData}.
+     *
+     * @param api The api.
+     * @param clientRequestId The client request id.
+     * @param requestId The request id.
+     * @param eTag The eTag.
+     * @param contentType The content type.
+     * @param contentLength Th4e content length.
+     * @param blobType {@link BlobType}
+     * @param contentOffset The content offset.
+     * @param destinationUrl The destination url.
+     * @param sourceUrl The source url.
+     * @param blobUrl The blob url.
+     * @param recursive Whether or not this operation was recursive.
+     * @param sequencer The sequencer.
+     */
     public BlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
         String contentType, Long contentLength, BlobType blobType, Long contentOffset, String destinationUrl,
         String sourceUrl, String blobUrl, Boolean recursive, String sequencer) {
@@ -43,7 +63,7 @@ public class BlobChangefeedEventData {
         this.sequencer = sequencer;
     }
 
-    public static BlobChangefeedEventData fromRecord(Object d) {
+    static BlobChangefeedEventData fromRecord(Object d) {
         AvroSchema.checkType("data", d, Map.class);
         Map<?, ?> data = (Map<?, ?>) d;
 
@@ -83,54 +103,93 @@ public class BlobChangefeedEventData {
         );
     }
 
+    /**
+     * @return The api.
+     */
     public String getApi() {
         return api;
     }
 
+    /**
+     * @return The client request id.
+     */
     public String getClientRequestId() {
         return clientRequestId;
     }
 
+    /**
+     * @return The request id.
+     */
     public String getRequestId() {
         return requestId;
     }
 
-    public String geteTag() {
+    /**
+     * @return The eTag.
+     */
+    public String getETag() {
         return eTag;
     }
 
+    /**
+     * @return The content type.
+     */
     public String getContentType() {
         return contentType;
     }
 
+    /**
+     * @return The content length.
+     */
     public Long getContentLength() {
         return contentLength;
     }
 
+    /**
+     * @return {@link BlobType}.
+     */
     public BlobType getBlobType() {
         return blobType;
     }
 
+    /**
+     * @return The content offset.
+     */
     public Long getContentOffset() {
         return contentOffset;
     }
 
+    /**
+     * @return The destination url.
+     */
     public String getDestinationUrl() {
         return destinationUrl;
     }
 
+    /**
+     * @return The source url.
+     */
     public String getSourceUrl() {
         return sourceUrl;
     }
 
+    /**
+     * @return The blob url.
+     */
     public String getBlobUrl() {
         return blobUrl;
     }
 
+    /**
+     * @return Whether or not this operation was recursive.
+     */
     public Boolean getRecursive() {
         return recursive;
     }
 
+    /**
+     * @return The sequencer.
+     */
     public String getSequencer() {
         return sequencer;
     }
@@ -143,7 +202,7 @@ public class BlobChangefeedEventData {
         return getApi().equals(that.getApi())
             && getClientRequestId().equals(that.getClientRequestId())
             && getRequestId().equals(that.getRequestId())
-            && geteTag().equals(that.geteTag())
+            && getETag().equals(that.getETag())
             && getContentType().equals(that.getContentType())
             && getContentLength().equals(that.getContentLength())
             && getBlobType() == that.getBlobType()

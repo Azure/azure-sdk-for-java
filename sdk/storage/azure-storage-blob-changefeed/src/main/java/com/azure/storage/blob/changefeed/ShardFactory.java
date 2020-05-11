@@ -29,7 +29,7 @@ class ShardFactory {
      * Gets a new instance of a Shard.
      */
     Shard getShard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor,
-        final ShardCursor userShardCursor) {
+        ShardCursor userShardCursor) {
         return new Shard(client, shardPath, segmentCursor, userShardCursor, chunkFactory);
     }
 }

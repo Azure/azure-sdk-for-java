@@ -45,8 +45,11 @@ class ChunkTest extends HelperSpec {
             .thenReturn(mockBlob)
         when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(any(BlobAsyncClient.class), anyLong(), anyLong()))
             .thenReturn(mockBlobLazyDownloader)
+        /* The data returned by the lazy downloader does not matter since we're mocking avroObjects.  */
         when(mockBlobLazyDownloader.download())
             .thenReturn(Flux.empty())
+        when(mockAvroReader.readAvroObjects())
+            .thenReturn(Flux.fromIterable(mockAvroObjects))
 
         Map<String, ShardCursor> shardCursors = new HashMap<>()
         shardCursors.put(shardPath, null)
@@ -59,12 +62,15 @@ class ChunkTest extends HelperSpec {
         getAvroObjects()
     }
 
+    /* These are the records emitted in the AvroParser. */
+    /* This tests that the BlobChangefeedEvent objects are populated correctly from a record. */
     def getEvents() {
         for (int i = 0; i < 10; i++) {
             mockRecords.add(getMockChangefeedEventRecord(mockEvents.get(i)))
         }
     }
 
+    /* These are the wrapped records -> AvroObjects emitted by the AvroReader. */
     def getAvroObjects() {
         mockAvroObjects.add(new AvroObject(1234, 0, mockRecords.get(0)))
         mockAvroObjects.add(new AvroObject(1234, 1, mockRecords.get(1)))
@@ -83,8 +89,6 @@ class ChunkTest extends HelperSpec {
         setup:
         when(mockAvroReaderFactory.getAvroReader(any(Flux.class)))
             .thenReturn(mockAvroReader)
-        when(mockAvroReader.readAvroObjects())
-            .thenReturn(Flux.fromIterable(mockAvroObjects))
 
         when:
         ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
@@ -105,7 +109,7 @@ class ChunkTest extends HelperSpec {
             .verifyComplete()
 
         verify(mockContainer).getBlobAsyncClient(chunkPath) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, Chunk.DEFAULT_BODY_SIZE, 0) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, ChunkFactory.DEFAULT_BODY_SIZE, 0) || true
         verify(mockBlobLazyDownloader).download() || true
         verify(mockAvroReaderFactory).getAvroReader(Flux.empty()) || true
         verify(mockAvroReader).readAvroObjects() || true
@@ -115,12 +119,10 @@ class ChunkTest extends HelperSpec {
     @Unroll
     def "getEvents cursor"() {
         setup:
-        when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong()))
+        when(mockAvroReaderFactory.getAvroReader(any(Flux.class), any(Flux.class), anyLong(), anyLong()))
             .thenReturn(mockAvroReader)
         when(mockBlobLazyDownloaderFactory.getBlobLazyDownloader(any(BlobAsyncClient.class), anyLong()))
             .thenReturn(mockBlobLazyDownloader)
-        when(mockAvroReader.readAvroObjects())
-            .thenReturn(Flux.fromIterable(mockAvroObjects.subList(avroBlockIndex, 10)))
 
         when:
         ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
@@ -128,58 +130,50 @@ class ChunkTest extends HelperSpec {
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
-        if (offset < 1)
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 0) })
-        if (offset < 2)
-            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 1) })
-        if (offset < 3)
-            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 2) })
-        if (offset < 4)
-            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 1234, 3) })
-        if (offset < 5)
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 0) })
-        if (offset < 6)
-            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 1) })
-        if (offset < 7)
-            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 2) })
-        if (offset < 8)
-            sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 5678, 3) })
-        if (offset < 9)
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 9101, 0) })
-        if (offset < 10)
-            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1() + offset, 9101, 1) })
-
-        sv.verifyComplete()
+        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 2) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 1234, 3) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 2) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 5678, 3) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 9101, 1) })
+            .verifyComplete()
 
         verify(mockContainer).getBlobAsyncClient(chunkPath) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, Chunk.DEFAULT_BODY_SIZE, blockOffset) || true
-        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, Chunk.DEFAULT_HEADER_SIZE) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, ChunkFactory.DEFAULT_HEADER_SIZE) || true
+        verify(mockBlobLazyDownloaderFactory).getBlobLazyDownloader(mockBlob, ChunkFactory.DEFAULT_BODY_SIZE, blockOffset) || true
         verify(mockBlobLazyDownloader, times(2)).download() || true
-        verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset) || true
+        verify(mockAvroReaderFactory).getAvroReader(Flux.empty(), Flux.empty(), blockOffset, objectBlockIndex) || true
         verify(mockAvroReader).readAvroObjects() || true
 
         where:
-        avroBlockIndex | blockOffset | objectBlockIndex || offset
-        /* First block. */
-        0              | 1234        | 0                || 1            /* Stooped at first event. */
-        0              | 1234        | 1                || 2            /* Stopped at middle event. */
-        0              | 1234        | 2                || 3            /* Stopped at middle event. */
-        0              | 1234        | 3                || 4            /* Stopped at last event. */
-        /* Middle block. */
-        4              | 5678        | 0                || 5
-        4              | 5678        | 1                || 6
-        4              | 5678        | 2                || 7
-        4              | 5678        | 3                || 8
-        /* Last block. */
-        8              | 9101        | 0                || 9            /* 1 event expected. */
-        8              | 9101        | 1                || 10           /* No events expected here. */
+        blockOffset | objectBlockIndex || _
+        1234        | 0                || _
+        1234        | 1                || _
+        1234        | 2                || _
+        1234        | 3                || _
+        5678        | 0                || _
+        5678        | 1                || _
+        5678        | 2                || _
+        5678        | 3                || _
+        9101        | 0                || _
+        9101        | 1                || _
     }
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
         boolean verify = true
+        /* Make sure shardCursor was alsop updated properly. */
+        verify &= shardCursor.getShardCursor(shardPath).getBlockOffset() == blockOffset
+        verify &= shardCursor.getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
+        verify &= shardCursor.getShardCursor(shardPath).getChunkPath() == chunkPath
+        /* Make sure the cursor associated with the event is also correct. */
         verify &= wrapper.getCursor().getShardCursor(shardPath).getBlockOffset() == blockOffset
         verify &= wrapper.getCursor().getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
         verify &= wrapper.getCursor().getShardCursor(shardPath).getChunkPath() == chunkPath
+        /* Make sure the event in the wrapper is what was expected. */
         verify &= wrapper.getEvent().equals(mockEvents.get(index as int))
         return verify
     }
@@ -205,7 +199,7 @@ class ChunkTest extends HelperSpec {
         cfEventData.put("api", data.getApi().toString())
         cfEventData.put("clientRequestId", data.getClientRequestId())
         cfEventData.put("requestId", data.getRequestId())
-        cfEventData.put("etag", data.geteTag())
+        cfEventData.put("etag", data.getETag())
         cfEventData.put("contentType", data.getContentType())
         cfEventData.put("contentLength", data.getContentLength())
         cfEventData.put("contentOffset", data.getContentOffset())

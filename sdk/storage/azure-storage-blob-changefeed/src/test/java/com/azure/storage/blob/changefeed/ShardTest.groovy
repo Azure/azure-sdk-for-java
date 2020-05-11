@@ -2,7 +2,7 @@ package com.azure.storage.blob.changefeed
 
 import com.azure.core.http.rest.PagedFlux
 import com.azure.core.http.rest.PagedResponse
-import com.azure.storage.blob.BlobAsyncClient
+import com.azure.core.http.rest.PagedResponseBase
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
@@ -12,6 +12,7 @@ import com.azure.storage.blob.models.ListBlobsOptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
+import spock.lang.Unroll
 
 import java.util.function.Supplier
 
@@ -22,11 +23,7 @@ import static org.mockito.Mockito.when
 class ShardTest extends HelperSpec {
 
     BlobContainerAsyncClient mockContainer
-    BlobAsyncClient mockBlob
     ChunkFactory mockChunkFactory
-    Chunk mockChunk0
-    Chunk mockChunk1
-    Chunk mockChunk2
 
     String shardPath = "shardPath"
     ChangefeedCursor segmentCursor
@@ -34,19 +31,21 @@ class ShardTest extends HelperSpec {
 
     def setup() {
         mockContainer = mock(BlobContainerAsyncClient.class)
-        mockBlob = mock(BlobAsyncClient.class)
         mockChunkFactory = mock(ChunkFactory.class)
-        mockChunk0 = mock(Chunk.class)
-        mockChunk1 = mock(Chunk.class)
-        mockChunk2 = mock(Chunk.class)
+        Chunk mockChunk0 = mock(Chunk.class)
+        Chunk mockChunk1 = mock(Chunk.class)
+        Chunk mockChunk2 = mock(Chunk.class)
 
-        def mockPagedResponse = mock(PagedResponse.class)
-        when(mockPagedResponse.getValue())
-            .thenReturn(List.of(new BlobItem().setName("chunk0"), new BlobItem().setName("chunk1"), new BlobItem().setName("chunk2")))
-        def mockSupplier = mock(Supplier.class)
-        when(mockSupplier.get())
-            .thenReturn(Mono.just(mockPagedResponse))
-        def mockPagedFlux = new PagedFlux(mockSupplier)
+        Supplier<Mono<PagedResponse<BlobItem>>> supplier = new Supplier<Mono<PagedResponse<BlobItem>>>() {
+            @Override
+            Mono<PagedResponse<BlobItem>> get() {
+                return Mono.just(new PagedResponseBase<>(
+                    null, 200, null,
+                    List.of(new BlobItem().setName("chunk0"), new BlobItem().setName("chunk1"), new BlobItem().setName("chunk2")),
+                    null, null))
+            }
+        }
+        PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>( supplier )
 
         Map<String, ShardCursor> shardCursors = new HashMap<>()
         shardCursors.put(shardPath, null)
@@ -78,11 +77,10 @@ class ShardTest extends HelperSpec {
         return mockEventWrappers
     }
 
+    /*TODO (gapra) : Improve these tests to check events. */
 
     /* Tests no user cursor. */
     def "getEvents min"() {
-        setup:
-
         when:
         ShardFactory shardFactory = new ShardFactory(mockChunkFactory)
         Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, null)
@@ -90,10 +88,30 @@ class ShardTest extends HelperSpec {
         def sv = StepVerifier.create(shard.getEvents())
 
         then:
-
         sv.expectNextCount(9)
         .verifyComplete()
+    }
 
+    /* Tests user cursor. */
+    @Unroll
+    def "getEvents cursor"() {
+        setup:
+        ShardCursor userShardCursor = new ShardCursor(chunkPath, blockOffset, objectBlockIndex)
+        when:
+        ShardFactory shardFactory = new ShardFactory(mockChunkFactory)
+        Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, userShardCursor)
+
+        def sv = StepVerifier.create(shard.getEvents())
+
+        then:
+        sv.expectNextCount(offset)
+            .verifyComplete()
+
+        where:
+        chunkPath | blockOffset | objectBlockIndex || offset
+        "chunk0"  | 0           | 0                || 9
+        "chunk1"  | 0           | 0                || 6
+        "chunk2"  | 0           | 0                || 3
     }
 
 }

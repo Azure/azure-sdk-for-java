@@ -13,6 +13,7 @@ import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * FOR INTERNAL USE ONLY.
@@ -171,5 +172,16 @@ public class ChangefeedCursor {
         } catch (IOException e) {
             throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ChangefeedCursor)) return false;
+        ChangefeedCursor that = (ChangefeedCursor) o;
+        return Objects.equals(getEndTime(), that.getEndTime()) &&
+            Objects.equals(getSegmentTime(), that.getSegmentTime()) &&
+            Objects.equals(getShardCursors(), that.getShardCursors()) &&
+            Objects.equals(getShardPath(), that.getShardPath());
     }
 }

@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 public class DownloadUtils {
 
     /**
-     * Reduces a Flux of ByteBuffer into a Mono<String>
+     * Reduces a Flux of ByteBuffer into a Mono of String
      */
     public static Mono<String> downloadToString(BlobContainerAsyncClient client, String blobPath) {
         return client.getBlobAsyncClient(blobPath)
