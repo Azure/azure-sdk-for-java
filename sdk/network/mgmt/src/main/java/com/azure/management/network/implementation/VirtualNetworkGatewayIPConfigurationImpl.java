@@ -35,7 +35,7 @@ class VirtualNetworkGatewayIPConfigurationImpl
     @Override
     public String publicIPAddressId() {
         if (this.inner().publicIPAddress() != null) {
-            return this.inner().publicIPAddress().getId();
+            return this.inner().publicIPAddress().id();
         } else {
             return null;
         }
@@ -45,7 +45,7 @@ class VirtualNetworkGatewayIPConfigurationImpl
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -55,7 +55,7 @@ class VirtualNetworkGatewayIPConfigurationImpl
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.getId());
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -73,7 +73,7 @@ class VirtualNetworkGatewayIPConfigurationImpl
 
     @Override
     public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
-        SubResource subnetRef = new SubResource().setId(networkId + "/subnets/" + subnetName);
+        SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;
     }
@@ -100,7 +100,7 @@ class VirtualNetworkGatewayIPConfigurationImpl
 
     @Override
     public VirtualNetworkGatewayIPConfigurationImpl withExistingPublicIPAddress(String resourceId) {
-        SubResource pipRef = new SubResource().setId(resourceId);
+        SubResource pipRef = new SubResource().withId(resourceId);
         this.inner().withPublicIPAddress(pipRef);
         return this;
     }

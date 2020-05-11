@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Database;
+import com.azure.cosmos.implementation.Resource;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,27 +18,34 @@ import java.util.stream.Collectors;
  * more cosmos items. Since databases are an an administrative resource and the Service Key will be required in
  * order to access and successfully complete any action using the User APIs.
  */
-public final class CosmosDatabaseProperties extends Resource {
+public final class CosmosDatabaseProperties extends ResourceWrapper{
 
+    private Database database;
     /**
      * Constructor
      *
      * @param id id of the database
      */
     public CosmosDatabaseProperties(String id) {
-        super.setId(id);
+        this.database = new Database();
+        this.database.setId(id);
     }
 
     CosmosDatabaseProperties(String jsonString, String dummy) {
-        super(jsonString);
+        this.database = new Database(jsonString);
     }
 
     // Converting document collection to CosmosContainerProperties
     CosmosDatabaseProperties(Database database) {
-        super(database.toJson());
+        this.database = database;
     }
 
     static List<CosmosDatabaseProperties> getFromV2Results(List<Database> results) {
         return results.stream().map(CosmosDatabaseProperties::new).collect(Collectors.toList());
+    }
+
+    @Override
+    Resource getResource() {
+        return this.database;
     }
 }

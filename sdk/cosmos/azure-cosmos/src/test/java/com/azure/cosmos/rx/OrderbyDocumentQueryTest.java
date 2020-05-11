@@ -16,7 +16,7 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.ResourceValidator;
@@ -390,8 +390,6 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         TimeUnit.SECONDS.sleep(10);
     }
 
-    // TODO (DANOBLE) OrderbyDocumentQueryTest initialization intermittently times out in CI environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6386
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_OrderbyDocumentQueryTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();

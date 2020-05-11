@@ -51,7 +51,7 @@ class VirtualMachineCustomImageImpl
         if (this.inner().sourceVirtualMachine() == null) {
             return null;
         }
-        return this.inner().sourceVirtualMachine().getId();
+        return this.inner().sourceVirtualMachine().id();
     }
 
     @Override
@@ -76,7 +76,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public VirtualMachineCustomImageImpl fromVirtualMachine(String virtualMachineId) {
-        this.inner().withSourceVirtualMachine(new SubResource().setId(virtualMachineId));
+        this.inner().withSourceVirtualMachine(new SubResource().withId(virtualMachineId));
         return this;
     }
 
@@ -108,7 +108,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.WINDOWS)
-            .withSnapshot(new SubResource().setId(sourceSnapshotId));
+            .withSnapshot(new SubResource().withId(sourceSnapshotId));
         return this;
     }
 
@@ -119,7 +119,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.LINUX)
-            .withSnapshot(new SubResource().setId(sourceSnapshotId));
+            .withSnapshot(new SubResource().withId(sourceSnapshotId));
 
         return this;
     }
@@ -143,7 +143,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.WINDOWS)
-            .withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+            .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
@@ -154,7 +154,7 @@ class VirtualMachineCustomImageImpl
             .ensureOsDiskImage()
             .withOsState(osState)
             .withOsType(OperatingSystemTypes.LINUX)
-            .withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+            .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 

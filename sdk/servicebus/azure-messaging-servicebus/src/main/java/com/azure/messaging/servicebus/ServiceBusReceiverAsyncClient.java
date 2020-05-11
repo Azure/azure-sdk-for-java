@@ -1000,6 +1000,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     *
+     * @return receiver options set by user;
+     */
+    ReceiverOptions getReceiverOptions() {
+        return receiverOptions;
+    }
+    /**
      * Renews the message lock, and updates its value in the container.
      */
     private Mono<Instant> renewMessageLock(MessageLockToken lockToken, String linkName) {

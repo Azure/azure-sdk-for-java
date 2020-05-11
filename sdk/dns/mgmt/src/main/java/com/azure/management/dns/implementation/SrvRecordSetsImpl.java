@@ -67,6 +67,6 @@ class SrvRecordSetsImpl extends DnsRecordSetsBaseImpl<SrvRecordSet, SrvRecordSet
         if (inner == null) {
             return null;
         }
-        return new SrvRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new SrvRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

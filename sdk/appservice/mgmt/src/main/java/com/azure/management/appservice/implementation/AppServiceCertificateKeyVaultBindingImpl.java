@@ -25,13 +25,13 @@ class AppServiceCertificateKeyVaultBindingImpl
 
     AppServiceCertificateKeyVaultBindingImpl(
         AppServiceCertificateResourceInner innerObject, AppServiceCertificateOrderImpl parent) {
-        super(innerObject.getName(), innerObject, (parent != null) ? parent.manager() : null);
+        super(innerObject.name(), innerObject, (parent != null) ? parent.manager() : null);
         this.parent = parent;
     }
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
