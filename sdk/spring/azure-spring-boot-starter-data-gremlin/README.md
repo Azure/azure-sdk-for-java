@@ -11,12 +11,12 @@ This project works with *any Gremlin-compatible* data store, and also with [Azur
 ### Add the dependency
 `azure-spring-boot-starter-data-gremlin` is published on Maven Central Repository. If you are using Maven, add the following dependency.  
 
-[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-data-gremlin;dependency})
+[//]: # ({x-version-update-start;com.azure:azure-spring-boot-starter-data-gremlin;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
-    <artifactId>azure-spring-boot-starter-data-gremlin</artifactId>
-    <version>1.0.0-beta.1</version>
+    <artifactId>azure-data-gremlin-spring-boot-starter</artifactId>
+    <version>2.2.5-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -36,12 +36,9 @@ gremlin:
 
 ### Define an entity
 Define a simple Vertex entity with ```@Vertex```.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/gremlin/Person.java#L11-L23 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/gremlin/Person.java#L10-L76 -->
 ```java
 @Vertex
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Person {
 
     @Id
@@ -50,6 +47,63 @@ public class Person {
     private String name;
 
     private String level;
+
+    public Person() {
+    }
+
+    public Person(String id, String name, String level) {
+        this.id = id;
+        this.name = name;
+        this.level = level;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return Objects.equals(id, person.id) &&
+            Objects.equals(name, person.name) &&
+            Objects.equals(level, person.level);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, level);
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+            "id='" + id + '\'' +
+            ", name='" + name + '\'' +
+            ", level='" + level + '\'' +
+            '}';
+    }
 }
 ```
 

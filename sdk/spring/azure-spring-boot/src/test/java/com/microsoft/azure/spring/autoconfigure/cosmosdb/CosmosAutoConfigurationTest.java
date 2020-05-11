@@ -23,69 +23,6 @@ public class CosmosAutoConfigurationTest {
         PropertySettingUtil.unsetProperties();
     }
 
-//    @Test
-//    public void canSetAllPropertiesToDocumentClient() {
-//        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-//            context.register(CosmosAutoConfiguration.class);
-//            context.refresh();
-//            final CosmosClient cosmosClient = context.getBean(CosmosClient.class);
-//
-//            // No way to verify the setting of key value and ConsistencyLevel.
-//            final URI uri = cosmosClient.getServiceEndpoint();
-//            assertThat(uri.toString()).isEqualTo(PropertySettingUtil.URI);
-//
-//            assertThat(cosmosClient.getConnectionPolicy()).isEqualTo(ConnectionPolicy.GetDefault());
-//        }
-//    }
-//
-//    @Test
-//    public void canSetConnectionPolicyToDocumentClient() {
-//        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-//            context.register(CosmosAutoConfiguration.class, ConnectionPolicyConfig.class);
-//            context.refresh();
-//            final CosmosClient cosmosClient = context.getBean(CosmosClient.class);
-//
-//            final ConnectionPolicy connectionPolicy = cosmosClient;
-//            assertThat(connectionPolicy.requestTimeoutInMillis()).isEqualTo(PropertySettingUtil.REQUEST_TIMEOUT);
-//            assertThat(connectionPolicy.getMediaRequestTimeout()).
-//                    isEqualTo(PropertySettingUtil.MEDIA_REQUEST_TIMEOUT);
-//            assertThat(connectionPolicy.getConnectionMode()).isEqualTo(PropertySettingUtil.CONNECTION_MODE);
-//            assertThat(connectionPolicy.getMediaReadMode()).isEqualTo(PropertySettingUtil.MEDIA_READ_MODE);
-//            assertThat(connectionPolicy.getMaxPoolSize()).isEqualTo(PropertySettingUtil.MAX_POOL_SIZE);
-//            assertThat(connectionPolicy.getIdleConnectionTimeout()).
-//                    isEqualTo(PropertySettingUtil.IDLE_CONNECTION_TIMEOUT);
-//            // TODO (data) User agent from configured ConnectionPolicy is not taken
-//            // assertThat(connectionPolicy.getUserAgentSuffix()).contains(PropertySettingUtil.USER_AGENT_SUFFIX);
-//            assertThat(connectionPolicy.getUserAgentSuffix()).contains(PropertySettingUtil.DEFAULT_USER_AGENT_SUFFIX);
-//            assertThat(connectionPolicy.getRetryOptions().getMaxRetryAttemptsOnThrottledRequests()).
-//                    isEqualTo(PropertySettingUtil.RETRY_OPTIONS_MAX_RETRY_ATTEMPTS_ON_THROTTLED_REQUESTS);
-//            assertThat(connectionPolicy.getRetryOptions().getMaxRetryWaitTimeInSeconds()).
-//                    isEqualTo(PropertySettingUtil.RETRY_OPTIONS_MAX_RETRY_WAIT_TIME_IN_SECONDS);
-//            assertThat(connectionPolicy.getEnableEndpointDiscovery()).
-//                    isEqualTo(PropertySettingUtil.ENABLE_ENDPOINT_DISCOVERY);
-//            assertThat(connectionPolicy.getPreferredLocations().toString()).
-//                    isEqualTo(PropertySettingUtil.PREFERRED_LOCATIONS.toString());
-//        }
-//    }
-//
-//    @Test
-//    public void canSetAllowTelemetryFalse() {
-//        PropertySettingUtil.setAllowTelemetryFalse();
-//
-//        try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
-//            context.register(CosmosAutoConfiguration.class, ConnectionPolicyConfig.class);
-//            context.refresh();
-//            final DocumentClient documentClient = context.getBean(DocumentClient.class);
-//
-//            final ConnectionPolicy connectionPolicy = documentClient.getConnectionPolicy();
-//            // TODO (data) User agent from configured ConnectionPolicy is not taken
-//            // assertThat(connectionPolicy.getUserAgentSuffix()).contains(PropertySettingUtil.USER_AGENT_SUFFIX);
-//            assertThat(connectionPolicy.getUserAgentSuffix()).contains(
-//                    PropertySettingUtil.DEFAULT_USER_AGENT_SUFFIX);
-//        }
-//        PropertySettingUtil.unsetAllowTelemetry();
-//    }
-
     @Configuration
     static class ConnectionPolicyConfig {
         @Bean
