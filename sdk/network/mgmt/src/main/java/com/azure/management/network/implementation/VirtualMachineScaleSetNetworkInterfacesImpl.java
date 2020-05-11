@@ -43,7 +43,7 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
             return null;
         }
         return new VirtualMachineScaleSetNetworkInterfaceImpl(
-            inner.getName(), this.scaleSetName, this.resourceGroupName, inner, this.manager());
+            inner.name(), this.scaleSetName, this.resourceGroupName, inner, this.manager());
     }
 
     @Override

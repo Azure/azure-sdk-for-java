@@ -64,22 +64,22 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -89,7 +89,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().getTags();
+        return this.inner().tags();
     }
 
     @Override
@@ -184,11 +184,11 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     RegistryTaskImpl(ContainerRegistryManager registryManager, TaskInner inner) {
         this.tasksInner = registryManager.inner().tasks();
-        this.taskName = inner.getName();
+        this.taskName = inner.name();
         this.inner = inner;
-        this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.getId());
+        this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.id());
         this.registryName =
-            ResourceUtils.nameFromResourceId(ResourceUtils.parentResourceIdFromResourceId(this.inner.getId()));
+            ResourceUtils.nameFromResourceId(ResourceUtils.parentResourceIdFromResourceId(this.inner.id()));
         this.taskUpdateParameters = new TaskUpdateParameters();
         setTaskUpdateParameterTriggers();
     }
@@ -217,13 +217,13 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public DefinitionStages.Platform withLocation(String location) {
-        this.inner.setLocation(location);
+        this.inner.withLocation(location);
         return this;
     }
 
     @Override
     public DefinitionStages.Platform withLocation(Region location) {
-        this.inner.setLocation(location.toString());
+        this.inner.withLocation(location.toString());
         return this;
     }
 
@@ -541,7 +541,7 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     private boolean isInCreateMode() {
-        if (this.inner().getId() == null) {
+        if (this.inner().id() == null) {
             return true;
         }
         return false;

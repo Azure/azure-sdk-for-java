@@ -229,7 +229,9 @@ public class UniqueIndexTest extends TestSuiteBase {
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
             .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
-            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
 
         database = createDatabase(client, databaseId);
     }

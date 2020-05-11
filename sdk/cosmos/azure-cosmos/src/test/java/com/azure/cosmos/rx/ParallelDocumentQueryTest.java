@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
 import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestUtils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
@@ -27,7 +28,6 @@ import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
 import io.reactivex.subscribers.TestSubscriber;
@@ -374,8 +374,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     }
 
-    // TODO (DANOBLE) ParallelDocumentQueryTest initialization intermittently fails in CI environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
         client = getClientBuilder().buildAsyncClient();

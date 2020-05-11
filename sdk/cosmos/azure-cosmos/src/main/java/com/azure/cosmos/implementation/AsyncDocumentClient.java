@@ -82,6 +82,7 @@ public interface AsyncDocumentClient {
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         JsonSerializer jsonSerializer;
+        boolean contentResponseOnWriteEnabled;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -163,6 +164,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        public Builder withContentResponseOnWriteEnabled(boolean contentResponseOnWriteEnabled) {
+            this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
+            return this;
+        }
+
         /**
          * This method will accept functional interface TokenResolver which helps in generation authorization
          * token per request. AsyncDocumentClient can be successfully initialized with this API without passing any MasterKey, ResourceToken or PermissionFeed.
@@ -210,16 +216,17 @@ public interface AsyncDocumentClient {
                 : jsonSerializer;
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
-                                                                   masterKeyOrResourceToken,
-                                                                   permissionFeed,
-                                                                   connectionPolicy,
-                                                                   desiredConsistencyLevel,
-                                                                   configs,
-                                                                   cosmosAuthorizationTokenResolver,
-                                                                   cosmosKeyCredential,
-                                                                   sessionCapturingOverride,
-                                                                   transportClientSharing,
-                                                                   buildJsonSerializer);
+                masterKeyOrResourceToken,
+                permissionFeed,
+                connectionPolicy,
+                desiredConsistencyLevel,
+                configs,
+                cosmosAuthorizationTokenResolver,
+                cosmosKeyCredential,
+                sessionCapturingOverride,
+                transportClientSharing,
+                buildJsonSerializer,
+                contentResponseOnWriteEnabled);
             client.init();
             return client;
         }

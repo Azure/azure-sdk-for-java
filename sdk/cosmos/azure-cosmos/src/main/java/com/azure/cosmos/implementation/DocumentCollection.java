@@ -6,14 +6,12 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.IndexingPolicy;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import static com.azure.cosmos.models.ModelBridgeInternal.populatePropertyBagJsonSerializable;
 import static com.azure.cosmos.BridgeInternal.setProperty;
+import static com.azure.cosmos.models.ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper;
 
 /**
  * Represents a document collection in the Azure Cosmos DB database service. A collection is a named logical container
@@ -166,6 +164,45 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
+     * Sets the analytical storage time to live in seconds for items in a container from the Azure Cosmos DB service.
+     *
+     * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
+     * By default, AnalyticalStorageTimeToLive is set to 0 meaning the analytical store is turned off for the container;
+     * -1 means documents in analytical store never expire.
+     * The unit of measurement is seconds. The maximum allowed value is 2147483647.
+     *
+     * @param timeToLive the analytical storage time to live in seconds.
+     * @return the CosmosContainerProperties.
+     */
+    public void setAnalyticalStorageTimeToLiveInSeconds(Integer timeToLive) {
+        // a "null" value is represented as a missing element on the wire.
+        // setting timeToLive to null should remove the property from the property bag.
+        if (timeToLive != null) {
+            super.set(Constants.Properties.ANALYTICAL_STORAGE_TTL, timeToLive);
+        } else if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
+            super.remove(Constants.Properties.ANALYTICAL_STORAGE_TTL);
+        }
+    }
+
+    /**
+     * Gets the analytical storage time to live in seconds for items in a container from the Azure Cosmos DB service.
+     *
+     * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
+     * By default, AnalyticalStorageTimeToLive is set to 0 meaning the analytical store is turned off for the container;
+     * -1 means documents in analytical store never expire.
+     * The unit of measurement is seconds. The maximum allowed value is 2147483647.
+     *
+     * @return analytical ttl
+     */
+    public Integer getAnalyticalStorageTimeToLiveInSeconds() {
+        if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
+            return super.getInt(Constants.Properties.ANALYTICAL_STORAGE_TTL);
+        }
+
+        return null;
+    }
+
+    /**
      * Sets the Uni that guarantees uniqueness of documents in collection in the Azure Cosmos DB service.
      * @return UniqueKeyPolicy
      */
@@ -269,7 +306,7 @@ public final class DocumentCollection extends Resource {
                 "/" + super.getString(Constants.Properties.CONFLICTS_LINK);
     }
 
-    protected void populatePropertyBag() {
+    public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
@@ -279,11 +316,11 @@ public final class DocumentCollection extends Resource {
         }
 
         if (this.partitionKeyDefinition != null) {
-            populatePropertyBagJsonSerializable(this.partitionKeyDefinition);
+            populatePropertyBagJsonSerializableWrapper(this.partitionKeyDefinition);
             setProperty(this, Constants.Properties.PARTITION_KEY, this.partitionKeyDefinition);
         }
-        populatePropertyBagJsonSerializable(this.indexingPolicy);
-        populatePropertyBagJsonSerializable(this.uniqueKeyPolicy);
+        populatePropertyBagJsonSerializableWrapper(this.indexingPolicy);
+        populatePropertyBagJsonSerializableWrapper(this.uniqueKeyPolicy);
 
         setProperty(this, Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
         setProperty(this, Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);

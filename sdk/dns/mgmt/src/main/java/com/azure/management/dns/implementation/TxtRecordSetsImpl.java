@@ -67,6 +67,6 @@ class TxtRecordSetsImpl extends DnsRecordSetsBaseImpl<TxtRecordSet, TxtRecordSet
         if (inner == null) {
             return null;
         }
-        return new TxtRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new TxtRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

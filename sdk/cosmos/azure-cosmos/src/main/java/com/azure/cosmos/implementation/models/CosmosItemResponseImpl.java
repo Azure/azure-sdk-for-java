@@ -89,4 +89,9 @@ public class CosmosItemResponseImpl<T> implements CosmosItemResponse<T> {
     public Duration getRequestLatency() {
         return responseWrapper.getRequestLatency();
     }
+
+    @Override
+    public String getETag() {
+        return responseWrapper.getETag();
+    }
 }

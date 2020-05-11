@@ -4,6 +4,7 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import org.junit.jupiter.api.Test;
 
 import static com.azure.ai.textanalytics.TestUtils.VALID_HTTPS_LOCALHOST;
@@ -48,17 +49,6 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
-     * Test for null API key
-     */
-    @Test
-    public void nullApiKey() {
-        assertThrows(NullPointerException.class, () -> {
-            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).apiKey(null);
-        });
-    }
-
-    /**
      * Test for empty Api Key without any other authentication
      */
     @Test
@@ -67,13 +57,26 @@ public class TextAnalyticsClientBuilderUnitTest {
     }
 
     /**
+     * Test for null API key
+     */
+    @Test
+    public void nullApiKey() {
+        AzureKeyCredential azureKeyCredential = null;
+        assertThrows(NullPointerException.class, () -> {
+            final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(azureKeyCredential);
+        });
+    }
+
+    /**
      * Test for null AAD credential
      */
     @Test
     public void nullAADCredential() {
+        TokenCredential tokenCredential = null;
         assertThrows(NullPointerException.class, () -> {
             final TextAnalyticsClientBuilder builder = new TextAnalyticsClientBuilder();
-            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(null);
+            builder.endpoint(VALID_HTTPS_LOCALHOST).credential(tokenCredential);
         });
     }
 }

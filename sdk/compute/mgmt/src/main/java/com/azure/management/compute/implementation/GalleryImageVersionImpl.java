@@ -42,15 +42,15 @@ class GalleryImageVersionImpl
     }
 
     GalleryImageVersionImpl(GalleryImageVersionInner inner, ComputeManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.galleryImageVersionName = inner.getName();
+        this.galleryImageVersionName = inner.name();
         // resource ancestor names
-        this.resourceGroupName = getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.galleryName = getValueFromIdByName(inner.getId(), "galleries");
-        this.galleryImageName = getValueFromIdByName(inner.getId(), "images");
-        this.galleryImageVersionName = getValueFromIdByName(inner.getId(), "versions");
+        this.resourceGroupName = getValueFromIdByName(inner.id(), "resourceGroups");
+        this.galleryName = getValueFromIdByName(inner.id(), "galleries");
+        this.galleryImageName = getValueFromIdByName(inner.id(), "images");
+        this.galleryImageVersionName = getValueFromIdByName(inner.id(), "versions");
         //
     }
 
@@ -97,22 +97,22 @@ class GalleryImageVersionImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String location() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -170,12 +170,12 @@ class GalleryImageVersionImpl
 
     @Override
     public Map<String, String> tags() {
-        return this.inner().getTags();
+        return this.inner().tags();
     }
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
@@ -189,13 +189,13 @@ class GalleryImageVersionImpl
 
     @Override
     public GalleryImageVersionImpl withLocation(String location) {
-        this.inner().setLocation(location);
+        this.inner().withLocation(location);
         return this;
     }
 
     @Override
     public DefinitionStages.WithSource withLocation(Region location) {
-        this.inner().setLocation(location.toString());
+        this.inner().withLocation(location.toString());
         return this;
     }
 
@@ -349,7 +349,7 @@ class GalleryImageVersionImpl
 
     @Override
     public GalleryImageVersionImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(tags);
+        this.inner().withTags(tags);
         return this;
     }
 

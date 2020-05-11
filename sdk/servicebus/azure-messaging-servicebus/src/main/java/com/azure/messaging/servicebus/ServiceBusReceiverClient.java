@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -17,6 +18,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * A <b>synchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage} from a specific queue or
@@ -34,9 +36,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
+    private final Object lock = new Object();
     private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
         .setIsAutoCompleteEnabled(false)
         .setMaxAutoLockRenewalDuration(Duration.ZERO);
+
+    private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
+        new AtomicReference<>();
 
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
@@ -606,20 +612,35 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     @Override
     public void close() {
         asyncClient.close();
+
+        EmitterProcessor<ServiceBusReceivedMessageContext> processor = messageProcessor.getAndSet(null);
+        if (processor != null) {
+            processor.onComplete();
+        }
     }
 
     /**
-     * Given an {@code emitter}, queues that work in {@link SynchronousMessageSubscriber}. If the synchronous job has
-     * not been created, will initialise it.
+     * Given an {@code emitter}, creates a {@link SynchronousMessageSubscriber} to receive messages from Service Bus
+     * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
-        final long id = idGenerator.getAndIncrement();
-        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
-            emitter);
-        final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
+        synchronized (lock) {
+            final long id = idGenerator.getAndIncrement();
+            EmitterProcessor<ServiceBusReceivedMessageContext> emitterProcessor = messageProcessor.get();
 
-        logger.info("[{}]: Started synchronous message subscriber.", id);
-        asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(syncSubscriber);
+            final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
+                emitter);
+            final SynchronousMessageSubscriber syncSubscriber = new SynchronousMessageSubscriber(work);
+            logger.info("[{}]: Started synchronous message subscriber.", id);
+
+            if (emitterProcessor == null) {
+                emitterProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                    .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
+                messageProcessor.set(emitterProcessor);
+            }
+
+            emitterProcessor.subscribe(syncSubscriber);
+        }
     }
 }

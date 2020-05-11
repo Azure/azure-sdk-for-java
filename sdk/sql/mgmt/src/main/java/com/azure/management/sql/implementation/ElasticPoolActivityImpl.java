@@ -16,7 +16,7 @@ class ElasticPoolActivityImpl extends WrapperImpl<ElasticPoolActivityInner> impl
 
     protected ElasticPoolActivityImpl(ElasticPoolActivityInner innerObject) {
         super(innerObject);
-        this.resourceId = ResourceId.fromString(this.inner().getId());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override

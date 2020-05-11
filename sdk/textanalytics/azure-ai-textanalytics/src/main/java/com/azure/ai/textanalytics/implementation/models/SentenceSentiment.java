@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /**
  * The SentenceSentiment model.
@@ -14,8 +13,13 @@ import java.util.List;
 @Fluent
 public final class SentenceSentiment {
     /*
-     * The predicted Sentiment for the sentence. Possible values include:
-     * 'positive', 'neutral', 'negative'
+     * The sentence text.
+     */
+    @JsonProperty(value = "text")
+    private String text;
+
+    /*
+     * The predicted Sentiment for the sentence.
      */
     @JsonProperty(value = "sentiment", required = true)
     private SentenceSentimentValue sentiment;
@@ -24,8 +28,8 @@ public final class SentenceSentiment {
      * The sentiment confidence score between 0 and 1 for the sentence for all
      * classes.
      */
-    @JsonProperty(value = "sentenceScores", required = true)
-    private SentimentConfidenceScorePerLabel sentenceScores;
+    @JsonProperty(value = "confidenceScores", required = true)
+    private SentimentConfidenceScorePerLabel confidenceScores;
 
     /*
      * The sentence offset from the start of the document.
@@ -39,16 +43,29 @@ public final class SentenceSentiment {
     @JsonProperty(value = "length", required = true)
     private int length;
 
-    /*
-     * The warnings generated for the sentence.
+    /**
+     * Get the text property: The sentence text.
+     * 
+     * @return the text value.
      */
-    @JsonProperty(value = "warnings")
-    private List<String> warnings;
+    public String getText() {
+        return this.text;
+    }
+
+    /**
+     * Set the text property: The sentence text.
+     * 
+     * @param text the text value to set.
+     * @return the SentenceSentiment object itself.
+     */
+    public SentenceSentiment setText(String text) {
+        this.text = text;
+        return this;
+    }
 
     /**
      * Get the sentiment property: The predicted Sentiment for the sentence.
-     * Possible values include: 'positive', 'neutral', 'negative'.
-     *
+     * 
      * @return the sentiment value.
      */
     public SentenceSentimentValue getSentiment() {
@@ -57,8 +74,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the sentiment property: The predicted Sentiment for the sentence.
-     * Possible values include: 'positive', 'neutral', 'negative'.
-     *
+     * 
      * @param sentiment the sentiment value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -68,31 +84,31 @@ public final class SentenceSentiment {
     }
 
     /**
-     * Get the sentenceScores property: The sentiment confidence score between
-     * 0 and 1 for the sentence for all classes.
-     *
-     * @return the sentenceScores value.
+     * Get the confidenceScores property: The sentiment confidence score
+     * between 0 and 1 for the sentence for all classes.
+     * 
+     * @return the confidenceScores value.
      */
-    public SentimentConfidenceScorePerLabel getSentenceScores() {
-        return this.sentenceScores;
+    public SentimentConfidenceScorePerLabel getConfidenceScores() {
+        return this.confidenceScores;
     }
 
     /**
-     * Set the sentenceScores property: The sentiment confidence score between
-     * 0 and 1 for the sentence for all classes.
-     *
-     * @param sentenceScores the sentenceScores value to set.
+     * Set the confidenceScores property: The sentiment confidence score
+     * between 0 and 1 for the sentence for all classes.
+     * 
+     * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceSentiment object itself.
      */
-    public SentenceSentiment setSentenceScores(SentimentConfidenceScorePerLabel sentenceScores) {
-        this.sentenceScores = sentenceScores;
+    public SentenceSentiment setConfidenceScores(SentimentConfidenceScorePerLabel confidenceScores) {
+        this.confidenceScores = confidenceScores;
         return this;
     }
 
     /**
      * Get the offset property: The sentence offset from the start of the
      * document.
-     *
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -102,7 +118,7 @@ public final class SentenceSentiment {
     /**
      * Set the offset property: The sentence offset from the start of the
      * document.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -113,7 +129,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the length property: The length of the sentence by Unicode standard.
-     *
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -122,32 +138,12 @@ public final class SentenceSentiment {
 
     /**
      * Set the length property: The length of the sentence by Unicode standard.
-     *
+     * 
      * @param length the length value to set.
      * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setLength(int length) {
         this.length = length;
-        return this;
-    }
-
-    /**
-     * Get the warnings property: The warnings generated for the sentence.
-     *
-     * @return the warnings value.
-     */
-    public List<String> getWarnings() {
-        return this.warnings;
-    }
-
-    /**
-     * Set the warnings property: The warnings generated for the sentence.
-     *
-     * @param warnings the warnings value to set.
-     * @return the SentenceSentiment object itself.
-     */
-    public SentenceSentiment setWarnings(List<String> warnings) {
-        this.warnings = warnings;
         return this;
     }
 }

@@ -40,7 +40,7 @@ public final class MetricNamespaceInner {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

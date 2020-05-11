@@ -11,6 +11,7 @@ import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.DataType;
@@ -72,11 +73,11 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "getPrecision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);

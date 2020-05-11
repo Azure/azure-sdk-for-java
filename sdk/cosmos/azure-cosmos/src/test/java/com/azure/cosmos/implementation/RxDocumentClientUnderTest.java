@@ -38,8 +38,9 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      ConsistencyLevel consistencyLevel,
                                      Configs configs,
                                      CosmosKeyCredential cosmosKeyCredential,
-                                     JsonSerializer jsonSerializer) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false, jsonSerializer);
+                                     JsonSerializer jsonSerializer,
+                                     boolean contentResponseOnWriteEnabled) {
+        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, false, false, jsonSerializer, contentResponseOnWriteEnabled);
         init();
     }
 

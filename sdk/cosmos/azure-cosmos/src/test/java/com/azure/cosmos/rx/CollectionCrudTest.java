@@ -368,6 +368,26 @@ public class CollectionCrudTest extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void replaceProvisionedThroughput(){
+        final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.createDatabase(databaseName)
+                                           .block()
+                                           .getDatabase();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
+                                                                  new CosmosContainerRequestOptions())
+                                             .block()
+                                             .getContainer();
+        Integer throughput = container.readProvisionedThroughput().block();
+
+        assertThat(throughput).isEqualTo(1000);
+
+        throughput = container.replaceProvisionedThroughput(2000).block();
+        assertThat(throughput).isEqualTo(2000);
+    }
+
+
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {
         client = getClientBuilder().buildAsyncClient();

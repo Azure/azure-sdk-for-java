@@ -24,7 +24,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -45,8 +45,8 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
                 } else {
                     // Valid document
                     entitiesResult.getEntities().forEach(entity -> System.out.printf(
-                        "Recognized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-                        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+                        "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+                        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                 }
             },
             error -> System.err.println("There was an error recognizing entities of the documents." + error),

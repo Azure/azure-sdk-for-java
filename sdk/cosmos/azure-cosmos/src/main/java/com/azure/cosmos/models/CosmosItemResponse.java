@@ -84,4 +84,13 @@ public interface CosmosItemResponse<T> {
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
     Duration getRequestLatency();
+
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    String getETag();
 }

@@ -40,7 +40,7 @@ class CosmosDBAccountsImpl
         return this
             .inner()
             .listAsync()
-            .mapPage(inner -> new CosmosDBAccountImpl(inner.getName(), inner, this.manager()));
+            .mapPage(inner -> new CosmosDBAccountImpl(inner.name(), inner, this.manager()));
     }
 
     @Override
@@ -83,7 +83,7 @@ class CosmosDBAccountsImpl
             return null;
         }
 
-        return new CosmosDBAccountImpl(containerServiceInner.getName(), containerServiceInner, this.manager());
+        return new CosmosDBAccountImpl(containerServiceInner.name(), containerServiceInner, this.manager());
     }
 
     @Override

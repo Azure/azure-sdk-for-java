@@ -7,6 +7,7 @@ import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
+import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,6 +65,7 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
 
         when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
@@ -382,9 +384,9 @@ class ServiceBusReceiverClientTest {
         final int maxMessages = 10;
         final int numberToEmit = 5;
         final Duration receiveTimeout = Duration.ofSeconds(2);
+        final AtomicInteger emittedMessages = new AtomicInteger();
         Flux<ServiceBusReceivedMessageContext> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
-                final AtomicInteger emittedMessages = new AtomicInteger();
                 if (emittedMessages.get() >= numberToEmit) {
                     logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);
@@ -475,9 +477,10 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final int maxMessages = 10;
         final int numberToEmit = 5;
+
+        final AtomicInteger emittedMessages = new AtomicInteger();
         Flux<ServiceBusReceivedMessageContext> messageSink = Flux.create(sink -> {
             sink.onRequest(e -> {
-                final AtomicInteger emittedMessages = new AtomicInteger();
                 if (emittedMessages.get() >= numberToEmit) {
                     logger.info("Cannot emit more. Reached max already. Emitted: {}. Max: {}",
                         emittedMessages.get(), numberToEmit);

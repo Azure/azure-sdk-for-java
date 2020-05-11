@@ -13,31 +13,32 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.serviceEndpoint = builder.serviceEndpoint;
         super.cosmosKeyCredential = builder.cosmosKeyCredential;
         super.jsonSerializer = builder.jsonSerializer;
+        super.contentResponseOnWriteEnabled = builder.contentResponseOnWriteEnabled;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
         return SpyClientUnderTestFactory.createClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs, cosmosKeyCredential, jsonSerializer);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            configs, cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
         return SpyClientUnderTestFactory.createClientWithGatewaySpy(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs, cosmosKeyCredential, jsonSerializer);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            configs, cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
         return SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel, cosmosKeyCredential, jsonSerializer);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel, cosmosKeyCredential, jsonSerializer, contentResponseOnWriteEnabled);
     }
 }

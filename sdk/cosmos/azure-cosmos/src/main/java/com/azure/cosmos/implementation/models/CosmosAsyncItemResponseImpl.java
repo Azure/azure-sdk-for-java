@@ -152,4 +152,9 @@ public class CosmosAsyncItemResponseImpl<T> implements CosmosAsyncItemResponse<T
     public Duration getRequestLatency() {
         return resourceResponse.getRequestLatency();
     }
+
+    @Override
+    public String getETag() {
+        return resourceResponse.getETag();
+    }
 }
