@@ -14,7 +14,6 @@ import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
 import com.azure.cosmos.models.CosmosAsyncUserResponse;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedOptions;
@@ -28,10 +27,10 @@ import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import static com.azure.core.util.FluxUtil.withContext;
 import java.util.Collections;
 import java.util.List;
 
+import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.cosmos.implementation.Utils.setContinuationTokenAndMaxItemCount;
 
 /**
@@ -297,7 +296,13 @@ public class CosmosAsyncDatabase {
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties) {
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
-        return createContainerIfNotExistsInternal(containerProperties, container, null);
+        if (!client.getTracerProvider().isEnabled()) {
+            return createContainerIfNotExistsInternal(containerProperties, container,
+                null);
+        }
+
+        return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, null,
+            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -319,7 +324,12 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
         CosmosAsyncContainer container = getContainer(containerProperties.getId());
-        return createContainerIfNotExistsInternal(containerProperties, container, options);
+        if (!client.getTracerProvider().isEnabled()) {
+            return createContainerIfNotExistsInternal(containerProperties, container, options);
+        }
+
+        return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
+            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -336,9 +346,13 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(String id, String partitionKeyPath) {
         CosmosAsyncContainer container = getContainer(id);
-        return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath),
-                                                  container,
-                                                  null);
+        if (!client.getTracerProvider().isEnabled()) {
+            return createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container,
+                null);
+        }
+
+        return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container, null,
+            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
     }
 
     /**
@@ -796,16 +810,7 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options,
         Context context) {
         String spanName = "createContainerIfNotExistsInternal." + containerProperties.getId();
-        Mono<CosmosAsyncContainerResponse> responseMono = container.read(options).onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosClientException) {
-                final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
-                if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createContainer(containerProperties, options);
-                }
-            }
-            return Mono.error(unwrappedException);
-        });
+        Mono<CosmosAsyncContainerResponse> responseMono = createContainerIfNotExistsInternal(containerProperties, container, options);
         return this.client.getTracerProvider().traceEnabledCosmosResponsePublisher(responseMono, context,
             spanName, getId(), getClient().getServiceEndpoint());
     }

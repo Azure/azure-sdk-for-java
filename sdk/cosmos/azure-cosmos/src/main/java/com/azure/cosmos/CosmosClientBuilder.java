@@ -3,15 +3,12 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 
 import java.util.List;
-import java.util.ServiceLoader;
 
 /**
  * Helper class to buildAsyncClient {@link CosmosAsyncClient} instances
@@ -42,7 +39,6 @@ public class CosmosClientBuilder {
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionReuseAcrossClientsEnabled;
-
     private boolean contentResponseOnWriteEnabled;
 
     /**
@@ -297,7 +293,6 @@ public class CosmosClientBuilder {
     }
 
     /**
-<<<<<<< Updated upstream
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
      * in case of Create, Update and Delete operations on CosmosItem.
      *
