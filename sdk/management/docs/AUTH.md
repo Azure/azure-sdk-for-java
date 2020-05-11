@@ -21,7 +21,7 @@ ClientSecretCredential clientSecretCredential = new ClientSecretCredentialBuilde
     .build();
 ```
 
-Please note, most of credentials require a [service principal registration](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/graphrbac/samples/ManageServicePrincipalCredentials.java). Alternatively, you could also register a service principal in the [Azure portal](https://portal.azure.com/).
+Please note, most of credentials require a [service principal registration](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal). Alternatively, you could also register a service principal in [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/create-an-azure-service-principal-azure-cli) or [Azure Powershell](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-authenticate-service-principal-powershell).
 
 * AzureProfile
   * The `AzureProfile` is a class holding `AzureEnvironment`, `subscriptionId`, `tenantId` to configure the requests sending to wire. 
