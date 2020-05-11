@@ -14,7 +14,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -129,20 +129,20 @@ public class FormTrainingAsyncClient {
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
+     * @param trainModelOptions Filter to apply to the documents in the source path for training.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
-        boolean useLabelFile, Duration pollInterval, TrainingFileFilter trainingFileFilter) {
+        boolean useLabelFile, Duration pollInterval, TrainModelOptions trainModelOptions) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
             getTrainingActivationOperation(fileSourceUrl,
-                getIncludeSubFolder(trainingFileFilter),
-                getFilePrefix(trainingFileFilter),
+                getIncludeSubFolder(trainModelOptions),
+                getFilePrefix(trainModelOptions),
                 useLabelFile),
             createTrainingPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),

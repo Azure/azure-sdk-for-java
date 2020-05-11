@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.implementation;
 
 import com.azure.ai.formrecognizer.implementation.models.ContentType;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
@@ -167,25 +167,25 @@ public final class Utility {
     }
 
     /**
-     * Checks user provided {@link TrainingFileFilter} object and returns a default value for file prefix.
+     * Checks user provided {@link TrainModelOptions} object and returns a default value for file prefix.
      *
-     * @param trainingFileFilter The user provided {@link TrainingFileFilter} object.
+     * @param trainModelOptions The user provided {@link TrainModelOptions} object.
      *
      * @return the file prefix value.
      */
-    public static String getFilePrefix(TrainingFileFilter trainingFileFilter) {
-        return trainingFileFilter != null ? trainingFileFilter.getPrefix() : null;
+    public static String getFilePrefix(TrainModelOptions trainModelOptions) {
+        return trainModelOptions != null ? trainModelOptions.getPrefix() : null;
     }
 
     /**
-     * Checks user provided {@link TrainingFileFilter} object and returns a default value for include sub folder.
+     * Checks user provided {@link TrainModelOptions} object and returns a default value for include sub folder.
      *
-     * @param trainingFileFilter The user provided {@link TrainingFileFilter} object.
+     * @param trainModelOptions The user provided {@link TrainModelOptions} object.
      *
      * @return the include sub folder boolean.
      */
-    public static boolean getIncludeSubFolder(TrainingFileFilter trainingFileFilter) {
-        return trainingFileFilter != null ? trainingFileFilter.isIncludeSubFolders() : false;
+    public static boolean getIncludeSubFolder(TrainModelOptions trainModelOptions) {
+        return trainModelOptions != null ? trainModelOptions.isIncludeSubFolders() : false;
     }
 
     private static class Pair {

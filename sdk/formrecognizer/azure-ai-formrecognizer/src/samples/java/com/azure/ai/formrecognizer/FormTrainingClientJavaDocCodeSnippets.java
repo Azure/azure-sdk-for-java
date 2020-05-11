@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -48,18 +48,18 @@ public class FormTrainingClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainingFileFilter, Duration)}
+     * Code snippet for {@link FormTrainingClient#beginTraining(String, boolean, TrainModelOptions, Duration)}
      * with options
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration
         String trainingSetSource = "{training-set-SAS-URL}";
-        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix(
+        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix(
             "Invoice");
         boolean useLabelFile = true;
 
         CustomFormModel customFormModel = formTrainingClient.beginTraining(
-            trainingSetSource, useLabelFile, trainingFileFilter, Duration.ofSeconds(5)).getFinalResult();
+            trainingSetSource, useLabelFile, trainModelOptions, Duration.ofSeconds(5)).getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());

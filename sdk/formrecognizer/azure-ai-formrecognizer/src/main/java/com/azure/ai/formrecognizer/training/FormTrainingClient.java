@@ -10,7 +10,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -87,7 +87,7 @@ public class FormTrainingClient {
      * @param fileSourceUrl source URL parameter that is either an externally accessible Azure storage
      * blob container Uri (preferably a Shared Access Signature Uri).
      * @param useLabelFile Boolean to specify the use of labeled files for training the model.
-     * @param trainingFileFilter Filter to apply to the documents in the source path for training.
+     * @param trainModelOptions Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -96,7 +96,7 @@ public class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
-        TrainingFileFilter trainingFileFilter, Duration pollInterval) {
+        TrainModelOptions trainModelOptions, Duration pollInterval) {
         return client.beginTraining(fileSourceUrl, useLabelFile,
             pollInterval, null).getSyncPoller();
     }

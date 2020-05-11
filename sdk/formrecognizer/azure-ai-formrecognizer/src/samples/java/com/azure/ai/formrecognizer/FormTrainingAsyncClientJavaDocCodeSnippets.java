@@ -5,7 +5,7 @@ package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
-import com.azure.ai.formrecognizer.models.TrainingFileFilter;
+import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 
 import java.time.Duration;
@@ -50,18 +50,18 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, Duration, TrainingFileFilter)}
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, Duration, TrainModelOptions)}
      * with options
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient
         // .beginTraining#string-boolean-boolean-string-Duration
         String trainingSetSource = "{training-set-SAS-URL}";
-        TrainingFileFilter trainingFileFilter = new TrainingFileFilter().setIncludeSubFolders(false).setPrefix(
+        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix(
             "Invoice");
 
         formTrainingAsyncClient.beginTraining(trainingSetSource, true, Duration.ofSeconds(5),
-            trainingFileFilter).subscribe(recognizePollingOperation -> {
+            trainModelOptions).subscribe(recognizePollingOperation -> {
             // if training polling operation completed, retrieve the final result.
             recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
                 System.out.printf("Model Id: %s%n", customFormModel.getModelId());
