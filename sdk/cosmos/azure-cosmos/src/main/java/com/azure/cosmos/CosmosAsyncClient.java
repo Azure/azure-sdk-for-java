@@ -18,6 +18,7 @@ import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -53,6 +54,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
     private final TracerProvider tracerProvider;
+    private final boolean contentResponseOnWriteEnabled;
 
     CosmosAsyncClient(CosmosClientBuilder builder) {
         this.configs = builder.configs();
@@ -66,6 +68,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionReuseAcrossClientsEnabled();
         this.tracerProvider = builder.getTracerProvider();
+        this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.asyncDocumentClient = new AsyncDocumentClient.Builder()
                                        .withServiceEndpoint(this.serviceEndpoint)
                                        .withMasterKeyOrResourceToken(this.keyOrResourceToken)
@@ -76,6 +79,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withTokenResolver(this.cosmosAuthorizationTokenResolver)
                                        .withCosmosKeyCredential(this.cosmosKeyCredential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
+                                       .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .build();
     }
 
@@ -166,6 +170,22 @@ public final class CosmosAsyncClient implements Closeable {
      */
     CosmosKeyCredential cosmosKeyCredential() {
         return cosmosKeyCredential;
+    }
+
+    /**
+     * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
+     * in case of Create, Update and Delete operations on CosmosItem.
+     *
+     * If set to false (which is by default), this removes the resource from response. It reduces networking
+     * and CPU load by not sending the resource back over the network and serializing it
+     * on the client.
+     *
+     * By-default, this is false.
+     *
+     * @return a boolean indicating whether resource will be included in the response or not
+     */
+    boolean isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
     }
 
     /**
@@ -309,6 +329,19 @@ public final class CosmosAsyncClient implements Closeable {
     public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, int throughput) {
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
+        return createDatabase(new CosmosDatabaseProperties(id), options);
+    }
+
+    /**
+     * Creates a database.
+     *
+     * @param id the id
+     * @param throughputProperties the throughputProperties
+     * @return the mono
+     */
+    public Mono<CosmosAsyncDatabaseResponse> createDatabase(String id, ThroughputProperties throughputProperties) {
+        CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
+        ModelBridgeInternal.setOfferProperties(options, throughputProperties);
         return createDatabase(new CosmosDatabaseProperties(id), options);
     }
 
