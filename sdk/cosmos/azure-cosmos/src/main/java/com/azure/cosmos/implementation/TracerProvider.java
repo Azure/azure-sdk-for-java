@@ -128,7 +128,7 @@ public class TracerProvider {
                                                                                                       String databaseId,
                                                                                                       String endpoint) {
         return traceEnabledPublisher(resultPublisher,  context, spanName,databaseId, endpoint,
-            CosmosResponse::getStatusCode);
+            (T response) -> response.getStatusCode());
     }
 
     public <T> Mono<T> traceEnabledNonCosmosResponsePublisher(Mono<T> resultPublisher,
