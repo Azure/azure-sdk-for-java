@@ -473,7 +473,7 @@ public final class CosmosAsyncClient implements Closeable {
 
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database,
                                                                                 Context context) {
-        String spanName = "createDatabaseIfNotExistsInternal." + database.getId();
+        String spanName = "createDatabaseIfNotExists." + database.getId();
         Mono<CosmosAsyncDatabaseResponse> responseMono = database.read().onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
             if (unwrappedException instanceof CosmosClientException) {
