@@ -1,23 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages",
+    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//languages",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.4 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "c701c8da-5348-430e-aa36-5b86360b8a40",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "0e50d1aa-13ce-4b88-aa46-cb6786bc979e",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "3",
+      "x-envoy-upstream-service-time" : "2",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
       "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=2",
-      "apim-request-id" : "444ce462-b874-48dd-84d8-b1f32bd1c290",
+      "apim-request-id" : "0dbd716c-942a-46fd-abca-a903c3e12a1d",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguages\":[{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"score\":1.0}]},{\"id\":\"1\",\"detectedLanguages\":[{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"score\":1.0}]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
-      "Date" : "Tue, 24 Mar 2020 22:51:44 GMT",
+      "Body" : "{\"documents\":[{\"id\":\"0\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"warnings\":[]},{\"id\":\"1\",\"detectedLanguage\":{\"name\":\"Spanish\",\"iso6391Name\":\"es\",\"confidenceScore\":1.0},\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2019-10-01\"}",
+      "Date" : "Wed, 29 Apr 2020 17:12:17 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

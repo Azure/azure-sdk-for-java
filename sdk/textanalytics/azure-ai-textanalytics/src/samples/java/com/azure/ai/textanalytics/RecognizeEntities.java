@@ -17,7 +17,7 @@ public class RecognizeEntities {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -25,7 +25,7 @@ public class RecognizeEntities {
         String document = "Satya Nadella is the CEO of Microsoft";
 
         client.recognizeEntities(document).forEach(entity -> System.out.printf(
-            "Recognized categorized entity: %s, entity category: %s, entity sub-category: %s, score: %f.%n",
-            entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+            "Recognized categorized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
+            entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
     }
 }

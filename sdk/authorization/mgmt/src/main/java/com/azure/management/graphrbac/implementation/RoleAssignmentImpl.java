@@ -43,7 +43,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public boolean isInCreateMode() {
-        return inner().getId() == null;
+        return inner().id() == null;
     }
 
     @Override
@@ -207,7 +207,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

@@ -27,6 +27,8 @@ public class Main {
                 return;
             }
 
+            validateConfiguration(cfg);
+
             if (cfg.isSync()) {
                 syncBenchmark(cfg);
             } else {
@@ -41,6 +43,19 @@ public class Main {
             System.err.println("INVALID Usage: " + e.getMessage());
             System.err.println("Try '-help' for more information.");
             throw e;
+        }
+    }
+
+    private static void validateConfiguration(Configuration cfg) {
+        switch (cfg.getOperationType()) {
+            case WriteLatency:
+            case WriteThroughput:
+                break;
+            default:
+                if (!Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled())) {
+                    throw new IllegalArgumentException("contentResponseOnWriteEnabled parameter can only be set to false " +
+                        "for write latency and write throughput operations");
+                }
         }
     }
 

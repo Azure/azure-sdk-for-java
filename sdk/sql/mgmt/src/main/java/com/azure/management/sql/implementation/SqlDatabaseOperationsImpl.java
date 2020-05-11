@@ -41,7 +41,7 @@ public class SqlDatabaseOperationsImpl
         DatabaseInner inner = this.manager.inner().databases().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
             ? new SqlDatabaseImpl(
-                resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager)
+                resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager)
             : null;
     }
 
@@ -56,7 +56,7 @@ public class SqlDatabaseOperationsImpl
             .map(
                 inner ->
                     new SqlDatabaseImpl(
-                        resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager));
+                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SqlDatabaseOperationsImpl
         }
         DatabaseInner inner =
             this.manager.inner().databases().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
-        return (inner != null) ? new SqlDatabaseImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager) : null;
+        return (inner != null) ? new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager) : null;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SqlDatabaseOperationsImpl
             .inner()
             .databases()
             .getAsync(sqlServer.resourceGroupName(), sqlServer.name(), name)
-            .map(inner -> new SqlDatabaseImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
+            .map(inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
     }
 
     @Override
@@ -168,7 +168,7 @@ public class SqlDatabaseOperationsImpl
             databasesSet
                 .add(
                     new SqlDatabaseImpl(
-                        resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager));
+                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
         }
         return Collections.unmodifiableList(databasesSet);
     }
@@ -183,7 +183,7 @@ public class SqlDatabaseOperationsImpl
             .mapPage(
                 inner ->
                     new SqlDatabaseImpl(
-                        resourceGroupName, sqlServerName, inner.getLocation(), inner.getName(), inner, manager));
+                        resourceGroupName, sqlServerName, inner.location(), inner.name(), inner, manager));
     }
 
     @Override
@@ -192,7 +192,7 @@ public class SqlDatabaseOperationsImpl
         if (sqlServer != null) {
             for (DatabaseInner inner
                 : this.manager.inner().databases().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
-                firewallRuleSet.add(new SqlDatabaseImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, manager));
+                firewallRuleSet.add(new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, manager));
             }
         }
         return Collections.unmodifiableList(firewallRuleSet);
@@ -206,7 +206,7 @@ public class SqlDatabaseOperationsImpl
             .databases()
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
-                inner -> new SqlDatabaseImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+                inner -> new SqlDatabaseImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 
     @Override

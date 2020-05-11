@@ -43,7 +43,7 @@ class ApplicationGatewayIPConfigurationImpl
 
     @Override
     public ApplicationGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
-        SubResource subnetRef = new SubResource().setId(networkId + "/subnets/" + subnetName);
+        SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;
     }
@@ -59,7 +59,7 @@ class ApplicationGatewayIPConfigurationImpl
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -69,7 +69,7 @@ class ApplicationGatewayIPConfigurationImpl
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.getId());
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
             return null;
         }

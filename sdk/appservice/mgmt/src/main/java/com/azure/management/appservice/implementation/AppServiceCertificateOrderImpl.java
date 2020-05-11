@@ -152,7 +152,7 @@ class AppServiceCertificateOrderImpl
     @Override
     public Mono<AppServiceCertificateKeyVaultBinding> createKeyVaultBindingAsync(String certificateName, Vault vault) {
         AppServiceCertificateResourceInner certInner = new AppServiceCertificateResourceInner();
-        certInner.setLocation(vault.regionName());
+        certInner.withLocation(vault.regionName());
         certInner.withKeyVaultId(vault.id());
         certInner.withKeyVaultSecretName(certificateName);
         return this

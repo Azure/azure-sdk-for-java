@@ -60,6 +60,6 @@ class AaaaRecordSetsImpl extends DnsRecordSetsBaseImpl<AaaaRecordSet, AaaaRecord
         if (inner == null) {
             return null;
         }
-        return new AaaaRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new AaaaRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

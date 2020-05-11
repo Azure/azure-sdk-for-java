@@ -464,7 +464,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         group
             .add(
                 new VaultSecretGroup()
-                    .withSourceVault(new SubResource().setId(vault.id()))
+                    .withSourceVault(new SubResource().withId(vault.id()))
                     .withVaultCertificates(certs));
 
         VirtualMachineScaleSet virtualMachineScaleSet =

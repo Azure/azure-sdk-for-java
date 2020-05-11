@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.CoreUtils;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
@@ -35,17 +36,26 @@ class VisualStudioCodeCredential implements TokenCredential {
 
         IdentityClientOptions options = (identityClientOptions == null ? new IdentityClientOptions()
                                                  : identityClientOptions);
+        String tenant;
 
-        String tenant = tenantId;
-        if (tenant == null) {
+        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
+        Map<String, String> userSettings = accessor.getUserSettingsDetails();
+
+        cloudInstance = userSettings.get("cloud");
+        if (CoreUtils.isNullOrEmpty(options.getAuthorityHost())) {
+            options.setAuthorityHost(accessor.getAzureAuthHost(cloudInstance));
+        }
+
+        if (!CoreUtils.isNullOrEmpty(tenantId)) {
+            tenant = tenantId;
+        } else if (userSettings.containsKey("tenant")) {
+            tenant = userSettings.get("tenant");
+        } else {
             tenant = "common";
         }
-        VisualStudioCacheAccessor accessor = new VisualStudioCacheAccessor();
-        Map<String, String> userSettings = accessor.getUserSettingsDetails(tenant);
-        cloudInstance = userSettings.get("cloud");
-        options.setAuthorityHost(accessor.getAzureAuthHost(cloudInstance));
 
         identityClient = new IdentityClientBuilder()
+                .tenantId(tenant)
                 .clientId("aebc6443-996d-45c2-90f0-388ff96faa56")
                 .identityClientOptions(options)
                 .build();

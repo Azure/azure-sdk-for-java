@@ -27,7 +27,7 @@ public class TrainModelWithLabelsAsync {
         // Instantiate a client that will be used to call the service.
 
         FormTrainingAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_Key}"))
+            .credential(new AzureKeyCredential("{api_Key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient().getFormTrainingAsyncClient();
 

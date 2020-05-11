@@ -373,8 +373,6 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
     }
 
-    // TODO (DANOBLE) ParallelDocumentQueryTest initialization intermittently fails in CI environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6398
     @BeforeClass(groups = { "simple", "non-emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ParallelDocumentQueryTest() {
         client = getClientBuilder().buildAsyncClient();

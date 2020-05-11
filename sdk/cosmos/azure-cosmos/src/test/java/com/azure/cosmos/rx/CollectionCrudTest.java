@@ -27,6 +27,8 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
+import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -366,6 +368,26 @@ public class CollectionCrudTest extends TestSuiteBase {
             safeClose(client2);
         }
     }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void replaceProvisionedThroughput(){
+        final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.createDatabase(databaseName)
+                                           .block()
+                                           .getDatabase();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
+                                                                  new CosmosContainerRequestOptions())
+                                             .block()
+                                             .getContainer();
+        Integer throughput = container.readProvisionedThroughput().block();
+
+        assertThat(throughput).isEqualTo(1000);
+
+        throughput = container.replaceProvisionedThroughput(2000).block();
+        assertThat(throughput).isEqualTo(2000);
+    }
+
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {

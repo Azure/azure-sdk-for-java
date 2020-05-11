@@ -200,7 +200,7 @@ class VirtualNetworkGatewayImpl
         PagedFlux<VirtualNetworkGatewayConnectionListEntityInner> connectionInners =
             this.manager().inner().virtualNetworkGateways().listConnectionsAsync(this.resourceGroupName(), this.name());
         return PagedConverter
-            .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.getId()));
+            .flatMapPage(connectionInners, connectionInner -> connections().getByIdAsync(connectionInner.id()));
     }
 
     @Override
@@ -227,7 +227,7 @@ class VirtualNetworkGatewayImpl
             .manager()
             .inner()
             .virtualNetworkGateways()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -260,7 +260,7 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public String gatewayDefaultSiteResourceId() {
-        return inner().gatewayDefaultSite() == null ? null : inner().gatewayDefaultSite().getId();
+        return inner().gatewayDefaultSite() == null ? null : inner().gatewayDefaultSite().id();
     }
 
     @Override
