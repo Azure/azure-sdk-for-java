@@ -1,5 +1,8 @@
 # Release History
 
+## 4.2.0-beta.1 (Unreleased)
+
+
 ## 4.1.3 (2020-05-06)
 - Update azure-core dependency to version 1.5.0.
 
