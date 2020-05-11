@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.JsonSerializable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +13,7 @@ import java.util.List;
 /**
  * Represents a SQL query in the Azure Cosmos DB database service.
  */
-public final class SqlQuerySpec extends JsonSerializable {
+public final class SqlQuerySpec extends JsonSerializableWrapper{
 
     private List<SqlParameter> parameters;
 
@@ -19,7 +21,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * Initializes a new instance of the SqlQuerySpec class.
      */
     public SqlQuerySpec() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -29,7 +31,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @param queryText the query text.
      */
     public SqlQuerySpec(String queryText) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setQueryText(queryText);
     }
 
@@ -41,7 +43,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @param parameters the query parameters.
      */
     public SqlQuerySpec(String queryText, List<SqlParameter> parameters) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setQueryText(queryText);
         this.parameters = parameters;
     }
@@ -54,7 +56,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @param parameters the query parameters.
      */
     public SqlQuerySpec(String queryText, SqlParameter... parameters) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setQueryText(queryText);
         this.parameters = Arrays.asList(parameters);
     }
@@ -65,7 +67,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @return the query text.
      */
     public String getQueryText() {
-        return super.getString("query");
+        return this.jsonSerializable.getString("query");
     }
 
     /**
@@ -75,7 +77,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      * @return the SqlQuerySpec.
      */
     public SqlQuerySpec setQueryText(String queryText) {
-        super.set("query", queryText);
+        this.jsonSerializable.set("query", queryText);
         return this;
     }
 
@@ -86,7 +88,7 @@ public final class SqlQuerySpec extends JsonSerializable {
      */
     public List<SqlParameter> getParameters() {
         if (this.parameters == null) {
-            Collection<SqlParameter> sqlParameters = super.getCollection("parameters", SqlParameter.class);
+            Collection<SqlParameter> sqlParameters = this.jsonSerializable.getCollection("parameters", SqlParameter.class);
             if (sqlParameters == null) {
                 sqlParameters = new ArrayList<>();
             }
@@ -110,13 +112,13 @@ public final class SqlQuerySpec extends JsonSerializable {
 
     @Override
     protected void populatePropertyBag() {
-        super.populatePropertyBag();
+        this.jsonSerializable.populatePropertyBag();
         boolean defaultParameters = (this.parameters != null && this.parameters.size() != 0);
 
         if (defaultParameters) {
-            super.set("parameters", this.parameters);
+            this.jsonSerializable.set("parameters", this.parameters);
         } else {
-            super.remove("parameters");
+            this.jsonSerializable.remove("parameters");
         }
     }
 }

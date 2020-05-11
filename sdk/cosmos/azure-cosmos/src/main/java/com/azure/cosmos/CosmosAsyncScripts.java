@@ -242,7 +242,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
-     * @param options   the feed options.
+     * @param options the feed options.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
@@ -468,7 +468,8 @@ public class CosmosAsyncScripts {
     }
 
     private Mono<CosmosAsyncTriggerResponse> createTriggerInternal(CosmosTriggerProperties properties) {
-        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(properties));
+        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
+            ModelBridgeInternal.getResourceFromResourceWrapper(properties)));
         return database.getDocClientWrapper()
             .createTrigger(container.getLink(), trigger, null)
             .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, this.container))

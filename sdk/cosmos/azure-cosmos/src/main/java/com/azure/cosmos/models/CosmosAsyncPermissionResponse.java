@@ -24,7 +24,7 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
         } else {
             CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsString);
             super.setProperties(props);
-            permissionClient = BridgeInternal.createCosmosAsyncPermission(props.getId(), cosmosUser);
+            permissionClient = BridgeInternal.createCosmosAsyncPermission(ModelBridgeInternal.getResourceFromResourceWrapper(props).getId(), cosmosUser);
         }
     }
 

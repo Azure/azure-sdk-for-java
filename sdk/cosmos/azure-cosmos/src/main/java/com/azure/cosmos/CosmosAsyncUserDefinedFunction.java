@@ -143,7 +143,8 @@ public class CosmosAsyncUserDefinedFunction {
     private Mono<CosmosAsyncUserDefinedFunctionResponse> replaceInternal(CosmosUserDefinedFunctionProperties udfSettings) {
         return container.getDatabase()
             .getDocClientWrapper()
-            .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(udfSettings)), null)
+            .replaceUserDefinedFunction(new UserDefinedFunction(ModelBridgeInternal.toJsonFromJsonSerializable(
+                ModelBridgeInternal.getResourceFromResourceWrapper(udfSettings))), null)
             .map(response -> ModelBridgeInternal.createCosmosAsyncUserDefinedFunctionResponse(response, container))
             .single();
     }

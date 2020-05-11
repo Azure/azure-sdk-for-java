@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Resource;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
