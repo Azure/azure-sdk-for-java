@@ -65,8 +65,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(createObservable, validator);
     }
 
-    // TODO (DANOBLE) DocumentCrudTest::createLargeDocument fails in some  environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6335
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createLargeDocument(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -105,8 +103,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(createObservable, validator);
     }
 
-    // TODO (DANOBLE) DocumentCrudTest::readDocumentWithVeryLargePartitionKey test fails in some environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6336
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void readDocumentWithVeryLargePartitionKey(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -213,8 +209,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         validateItemFailure(readObservable, validator);
     }
 
-    // TODO (DANOBLE) DocumentCrudTest::deleteDocument test fails in some test environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6337
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);

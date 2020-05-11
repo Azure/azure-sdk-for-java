@@ -130,6 +130,9 @@ class Configuration {
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
 
+    @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
+    private String contentResponseOnWriteEnabled = String.valueOf(true);
+
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
@@ -262,6 +265,10 @@ class Configuration {
 
     ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
+    }
+
+    String isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
     }
 
     String getDatabaseId() {

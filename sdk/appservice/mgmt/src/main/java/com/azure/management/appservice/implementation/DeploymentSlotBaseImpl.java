@@ -54,7 +54,7 @@ abstract class DeploymentSlotBaseImpl<
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
         inner().withServerFarmId(parent.appServicePlanId());
-        inner().setLocation(regionName());
+        inner().withLocation(regionName());
     }
 
     @Override

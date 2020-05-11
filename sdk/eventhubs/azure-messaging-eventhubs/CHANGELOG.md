@@ -1,7 +1,15 @@
 # Release History
 
-## 5.1.0-beta.1 (Unreleased)
+## 5.2.0-beta.1 (Unreleased)
 
+
+## 5.1.0 (2020-05-07)
+- Add support for sending a collection of events as a single batch from `EventHubProducerClient` and `EventHubProducerAsyncClient`.
+- Updated dependency version of `azure-core-amqp` to `1.1.2`.
+
+## 5.1.0-beta.1 (2020-04-08)
+- Add support for heartbeat for single process event function in Event Processor Client.
+- Add support for receiving events in batches in Event Processor Client.
 
 ## 5.0.3 (2020-04-08)
 - Fix bug where producers and consumers would be unable to get partition information after a reconnect.

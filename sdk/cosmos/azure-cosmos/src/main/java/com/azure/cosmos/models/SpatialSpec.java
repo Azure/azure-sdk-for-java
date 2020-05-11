@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,7 +13,7 @@ import java.util.List;
 /**
  * The type Spatial spec.
  */
-public final class SpatialSpec extends JsonSerializable {
+public final class SpatialSpec extends JsonSerializableWrapper{
 
     private List<SpatialType> spatialTypes;
 
@@ -20,7 +21,7 @@ public final class SpatialSpec extends JsonSerializable {
      * Constructor.
      */
     public SpatialSpec() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -29,7 +30,7 @@ public final class SpatialSpec extends JsonSerializable {
      * @param jsonString the json string that represents the included path.
      */
     SpatialSpec(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
 
@@ -39,7 +40,7 @@ public final class SpatialSpec extends JsonSerializable {
      * @return the path.
      */
     public String getPath() {
-        return super.getString(Constants.Properties.PATH);
+        return this.jsonSerializable.getString(Constants.Properties.PATH);
     }
 
     /**
@@ -49,7 +50,7 @@ public final class SpatialSpec extends JsonSerializable {
      * @return the SpatialSpec.
      */
     public SpatialSpec setPath(String path) {
-        super.set(Constants.Properties.PATH, path);
+        this.jsonSerializable.set(Constants.Properties.PATH, path);
         return this;
     }
 
@@ -60,7 +61,7 @@ public final class SpatialSpec extends JsonSerializable {
      */
     public List<SpatialType> getSpatialTypes() {
         if (this.spatialTypes == null) {
-            this.spatialTypes = super.getList(Constants.Properties.TYPES, SpatialType.class, true);
+            this.spatialTypes = this.jsonSerializable.getList(Constants.Properties.TYPES, SpatialType.class, true);
 
             if (this.spatialTypes == null) {
                 this.spatialTypes = new ArrayList<SpatialType>();
@@ -82,7 +83,7 @@ public final class SpatialSpec extends JsonSerializable {
         for (SpatialType spatialType : this.spatialTypes) {
             spatialTypeNames.add(spatialType.toString());
         }
-        super.set(Constants.Properties.TYPES, spatialTypeNames);
+        this.jsonSerializable.set(Constants.Properties.TYPES, spatialTypeNames);
         return this;
     }
 }

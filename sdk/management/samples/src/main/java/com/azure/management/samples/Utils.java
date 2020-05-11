@@ -172,6 +172,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -271,7 +272,7 @@ public final class Utils {
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
-                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().getId());
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
                     }
                 } else {
                     if (disk.vhd().uri() != null) {
@@ -1591,7 +1592,7 @@ public final class Utils {
         builder.append("\n\tPartner Servers: ");
         for (PartnerInfo item : failoverGroup.partnerServers()) {
             builder
-                    .append("\n\t\tId: ").append(item.getId())
+                    .append("\n\t\tId: ").append(item.id())
                     .append("\n\t\tLocation: ").append(item.location())
                     .append("\n\t\tReplication role: ").append(item.replicationRole());
         }
@@ -1914,10 +1915,10 @@ public final class Utils {
             builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
         }
         if (image.osDiskImage().managedDisk() != null) {
-            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().getId());
+            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().id());
         }
         if (image.osDiskImage().snapshot() != null) {
-            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().getId());
+            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().id());
         }
         if (image.osDiskImage().blobUri() != null) {
             builder.append("\n\t\tSource un-managed vhd: ").append(image.osDiskImage().blobUri());
@@ -1931,10 +1932,10 @@ public final class Utils {
                     builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
                 }
                 if (diskImage.managedDisk() != null) {
-                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().getId());
+                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().id());
                 }
                 if (diskImage.snapshot() != null) {
-                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().getId());
+                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().id());
                 }
                 if (diskImage.blobUri() != null) {
                     builder.append("\n\t\tSource un-managed vhd: ").append(diskImage.blobUri());
@@ -2484,12 +2485,12 @@ public final class Utils {
         StringBuilder sb = new StringBuilder().append("Topology: ").append(resource.id())
                 .append("\n\tTopology parameters: ")
                 .append("\n\t\tResource group: ").append(resource.topologyParameters().targetResourceGroupName())
-                .append("\n\t\tVirtual network: ").append(resource.topologyParameters().targetVirtualNetwork() == null ? "" : resource.topologyParameters().targetVirtualNetwork().getId())
-                .append("\n\t\tSubnet id: ").append(resource.topologyParameters().targetSubnet() == null ? "" : resource.topologyParameters().targetSubnet().getId())
+                .append("\n\t\tVirtual network: ").append(resource.topologyParameters().targetVirtualNetwork() == null ? "" : resource.topologyParameters().targetVirtualNetwork().id())
+                .append("\n\t\tSubnet id: ").append(resource.topologyParameters().targetSubnet() == null ? "" : resource.topologyParameters().targetSubnet().id())
                 .append("\n\tCreated time: ").append(resource.createdTime())
                 .append("\n\tLast modified time: ").append(resource.lastModifiedTime());
         for (TopologyResource tr : resource.resources().values()) {
-            sb.append("\n\tTopology resource: ").append(tr.getId())
+            sb.append("\n\tTopology resource: ").append(tr.id())
                     .append("\n\t\tName: ").append(tr.name())
                     .append("\n\t\tLocation: ").append(tr.location())
                     .append("\n\t\tAssociations:");
@@ -2526,7 +2527,7 @@ public final class Utils {
         StringBuilder sb = new StringBuilder().append("Security group view: ")
                 .append("\n\tVirtual machine id: ").append(resource.vmId());
         for (SecurityGroupNetworkInterface sgni : resource.networkInterfaces().values()) {
-            sb.append("\n\tSecurity group network interface:").append(sgni.getId())
+            sb.append("\n\tSecurity group network interface:").append(sgni.id())
                     .append("\n\t\tSecurity group network interface:")
                     .append("\n\t\tEffective security rules:");
             for (EffectiveNetworkSecurityRule rule : sgni.securityRuleAssociations().effectiveSecurityRules()) {
@@ -2540,10 +2541,10 @@ public final class Utils {
                         .append("\n\t\t\tDestination port range: ").append(rule.destinationPortRange())
                         .append("\n\t\t\tProtocol: ").append(rule.protocol());
             }
-            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().getId());
+            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().id());
             printSecurityRule(sb, sgni.securityRuleAssociations().subnetAssociation().securityRules());
             if (sgni.securityRuleAssociations().networkInterfaceAssociation() != null) {
-                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().getId());
+                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().id());
                 printSecurityRule(sb, sgni.securityRuleAssociations().networkInterfaceAssociation().securityRules());
             }
             sb.append("\n\t\tDefault security rules:");
@@ -3086,9 +3087,10 @@ public final class Utils {
 
     public static synchronized <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-
-        for (T t : iterable) {
-            res++;
+        Iterator<T> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            ++res;
         }
         return res;
     }

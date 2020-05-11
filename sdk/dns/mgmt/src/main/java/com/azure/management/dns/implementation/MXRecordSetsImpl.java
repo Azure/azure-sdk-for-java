@@ -79,6 +79,6 @@ class MXRecordSetsImpl extends DnsRecordSetsBaseImpl<MXRecordSet, MXRecordSetImp
         if (inner == null) {
             return null;
         }
-        return new MXRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new MXRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

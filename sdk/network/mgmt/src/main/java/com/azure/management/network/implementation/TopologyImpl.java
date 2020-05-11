@@ -29,7 +29,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
@@ -57,7 +57,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
         List<TopologyResource> topologyResources = this.inner().resources();
         if (topologyResources != null) {
             for (TopologyResource resource : topologyResources) {
-                this.resources.put(resource.getId(), resource);
+                this.resources.put(resource.id(), resource);
             }
         }
     }
@@ -75,7 +75,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
 
     @Override
     public TopologyImpl withTargetNetwork(String networkId) {
-        parameters.withTargetVirtualNetwork(new SubResource().setId(networkId));
+        parameters.withTargetVirtualNetwork(new SubResource().withId(networkId));
         return this;
     }
 
@@ -83,7 +83,7 @@ class TopologyImpl extends ExecutableImpl<Topology> implements Topology, Topolog
     public TopologyImpl withTargetSubnet(String subnetName) {
         parameters
             .withTargetSubnet(
-                new SubResource().setId(parameters.targetVirtualNetwork().getId() + "/subnets/" + subnetName));
+                new SubResource().withId(parameters.targetVirtualNetwork().id() + "/subnets/" + subnetName));
         return this;
     }
 

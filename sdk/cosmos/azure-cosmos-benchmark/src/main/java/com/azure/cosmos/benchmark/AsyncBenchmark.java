@@ -66,6 +66,7 @@ abstract class AsyncBenchmark<T> {
             .key(cfg.getMasterKey())
             .connectionPolicy(cfg.getConnectionPolicy())
             .consistencyLevel(cfg.getConsistencyLevel())
+            .contentResponseOnWriteEnabled(Boolean.parseBoolean(cfg.isContentResponseOnWriteEnabled()))
             .buildAsyncClient();
         configuration = cfg;
         logger = LoggerFactory.getLogger(this.getClass());

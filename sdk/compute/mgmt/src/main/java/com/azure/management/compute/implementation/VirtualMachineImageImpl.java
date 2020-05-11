@@ -50,7 +50,7 @@ class VirtualMachineImageImpl extends IndexableWrapperImpl<VirtualMachineImageIn
         if (this.inner() == null) {
             return null;
         }
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
