@@ -502,7 +502,7 @@ public final class ModelBridgeInternal {
 
     public static <T> T instantiateByJsonString(String jsonString, Class<T> c) {
         try {
-            return (T) c.getDeclaredConstructor(String.class).newInstance(jsonString);
+            return c.getDeclaredConstructor(String.class).newInstance(jsonString);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }

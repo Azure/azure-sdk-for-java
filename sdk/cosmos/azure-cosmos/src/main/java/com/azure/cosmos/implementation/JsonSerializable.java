@@ -365,7 +365,7 @@ public class JsonSerializable {
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 return (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
             } else if (containsJsonSerializable(c)) {
-                return (T) ModelBridgeInternal.instantiateByJsonString(Utils.toJson(Utils.getSimpleObjectMapper(), (ObjectNode) jsonObj), c);
+                return ModelBridgeInternal.instantiateByJsonString(Utils.toJson(Utils.getSimpleObjectMapper(), (ObjectNode) jsonObj), c);
             }
             else {
                 // POJO
@@ -441,7 +441,7 @@ public class JsonSerializable {
 
                 } else if (containsJsonSerializable) {
                     try {
-                        T t = (T) c.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), (ObjectNode) n));
+                        T t = c.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), (ObjectNode) n));
                         result.add(t);
                     } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
                         throw new IllegalArgumentException(e);
