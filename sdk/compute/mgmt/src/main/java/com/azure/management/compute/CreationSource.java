@@ -63,7 +63,7 @@ public class CreationSource {
     public String sourceId() {
         if (this.type() == CreationSourceType.FROM_OS_DISK_IMAGE
             || this.type() == CreationSourceType.FROM_DATA_DISK_IMAGE) {
-            return this.creationData.imageReference().getId();
+            return this.creationData.imageReference().id();
         }
         if (this.type() == CreationSourceType.IMPORTED_FROM_VHD) {
             return this.creationData.sourceUri();

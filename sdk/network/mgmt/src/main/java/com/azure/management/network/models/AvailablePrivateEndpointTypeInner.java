@@ -59,7 +59,7 @@ public final class AvailablePrivateEndpointTypeInner {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

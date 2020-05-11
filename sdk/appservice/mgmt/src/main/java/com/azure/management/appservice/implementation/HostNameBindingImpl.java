@@ -45,7 +45,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent) {
         super(innerObject);
         this.parent = parent;
-        this.name = innerObject.getName();
+        this.name = innerObject.name();
         if (name != null && name.contains("/")) {
             this.name = name.replace(parent.name() + "/", "");
         }
@@ -53,12 +53,12 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override

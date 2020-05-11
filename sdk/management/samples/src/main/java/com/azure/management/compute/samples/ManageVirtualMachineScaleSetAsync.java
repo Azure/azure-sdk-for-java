@@ -255,6 +255,10 @@ public final class ManageVirtualMachineScaleSetAsync {
                     })
                     .last().block();
 
+            if (virtualMachineScaleSet == null) {
+                return false;
+            }
+
             final String pipFqdn = publicIPAddress.fqdn();
             //=============================================================
             // List virtual machine scale set instance network interfaces and SSH connection string

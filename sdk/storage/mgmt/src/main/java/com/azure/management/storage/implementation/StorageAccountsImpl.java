@@ -51,7 +51,7 @@ class StorageAccountsImpl
         if (storageAccountInner == null) {
             return null;
         }
-        return new StorageAccountImpl(storageAccountInner.getName(), storageAccountInner, this.manager());
+        return new StorageAccountImpl(storageAccountInner.name(), storageAccountInner, this.manager());
     }
 
     @Override

@@ -28,7 +28,7 @@ public class Utils {
         connectionPolicy.setThrottlingRetryOptions(options);
         AsyncDocumentClient client = new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
+                .withConnectionPolicy(connectionPolicy).withContentResponseOnWriteEnabled(true)
                 .build();
         safeCleanDatabases(client);
         client.close();

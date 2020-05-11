@@ -59,19 +59,17 @@ public class VisualStudioCacheAccessor {
     /**
      * Get the user configured settings of Visual Studio code.
      *
-     * @param tenantId the user specified tenant id.
      * @return a Map containing Vs Code user settings
      */
-    public Map<String, String> getUserSettingsDetails(String tenantId) {
+    public Map<String, String> getUserSettingsDetails() {
         JsonNode userSettings = getUserSettings();
         Map<String, String> details = new HashMap<>();
 
-        String tenant = tenantId;
-
+        String tenant = null;
         String cloud = "Azure";
 
         if (userSettings != null && !userSettings.isNull()) {
-            if (userSettings.has("azure.tenant") && CoreUtils.isNullOrEmpty(tenant)) {
+            if (userSettings.has("azure.tenant")) {
                 tenant = userSettings.get("azure.tenant").asText();
             }
 
@@ -80,7 +78,10 @@ public class VisualStudioCacheAccessor {
             }
         }
 
-        details.put("tenant", tenant);
+        if (!CoreUtils.isNullOrEmpty(tenant)) {
+            details.put("tenant", tenant);
+        }
+
         details.put("cloud", cloud);
         return details;
     }

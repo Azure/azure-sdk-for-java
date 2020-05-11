@@ -91,17 +91,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -111,15 +111,15 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().getTags() == null) {
+        if (this.inner().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<>());
         }
-        return Collections.unmodifiableMap(this.inner().getTags());
+        return Collections.unmodifiableMap(this.inner().tags());
     }
 
     @Override
@@ -164,7 +164,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isOSBasedOnCustomImage() {
         ImageReference imageReference = this.inner().storageProfile().imageReference();
-        if (imageReference != null && imageReference.getId() != null) {
+        if (imageReference != null && imageReference.id() != null) {
             return true;
         }
         return false;
@@ -207,7 +207,7 @@ class VirtualMachineScaleSetVMImpl
     public VirtualMachineCustomImage getOSCustomImage() {
         if (this.isOSBasedOnCustomImage()) {
             ImageReference imageReference = this.inner().storageProfile().imageReference();
-            return this.computeManager.virtualMachineCustomImages().getById(imageReference.getId());
+            return this.computeManager.virtualMachineCustomImages().getById(imageReference.id());
         }
         return null;
     }
@@ -236,7 +236,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String osDiskId() {
         if (this.storageProfile().osDisk().managedDisk() != null) {
-            return this.storageProfile().osDisk().managedDisk().getId();
+            return this.storageProfile().osDisk().managedDisk().id();
         }
         return null;
     }
@@ -346,7 +346,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String availabilitySetId() {
         if (this.inner().availabilitySet() != null) {
-            return this.inner().availabilitySet().getId();
+            return this.inner().availabilitySet().id();
         }
         return null;
     }
@@ -355,7 +355,7 @@ class VirtualMachineScaleSetVMImpl
     public List<String> networkInterfaceIds() {
         List<String> resourceIds = new ArrayList<>();
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
-            resourceIds.add(reference.getId());
+            resourceIds.add(reference.id());
         }
         return Collections.unmodifiableList(resourceIds);
     }
@@ -364,7 +364,7 @@ class VirtualMachineScaleSetVMImpl
     public String primaryNetworkInterfaceId() {
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
             if (reference.primary() != null && reference.primary()) {
-                return reference.getId();
+                return reference.id();
             }
         }
         return null;
@@ -377,7 +377,7 @@ class VirtualMachineScaleSetVMImpl
             for (VirtualMachineExtensionInner extensionInner : this.inner().resources()) {
                 extensions
                     .put(
-                        extensionInner.getName(),
+                        extensionInner.name(),
                         new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
             }
         }
@@ -594,7 +594,7 @@ class VirtualMachineScaleSetVMImpl
 
         ManagedDiskParameters managedDiskParameters =
             new ManagedDiskParameters().withStorageAccountType(storageAccountTypes);
-        managedDiskParameters.setId(dataDisk.id());
+        managedDiskParameters.withId(dataDisk.id());
 
         DataDisk attachDataDisk =
             new DataDisk()

@@ -3,6 +3,9 @@
 ## 12.6.0-beta.1 (Unreleased)
 
 
+## 12.5.1 (2020-05-06)
+- Updated `azure-core` version to `1.5.0` to pickup fixes for percent encoding `UTF-8` and invalid leading bytes in a body string.
+
 ## 12.5.0 (2020-04-06)
 - Fixed a bug where the Date header wouldn't be updated with a new value on request retry.
 

@@ -32,7 +32,7 @@ class MetricAlertsImpl
         if (inner == null) {
             return null;
         }
-        return new MetricAlertImpl(inner.getName(), inner, this.manager());
+        return new MetricAlertImpl(inner.name(), inner, this.manager());
     }
 
     @Override

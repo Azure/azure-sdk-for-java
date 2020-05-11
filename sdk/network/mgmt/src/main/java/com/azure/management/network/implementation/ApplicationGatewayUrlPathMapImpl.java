@@ -56,7 +56,7 @@ class ApplicationGatewayUrlPathMapImpl
     public ApplicationGatewayBackend defaultBackend() {
         SubResource backendRef = this.inner().defaultBackendAddressPool();
         return (backendRef != null)
-            ? this.parent().backends().get(ResourceUtils.nameFromResourceId(backendRef.getId()))
+            ? this.parent().backends().get(ResourceUtils.nameFromResourceId(backendRef.id()))
             : null;
     }
 
@@ -67,7 +67,7 @@ class ApplicationGatewayUrlPathMapImpl
             ? this
                 .parent()
                 .backendHttpConfigurations()
-                .get(ResourceUtils.nameFromResourceId(backendHttpConfigRef.getId()))
+                .get(ResourceUtils.nameFromResourceId(backendHttpConfigRef.id()))
             : null;
     }
 
@@ -75,7 +75,7 @@ class ApplicationGatewayUrlPathMapImpl
     public ApplicationGatewayRedirectConfiguration defaultRedirectConfiguration() {
         SubResource redirectRef = this.inner().defaultRedirectConfiguration();
         return (redirectRef != null)
-            ? this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(redirectRef.getId()))
+            ? this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(redirectRef.id()))
             : null;
     }
 
@@ -89,7 +89,7 @@ class ApplicationGatewayUrlPathMapImpl
     @Override
     public ApplicationGatewayUrlPathMapImpl toBackendHttpConfiguration(String name) {
         SubResource httpConfigRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
+            new SubResource().withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
         this.inner().withDefaultBackendHttpSettings(httpConfigRef);
         return this;
     }
@@ -113,7 +113,7 @@ class ApplicationGatewayUrlPathMapImpl
             this.inner().withDefaultRedirectConfiguration(null);
         } else {
             SubResource ref =
-                new SubResource().setId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
+                new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
             this
                 .inner()
                 .withDefaultRedirectConfiguration(ref)
@@ -140,7 +140,7 @@ class ApplicationGatewayUrlPathMapImpl
 
     @Override
     public ApplicationGatewayUrlPathMapImpl fromListener(String name) {
-        SubResource listenerRef = new SubResource().setId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
+        SubResource listenerRef = new SubResource().withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         parent().requestRoutingRules().get(this.name()).inner().withHttpListener(listenerRef);
         return this;
     }

@@ -120,7 +120,7 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
@@ -140,7 +140,7 @@ class ExpressRouteCrossConnectionPeeringImpl
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
