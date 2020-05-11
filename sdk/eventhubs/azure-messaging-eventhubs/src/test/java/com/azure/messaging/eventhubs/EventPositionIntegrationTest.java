@@ -45,7 +45,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
     private EventHubConsumerAsyncClient consumer;
     private EventHubConsumerAsyncClient enqueuedTimeConsumer;
 
-    public EventPositionIntegrationTest() {
+    EventPositionIntegrationTest() {
         super(new ClientLogger(EventPositionIntegrationTest.class));
     }
 
@@ -107,7 +107,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * EventPosition#fromEnqueuedTime(Instant)} where the enqueued time is {@link Instant#EPOCH}.
      */
     @Test
-    public void receiveEarliestMessages() {
+    void receiveEarliestMessages() {
         // Arrange
         final List<EventData> earliestEvents;
         final List<EventData> enqueuedEvents;
@@ -154,7 +154,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Verify that if no new items are added at the end of the stream, we don't get any events.
      */
     @Test
-    public void receiveLatestMessagesNoneAdded() {
+    void receiveLatestMessagesNoneAdded() {
         // Act & Assert
         try {
             StepVerifier.create(consumer.receiveFromPartition(testData.getPartitionId(), EventPosition.latest())
@@ -171,7 +171,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Test for receiving message from latest offset
      */
     @Test
-    public void receiveLatestMessages() throws InterruptedException {
+    void receiveLatestMessages() throws InterruptedException {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(testData.getPartitionId());
@@ -206,7 +206,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Test for receiving messages start at enqueued time or after the enqueued time.
      */
     @Test
-    public void receiveMessageFromEnqueuedTime() {
+    void receiveMessageFromEnqueuedTime() {
         // Arrange
         final EventPosition position = EventPosition.fromEnqueuedTime(testData.getPartitionProperties().getLastEnqueuedTime());
         final EventData expectedEvent = receivedEvents[0];
@@ -231,7 +231,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      */
     @Disabled("Investigate. We cannot use the enqueuedTime from an existing event. If we set Instant we created, like Instant.now() it works.")
     @Test
-    public void receiveMessageFromEnqueuedTimeReceivedMessage() {
+    void receiveMessageFromEnqueuedTimeReceivedMessage() {
         // Arrange
         final EventData secondEvent = receivedEvents[1];
         final EventPosition position = EventPosition.fromEnqueuedTime(secondEvent.getEnqueuedTime());
@@ -256,7 +256,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Tests that we can get an event using the non-inclusive offset.
      */
     @Test
-    public void receiveMessageFromOffsetNonInclusive() {
+    void receiveMessageFromOffsetNonInclusive() {
         // Arrange
         final EventData expectedEvent = receivedEvents[4];
 
@@ -283,7 +283,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Test for receiving sequence number with inclusive sequence number.
      */
     @Test
-    public void receiveMessageFromSequenceNumberInclusive() {
+    void receiveMessageFromSequenceNumberInclusive() {
         // Arrange
         final EventData expectedEvent = receivedEvents[3];
         final EventPosition position = EventPosition.fromSequenceNumber(expectedEvent.getSequenceNumber(), true);
@@ -308,7 +308,7 @@ class EventPositionIntegrationTest extends IntegrationTestBase {
      * Test for receiving sequence number with non-inclusive sequence number.
      */
     @Test
-    public void receiveMessageFromSequenceNumberNonInclusive() {
+    void receiveMessageFromSequenceNumberNonInclusive() {
         // Arrange
         final EventData expectedEvent = receivedEvents[4];
         final EventPosition position = EventPosition.fromSequenceNumber(receivedEvents[3].getSequenceNumber());

@@ -62,12 +62,12 @@ class CBSChannelTest extends IntegrationTestBase {
     private ReactorHandlerProvider handlerProvider;
     private String tokenAudience;
 
-    public CBSChannelTest() {
+    CBSChannelTest() {
         super(new ClientLogger(CBSChannelTest.class));
     }
 
     @BeforeAll
-    public static void init() {
+    static void init() {
         Map<String, String> properties = CoreUtils.getProperties("azure-messaging-eventhubs.properties");
         product = properties.get("name");
         clientVersion = properties.get("version");
@@ -99,7 +99,7 @@ class CBSChannelTest extends IntegrationTestBase {
     }
 
     @Test
-    public void successfullyAuthorizes() {
+    void successfullyAuthorizes() {
         // Arrange
         TokenCredential tokenCredential = new EventHubSharedKeyCredential(
             connectionProperties.getSharedAccessKeyName(), connectionProperties.getSharedAccessKey());
@@ -120,7 +120,7 @@ class CBSChannelTest extends IntegrationTestBase {
     }
 
     @Test
-    public void unsuccessfulAuthorize() {
+    void unsuccessfulAuthorize() {
         // Arrange
         final TokenCredential invalidToken = new EventHubSharedKeyCredential(
             connectionProperties.getSharedAccessKeyName(), "Invalid shared access key.");

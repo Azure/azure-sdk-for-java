@@ -66,7 +66,7 @@ public abstract class IntegrationTestBase extends TestBase {
     private static final String AZURE_EVENTHUBS_EVENT_HUB_NAME = "AZURE_EVENTHUBS_EVENT_HUB_NAME";
     private static final Object LOCK = new Object();
 
-    private static Scheduler SCHEDULER;
+    private static Scheduler scheduler;
     private static Map<String, IntegrationTestEventData> testEventData;
 
     private String testName;
@@ -77,14 +77,14 @@ public abstract class IntegrationTestBase extends TestBase {
 
     @BeforeAll
     public static void beforeAll() {
-        SCHEDULER = Schedulers.newParallel("eh-integration");
+        scheduler = Schedulers.newParallel("eh-integration");
         StepVerifier.setDefaultTimeout(TIMEOUT);
     }
 
     @AfterAll
     public static void afterAll() {
         StepVerifier.resetDefaultTimeout();
-        SCHEDULER.dispose();
+        scheduler.dispose();
     }
 
     @BeforeEach
@@ -190,7 +190,7 @@ public abstract class IntegrationTestBase extends TestBase {
             .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
             .retry(RETRY_OPTIONS)
             .transportType(AmqpTransportType.AMQP)
-            .scheduler(SCHEDULER);
+            .scheduler(scheduler);
 
         if (useCredentials) {
             final String fqdn = getFullyQualifiedDomainName();

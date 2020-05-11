@@ -39,12 +39,12 @@ class ProxySendTest extends IntegrationTestBase {
     private static ProxySelector defaultProxySelector;
     private EventHubClientBuilder builder;
 
-    public ProxySendTest() {
+    ProxySendTest() {
         super(new ClientLogger(ProxySendTest.class));
     }
 
     @BeforeAll
-    public static void initialize() throws Exception {
+    static void initialize() throws Exception {
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
 
         proxyServer = new SimpleProxy(PROXY_PORT);
@@ -66,7 +66,7 @@ class ProxySendTest extends IntegrationTestBase {
     }
 
     @AfterAll
-    public static void cleanupClient() throws Exception {
+    static void cleanupClient() throws Exception {
         StepVerifier.resetDefaultTimeout();
 
         if (proxyServer != null) {
@@ -83,16 +83,11 @@ class ProxySendTest extends IntegrationTestBase {
             .connectionString(getConnectionString());
     }
 
-    @Override
-    protected void afterTest() {
-
-    }
-
     /**
      * Verifies that we can send some number of events.
      */
     @Test
-    public void sendEvents() {
+    void sendEvents() {
         // Arrange
         final String messageId = UUID.randomUUID().toString();
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);

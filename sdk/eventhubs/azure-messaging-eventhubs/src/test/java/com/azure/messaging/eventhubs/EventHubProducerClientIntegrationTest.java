@@ -23,7 +23,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
     private EventHubProducerClient producer;
 
-    public EventHubProducerClientIntegrationTest() {
+    EventHubProducerClientIntegrationTest() {
         super(new ClientLogger(EventHubProducerClientIntegrationTest.class));
     }
 
@@ -44,7 +44,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create and send a message to an Event Hub partition.
      */
     @Test
-    public void sendMessageToPartition() {
+    void sendMessageToPartition() {
         // Arrange
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
         final List<EventData> events = Arrays.asList(
@@ -61,7 +61,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
      * service distribute the events.
      */
     @Test
-    public void sendMessage() {
+    void sendMessage() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -76,7 +76,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
      * Verifies we can create an {@link EventDataBatch} and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatch() {
+    void sendBatch() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -94,7 +94,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
      * Verifies we can create an {@link EventDataBatch} with a partition key and send it using our EventHubProducer.
      */
     @Test
-    public void sendBatchWithPartitionKey() {
+    void sendBatchWithPartitionKey() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -114,7 +114,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
      * Verify that we can send to multiple partitions, round-robin, and with a partition key, using the same producer.
      */
     @Test
-    public void sendEventsWithKeyAndPartition() {
+    void sendEventsWithKeyAndPartition() {
         // Arrange
         final List<EventData> events = Arrays.asList(
             new EventData("Event 1".getBytes(UTF_8)),
@@ -130,7 +130,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
     }
 
     @Test
-    public void sendAllPartitions() {
+    void sendAllPartitions() {
         for (String partitionId : producer.getPartitionIds()) {
             final EventDataBatch batch = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId));
             Assertions.assertNotNull(batch);
@@ -146,7 +146,7 @@ class EventHubProducerClientIntegrationTest extends IntegrationTestBase {
      * Sending with credentials.
      */
     @Test
-    public void sendWithCredentials() {
+    void sendWithCredentials() {
         // Arrange
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);

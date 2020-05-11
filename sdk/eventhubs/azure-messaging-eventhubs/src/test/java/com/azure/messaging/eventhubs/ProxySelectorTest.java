@@ -31,23 +31,23 @@ class ProxySelectorTest extends IntegrationTestBase {
     private static final InetSocketAddress SIMPLE_PROXY_ADDRESS = new InetSocketAddress("localhost", PROXY_PORT);
     private ProxySelector defaultProxySelector;
 
-    public ProxySelectorTest() {
+    ProxySelectorTest() {
         super(new ClientLogger(ProxySelectorTest.class));
     }
 
     @Override
-    public void beforeTest() {
+    protected void beforeTest() {
         defaultProxySelector = ProxySelector.getDefault();
     }
 
     @Override
-    public void afterTest() {
+    protected void afterTest() {
         ProxySelector.setDefault(defaultProxySelector);
     }
 
     @Disabled("Exceptions are not propagated to the consumer. https://github.com/Azure/azure-sdk-for-java/issues/4663")
     @Test
-    public void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
+    void proxySelectorConnectFailedInvokeTest() throws InterruptedException {
         // doesn't start proxy server and verifies that the connectFailed callback is invoked.
         final CountDownLatch countDownLatch = new CountDownLatch(1);
         ProxySelector.setDefault(new ProxySelector() {
