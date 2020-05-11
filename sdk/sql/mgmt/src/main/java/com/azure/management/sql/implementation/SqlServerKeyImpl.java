@@ -40,8 +40,8 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
         this.sqlServerManager = sqlServerManager;
         this.resourceGroupName = parent.resourceGroupName();
         this.sqlServerName = parent.name();
-        if (innerObject != null && innerObject.getName() != null) {
-            this.serverKeyName = innerObject.getName();
+        if (innerObject != null && innerObject.name() != null) {
+            this.serverKeyName = innerObject.name();
         }
     }
 
@@ -65,8 +65,8 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
         this.sqlServerManager = sqlServerManager;
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
-        if (innerObject != null && innerObject.getName() != null) {
-            this.serverKeyName = innerObject.getName();
+        if (innerObject != null && innerObject.name() != null) {
+            this.serverKeyName = innerObject.name();
         }
     }
 
@@ -81,12 +81,12 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
         this.sqlServerManager = sqlServerManager;
-        if (innerObject != null && innerObject.getId() != null) {
-            if (innerObject.getName() != null) {
-                this.serverKeyName = innerObject.getName();
+        if (innerObject != null && innerObject.id() != null) {
+            if (innerObject.name() != null) {
+                this.serverKeyName = innerObject.name();
             }
             try {
-                ResourceId resourceId = ResourceId.fromString(innerObject.getId());
+                ResourceId resourceId = ResourceId.fromString(innerObject.id());
                 this.resourceGroupName = resourceId.resourceGroupName();
                 this.sqlServerName = resourceId.parent().name();
             } catch (NullPointerException e) {
@@ -96,7 +96,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -201,7 +201,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public String parentId() {
-        return ResourceUtils.parentResourceIdFromResourceId(this.inner().getId());
+        return ResourceUtils.parentResourceIdFromResourceId(this.inner().id());
     }
 
     @Override

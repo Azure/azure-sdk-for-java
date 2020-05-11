@@ -64,7 +64,7 @@ abstract class EncryptionSettings {
                 keyEncryptionKey = new KeyVaultKeyReference();
                 keyEncryptionKey.withKeyUrl(config.keyEncryptionKeyUrl());
                 if (config.keyEncryptionKeyVaultId() != null) {
-                    keyEncryptionKey.withSourceVault(new SubResource().setId(config.keyEncryptionKeyVaultId()));
+                    keyEncryptionKey.withSourceVault(new SubResource().withId(config.keyEncryptionKeyVaultId()));
                 }
             }
             DiskEncryptionSettings diskEncryptionSettings = new DiskEncryptionSettings();
@@ -73,7 +73,7 @@ abstract class EncryptionSettings {
                 .withKeyEncryptionKey(keyEncryptionKey)
                 .withDiskEncryptionKey(new KeyVaultSecretReference())
                 .diskEncryptionKey()
-                .withSourceVault(new SubResource().setId(config.keyVaultId()));
+                .withSourceVault(new SubResource().withId(config.keyVaultId()));
             return diskEncryptionSettings;
         }
 

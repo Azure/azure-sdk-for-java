@@ -74,7 +74,9 @@ public class ProxyHostTest extends TestSuiteBase {
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .connectionPolicy(connectionPolicy)
-                                                            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+                                                            .consistencyLevel(ConsistencyLevel.SESSION)
+                                                            .contentResponseOnWriteEnabled(true)
+                                                            .buildAsyncClient();
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
                     .createItem(docDefinition, new CosmosItemRequestOptions());
@@ -108,7 +110,9 @@ public class ProxyHostTest extends TestSuiteBase {
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
                                                             .connectionPolicy(connectionPolicy)
-                                                            .consistencyLevel(ConsistencyLevel.SESSION).buildAsyncClient();
+                                                            .consistencyLevel(ConsistencyLevel.SESSION)
+                                                            .contentResponseOnWriteEnabled(true)
+                                                            .buildAsyncClient();
             CosmosItemProperties docDefinition = getDocumentDefinition();
             Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = clientWithRightProxy.getDatabase(createdDatabase.getId()).getContainer(createdCollection.getId())
                     .createItem(docDefinition, new CosmosItemRequestOptions());

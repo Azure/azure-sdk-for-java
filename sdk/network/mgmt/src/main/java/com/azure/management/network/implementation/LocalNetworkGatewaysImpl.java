@@ -96,6 +96,6 @@ class LocalNetworkGatewaysImpl
         if (inner == null) {
             return null;
         }
-        return new LocalNetworkGatewayImpl(inner.getName(), inner, this.manager());
+        return new LocalNetworkGatewayImpl(inner.name(), inner, this.manager());
     }
 }

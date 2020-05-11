@@ -32,12 +32,12 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.STRONG).build();
+                .withConsistencyLevel(ConsistencyLevel.STRONG).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.STRONG).build();
+                .withConsistencyLevel(ConsistencyLevel.STRONG).withContentResponseOnWriteEnabled(true).build();
         User userDefinition = getUserDefinition();
         userDefinition.setId(userDefinition.getId() + "validateStrongConsistencyOnSyncReplication");
         User user = safeCreateUser(this.initClient, createdDatabase.getId(), userDefinition);
@@ -54,12 +54,12 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
         validateConsistentLSN();
     }
 
@@ -70,12 +70,12 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
         validateConsistentLSN();
     }
 
@@ -88,12 +88,12 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
         validateConsistentLSNAndQuorumAckedLSN();
     }
 
@@ -122,12 +122,12 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
         validateConsistentLSNAndQuorumAckedLSN();
     }
 
@@ -165,22 +165,17 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS).build();
+                .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS).build();
+                .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS).withContentResponseOnWriteEnabled(true).build();
         User user = safeCreateUser(this.initClient, createdDatabase.getId(), getUserDefinition());
         boolean readLagging = validateConsistentPrefix(user);
         assertThat(readLagging).isFalse();
     }
 
-    // TODO (DANOBLE) ConsistencyTests1::validateConsistentPrefixOnAsyncReplication test fails
-    //  This test requires BoundedStaleness and fails due to timeouts when run in Direct TCP mode.
-    //  This test should be enabled when we are ready to address our BoundedStaleness consistency issues.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6378
-    @Ignore
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateConsistentPrefixOnAsyncReplication() throws InterruptedException {
         if (!(TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.STRONG.toString()) || TestConfigurations.CONSISTENCY.equalsIgnoreCase(ConsistencyLevel.BOUNDED_STALENESS.toString()))) {
@@ -193,13 +188,13 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.BOUNDED_STALENESS)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
         Document documentDefinition = getDocumentDefinition();
         Document document = createDocument(this.initClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
         boolean readLagging = validateConsistentPrefix(document);
@@ -245,7 +240,7 @@ public class ConsistencyTests1 extends ConsistencyTestsBase {
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
                 .withConsistencyLevel(ConsistencyLevel.SESSION)
-                .build();
+                .withContentResponseOnWriteEnabled(true).build();
         try {
             DocumentCollection documentCollection = new DocumentCollection();
             documentCollection.setId(UUID.randomUUID().toString());

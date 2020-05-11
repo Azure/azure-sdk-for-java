@@ -86,7 +86,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
 
             System.out.println("CosmosDB Virtual Network Rules:");
             for (VirtualNetworkRule vnetRule : vnetRules) {
-                System.out.println("\t" + vnetRule.getId());
+                System.out.println("\t" + vnetRule.id());
             }
 
 
@@ -105,7 +105,7 @@ public class CreateCosmosDBTableWithVirtualNetworkRule {
 
             System.out.println("CosmosDB Virtual Network Rules:");
             for (VirtualNetworkRule vnetRule : vnetRules) {
-                System.out.println("\t" + vnetRule.getId());
+                System.out.println("\t" + vnetRule.id());
             }
 
             cosmosDBAccount.update()

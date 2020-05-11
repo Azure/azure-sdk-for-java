@@ -29,7 +29,7 @@ public final class TenantIdDescriptionInner {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

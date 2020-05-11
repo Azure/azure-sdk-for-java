@@ -12,31 +12,38 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
         super.cosmosKeyCredential = builder.cosmosKeyCredential;
+        super.contentResponseOnWriteEnabled = builder.contentResponseOnWriteEnabled;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
         return SpyClientUnderTestFactory.createClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs, cosmosKeyCredential);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            configs,
+            cosmosKeyCredential,
+            contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
         return SpyClientUnderTestFactory.createClientWithGatewaySpy(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel,
-                configs, cosmosKeyCredential);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            configs,
+            cosmosKeyCredential,
+            contentResponseOnWriteEnabled);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
         return SpyClientUnderTestFactory.createDirectHttpsClientUnderTest(
-                serviceEndpoint,
-                masterKeyOrResourceToken,
-                connectionPolicy,
-                desiredConsistencyLevel, cosmosKeyCredential);
+            serviceEndpoint,
+            masterKeyOrResourceToken,
+            connectionPolicy,
+            desiredConsistencyLevel,
+            cosmosKeyCredential,
+            contentResponseOnWriteEnabled);
     }
 }
