@@ -117,7 +117,7 @@ public class EventHubConsumerClientIntegrationTest extends IntegrationTestBase {
         // Assert
         final List<PartitionEvent> asList = receive.stream().collect(Collectors.toList());
         final int actual = asList.size();
-        Assertions.assertTrue(eventSize < actual && actual > maximumSize,
+        Assertions.assertTrue(eventSize <= actual && actual <= maximumSize,
             String.format("Should be between %s and %s. Actual: %s", eventSize, maximumSize, actual));
     }
 
