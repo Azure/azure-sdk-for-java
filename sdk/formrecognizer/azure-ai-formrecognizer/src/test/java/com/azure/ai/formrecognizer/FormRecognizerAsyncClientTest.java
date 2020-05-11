@@ -146,18 +146,20 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     /**
      * Verifies receipt data from a document using file data as source and including text content details.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        receiptDataRunnerTextDetails((data, includeTextDetails) -> {
-            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(toFluxByteBuffer(data), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG,
-                    includeTextDetails, null).getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), true);
-        });
-    }
+    // Turn off the tests as there is service regression on the media type.
+    // Issue link: https://github.com/Azure/azure-sdk-for-java/issues/11036
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+//    public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+//        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
+//        receiptDataRunnerTextDetails((data, includeTextDetails) -> {
+//            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+//                client.beginRecognizeReceipts(toFluxByteBuffer(data), RECEIPT_FILE_LENGTH, FormContentType.IMAGE_JPEG,
+//                    includeTextDetails, null).getSyncPoller();
+//            syncPoller.waitForCompletion();
+//            validateReceiptResultData(syncPoller.getFinalResult(), true);
+//        });
+//    }
 
     /**
      * Verifies that an exception is thrown for invalid source url.

@@ -127,18 +127,20 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      * Verifies receipt data for a document using source as as input stream data and text content when
      * includeTextDetails is true.
      */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-     public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        receiptDataRunnerTextDetails((data, includeTextDetails) -> {
-            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
-                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG,
-                    includeTextDetails, null);
-            syncPoller.waitForCompletion();
-            validateReceiptResultData(syncPoller.getFinalResult(), true);
-        });
-    }
+    // Turn off the tests as there is service regression on the media type.
+    // Issue link: https://github.com/Azure/azure-sdk-for-java/issues/11036
+//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+//    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+//     public void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+//        client = getFormRecognizerClient(httpClient, serviceVersion);
+//        receiptDataRunnerTextDetails((data, includeTextDetails) -> {
+//            SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+//                client.beginRecognizeReceipts(data, RECEIPT_FILE_LENGTH, FormContentType.IMAGE_PNG,
+//                    includeTextDetails, null);
+//            syncPoller.waitForCompletion();
+//            validateReceiptResultData(syncPoller.getFinalResult(), true);
+//        });
+//    }
 
     /**
      * Verifies layout/content data for a document using source as input stream data.

@@ -256,8 +256,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     @Test
     abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    // Turn off the tests as there is service regression on the media type.
+    // Issue link: https://github.com/Azure/azure-sdk-for-java/issues/11036
+    // @Test
+    // abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void recognizeReceiptDataTextDetailsWithNullData(HttpClient httpClient,
