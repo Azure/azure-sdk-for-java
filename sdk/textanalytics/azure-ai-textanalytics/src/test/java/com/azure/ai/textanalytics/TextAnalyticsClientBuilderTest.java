@@ -306,7 +306,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
      */
     TextAnalyticsClientBuilder createClientBuilder(String endpoint, AzureKeyCredential credential) {
         final TextAnalyticsClientBuilder clientBuilder = new TextAnalyticsClientBuilder()
-            .apiKey(credential)
+            .credential(credential)
             .endpoint(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {

@@ -34,6 +34,6 @@ class RouteFiltersImpl
         if (inner == null) {
             return null;
         }
-        return new RouteFilterImpl(inner.getName(), inner, this.manager());
+        return new RouteFilterImpl(inner.name(), inner, this.manager());
     }
 }

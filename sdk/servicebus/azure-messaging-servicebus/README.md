@@ -1,39 +1,40 @@
 # Azure Service Bus client library for Java
 
 Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple
-applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data
-and state. Data is transferred between different applications and services using messages. If you would like to know
-more about Azure Service Bus, you may wish to review: [What is Service Bus](https://docs.microsoft.com/en-us/azure/service-bus-messaging)?
+applications and services. Service Bus offers a reliable and secure platform for asynchronous transfer of data and
+state. Data is transferred between different applications and services using messages. If you would like to know more
+about Azure Service Bus, you may wish to review: [What is Service Bus][product_docs]
 
 The Azure Service Bus client library allows for sending and receiving of Azure Service Bus messages and may be used to:
-
-- Messaging: Transfer business data, such as sales or purchase orders, journals, or inventory movements.
-- Decouple applications: Improve reliability and scalability of applications and services. Client and service don't
+- Transfer business data, such as sales or purchase orders, journals, or inventory movements.
+- Decouple applications to improve reliability and scalability of applications and services. Clients and services don't
 have to be online at the same time.
-- Topics and subscriptions: Enable 1:n relationships between publishers and subscribers.
-- Message sessions. Implement work-flows that require message ordering or message deferral.
+- Enable 1:n relationships between publishers and subscribers.
+- Implement workflows that require message ordering or message deferral.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Samples][sample_readme]
+[Source code][source_code] | [API reference documentation][api_documentation]
+| [Product documentation][product_docs]| [Samples][sample_examples]
 
 ## Table of contents
 
-- [Table of contents](#table-of-contents)
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Adding the package to your product](#adding-the-package-to-your-product)
-  - [Authenticate the client](#authenticate-the-client)
-- [Key concepts](#key-concepts)
-- [Examples](#examples)
-  - [Sending messages](#sending-messages)
-  - [Receiving messages](#receiving-messages)
-- [Troubleshooting](#troubleshooting)
-  - [Enable client logging](#enable-client-logging)
-  - [Enable AMQP transport logging](#enable-amqp-transport-logging)
-  - [Common exceptions](#common-exceptions)
-  - [Handling transient AMQP exceptions](#handling-transient-amqp-exceptions)
-  - [Default SSL library](#default-ssl-library)
-- [Next steps](#next-steps)
-- [Contributing](#contributing)
+- [Azure Service Bus client library for Java](#azure-service-bus-client-library-for-java)
+  - [Table of contents](#table-of-contents)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Include the package](#include-the-package)
+    - [Authenticate the client](#authenticate-the-client)
+  - [Key concepts](#key-concepts)
+  - [Examples](#examples)
+    - [Send messages](#send-messages)
+    - [Receive messages](#receive-messages)
+    - [Settle messages](#settle-messages)
+    - [Send and receive from session enabled queues or topics](#send-and-receive-from-session-enabled-queues-or-topics)
+  - [Troubleshooting](#troubleshooting)
+    - [Enable client logging](#enable-client-logging)
+    - [Enable AMQP transport logging](#enable-amqp-transport-logging)
+    - [Common exceptions](#common-exceptions)
+  - [Next steps](#next-steps)
+  - [Contributing](#contributing)
 
 ## Getting started
 
@@ -43,27 +44,58 @@ have to be online at the same time.
 - [Maven][maven]
 - Microsoft Azure subscription
   - You can create a free account at: https://azure.microsoft.com
+- Azure Service Bus instance
+  - Step-by-step guide for [creating a Service Bus instance using Azure Portal][service_bus_create]
 
-### Adding the package to your product
+### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-messaging-servicebus;current})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.0.0-beta.1</version>
+    <version>7.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authenticate the client
 
-For the Service Bus client library to interact with an Service Bus, it will need to understand how to connect
-and authorize with it.
+For the Service Bus client library to interact with Service Bus, it will need to understand how to connect and authorize
+with it.
 
-#### Create an Service Bus client using Microsoft identity platform (formerly Azure Active Directory)
+#### Create Service Bus clients using a connection string
 
-Azure SDK for Java supports an Azure Identity package, making it simple get credentials from Microsoft identity
+The easiest means for authenticating is to use a connection string, which automatically created when creating a Service Bus
+namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
+[get a Service Bus connection string][service_bus_connection_string].
+
+Both the asynchronous and synchronous Service Bus sender and receiver clients are instantiated using
+`ServiceBusClientBuilder`. The snippets below create a synchronous Service Bus sender and an asynchronous receiver,
+respectively.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L29-L33 -->
+```java
+ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .sender()
+    .queueName("<< QUEUE NAME >>")
+    .buildClient();
+```
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L40-L45 -->
+```java
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .receiver()
+    .topicName("<< TOPIC NAME >>")
+    .subscriptionName("<< SUBSCRIPTION NAME >>")
+    .buildAsyncClient();
+```
+
+#### Create a Service Bus client using Microsoft Identity platform (formerly Azure Active Directory)
+
+Azure SDK for Java supports the Azure Identity package, making it simple to get credentials from the Microsoft identity
 platform. First, add the package:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
@@ -76,20 +108,18 @@ platform. First, add the package:
 ```
 [//]: # ({x-version-update-end})
 
-All the implemented ways to request a credential can be found under the `com.azure.identity.credential` package. The
-sample below shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Service Bus.
+The implemented ways to request a credential are under the `com.azure.identity.credential` package. The sample below
+shows how to use an Azure Active Directory (AAD) application client secret to authorize with Azure Service Bus.
 
-#### Authorizing with AAD application client secret
+##### Authorizing with DefaultAzureCredential
 
-Follow the instructions in [Creating a service principal using Azure Portal][application_client_secret] to create a
-service principal and a client secret. The corresponding `clientId` and `tenantId` for the service principal can be
-obtained from the [App registration page][app_registration_page].
-
-Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables:
-AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
+Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
+running environment. For more information about using Azure Active Directory authorization with Service Bus, please
+refer to [the associated documentation][aad_authorization].
 
 Use the returned token credential to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L48-L54 -->
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L52-L58 -->
 ```java
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .build();
@@ -100,92 +130,163 @@ ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
     .buildAsyncClient();
 ```
 
-##### Service Bus Roles
-
-When using Azure Active Directory, your principal must be assigned a role which allows access to Service Bus, such
-as the `Azure Service Bus Data Owner`, `Azure Service Bus Data Sender` and `Azure Service Bus Data Receiver`
-[role][servicebus_roles].
-For more information about using Azure Active Directory authorization with Service Bus, please refer to
-[the associated documentation][aad_authorization].
-
 ## Key concepts
 
 You can interact with the primary resource types within a Service Bus Namespace, of which multiple can exist and
-on which actual message transmission takes place, the namespace often serving as an application container:
+on which actual message transmission takes place. The namespace often serves as an application container:
 
-* [Queue][queue_concept]: Allows for Sending and Receiving of messages, ordered first-in-first-out.  Often used for
-point-to-point communication.
-
-* [Topic][topic_concept]: As opposed to Queues, Topics are better suited to publish/subscribe scenarios.  A topic can
-be sent to, but requires a subscription, of which there can be multiple in parallel, to consume from.
-
-* [Subscription][subscription_concept]: The mechanism to consume from a Topic.  Each subscription is independent, and
-receaves a copy of each message sent to the topic.
+* A **[queue][queue_concept]** allows for the sending and receiving of messages, ordered first-in-first-out. It is often
+  used for point-to-point communication.
+* A **[topic][topic_concept]** is better suited to publisher and subscriber scenarios. A topic publishes messages to
+  subscriptions, of which, multiple can exist simultaneously.
+* A **[subscription][subscription_concept]** receives messages from a topic. Each subscription is independent and
+  receives a copy of the message sent to the topic.
 
 ## Examples
 
-### Create a sender or receiver using connection string
+### Send messages
 
-The easiest means for doing so is to use a connection string, which is created automatically when creating an Service Bus
-namespace. If you aren't familiar with shared access policies in Azure, you may wish to follow the step-by-step guide to
-[get an Service Bus connection string][service_bus_connection_string].
+You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or a synchronous
+[`ServiceBusSenderClient`][ServiceBusSenderClient] to send messages. Each sender can send messages to either a queue or
+a topic.
 
-Both the asynchronous and synchronous Service Bus sender and receiver clients can be created using
-`ServiceBusClientBuilder`.The examples are explained blow.
+The snippet below creates a synchronous `ServiceBusSender` to publish a message to a queue.
 
-The snippet below creates an asynchronous Service Bus sender.
-
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L23-L28 -->
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L65-L74 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
-ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
+ServiceBusSenderClient sender = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .sender()
     .queueName("<< QUEUE NAME >>")
-    .buildAsyncClient();
+    .buildClient();
+List<ServiceBusMessage> messages = Arrays.asList(
+    new ServiceBusMessage("Hello world".getBytes()).setMessageId("1"),
+    new ServiceBusMessage("Bonjour".getBytes()).setMessageId("2"));
+
+sender.send(messages);
 ```
 
-The snippet below creates an asynchronous Service Bus receiver.
+### Receive messages
 
-<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L35-L41 -->
+You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or a synchronous
+[`ServiceBusReceiverClient`][ServiceBusReceiverClient] to receive messages. Each receiver can consume messages from
+either a queue or a topic subscription.
+
+#### Receive a batch of messages
+
+The snippet below creates a `ServiceBusReceiverClient` to receive messages from a topic subscription. It returns a batch
+of messages when 10 messages are received or until 30 seconds have elapsed, whichever happens first.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L81-L94 -->
 ```java
-String connectionString = "<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>";
-ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-    .connectionString(connectionString)
+ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
     .receiver()
     .topicName("<< TOPIC NAME >>")
     .subscriptionName("<< SUBSCRIPTION NAME >>")
+    .receiveMode(ReceiveMode.PEEK_LOCK)
+    .buildClient();
+
+IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(10, Duration.ofSeconds(30));
+messages.forEach(context -> {
+    ServiceBusReceivedMessage message = context.getMessage();
+    System.out.printf("Id: %s. Contents: %s%n", message.getMessageId(),
+        new String(message.getBody(), StandardCharsets.UTF_8));
+});
+```
+
+#### Receive a stream of messages
+
+The asynchronous `ServiceBusReceiverAsyncClient` continuously fetches messages until the `subscription` is disposed.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L101-L115 -->
+```java
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .receiver()
+    .queueName("<< QUEUE NAME >>")
+    .buildAsyncClient();
+
+Disposable subscription = receiver.receive().subscribe(context -> {
+    ServiceBusReceivedMessage message = context.getMessage();
+    System.out.printf("Id: %s%n", message.getMessageId());
+    System.out.printf("Contents: %s%n", new String(message.getBody(), StandardCharsets.UTF_8));
+}, error -> {
+        System.err.println("Error occurred while receiving messages: " + error);
+    }, () -> {
+        System.out.println("Finished receiving messages.");
+    });
+```
+
+### Settle messages
+
+When a message is received, it can be settled using any of the `complete()`, `abandon()`, `defer()`, or `deadLetter()`
+overloads. The sample below completes a received message from synchronous `ServiceBusReceiverClient`.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L130-L135 -->
+```java
+receiver.receive(10).forEach(context -> {
+    ServiceBusReceivedMessage message = context.getMessage();
+
+    // Process message and then complete it.
+    receiver.complete(message);
+});
+```
+
+### Send and receive from session enabled queues or topics
+
+> Using sessions requires you to create a session enabled queue or subscription. You can read more about how to
+> configure this in "[Message sessions][message-sessions]".
+
+Unlike non-session-enabled queues or subscriptions, only a single receiver can read from a session at any time. When a
+receiver fetches a session, Service Bus locks the session for that receiver, and it has exclusive access to messages in
+that session.
+
+#### Send message to a session
+
+Create a `ServiceBusSenderClient` for a session enabled queue or topic subscription. Setting `.setSessionId(String)` on
+a `ServiceBusMessage` will publish the message to that session. If the session does not exist, it is created.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L148-L151 -->
+```java
+ServiceBusMessage message = new ServiceBusMessage("Hello world".getBytes())
+    .setSessionId("greetings");
+
+sender.send(message);
+```
+
+#### Receive messages from a session
+
+Receivers can fetch messages from a specific session or the first available, unlocked session. The first snippet creates
+a receiver for a session with id "greetings". The second snippet creates a receiver that fetches the first available
+session.
+
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L158-L163 -->
+```java
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .sessionReceiver()
+    .queueName("<< QUEUE NAME >>")
+    .sessionId("greetings")
     .buildAsyncClient();
 ```
 
-### Sending messages
-
-You'll need to create an asynchronous [`ServiceBusSenderAsyncClient`][ServiceBusSenderAsyncClient] or
-a synchronous [`ServiceBusSenderClient`][ServiceBusSenderClient] to send message. Each sender can send message to either, a queue,
-or topic.
-
-* [Sending a message asynchronously][sample-send-async-message].
-* [Sending a message asynchronously using active directory credential][sample-send-async-aad-message].
-* [Send message in batch synchronously][sample-send-batch-messages].
-
-### Receiving messages
-
-You'll need to create an asynchronous [`ServiceBusReceiverAsyncClient`][ServiceBusReceiverAsyncClient] or
-a synchronous [`ServiceBusReceiverClient`][ServiceBusReceiverClient]. Each receiver can receive message from either, a queue,
-or subscriber.
-
-* [Receiving a message asynchronously][sample-receive-async-message].
-* [Receiving a message asynchronously using active directory credential][sample-receive-async-aad-message].
-* [Receiving a message asynchronously and settling][sample-receive-message-and-settle].
-* [Receiving messages synchronously][sample-receive-message-synchronously].
+<!-- embedme ./src/samples/java/com/azure/messaging/servicebus/ReadmeSamples.java#L170-L174 -->
+```java
+ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+    .connectionString("<< CONNECTION STRING FOR THE SERVICE BUS NAMESPACE >>")
+    .sessionReceiver()
+    .queueName("<< QUEUE NAME >>")
+    .buildAsyncClient();
+```
 
 ## Troubleshooting
 
 ### Enable client logging
 
-You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
-example, setting `AZURE_LOG_LEVEL=2` would show all informational, warning, and error log messages. The log levels can
-be found here: [log levels][LogLevels].
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
+their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
+locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Enable AMQP transport logging
 
@@ -224,66 +325,40 @@ services. When an AMQP exception is thrown, examining the error condition field 
 exception occurred and if possible, how to mitigate this exception. A list of all the AMQP exceptions can be found in
 [OASIS AMQP Version 1.0 Transport Errors][oasis_amqp_v1_error].
 
-The [`AmqpErrorContext`][AmqpErrorContext] in the [`AmqpException`][AmqpException] provides information about the AMQP
-session, link, or connection that the exception occurred in. This is useful to diagnose which level in the transport
-this exception occurred at and whether it was an issue in one of the producers or consumers.
-
-#### Operation cancelled exception
-
-It occurs when the underlying AMQP layer encounters an abnormal link abort or the connection is disconnected in an
-unexpected fashion. It is recommended to attempt to verify the current state and retry if necessary.
-
-### Handling transient AMQP exceptions
-
-If a transient AMQP exception occurs, the client library retries the operation as many times as the
-[AmqpRetryOptions][AmqpRetryOptions] allows. Afterwards, the operation fails and an exception is propagated back to the
-user.
-
-### Default SSL library
-
-All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
-operations. The Boring SSL library is an uber jar containing native libraries for Linux / macOS / Windows, and provides
-better performance compared to the default SSL implementation within the JDK. For more information, including how to
-reduce the dependency size, refer to the [performance tuning][performance_tuning] section of the wiki.
+The recommended way to solve the specific exception the AMQP exception represents is to follow the
+[Service Bus Messaging Exceptions][] guidance.
 
 ## Next steps
 
 Beyond those discussed, the Azure Service Bus client library offers support for many additional scenarios to help take
-advantage of the full feature set of the Azure Service Bus service. In order to help explore some of the these scenarios,
-the following set of sample is available [here][samples_readme].
+advantage of the full feature set of the Azure Service Bus service. In order to help explore some of these scenarios,
+check out the [samples README][samples_readme].
 
 ## Contributing
 
 If you would like to become an active contributor to this project please refer to our [Contribution
-Guidelines](./CONTRIBUTING.md) for more information.
+Guidelines](./../../../CONTRIBUTING.md) for more information.
 
 <!-- Links -->
 [aad_authorization]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application
 [amqp_transport_error]: https://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-amqp-error
 [AmqpErrorCondition]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorCondition.java
-[AmqpErrorContext]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpErrorContext.java
-[AmqpException]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/exception/AmqpException.java
 [api_documentation]: https://aka.ms/java-docs
-[app_registration_page]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#get-values-for-signing-in
-[application_client_secret]: https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal#create-a-new-application-secret
 [java_8_sdk_javadocs]: https://docs.oracle.com/javase/8/docs/api/java/util/logging/package-summary.html
-[LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [maven]: https://maven.apache.org/
+[message-sessions]: https://docs.microsoft.com/azure/service-bus-messaging/message-sessions
 [oasis_amqp_v1_error]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transport-v1.0-os.html#type-error
 [oasis_amqp_v1]: http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-overview-v1.0-os.html
-[performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
+[product_docs]: https://docs.microsoft.com/azure/service-bus-messaging
 [qpid_proton_j_apache]: http://qpid.apache.org/proton/
 [queue_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#queues
 [RetryOptions]: ../../core/azure-core-amqp/src/main/java/com/azure/core/amqp/AmqpRetryOptions.java
-[sample_readme]: ./src/samples/README.md
-[sample-receive-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAzureIdentityAsyncSample.java
-[sample-receive-async-message]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAsyncSample.java
-[sample-receive-message-and-settle]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageAndSettleAsyncSample.java
-[sample-receive-message-synchronously]: ./src/samples/java/com/azure/messaging/servicebus/ReceiveMessageSyncSample.java
-[sample-send-async-aad-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageWithAzureIdentityAsyncSample.java
-[sample-send-async-message]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageAsyncSample.java
-[sample-send-batch-messages]: ./src/samples/java/com/azure/messaging/servicebus/SendMessageBatchSyncSample.java
+[sample_examples]: ./src/samples/java/com/azure/messaging/servicebus/
+[samples_readme]: ./src/samples/README.md
 [service_bus_connection_string]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal#get-the-connection-string
+[servicebus_create]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-create-namespace-portal
+[servicebus_messaging_exceptions]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-exceptions
 [servicebus_roles]: https://docs.microsoft.com/azure/service-bus-messaging/authenticate-application#built-in-rbac-roles-for-azure-service-bus
 [ServiceBusReceiverAsyncClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverAsyncClient.java
 [ServiceBusReceiverClient]: ./src/main/java/com/azure/messaging/servicebus/ServiceBusReceiverClient.java
@@ -292,5 +367,6 @@ Guidelines](./CONTRIBUTING.md) for more information.
 [source_code]: ./
 [subscription_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-queues-topics-subscriptions#topics-and-subscriptions
 [topic_concept]: https://docs.microsoft.com/azure/service-bus-messaging/service-bus-messaging-overview#topics
+[wiki_identity]: https://github.com/Azure/azure-sdk-for-java/wiki/Identity-and-Authentication
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fservicebus%2Fazure-messaging-servicebus%2FREADME.png)

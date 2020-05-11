@@ -68,7 +68,7 @@ public class SqlSyncGroupOperationsImpl
             .inner()
             .syncGroups()
             .listSyncDatabaseIds(locationName)
-            .mapPage(SyncDatabaseIdPropertiesInner::getId);
+            .mapPage(SyncDatabaseIdPropertiesInner::id);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class SqlSyncGroupOperationsImpl
             .inner()
             .syncGroups()
             .listSyncDatabaseIdsAsync(locationName)
-            .mapPage(SyncDatabaseIdPropertiesInner::getId);
+            .mapPage(SyncDatabaseIdPropertiesInner::id);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class SqlSyncGroupOperationsImpl
                 sqlSyncGroups
                     .add(
                         new SqlSyncGroupImpl(
-                            groupInner.getName(), this.sqlDatabase, groupInner, this.sqlServerManager));
+                            groupInner.name(), this.sqlDatabase, groupInner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(sqlSyncGroups);
@@ -247,6 +247,6 @@ public class SqlSyncGroupOperationsImpl
             .mapPage(
                 syncGroupInner ->
                     new SqlSyncGroupImpl(
-                        syncGroupInner.getName(), self.sqlDatabase, syncGroupInner, self.sqlServerManager));
+                        syncGroupInner.name(), self.sqlDatabase, syncGroupInner, self.sqlServerManager));
     }
 }

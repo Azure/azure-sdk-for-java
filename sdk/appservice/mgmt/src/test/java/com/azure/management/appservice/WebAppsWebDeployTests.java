@@ -52,14 +52,14 @@ public class WebAppsWebDeployTests extends AppServiceTest {
             webApp1
                 .deploy()
                 .withPackageUri(
-                    "https://github.com/Azure/azure-libraries-for-java/raw/master/azure-mgmt-appservice/src/test/resources/webapps.zip")
+                    "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/webapps.zip")
                 .withExistingDeploymentsDeleted(true)
                 .execute();
 
         Assertions.assertNotNull(deployment);
         if (!isPlaybackMode()) {
             SdkContext.sleep(10000);
-            Response<String> response = curl("http://" + webApp1.defaultHostName() + "/helloworld");
+            Response<String> response = curl("http://" + webApp1.defaultHostName() + "/helloworld/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

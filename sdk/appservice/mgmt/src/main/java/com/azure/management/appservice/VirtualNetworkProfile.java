@@ -39,7 +39,7 @@ public final class VirtualNetworkProfile {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

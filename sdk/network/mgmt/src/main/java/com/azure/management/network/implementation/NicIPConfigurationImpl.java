@@ -70,7 +70,7 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
         if (this.inner().publicIPAddress() == null) {
             return null;
         }
-        return this.inner().publicIPAddress().getId();
+        return this.inner().publicIPAddress().id();
     }
 
     @Override
@@ -285,13 +285,13 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
         if (this.isInCreateMode) {
             if (this.creatableVirtualNetworkKey != null) {
                 Network network = (Network) parent().createdDependencyResource(this.creatableVirtualNetworkKey);
-                subnetInner.setId(network.inner().subnets().get(0).getId());
+                subnetInner.withId(network.inner().subnets().get(0).id());
                 return subnetInner;
             }
 
             for (SubnetInner subnet : this.existingVirtualNetworkToAssociate.inner().subnets()) {
                 if (subnet.name().equalsIgnoreCase(this.subnetToAssociate)) {
-                    subnetInner.setId(subnet.getId());
+                    subnetInner.withId(subnet.id());
                     return subnetInner;
                 }
             }
@@ -305,10 +305,10 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
 
         } else {
             if (subnetToAssociate != null) {
-                int idx = this.inner().subnet().getId().lastIndexOf('/');
-                subnetInner.setId(this.inner().subnet().getId().substring(0, idx + 1) + subnetToAssociate);
+                int idx = this.inner().subnet().id().lastIndexOf('/');
+                subnetInner.withId(this.inner().subnet().id().substring(0, idx + 1) + subnetToAssociate);
             } else {
-                subnetInner.setId(this.inner().subnet().getId());
+                subnetInner.withId(this.inner().subnet().id());
             }
             return subnetInner;
         }

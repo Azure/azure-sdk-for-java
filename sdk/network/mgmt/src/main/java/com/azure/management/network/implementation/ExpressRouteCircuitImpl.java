@@ -137,7 +137,7 @@ class ExpressRouteCircuitImpl
             .manager()
             .inner()
             .expressRouteCircuits()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Getters
