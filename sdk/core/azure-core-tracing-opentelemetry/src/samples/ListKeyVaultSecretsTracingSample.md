@@ -23,7 +23,7 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
@@ -72,7 +72,7 @@ public class Sample {
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
-    Span span = tracer.spanBuilder("user-parent-span").startSpan();
+    Span span = TRACER.spanBuilder("user-parent-span").startSpan();
     try (final Scope scope = TRACER.withSpan(span)) {
         secretClient.setSecret(new KeyVaultSecret("StorageAccountPassword", "password"));
         secretClient.listPropertiesOfSecrets().forEach(secretProperties -> {

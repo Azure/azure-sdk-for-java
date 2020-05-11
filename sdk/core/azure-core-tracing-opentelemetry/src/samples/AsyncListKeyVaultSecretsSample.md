@@ -23,12 +23,12 @@ Sample uses **[opentelemetry-sdk][opentelemetry_sdk]** as implementation package
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>4.2.0-beta.1</version>
+    <version>4.2.0-beta.2</version>
 </dependency>
 <dependency>
     <groupId>com.azure</groupId>
