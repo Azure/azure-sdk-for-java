@@ -162,13 +162,44 @@ public class JacksonAdapter implements SerializerAdapter {
             if (encoding == SerializerEncoding.XML) {
                 return (T) xmlMapper.readValue(value, javaType);
             } else if (encoding == SerializerEncoding.TEXT) {
-                return (T) javaType.getRawClass().cast(value);
+                return (T) convertText(value, javaType.getRawClass());
             } else {
                 return (T) serializer().readValue(value, javaType);
             }
         } catch (JsonParseException jpe) {
             throw logger.logExceptionAsError(new MalformedValueException(jpe.getMessage(), jpe));
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> T convertText(String value, Class<T> type) {
+        // Value is null or empty, return the default.
+        if (CoreUtils.isNullOrEmpty(value)) {
+            return null;
+        }
+
+        // Check the default value's type to determine how it needs to be converted.
+        Object convertedValue;
+        if (type.isAssignableFrom(byte.class)) {
+            convertedValue = Byte.parseByte(value);
+        } else if (type.isAssignableFrom(short.class)) {
+            convertedValue = Short.parseShort(value);
+        } else if (type.isAssignableFrom(int.class)) {
+            convertedValue = Integer.parseInt(value);
+        } else if (type.isAssignableFrom(long.class)) {
+            convertedValue = Long.parseLong(value);
+        } else if (type.isAssignableFrom(float.class)) {
+            convertedValue = Float.parseFloat(value);
+        } else if (type.isAssignableFrom(double.class)) {
+            convertedValue = Double.parseDouble(value);
+        } else if (type.isAssignableFrom(boolean.class)) {
+            convertedValue = Boolean.parseBoolean(value);
+        } else {
+            // Should this check if there are any String only constructors or static factories?
+            convertedValue = value;
+        }
+
+        return (T) convertedValue;
     }
 
     @Override
