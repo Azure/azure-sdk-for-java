@@ -34,10 +34,10 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean
-        String trainingSetSource = "{training-set-SAS-URL}";
-        boolean useLabelFile = true;
+        String trainingFilesUrl = "{training-set-SAS-URL}";
+        boolean useTrainingLabels = true;
         CustomFormModel customFormModel =
-            formTrainingClient.beginTraining(trainingSetSource, useLabelFile).getFinalResult();
+            formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels).getFinalResult();
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
         customFormModel.getSubModels().forEach(customFormSubModel ->
@@ -53,13 +53,13 @@ public class FormTrainingClientJavaDocCodeSnippets {
      */
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration
-        String trainingSetSource = "{training-set-SAS-URL}";
-        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix(
-            "Invoice");
-        boolean useLabelFile = true;
+        String trainingFilesUrl = "{training-set-SAS-URL}";
+        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false)
+            .setPrefix("Invoice");
+        boolean useTrainingLabels = true;
 
         CustomFormModel customFormModel = formTrainingClient.beginTraining(
-            trainingSetSource, useLabelFile, trainModelOptions, Duration.ofSeconds(5)).getFinalResult();
+            trainingFilesUrl, useTrainingLabels, trainModelOptions, Duration.ofSeconds(5)).getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());

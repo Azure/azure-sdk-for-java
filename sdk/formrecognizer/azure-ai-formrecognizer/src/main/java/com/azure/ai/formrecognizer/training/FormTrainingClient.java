@@ -97,10 +97,9 @@ public class FormTrainingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels,
-        TrainModelOptions trainModelOptions, Duration pollInterval) {
-        return client.beginTraining(trainingFilesUrl, useTrainingLabels,
-            null, pollInterval).getSyncPoller();
+        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainModelOptions, pollInterval)
+            .getSyncPoller();
     }
 
     /**

@@ -221,9 +221,9 @@ Provide a container SAS url to your Azure Storage Blob container where you're st
 in the [service quickstart documentation][quickstart_training].
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L123-L143 -->
 ```java
-String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
+String trainingFilesUrl = "{training_set_SAS_URL}";
 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-    formTrainingClient.beginTraining(trainingSetSource, false);
+    formTrainingClient.beginTraining(trainingFilesUrl, false);
 
 CustomFormModel customFormModel = trainingPoller.getFinalResult();
 

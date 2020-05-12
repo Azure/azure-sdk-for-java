@@ -113,7 +113,6 @@ public class FormTrainingAsyncClient {
     }
 
     /**
-     * s
      * Create and train a custom model.
      * <p>Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.

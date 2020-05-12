@@ -120,9 +120,9 @@ public class ReadmeSamples {
     }
 
     public void trainModel() {
-        String trainingSetSource = "{unlabeled_training_set_SAS_URL}";
+        String trainingFilesUrl = "{training_set_SAS_URL}";
         SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-            formTrainingClient.beginTraining(trainingSetSource, false);
+            formTrainingClient.beginTraining(trainingFilesUrl, false);
 
         CustomFormModel customFormModel = trainingPoller.getFinalResult();
 
