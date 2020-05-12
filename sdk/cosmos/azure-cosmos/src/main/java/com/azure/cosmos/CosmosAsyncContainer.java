@@ -154,7 +154,7 @@ public class CosmosAsyncContainer {
     public Mono<CosmosAsyncContainerResponse> replace(
         CosmosContainerProperties containerProperties,
         CosmosContainerRequestOptions options) {
-        ModelBridgeInternal.validateResource(containerProperties);
+        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }

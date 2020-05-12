@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.Resource;
 
 import java.time.Duration;
 import java.util.HashMap;

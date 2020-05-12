@@ -26,7 +26,7 @@ public class CosmosAsyncConflictResponse extends CosmosResponse<CosmosConflictPr
         } else {
             CosmosConflictProperties props = new CosmosConflictProperties(bodyAsString);
             super.setProperties(props);
-            conflictClient = BridgeInternal.createCosmosAsyncConflict(props.getId(), container);
+            conflictClient = BridgeInternal.createCosmosAsyncConflict(ModelBridgeInternal.getResourceFromResourceWrapper(props).getId(), container);
         }
     }
 
