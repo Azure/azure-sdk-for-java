@@ -44,30 +44,6 @@
         "cognitiveServiceUserRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/a97b65f3-24c7-4388-baec-2e87135dc908')]"
     },
     "resources": [
-        {
-            "type": "Microsoft.Authorization/roleAssignments",
-            "apiVersion": "[variables('authorizationApiVersion')]",
-            "name": "[guid(concat(variables('cognitiveServiceUserRoleId'), parameters('baseName')))]",
-            "dependsOn": [
-                "[parameters('baseName')]"
-            ],
-            "properties": {
-                "principalId": "[parameters('testApplicationOid')]",
-                "roleDefinitionId": "[variables('cognitiveServiceUserRoleId')]"
-            }
-        },
-        {
-            "type": "Microsoft.CognitiveServices/accounts",
-            "name": "[parameters('baseName')]",
-            "apiVersion": "[variables('textAnalyticsApiVersion')]",
-            "sku": {
-                "name": "S"
-            },
-            "kind": "TextAnalytics",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "customSubDomainName": "[parameters('baseName')]"
-            }
-        }
+      
     ]
 }
