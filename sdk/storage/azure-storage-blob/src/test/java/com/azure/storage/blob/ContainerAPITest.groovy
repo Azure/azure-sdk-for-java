@@ -4,12 +4,10 @@
 package com.azure.storage.blob
 
 import com.azure.core.http.rest.Response
-import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.AppendBlobItem
 import com.azure.storage.blob.models.BlobAccessPolicy
-import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobListDetails
 import com.azure.storage.blob.models.BlobProperties
@@ -21,9 +19,7 @@ import com.azure.storage.blob.models.CopyStatusType
 import com.azure.storage.blob.models.CustomerProvidedKey
 import com.azure.storage.blob.models.LeaseStateType
 import com.azure.storage.blob.models.LeaseStatusType
-import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.blob.models.ListBlobsOptions
-import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.specialized.AppendBlobClient
 import com.azure.storage.blob.specialized.BlobClientBase
@@ -1426,171 +1422,5 @@ class ContainerAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
-    }
-
-    def "Restore Container"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
-
-        when:
-        cc1.restore(blobContainerItem.getName(), blobContainerItem.getVersion())
-
-        then:
-        cc1.listBlobs().size() == 1
-        cc1.listBlobs().first().getName() == blobName
-    }
-
-    def "Restore Container into other container"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
-
-        when:
-        def cc2 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc2.restore(blobContainerItem.getName(), blobContainerItem.getVersion())
-
-        then:
-        cc2.listBlobs().size() == 1
-        cc2.listBlobs().first().getName() == blobName
-    }
-
-    def "Restore Container with response"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
-
-        when:
-        def response = cc1.restoreWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion(),
-            Duration.ofMinutes(1), Context.NONE)
-
-        then:
-        response != null
-        cc1.listBlobs().size() == 1
-        cc1.listBlobs().first().getName() == blobName
-    }
-
-    def "Restore Container async"() {
-        given:
-        def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        cc1.create().block()
-        def blobName = generateBlobName()
-        cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()).block()
-        cc1.delete().block()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
-
-        when:
-        cc1.restore(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
-
-        then:
-        cc1.listBlobs().collectList().block().size() == 1
-        cc1.listBlobs().collectList().block().first().getName() == blobName
-    }
-
-    def "Restore Container async with response"() {
-        given:
-        def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        cc1.create().block()
-        def blobName = generateBlobName()
-        cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()).block()
-        cc1.delete().block()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
-
-        when:
-        def response = cc1.restoreWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
-
-        then:
-        response != null
-        cc1.listBlobs().collectList().block().size() == 1
-        cc1.listBlobs().collectList().block().first().getName() == blobName
-    }
-
-    def "Restore Container error"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-
-        when:
-        cc1.restore(generateContainerName(), "01D60F8BB59A4652")
-
-        then:
-        thrown(BlobStorageException.class)
-    }
-
-    def "Restore Container into existing container error"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc1.create()
-        def blobName = generateBlobName()
-        cc1.getBlobClient(blobName).upload(defaultInputStream.get(), 7)
-        cc1.delete()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
-
-        when:
-        def cc2 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-        cc2.create()
-        cc2.restore(blobContainerItem.getName(), blobContainerItem.getVersion())
-
-        then:
-        thrown(BlobStorageException.class)
     }
 }

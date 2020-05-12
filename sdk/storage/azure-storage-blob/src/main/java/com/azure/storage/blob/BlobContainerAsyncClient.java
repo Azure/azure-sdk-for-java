@@ -1045,47 +1045,4 @@ public final class BlobContainerAsyncClient {
         }
         return modifiedRequestConditions.getIfMatch() == null && modifiedRequestConditions.getIfNoneMatch() == null;
     }
-
-    /**
-     * Restores a previously deleted container.  The restored container
-     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
-     * If the container associated with this {@link BlobContainerAsyncClient}
-     * already exists, this call will result in a 409 (conflict).
-     * This API is only functional if Container Soft Delete is enabled
-     * for the storage account associated with the container.
-     *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
-     * @return A reactive response signaling completion.
-     */
-    public Mono<Void> restore(String deletedContainerName, String deletedContainerVersion) {
-        return this.restoreWithResponse(deletedContainerName, deletedContainerVersion).flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Restores a previously deleted container.  The restored container
-     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
-     * If the container associated with this {@link BlobContainerAsyncClient}
-     * already exists, this call will result in a 409 (conflict).
-     * This API is only functional if Container Soft Delete is enabled
-     * for the storage account associated with the container.
-     *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
-     * @return A reactive response signaling completion.
-     */
-    public Mono<Response<Void>> restoreWithResponse(String deletedContainerName, String deletedContainerVersion) {
-        try {
-            return withContext(context -> restoreWithResponse(deletedContainerName, deletedContainerVersion, context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    Mono<Response<Void>> restoreWithResponse(String deletedContainerName, String deletedContainerVersion,
-                                                    Context context) {
-        return this.azureBlobStorage.containers().restoreWithRestResponseAsync(null, null,
-            null, deletedContainerName, deletedContainerVersion, context)
-            .map(response -> new SimpleResponse<>(response, null));
-    }
 }

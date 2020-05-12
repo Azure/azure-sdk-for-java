@@ -26,6 +26,8 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
+
 /**
  * Client to a storage account. It may only be instantiated through a {@link BlobServiceClientBuilder}. This class does
  * not hold any state about a particular storage account but is instead a convenient way of sending off appropriate
@@ -395,5 +397,86 @@ public final class BlobServiceClient {
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return this.blobServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
+    }
+
+    /**
+     * Restores a previously deleted container.  The restored container
+     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
+     * If the container associated with this {@link BlobContainerAsyncClient}
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     */
+    public BlobContainerClient undeleteContainer(String deletedContainerName, String deletedContainerVersion) {
+        return this.undeleteContainer(deletedContainerName, deletedContainerVersion, deletedContainerName);
+    }
+
+    /**
+     * Restores a previously deleted container.  The restored container
+     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
+     * If the container associated with this {@link BlobContainerAsyncClient}
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     * @param destinationContainerName The name of the destination container.
+     */
+    public BlobContainerClient undeleteContainer(
+        String deletedContainerName, String deletedContainerVersion, String destinationContainerName) {
+        return this.undeleteContainerWithResponse(
+            deletedContainerName, deletedContainerVersion, destinationContainerName,
+            null, Context.NONE).getValue();
+    }
+
+    /**
+     * Restores a previously deleted container.  The restored container
+     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
+     * If the container associated with this {@link BlobContainerAsyncClient}
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<BlobContainerClient> undeleteContainerWithResponse(
+        String deletedContainerName, String deletedContainerVersion,
+        Duration timeout, Context context) {
+        return this.undeleteContainerWithResponse(deletedContainerName, deletedContainerVersion, deletedContainerName,
+            timeout, context);
+    }
+
+    /**
+     * Restores a previously deleted container.  The restored container
+     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
+     * If the container associated with this {@link BlobContainerAsyncClient}
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     * @param destinationContainerName The name of the destination container.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    public Response<BlobContainerClient> undeleteContainerWithResponse(
+        String deletedContainerName, String deletedContainerVersion, String destinationContainerName,
+        Duration timeout, Context context) {
+        Mono<Response<BlobContainerClient>> response =
+            this.blobServiceAsyncClient.undeleteContainerWithResponse(
+                deletedContainerName, deletedContainerVersion, destinationContainerName, context)
+            .map(r -> new SimpleResponse<>(r, getBlobContainerClient(destinationContainerName)));
+
+        return blockWithOptionalTimeout(response, timeout);
     }
 }
