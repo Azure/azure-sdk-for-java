@@ -55,10 +55,10 @@ public abstract class SearchTestBase extends TestBase {
     private static final String HOTELS_TESTS_INDEX_DATA_JSON = "HotelsTestsIndexData.json";
 
     protected static final String ENDPOINT = Configuration.getGlobalConfiguration()
-        .get("AZURE_SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
+        .get("SEARCH_SERVICE_ENDPOINT", "https://playback.search.windows.net");
 
     protected static final String API_KEY = Configuration.getGlobalConfiguration()
-        .get("AZURE_SEARCH_SERVICE_API_KEY", "apiKey");
+        .get("SEARCH_SERVICE_API_KEY", "apiKey");
 
     // The connection string we use here, as well as table name and target index schema, use the USGS database
     // that we set up to support our code samples.
@@ -435,9 +435,9 @@ public abstract class SearchTestBase extends TestBase {
 
     protected DataSource createBlobDataSource() {
         String storageConnectionString = Configuration.getGlobalConfiguration()
-            .get("AZURE_SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
+            .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
         String blobContainerName = Configuration.getGlobalConfiguration()
-            .get("AZURE_SEARCH_STORAGE_CONTAINER_NAME", "container");
+            .get("SEARCH_STORAGE_CONTAINER_NAME", "container");
 
         // create the new data source object for this storage account and container
         return DataSources.createFromAzureBlobStorage(testResourceNamer.randomName(BLOB_DATASOURCE_NAME, 32),
