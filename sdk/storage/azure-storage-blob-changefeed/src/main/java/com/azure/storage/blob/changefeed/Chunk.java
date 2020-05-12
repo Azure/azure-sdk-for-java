@@ -6,6 +6,7 @@ package com.azure.storage.blob.changefeed;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
+import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.internal.avro.implementation.AvroReader;
 import reactor.core.publisher.Flux;
 
@@ -24,6 +25,7 @@ class Chunk {
      * Creates a new Chunk.
      */
     Chunk(String chunkPath, ChangefeedCursor shardCursor, AvroReader avroReader) {
+        StorageImplUtils.assertNotNull("avroReader", avroReader);
         this.chunkPath = chunkPath;
         this.shardCursor = shardCursor;
         this.avroReader = avroReader;

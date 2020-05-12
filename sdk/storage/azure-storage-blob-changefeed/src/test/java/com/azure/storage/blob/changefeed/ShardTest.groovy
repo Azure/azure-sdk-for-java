@@ -9,6 +9,7 @@ import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.ListBlobsOptions
+import org.mockito.ArgumentCaptor
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -17,26 +18,27 @@ import spock.lang.Unroll
 import java.util.function.Supplier
 
 import static org.mockito.ArgumentMatchers.*
-import static org.mockito.Mockito.mock
-import static org.mockito.Mockito.when
+import static org.mockito.Mockito.*
 
 class ShardTest extends HelperSpec {
 
     BlobContainerAsyncClient mockContainer
     ChunkFactory mockChunkFactory
+    Chunk mockChunk0
+    Chunk mockChunk1
+    Chunk mockChunk2
 
     String shardPath = "shardPath"
     ChangefeedCursor segmentCursor
 
-
     def setup() {
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockChunkFactory = mock(ChunkFactory.class)
-        Chunk mockChunk0 = mock(Chunk.class)
-        Chunk mockChunk1 = mock(Chunk.class)
-        Chunk mockChunk2 = mock(Chunk.class)
+        mockChunk0 = mock(Chunk.class)
+        mockChunk1 = mock(Chunk.class)
+        mockChunk2 = mock(Chunk.class)
 
-        Supplier<Mono<PagedResponse<BlobItem>>> supplier = new Supplier<Mono<PagedResponse<BlobItem>>>() {
+        Supplier<Mono<PagedResponse<BlobItem>>> chunkSupplier = new Supplier<Mono<PagedResponse<BlobItem>>>() {
             @Override
             Mono<PagedResponse<BlobItem>> get() {
                 return Mono.just(new PagedResponseBase<>(
@@ -45,7 +47,7 @@ class ShardTest extends HelperSpec {
                     null, null))
             }
         }
-        PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>( supplier )
+        PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>(chunkSupplier)
 
         Map<String, ShardCursor> shardCursors = new HashMap<>()
         shardCursors.put(shardPath, null)
@@ -77,41 +79,104 @@ class ShardTest extends HelperSpec {
         return mockEventWrappers
     }
 
-    /*TODO (gapra) : Improve these tests to check events. */
-
     /* Tests no user cursor. */
     def "getEvents min"() {
         when:
         ShardFactory shardFactory = new ShardFactory(mockChunkFactory)
         Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, null)
 
-        def sv = StepVerifier.create(shard.getEvents())
+        def sv = StepVerifier.create(shard.getEvents().index())
 
         then:
-        sv.expectNextCount(9)
-        .verifyComplete()
+        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 2) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 2) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 0) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 1) })
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 2) })
+            .verifyComplete()
+
+        ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
+        verify(mockContainer).listBlobs(options.capture()) || true
+        options.getValue().getPrefix() == shardPath
+        verify(mockChunkFactory).getChunk(mockContainer, "chunk0", segmentCursor, 0, 0) || true
+        verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, 0, 0) || true
+        verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true
+        verify(mockChunk0).getEvents() || true
+        verify(mockChunk1).getEvents() || true
+        verify(mockChunk2).getEvents() || true
     }
 
     /* Tests user cursor. */
     @Unroll
     def "getEvents cursor"() {
         setup:
-        ShardCursor userShardCursor = new ShardCursor(chunkPath, blockOffset, objectBlockIndex)
+        ShardCursor userCursor = new ShardCursor(chunkPath, blockOffset, objectBlockIndex)
         when:
         ShardFactory shardFactory = new ShardFactory(mockChunkFactory)
-        Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, userShardCursor)
+        Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, userCursor)
 
-        def sv = StepVerifier.create(shard.getEvents())
+        def sv = StepVerifier.create(shard.getEvents().index())
 
         then:
-        sv.expectNextCount(offset)
-            .verifyComplete()
+        if (chunkPath == "chunk0") {
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 0) })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 1) })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk0", 1234, 2) })
+        }
+        if (chunkPath == "chunk0" || chunkPath == "chunk1") {
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 0) })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 1) })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk1", 1234, 2) })
+        }
+        if (chunkPath == "chunk0" || chunkPath == "chunk1" || chunkPath == "chunk2") {
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 0) })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 1) })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), "chunk2", 1234, 2) })
+        }
+        sv.verifyComplete()
+
+        ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
+        verify(mockContainer).listBlobs(options.capture()) || true
+        options.getValue().getPrefix() == shardPath
+
+        if (chunkPath == "chunk0") {
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk0", segmentCursor, blockOffset, objectBlockIndex) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, 0, 0) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true
+            verify(mockChunk0).getEvents() || true
+            verify(mockChunk1).getEvents() || true
+            verify(mockChunk2).getEvents() || true
+
+        } else if (chunkPath == "chunk1") {
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, blockOffset, objectBlockIndex) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true
+            verify(mockChunk1).getEvents() || true
+            verify(mockChunk2).getEvents() || true
+        } else if (chunkPath == "chunk2") {
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, blockOffset, objectBlockIndex) || true
+            verify(mockChunk2).getEvents() || true
+        }
 
         where:
-        chunkPath | blockOffset | objectBlockIndex || offset
-        "chunk0"  | 0           | 0                || 9
-        "chunk1"  | 0           | 0                || 6
-        "chunk2"  | 0           | 0                || 3
+        chunkPath | blockOffset | objectBlockIndex || _
+        "chunk0"  | 1234        | 10               || _
+        "chunk1"  | 5678        | 5                || _
+        "chunk2"  | 435         | 9                || _
+    }
+
+    boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String chunkPath, long blockOffset, long blockIndex) {
+        boolean verify = true
+        /* Make sure the cursor associated with the event is also correct. */
+        verify &= wrapper.getCursor().getShardCursor(shardPath).getBlockOffset() == blockOffset
+        verify &= wrapper.getCursor().getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
+        verify &= wrapper.getCursor().getShardCursor(shardPath).getChunkPath() == chunkPath
+        /* Make sure the event in the wrapper is what was expected. */
+        verify &= wrapper.getEvent().equals(mockEvents.get(index%3 as int))
+        return verify
     }
 
 }

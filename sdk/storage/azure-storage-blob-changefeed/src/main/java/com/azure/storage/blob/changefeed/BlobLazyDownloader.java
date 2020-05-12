@@ -14,25 +14,34 @@ import reactor.core.scheduler.Schedulers;
 import java.nio.ByteBuffer;
 import java.util.function.Function;
 
+/**
+ * FOR INTERNAL USE ONLY.
+ * Class to lazily download a blob.
+ */
 class BlobLazyDownloader {
 
     private final BlobAsyncClient client; /* Client to download from. */
-    private final long blockSize;
+    private final long blockSize; /* The block size. */
     private BlobRange range;
 
+    /**
+     * Creates a new BlobLazyDownloader to download the rest of a blob at a certain offset.
+     */
     BlobLazyDownloader(BlobAsyncClient client, long blockSize, long offset) {
         this.client = client;
         this.blockSize = blockSize;
         this.range = new BlobRange(offset);
     }
 
-    BlobLazyDownloader(BlobAsyncClient client, long blockSize) {
+    /**
+     * Creates a new BlobLazyDownloader to download a partial blob.
+     */
+    BlobLazyDownloader(BlobAsyncClient client, long totalSize) {
         this.client = client;
-        this.blockSize = blockSize;
-        this.range = new BlobRange(0, blockSize);
+        this.blockSize = totalSize;
+        this.range = new BlobRange(0, totalSize);
     }
 
-    /* TODO (gapra) : Tests Lazy downloader to only download part of blob. */
     /*TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but wasnt immediately obvious to me */
     public Flux<ByteBuffer> download() {
         ParallelTransferOptions options = new ParallelTransferOptions()
@@ -56,7 +65,8 @@ class BlobLazyDownloader {
                 BlobDownloadAsyncResponse initialResponse = setupTuple3.getT3();
                 return Flux.range(0, numChunks)
                     .concatMap(chunkNum -> { /* TODO (gapra) : This was the biggest difference - downloadToFile does
-                                                                it in parallel, but we want this to be sequential. */
+                                                                it in parallel, but we want this to be strictly
+                                                                 sequential. */
                         // The first chunk was retrieved during setup.
                         if (chunkNum == 0) {
                             return initialResponse.getValue();

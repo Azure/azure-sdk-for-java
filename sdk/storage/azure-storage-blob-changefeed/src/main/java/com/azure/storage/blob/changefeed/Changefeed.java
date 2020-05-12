@@ -26,50 +26,29 @@ class Changefeed {
     private static final String SEGMENT_PREFIX = "idx/segments/";
     private static final String METADATA_SEGMENT_PATH = "meta/segments.json";
 
-    /* Changefeed container */
-    private final BlobContainerAsyncClient client;
-
-    /* User provided start and end times. */
-    private final OffsetDateTime startTime;
-    private final OffsetDateTime endTime;
-
-    /* User provided cursor. */
-    private ChangefeedCursor userCursor;
-
-    /* Last consumable time. The latest time the changefeed can safely be read from.*/
-    private OffsetDateTime lastConsumable;
-
-    /* Soonest time between lastConsumable and endTime. */
-    private OffsetDateTime safeEndTime;
-
-    /* Cursor associated with changefeed. */
-    private final ChangefeedCursor cfCursor;
-
-    private final SegmentFactory segmentFactory;
+    private final BlobContainerAsyncClient client; /* Changefeed container */
+    private final OffsetDateTime startTime; /* User provided start time. */
+    private final OffsetDateTime endTime; /* User provided end time. */
+    private OffsetDateTime lastConsumable; /* Last consumable time. The latest time the changefeed can safely be
+                                              read from.*/
+    private OffsetDateTime safeEndTime; /* Soonest time between lastConsumable and endTime. */
+    private final ChangefeedCursor cfCursor; /* Cursor associated with changefeed. */
+    private ChangefeedCursor userCursor; /* User provided cursor. */
+    private final SegmentFactory segmentFactory; /* Segment factory. */
 
     /**
-     * Creates a new Changefeed from a start and end time.
+     * Creates a new Changefeed.
      */
     Changefeed(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime,
-        SegmentFactory segmentFactory) {
+        ChangefeedCursor userCursor, SegmentFactory segmentFactory) {
         this.client = client;
-        this.startTime = startTime == null ? OffsetDateTime.MIN : startTime;
-        this.endTime = endTime == null ? OffsetDateTime.MAX : endTime;
-        this.cfCursor = new ChangefeedCursor(this.endTime);
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.userCursor = userCursor;
         this.segmentFactory = segmentFactory;
-    }
 
-    /**
-     * Creates a new Changefeed from a cursor.
-     */
-    Changefeed(BlobContainerAsyncClient client, String userCursor, SegmentFactory segmentFactory) {
-        this.client = client;
-        this.userCursor = ChangefeedCursor.deserialize(userCursor);
-        this.startTime = OffsetDateTime.parse(this.userCursor.getSegmentTime());
-        this.endTime = OffsetDateTime.parse(this.userCursor.getEndTime());
-        this.safeEndTime = this.endTime;
-        this.cfCursor = new ChangefeedCursor(endTime);
-        this.segmentFactory = segmentFactory;
+        this.cfCursor = new ChangefeedCursor(this.endTime);
+        this.safeEndTime = endTime;
     }
 
     /**
@@ -91,8 +70,7 @@ class Changefeed {
         return this.client.exists()
             .flatMap(exists -> {
                 if (exists == null || !exists) {
-                    return Mono.error(new RuntimeException("Changefeed has not been enabled for this "
-                        + "account."));
+                    return Mono.error(new RuntimeException("Changefeed has not been enabled for this account."));
                 }
                 return Mono.just(true);
             });
@@ -125,19 +103,17 @@ class Changefeed {
      */
     private Flux<String> listYears() {
         return client.listBlobsByHierarchy(SEGMENT_PREFIX)
-            .map(BlobItem::getName);
+            .map(BlobItem::getName)
+            .filter(yearPath -> TimeUtils.validYear(yearPath, startTime, safeEndTime));
     }
 
     /**
      * List segments for years of interest.
      */
     private Flux<String> listSegmentsForYear(String year) {
-        if (TimeUtils.validYear(year, startTime, safeEndTime)) {
-            return client.listBlobs(new ListBlobsOptions().setPrefix(year))
-                .map(BlobItem::getName);
-        } else {
-            return Flux.empty();
-        }
+        return client.listBlobs(new ListBlobsOptions().setPrefix(year))
+            .map(BlobItem::getName)
+            .filter(segmentPath -> TimeUtils.validSegment(segmentPath, startTime, safeEndTime));
     }
 
     /**
@@ -145,12 +121,8 @@ class Changefeed {
      */
     private Flux<BlobChangefeedEventWrapper> getEventsForSegment(String segment) {
         OffsetDateTime segmentTime = TimeUtils.convertPathToTime(segment);
-        if (TimeUtils.validSegment(segment, startTime, safeEndTime)) {
-            return segmentFactory.getSegment(client, segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
-                .getEvents();
-        } else {
-            return Flux.empty();
-        }
+        return segmentFactory.getSegment(client, segment, cfCursor.toSegmentCursor(segmentTime), userCursor)
+            .getEvents();
     }
 
 }

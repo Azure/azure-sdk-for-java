@@ -41,6 +41,14 @@ class ChunkFactory {
 
     /**
      * Gets a new instance of a Chunk.
+     *
+     * @param client The changefeed container client.
+     * @param chunkPath The path to the chunk blob.
+     * @param shardCursor The parent shard cursor.
+     * @param blockOffset The offset of the block to start reading from. If 0, this indicates we should read the whole
+     *                    avro file from the beginning.
+     * @param objectBlockIndex The index of the last object in the block that was returned to the user.
+     * @return {@link Chunk}
      */
     Chunk getChunk(BlobContainerAsyncClient client, String chunkPath, ChangefeedCursor shardCursor,
         long blockOffset, long objectBlockIndex) {

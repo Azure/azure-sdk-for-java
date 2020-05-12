@@ -15,15 +15,26 @@ public class BlobChangefeedEventWrapper {
     private final BlobChangefeedEvent event;
     private final ChangefeedCursor cursor;
 
+    /**
+     * Creates a new instance of a BlobChangefeedEventWrapper
+     * @param event {@link BlobChangefeedEvent}
+     * @param cursor {@link ChangefeedCursor}
+     */
     public BlobChangefeedEventWrapper(BlobChangefeedEvent event, ChangefeedCursor cursor) {
         this.event = event;
         this.cursor = cursor;
     }
 
+    /**
+     * @return {@link BlobChangefeedEvent}
+     */
     public BlobChangefeedEvent getEvent() {
         return event;
     }
 
+    /**
+     * @return {@link ChangefeedCursor}
+     */
     public ChangefeedCursor getCursor() {
         return cursor;
     }
