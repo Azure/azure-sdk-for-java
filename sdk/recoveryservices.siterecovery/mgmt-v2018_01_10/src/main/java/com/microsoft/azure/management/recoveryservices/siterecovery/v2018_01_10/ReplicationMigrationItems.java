@@ -32,6 +32,19 @@ public interface ReplicationMigrationItems extends SupportsCreating<MigrationIte
     Observable<MigrationItem> migrateAsync(String fabricName, String protectionContainerName, String migrationItemName, MigrateInputProperties properties);
 
     /**
+     * Resynchronizes replication.
+     * The operation to resynchronize replication of an ASR migration item.
+     *
+     * @param fabricName Fabric name.
+     * @param protectionContainerName Protection container name.
+     * @param migrationItemName Migration item name.
+     * @param properties Resync input properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<MigrationItem> resyncAsync(String fabricName, String protectionContainerName, String migrationItemName, ResyncInputProperties properties);
+
+    /**
      * Test migrate item.
      * The operation to initiate test migration of the item.
      *

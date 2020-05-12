@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * InMageAzureV2 specific provider input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = InMageAzureV2ReprotectInput.class)
 @JsonTypeName("InMageAzureV2")
 public class InMageAzureV2ReprotectInput extends ReverseReplicationProviderSpecificInput {
     /**

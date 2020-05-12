@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Replication provider specific settings.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = ReplicationProviderSpecificSettings.class)
 @JsonTypeName("ReplicationProviderSpecificSettings")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AReplicationDetails.class),

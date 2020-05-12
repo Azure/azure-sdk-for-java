@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Hyper V replica provider specific settings base class.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = HyperVReplicaBaseReplicationDetails.class)
 @JsonTypeName("HyperVReplicaBaseReplicationDetails")
 public class HyperVReplicaBaseReplicationDetails extends ReplicationProviderSpecificSettings {
     /**

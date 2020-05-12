@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMwareCbt container creation input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
-@JsonTypeName("6c7da455-506f-43ff-a16a-8eb101aebb70")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VMwareCbtContainerCreationInput.class)
+@JsonTypeName("VMwareCbt")
 public class VMwareCbtContainerCreationInput extends ReplicationProviderSpecificContainerCreationInput {
 }
