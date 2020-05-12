@@ -28,12 +28,11 @@ public class RecognizeReceiptsFromUrlAsync {
     public static void main(final String[] args) {
         // Instantiate a client that will be used to call the service.
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        String receiptUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media/contoso"
-            + "-allinone.jpg";
+        String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/receipts/contoso-allinone.jpg";
         PollerFlux<OperationResult, IterableStream<RecognizedReceipt>> analyzeReceiptPoller =
             client.beginRecognizeReceiptsFromUrl(receiptUrl);
 

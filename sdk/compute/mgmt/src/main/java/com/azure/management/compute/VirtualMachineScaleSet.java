@@ -4,6 +4,7 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.compute.implementation.ComputeManager;
 import com.azure.management.compute.models.VirtualMachineScaleSetInner;
@@ -24,11 +25,12 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import com.azure.management.storage.StorageAccount;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure virtual machine scale set. */
 @Fluent
@@ -282,6 +284,15 @@ public interface VirtualMachineScaleSet
      * @return the network interfaces
      */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(
+        String virtualMachineInstanceId);
+
+    /**
+     * Lists the network interface associated with a specific virtual machine instance in the scale set asynchronously.
+     *
+     * @param virtualMachineInstanceId the instance ID
+     * @return the network interfaces
+     */
+    PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
         String virtualMachineInstanceId);
 
     /** @return true if managed disk is used for the virtual machine scale set's disks (os, data) */
@@ -1239,7 +1250,7 @@ public interface VirtualMachineScaleSet
              * @param capacity number of virtual machines
              * @return the next stage of the definition
              */
-            WithCreate withCapacity(int capacity);
+            WithCreate withCapacity(long capacity);
         }
 
         /** The stage of a virtual machine scale set definition allowing to specify the upgrade policy. */
@@ -1841,7 +1852,7 @@ public interface VirtualMachineScaleSet
              * @param capacity the virtual machine capacity of the scale set
              * @return the next stage of the update
              */
-            WithApply withCapacity(int capacity);
+            WithApply withCapacity(long capacity);
         }
 
         /** The stage of the virtual machine scale set definition allowing to specify the custom data. */

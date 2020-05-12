@@ -21,7 +21,7 @@ public final class ManagedArtifact {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

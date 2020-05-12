@@ -26,12 +26,12 @@ public class RecognizeContentAsync {
         // Instantiate a client that will be used to call the service.
 
         FormRecognizerAsyncClient client = new FormRecognizerClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
         PollerFlux<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
-            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure-Samples/cognitive-services-REST-api-samples/master/curl/form-recognizer/contoso-allinone.jpg");
+            client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/forms/layout1.jpg");
 
         Mono<IterableStream<FormPage>> layoutPageResults = recognizeLayoutPoller
             .last()

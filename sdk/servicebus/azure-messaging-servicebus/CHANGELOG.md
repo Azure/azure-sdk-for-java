@@ -1,7 +1,17 @@
 # Release History
 
-## 7.0.0-beta.2 (Unreleased)
+## 7.0.0-beta.2 (2020-05-07)
 
+- Add support for receiving messages from specific sessions
+- Add support for receiving messages from multiple sessions
+- Add missing schedule and cancel APIs in ServiceBusSenderClient
+- Add support to send a collection of messages at once without needing to create a `ServiceBusMessageBatch` first. This
+  will throw an error/exception will the messages cannot fit as per batch size restrictions
+- Change return type from `ServiceBusReceivedMessage` to `ServiceBusReceivedMessageContext` when calling `receive()` so
+  users can distinguish between transient failure scenarios where receiving continues and an actual terminal signal that
+  is signaled through the downstream `onError`.
+- Fix message settlement to occur on receive link
+- Fix issue where backpressure is not properly supported
 
 ## 7.0.0-beta.1 (2020-04-06)
 

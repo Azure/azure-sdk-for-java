@@ -99,7 +99,7 @@ public class ProxyReceiveTest extends IntegrationTestBase {
             .buildAsyncClient();
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setEnableAutoComplete(false);
+            .setIsAutoCompleteEnabled(false);
 
         // Act & Assert
         try {

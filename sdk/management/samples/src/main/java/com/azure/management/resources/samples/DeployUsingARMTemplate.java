@@ -3,19 +3,22 @@
 
 package com.azure.management.resources.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.resources.Deployment;
 import com.azure.management.resources.DeploymentMode;
 import com.azure.management.resources.DeploymentOperation;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -82,7 +85,7 @@ public final class DeployUsingARMTemplate {
                 for (DeploymentOperation operation : operations) {
                     if (operation.targetResource() != null) {
                         String operationTxt = String.format("id:%s name:%s type: %s provisioning-state:%s code: %s msg: %s",
-                                operation.targetResource().getId(),
+                                operation.targetResource().id(),
                                 operation.targetResource().resourceName(),
                                 operation.targetResource().resourceType(),
                                 operation.provisioningState(),
@@ -121,12 +124,16 @@ public final class DeployUsingARMTemplate {
             //=================================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogLevel(HttpLogDetailLevel.BASIC)
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             runSample(azure);
         } catch (Exception e) {
@@ -138,18 +145,19 @@ public final class DeployUsingARMTemplate {
     private static String getTemplate(Azure azure) throws IllegalAccessException, JsonProcessingException, IOException {
         final String hostingPlanName = azure.sdkContext().randomResourceName("hpRSAT", 24);
         final String webappName = azure.sdkContext().randomResourceName("wnRSAT", 24);
-        final InputStream embeddedTemplate;
-        embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json");
 
-        final ObjectMapper mapper = new ObjectMapper();
-        final JsonNode tmp = mapper.readTree(embeddedTemplate);
+        try (InputStream embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json")) {
 
-        DeployUsingARMTemplate.validateAndAddFieldValue("string", hostingPlanName, "hostingPlanName", null, tmp);
-        DeployUsingARMTemplate.validateAndAddFieldValue("string", webappName, "webSiteName", null, tmp);
-        DeployUsingARMTemplate.validateAndAddFieldValue("string", "F1", "skuName", null, tmp);
-        DeployUsingARMTemplate.validateAndAddFieldValue("int", "1", "skuCapacity", null, tmp);
+            final ObjectMapper mapper = new ObjectMapper();
+            final JsonNode tmp = mapper.readTree(embeddedTemplate);
 
-        return tmp.toString();
+            DeployUsingARMTemplate.validateAndAddFieldValue("string", hostingPlanName, "hostingPlanName", null, tmp);
+            DeployUsingARMTemplate.validateAndAddFieldValue("string", webappName, "webSiteName", null, tmp);
+            DeployUsingARMTemplate.validateAndAddFieldValue("string", "F1", "skuName", null, tmp);
+            DeployUsingARMTemplate.validateAndAddFieldValue("int", "1", "skuCapacity", null, tmp);
+
+            return tmp.toString();
+        }
     }
 
     private static void validateAndAddFieldValue(String type, String fieldValue, String fieldName, String errorMessage,

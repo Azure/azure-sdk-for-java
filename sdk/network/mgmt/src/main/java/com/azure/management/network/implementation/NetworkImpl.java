@@ -78,7 +78,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().inner().virtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this.manager().inner().virtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -276,7 +276,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public String ddosProtectionPlanId() {
-        return inner().ddosProtectionPlan() == null ? null : inner().ddosProtectionPlan().getId();
+        return inner().ddosProtectionPlan() == null ? null : inner().ddosProtectionPlan().id();
     }
 
     @Override
@@ -298,7 +298,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
 
     @Override
     public NetworkImpl withExistingDdosProtectionPlan(String planId) {
-        inner().withEnableDdosProtection(true).withDdosProtectionPlan(new SubResource().setId(planId));
+        inner().withEnableDdosProtection(true).withDdosProtectionPlan(new SubResource().withId(planId));
         return this;
     }
 

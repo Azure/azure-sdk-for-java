@@ -4,18 +4,18 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.models.AccessCondition;
 import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKind;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
@@ -116,20 +116,20 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             throw new SkipException("Endpoint does not have strong consistency");
         }
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         }
 
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.STRONG).build();
+                .withConsistencyLevel(ConsistencyLevel.STRONG).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.STRONG).build();
+                .withConsistencyLevel(ConsistencyLevel.STRONG).withContentResponseOnWriteEnabled(true).build();
 
         Document documentDefinition = getDocumentDefinition();
         Document document = createDocument(this.writeClient, createdDatabase.getId(), createdCollection.getId(), documentDefinition);
@@ -154,17 +154,17 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     void validateSessionContainerAfterCollectionCreateReplace(boolean useGateway) {
         // DIRECT clients for read and write operations
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
 
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         try {
             PartitionKeyDefinition partitionKey = new PartitionKeyDefinition();
@@ -362,21 +362,21 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionContainerAfterCollectionDeletion(boolean useGateway) throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl client1 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         RxDocumentClientImpl client2 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
 
         String collectionId = UUID.randomUUID().toString();
@@ -493,21 +493,21 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionTokenWithPreConditionFailure(boolean useGateway) throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         RxDocumentClientImpl validationClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
             // write a document, and upsert to it to update etag.
@@ -537,21 +537,21 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionTokenWithDocumentNotFoundException(boolean useGateway) throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         RxDocumentClientImpl validationClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
             DocumentCollection collectionDefinition = getCollectionDefinition();
@@ -573,16 +573,16 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionTokenWithExpectedException(boolean useGateway) throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
             ResourceResponse<Document> documentResponse =
@@ -606,21 +606,21 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionTokenWithConflictException(boolean useGateway) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         RxDocumentClientImpl validationClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
             Document documentDefinition = getDocumentDefinition();
@@ -639,16 +639,16 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionTokenMultiPartitionCollection(boolean useGateway) throws Exception {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
 
@@ -718,16 +718,16 @@ public class ConsistencyTestsBase extends TestSuiteBase {
     }
 
     void validateSessionTokenFromCollectionReplaceIsServerToken(boolean useGateway) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy;
         if (useGateway) {
-            connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+            connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         } else {
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
         RxDocumentClientImpl client1 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         RxDocumentClientImpl client2 = null;
         try {
@@ -740,7 +740,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             client2 = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                     .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                     .withConnectionPolicy(connectionPolicy)
-                    .withConsistencyLevel(ConsistencyLevel.SESSION)
+                    .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                     .build();
             client2.replaceCollection(createdCollection, null).block();
             String token2 = ((SessionContainer) client2.getSession()).getSessionToken(createdCollection.getSelfLink());

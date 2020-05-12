@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -151,10 +151,10 @@ public class LocationCacheTest {
 
         this.cache.onDatabaseAccountRead(this.databaseAccount);
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setEndpointDiscoveryEnabled(enableEndpointDiscovery);
-        BridgeInternal.setUseMultipleWriteLocations(connectionPolicy, useMultipleWriteLocations);
-        connectionPolicy.setPreferredLocations(this.preferredLocations);
+        connectionPolicy.setMultipleWriteRegionsEnabled(useMultipleWriteLocations);
+        connectionPolicy.setPreferredRegions(this.preferredLocations);
 
         this.endpointManager = new GlobalEndpointManager(mockedClient, connectionPolicy, configs);
     }

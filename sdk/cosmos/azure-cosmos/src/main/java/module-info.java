@@ -28,6 +28,7 @@ module com.azure.cosmos {
     // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
+    exports com.azure.cosmos.util;
 
     // exporting some packages specifically for Jackson
     opens com.azure.cosmos to com.fasterxml.jackson.databind;
@@ -37,6 +38,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.changefeed.implementation to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.changefeed.exceptions to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.directconnectivity to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.implementation.directconnectivity.rntbd to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.http to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.query.aggregation to com.fasterxml.jackson.databind;
@@ -44,6 +46,7 @@ module com.azure.cosmos {
     opens com.azure.cosmos.implementation.query.orderbyquery to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.implementation.routing to com.fasterxml.jackson.databind;
     opens com.azure.cosmos.models to com.fasterxml.jackson.databind;
+    opens com.azure.cosmos.util to com.fasterxml.jackson.databind;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
 }

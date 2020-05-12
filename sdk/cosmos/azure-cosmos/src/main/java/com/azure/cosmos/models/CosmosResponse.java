@@ -13,7 +13,7 @@ import java.util.Map;
  * The cosmos response
  * @param <T> the type of resource
  */
-public class CosmosResponse<T extends Resource> {
+public class CosmosResponse<T> {
     private T properties;
     protected final ResourceResponse<?> resourceResponseWrapper;
 

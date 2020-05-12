@@ -3,6 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -78,6 +79,9 @@ import com.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageAccount;
 import com.azure.management.storage.implementation.StorageManager;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Mono;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -85,11 +89,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 
 /** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
@@ -363,7 +366,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Network getPrimaryNetwork() throws IOException {
-        String subnetId = primaryNicDefaultIPConfiguration().subnet().getId();
+        String subnetId = primaryNicDefaultIPConfiguration().subnet().id();
         String virtualNetworkId = ResourceUtils.parentResourceIdFromResourceId(subnetId);
         return this.networkManager.networks().getById(virtualNetworkId);
     }
@@ -476,16 +479,12 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetPublicIPAddressConfiguration virtualMachinePublicIpConfig() {
         VirtualMachineScaleSetIPConfiguration nicConfig = this.primaryNicDefaultIPConfiguration();
-        if (nicConfig != null) {
-            return nicConfig.publicIPAddressConfiguration();
-        } else {
-            return null;
-        }
+        return nicConfig.publicIPAddressConfiguration();
     }
 
     @Override
     public VirtualMachineEvictionPolicyTypes virtualMachineEvictionPolicy() {
-        if (this.inner().virtualMachineProfile() != null) {
+        if (this.inner() != null &&  this.inner().virtualMachineProfile() != null) {
             return this.inner().virtualMachineProfile().evictionPolicy();
         } else {
             return null;
@@ -516,7 +515,7 @@ public class VirtualMachineScaleSetImpl
     public String networkSecurityGroupId() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
         if (nicConfig.networkSecurityGroup() != null) {
-            return nicConfig.networkSecurityGroup().getId();
+            return nicConfig.networkSecurityGroup().id();
         } else {
             return null;
         }
@@ -538,7 +537,7 @@ public class VirtualMachineScaleSetImpl
         List<String> result = new ArrayList<>();
         if (backendPools != null) {
             for (SubResource backendPool : backendPools) {
-                result.add(backendPool.getId());
+                result.add(backendPool.id());
             }
         }
         return result;
@@ -550,7 +549,7 @@ public class VirtualMachineScaleSetImpl
         List<String> asgIds = new ArrayList<>();
         if (nicIpConfig.applicationSecurityGroups() != null) {
             for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
-                asgIds.add(asg.getId());
+                asgIds.add(asg.id());
             }
         }
         return asgIds;
@@ -563,7 +562,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().getId());
+        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
         ProximityPlacementGroupInner plgInner =
             manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
@@ -601,6 +600,16 @@ public class VirtualMachineScaleSetImpl
             .networkManager
             .networkInterfaces()
             .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(), this.name(), virtualMachineInstanceId);
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
+        String virtualMachineInstanceId) {
+        return this.
+            networkManager
+            .networkInterfaces()
+            .listByVirtualMachineScaleSetInstanceIdAsync(
+                this.resourceGroupName(), this.name(), virtualMachineInstanceId);
     }
 
     // Fluent setters
@@ -704,7 +713,7 @@ public class VirtualMachineScaleSetImpl
                 this.primaryInternalLoadBalancer, this.primaryNicDefaultIPConfiguration());
         } else {
             String vmNicVnetId =
-                ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIPConfiguration().subnet().getId());
+                ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIPConfiguration().subnet().id());
             if (!vmNicVnetId.equalsIgnoreCase(lbNetworkId)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(
                     "Virtual network associated with scale set virtual machines"
@@ -818,7 +827,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withWindowsCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
-        imageReferenceInner.setId(customImageId);
+        imageReferenceInner.withId(customImageId);
         this
             .inner()
             .virtualMachineProfile()
@@ -882,7 +891,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withLinuxCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
-        imageReferenceInner.setId(customImageId);
+        imageReferenceInner.withId(customImageId);
         this
             .inner()
             .virtualMachineProfile()
@@ -1035,8 +1044,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withCapacity(int capacity) {
-        this.inner().sku().withCapacity(new Long(capacity));
+    public VirtualMachineScaleSetImpl withCapacity(long capacity) {
+        this.inner().sku().withCapacity(capacity);
         return this;
     }
 
@@ -1898,12 +1907,12 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSetIPConfiguration ipConfig = primaryNicDefaultIPConfiguration();
         if (!ipConfig.loadBalancerBackendAddressPools().isEmpty()) {
             firstLoadBalancerId =
-                ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).getId());
+                ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).id());
         }
 
         if (firstLoadBalancerId == null && !ipConfig.loadBalancerInboundNatPools().isEmpty()) {
             firstLoadBalancerId =
-                ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerInboundNatPools().get(0).getId());
+                ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerInboundNatPools().get(0).id());
         }
 
         if (firstLoadBalancerId == null) {
@@ -1935,16 +1944,18 @@ public class VirtualMachineScaleSetImpl
 
         String secondLoadBalancerId = null;
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (!subResource.getId().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
-                secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.getId());
+            if (!subResource.id().toLowerCase(Locale.ROOT)
+                    .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
+                secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.id());
                 break;
             }
         }
 
         if (secondLoadBalancerId == null) {
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (!subResource.getId().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
-                    secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.getId());
+                if (!subResource.id().toLowerCase(Locale.ROOT)
+                        .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
+                    secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.id());
                     break;
                 }
             }
@@ -2017,13 +2028,13 @@ public class VirtualMachineScaleSetImpl
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             boolean found = false;
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-                if (subResource.getId().equalsIgnoreCase(backendPoolId)) {
+                if (subResource.id().equalsIgnoreCase(backendPoolId)) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                backendSubResourcesToAssociate.add(new SubResource().setId(backendPoolId));
+                backendSubResourcesToAssociate.add(new SubResource().withId(backendPoolId));
             }
         }
 
@@ -2039,13 +2050,13 @@ public class VirtualMachineScaleSetImpl
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", inboundNatPool);
             boolean found = false;
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (subResource.getId().equalsIgnoreCase(inboundNatPoolId)) {
+                if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                inboundNatPoolSubResourcesToAssociate.add(new SubResource().setId(inboundNatPoolId));
+                inboundNatPoolSubResourcesToAssociate.add(new SubResource().withId(inboundNatPoolId));
             }
         }
 
@@ -2062,7 +2073,7 @@ public class VirtualMachineScaleSetImpl
         for (LoadBalancerBackend lbBackend : lbBackends.values()) {
             String backendId = mergePath(loadBalancerId, "backendAddressPools", lbBackend.name());
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-                if (subResource.getId().equalsIgnoreCase(backendId)) {
+                if (subResource.id().equalsIgnoreCase(backendId)) {
                     attachedBackends.put(lbBackend.name(), lbBackend);
                 }
             }
@@ -2078,7 +2089,7 @@ public class VirtualMachineScaleSetImpl
         for (LoadBalancerInboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", lbInboundNatPool.name());
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (subResource.getId().equalsIgnoreCase(inboundNatPoolId)) {
+                if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     attachedInboundNatPools.put(lbInboundNatPool.name(), lbInboundNatPool);
                 }
             }
@@ -2119,7 +2130,8 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer, VirtualMachineScaleSetIPConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (subResource.getId().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+            if (subResource.id().toLowerCase(Locale.ROOT)
+                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2133,7 +2145,8 @@ public class VirtualMachineScaleSetImpl
         LoadBalancer loadBalancer, VirtualMachineScaleSetIPConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-            if (subResource.getId().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+            if (subResource.id().toLowerCase(Locale.ROOT)
+                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2149,7 +2162,7 @@ public class VirtualMachineScaleSetImpl
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-                if (subResource.getId().equalsIgnoreCase(backendPoolId)) {
+                if (subResource.id().equalsIgnoreCase(backendPoolId)) {
                     toRemove.add(subResource);
                     break;
                 }
@@ -2167,7 +2180,7 @@ public class VirtualMachineScaleSetImpl
         for (String natPoolName : inboundNatPoolNames) {
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", natPoolName);
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (subResource.getId().equalsIgnoreCase(inboundNatPoolId)) {
+                if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     toRemove.add(subResource);
                     break;
                 }
@@ -2219,7 +2232,7 @@ public class VirtualMachineScaleSetImpl
             @Override
             public String resourceId() {
                 if (inner() != null) {
-                    return inner().getId();
+                    return inner().id();
                 } else {
                     return null;
                 }
@@ -2275,7 +2288,7 @@ public class VirtualMachineScaleSetImpl
      */
     private boolean isOsDiskFromCustomImage(VirtualMachineScaleSetStorageProfile storageProfile) {
         ImageReference imageReference = storageProfile.imageReference();
-        return isOSDiskFromImage(storageProfile.osDisk()) && imageReference != null && imageReference.getId() != null;
+        return isOSDiskFromImage(storageProfile.osDisk()) && imageReference != null && imageReference.id() != null;
     }
 
     /**
@@ -2445,14 +2458,14 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup) {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
-        nicConfig.withNetworkSecurityGroup(new SubResource().setId(networkSecurityGroup.id()));
+        nicConfig.withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withExistingNetworkSecurityGroupId(String networkSecurityGroupId) {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
-        nicConfig.withNetworkSecurityGroup(new SubResource().setId(networkSecurityGroupId));
+        nicConfig.withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroupId));
         return this;
     }
 
@@ -2483,13 +2496,13 @@ public class VirtualMachineScaleSetImpl
         }
         boolean found = false;
         for (SubResource backendPool : nicIpConfig.applicationGatewayBackendAddressPools()) {
-            if (backendPool.getId().equalsIgnoreCase(backendPoolId)) {
+            if (backendPool.id().equalsIgnoreCase(backendPoolId)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            nicIpConfig.applicationGatewayBackendAddressPools().add(new SubResource().setId(backendPoolId));
+            nicIpConfig.applicationGatewayBackendAddressPools().add(new SubResource().withId(backendPoolId));
         }
         return this;
     }
@@ -2504,7 +2517,7 @@ public class VirtualMachineScaleSetImpl
             int index = -1;
             for (SubResource backendPool : nicIpConfig.applicationGatewayBackendAddressPools()) {
                 index = index + 1;
-                if (backendPool.getId().equalsIgnoreCase(backendPoolId)) {
+                if (backendPool.id().equalsIgnoreCase(backendPoolId)) {
                     foundIndex = index;
                     break;
                 }
@@ -2530,13 +2543,13 @@ public class VirtualMachineScaleSetImpl
         }
         boolean found = false;
         for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
-            if (asg.getId().equalsIgnoreCase(applicationSecurityGroupId)) {
+            if (asg.id().equalsIgnoreCase(applicationSecurityGroupId)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            nicIpConfig.applicationSecurityGroups().add(new SubResource().setId(applicationSecurityGroupId));
+            nicIpConfig.applicationSecurityGroups().add(new SubResource().withId(applicationSecurityGroupId));
         }
         return this;
     }
@@ -2551,7 +2564,7 @@ public class VirtualMachineScaleSetImpl
             int index = -1;
             for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
                 index = index + 1;
-                if (asg.getId().equalsIgnoreCase(applicationSecurityGroupId)) {
+                if (asg.id().equalsIgnoreCase(applicationSecurityGroupId)) {
                     foundIndex = index;
                     break;
                 }
@@ -2565,7 +2578,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().setId(proximityPlacementGroupId));
+        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         this.newProximityPlacementGroupName = null;
         return this;
     }
@@ -2599,7 +2612,7 @@ public class VirtualMachineScaleSetImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.setLocation(this.inner().getLocation());
+                plgInner.withLocation(this.inner().location());
                 plgInner =
                     this
                         .manager()
@@ -2607,7 +2620,7 @@ public class VirtualMachineScaleSetImpl
                         .proximityPlacementGroups()
                         .createOrUpdate(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner);
 
-                this.inner().withProximityPlacementGroup((new SubResource().setId(plgInner.getId())));
+                this.inner().withProximityPlacementGroup((new SubResource().withId(plgInner.id())));
             }
         }
     }

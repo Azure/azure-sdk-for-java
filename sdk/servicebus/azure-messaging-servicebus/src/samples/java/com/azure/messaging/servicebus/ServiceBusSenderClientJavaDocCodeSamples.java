@@ -30,7 +30,6 @@ public class ServiceBusSenderClientJavaDocCodeSamples {
             .sender()
             .queueName("queue-name")
             .buildClient();
-
         // END: com.azure.messaging.servicebus.servicebussenderclient.instantiation
 
         sender.close();

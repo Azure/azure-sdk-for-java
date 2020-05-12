@@ -12,7 +12,7 @@ public class RoleDefinitionTests extends GraphRbacManagementTest {
         RoleDefinition roleDefinition =
             graphRbacManager
                 .roleDefinitions()
-                .getByScopeAndRoleName("subscriptions/" + resourceManager.getSubscriptionId(), "Contributor");
+                .getByScopeAndRoleName("subscriptions/" + resourceManager.subscriptionId(), "Contributor");
         Assertions.assertNotNull(roleDefinition);
         Assertions.assertEquals("Contributor", roleDefinition.roleName());
     }

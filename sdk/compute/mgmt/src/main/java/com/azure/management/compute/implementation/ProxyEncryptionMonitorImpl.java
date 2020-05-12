@@ -86,16 +86,16 @@ class ProxyEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager)
+                                        virtualMachine.id(), computeManager)
                                     : new WindowsVolumeNoAADEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager);
+                                        virtualMachine.id(), computeManager);
                         } else {
                             self.resolvedEncryptionMonitor =
                                 (osType() == OperatingSystemTypes.LINUX)
                                     ? new LinuxDiskVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager)
+                                        virtualMachine.id(), computeManager)
                                     : new WindowsVolumeLegacyEncryptionMonitorImpl(
-                                        virtualMachine.getId(), computeManager);
+                                        virtualMachine.id(), computeManager);
                         }
                         return self.resolvedEncryptionMonitor.refreshAsync();
                     })

@@ -91,7 +91,7 @@ class BlobAPITest extends APISpec {
 
         when:
         // Uses blob output stream under the hood.
-        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null)
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)

@@ -1,11 +1,26 @@
 # Release History
 
+## 1.1.0-beta.5 (Unreleased)
+
+## 1.1.0-beta.4 (2020-05-06)
+- Added `IntelliJCredential` support in `DefaultAzureCredential`.
+- Added `VsCodeCredential` support in `DefaultAzureCredential`.
+- Added support to disable specific credentials in `DefaultAzureCredential` authentication flow.
+- Added Shared Token cache support for MacOS Keychain, Gnome Keyring, and plain text for other Linux environments
+- Added option to write to shared token cache from `InteractiveBrowserCredential`, `AuthorizationCodeCredential`, `UsernamePasswordCredential`, and `DeviceCodeCredential`
+
+## 1.0.6 (2020-05-05)
+- Upgraded `azure-core` dependency to 1.5.0
+- Fix `MSIToken` expiry time parsing for Azure App Service platforms.
+
 ## 1.1.0-beta.3 (2020-04-07)
 - Added `KnownAuthorityHosts` to enable quick references to public azure authority hosts.
 - Added methods to allow credential configuration in `DefaultAzureCredentialBuilder`
 - Added support for authority host to be read from `AZURE_AUTHORITY_HOST` environment variable.
 - Added support for `ClientCertificateCredential` and `UserNamePasswordCredential` in EnvironmentCredential.
 
+## 1.0.5 (2020-04-07)
+- Upgraded `azure-core` dependency to 1.4.0
 
 ## 1.1.0-beta.2 (2020-03-11)
 
@@ -16,6 +31,9 @@
 - Added `tokenRefreshOffset` set method in all the credential builders.
 - Added `httpClient` set method in all the credential builders.
 - Updated `DefaultAzureCredential` to enable authenticating through the Azure CLI
+
+## 1.0.4 (2020-03-10)
+- Upgraded `azure-core` dependency to 1.0.4
 
 ## 1.1.0-beta.1 (2020-02-12)
 - All credential builders support setting a pipeline via `httpPipeline` method.

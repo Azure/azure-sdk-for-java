@@ -18,7 +18,7 @@ public class DetectLanguage {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
@@ -26,7 +26,7 @@ public class DetectLanguage {
         String document = "hello world";
 
         final DetectedLanguage detectedLanguage = client.detectLanguage(document);
-        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+        System.out.printf("Detected primary language: %s, ISO 6391 name: %s, confidence score: %f.%n",
+            detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
     }
 }

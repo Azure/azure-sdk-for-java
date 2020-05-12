@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CachingTypes;
@@ -39,6 +40,8 @@ import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -46,7 +49,6 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** Implementation of {@link VirtualMachineScaleSetVM}. */
 class VirtualMachineScaleSetVMImpl
@@ -89,17 +91,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -109,15 +111,15 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().getTags() == null) {
+        if (this.inner().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<>());
         }
-        return Collections.unmodifiableMap(this.inner().getTags());
+        return Collections.unmodifiableMap(this.inner().tags());
     }
 
     @Override
@@ -162,7 +164,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isOSBasedOnCustomImage() {
         ImageReference imageReference = this.inner().storageProfile().imageReference();
-        if (imageReference != null && imageReference.getId() != null) {
+        if (imageReference != null && imageReference.id() != null) {
             return true;
         }
         return false;
@@ -205,7 +207,7 @@ class VirtualMachineScaleSetVMImpl
     public VirtualMachineCustomImage getOSCustomImage() {
         if (this.isOSBasedOnCustomImage()) {
             ImageReference imageReference = this.inner().storageProfile().imageReference();
-            return this.computeManager.virtualMachineCustomImages().getById(imageReference.getId());
+            return this.computeManager.virtualMachineCustomImages().getById(imageReference.id());
         }
         return null;
     }
@@ -234,7 +236,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String osDiskId() {
         if (this.storageProfile().osDisk().managedDisk() != null) {
-            return this.storageProfile().osDisk().managedDisk().getId();
+            return this.storageProfile().osDisk().managedDisk().id();
         }
         return null;
     }
@@ -344,7 +346,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String availabilitySetId() {
         if (this.inner().availabilitySet() != null) {
-            return this.inner().availabilitySet().getId();
+            return this.inner().availabilitySet().id();
         }
         return null;
     }
@@ -353,7 +355,7 @@ class VirtualMachineScaleSetVMImpl
     public List<String> networkInterfaceIds() {
         List<String> resourceIds = new ArrayList<>();
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
-            resourceIds.add(reference.getId());
+            resourceIds.add(reference.id());
         }
         return Collections.unmodifiableList(resourceIds);
     }
@@ -362,7 +364,7 @@ class VirtualMachineScaleSetVMImpl
     public String primaryNetworkInterfaceId() {
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
             if (reference.primary() != null && reference.primary()) {
-                return reference.getId();
+                return reference.id();
             }
         }
         return null;
@@ -375,7 +377,7 @@ class VirtualMachineScaleSetVMImpl
             for (VirtualMachineExtensionInner extensionInner : this.inner().resources()) {
                 extensions
                     .put(
-                        extensionInner.getName(),
+                        extensionInner.name(),
                         new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
             }
         }
@@ -532,6 +534,11 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesAsync() {
+        return this.parent().listNetworkInterfacesByInstanceIdAsync(this.instanceId());
+    }
+
+    @Override
     public String modelDefinitionApplied() {
         return this.inner().modelDefinitionApplied();
     }
@@ -585,14 +592,16 @@ class VirtualMachineScaleSetVMImpl
             throw logger.logExceptionAsError(new IllegalStateException("Disk need to be in unattached state"));
         }
 
+        ManagedDiskParameters managedDiskParameters =
+            new ManagedDiskParameters().withStorageAccountType(storageAccountTypes);
+        managedDiskParameters.withId(dataDisk.id());
+
         DataDisk attachDataDisk =
             new DataDisk()
                 .withCreateOption(DiskCreateOptionTypes.ATTACH)
                 .withLun(lun)
                 .withCaching(cachingTypes)
-                .withManagedDisk(
-                    (ManagedDiskParameters)
-                        new ManagedDiskParameters().withStorageAccountType(storageAccountTypes).setId(dataDisk.id()));
+                .withManagedDisk(managedDiskParameters);
         return this.withExistingDataDisk(attachDataDisk, lun);
     }
 
@@ -674,7 +683,7 @@ class VirtualMachineScaleSetVMImpl
     }
 
     /** Class to manage data disk collection. */
-    private class ManagedDataDiskCollection {
+    private static class ManagedDataDiskCollection {
         private final List<DataDisk> existingDisksToAttach = new ArrayList<>();
         private final List<Integer> diskLunsToRemove = new ArrayList<>();
 

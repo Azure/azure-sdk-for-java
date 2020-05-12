@@ -97,17 +97,17 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -117,7 +117,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().getTags();
+        Map<String, String> tags = this.inner().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -186,7 +186,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
             .inner()
             .webhooks()
             .ping(this.resourceGroupName, this.registryName, name())
-            .getId();
+            .id();
     }
 
     @Override
@@ -196,7 +196,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
             .inner()
             .webhooks()
             .pingAsync(this.resourceGroupName, this.registryName, name())
-            .map(eventInfoInner -> eventInfoInner.getId());
+            .map(eventInfoInner -> eventInfoInner.id());
     }
 
     @Override
@@ -344,7 +344,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         if (tags != null) {
             this.tags = null;
             ensureValidTags();
-            for (Map.Entry<String, String> entry : inner().getTags().entrySet()) {
+            for (Map.Entry<String, String> entry : inner().tags().entrySet()) {
                 this.tags.put(entry.getKey(), entry.getValue());
             }
         }
@@ -404,7 +404,7 @@ public class WebhookImpl extends ExternalChildResourceImpl<Webhook, WebhookInner
         if (customHeaders != null) {
             this.customHeaders = null;
             ensureValidCustomHeaders();
-            for (Map.Entry<String, String> entry : inner().getTags().entrySet()) {
+            for (Map.Entry<String, String> entry : inner().tags().entrySet()) {
                 this.customHeaders.put(entry.getKey(), entry.getValue());
             }
         }

@@ -31,7 +31,7 @@ class ApplicationGatewayFrontendImpl
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -41,7 +41,7 @@ class ApplicationGatewayFrontendImpl
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.getId());
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -65,7 +65,7 @@ class ApplicationGatewayFrontendImpl
     @Override
     public String publicIPAddressId() {
         if (this.inner().publicIPAddress() != null) {
-            return this.inner().publicIPAddress().getId();
+            return this.inner().publicIPAddress().id();
         } else {
             return null;
         }
@@ -90,7 +90,7 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public ApplicationGatewayFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
-        SubResource subnetRef = new SubResource().setId(parentNetworkResourceId + "/subnets/" + subnetName);
+        SubResource subnetRef = new SubResource().withId(parentNetworkResourceId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
 
         // Ensure this frontend is not public
@@ -105,7 +105,7 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public ApplicationGatewayFrontendImpl withExistingPublicIPAddress(String resourceId) {
-        SubResource pipRef = new SubResource().setId(resourceId);
+        SubResource pipRef = new SubResource().withId(resourceId);
         this.inner().withPublicIPAddress(pipRef);
         this.withoutSubnet(); // Ensure no conflicting public and private settings
         return this;

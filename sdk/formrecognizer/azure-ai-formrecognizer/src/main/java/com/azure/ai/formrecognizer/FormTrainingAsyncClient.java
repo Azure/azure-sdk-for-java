@@ -325,17 +325,21 @@ public class FormTrainingAsyncClient {
 
     private Function<PollingContext<OperationResult>, Mono<CustomFormModel>> fetchTrainingModelResultOperation() {
         return (pollingContext) -> {
-            final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-            return service.getCustomModelWithResponseAsync(modelUid, true)
-                .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()));
+            try {
+                final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
+                return service.getCustomModelWithResponseAsync(modelUid, true)
+                    .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()));
+            } catch (RuntimeException ex) {
+                return monoError(logger, ex);
+            }
         };
     }
 
     private Function<PollingContext<OperationResult>, Mono<PollResponse<OperationResult>>>
         createTrainingPollOperation() {
         return (pollingContext) -> {
-            PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
             try {
+                PollResponse<OperationResult> operationResultPollResponse = pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
                 return service.getCustomModelWithResponseAsync(modelUid, true)
                     .flatMap(modelSimpleResponse ->
