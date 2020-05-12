@@ -5,15 +5,13 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
+import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent;
 import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
@@ -27,26 +25,12 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     private final Integer defaultPageSize = 5000;
 
     /**
-     * Package-private constructor for use by {@link BlobChangefeedAsyncClient}.
      * Creates an instance of {@link BlobChangefeedPagedFlux}.
      *
-     * @param client The {@link BlobContainerAsyncClient changefeed client}.
-     * @param startTime The {@link OffsetDateTime start time}.
-     * @param endTime The {@link OffsetDateTime end time}.
+     * @param changefeed {@link Changefeed}
      */
-    BlobChangefeedPagedFlux(BlobContainerAsyncClient client, OffsetDateTime startTime, OffsetDateTime endTime) {
-        this.changefeed = new ChangefeedFactory().getChangefeed(client, startTime, endTime);
-    }
-
-    /**
-     * Package-private constructor for use by {@link BlobChangefeedAsyncClient}.
-     * Creates an instance of {@link BlobChangefeedPagedFlux}.
-     *
-     * @param client The {@link BlobContainerAsyncClient changefeed client}.
-     * @param cursor The cursor.
-     */
-    BlobChangefeedPagedFlux(BlobContainerAsyncClient client, String cursor) {
-        this.changefeed = new ChangefeedFactory().getChangefeed(client, cursor);
+    BlobChangefeedPagedFlux(Changefeed changefeed) {
+        this.changefeed = changefeed;
     }
 
     @Override

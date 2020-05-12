@@ -5,7 +5,6 @@ package com.azure.storage.blob.changefeed;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
@@ -19,7 +18,6 @@ import java.time.OffsetDateTime;
  */
 @ServiceClient(builder = BlobChangefeedClientBuilder.class, isAsync = true)
 public class BlobChangefeedAsyncClient {
-    private final ClientLogger logger = new ClientLogger(BlobChangefeedAsyncClient.class);
 
     static final String CHANGEFEED_CONTAINER_NAME = "$blobchangefeed";
 
@@ -42,19 +40,57 @@ public class BlobChangefeedAsyncClient {
     }
 
     /**
+     * Returns a reactive Publisher emitting all the changefeed events for this account lazily as needed.
      *
-     * @return
+     * <p>
+     * Changefeed events are returned in approximate temporal order. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedAsyncClient.getEvents}
+     *
+     * @return A reactive response emitting the changefeed events.
      */
     public BlobChangefeedPagedFlux getEvents() {
         return getEvents(null, null);
     }
 
+    /**
+     * Returns a reactive Publisher emitting all the changefeed events for this account lazily as needed.
+     *
+     * <p>
+     * Changefeed events are returned in approximate temporal order. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedAsyncClient.getEvents#OffsetDateTime-OffsetDateTime}
+     *
+     * @param startTime Filters the results to return events after the start time.
+     * @param endTime Filters the results to return events before the end time.
+     * @return A reactive response emitting the changefeed events.
+     */
     public BlobChangefeedPagedFlux getEvents(OffsetDateTime startTime, OffsetDateTime endTime) {
-        return new BlobChangefeedPagedFlux(client, startTime, endTime);
+        return new BlobChangefeedPagedFluxFactory().getBlobChangefeedPagedFlux(client, startTime, endTime);
     }
 
+    /**
+     * Returns a reactive Publisher emitting all the changefeed events for this account lazily as needed.
+     *
+     * <p>
+     * Changefeed events are returned in approximate temporal order. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedAsyncClient.getEvents#String}
+     *
+     * @param cursor Identifies the portion of the events to be returned with the next get operation.
+     * @return A reactive response emitting the changefeed events.
+     */
     public BlobChangefeedPagedFlux getEvents(String cursor) {
-        return new BlobChangefeedPagedFlux(client, cursor);
+        return new BlobChangefeedPagedFluxFactory().getBlobChangefeedPagedFlux(client, cursor);
     }
 
 }
