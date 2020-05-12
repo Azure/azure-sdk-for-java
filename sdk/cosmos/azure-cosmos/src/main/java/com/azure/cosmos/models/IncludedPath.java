@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +35,15 @@ public final class IncludedPath {
      */
     public IncludedPath(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    IncludedPath(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**

@@ -203,8 +203,8 @@ public class JsonSerializable {
             castedValue.populatePropertyBag();
             this.propertyBag.set(propertyName, castedValue.propertyBag);
         } else if (containsJsonSerializable(value.getClass())) {
-            ModelBridgeInternal.invokePopulatePropertyBag(value);
-            this.propertyBag.set(propertyName, ModelBridgeInternal.invokeGetJsonSerializable(value).propertyBag);
+            ModelBridgeInternal.populatePropertyBag(value);
+            this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializable(value).propertyBag);
         } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.
@@ -231,9 +231,9 @@ public class JsonSerializable {
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
                                     : this.getMapper().createObjectNode());
             } else if (containsJsonSerializable(childValue.getClass())) {
-                ModelBridgeInternal.invokePopulatePropertyBag(childValue);
-                targetArray.add(ModelBridgeInternal.invokeGetJsonSerializable(childValue).propertyBag != null ?
-                    ModelBridgeInternal.invokeGetJsonSerializable(childValue).propertyBag : this.getMapper().createObjectNode());
+                ModelBridgeInternal.populatePropertyBag(childValue);
+                targetArray.add(ModelBridgeInternal.getJsonSerializable(childValue).propertyBag != null ?
+                    ModelBridgeInternal.getJsonSerializable(childValue).propertyBag : this.getMapper().createObjectNode());
             } else {
                 // POJO, JsonNode, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
@@ -365,7 +365,7 @@ public class JsonSerializable {
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 return (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
             } else if (containsJsonSerializable(c)) {
-                return ModelBridgeInternal.instantiateByJsonString(Utils.toJson(Utils.getSimpleObjectMapper(), (ObjectNode) jsonObj), c);
+                return ModelBridgeInternal.instantiateByObjectNode((ObjectNode) jsonObj, c);
             }
             else {
                 // POJO
@@ -440,13 +440,8 @@ public class JsonSerializable {
                     result.add(t);
 
                 } else if (containsJsonSerializable) {
-                    try {
-                        T t = c.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), (ObjectNode) n));
-                        result.add(t);
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
-                        throw new IllegalArgumentException(e);
-                    }
-
+                    T t = ModelBridgeInternal.instantiateByObjectNode((ObjectNode) n, c);
+                    result.add(t);
                 } else {
                     // POJO
                     try {
@@ -691,20 +686,20 @@ public class JsonSerializable {
     }
 
     <T> boolean containsJsonSerializable(Class<T> c) {
-        return CompositePath.class.isAssignableFrom(c)
-            || ConflictResolutionPolicy.class.isAssignableFrom(c)
-            || ConsistencyPolicy.class.isAssignableFrom(c)
-            || DatabaseAccountLocation.class.isAssignableFrom(c)
-            || ExcludedPath.class.isAssignableFrom(c)
-            || IncludedPath.class.isAssignableFrom(c)
-            || IndexingPolicy.class.isAssignableFrom(c)
-            || PartitionKeyDefinition.class.isAssignableFrom(c)
-            || SpatialSpec.class.isAssignableFrom(c)
-            || SqlParameter.class.isAssignableFrom(c)
-            || SqlQuerySpec.class.isAssignableFrom(c)
-            || UniqueKey.class.isAssignableFrom(c)
-            || UniqueKeyPolicy.class.isAssignableFrom(c)
+        return CompositePath.class.equals(c)
+            || ConflictResolutionPolicy.class.equals(c)
+            || ConsistencyPolicy.class.equals(c)
+            || DatabaseAccountLocation.class.equals(c)
+            || ExcludedPath.class.equals(c)
+            || IncludedPath.class.equals(c)
+            || IndexingPolicy.class.equals(c)
+            || PartitionKeyDefinition.class.equals(c)
+            || SpatialSpec.class.equals(c)
+            || SqlParameter.class.equals(c)
+            || SqlQuerySpec.class.equals(c)
+            || UniqueKey.class.equals(c)
+            || UniqueKeyPolicy.class.equals(c)
             || Index.class.isAssignableFrom(c)
-            || CosmosError.class.isAssignableFrom(c);
+            || CosmosError.class.equals(c);
     }
 }

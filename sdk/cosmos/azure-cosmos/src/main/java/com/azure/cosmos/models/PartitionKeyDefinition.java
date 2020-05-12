@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Optional;
  * specifies which
  * document property is used as the partition key in a collection that has multiple partitions.
  */
-public final class PartitionKeyDefinition{
+public final class PartitionKeyDefinition {
     private List<String> paths;
     private PartitionKind kind;
     private Optional<PartitionKeyDefinitionVersion> versionOptional;
@@ -42,6 +43,16 @@ public final class PartitionKeyDefinition{
      */
     PartitionKeyDefinition(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Constructor. Creates a new instance of the PartitionKeyDefinition object from a
+     * JSON string.
+     *
+     * @param objectNode the object node that represents the partition key definition.
+     */
+    PartitionKeyDefinition(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**

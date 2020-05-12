@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,6 +36,14 @@ public final class SpatialSpec {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
+    /**
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    SpatialSpec(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
+    }
 
     /**
      * Gets path.

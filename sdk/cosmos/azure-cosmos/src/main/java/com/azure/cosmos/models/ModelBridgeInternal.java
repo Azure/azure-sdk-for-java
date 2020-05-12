@@ -500,15 +500,15 @@ public final class ModelBridgeInternal {
         return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer();
     }
 
-    public static <T> T instantiateByJsonString(String jsonString, Class<T> c) {
+    public static <T> T instantiateByObjectNode(ObjectNode objectNode, Class<T> c) {
         try {
-            return c.getDeclaredConstructor(String.class).newInstance(jsonString);
+            return c.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public static <T> void invokePopulatePropertyBag(T t) {
+    public static <T> void populatePropertyBag(T t) {
         if (t instanceof JsonSerializable) {
             ((JsonSerializable) t).populatePropertyBag();
         } else if (t instanceof CompositePath) {
@@ -546,7 +546,7 @@ public final class ModelBridgeInternal {
         }
     }
 
-    public static <T> JsonSerializable invokeGetJsonSerializable(T t) {
+    public static <T> JsonSerializable getJsonSerializable(T t) {
         if (t instanceof CompositePath) {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {

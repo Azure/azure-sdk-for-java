@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,15 @@ public final class UniqueKeyPolicy {
      */
     UniqueKeyPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the json string that represents the Unique Key policy.
+     */
+    UniqueKeyPolicy(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**

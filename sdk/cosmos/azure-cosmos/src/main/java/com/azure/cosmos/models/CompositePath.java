@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a composite path of the IndexingPolicy in the Azure Cosmos DB database service.
@@ -13,7 +14,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
  * "SELECT * FROM c ORDER BY c.age, c.height", then you need to add "/age" and "/height"
  * as composite paths to your composite index.
  */
-public final class CompositePath{
+public final class CompositePath {
 
     private JsonSerializable jsonSerializable;
 
@@ -31,6 +32,16 @@ public final class CompositePath{
      */
     CompositePath(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    CompositePath(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**

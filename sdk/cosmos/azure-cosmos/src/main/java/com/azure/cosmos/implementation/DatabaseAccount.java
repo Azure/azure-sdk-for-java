@@ -273,7 +273,7 @@ public final class DatabaseAccount extends Resource {
     public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
-            ModelBridgeInternal.invokePopulatePropertyBag(this.consistencyPolicy);
+            ModelBridgeInternal.populatePropertyBag(this.consistencyPolicy);
             BridgeInternal.setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
         }
     }

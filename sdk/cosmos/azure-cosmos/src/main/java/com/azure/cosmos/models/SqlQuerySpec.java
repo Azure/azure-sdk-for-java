@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,15 @@ public final class SqlQuerySpec {
      */
     public SqlQuerySpec() {
         this.jsonSerializable = new JsonSerializable();
+    }
+
+    /**
+     * Initializes a new instance of the SqlQuerySpec class.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    SqlQuerySpec(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
