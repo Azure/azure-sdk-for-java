@@ -2172,18 +2172,4 @@ class BlobAPITest extends APISpec {
         then:
         thrown(IllegalArgumentException)
     }
-
-    def "OAuth on secondary"() {
-        setup:
-        def secondaryEndpoint = String.format(defaultEndpointTemplate,
-            primaryCredential.getAccountName() + "-secondary")
-        def serviceClient = getServiceClientBuilder(null, secondaryEndpoint)
-            .credential(new EnvironmentCredentialBuilder().build()).buildClient()
-
-        when:
-        serviceClient.getProperties()
-
-        then:
-        notThrown(Exception)
-    }
 }
