@@ -233,13 +233,13 @@ ApplicationGateway applicationGateway = azure.applicationGateways().define("myFi
 </ul></td>
   </tr>
 
-  <tr>
+  <!--tr>
     <td>Traffic Manager</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/trafficmanager/samples/ManageTrafficManager.java">Manage traffic manager profiles</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/trafficmanager/samples/ManageSimpleTrafficManager.java">Manage simple traffic manager profiles</a></li>
 </ul></td>
-  </tr>
+  </tr-->
 
   <tr>
     <td>Application Gateway</td>
@@ -443,16 +443,15 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/kubernetescluster/samples/DeployImageFromContainerRegistryToKubernetes.java">Deploy an image from container registry to Kubernetes cluster (AKS)</a></li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/kubernetescluster/samples/ManagedKubernetesClusterWithAdvancedNetworking.java">Manage Kubernetes clusters with advanced networking</a></li>
 
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerservice/samples/DeployImageFromContainerRegistryToContainerServiceOrchestrator.java">Deploy an image from container registry to ACS with Kubernetes orchestrator</a></li>
 <!--
 <li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-acr-to-swarm">Deploy an image from container registry to Swarm cluster</li>
 <li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-kubernetes">Deploy an image from Docker hub to Kubernetes cluster</a></li>
 <li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-swarm">Deploy an image from Docker hub to Swarm cluster</li>
 -->
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerinstance/samples/ManageContainerInstanceWithAzureFileShareMount.java">Manage Azure Container Instances with new Azure File Share</li>
+<!--li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerinstance/samples/ManageContainerInstanceWithAzureFileShareMount.java">Manage Azure Container Instances with new Azure File Share</li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerinstance/samples/ManageContainerInstanceWithManualAzureFileShareMountCreation.java">Manage Azure Container Instances with an existing Azure File Share</li>
 <li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerinstance/samples/ManageContainerInstanceWithMultipleContainerImages.java">Create Container Group with multiple instances and container images</li>
-<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerinstance/samples/ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator.java">Create Container Group and scale up containers using Kubernetes in ACS</li>
+<li><a href="https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/management/samples/src/main/java/com/azure/management/containerinstance/samples/ManageContainerInstanceZeroToOneAndOneToManyUsingContainerServiceOrchestrator.java">Create Container Group and scale up containers using Kubernetes in ACS</li-->
 </ul></td>
   </tr>
 
