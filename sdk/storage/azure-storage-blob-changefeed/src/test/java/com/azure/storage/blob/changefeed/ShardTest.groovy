@@ -150,7 +150,6 @@ class ShardTest extends HelperSpec {
             verify(mockChunk0).getEvents() || true
             verify(mockChunk1).getEvents() || true
             verify(mockChunk2).getEvents() || true
-
         } else if (chunkPath == "chunk1") {
             verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, blockOffset, objectBlockIndex) || true
             verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true

@@ -8,6 +8,7 @@ import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
+import spock.lang.Unroll
 
 import static org.mockito.ArgumentMatchers.*
 import static org.mockito.Mockito.mock
@@ -54,9 +55,9 @@ class SegmentTest extends HelperSpec {
 
     List<BlobChangefeedEventWrapper> getMockEventWrappers(String shardPath) {
         List<BlobChangefeedEventWrapper> mockEventWrappers = new LinkedList<>()
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(0), cfCursor.toShardCursor(shardPath, null)))
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(1), cfCursor.toShardCursor(shardPath, null)))
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(2), cfCursor.toShardCursor(shardPath, null)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(0), cfCursor.toShardCursor(shardPath, new HashMap<String, ShardCursor>())))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(1), cfCursor.toShardCursor(shardPath,  new HashMap<String, ShardCursor>())))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(2), cfCursor.toShardCursor(shardPath,  new HashMap<String, ShardCursor>())))
         return mockEventWrappers
     }
 
@@ -68,26 +69,56 @@ class SegmentTest extends HelperSpec {
         def sv = StepVerifier.create(segment.getEvents().index())
 
         then:
-        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
-            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1())})
+        sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+            .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
             .verifyComplete()
     }
 
-    boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index) {
-        boolean verify = true
+    @Unroll
+    def "getEvents cursor"() {
+        when:
+        ChangefeedCursor userCursor = new ChangefeedCursor("endTime", "segmentTime", new HashMap<String, ShardCursor>(), shardPath)
+        SegmentFactory segmentFactory = new SegmentFactory(mockShardFactory)
+        Segment segment = segmentFactory.getSegment(mockContainer, segmentPath, cfCursor, userCursor)
 
-        return verify
+        def sv = StepVerifier.create(segment.getEvents().index())
+
+        then:
+        if (shardPath == 'log/00/2020/03/25/0200/') {
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/00/2020/03/25/0200/') })
+        }
+        if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/') {
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/01/2020/03/25/0200/')})
+        }
+        if (shardPath == 'log/00/2020/03/25/0200/' || shardPath == 'log/01/2020/03/25/0200/' || shardPath == 'log/02/2020/03/25/0200/') {
+            sv = sv.expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+                .expectNextMatches({ tuple2 -> this.&verifyWrapper(tuple2.getT2(), tuple2.getT1(), 'log/02/2020/03/25/0200/')})
+        }
+            sv.verifyComplete()
+
+        where:
+        shardPath                   || _
+        'log/00/2020/03/25/0200/'   || _
+        'log/01/2020/03/25/0200/'   || _
+        'log/02/2020/03/25/0200/'   || _
     }
 
-
-
-
-
+    boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String shardPath) {
+        boolean verify = true
+        verify &= wrapper.getEvent().equals(mockEvents.get(index % 3 as int))
+        verify &= wrapper.getCursor().getShardPath() == shardPath
+        return verify
+    }
 }

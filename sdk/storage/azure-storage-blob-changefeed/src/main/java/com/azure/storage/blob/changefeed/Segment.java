@@ -88,6 +88,8 @@ class Segment {
         List<Shard> shards = new ArrayList<>();
 
         /* Iterate over each shard element. */
+        int i = 0;
+        int index = 0; /* Index of the shard of interest. */
         for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
             /* Strip out the changefeed container name and the subsequent / */
             String shardPath =
@@ -99,12 +101,16 @@ class Segment {
             /* If a user cursor was provided, figure out the associated user shard cursor. */
             ShardCursor userShardCursor = null;
             if (userCursor != null) {
+                if (shardPath.equals(userCursor.getShardPath())) {
+                    index = i;
+                }
                 userShardCursor = userCursor.getShardCursor(shardPath);
             }
 
             shards.add(shardFactory.getShard(client, shardPath, cfCursor.toShardCursor(shardPath, shardCursors),
                 userShardCursor));
+            i++;
         }
-        return Flux.fromIterable(shards);
+        return Flux.fromIterable(shards.subList(index, shards.size()));
     }
 }

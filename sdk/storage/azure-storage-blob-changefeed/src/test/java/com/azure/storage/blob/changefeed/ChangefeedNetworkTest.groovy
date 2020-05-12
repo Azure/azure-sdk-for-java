@@ -13,7 +13,7 @@ class ChangefeedNetworkTest extends APISpec {
                 .buildAsyncClient().getEvents()
         )
         then:
-        sv.expectNextCount(2000) /* Note this number should be adjusted to verify the number of events expected. */
+        sv.expectNextCount(472) /* Note this number should be adjusted to verify the number of events expected. */
             .verifyComplete()
     }
 
@@ -28,7 +28,7 @@ class ChangefeedNetworkTest extends APISpec {
             pagedFlux.byPage(50)
         )
         then:
-        sv.expectNextCount(34).verifyComplete()
+        sv.expectNextCount(10).verifyComplete()
     }
 
     @Ignore
