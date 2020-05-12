@@ -19,10 +19,9 @@ public interface Operations extends HasInner<OperationsInner> {
     /**
      * List all the available operations the KubernetesConfiguration resource provider supports.
      *
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourceProviderOperation> listAsync(final String apiVersion);
+    Observable<ResourceProviderOperation> listAsync();
 
 }
