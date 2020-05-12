@@ -2,7 +2,7 @@
 
 ## 7.0.0-beta.3 (Unreleased)
 
-
+ 
 ## 7.0.0-beta.2 (2020-05-07)
 
 - Add support for receiving messages from specific sessions
