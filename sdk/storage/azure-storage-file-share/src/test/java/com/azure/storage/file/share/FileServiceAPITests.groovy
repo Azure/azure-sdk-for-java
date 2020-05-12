@@ -15,6 +15,8 @@ import com.azure.storage.file.share.models.ShareServiceProperties
 import com.azure.storage.file.share.models.ShareStorageException
 import spock.lang.Unroll
 
+import java.time.OffsetDateTime
+
 class FileServiceAPITests extends APISpec {
     String shareName
 
@@ -108,7 +110,7 @@ class FileServiceAPITests extends APISpec {
     def "List shares with filter"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             ShareItem share = new ShareItem().setProperties(new ShareProperties().setQuota(i + 1)).setName(shareName + i)
             if (i == 2) {
                 share.setMetadata(testMetadata)
@@ -116,6 +118,11 @@ class FileServiceAPITests extends APISpec {
 
             testShares.add(share)
             primaryFileServiceClient.createShareWithResponse(share.getName(), share.getMetadata(), share.getProperties().getQuota(), null, null)
+
+            if (i == 3) {
+                share.getProperties().setDeletedTime(OffsetDateTime.now())
+                primaryFileServiceClient.deleteShare(share.getName())
+            }
         }
 
         when:
@@ -123,16 +130,17 @@ class FileServiceAPITests extends APISpec {
 
         then:
         for (int i = 0; i < limits; i++) {
-            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
+            FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot, includeDeleted)
         }
-        !shares.hasNext()
+        includeDeleted || !shares.hasNext()
 
         where:
-        options                                                                                                | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter")                           | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true
+        options                                                                                                | limits | includeMetadata | includeSnapshot | includeDeleted
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter")                           | 3      | false           | true            | false
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true            | false
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true            | false
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true            | false
+        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeDeleted(true)   | 4      | false           | true            | true
     }
 
     @Unroll

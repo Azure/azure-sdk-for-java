@@ -206,6 +206,10 @@ public final class ShareServiceAsyncClient {
             if (options.isIncludeSnapshots()) {
                 include.add(ListSharesIncludeType.SNAPSHOTS);
             }
+
+            if (options.isIncludeDeleted()) {
+                include.add(ListSharesIncludeType.DELETED);
+            }
         }
 
         Function<String, Mono<PagedResponse<ShareItem>>> retriever =
