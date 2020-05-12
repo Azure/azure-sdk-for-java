@@ -25,7 +25,7 @@ public class CosmosAsyncTriggerResponse extends CosmosResponse<CosmosTriggerProp
             cosmosTrigger = null;
         } else {
             cosmosTriggerProperties = new CosmosTriggerProperties(bodyAsString);
-            cosmosTrigger = BridgeInternal.createCosmosAsyncTrigger(ModelBridgeInternal.getResource(cosmosTriggerProperties).getId(), container);
+            cosmosTrigger = BridgeInternal.createCosmosAsyncTrigger(cosmosTriggerProperties.getId(), container);
         }
     }
 

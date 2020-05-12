@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.User;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,11 +61,48 @@ public final class CosmosUserProperties {
         return new User(this.user.toJson());
     }
 
-    static List<CosmosUserProperties> getFromV2Results(List<User> results) {
-        return results.stream().map(CosmosUserProperties::new).collect(Collectors.toList());
-    }
 
     Resource getResource() {
         return this.user;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.user.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.user.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.user.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.user.getETag();
+    }
+
+    static List<CosmosUserProperties> getFromV2Results(List<User> results) {
+        return results.stream().map(CosmosUserProperties::new).collect(Collectors.toList());
     }
 }

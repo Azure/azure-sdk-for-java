@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Trigger;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,9 +38,7 @@ public final class CosmosTriggerProperties {
      * @return the current cosmos trigger properties instance
      */
     public CosmosTriggerProperties setId(String id) {
-        this.trigger = new Trigger();
         trigger.setId(id);
-
         return this;
     }
 
@@ -103,12 +102,48 @@ public final class CosmosTriggerProperties {
         return this;
     }
 
+    Resource getResource() {
+        return this.trigger;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.trigger.getId();
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.trigger.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.trigger.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.trigger.getETag();
+    }
+
     static List<CosmosTriggerProperties> getFromV2Results(List<Trigger> results) {
         return results.stream().map(trigger -> new CosmosTriggerProperties(trigger.toJson()))
                    .collect(Collectors.toList());
-    }
-
-    Resource getResource() {
-        return this.trigger;
     }
 }

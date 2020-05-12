@@ -308,10 +308,8 @@ public interface FeedResponseListValidator<T> {
         }
 
         private <T> Resource getResource(T response) {
-            if (response instanceof Resource) {
-                return (Resource) response;
-            }
-            if (response instanceof CosmosConflictProperties
+            if (response instanceof Resource
+                || response instanceof CosmosConflictProperties
                 || response instanceof CosmosContainerProperties
                 || response instanceof CosmosDatabaseProperties
                 || response instanceof CosmosPermissionProperties

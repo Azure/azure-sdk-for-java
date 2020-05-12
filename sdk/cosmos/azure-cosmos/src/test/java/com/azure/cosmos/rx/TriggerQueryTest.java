@@ -42,7 +42,7 @@ public class TriggerQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
-        String filterId = ModelBridgeInternal.getResource(createdTriggers.get(0)).getId();
+        String filterId = createdTriggers.get(0).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
@@ -51,7 +51,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         List<CosmosTriggerProperties> expectedDocs = createdTriggers
                 .stream()
-                .filter(sp -> filterId.equals(ModelBridgeInternal.getResource(sp).getId()) )
+                .filter(sp -> filterId.equals(sp.getId()) )
                 .collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
@@ -59,7 +59,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosTriggerProperties> validator = new FeedResponseListValidator.Builder<CosmosTriggerProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(doc -> ModelBridgeInternal.getResource(doc).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(doc -> doc.getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosTriggerProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -94,7 +94,7 @@ public class TriggerQueryTest extends TestSuiteBase {
 
         CosmosPagedFlux<CosmosTriggerProperties> queryObservable = createdCollection.getScripts().queryTriggers(query, options);
 
-        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}", ModelBridgeInternal.getResource(cosmosTriggerSettings).getResourceId()));
+        createdTriggers.forEach(cosmosTriggerSettings -> logger.info("Created trigger in method: {}", cosmosTriggerSettings.getResourceId()));
 
         List<CosmosTriggerProperties> expectedDocs = createdTriggers;
 
@@ -104,7 +104,7 @@ public class TriggerQueryTest extends TestSuiteBase {
                 .Builder<CosmosTriggerProperties>()
                 .exactlyContainsInAnyOrder(expectedDocs
                         .stream()
-                        .map(doc -> ModelBridgeInternal.getResource(doc).getResourceId())
+                        .map(doc -> doc.getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosTriggerProperties>()

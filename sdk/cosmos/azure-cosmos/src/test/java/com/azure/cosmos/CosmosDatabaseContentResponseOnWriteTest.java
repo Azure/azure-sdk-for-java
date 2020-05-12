@@ -53,7 +53,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withContentResponseOnWriteDisabled() throws CosmosClientException {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(ModelBridgeInternal.getResource(databaseDefinition).getId());
+        databases.add(databaseDefinition.getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
@@ -75,10 +75,10 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
 
     private void validateDatabaseResponse(CosmosDatabaseProperties databaseDefinition, CosmosDatabaseResponse createResponse) {
         // Basic validation
-        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId()).isNotNull();
-        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId())
+        assertThat(createResponse.getProperties().getId()).isNotNull();
+        assertThat(createResponse.getProperties().getId())
             .as("check Resource Id")
-            .isEqualTo(ModelBridgeInternal.getResource(databaseDefinition).getId());
+            .isEqualTo(databaseDefinition.getId());
 
     }
 

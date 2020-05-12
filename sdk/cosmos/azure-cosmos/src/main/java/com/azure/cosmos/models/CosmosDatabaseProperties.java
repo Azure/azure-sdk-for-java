@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Resource;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,11 +41,58 @@ public final class CosmosDatabaseProperties {
         this.database = database;
     }
 
-    static List<CosmosDatabaseProperties> getFromV2Results(List<Database> results) {
-        return results.stream().map(CosmosDatabaseProperties::new).collect(Collectors.toList());
-    }
-
     Resource getResource() {
         return this.database;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.database.getId();
+    }
+
+    /**
+     * Sets the name of the resource.
+     *
+     * @param id the name of the resource.
+     * @return the current instance of {@link CosmosDatabaseProperties}.
+     */
+    public CosmosDatabaseProperties setId(String id) {
+        this.database.setId(id);
+        return this;
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.database.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.database.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.database.getETag();
+    }
+
+    static List<CosmosDatabaseProperties> getFromV2Results(List<Database> results) {
+        return results.stream().map(CosmosDatabaseProperties::new).collect(Collectors.toList());
     }
 }

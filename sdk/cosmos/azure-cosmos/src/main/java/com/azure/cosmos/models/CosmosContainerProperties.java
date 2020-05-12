@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Resource;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -220,14 +221,61 @@ public final class CosmosContainerProperties {
         return this.documentCollection.getAnalyticalStoreTimeToLiveInSeconds();
     }
 
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.documentCollection.getId();
+    }
+
+    /**
+     * Sets the name of the resource.
+     *
+     * @param id the name of the resource.
+     * @return the current instance of {@link CosmosContainerProperties}.
+     */
+    public CosmosContainerProperties setId(String id) {
+        this.documentCollection.setId(id);
+        return this;
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.documentCollection.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.documentCollection.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.documentCollection.getETag();
+    }
+
+    Resource getResource() {
+        return this.documentCollection;
+    }
+
     DocumentCollection getV2Collection() {
         DocumentCollection collection = new DocumentCollection(this.documentCollection.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
         collection.setIndexingPolicy(this.getIndexingPolicy());
         return collection;
-    }
-
-    Resource getResource() {
-        return this.documentCollection;
     }
 }

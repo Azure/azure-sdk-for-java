@@ -224,7 +224,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
-        String cosmosContainerId = ModelBridgeInternal.getResource(cosmosContainerProperties).getId();
+        String cosmosContainerId = cosmosContainerProperties.getId();
         logger.info("Truncating collection {} ...", cosmosContainerId);
         List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
         FeedOptions options = new FeedOptions();
@@ -270,7 +270,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                return cosmosContainer.getScripts().getTrigger(ModelBridgeInternal.getResource(trigger).getId()).delete();
+                return cosmosContainer.getScripts().getTrigger(trigger.getId()).delete();
             }).then().block();
 
         logger.info("Truncating collection {} storedProcedures ...", cosmosContainerId);
@@ -288,7 +288,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                return cosmosContainer.getScripts().getStoredProcedure(ModelBridgeInternal.getResource(storedProcedure).getId()).delete(new CosmosStoredProcedureRequestOptions());
+                return cosmosContainer.getScripts().getStoredProcedure(storedProcedure.getId()).delete(new CosmosStoredProcedureRequestOptions());
             }).then().block();
 
         logger.info("Truncating collection {} udfs ...", cosmosContainerId);
@@ -306,7 +306,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 //                        requestOptions.getPartitionKey(new PartitionKey(propertyValue));
 //                    }
 
-                return cosmosContainer.getScripts().getUserDefinedFunction(ModelBridgeInternal.getResource(udf).getId()).delete();
+                return cosmosContainer.getScripts().getUserDefinedFunction(udf.getId()).delete();
             }).then().block();
 
         logger.info("Finished truncating collection {}.", cosmosContainerId);
@@ -502,12 +502,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static CosmosAsyncUser safeCreateUser(CosmosAsyncClient client, String databaseId, CosmosUserProperties user) {
-        deleteUserIfExists(client, databaseId, ModelBridgeInternal.getResource(user).getId());
+        deleteUserIfExists(client, databaseId, user.getId());
         return createUser(client, databaseId, user);
     }
 
     private static CosmosAsyncContainer safeCreateCollection(CosmosAsyncClient client, String databaseId, CosmosContainerProperties collection, CosmosContainerRequestOptions options) {
-        deleteCollectionIfExists(client, databaseId, ModelBridgeInternal.getResource(collection).getId());
+        deleteCollectionIfExists(client, databaseId, collection.getId());
         return createCollection(client.getDatabase(databaseId), collection, options);
     }
 
@@ -623,7 +623,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static private CosmosAsyncDatabase safeCreateDatabase(CosmosAsyncClient client, CosmosDatabaseProperties databaseSettings) {
-        safeDeleteDatabase(client.getDatabase(ModelBridgeInternal.getResource(databaseSettings).getId()));
+        safeDeleteDatabase(client.getDatabase(databaseSettings.getId()));
         return client.createDatabase(databaseSettings).block().getDatabase();
     }
 
@@ -682,7 +682,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                 .block();
 
             for(CosmosContainerProperties collection: collections) {
-                database.getContainer(ModelBridgeInternal.getResource(collection).getId()).delete().block();
+                database.getContainer(collection.getId()).delete().block();
             }
         }
     }

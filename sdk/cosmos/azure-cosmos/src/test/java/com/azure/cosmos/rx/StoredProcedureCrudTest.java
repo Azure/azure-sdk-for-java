@@ -42,7 +42,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncStoredProcedureResponse> createObservable = container.getScripts().createStoredProcedure(storedProcedureDef, new CosmosStoredProcedureRequestOptions());
 
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
-            .withId(ModelBridgeInternal.getResource(storedProcedureDef).getId())
+            .withId(storedProcedureDef.getId())
             .withStoredProcedureBody("function() {var x = 10;}")
             .notNullEtag()
             .build();
@@ -62,7 +62,7 @@ public class StoredProcedureCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncStoredProcedureResponse> readObservable = storedProcedure.read(null);
 
         CosmosResponseValidator<CosmosAsyncStoredProcedureResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncStoredProcedureResponse>()
-            .withId(ModelBridgeInternal.getResource(storedProcedureDef).getId())
+            .withId(storedProcedureDef.getId())
             .withStoredProcedureBody("function() {var x = 10;}")
             .notNullEtag()
             .build();

@@ -69,7 +69,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosUser user = createdDatabase.getUser(ModelBridgeInternal.getResource(userProperties).getId());
+        CosmosUser user = createdDatabase.getUser(userProperties.getId());
         CosmosUserResponse readResponse = user.read();
         validateResponse(userProperties, readResponse);
     }
@@ -79,7 +79,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        CosmosUser user = createdDatabase.getUser(ModelBridgeInternal.getResource(userProperties).getId());
+        CosmosUser user = createdDatabase.getUser(userProperties.getId());
         CosmosUserResponse delete = user.delete();
 
     }
@@ -105,7 +105,7 @@ public class CosmosUserTest extends TestSuiteBase {
         CosmosUserProperties userProperties = getUserProperties();
         CosmosUserResponse response = createdDatabase.createUser(userProperties);
 
-        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.getResource(userProperties).getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", userProperties.getId());
         FeedOptions feedOptions = new FeedOptions();
 
         CosmosPagedIterable<CosmosUserProperties> feedResponseIterator1 =
@@ -122,10 +122,10 @@ public class CosmosUserTest extends TestSuiteBase {
     private void validateResponse(CosmosUserProperties properties,
                                   CosmosUserResponse createResponse) {
         // Basic validation
-        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId()).isNotNull();
-        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId())
+        assertThat(createResponse.getProperties().getId()).isNotNull();
+        assertThat(createResponse.getProperties().getId())
                 .as("check Resource Id")
-                .isEqualTo(ModelBridgeInternal.getResource(properties).getId());
+                .isEqualTo(properties.getId());
 
     }
 }

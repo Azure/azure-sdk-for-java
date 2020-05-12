@@ -89,7 +89,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .createContainer(collectionDefinition);
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(ModelBridgeInternal.getResource(collectionDefinition).getId()).build();
+                .withId(collectionDefinition.getId()).build();
 
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(database);
@@ -106,7 +106,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             .createContainer(collectionDefinition);
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-            .withId(ModelBridgeInternal.getResource(collectionDefinition).getId()).withDefaultTimeToLive(defaultTimeToLive).build();
+            .withId(collectionDefinition.getId()).withDefaultTimeToLive(defaultTimeToLive).build();
 
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(database);
@@ -181,7 +181,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(ModelBridgeInternal.getResource(collection).getId())
+                .withId(collection.getId())
                 .withCompositeIndexes(compositeIndexes)
                 .withSpatialIndexes(spatialIndexes)
                 .build();
