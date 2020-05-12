@@ -12,16 +12,24 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
 
     public ClientUnderTestBuilder(CosmosClientBuilder builder) {
         this.configs(builder.configs());
-        this.connectionPolicy(builder.getConnectionPolicy());
+        this.gatewayMode(builder.getGatewayConnectionConfig());
+        this.directMode(builder.getDirectConnectionConfig());
         this.consistencyLevel(builder.getConsistencyLevel());
         this.key(builder.getKey());
         this.endpoint(builder.getEndpoint());
         this.keyCredential(builder.getKeyCredential());
         this.contentResponseOnWriteEnabled(builder.isContentResponseOnWriteEnabled());
+        this.userAgentSuffix(builder.getUserAgentSuffix());
+        this.throttlingRetryOptions(builder.getThrottlingRetryOptions());
+        this.preferredRegions(builder.getPreferredRegions());
+        this.endpointDiscoveryEnabled(builder.isEndpointDiscoveryEnabled());
+        this.multipleWriteRegionsEnabled(builder.isMultipleWriteRegionsEnabled());
+        this.readRequestsFallbackEnabled(builder.isReadRequestsFallbackEnabled());
     }
 
     @Override
     public CosmosAsyncClient buildAsyncClient() {
+        CosmosAsyncClient cosmosAsyncClient = super.buildAsyncClient();
         RxDocumentClientUnderTest rxClient;
         try {
             rxClient = new RxDocumentClientUnderTest(
@@ -35,7 +43,6 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
-        CosmosAsyncClient cosmosAsyncClient = super.buildAsyncClient();
         ReflectionUtils.setAsyncDocumentClient(cosmosAsyncClient, rxClient);
         return cosmosAsyncClient;
     }
