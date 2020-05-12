@@ -17,7 +17,7 @@ public class SampleApplication implements CommandLineRunner {
         SpringApplication.run(SampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
+    public void run(String... var1) {
 
         final Person testUser = new Person("PERSON_ID", "PERSON_NAME", "PERSON_AGE");
 

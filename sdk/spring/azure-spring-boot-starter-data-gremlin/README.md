@@ -39,7 +39,7 @@ gremlin:
 
 ### Define an entity
 Define a simple Vertex entity with ```@Vertex```.
-<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/gremlin/Person.java#L10-L76 -->
+<!-- embedme ../azure-spring-boot/src/samples/java/com/azure/spring/gremlin/Person.java#L10-L80 -->
 ```java
 @Vertex
 public class Person {
@@ -86,12 +86,16 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Person person = (Person) o;
-        return Objects.equals(id, person.id) &&
-            Objects.equals(name, person.name) &&
-            Objects.equals(level, person.level);
+        return Objects.equals(id, person.id)
+                    && Objects.equals(name, person.name)
+                    && Objects.equals(level, person.level);
     }
 
     @Override
@@ -101,11 +105,11 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
-            ", level='" + level + '\'' +
-            '}';
+        return "Person{"
+                    + "id='" + id + '\''
+                    + ", name='" + name + '\''
+                    + ", level='" + level + '\''
+                    + '}';
     }
 }
 ```
@@ -177,7 +181,7 @@ public class SampleApplication implements CommandLineRunner {
         SpringApplication.run(SampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
+    public void run(String... var1) {
 
         final Person testUser = new Person("PERSON_ID", "PERSON_NAME", "PERSON_AGE");
 

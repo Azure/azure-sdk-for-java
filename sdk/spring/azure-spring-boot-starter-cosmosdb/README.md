@@ -158,7 +158,7 @@ public class CosmosSampleApplication implements CommandLineRunner {
         SpringApplication.run(CosmosSampleApplication.class, args);
     }
 
-    public void run(String... var1) throws Exception {
+    public void run(String... var1) {
         final User testUser = new User("testId", "testFirstName", "testLastName", "test address line one");
 
         // Save the User class to Azure CosmosDB database.

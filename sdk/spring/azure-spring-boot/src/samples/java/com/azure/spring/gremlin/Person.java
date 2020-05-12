@@ -52,12 +52,16 @@ public class Person {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Person person = (Person) o;
-        return Objects.equals(id, person.id) &&
-            Objects.equals(name, person.name) &&
-            Objects.equals(level, person.level);
+        return Objects.equals(id, person.id)
+                    && Objects.equals(name, person.name)
+                    && Objects.equals(level, person.level);
     }
 
     @Override
@@ -67,10 +71,10 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person{" +
-            "id='" + id + '\'' +
-            ", name='" + name + '\'' +
-            ", level='" + level + '\'' +
-            '}';
+        return "Person{"
+                    + "id='" + id + '\''
+                    + ", name='" + name + '\''
+                    + ", level='" + level + '\''
+                    + '}';
     }
 }
