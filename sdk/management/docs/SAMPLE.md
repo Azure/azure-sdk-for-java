@@ -85,7 +85,7 @@ You can create a virtual machine scale set instance by using a `define() … cre
     <td>Virtual Machines</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machines</a></li>
-<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm-async">Manage virtual machines asynchronously </a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm-async">Manage virtual machines asynchronously</a></li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
@@ -456,7 +456,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 </ul></td>
   </tr>
 
-  <tr>
+  <!--tr>
     <td>Service Bus</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/service-bus-java-manage-queue-with-basic-features">Manage queues with basic features</a></li>
@@ -465,7 +465,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure-Samples/service-bus-java-manage-publish-subscribe-with-advanced-features">Manage publish-subscribe with advanced features - sessions, dead-lettering, de-duplication and auto-deletion of idle entries</a></li>
 <li><a href="https://github.com/Azure-Samples/service-bus-java-manage-queue-with-advanced-features">Manage queues with advanced features - sessions, dead-lettering, de-duplication and auto-deletion of idle entries</a></li>
 </ul></td>
-  </tr>
+  </tr-->
 
   <tr>
     <td>Resource Groups</td>
@@ -481,12 +481,12 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure-Samples/resources-java-deploy-virtual-machine-with-managed-disks-using-arm-template">Deploy a virtual machine with managed disks using an ARM template</li></ul></td>
   </tr>
 
-  <tr>
+  <!--tr>
     <td>Redis Cache</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/redis-java-manage-cache">Manage Redis Cache</a></li>
 </ul></td>
-</tr>
+</tr-->
 
   <tr>
     <td>Key Vault</td>
@@ -506,7 +506,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 </ul></td>
   </tr>
 
-  <tr>
+  <!--tr>
     <td>CDN</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/cdn-java-manage-cdn">Manage CDNs</a></li>
@@ -541,7 +541,6 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 <li><a href="https://github.com/Azure-Samples/eventhub-java-manage-event-hub-geo-disaster-recovery">Manage event hub geo-disaster recovery</a></li>
 <li><a href="https://github.com/Azure-Samples/eventhub-java-manage-event-hub-events">Stream Azure Service Logs and Metrics for consumption through Event Hub</a></li>
 </ul></td>
-  </tr>
-
+  </tr-->
 
 </table>
