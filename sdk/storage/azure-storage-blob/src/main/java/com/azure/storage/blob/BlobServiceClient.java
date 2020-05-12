@@ -400,9 +400,8 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Restores a previously deleted container.  The restored container
-     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
-     * If the container associated with this {@link BlobContainerAsyncClient}
+     * Restores a previously deleted container.
+     * If the container associated with provided <code>deletedContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
@@ -423,8 +422,8 @@ public final class BlobServiceClient {
 
     /**
      * Restores a previously deleted container.  The restored container
-     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
-     * If the container associated with this {@link BlobContainerAsyncClient}
+     * will be renamed to the <code>destinationContainerName</code>.
+     * If the container associated with provided <code>destinationContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
@@ -448,9 +447,8 @@ public final class BlobServiceClient {
     }
 
     /**
-     * Restores a previously deleted container.  The restored container
-     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
-     * If the container associated with this {@link BlobContainerAsyncClient}
+     * Restores a previously deleted container.
+     * If the container associated with provided <code>deletedContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
@@ -478,8 +476,8 @@ public final class BlobServiceClient {
 
     /**
      * Restores a previously deleted container.  The restored container
-     * will be renamed to the name of this {@link BlobContainerAsyncClient}.
-     * If the container associated with this {@link BlobContainerAsyncClient}
+     * will be renamed to the <code>destinationContainerName</code>.
+     * If the container associated with provided <code>destinationContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
      * for the storage account associated with the container.
