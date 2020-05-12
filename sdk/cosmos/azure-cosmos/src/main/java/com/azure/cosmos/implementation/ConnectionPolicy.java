@@ -1,7 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.ThrottlingRetryOptions;
 
 import java.net.InetSocketAddress;
 import java.time.Duration;
@@ -12,40 +17,63 @@ import java.util.List;
  * Represents the Connection policy associated with a DocumentClient in the Azure Cosmos DB database service.
  */
 public final class ConnectionPolicy {
-    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
-    // defaultMediaRequestTimeout is based upon the blob client timeout and the
-    // retry policy.
-    private static final Duration DEFAULT_MEDIA_REQUEST_TIMEOUT = Duration.ofSeconds(300);
-    private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
 
-    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
+    //  Constants
+    public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+    public static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    public static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
-    private static ConnectionPolicy defaultPolicy = null;
-    private Duration requestTimeout;
-    private final Duration mediaRequestTimeout;
+    private static final ConnectionPolicy defaultPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
+
     private ConnectionMode connectionMode;
-    private int maxPoolSize;
-    private Duration idleConnectionTimeout;
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
-    private boolean endpointDiscoveryEnabled = true;
+    private boolean endpointDiscoveryEnabled;
     private List<String> preferredRegions;
-    private boolean usingMultipleWriteRegions = true;
+    private boolean multipleWriteRegionsEnabled;
+    private boolean readRequestsFallbackEnabled;
+
+    //  Gateway connection config properties
+    private int maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
+    private Duration requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+    private Duration idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
     private InetSocketAddress inetSocketProxyAddress;
-    private Boolean readRequestsFallbackEnabled;
+
+    //  Direct connection config properties
+    private Duration connectionTimeout;
+    private Duration idleChannelTimeout;
+    private Duration idleEndpointTimeout;
+    private int maxChannelsPerEndpoint;
+    private int maxRequestsPerChannel;
 
     /**
      * Constructor.
      */
-    public ConnectionPolicy() {
-        this.connectionMode = ConnectionMode.DIRECT;
-        this.readRequestsFallbackEnabled = null;
-        this.idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
-        this.maxPoolSize = DEFAULT_MAX_POOL_SIZE;
-        this.mediaRequestTimeout = DEFAULT_MEDIA_REQUEST_TIMEOUT;
-        this.requestTimeout = DEFAULT_REQUEST_TIMEOUT;
+    public ConnectionPolicy(GatewayConnectionConfig gatewayConnectionConfig) {
+        this(ConnectionMode.GATEWAY);
+        this.idleConnectionTimeout = gatewayConnectionConfig.getIdleConnectionTimeout();
+        this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
+        this.requestTimeout = gatewayConnectionConfig.getRequestTimeout();
+        this.inetSocketProxyAddress = gatewayConnectionConfig.getProxy();
+    }
+
+    public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
+        this(ConnectionMode.DIRECT);
+        this.connectionTimeout = directConnectionConfig.getConnectionTimeout();
+        this.idleChannelTimeout = directConnectionConfig.getIdleChannelTimeout();
+        this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
+        this.maxChannelsPerEndpoint = directConnectionConfig.getMaxChannelsPerEndpoint();
+        this.maxRequestsPerChannel = directConnectionConfig.getMaxRequestsPerChannel();
+    }
+
+    private ConnectionPolicy(ConnectionMode connectionMode) {
+        this.connectionMode = connectionMode;
+        //  Default values
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
+        this.readRequestsFallbackEnabled = true;
+        this.endpointDiscoveryEnabled = true;
+        this.multipleWriteRegionsEnabled = true;
     }
 
     /**
@@ -54,9 +82,6 @@ public final class ConnectionPolicy {
      * @return the default connection policy.
      */
     public static ConnectionPolicy getDefaultPolicy() {
-        if (ConnectionPolicy.defaultPolicy == null) {
-            ConnectionPolicy.defaultPolicy = new ConnectionPolicy();
-        }
         return ConnectionPolicy.defaultPolicy;
     }
 
@@ -106,19 +131,19 @@ public final class ConnectionPolicy {
      *
      * @return connection pool size.
      */
-    public int getMaxPoolSize() {
-        return this.maxPoolSize;
+    public int getMaxConnectionPoolSize() {
+        return this.maxConnectionPoolSize;
     }
 
     /**
      * Sets the value of the connection pool size, the default
      * is 1000.
      *
-     * @param maxPoolSize The value of the connection pool size.
+     * @param maxConnectionPoolSize The value of the connection pool size.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setMaxPoolSize(int maxPoolSize) {
-        this.maxPoolSize = maxPoolSize;
+    public ConnectionPolicy setMaxConnectionPoolSize(int maxConnectionPoolSize) {
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
     }
 
@@ -236,14 +261,14 @@ public final class ConnectionPolicy {
      *
      * @return flag to enable writes on any regions for geo-replicated database accounts.
      */
-    public boolean isUsingMultipleWriteRegions() {
-        return this.usingMultipleWriteRegions;
+    public boolean isMultipleWriteRegionsEnabled() {
+        return this.multipleWriteRegionsEnabled;
     }
 
     /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
-     * DEFAULT value is null.
+     * DEFAULT value is true.
      * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
@@ -252,7 +277,7 @@ public final class ConnectionPolicy {
      *
      * @return flag to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      */
-    public Boolean isReadRequestsFallbackEnabled() {
+    public boolean isReadRequestsFallbackEnabled() {
         return this.readRequestsFallbackEnabled;
     }
 
@@ -269,19 +294,19 @@ public final class ConnectionPolicy {
      * DEFAULT value is false indicating that writes are only directed to
      * first region in PreferredRegions property.
      *
-     * @param usingMultipleWriteRegions flag to enable writes on any regions for geo-replicated
+     * @param multipleWriteRegionsEnabled flag to enable writes on any regions for geo-replicated
      * database accounts.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setUsingMultipleWriteRegions(boolean usingMultipleWriteRegions) {
-        this.usingMultipleWriteRegions = usingMultipleWriteRegions;
+    public ConnectionPolicy setMultipleWriteRegionsEnabled(boolean multipleWriteRegionsEnabled) {
+        this.multipleWriteRegionsEnabled = multipleWriteRegionsEnabled;
         return this;
     }
 
     /**
      * Sets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
-     * DEFAULT value is null.
+     * DEFAULT value is true.
      * <p>
      * If this property is not set, the default is true for all Consistency Levels other than Bounded Staleness,
      * The default is false for Bounded Staleness.
@@ -292,7 +317,7 @@ public final class ConnectionPolicy {
      * Azure Cosmos DB service.
      * @return the ConnectionPolicy.
      */
-    public ConnectionPolicy setReadRequestsFallbackEnabled(Boolean readRequestsFallbackEnabled) {
+    public ConnectionPolicy setReadRequestsFallbackEnabled(boolean readRequestsFallbackEnabled) {
         this.readRequestsFallbackEnabled = readRequestsFallbackEnabled;
         return this;
     }
@@ -346,20 +371,115 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    /**
+     * Gets the direct connection timeout
+     * @return direct connection timeout
+     */
+    public Duration getConnectionTimeout() {
+        return connectionTimeout;
+    }
+
+    /**
+     *  Sets the direct connection timeout
+     * @param connectionTimeout the connection timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setConnectionTimeout(Duration connectionTimeout) {
+        this.connectionTimeout = connectionTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the idle channel timeout
+     * @return idle channel timeout
+     */
+    public Duration getIdleChannelTimeout() {
+        return idleChannelTimeout;
+    }
+
+    /**
+     * Sets the idle channel timeout
+     * @param idleChannelTimeout idle channel timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setIdleChannelTimeout(Duration idleChannelTimeout) {
+        this.idleChannelTimeout = idleChannelTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the idle endpoint timeout
+     * @return the idle endpoint timeout
+     */
+    public Duration getIdleEndpointTimeout() {
+        return idleEndpointTimeout;
+    }
+
+    /**
+     * Sets the idle endpoint timeout
+     * @param idleEndpointTimeout the idle endpoint timeout
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setIdleEndpointTimeout(Duration idleEndpointTimeout) {
+        this.idleEndpointTimeout = idleEndpointTimeout;
+        return this;
+    }
+
+    /**
+     * Gets the max channels per endpoint
+     * @return the max channels per endpoint
+     */
+    public int getMaxChannelsPerEndpoint() {
+        return maxChannelsPerEndpoint;
+    }
+
+    /**
+     * Sets the max channels per endpoint
+     * @param maxChannelsPerEndpoint the max channels per endpoint
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setMaxChannelsPerEndpoint(int maxChannelsPerEndpoint) {
+        this.maxChannelsPerEndpoint = maxChannelsPerEndpoint;
+        return this;
+    }
+
+    /**
+     * Gets the max requests per endpoint
+     * @return the max requests per endpoint
+     */
+    public int getMaxRequestsPerChannel() {
+        return maxRequestsPerChannel;
+    }
+
+    /**
+     * Sets the max requests per endpoint
+     * @param maxRequestsPerChannel the max requests per endpoint
+     * @return the {@link ConnectionPolicy}
+     */
+    public ConnectionPolicy setMaxRequestsPerChannel(int maxRequestsPerChannel) {
+        this.maxRequestsPerChannel = maxRequestsPerChannel;
+        return this;
+    }
+
     @Override
     public String toString() {
-        return "ConnectionPolicy{"
-                   + "requestTimeout=" + requestTimeout
-                   + ", mediaRequestTimeout=" + mediaRequestTimeout
-                   + ", connectionMode=" + connectionMode
-                   + ", maxPoolSize=" + maxPoolSize
-                   + ", idleConnectionTimeout=" + idleConnectionTimeout
-                   + ", userAgentSuffix='" + userAgentSuffix + '\''
-                   + ", retryOptions=" + throttlingRetryOptions
-                   + ", enableEndpointDiscovery=" + endpointDiscoveryEnabled
-                   + ", preferredRegions=" + preferredRegions
-                   + ", usingMultipleWriteRegions=" + usingMultipleWriteRegions
-                   + ", inetSocketProxyAddress=" + inetSocketProxyAddress
-                   + '}';
+        return "ConnectionPolicy{" +
+            "requestTimeout=" + requestTimeout +
+            ", connectionMode=" + connectionMode +
+            ", maxConnectionPoolSize=" + maxConnectionPoolSize +
+            ", idleConnectionTimeout=" + idleConnectionTimeout +
+            ", userAgentSuffix='" + userAgentSuffix + '\'' +
+            ", throttlingRetryOptions=" + throttlingRetryOptions +
+            ", endpointDiscoveryEnabled=" + endpointDiscoveryEnabled +
+            ", preferredRegions=" + preferredRegions +
+            ", multipleWriteRegionsEnabled=" + multipleWriteRegionsEnabled +
+            ", inetSocketProxyAddress=" + inetSocketProxyAddress +
+            ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
+            ", connectionTimeout=" + connectionTimeout +
+            ", idleChannelTimeout=" + idleChannelTimeout +
+            ", idleEndpointTimeout=" + idleEndpointTimeout +
+            ", maxChannelsPerEndpoint=" + maxChannelsPerEndpoint +
+            ", maxRequestsPerChannel=" + maxRequestsPerChannel +
+            '}';
     }
 }
