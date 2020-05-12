@@ -60,8 +60,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessageContext message) {
-        if (currentWork == null ) {
-            logger.error("!!! Received message but no receive operation waitting.");
+        if (currentWork == null) {
+            //Boundary condition(timeout cases), buffer the received message for future requests.
             bufferMessages.add(message);
             return;
         }
@@ -100,8 +100,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         long creditToAdd = requested - remaining.get();
         if (creditToAdd > 0) {
             remaining.addAndGet(creditToAdd);
-            logger.verbose(" !!! work id = "+currentWork.getId()+" request credit for " + creditToAdd);
             subscription.request(creditToAdd);
+        } else {
+            logger.verbose("[{}] No need to request credit. ", currentWork.getId());
         }
 
     }
@@ -115,6 +116,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     private void drain() {
+        if (workQueue.size() == 0) {
+            return;
+        }
+
         // If someone is already in this loop, then we are already clearing the queue.
         if (!wip.compareAndSet(0, 1)) {
             return;
@@ -127,7 +132,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
 
     private void drainQueue() {
-        logger.verbose(" !!!  in drainQueue ");
         if (isTerminated()) {
             return;
         }
@@ -139,15 +143,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         if (bufferMessages.size() > 0) {
             // If  we already have messages in buffer, we should send it first
 
-            while(!bufferMessages.isEmpty() || sentFromBuffer < currentWork.getNumberOfEvents()) {
+            while (!bufferMessages.isEmpty() || sentFromBuffer < currentWork.getNumberOfEvents()) {
                 currentWork.next(bufferMessages.poll());
                 remaining.decrementAndGet();
                 ++sentFromBuffer;
-                logger.verbose(" !!! Sent one message from buffer  work id : " + currentWork.getId());
             }
             if (sentFromBuffer == currentWork.getNumberOfEvents()) {
                 currentWork.complete();
-                logger.verbose(" !!! Sent from buffer  work id : " + currentWork.getId());
+                logger.verbose("[{}] Sent [{}] messages from buffer.", currentWork.getId(), sentFromBuffer);
                 drainQueue();
             }
         }
@@ -160,14 +163,15 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private Disposable getTimeoutOperation() {
         return Mono.delay(currentWork.getTimeout())
             .subscribe(l -> {
-                logger.verbose(" !!! Timeout operation work id : " + currentWork.getId() + ", any more work : " + workQueue.size());
                 if (currentWork != null && !currentWork.isTerminal()) {
+                    logger.verbose("[{}] Timeout triggered.", currentWork.getId());
                     currentWork.complete();
                 }
                 if (wip.decrementAndGet() != 0) {
                     logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
                 }
-                drainQueue();
+                //any work which needs to be processed.
+                drain();
             });
     }
     /**
@@ -182,8 +186,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     @Override
     protected void hookOnCancel() {
-        logger.error("[{}] !!! Cancelled.");
-
         if (isDisposed.getAndSet(true)) {
             return;
         }

@@ -107,20 +107,20 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 2;
-        final int totalReceive = 1;
+        final int totalReceive = 2;
         final Duration shortTimeOut = Duration.ofSeconds(8);
         final Duration longTimeOut = Duration.ofSeconds(10);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+        List<ServiceBusMessage> messageList = new ArrayList<>();
+        for (int i = 0; i < totalReceive * maxMessages; ++i) {
+            messageList.add(getMessage(messageId, isSessionEnabled));
+        }
 
         Mono.just(true)
             .delayElement(longTimeOut)
             .map(aBoolean -> {
-                System.out.println("!!! Sending message");
-                for (int i = 0; i < totalReceive * maxMessages; ++i) {
-                    sendMessage(message);
-                }
+                sendMessages(messageList);
                 return aBoolean;
             })
             .subscribe();
@@ -129,20 +129,17 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         long received = messages.stream().count();
         assertEquals(0, received);
 
-        System.out.println("!!! Test Now start receiving message..");
         int receivedMessageCount;
         int totalReceivedCount = 0;
         for (int i = 0; i < totalReceive; ++i) {
             messages = receiver.receive(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
-                System.out.println("!!! Test receiver ["+(i)+"] Message SQ " + receivedMessage.getMessage().getSequenceNumber());
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                 receiver.complete(receivedMessage.getMessage());
                 messagesPending.decrementAndGet();
                 ++receivedMessageCount;
             }
-            System.out.println("!!! Test receiver ["+(i)+"]  Stop receiving ....  ");
             assertEquals(maxMessages, receivedMessageCount);
             totalReceivedCount += receivedMessageCount;
         }
@@ -213,15 +210,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         AtomicInteger totalReceivedMessages = new AtomicInteger();
         List<Thread> receiverThreads = new ArrayList<>();
         for (int i = 0; i < totalReceiver; ++i) {
-            int finalI = i;
             Thread thread = new Thread(() -> {
                 IterableStream<ServiceBusReceivedMessageContext> messages1 = receiver.
                     receive(maxMessagesEachReceive, shortTimeOut);
                 int receivedMessageCount = 0;
                 long lastSequenceReceiver = 0;
                 for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
-                    logger.verbose("Receiver [{}}] Received Sequence Number: [{}] ", (finalI + 1), receivedMessage
-                        .getMessage().getSequenceNumber());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     receiver.complete(receivedMessage.getMessage());
                     assertTrue(receivedMessage.getMessage().getSequenceNumber() > lastSequenceReceiver);
@@ -231,7 +225,6 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 }
                 totalReceivedMessages.addAndGet(receivedMessageCount);
                 assertEquals(maxMessagesEachReceive, receivedMessageCount);
-                logger.verbose("Receiver [{}}] . Test Completed receivers  ", (finalI + 1));
             });
             receiverThreads.add(thread);
         }
@@ -714,6 +707,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
+    }
+    private void sendMessages(List<ServiceBusMessage> messageList) {
+        sender.send(messageList);
+        int number = messagesPending.getAndSet(messageList.size());
+        logger.info("Number sent: {}", number);
     }
 
     private void sendMessage(ServiceBusMessage message) {
