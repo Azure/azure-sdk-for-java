@@ -857,7 +857,8 @@ public final class BlobServiceAsyncClient {
         String deletedContainerName, String deletedContainerVersion, String destinationContainerName,
         Context context) {
         return this.azureBlobStorage.containers().restoreWithRestResponseAsync(destinationContainerName, null,
-            null, deletedContainerName, deletedContainerVersion, context)
+            null, deletedContainerName, deletedContainerVersion,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, getBlobContainerAsyncClient(destinationContainerName)));
     }
 }

@@ -566,11 +566,12 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        primaryBlobServiceClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+        def restoredContainerClient = primaryBlobServiceClient
+            .undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
 
         then:
-        cc1.listBlobs().size() == 1
-        cc1.listBlobs().first().getName() == blobName
+        restoredContainerClient.listBlobs().size() == 1
+        restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
     def "Restore Container into other container"() {
@@ -591,12 +592,12 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def cc2 = primaryBlobServiceClient.undeleteBlobContainer(
+        def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainer(
             blobContainerItem.getName(), blobContainerItem.getVersion(), generateContainerName())
 
         then:
-        cc2.listBlobs().size() == 1
-        cc2.listBlobs().first().getName() == blobName
+        restoredContainerClient.listBlobs().size() == 1
+        restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
     def "Restore Container with response"() {
@@ -620,11 +621,13 @@ class ServiceAPITest extends APISpec {
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
             blobContainerItem.getName(), blobContainerItem.getVersion(),
             Duration.ofMinutes(1), Context.NONE)
+        def restoredContainerClient = response.getValue()
 
         then:
         response != null
-        cc1.listBlobs().size() == 1
-        cc1.listBlobs().first().getName() == blobName
+        response.getStatusCode() == 201
+        restoredContainerClient.listBlobs().size() == 1
+        restoredContainerClient.listBlobs().first().getName() == blobName
     }
 
     def "Restore Container async"() {
@@ -645,11 +648,11 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def cc2 = primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
+        def restoredContainerClient = primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
 
         then:
-        cc2.listBlobs().collectList().block().size() == 1
-        cc2.listBlobs().collectList().block().first().getName() == blobName
+        restoredContainerClient.listBlobs().collectList().block().size() == 1
+        restoredContainerClient.listBlobs().collectList().block().first().getName() == blobName
     }
 
     def "Restore Container async with response"() {
@@ -671,18 +674,16 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
-        def cc2 = response.getValue()
+        def restoredContainerClient = response.getValue()
 
         then:
         response != null
-        cc2.listBlobs().collectList().block().size() == 1
-        cc2.listBlobs().collectList().block().first().getName() == blobName
+        response.getStatusCode() == 201
+        restoredContainerClient.listBlobs().collectList().block().size() == 1
+        restoredContainerClient.listBlobs().collectList().block().first().getName() == blobName
     }
 
     def "Restore Container error"() {
-        given:
-        def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
-
         when:
         primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
 
