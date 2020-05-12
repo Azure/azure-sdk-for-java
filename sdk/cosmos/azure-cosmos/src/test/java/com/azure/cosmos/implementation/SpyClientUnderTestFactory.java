@@ -4,7 +4,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;

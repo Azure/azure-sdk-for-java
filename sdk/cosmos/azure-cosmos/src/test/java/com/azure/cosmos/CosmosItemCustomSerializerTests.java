@@ -44,7 +44,7 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().connectionPolicy(new ConnectionPolicy().setConnectionMode(ConnectionMode.GATEWAY)
+        this.client = getClientBuilder().gatewayMode(new GatewayConnectionConfig()
             .setProxy(new InetSocketAddress("localhost", 8888)))
             .jsonSerializer(new GsonJsonSerializerBuilder().build())
             .buildClient();

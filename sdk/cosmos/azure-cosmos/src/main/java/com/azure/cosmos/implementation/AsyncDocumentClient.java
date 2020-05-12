@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializer;
 import com.azure.core.serializer.json.jackson.JacksonJsonSerializerBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -39,8 +38,7 @@ import java.util.List;
  * To instantiate you can use the {@link Builder}
  * <pre>
  * {@code
- * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
- * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+ * ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
  * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
  *         .withServiceEndpoint(serviceEndpoint)
  *         .withMasterKeyOrResourceToken(masterKey)
@@ -58,8 +56,7 @@ public interface AsyncDocumentClient {
      *
      * <pre>
      * {@code
-     * ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-     * connectionPolicy.connectionMode(ConnectionMode.DIRECT);
+     * ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
      * AsyncDocumentClient client = new AsyncDocumentClient.Builder()
      *         .withServiceEndpoint(serviceEndpoint)
      *         .withMasterKeyOrResourceToken(masterKey)

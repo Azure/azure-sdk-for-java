@@ -43,9 +43,8 @@ public class CosmosItemTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder()
-            .connectionPolicy(new ConnectionPolicy().setConnectionMode(ConnectionMode.GATEWAY)
-                .setProxy(new InetSocketAddress("localhost", 8888)))
+        this.client = getClientBuilder().gatewayMode(new GatewayConnectionConfig()
+            .setProxy(new InetSocketAddress("localhost", 8888)))
             .buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());

@@ -3,8 +3,6 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientTest;
@@ -19,9 +17,12 @@ import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
@@ -1059,27 +1060,25 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     static protected CosmosClientBuilder createGatewayHouseKeepingDocumentClient(boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
-        connectionPolicy.setThrottlingRetryOptions(options);
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                         .keyCredential(cosmosKeyCredential)
-                                        .connectionPolicy(connectionPolicy)
+                                        .gatewayMode(gatewayConnectionConfig)
+                                        .throttlingRetryOptions(options)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(ConsistencyLevel.SESSION);
     }
 
     static protected CosmosClientBuilder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled,
                                                                        List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
-        connectionPolicy.setUsingMultipleWriteRegions(multiMasterEnabled);
-        connectionPolicy.setPreferredRegions(preferredRegions);
+        GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                         .keyCredential(cosmosKeyCredential)
-                                        .connectionPolicy(connectionPolicy)
+                                        .gatewayMode(gatewayConnectionConfig)
+                                        .multipleWriteRegionsEnabled(multiMasterEnabled)
+                                        .preferredRegions(preferredRegions)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                         .consistencyLevel(consistencyLevel);
     }
@@ -1093,25 +1092,21 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       boolean multiMasterEnabled,
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled) {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
-
+        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
+                                                               .keyCredential(cosmosKeyCredential)
+                                                               .directMode(DirectConnectionConfig.getDefaultConfig())
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                                               .consistencyLevel(consistencyLevel);
         if (preferredRegions != null) {
-            connectionPolicy.setPreferredRegions(preferredRegions);
+            builder.preferredRegions(preferredRegions);
         }
 
         if (multiMasterEnabled && consistencyLevel == ConsistencyLevel.SESSION) {
-            connectionPolicy.setUsingMultipleWriteRegions(true);
+            builder.multipleWriteRegionsEnabled(true);
         }
 
         Configs configs = spy(new Configs());
         doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
-
-        CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .keyCredential(cosmosKeyCredential)
-                                                               .connectionPolicy(connectionPolicy)
-                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-                                                               .consistencyLevel(consistencyLevel);
 
         return injectConfigs(builder, configs);
     }

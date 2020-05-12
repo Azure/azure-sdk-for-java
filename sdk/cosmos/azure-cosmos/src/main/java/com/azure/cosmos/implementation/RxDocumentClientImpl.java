@@ -5,9 +5,9 @@ package com.azure.cosmos.implementation;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -240,7 +240,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (connectionPolicy != null) {
             this.connectionPolicy = connectionPolicy;
         } else {
-            this.connectionPolicy = new ConnectionPolicy();
+            this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
 
         boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
@@ -269,7 +269,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // this.globalEndpointManager.init() must have been already called
         // hence asserting it
         assert(databaseAccount != null);
-        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteRegions() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
@@ -305,9 +305,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.storeClientFactory = new StoreClientFactory(
             this.configs,
-            this.connectionPolicy.getRequestTimeout(),
+            this.connectionPolicy,
            // this.maxConcurrentConnectionOpenRequests,
-            0,
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled
         );
@@ -367,7 +366,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
                 .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleConnectionTimeout())
-                .withPoolSize(this.connectionPolicy.getMaxPoolSize())
+                .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
                 .withHttpProxy(this.connectionPolicy.getProxy())
                 .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
 
@@ -3062,7 +3061,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 logger.warn(message);
             }).map(rsp -> rsp.getResource(DatabaseAccount.class))
                     .doOnNext(databaseAccount -> {
-                        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteRegions()
+                        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled()
                                 && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
                     });
         });
