@@ -24,7 +24,7 @@ public abstract class SendReceiveTests extends Tests {
     static ManagementClientAsync managementClient = null;
     private static String entityNameCreatedForAllTests = null;
     private static String receiveEntityPathForAllTest = null;
-    
+
     MessagingFactory factory;
     IMessageSender sender;
     IMessageReceiver receiver;
@@ -34,7 +34,7 @@ public abstract class SendReceiveTests extends Tests {
     private final String sessionId = null;
 
     @BeforeClass
-    public static void init() {
+    public static void init() throws ServiceBusException, InterruptedException {
         SendReceiveTests.entityNameCreatedForAllTests = null;
         SendReceiveTests.receiveEntityPathForAllTest = null;
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
@@ -86,14 +86,14 @@ public abstract class SendReceiveTests extends Tests {
         if (this.sender != null) {
         	this.sender.close();
         }
-        
+
         if (this.receiver != null) {
             this.receiver.close();
         }
-        
+
         if (this.factory != null) {
         	this.factory.close();
-        }        
+        }
 
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
@@ -230,7 +230,7 @@ public abstract class SendReceiveTests extends Tests {
         this.receiver = ClientFactory.createMessageReceiverFromEntityPath(factory, this.receiveEntityPath, ReceiveMode.RECEIVEANDDELETE);
         TestCommons.testSendReceiveMessageWithVariousPropertyTypes(this.sender, this.sessionId, this.receiver);
     }
-    
+
     @Test
     public void testLongPollReceiveOnLinkAbort() throws InterruptedException, ServiceBusException, ExecutionException
     {

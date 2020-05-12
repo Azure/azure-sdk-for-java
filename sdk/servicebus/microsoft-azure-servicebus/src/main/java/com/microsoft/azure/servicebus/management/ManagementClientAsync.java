@@ -3,17 +3,8 @@
 
 package com.microsoft.azure.servicebus.management;
 
-import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.servicebus.primitives.AuthorizationFailedException;
-import com.microsoft.azure.servicebus.primitives.ClientConstants;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.MessagingEntityAlreadyExistsException;
-import com.microsoft.azure.servicebus.primitives.MessagingEntityNotFoundException;
-import com.microsoft.azure.servicebus.primitives.MessagingFactory;
-import com.microsoft.azure.servicebus.primitives.QuotaExceededException;
-import com.microsoft.azure.servicebus.primitives.ServerBusyException;
-import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.microsoft.azure.servicebus.primitives.Util;
+import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.servicebus.primitives.*;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 import com.microsoft.azure.servicebus.security.SecurityToken;
 import com.microsoft.azure.servicebus.security.TokenProvider;
@@ -24,6 +15,7 @@ import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Request;
 import org.asynchttpclient.RequestBuilder;
 import org.asynchttpclient.Response;
+import org.asynchttpclient.proxy.ProxyServer;
 import org.asynchttpclient.util.HttpConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +30,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -68,15 +57,18 @@ public class ManagementClientAsync {
     private static final String USER_AGENT = String.format("%s/%s(%s)", ClientConstants.PRODUCT_NAME, ClientConstants.CURRENT_JAVACLIENT_VERSION, ClientConstants.PLATFORM_INFO);
 
     private ClientSettings clientSettings;
+    private MessagingFactory factory;
     private URI namespaceEndpointURI;
     private AsyncHttpClient asyncHttpClient;
+    private MiscRequestResponseOperationHandler miscRequestResponseHandler;
+    private List<Proxy> proxies;
 
     /**
      * Creates a new {@link ManagementClientAsync}.
      * User should call {@link ManagementClientAsync#close()} at the end of life of the client.
      * @param connectionStringBuilder - connectionStringBuilder containing namespace information and client settings.
      */
-    public ManagementClientAsync(ConnectionStringBuilder connectionStringBuilder) {
+    public ManagementClientAsync(ConnectionStringBuilder connectionStringBuilder) throws InterruptedException, ServiceBusException {
         this(connectionStringBuilder.getEndpoint(), Util.getClientSettingsFromConnectionStringBuilder(connectionStringBuilder));
     }
 
@@ -86,14 +78,93 @@ public class ManagementClientAsync {
      * @param namespaceEndpointURI - URI of the namespace connecting to.
      * @param clientSettings - client settings.
      */
-    public ManagementClientAsync(URI namespaceEndpointURI, ClientSettings clientSettings) {
+//    public ManagementClientAsync(URI namespaceEndpointURI, ClientSettings clientSettings) {
+//        this.namespaceEndpointURI = namespaceEndpointURI;
+//        this.clientSettings = clientSettings;
+//        DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
+//                .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
+//                .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
+//        this.asyncHttpClient = asyncHttpClient(clientBuilder);
+//    }
+
+    public ManagementClientAsync(URI namespaceEndpointURI, ClientSettings clientSettings, DefaultAsyncHttpClientConfig.Builder httpClientBuilder) {
+        this.namespaceEndpointURI = namespaceEndpointURI;
+        this.clientSettings = clientSettings;
+        this.asyncHttpClient = asyncHttpClient(httpClientBuilder);
+    }
+
+    public ManagementClientAsync(URI namespaceEndpointURI, ClientSettings clientSettings) throws InterruptedException, ServiceBusException {
         this.namespaceEndpointURI = namespaceEndpointURI;
         this.clientSettings = clientSettings;
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
-                .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
-                .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
+            .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
+            .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
+
+        if(shouldUseProxy(this.namespaceEndpointURI.getHost())){
+            InetSocketAddress address = (InetSocketAddress)this.proxies.get(0).address();
+            String proxyHostName = address.getHostName();
+            int proxyPort = address.getPort();
+            clientBuilder.setProxyServer(new ProxyServer.Builder(proxyHostName, proxyPort));
+        }
+
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
+//        CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsync(namespaceEndpointURI, clientSettings);
+//        Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createInternals(f), MessagingFactory.INTERNAL_THREAD_POOL));
+//        if (TRACE_LOGGER.isInfoEnabled()) {
+//            TRACE_LOGGER.info("Created management client '{}'", namespaceEndpointURI.toString());
+//        }
     }
+
+    public boolean shouldUseProxy(final String hostName) {
+        final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
+        final ProxySelector proxySelector = ProxySelector.getDefault();
+        if (proxySelector == null) {
+            return false;
+        }
+
+        final List<Proxy> proxies = proxySelector.select(uri);
+        if (isProxyAddressLegal(proxies)) {
+            this.proxies = proxies;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static URI createURIFromHostNamePort(final String hostName, final int port) {
+        return URI.create(String.format(ClientConstants.HTTPS_URI_FORMAT, hostName, port));
+    }
+
+    private static boolean isProxyAddressLegal(final List<Proxy> proxies) {
+        // only checks the first proxy in the list
+        // returns true if it is an InetSocketAddress, which is required for qpid-proton-j library
+        return proxies != null
+            && !proxies.isEmpty()
+            && proxies.get(0).type() == Proxy.Type.HTTP
+            && proxies.get(0).address() != null
+            && proxies.get(0).address() instanceof InetSocketAddress;
+    }
+    private CompletableFuture<Void> createInternals(MessagingFactory factory) {
+        this.factory = factory;
+
+        CompletableFuture<Void> postSessionBrowserFuture = MiscRequestResponseOperationHandler.create(factory).thenAcceptAsync((msoh) -> {
+            this.miscRequestResponseHandler = msoh;
+            //this.sessionBrowser = new SessionBrowser(factory, queuePath, MessagingEntityType.QUEUE, msoh);
+        }, MessagingFactory.INTERNAL_THREAD_POOL);
+
+        return CompletableFuture.allOf(postSessionBrowserFuture);
+    }
+
+    // No op now
+//    @Override
+//    CompletableFuture<Void> initializeAsync() {
+//        return CompletableFuture.completedFuture(null);
+//    }
+//
+//    @Override
+//    protected CompletableFuture<Void> onClose() {
+//        return this.miscRequestResponseHandler.closeAsync().thenCompose((w) -> this.factory.closeAsync());
+//    }
 
     /**
      * Retrieves information related to the namespace.

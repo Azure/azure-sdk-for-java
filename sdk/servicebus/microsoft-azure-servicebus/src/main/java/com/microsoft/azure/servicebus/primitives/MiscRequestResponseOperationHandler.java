@@ -20,7 +20,7 @@ import com.microsoft.azure.servicebus.rules.RuleDescription;
 
 public final class MiscRequestResponseOperationHandler extends ClientEntity {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MiscRequestResponseOperationHandler.class);
-    
+
     private final Object requestResonseLinkCreationLock = new Object();
     private final String entityPath;
     private final MessagingEntityType entityType;
@@ -37,6 +37,10 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
     }
 
     @Deprecated
+    public static CompletableFuture<MiscRequestResponseOperationHandler> create(MessagingFactory factory) {
+        return create(factory, null, null);
+    }
+
     public static CompletableFuture<MiscRequestResponseOperationHandler> create(MessagingFactory factory, String entityPath) {
         return create(factory, entityPath, null);
     }
@@ -76,7 +80,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity {
                     return null;
                 }, MessagingFactory.INTERNAL_THREAD_POOL);
             }
-            
+
             return this.requestResponseLinkCreationFuture;
         }
     }

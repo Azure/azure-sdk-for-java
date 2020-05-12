@@ -32,7 +32,7 @@ public class ClientValidationTests extends TestBase {
     private static ManagementClientAsync managementClient;
 
     @BeforeClass
-    public static void createEntities() throws ExecutionException, InterruptedException {
+    public static void createEntities() throws ExecutionException, InterruptedException, ServiceBusException {
         // Create a queue, a topic and a subscription
         queuePath = TestUtils.randomizeEntityName(ENTITY_NAME_PREFIX);
         sessionfulQueuePath = TestUtils.randomizeEntityName(ENTITY_NAME_PREFIX);

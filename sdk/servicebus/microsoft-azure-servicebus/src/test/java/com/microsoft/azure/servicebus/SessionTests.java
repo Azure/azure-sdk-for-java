@@ -37,7 +37,7 @@ public abstract class SessionTests extends Tests {
     String receiveEntityPath;
 
     @BeforeClass
-    public static void init() {
+    public static void init() throws ServiceBusException, InterruptedException {
         SessionTests.entityNameCreatedForAllTests = null;
         SessionTests.receiveEntityPathForAllTest = null;
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
@@ -87,19 +87,19 @@ public abstract class SessionTests extends Tests {
         if (!this.shouldCreateEntityForEveryTest()) {
             this.drainSession();
         }
-        
+
         if (this.sender != null) {
         	this.sender.close();
         }
-        
+
         if (this.session != null) {
             this.session.close();
         }
-        
+
         if (this.factory != null) {
         	this.factory.close();
-        }        
-        
+        }
+
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
         }

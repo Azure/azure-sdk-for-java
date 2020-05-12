@@ -29,16 +29,16 @@ public abstract class ClientSessionTests extends Tests {
     private String receiveEntityPath;
     private IMessageSender sendClient;
     private IMessageAndSessionPump receiveClient;
-    
+
     @BeforeClass
-    public static void init() {
+    public static void init() throws ServiceBusException, InterruptedException {
         ClientSessionTests.entityNameCreatedForAllTests = null;
         ClientSessionTests.receiveEntityPathForAllTest = null;
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
         ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         managementClient = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
     }
-    
+
     @Before
     public void setup() throws InterruptedException, ExecutionException {
         if (this.shouldCreateEntityForEveryTest() || ClientSessionTests.entityNameCreatedForAllTests == null) {
@@ -72,7 +72,7 @@ public abstract class ClientSessionTests extends Tests {
             this.receiveEntityPath = ClientSessionTests.receiveEntityPathForAllTest;
         }
     }
-    
+
     @After
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
         if (this.sendClient != null) {
@@ -85,14 +85,14 @@ public abstract class ClientSessionTests extends Tests {
                 ((QueueClient) this.receiveClient).close();
             }
         }
-        
+
         if (this.shouldCreateEntityForEveryTest()) {
             managementClient.deleteQueueAsync(this.entityName).get();
         } else {
             TestCommons.drainAllSessions(this.receiveEntityPath, this.isEntityQueue());
         }
     }
-    
+
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
         if (managementClient != null) {
@@ -103,7 +103,7 @@ public abstract class ClientSessionTests extends Tests {
             managementClient.close();
         }
     }
-    
+
     private void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
@@ -113,49 +113,49 @@ public abstract class ClientSessionTests extends Tests {
             this.receiveClient = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, TestUtils.getClientSettings(), receiveMode);
         }
     }
-    
+
     @Test
     public void testRegisterAnotherHandlerAfterSessionHandler() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testRegisterAnotherHandlerAfterSessionHandler(this.receiveClient);
     }
-    
+
     @Test
     public void testGetMessageSessions() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         TestCommons.testGetMessageSessions(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testSessionPumpAutoCompleteWithOneConcurrentCallPerSession() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithOneConcurrentCallPerSession(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testReceiveAndDeleteSessionPump() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.RECEIVEANDDELETE);
         MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithOneConcurrentCallPerSession(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testSessionPumpAutoCompleteWithMultipleConcurrentCallsPerSession(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testSessionPumpClientComplete() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testSessionPumpClientComplete(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testSessionPumpAbandonOnException() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testSessionPumpAbandonOnException(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testSessionPumpRenewLock() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);

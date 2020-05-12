@@ -63,7 +63,7 @@ public class TestUtils extends TestBase {
         }
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
     }
-    
+
     // AADTokens cannot yet be used for management operations, sent directly to gateway
     public static ClientSettings getManagementClientSettings() {
         return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
@@ -92,9 +92,9 @@ public class TestUtils extends TestBase {
     public static String getRandomString() {
         return UUID.randomUUID().toString();
     }
-    
+
     /**
-     * Tells this class whether to create an entity for every test and delete it after the test. Creating an entity for every test makes the tests independent of 
+     * Tells this class whether to create an entity for every test and delete it after the test. Creating an entity for every test makes the tests independent of
      * each other and advisable if the SB namespace allows it. If the namespace doesn't allow creation and deletion of many entities in a short span of time, the suite
      * will create one entity at the start, uses it for all test and deletes the entity at the end.
      * @return true if each test should create and delete its own entity. Else return false.

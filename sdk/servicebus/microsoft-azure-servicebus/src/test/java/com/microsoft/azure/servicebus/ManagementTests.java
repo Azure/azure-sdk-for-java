@@ -44,10 +44,17 @@ public class ManagementTests extends TestBase {
     private ManagementClientAsync managementClientAsync;
 
     @Before
-    public void setup() {
+    public void setup() throws ServiceBusException, InterruptedException {
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
         ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         managementClientAsync = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
+    }
+
+    public void Daxi() throws InterruptedException, ExecutionException {
+        String queueName = UUID.randomUUID().toString().substring(0, 8);
+        QueueDescription q = new QueueDescription(queueName);
+        QueueDescription qCreated = this.managementClientAsync.createQueueAsync(q).get();
+        Assert.assertEquals(q, qCreated);
     }
 
     @Test
@@ -514,13 +521,13 @@ public class ManagementTests extends TestBase {
         this.managementClientAsync.deleteQueueAsync(destinationName);
         this.managementClientAsync.deleteQueueAsync(dlqDestinationName);
     }
-    
+
     @Test
     public void subscriptionForwardToCreationTest() throws ServiceBusException, InterruptedException {
         String sourceName = UUID.randomUUID().toString().substring(0, 8);
         String destinationName = UUID.randomUUID().toString().substring(0, 8);
         String subscriptionName = "subscription1";
-        
+
         TopicDescription destinationTopicDesc = new TopicDescription(destinationName);
         Utils.completeFuture(this.managementClientAsync.createTopicAsync(destinationTopicDesc));
         SubscriptionDescription subDesc = new SubscriptionDescription(destinationName, subscriptionName);

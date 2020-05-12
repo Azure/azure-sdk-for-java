@@ -29,16 +29,16 @@ public abstract class ClientTests extends Tests {
     private String receiveEntityPath;
     protected IMessageSender sendClient;
     protected IMessageAndSessionPump receiveClient;
-    
+
     @BeforeClass
-    public static void init() {
+    public static void init() throws ServiceBusException, InterruptedException {
         ClientTests.entityNameCreatedForAllTests = null;
         ClientTests.receiveEntityPathForAllTest = null;
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
         ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         managementClientAsync = new ManagementClientAsync(namespaceEndpointURI, managementClientSettings);
     }
-    
+
     @Before
     public void setup() throws ExecutionException, InterruptedException {
         if (this.shouldCreateEntityForEveryTest() || ClientTests.entityNameCreatedForAllTests == null) {
@@ -70,7 +70,7 @@ public abstract class ClientTests extends Tests {
             this.receiveEntityPath = ClientTests.receiveEntityPathForAllTest;
         }
     }
-    
+
     @After
     public void tearDown() throws ServiceBusException, InterruptedException, ExecutionException {
         if (this.sendClient != null) {
@@ -83,14 +83,14 @@ public abstract class ClientTests extends Tests {
                 ((QueueClient) this.receiveClient).close();
             }
         }
-        
+
         if (this.shouldCreateEntityForEveryTest()) {
             managementClientAsync.deleteQueueAsync(this.entityName).get();
         } else {
             TestCommons.drainAllMessages(this.receiveEntityPath);
         }
     }
-    
+
     @AfterClass
     public static void cleanupAfterAllTest() throws ExecutionException, InterruptedException, IOException {
         if (managementClientAsync == null) {
@@ -102,7 +102,7 @@ public abstract class ClientTests extends Tests {
 
         managementClientAsync.close();
     }
-    
+
     protected void createClients(ReceiveMode receiveMode) throws InterruptedException, ServiceBusException {
         if (this.isEntityQueue()) {
             this.sendClient = new QueueClient(TestUtils.getNamespaceEndpointURI(), this.entityName, TestUtils.getClientSettings(), receiveMode);
@@ -112,37 +112,37 @@ public abstract class ClientTests extends Tests {
             this.receiveClient = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), this.receiveEntityPath, TestUtils.getClientSettings(), receiveMode);
         }
     }
-    
+
     @Test
     public void testMessagePumpAutoComplete() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testMessagePumpAutoComplete(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testReceiveAndDeleteMessagePump() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.RECEIVEANDDELETE);
         MessageAndSessionPumpTests.testMessagePumpAutoComplete(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testMessagePumpClientComplete() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testMessagePumpClientComplete(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testMessagePumpAbandonOnException() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testMessagePumpAbandonOnException(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testMessagePumpRenewLock() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
         MessageAndSessionPumpTests.testMessagePumpRenewLock(this.sendClient, this.receiveClient);
     }
-    
+
     @Test
     public void testRegisterAnotherHandlerAfterMessageHandler() throws InterruptedException, ServiceBusException {
         this.createClients(ReceiveMode.PEEKLOCK);
