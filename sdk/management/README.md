@@ -25,7 +25,10 @@ that is optimized for ease of use, succinctness and consistency.
 ```
 [//]: # ({x-version-update-end})
 
-### Include optional packages
+### Include the recommended packages
+
+It requires a `TokenCredential` implementation for authentication and an `HttpClient` implementation for HTTP client.
+`azure-identity` package and `azure-core-http-netty` package provide recommended implementation.
 
 [Azure Identity][azure_identity] provides Azure Active Directory token authentication support across the Azure SDK.
 
