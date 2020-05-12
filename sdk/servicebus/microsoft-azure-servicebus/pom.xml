@@ -87,5 +87,11 @@
       <version>4.13-beta-3</version> <!-- {x-version-update;junit:junit;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-servicebus</artifactId>
+      <version>2.0.0-PREVIEW-7</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 </project>

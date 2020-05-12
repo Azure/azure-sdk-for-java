@@ -24,6 +24,7 @@ import org.asynchttpclient.ListenableFuture;
 import org.asynchttpclient.Request;
 import org.asynchttpclient.RequestBuilder;
 import org.asynchttpclient.Response;
+import org.asynchttpclient.proxy.ProxyServer;
 import org.asynchttpclient.util.HttpConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,10 +39,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.net.*;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -68,8 +66,10 @@ public class ManagementClientAsync {
     private static final String USER_AGENT = String.format("%s/%s(%s)", ClientConstants.PRODUCT_NAME, ClientConstants.CURRENT_JAVACLIENT_VERSION, ClientConstants.PLATFORM_INFO);
 
     private ClientSettings clientSettings;
+    private MessagingFactory factory;
     private URI namespaceEndpointURI;
     private AsyncHttpClient asyncHttpClient;
+    private List<Proxy> proxies;
 
     /**
      * Creates a new {@link ManagementClientAsync}.
@@ -92,7 +92,46 @@ public class ManagementClientAsync {
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
                 .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
                 .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
+
+        if(shouldUseProxy(this.namespaceEndpointURI.getHost())){
+            InetSocketAddress address = (InetSocketAddress)this.proxies.get(0).address();
+            String proxyHostName=address.getHostName();
+            int proxyPort=address.getPort();
+
+            clientBuilder.setProxyServer(new ProxyServer.Builder(proxyHostName,proxyPort));
+        }
+
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
+    }
+
+    public boolean shouldUseProxy(final String hostName) {
+        final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
+        final ProxySelector proxySelector = ProxySelector.getDefault();
+        if (proxySelector == null) {
+            return false;
+        }
+
+        final List<Proxy> proxies = proxySelector.select(uri);
+        if (isProxyAddressLegal(proxies)) {
+            this.proxies = proxies;
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private static URI createURIFromHostNamePort(final String hostName, final int port) {
+        return URI.create(String.format(ClientConstants.HTTPS_URI_FORMAT, hostName, port));
+    }
+
+    private static boolean isProxyAddressLegal(final List<Proxy> proxies) {
+        // only checks the first proxy in the list
+        // returns true if it is an InetSocketAddress, which is required for qpid-proton-j library
+        return proxies != null
+            && !proxies.isEmpty()
+            && proxies.get(0).type() == Proxy.Type.HTTP
+            && proxies.get(0).address() != null
+            && proxies.get(0).address() instanceof InetSocketAddress;
     }
 
     /**
