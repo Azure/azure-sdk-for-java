@@ -585,6 +585,8 @@ public final class ModelBridgeInternal {
     public static <T> Resource getResource(T t) {
         if (t == null) {
             return null;
+        } else if (t instanceof Resource) {
+            return (Resource) t;
         } else if (t instanceof CosmosConflictProperties) {
             return ((CosmosConflictProperties) t).getResource();
         } else if (t instanceof CosmosContainerProperties) {
