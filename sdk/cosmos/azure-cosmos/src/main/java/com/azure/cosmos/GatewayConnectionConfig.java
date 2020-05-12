@@ -6,14 +6,14 @@ package com.azure.cosmos;
 import java.net.InetSocketAddress;
 import java.time.Duration;
 
-import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_IDLE_CONNECTION_TIMEOUT;
-import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_MAX_POOL_SIZE;
-import static com.azure.cosmos.implementation.ConnectionPolicy.DEFAULT_REQUEST_TIMEOUT;
-
 /**
  * Represents the connection config with {@link ConnectionMode#GATEWAY} associated with Cosmos Client in the Azure Cosmos DB database service.
  */
 public final class GatewayConnectionConfig {
+    //  Constants
+    private static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
+    private static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
+    private static final int DEFAULT_MAX_POOL_SIZE = 1000;
 
     private Duration requestTimeout;
     private int maxConnectionPoolSize;
