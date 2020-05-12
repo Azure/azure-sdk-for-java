@@ -15,6 +15,7 @@ import com.microsoft.azure.management.netapp.v2019_08_01.VolumePatch;
 import com.microsoft.azure.management.netapp.v2019_08_01.ServiceLevel;
 import com.microsoft.azure.management.netapp.v2019_08_01.VolumePropertiesExportPolicy;
 import java.util.List;
+import com.microsoft.azure.management.netapp.v2019_08_01.MountTargetProperties;
 import com.microsoft.azure.management.netapp.v2019_08_01.VolumePropertiesDataProtection;
 import java.util.Map;
 import com.microsoft.azure.management.netapp.v2019_08_01.VolumePatchPropertiesExportPolicy;
@@ -135,7 +136,7 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
-    public Object mountTargets() {
+    public List<MountTargetProperties> mountTargets() {
         return this.inner().mountTargets();
     }
 
@@ -234,7 +235,7 @@ class VolumeImpl extends CreatableUpdatableImpl<Volume, VolumeInner, VolumeImpl>
     }
 
     @Override
-    public VolumeImpl withMountTargets(Object mountTargets) {
+    public VolumeImpl withMountTargets(List<MountTargetProperties> mountTargets) {
         this.inner().withMountTargets(mountTargets);
         return this;
     }
