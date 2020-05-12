@@ -172,6 +172,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -3086,9 +3087,10 @@ public final class Utils {
 
     public static synchronized <T> int getSize(Iterable<T> iterable) {
         int res = 0;
-
-        for (T t : iterable) {
-            res++;
+        Iterator<T> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            ++res;
         }
         return res;
     }

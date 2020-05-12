@@ -327,6 +327,10 @@
       "\"moduleName\"": "\"StreamAnalytics\""
     }
   },
+  "subscription/resource-manager": {
+    "source": "specification/subscription/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "support/resource-manager": {
     "source": "specification/support/resource-manager/readme.md",
     "args": "--multiapi --fluent"

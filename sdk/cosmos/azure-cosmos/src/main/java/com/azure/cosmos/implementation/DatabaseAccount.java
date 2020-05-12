@@ -6,9 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.ConsistencyPolicy;
 import com.azure.cosmos.models.DatabaseAccountLocation;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
@@ -272,10 +270,10 @@ public final class DatabaseAccount extends Resource {
         BridgeInternal.setProperty(this, Constants.Properties.ENABLE_MULTIPLE_WRITE_LOCATIONS, value);
     }
 
-    protected void populatePropertyBag() {
+    public void populatePropertyBag() {
         super.populatePropertyBag();
         if (this.consistencyPolicy != null) {
-            ModelBridgeInternal.populatePropertyBagJsonSerializable(this.consistencyPolicy);
+            ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(this.consistencyPolicy);
             BridgeInternal.setProperty(this, Constants.Properties.USER_CONSISTENCY_POLICY, this.consistencyPolicy);
         }
     }

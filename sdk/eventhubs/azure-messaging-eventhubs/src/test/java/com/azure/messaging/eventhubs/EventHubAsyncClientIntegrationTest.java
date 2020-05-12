@@ -6,55 +6,40 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.time.Instant;
-import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
-import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
 /**
  * Tests scenarios on {@link EventHubAsyncClient}.
  */
+@Tag(TestUtils.INTEGRATION)
 class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final int NUMBER_OF_EVENTS = 5;
     private static final String PARTITION_ID = "1";
-    private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
-    private static volatile IntegrationTestEventData testData = null;
+    private IntegrationTestEventData testEventData;
 
     EventHubAsyncClientIntegrationTest() {
         super(new ClientLogger(EventHubAsyncClientIntegrationTest.class));
     }
 
-    protected void beforeTest(AmqpTransportType transportType) {
-        if (HAS_PUSHED_EVENTS.getAndSet(true)) {
-            logger.info("Already pushed events to partition. Skipping.");
-        } else {
-            logger.info("Pushing... events to partition.");
-
-            try (EventHubProducerAsyncClient testClient = createBuilder()
-                .transportType(transportType)
-                .buildAsyncProducerClient()) {
-                final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-                testData = setupEventTestData(testClient, NUMBER_OF_EVENTS, options);
-                logger.warning("Pushed events to partition.");
-            }
-        }
+    @Override
+    protected void beforeTest() {
+        final Map<String, IntegrationTestEventData> testData = getTestData();
+        testEventData = testData.get(PARTITION_ID);
+        Assertions.assertNotNull(testEventData, PARTITION_ID + " should have been able to get data for partition.");
     }
 
     /**
@@ -64,17 +49,14 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @ParameterizedTest
     @EnumSource(value = AmqpTransportType.class)
     void receiveMessage(AmqpTransportType transportType) {
-        beforeTest(transportType);
-
         // Arrange
         final EventHubConsumerAsyncClient consumer = createBuilder()
             .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(DEFAULT_PREFETCH_COUNT)
             .transportType(transportType)
             .buildAsyncConsumerClient();
 
-        final EventPosition startingPosition = EventPosition.fromEnqueuedTime(
-            testData.getEnqueuedTime().minus(Duration.ofMinutes(10)));
+        final Instant lastEnqueued = testEventData.getPartitionProperties().getLastEnqueuedTime();
+        final EventPosition startingPosition = EventPosition.fromEnqueuedTime(lastEnqueued);
 
         // Act & Assert
         try {
@@ -86,7 +68,6 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             consumer.close();
         }
-
     }
 
     /**
@@ -96,43 +77,28 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @EnumSource(value = AmqpTransportType.class)
     @Disabled("Works part of the time: https://github.com/Azure/azure-sdk-for-java/issues/9659")
     void parallelEventHubClients(AmqpTransportType transportType) throws InterruptedException {
-        beforeTest(transportType);
-
         // Arrange
-        final int numberOfClients = 4;
-        final int numberOfEvents = 10;
-        final String messageTrackingId = "message-tracking-id";
-        final String messageTrackingValue = UUID.randomUUID().toString();
-
-        final List<EventData> events = IntStream.range(0, numberOfEvents)
-            .mapToObj(number -> {
-                final EventData eventData = new EventData("testString".getBytes(UTF_8));
-                eventData.getProperties().put(messageTrackingId, messageTrackingValue);
-                return eventData;
-            }).collect(Collectors.toList());
-
+        final int numberOfClients = 3;
+        final int numberOfEvents = testEventData.getEvents().size() - 2;
         final CountDownLatch countDownLatch = new CountDownLatch(numberOfClients);
         final EventHubClientBuilder builder = createBuilder()
             .transportType(transportType)
-            .shareConnection()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(DEFAULT_PREFETCH_COUNT);
+            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME);
 
-        final EventHubProducerClient producer = builder.buildProducerClient();
         final EventHubConsumerAsyncClient[] clients = new EventHubConsumerAsyncClient[numberOfClients];
         for (int i = 0; i < numberOfClients; i++) {
             clients[i] = builder.buildAsyncConsumerClient();
         }
 
-        final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventPosition position = EventPosition.fromEnqueuedTime(Instant.now().minus(Duration.ofMinutes(10)));
+        final long sequenceNumber = testEventData.getPartitionProperties().getLastEnqueuedSequenceNumber();
+        final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
         try {
 
             //@formatter:off
             for (final EventHubConsumerAsyncClient consumer : clients) {
                 consumer.receiveFromPartition(PARTITION_ID, position)
-                    .filter(partitionEvent -> TestUtils.isMatchingEvent(partitionEvent.getData(), messageTrackingValue))
+                    .filter(partitionEvent -> isMatchingEvent(partitionEvent.getData(), testEventData.getMessageId()))
                     .take(numberOfEvents)
                     .subscribe(partitionEvent -> {
                         EventData event = partitionEvent.getData();
@@ -146,19 +112,13 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
             }
             //@formatter:on
 
-            // Act
-            producer.send(events, sendOptions);
-
             // Assert
             // Wait for all the events we sent to be received by each of the consumers.
-            countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-            Assertions.assertEquals(0, countDownLatch.getCount());
+            Assertions.assertTrue(countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
 
             logger.info("Completed successfully.");
         } finally {
             logger.info("Disposing of subscriptions, consumers and clients.");
-
-            dispose(producer);
             dispose(clients);
         }
     }
@@ -169,44 +129,17 @@ class EventHubAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void getPropertiesWithCredentials() {
         // Arrange
-        final EventHubAsyncClient client = createBuilder(true)
-            .buildAsyncClient();
 
         // Act & Assert
-        try {
+        try (EventHubAsyncClient client = createBuilder(true)
+            .buildAsyncClient()) {
             StepVerifier.create(client.getProperties())
                 .assertNext(properties -> {
                     Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
+                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
                 })
                 .expectComplete()
                 .verify(TIMEOUT);
-        } finally {
-            client.close();
-        }
-    }
-
-    /**
-     * Verifies that we can get partition properties.
-     */
-    @Test
-    void getMultipleProperties() {
-        // Arrange
-        final EventHubAsyncClient theClient = createBuilder(true)
-            .buildAsyncClient();
-
-        try {
-            for (int i = 0; i < 10; i++) {
-                // Act & Assert
-                StepVerifier.create(theClient.getProperties())
-                    .assertNext(properties -> {
-                        Assertions.assertEquals(getEventHubName(), properties.getName());
-                        Assertions.assertEquals(3, properties.getPartitionIds().stream().count());
-                    })
-                    .verifyComplete();
-            }
-        } finally {
-            theClient.close();
         }
     }
 }

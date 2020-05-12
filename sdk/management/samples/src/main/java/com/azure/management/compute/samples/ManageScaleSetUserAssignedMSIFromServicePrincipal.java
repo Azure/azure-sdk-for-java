@@ -142,13 +142,21 @@ public final class ManageScaleSetUserAssignedMSIFromServicePrincipal {
             System.out.println(e.getMessage());
             e.printStackTrace();
         } finally {
-            azure.resourceGroups().beginDeleteByName(rgName);
-            try {
-                authenticated.servicePrincipals().deleteById(servicePrincipal.id());
-            } catch (Exception e) { }
+            if (azure != null) {
+                azure.resourceGroups().beginDeleteByName(rgName);
+                try {
+                    authenticated.servicePrincipals().deleteById(servicePrincipal.id());
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    e.printStackTrace();
+                }
+            }
             try {
                 authenticated.activeDirectoryApplications().deleteById(authenticated.activeDirectoryApplications().getByName(servicePrincipal.applicationId()).id());
-            } catch (Exception e) { }
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                e.printStackTrace();
+            }
         }
         return false;
     }

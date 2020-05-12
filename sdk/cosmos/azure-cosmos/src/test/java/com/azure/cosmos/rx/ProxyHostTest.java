@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx;
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -69,11 +69,11 @@ public class ProxyHostTest extends TestSuiteBase {
     public void createDocumentWithValidHttpProxy() throws Exception {
         CosmosAsyncClient clientWithRightProxy = null;
         try {
-            ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+            gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
-                                                            .connectionPolicy(connectionPolicy)
+                                                            .gatewayMode(gatewayConnectionConfig)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();
@@ -105,11 +105,11 @@ public class ProxyHostTest extends TestSuiteBase {
             LogLevelTest.addAppenderAndLogger(LogLevelTest.NETWORK_LOGGING_CATEGORY, Level.TRACE,
                 "ProxyStringAppender", consoleWriter);
 
-            ConnectionPolicy connectionPolicy =new ConnectionPolicy();
-            connectionPolicy.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+            GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
+            gatewayConnectionConfig.setProxy(new InetSocketAddress(PROXY_HOST, PROXY_PORT));
             clientWithRightProxy = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
                                                             .key(TestConfigurations.MASTER_KEY)
-                                                            .connectionPolicy(connectionPolicy)
+                                                            .gatewayMode(gatewayConnectionConfig)
                                                             .consistencyLevel(ConsistencyLevel.SESSION)
                                                             .contentResponseOnWriteEnabled(true)
                                                             .buildAsyncClient();

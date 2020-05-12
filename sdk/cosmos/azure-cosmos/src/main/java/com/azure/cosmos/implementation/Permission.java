@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PermissionMode;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
