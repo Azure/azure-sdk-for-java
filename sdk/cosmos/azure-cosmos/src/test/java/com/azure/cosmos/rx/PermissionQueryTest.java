@@ -46,20 +46,20 @@ public class PermissionQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
-        String filterId = ModelBridgeInternal.invokeGetResource(createdPermissions.get(0)).getId();
+        String filterId = ModelBridgeInternal.getResource(createdPermissions.get(0)).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
         final int maxItemCount = 5;
 
         CosmosPagedFlux<CosmosPermissionProperties> queryObservable = createdUser.queryPermissions(query);
 
-        List<CosmosPermissionProperties> expectedDocs = createdPermissions.stream().filter(sp -> filterId.equals(ModelBridgeInternal.invokeGetResource(sp).getId())).collect(Collectors.toList());
+        List<CosmosPermissionProperties> expectedDocs = createdPermissions.stream().filter(sp -> filterId.equals(ModelBridgeInternal.getResource(sp).getId())).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosPermissionProperties> validator = new FeedResponseListValidator.Builder<CosmosPermissionProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.getResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosPermissionProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -97,7 +97,7 @@ public class PermissionQueryTest extends TestSuiteBase {
                 .Builder<CosmosPermissionProperties>()
                 .exactlyContainsInAnyOrder(createdPermissions
                         .stream()
-                        .map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId())
+                        .map(d -> ModelBridgeInternal.getResource(d).getResourceId())
                         .collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosPermissionProperties>()

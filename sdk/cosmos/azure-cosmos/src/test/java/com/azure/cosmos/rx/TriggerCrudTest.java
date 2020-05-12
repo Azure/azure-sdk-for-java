@@ -44,7 +44,7 @@ public class TriggerCrudTest extends TestSuiteBase {
 
         // validate trigger creation
         CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(trigger).getId())
+                .withId(ModelBridgeInternal.getResource(trigger).getId())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
                 .notNullEtag()
@@ -68,7 +68,7 @@ public class TriggerCrudTest extends TestSuiteBase {
 
         // validate read trigger
         CosmosResponseValidator<CosmosAsyncTriggerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncTriggerResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(trigger).getId())
+                .withId(ModelBridgeInternal.getResource(trigger).getId())
                 .withTriggerBody("function() {var x = 10;}")
                 .withTriggerInternals(TriggerType.PRE, TriggerOperation.CREATE)
                 .notNullEtag()

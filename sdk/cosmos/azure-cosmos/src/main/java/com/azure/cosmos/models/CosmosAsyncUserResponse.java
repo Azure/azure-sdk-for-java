@@ -26,7 +26,7 @@ public class CosmosAsyncUserResponse extends CosmosResponse<CosmosUserProperties
         } else {
             CosmosUserProperties props = new CosmosUserProperties(bodyAsString);
             super.setProperties(props);
-            user = BridgeInternal.createCosmosAsyncUser(ModelBridgeInternal.invokeGetResource(props).getId(), database);
+            user = BridgeInternal.createCosmosAsyncUser(ModelBridgeInternal.getResource(props).getId(), database);
         }
     }
 

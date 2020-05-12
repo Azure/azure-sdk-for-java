@@ -55,7 +55,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(expectedDatabases.size())
-                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> ModelBridgeInternal.getResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -83,7 +83,7 @@ public class DatabaseQueryTest extends TestSuiteBase {
 
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(expectedDatabases.size())
-                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDatabases.stream().map(d -> ModelBridgeInternal.getResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())

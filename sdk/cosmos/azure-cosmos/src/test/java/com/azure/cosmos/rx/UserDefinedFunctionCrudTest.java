@@ -39,7 +39,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
         // validate udf creation
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(udf).getId())
+                .withId(ModelBridgeInternal.getResource(udf).getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
                 .build();
@@ -60,7 +60,7 @@ public class UserDefinedFunctionCrudTest extends TestSuiteBase {
 
         //validate udf read
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(udf).getId())
+                .withId(ModelBridgeInternal.getResource(udf).getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
                 .build();

@@ -277,7 +277,7 @@ public class CosmosAsyncDatabase {
      */
     public Mono<CosmosAsyncContainerResponse> createContainerIfNotExists(
         CosmosContainerProperties containerProperties) {
-        CosmosAsyncContainer container = getContainer(ModelBridgeInternal.invokeGetResource(containerProperties).getId());
+        CosmosAsyncContainer container = getContainer(ModelBridgeInternal.getResource(containerProperties).getId());
         return createContainerIfNotExistsInternal(containerProperties, container, null);
     }
 
@@ -299,7 +299,7 @@ public class CosmosAsyncDatabase {
         int throughput) {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
-        CosmosAsyncContainer container = getContainer(ModelBridgeInternal.invokeGetResource(containerProperties).getId());
+        CosmosAsyncContainer container = getContainer(ModelBridgeInternal.getResource(containerProperties).getId());
         return createContainerIfNotExistsInternal(containerProperties, container, options);
     }
 
@@ -629,7 +629,7 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
                                                           .queryOffers("select * from c where c.offerResourceId = '"
-                                                                           + ModelBridgeInternal.invokeGetResource(cosmosDatabaseResponse.getProperties())
+                                                                           + ModelBridgeInternal.getResource(cosmosDatabaseResponse.getProperties())
                                                                                  .getResourceId() + "'",
                                                                        new FeedOptions())
                                                           .single()
@@ -662,7 +662,7 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(cosmosDatabaseResponse -> this.getDocClientWrapper()
                                                           .queryOffers("select * from c where c.offerResourceId = '"
-                                                                           + ModelBridgeInternal.invokeGetResource(cosmosDatabaseResponse.getProperties())
+                                                                           + ModelBridgeInternal.getResource(cosmosDatabaseResponse.getProperties())
                                                                                  .getResourceId()
                                                                            + "'", new FeedOptions())
                                                           .single()
@@ -693,7 +693,7 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(response -> this.getDocClientWrapper()
                                             .queryOffers(getOfferQuerySpecFromResourceId(
-                                                ModelBridgeInternal.invokeGetResource(ModelBridgeInternal.invokeGetResource(response.getProperties()))
+                                                ModelBridgeInternal.getResource(ModelBridgeInternal.getResource(response.getProperties()))
                                                                                              .getResourceId()),
                                                          new FeedOptions())
                                             .single()
@@ -726,7 +726,7 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> getDocClientWrapper()
-                                            .queryOffers(getOfferQuerySpecFromResourceId(ModelBridgeInternal.invokeGetResource(response.getProperties())
+                                            .queryOffers(getOfferQuerySpecFromResourceId(ModelBridgeInternal.getResource(response.getProperties())
                                                                                             .getResourceId()),
                                                          new FeedOptions())
                                             .single()

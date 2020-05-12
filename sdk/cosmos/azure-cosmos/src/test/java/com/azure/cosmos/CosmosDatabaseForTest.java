@@ -93,13 +93,13 @@ public class CosmosDatabaseForTest {
                 new SqlQuerySpec("SELECT * FROM c WHERE STARTSWITH(c.id, @PREFIX)", sqlParameterList)).collectList().block();
 
         for (CosmosDatabaseProperties db : dbs) {
-            assertThat(ModelBridgeInternal.invokeGetResource(db).getId()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
+            assertThat(ModelBridgeInternal.getResource(db).getId()).startsWith(CosmosDatabaseForTest.SHARED_DB_ID_PREFIX);
 
-            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(client.getDatabase(ModelBridgeInternal.invokeGetResource(db).getId()));
+            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.from(client.getDatabase(ModelBridgeInternal.getResource(db).getId()));
 
             if (db != null && dbForTest.isStale()) {
-                logger.info("Deleting database {}", ModelBridgeInternal.invokeGetResource(db).getId());
-                dbForTest.deleteDatabase(ModelBridgeInternal.invokeGetResource(db).getId());
+                logger.info("Deleting database {}", ModelBridgeInternal.getResource(db).getId());
+                dbForTest.deleteDatabase(ModelBridgeInternal.getResource(db).getId());
             }
         }
     }

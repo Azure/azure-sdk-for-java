@@ -582,7 +582,7 @@ public final class ModelBridgeInternal {
         }
     }
 
-    public static <T> Resource invokeGetResource(T t) {
+    public static <T> Resource getResource(T t) {
         if (t == null) {
             return null;
         } else if (t instanceof CosmosConflictProperties) {

@@ -55,7 +55,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesAndOptions() throws CosmosClientException {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        databases.add(ModelBridgeInternal.getResource(databaseDefinition).getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseDefinition,
                 new CosmosDatabaseRequestOptions());
@@ -66,8 +66,8 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withProperties() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        databases.add(ModelBridgeInternal.getResource(databaseDefinition).getId());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.getResource(databaseDefinition).getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         assertThat(createResponse.getRequestCharge()).isGreaterThan(0);
@@ -77,8 +77,8 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_alreadyExists() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        databases.add(ModelBridgeInternal.getResource(databaseDefinition).getId());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.getResource(databaseDefinition).getId());
 
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         validateDatabaseResponse(databaseDefinition, createResponse);
@@ -94,14 +94,14 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
 
-        CosmosDatabaseResponse createResponse = client.createDatabase(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        CosmosDatabaseResponse createResponse = client.createDatabase(ModelBridgeInternal.getResource(databaseDefinition).getId());
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesThroughputAndOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.getResource(databaseDefinition).getId());
         CosmosDatabaseRequestOptions requestOptions = new CosmosDatabaseRequestOptions();
         int throughput = 400;
         try {
@@ -115,7 +115,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.getResource(databaseDefinition).getId());
         int throughput = 1000;
         try {
             CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties, throughput);
@@ -134,7 +134,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         int throughput = 1000;
         try {
-            CosmosDatabaseResponse createResponse = client.createDatabase(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId(), throughput);
+            CosmosDatabaseResponse createResponse = client.createDatabase(ModelBridgeInternal.getResource(databaseDefinition).getId(), throughput);
             validateDatabaseResponse(databaseDefinition, createResponse);
         } catch (Exception ex) {
             if (ex instanceof CosmosClientException) {
@@ -191,28 +191,28 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.getResource(databaseDefinition).getId());
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
 
-        client.getDatabase(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId()).delete();
+        client.getDatabase(ModelBridgeInternal.getResource(databaseDefinition).getId()).delete();
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase_withOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        CosmosDatabaseProperties databaseProperties = new CosmosDatabaseProperties(ModelBridgeInternal.getResource(databaseDefinition).getId());
         CosmosDatabaseResponse createResponse = client.createDatabase(databaseProperties);
         CosmosDatabaseRequestOptions options = new CosmosDatabaseRequestOptions();
-        client.getDatabase(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId()).delete(options);
+        client.getDatabase(ModelBridgeInternal.getResource(databaseDefinition).getId()).delete(options);
     }
 
 
     private void validateDatabaseResponse(CosmosDatabaseProperties databaseDefinition, CosmosDatabaseResponse createResponse) {
         // Basic validation
-        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
-        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
+        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId())
                 .as("check Resource Id")
-                .isEqualTo(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+                .isEqualTo(ModelBridgeInternal.getResource(databaseDefinition).getId());
 
     }
 }

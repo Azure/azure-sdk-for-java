@@ -51,7 +51,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
         // validate getPermission creation
         CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(permissionSettings).getId())
+                .withId(ModelBridgeInternal.getResource(permissionSettings).getId())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
                 .notNullEtag()
@@ -76,7 +76,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
         // validate permission read
         CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(permissionSettings).getId())
+                .withId(ModelBridgeInternal.getResource(permissionSettings).getId())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
                 .notNullEtag()
@@ -134,7 +134,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
         // validate getPermission creation
         CosmosResponseValidator<CosmosAsyncPermissionResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(readBackPermission).getId())
+                .withId(ModelBridgeInternal.getResource(readBackPermission).getId())
                 .withPermissionMode(PermissionMode.READ)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
                 .notNullEtag()
@@ -148,7 +148,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
         // validate permission update
         CosmosResponseValidator<CosmosAsyncPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(readBackPermission).getId())
+                .withId(ModelBridgeInternal.getResource(readBackPermission).getId())
                 .withPermissionMode(PermissionMode.ALL)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
                 .notNullEtag()
@@ -192,7 +192,7 @@ public class PermissionCrudTest extends TestSuiteBase {
 
         // validate permission replace
         CosmosResponseValidator<CosmosAsyncPermissionResponse> validatorForUpdate = new CosmosResponseValidator.Builder<CosmosAsyncPermissionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(readBackPermission).getId())
+                .withId(ModelBridgeInternal.getResource(readBackPermission).getId())
                 .withPermissionMode(PermissionMode.ALL)
                 .withPermissionResourceLink("dbs/AQAAAA==/colls/AQAAAJ0fgTc=")
                 .notNullEtag()

@@ -143,7 +143,7 @@ public interface FeedResponseValidator<T> {
                 || response instanceof CosmosUserDefinedFunctionProperties
                 || response instanceof CosmosUserProperties) {
 
-                return ModelBridgeInternal.invokeGetResource(response);
+                return ModelBridgeInternal.getResource(response);
             }
 
             return null;

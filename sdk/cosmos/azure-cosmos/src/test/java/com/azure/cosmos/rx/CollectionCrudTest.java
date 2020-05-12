@@ -27,8 +27,6 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -91,7 +89,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .createContainer(collectionDefinition);
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(collectionDefinition).getId()).build();
+                .withId(ModelBridgeInternal.getResource(collectionDefinition).getId()).build();
 
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(database);
@@ -108,7 +106,7 @@ public class CollectionCrudTest extends TestSuiteBase {
             .createContainer(collectionDefinition);
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-            .withId(ModelBridgeInternal.invokeGetResource(collectionDefinition).getId()).withDefaultTimeToLive(defaultTimeToLive).build();
+            .withId(ModelBridgeInternal.getResource(collectionDefinition).getId()).withDefaultTimeToLive(defaultTimeToLive).build();
 
         validateSuccess(createObservable, validator);
         safeDeleteAllCollections(database);
@@ -183,7 +181,7 @@ public class CollectionCrudTest extends TestSuiteBase {
                 .createContainer(collection, new CosmosContainerRequestOptions());
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(collection).getId())
+                .withId(ModelBridgeInternal.getResource(collection).getId())
                 .withCompositeIndexes(compositeIndexes)
                 .withSpatialIndexes(spatialIndexes)
                 .build();

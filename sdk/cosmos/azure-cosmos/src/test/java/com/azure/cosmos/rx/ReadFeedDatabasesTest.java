@@ -45,7 +45,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
         int expectedPageSize = (allDatabases.size() + maxItemCount - 1) / maxItemCount;
         FeedResponseListValidator<CosmosDatabaseProperties> validator = new FeedResponseListValidator.Builder<CosmosDatabaseProperties>()
                 .totalSize(allDatabases.size())
-                .exactlyContainsInAnyOrder(allDatabases.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(allDatabases.stream().map(d -> ModelBridgeInternal.getResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosDatabaseProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -74,7 +74,7 @@ public class ReadFeedDatabasesTest extends TestSuiteBase {
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         for (int i = 0; i < 5; i ++) {
-            safeDeleteDatabase(client.getDatabase(ModelBridgeInternal.invokeGetResource(createdDatabases.get(i)).getId()));
+            safeDeleteDatabase(client.getDatabase(ModelBridgeInternal.getResource(createdDatabases.get(i)).getId()));
         }
         safeClose(client);
     }

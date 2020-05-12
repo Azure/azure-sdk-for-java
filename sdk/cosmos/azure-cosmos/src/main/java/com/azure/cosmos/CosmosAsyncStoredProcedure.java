@@ -173,7 +173,7 @@ public class CosmosAsyncStoredProcedure {
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
                    .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
-                       ModelBridgeInternal.invokeGetResource(storedProcedureSettings))),
+                       ModelBridgeInternal.getResource(storedProcedureSettings))),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
                    .single();

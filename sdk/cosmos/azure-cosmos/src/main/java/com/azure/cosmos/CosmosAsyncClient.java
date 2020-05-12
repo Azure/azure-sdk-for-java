@@ -194,7 +194,7 @@ public final class CosmosAsyncClient implements Closeable {
      * an error.
      */
     public Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExists(CosmosDatabaseProperties databaseSettings) {
-        return createDatabaseIfNotExistsInternal(getDatabase(ModelBridgeInternal.invokeGetResource(databaseSettings).getId()));
+        return createDatabaseIfNotExistsInternal(getDatabase(ModelBridgeInternal.getResource(databaseSettings).getId()));
     }
 
     /**
@@ -242,7 +242,7 @@ public final class CosmosAsyncClient implements Closeable {
             options = new CosmosDatabaseRequestOptions();
         }
         Database wrappedDatabase = new Database();
-        wrappedDatabase.setId(ModelBridgeInternal.invokeGetResource(databaseSettings).getId());
+        wrappedDatabase.setId(ModelBridgeInternal.getResource(databaseSettings).getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
                    .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))
@@ -300,7 +300,7 @@ public final class CosmosAsyncClient implements Closeable {
         }
         ModelBridgeInternal.setOfferThroughput(options, throughput);
         Database wrappedDatabase = new Database();
-        wrappedDatabase.setId(ModelBridgeInternal.invokeGetResource(databaseSettings).getId());
+        wrappedDatabase.setId(ModelBridgeInternal.getResource(databaseSettings).getId());
         return asyncDocumentClient.createDatabase(wrappedDatabase, ModelBridgeInternal.toRequestOptions(options))
                    .map(databaseResourceResponse -> ModelBridgeInternal.createCosmosAsyncDatabaseResponse(databaseResourceResponse,
                        this))

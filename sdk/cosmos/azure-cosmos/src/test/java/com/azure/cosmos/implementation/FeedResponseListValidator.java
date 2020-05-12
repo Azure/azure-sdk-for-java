@@ -319,7 +319,7 @@ public interface FeedResponseListValidator<T> {
                 || response instanceof CosmosTriggerProperties
                 || response instanceof CosmosUserDefinedFunctionProperties
                 || response instanceof CosmosUserProperties) {
-                return ModelBridgeInternal.invokeGetResource(response);
+                return ModelBridgeInternal.getResource(response);
             }
             return null;
         }

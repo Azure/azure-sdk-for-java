@@ -40,7 +40,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryWithFilter() throws Exception {
 
-        String filterId = ModelBridgeInternal.invokeGetResource(createdStoredProcs.get(0)).getId();
+        String filterId = ModelBridgeInternal.getResource(createdStoredProcs.get(0)).getId();
         String query = String.format("SELECT * from c where c.id = '%s'", filterId);
 
         FeedOptions options = new FeedOptions();
@@ -49,14 +49,14 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
                                                                                             .queryStoredProcedures(query, options);
 
         List<CosmosStoredProcedureProperties> expectedDocs = createdStoredProcs.stream()
-                .filter(sp -> filterId.equals(ModelBridgeInternal.invokeGetResource(sp).getId())).collect(Collectors.toList());
+                .filter(sp -> filterId.equals(ModelBridgeInternal.getResource(sp).getId())).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
                 .totalSize(expectedDocs.size())
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.getResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .pageSatisfy(0, new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())
@@ -97,7 +97,7 @@ public class StoredProcedureQueryTest extends TestSuiteBase {
         int expectedPageSize = (expectedDocs.size() + maxItemCount - 1) / maxItemCount;
 
         FeedResponseListValidator<CosmosStoredProcedureProperties> validator = new FeedResponseListValidator.Builder<CosmosStoredProcedureProperties>()
-                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.invokeGetResource(d).getResourceId()).collect(Collectors.toList()))
+                .exactlyContainsInAnyOrder(expectedDocs.stream().map(d -> ModelBridgeInternal.getResource(d).getResourceId()).collect(Collectors.toList()))
                 .numberOfPages(expectedPageSize)
                 .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosStoredProcedureProperties>()
                         .requestChargeGreaterThanOrEqualTo(1.0).build())

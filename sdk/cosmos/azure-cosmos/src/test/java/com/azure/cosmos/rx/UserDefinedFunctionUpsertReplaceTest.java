@@ -43,11 +43,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         // read udf to validate creation
         waitIfNeededForReplicasToCatchUp(getClientBuilder());
         Mono<CosmosAsyncUserDefinedFunctionResponse> readObservable =
-            createdCollection.getScripts().getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(readBackUdf).getId()).read();
+            createdCollection.getScripts().getUserDefinedFunction(ModelBridgeInternal.getResource(readBackUdf).getId()).read();
 
         // validate udf creation
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForRead = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(readBackUdf).getId())
+                .withId(ModelBridgeInternal.getResource(readBackUdf).getId())
                 .withUserDefinedFunctionBody("function() {var x = 10;}")
                 .notNullEtag()
                 .build();
@@ -57,11 +57,11 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         readBackUdf.setBody("function() {var x = 11;}");
 
         Mono<CosmosAsyncUserDefinedFunctionResponse> replaceObservable =
-            createdCollection.getScripts().getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(udf).getId()).replace(readBackUdf);
+            createdCollection.getScripts().getUserDefinedFunction(ModelBridgeInternal.getResource(udf).getId()).replace(readBackUdf);
 
         //validate udf replace
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(ModelBridgeInternal.invokeGetResource(udf).getId())
+                .withId(ModelBridgeInternal.getResource(udf).getId())
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
                 .build();

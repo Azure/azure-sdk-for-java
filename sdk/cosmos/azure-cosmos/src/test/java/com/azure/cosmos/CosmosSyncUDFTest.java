@@ -58,7 +58,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
 
         CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
 
-        CosmosUserDefinedFunctionResponse read = container.getScripts().getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(udf).getId()).read();
+        CosmosUserDefinedFunctionResponse read = container.getScripts().getUserDefinedFunction(ModelBridgeInternal.getResource(udf).getId()).read();
         validateResponse(udf, read);
     }
 
@@ -70,13 +70,13 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
 
         CosmosUserDefinedFunctionProperties readUdf = container.getScripts()
-                                                              .getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(udf).getId())
+                                                              .getUserDefinedFunction(ModelBridgeInternal.getResource(udf).getId())
                                                               .read()
                                                               .getProperties();
 
         readUdf.setBody("function() {var x = 11;}");
         CosmosUserDefinedFunctionResponse replace = container.getScripts()
-                                                                .getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(udf).getId())
+                                                                .getUserDefinedFunction(ModelBridgeInternal.getResource(udf).getId())
                                                                 .replace(readUdf);
         validateResponse(udf, replace);
 
@@ -89,7 +89,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         CosmosUserDefinedFunctionResponse createResponse = container.getScripts().createUserDefinedFunction(udf);
 
         container.getScripts()
-            .getUserDefinedFunction(ModelBridgeInternal.invokeGetResource(udf).getId())
+            .getUserDefinedFunction(ModelBridgeInternal.getResource(udf).getId())
             .delete();
 
     }
@@ -119,7 +119,7 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
         CosmosUserDefinedFunctionProperties properties = getCosmosUserDefinedFunctionProperties();
 
         container.getScripts().createUserDefinedFunction(properties);
-        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.invokeGetResource(properties).getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.getResource(properties).getId());
         FeedOptions feedOptions = new FeedOptions();
 
 
@@ -136,10 +136,10 @@ public class CosmosSyncUDFTest extends TestSuiteBase {
     private void validateResponse(CosmosUserDefinedFunctionProperties properties,
                                   CosmosUserDefinedFunctionResponse createResponse) {
         // Basic validation
-        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
-        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
+        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId())
                 .as("check Resource Id")
-                .isEqualTo(ModelBridgeInternal.invokeGetResource(properties).getId());
+                .isEqualTo(ModelBridgeInternal.getResource(properties).getId());
 
     }
 

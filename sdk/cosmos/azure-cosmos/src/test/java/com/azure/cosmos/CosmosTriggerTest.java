@@ -59,7 +59,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        CosmosTriggerResponse readResponse = container.getScripts().getTrigger(ModelBridgeInternal.invokeGetResource(trigger).getId()).read();
+        CosmosTriggerResponse readResponse = container.getScripts().getTrigger(ModelBridgeInternal.getResource(trigger).getId()).read();
         validateResponse(trigger, readResponse);
 
     }
@@ -70,10 +70,10 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        CosmosTriggerProperties readTrigger = container.getScripts().getTrigger(ModelBridgeInternal.invokeGetResource(trigger).getId()).read().getProperties();
+        CosmosTriggerProperties readTrigger = container.getScripts().getTrigger(ModelBridgeInternal.getResource(trigger).getId()).read().getProperties();
         readTrigger.setBody("function() {var x = 11;}");
 
-        CosmosTriggerResponse replace = container.getScripts().getTrigger(ModelBridgeInternal.invokeGetResource(trigger).getId()).replace(readTrigger);
+        CosmosTriggerResponse replace = container.getScripts().getTrigger(ModelBridgeInternal.getResource(trigger).getId()).replace(readTrigger);
         validateResponse(trigger, replace);
     }
 
@@ -83,7 +83,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
 
         container.getScripts().createTrigger(trigger);
 
-        container.getScripts().getTrigger(ModelBridgeInternal.invokeGetResource(trigger).getId()).delete();
+        container.getScripts().getTrigger(ModelBridgeInternal.getResource(trigger).getId()).delete();
     }
 
 
@@ -113,7 +113,7 @@ public class CosmosTriggerTest extends TestSuiteBase {
     public void queryTriggers() throws Exception {
         CosmosTriggerProperties properties = getCosmosTriggerProperties();
         container.getScripts().createTrigger(properties);
-        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.invokeGetResource(properties).getId());
+        String query = String.format("SELECT * from c where c.id = '%s'", ModelBridgeInternal.getResource(properties).getId());
         FeedOptions feedOptions = new FeedOptions();
 
         CosmosPagedIterable<CosmosTriggerProperties> feedResponseIterator1 =
@@ -129,10 +129,10 @@ public class CosmosTriggerTest extends TestSuiteBase {
     private void validateResponse(CosmosTriggerProperties properties,
                                   CosmosTriggerResponse createResponse) {
         // Basic validation
-        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId()).isNotNull();
-        assertThat(ModelBridgeInternal.invokeGetResource(createResponse.getProperties()).getId())
+        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId()).isNotNull();
+        assertThat(ModelBridgeInternal.getResource(createResponse.getProperties()).getId())
                 .as("check Resource Id")
-                .isEqualTo(ModelBridgeInternal.invokeGetResource(properties).getId());
+                .isEqualTo(ModelBridgeInternal.getResource(properties).getId());
 
     }
 

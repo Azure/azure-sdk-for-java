@@ -98,7 +98,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
             .createContainer(collectionDefinition);
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
-            .withId(ModelBridgeInternal.invokeGetResource(collectionDefinition).getId()).build();
+            .withId(ModelBridgeInternal.getResource(collectionDefinition).getId()).build();
 
         validateSuccess(createObservable, validator);
 
@@ -278,13 +278,13 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        databases.add(ModelBridgeInternal.getResource(databaseDefinition).getId());
         // create the getDatabase
         Mono<CosmosAsyncDatabaseResponse> createObservable = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions());
 
         // validate
         CosmosResponseValidator<CosmosAsyncDatabaseResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncDatabaseResponse>()
-            .withId(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId()).build();
+            .withId(ModelBridgeInternal.getResource(databaseDefinition).getId()).build();
         validateSuccess(createObservable, validator);
         //  sanity check
         assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
@@ -317,7 +317,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
 
         // create the database
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
-        databases.add(ModelBridgeInternal.invokeGetResource(databaseDefinition).getId());
+        databases.add(ModelBridgeInternal.getResource(databaseDefinition).getId());
 
         CosmosAsyncDatabase database = client.createDatabase(databaseDefinition, new CosmosDatabaseRequestOptions()).block().getDatabase();
         // delete the getDatabase
