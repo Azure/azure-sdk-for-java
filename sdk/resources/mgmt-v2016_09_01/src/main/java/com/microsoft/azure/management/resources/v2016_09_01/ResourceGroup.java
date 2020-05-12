@@ -75,6 +75,7 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithSubscription {
            /**
             * Specifies .
+            * @return the next definition stage
             */
             WithLocation withExistingSubscription();
         }
@@ -85,6 +86,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithLocation {
            /**
             * Specifies location.
+            * @param location The location of the resource group. It cannot be changed after the resource group has been created. It must be one of the supported Azure locations
+            * @return the next definition stage
             */
             WithCreate withLocation(String location);
         }
@@ -95,6 +98,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithManagedBy {
             /**
              * Specifies managedBy.
+             * @param managedBy The ID of the resource that manages this resource group
+             * @return the next definition stage
              */
             WithCreate withManagedBy(String managedBy);
         }
@@ -105,6 +110,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the resource group
+             * @return the next definition stage
              */
             WithCreate withName(String name);
         }
@@ -115,6 +122,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties the properties parameter value
+             * @return the next definition stage
              */
             WithCreate withProperties(ResourceGroupProperties properties);
         }
@@ -125,6 +134,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags attached to the resource group
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -153,6 +164,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithManagedBy {
             /**
              * Specifies managedBy.
+             * @param managedBy The ID of the resource that manages this resource group
+             * @return the next update stage
              */
             Update withManagedBy(String managedBy);
         }
@@ -163,6 +176,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithName {
             /**
              * Specifies name.
+             * @param name The name of the resource group
+             * @return the next update stage
              */
             Update withName(String name);
         }
@@ -173,6 +188,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithProperties {
             /**
              * Specifies properties.
+             * @param properties the properties parameter value
+             * @return the next update stage
              */
             Update withProperties(ResourceGroupProperties properties);
         }
@@ -183,6 +200,8 @@ public interface ResourceGroup extends HasInner<ResourceGroupInner>, Indexable, 
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The tags attached to the resource group
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
