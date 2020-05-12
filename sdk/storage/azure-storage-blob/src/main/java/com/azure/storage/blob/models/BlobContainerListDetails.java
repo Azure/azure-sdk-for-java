@@ -6,9 +6,6 @@ package com.azure.storage.blob.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.storage.blob.BlobServiceClient;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * This type allows users to specify additional information the service should return with each container when listing
  * containers in an account (via a {@link BlobServiceClient} object). Null may
@@ -68,8 +65,7 @@ public final class BlobContainerListDetails {
     /**
      * @return the listing flags
      * @deprecated {@link BlobContainerListDetails} now contains multiple options.
-     * In order to retrieve all of them use {@link #toIncludeTypes()}. Otherwise this will only convert result of
-     * {{@link #setRetrieveMetadata(boolean)}} for backwards compatibility.
+     * This will only convert result of {{@link #setRetrieveMetadata(boolean)}} for backwards compatibility.
      */
     @Deprecated
     public ListBlobContainersIncludeType toIncludeType() {
@@ -77,27 +73,5 @@ public final class BlobContainerListDetails {
             return ListBlobContainersIncludeType.METADATA;
         }
         return null;
-    }
-
-    /**
-     * Converts this {@link BlobContainerListDetails} into list of {@link ListBlobContainersIncludeType}
-     * that contains only options selected. If no option is selected then null is returned.
-     *
-     * @return a list of selected options converted into {@link ListBlobContainersIncludeType}, null if none
-     * of options has been selected.
-     */
-    public List<ListBlobContainersIncludeType> toIncludeTypes() {
-        if (this.retrieveMetadata || this.retrieveDeleted) {
-            List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
-            if (this.retrieveMetadata) {
-                flags.add(ListBlobContainersIncludeType.METADATA);
-            }
-            if (this.retrieveDeleted) {
-                flags.add(ListBlobContainersIncludeType.DELETED);
-            }
-            return flags;
-        } else {
-            return null;
-        }
     }
 }

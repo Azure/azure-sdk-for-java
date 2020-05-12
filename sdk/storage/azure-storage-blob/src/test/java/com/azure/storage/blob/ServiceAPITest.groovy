@@ -566,7 +566,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        primaryBlobServiceClient.undeleteContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+        primaryBlobServiceClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
 
         then:
         cc1.listBlobs().size() == 1
@@ -591,7 +591,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def cc2 = primaryBlobServiceClient.undeleteContainer(
+        def cc2 = primaryBlobServiceClient.undeleteBlobContainer(
             blobContainerItem.getName(), blobContainerItem.getVersion(), generateContainerName())
 
         then:
@@ -617,7 +617,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def response = primaryBlobServiceClient.undeleteContainerWithResponse(
+        def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
             blobContainerItem.getName(), blobContainerItem.getVersion(),
             Duration.ofMinutes(1), Context.NONE)
 
@@ -645,7 +645,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def cc2 = primaryBlobServiceAsyncClient.undeleteContainer(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
+        def cc2 = primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
 
         then:
         cc2.listBlobs().collectList().block().size() == 1
@@ -670,7 +670,7 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def response = primaryBlobServiceAsyncClient.undeleteContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
+        def response = primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
         def cc2 = response.getValue()
 
         then:
@@ -684,7 +684,7 @@ class ServiceAPITest extends APISpec {
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
 
         when:
-        primaryBlobServiceClient.undeleteContainer(generateContainerName(), "01D60F8BB59A4652")
+        primaryBlobServiceClient.undeleteBlobContainer(generateContainerName(), "01D60F8BB59A4652")
 
         then:
         thrown(BlobStorageException.class)
@@ -709,7 +709,7 @@ class ServiceAPITest extends APISpec {
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        primaryBlobServiceClient.undeleteContainer(blobContainerItem.getName(), blobContainerItem.getVersion(), cc2.getBlobContainerName())
+        primaryBlobServiceClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion(), cc2.getBlobContainerName())
 
         then:
         thrown(BlobStorageException.class)

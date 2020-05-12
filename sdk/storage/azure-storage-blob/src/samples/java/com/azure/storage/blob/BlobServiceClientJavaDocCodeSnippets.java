@@ -265,4 +265,73 @@ public class BlobServiceClientJavaDocCodeSnippets {
         String sas = client.generateAccountSas(sasValues);
         // END: com.azure.storage.blob.BlobServiceClient.generateAccountSas#AccountSasSignatureValues
     }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#undeleteBlobContainer(String, String)}.
+     */
+    public void undeleteBlobContainer() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String
+        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+        client.listBlobContainers(listBlobContainersOptions, null).forEach(
+            deletedContainer -> {
+                BlobContainerClient blobContainerClient = client.undeleteBlobContainer(
+                    deletedContainer.getName(), deletedContainer.getVersion());
+            }
+        );
+        // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#undeleteBlobContainer(String, String, String)}.
+     */
+    public void undeleteBlobContainerWithRename() {
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String-String
+        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+        client.listBlobContainers(listBlobContainersOptions, null).forEach(
+            deletedContainer -> {
+                BlobContainerClient blobContainerClient = client.undeleteBlobContainer(
+                    deletedContainer.getName(), deletedContainer.getVersion(),
+                    deletedContainer.getName() + "V2");
+            }
+        );
+        // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainer#String-String-String
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#undeleteBlobContainerWithResponse(String, String, Duration, Context)}.
+     */
+    public void undeleteBlobContainerWithResponse() {
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#String-String-Duration-Context
+        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+        client.listBlobContainers(listBlobContainersOptions, null).forEach(
+            deletedContainer -> {
+                BlobContainerClient blobContainerClient = client.undeleteBlobContainerWithResponse(
+                    deletedContainer.getName(), deletedContainer.getVersion(), timeout, context).getValue();
+            }
+        );
+        // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#String-String-Duration-Context
+    }
+
+    /**
+     * Code snippet for {@link BlobServiceClient#undeleteBlobContainerWithResponse(String, String, String,
+     * Duration, Context)}.
+     */
+    public void undeleteBlobContainerWithResponseWithRename() {
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#String-String-String-Duration-Context
+        ListBlobContainersOptions listBlobContainersOptions = new ListBlobContainersOptions();
+        listBlobContainersOptions.getDetails().setRetrieveDeleted(true);
+        client.listBlobContainers(listBlobContainersOptions, null).forEach(
+            deletedContainer -> {
+                BlobContainerClient blobContainerClient = client.undeleteBlobContainerWithResponse(
+                    deletedContainer.getName(), deletedContainer.getVersion(), deletedContainer.getName() + "V2",
+                    timeout, context).getValue();
+            }
+        );
+        // END: com.azure.storage.blob.BlobServiceClient.undeleteBlobContainerWithResponse#String-String-String-Duration-Context
+    }
 }
