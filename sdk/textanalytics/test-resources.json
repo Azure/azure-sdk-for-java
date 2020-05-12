@@ -70,27 +70,5 @@
                 "customSubDomainName": "[parameters('baseName')]"
             }
         }
-    ],
-    "outputs": {
-        "AZURE_TENANT_ID": {
-            "type": "String",
-            "value": "[parameters('tenantId')]"
-        },
-        "AZURE_CLIENT_ID": {
-            "type": "String",
-            "value": "[parameters('testApplicationId')]"
-        },
-        "AZURE_CLIENT_SECRET": {
-            "type": "String",
-            "value": "[parameters('testApplicationSecret')]"
-        },
-        "AZURE_TEXT_ANALYTICS_API_KEY": {
-            "type": "string",
-            "value": "[listKeys(resourceId('Microsoft.CognitiveServices/accounts', parameters('baseName')), variables('textAnalyticsApiVersion')).key1]"
-        },
-        "AZURE_TEXT_ANALYTICS_ENDPOINT": {
-            "type": "string",
-            "value": "[variables('azureTextAnalyticsUrl')]"
-        }
-    }
+    ]
 }
