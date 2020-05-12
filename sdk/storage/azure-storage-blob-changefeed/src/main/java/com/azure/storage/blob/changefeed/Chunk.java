@@ -19,7 +19,7 @@ class Chunk {
 
     private final String chunkPath; /* Chunk path. */
     private final ChangefeedCursor shardCursor; /* Cursor associated with parent shard. */
-    private final AvroReader avroReader; /* The AvroReader. */
+    private final AvroReader avroReader;
 
     /**
      * Creates a new Chunk.

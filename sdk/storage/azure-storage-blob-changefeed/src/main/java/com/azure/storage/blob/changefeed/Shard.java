@@ -17,6 +17,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * A class that represents a Shard in Changefeed.
  *
  * A shard is a virtual directory that contains a number of chunks.
+ *
+ * The log files in each shardPath are guaranteed to contain mutually exclusive blobs, and can be consumed and
+ * processed in parallel without violating the ordering of modifications per blob during the iteration.
  */
 class Shard  {
 
@@ -24,7 +27,7 @@ class Shard  {
     private final String shardPath; /* Shard virtual directory path/prefix. */
     private final ChangefeedCursor segmentCursor; /* Cursor associated with parent segment. */
     private final ShardCursor userCursor; /* User provided cursor for this shard. */
-    private final ChunkFactory chunkFactory; /* Chunk factory. */
+    private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.

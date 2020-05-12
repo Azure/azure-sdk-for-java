@@ -22,31 +22,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Gets events for a segment (represents approximately an hour of the changefeed).
+ * Represents a Segment in Changefeed.
+ *
+ * A segment is a blob that points to a manifest file.
+ * The segment manifest file (meta.json) shows the path of the change feed files for that segment in the
+ * chunkFilePaths property. (Note: these chunkFilePaths are really shardPaths in this implementation.)
+ * The chunkFilePaths property looks something like this.
+ * { ...
+ * "chunkFilePaths": [
+ *         "$blobchangefeed/log/00/2019/02/22/1810/",
+ *         "$blobchangefeed/log/01/2019/02/22/1810/"
+ *     ],
+ * ...}
  */
 class Segment {
 
-    /* Changefeed container */
-    private final BlobContainerAsyncClient client;
-
-    /* Segment manifest location. */
-    private final String path;
-
-    /* Cursor associated with parent changefeed. */
-    private final ChangefeedCursor cfCursor;
-
-    /* User provided cursor. */
-    private final ChangefeedCursor userCursor;
-
+    private final BlobContainerAsyncClient client; /* Changefeed container */
+    private final String segmentPath; /* Segment manifest location. */
+    private final ChangefeedCursor cfCursor; /* Cursor associated with parent changefeed. */
+    private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final ShardFactory shardFactory;
 
     /**
-     * Creates a segment with the associated path and cursors.
+     * Creates a new Segment.
      */
     Segment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor cfCursor,
         ChangefeedCursor userCursor, ShardFactory shardFactory) {
         this.client = client;
-        this.path = segmentPath;
+        this.segmentPath = segmentPath;
         this.cfCursor = cfCursor;
         this.userCursor = userCursor;
         this.shardFactory = shardFactory;
@@ -59,7 +62,7 @@ class Segment {
     Flux<BlobChangefeedEventWrapper> getEvents() {
         /* Download JSON manifest file. */
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
-        return DownloadUtils.downloadToString(client, path)
+        return DownloadUtils.downloadToString(client, segmentPath)
             .flatMap(this::parseJson)
             /* Parse the JSON for shards. */
             .map(this::getShards)

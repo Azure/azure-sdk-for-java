@@ -19,7 +19,15 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
- * Gets events for the changefeed as defined by the user.
+ * A class that represents a Changefeed.
+ *
+ * The changefeed is a log of changes that are organized into hourly segments.
+ * The listing of the $blobchangefeed/idx/segments/ virtual directory shows these segments ordered by time.
+ * The path of the segment describes the start of the hourly time-range that the segment represents.
+ * This list can be used to filter out the segments of logs that are interest.
+ *
+ * Note: The time represented by the segment is approximate with bounds of 15 minutes. So to ensure consumption of
+ * all records within a specified time, consume the consecutive previous and next hour segment.
  */
 class Changefeed {
 
@@ -78,6 +86,8 @@ class Changefeed {
 
     /**
      * Populates the last consumable property from changefeed metadata.
+     * Log files in any segment that is dated after the date of the LastConsumable property in the
+     * $blobchangefeed/meta/segments.json file, should not be consumed by your application.
      */
     private Mono<OffsetDateTime> populateLastConsumable() {
         /* We can keep the entire metadata file in memory since it is expected to only be a few hundred bytes. */
