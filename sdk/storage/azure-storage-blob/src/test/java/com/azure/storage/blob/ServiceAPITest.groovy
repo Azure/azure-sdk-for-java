@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob
 
+import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
@@ -25,6 +26,8 @@ import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import reactor.core.publisher.Mono
+import reactor.test.StepVerifier
 
 import java.time.Duration
 import java.time.OffsetDateTime
@@ -633,54 +636,69 @@ class ServiceAPITest extends APISpec {
     def "Restore Container async"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        cc1.create().block()
         def blobName = generateBlobName()
-        cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()).block()
-        cc1.delete().block()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
+        def delay = playbackMode() ? 0L : 30000L
+
+        def blobContainerItemMono = cc1.create()
+        .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+        .then(cc1.delete())
+        .then(Mono.delay(Duration.ofMillis(delay)))
+        .then(primaryBlobServiceAsyncClient.listBlobContainers(
             new ListBlobContainersOptions()
                 .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
-
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+        ).next())
 
         when:
-        def restoredContainerClient = primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
+        def restoredContainerClientMono = blobContainerItemMono.flatMap {
+            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion())
+        }
 
         then:
-        restoredContainerClient.listBlobs().collectList().block().size() == 1
-        restoredContainerClient.listBlobs().collectList().block().first().getName() == blobName
+        StepVerifier.create(restoredContainerClientMono.flatMap {restoredContainerClient -> restoredContainerClient.listBlobs().collectList() })
+        .assertNext( {
+            assert it.size() == 1
+            assert it.first().getName() == blobName
+        })
+        .verifyComplete()
     }
 
     def "Restore Container async with response"() {
         given:
         def cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
-        cc1.create().block()
         def blobName = generateBlobName()
-        cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()).block()
-        cc1.delete().block()
-        def blobContainerItem = primaryBlobServiceClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)),
-            null).first()
+        def delay = playbackMode() ? 0L : 30000L
 
-        if (!playbackMode()) {
-            Thread.sleep(30000)
-        }
+        def blobContainerItemMono = cc1.create()
+            .then(cc1.getBlobAsyncClient(blobName).upload(defaultFlux, new ParallelTransferOptions()))
+            .then(cc1.delete())
+            .then(Mono.delay(Duration.ofMillis(delay)))
+            .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))
+            ).next())
 
         when:
-        def response = primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion()).block()
-        def restoredContainerClient = response.getValue()
+        def responseMono = blobContainerItemMono.flatMap {
+            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion())
+        }
 
         then:
-        response != null
-        response.getStatusCode() == 201
-        restoredContainerClient.listBlobs().collectList().block().size() == 1
-        restoredContainerClient.listBlobs().collectList().block().first().getName() == blobName
+        StepVerifier.create(responseMono)
+        .assertNext({
+            assert it != null
+            assert it.getStatusCode() == 201
+            assert it.getValue() != null
+        })
+        .verifyComplete()
+
+        StepVerifier.create(responseMono.flatMap {r -> r.getValue().listBlobs().collectList()})
+            .assertNext({
+                assert it.size() == 1
+                assert it.first().getName() == blobName
+            })
+            .verifyComplete()
     }
 
     def "Restore Container error"() {
