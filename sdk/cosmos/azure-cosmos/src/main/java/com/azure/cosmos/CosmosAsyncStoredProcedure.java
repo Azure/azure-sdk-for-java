@@ -258,6 +258,10 @@ public class CosmosAsyncStoredProcedure {
 
     private Mono<CosmosAsyncStoredProcedureResponse> replaceInternal(CosmosStoredProcedureProperties storedProcedureSettings,
                                                                      CosmosStoredProcedureRequestOptions options) {
+        if (options == null) {
+            options = new CosmosStoredProcedureRequestOptions();
+        }
+
         return cosmosContainer.getDatabase()
             .getDocClientWrapper()
             .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
