@@ -54,10 +54,14 @@ class RecoveryPointsImpl extends WrapperImpl<RecoveryPointsInner> implements Rec
     public Observable<RecoveryPoint> getAsync(String fabricName, String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName) {
         RecoveryPointsInner client = this.inner();
         return client.getAsync(fabricName, protectionContainerName, replicatedProtectedItemName, recoveryPointName)
-        .map(new Func1<RecoveryPointInner, RecoveryPoint>() {
+        .flatMap(new Func1<RecoveryPointInner, Observable<RecoveryPoint>>() {
             @Override
-            public RecoveryPoint call(RecoveryPointInner inner) {
-                return wrapModel(inner);
+            public Observable<RecoveryPoint> call(RecoveryPointInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RecoveryPoint)wrapModel(inner));
+                }
             }
        });
     }

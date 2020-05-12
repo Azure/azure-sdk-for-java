@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * VMware Cbt specific policy details.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = VmwareCbtPolicyDetails.class)
 @JsonTypeName("VMwareCbt")
 public class VmwareCbtPolicyDetails extends PolicyProviderSpecificDetails {
     /**

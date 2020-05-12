@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Recovery plan InMageAzureV2 failover input.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType", defaultImpl = RecoveryPlanInMageAzureV2FailoverInput.class)
 @JsonTypeName("InMageAzureV2")
 public class RecoveryPlanInMageAzureV2FailoverInput extends RecoveryPlanProviderSpecificFailoverInput {
     /**
