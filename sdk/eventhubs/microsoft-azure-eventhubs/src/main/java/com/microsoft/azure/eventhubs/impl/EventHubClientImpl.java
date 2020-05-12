@@ -64,7 +64,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
         final ProxyConfiguration proxyConfiguration)
             throws IOException {
-        return create(connectionString, retryPolicy, executor, proxyConfiguration, EventHubClientOptions.WATCHDOG_OFF);
+        return create(connectionString, retryPolicy, executor, proxyConfiguration, EventHubClientOptions.SILENT_OFF);
     }
 
     public static CompletableFuture<EventHubClient> create(

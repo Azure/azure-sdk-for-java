@@ -134,7 +134,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final RetryPolicy retryPolicy,
             final ScheduledExecutorService executor,
             final ProxyConfiguration proxyConfiguration) throws IOException {
-        return createFromConnectionString(connectionString, retryPolicy, executor, null, proxyConfiguration, EventHubClientOptions.WATCHDOG_OFF);
+        return createFromConnectionString(connectionString, retryPolicy, executor, null, proxyConfiguration, EventHubClientOptions.SILENT_OFF);
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
@@ -188,7 +188,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         private RetryPolicy retryPolicy = RetryPolicy.getDefault();
         private ReactorFactory reactorFactory = new ReactorFactory();
         private ProxyConfiguration proxyConfiguration;
-        private int watchdogTriggerSeconds = EventHubClientOptions.WATCHDOG_OFF;
+        private int watchdogTriggerSeconds = EventHubClientOptions.SILENT_OFF;
 
         public MessagingFactoryBuilder(final String hostname, final ITokenProvider tokenProvider, final ScheduledExecutorService executor) {
             if (StringUtil.isNullOrWhiteSpace(hostname)) {
@@ -284,7 +284,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     public void registerForWatchdog(final MessageReceiver rcvr) {
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.WATCHDOG_OFF) {
+        if (this.watchdogTriggerSeconds > EventHubClientOptions.SILENT_OFF) {
             TRACE_LOGGER.info("Registering for watchdog: " + rcvr.getClientId());
             synchronized (this.watchdogSyncObject) {
                 this.watchdogReceivers.add(rcvr);
@@ -294,7 +294,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     public void unregisterForWatchdog(final MessageReceiver rcvr) {
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.WATCHDOG_OFF) {
+        if (this.watchdogTriggerSeconds > EventHubClientOptions.SILENT_OFF) {
             TRACE_LOGGER.info("Unregistering for watchdog: " + rcvr.getClientId());
             synchronized (this.watchdogSyncObject) {
                 this.watchdogReceivers.remove(rcvr);
@@ -303,7 +303,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     private void startWatchdog() {
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.WATCHDOG_OFF) {
+        if (this.watchdogTriggerSeconds > EventHubClientOptions.SILENT_OFF) {
             TRACE_LOGGER.info("Watchdog scheduling first run");
             this.watchdogFuture = this.executor.schedule(new WatchDog(), this.watchdogScanSeconds, TimeUnit.SECONDS);
         } else {
@@ -318,7 +318,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             if (MessagingFactory.this.getIsClosingOrClosed()) {
                 return;
             }
-            if (MessagingFactory.this.watchdogTriggerSeconds <= EventHubClientOptions.WATCHDOG_OFF) {
+            if (MessagingFactory.this.watchdogTriggerSeconds <= EventHubClientOptions.SILENT_OFF) {
                 TRACE_LOGGER.warn("Watchdog should not run when trigger time is " + MessagingFactory.this.watchdogTriggerSeconds + " -- stopping");
                 return;
             }

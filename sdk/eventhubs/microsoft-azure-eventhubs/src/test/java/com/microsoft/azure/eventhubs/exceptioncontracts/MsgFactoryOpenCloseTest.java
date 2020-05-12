@@ -131,7 +131,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
                     executor,
                     networkOutageSimulator,
                     null,
-                    EventHubClientOptions.WATCHDOG_OFF);
+                    EventHubClientOptions.SILENT_OFF);
             try {
                 openFuture.get();
                 Assert.fail();
