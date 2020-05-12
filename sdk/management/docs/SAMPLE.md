@@ -20,7 +20,7 @@ To learn more about authentication in the Azure Management Libraries for Java, s
 
 #### Create a Virtual Machine
 
-You can create a virtual machine instance by using a `define() �� create()` method chain.
+You can create a virtual machine instance by using a `define() … create()` method chain.
 
 ```java
 System.out.println("Creating a Linux VM");
@@ -42,7 +42,7 @@ System.out.println("Created a Linux VM: " + linuxVM.id());
 
 #### Update a Virtual Machine
 
-You can update a virtual machine instance by using an `update() �� apply()` method chain.
+You can update a virtual machine instance by using an `update() … apply()` method chain.
 
 ```java
 linuxVM.update()
@@ -52,7 +52,7 @@ linuxVM.update()
 
 #### Create a Virtual Machine Scale Set
 
-You can create a virtual machine scale set instance by using a `define() �� create()` method chain.
+You can create a virtual machine scale set instance by using a `define() … create()` method chain.
 
 ```java
  VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets().define(vmssName)
@@ -132,7 +132,7 @@ You can create a virtual machine scale set instance by using a `define() �� 
 
 #### Create a virtual network
 
-You can create a virtual network by using a `define() �� create()` method chain.
+You can create a virtual network by using a `define() … create()` method chain.
 
 ```java
 Network network = networks.define("mynetwork")
@@ -146,7 +146,7 @@ Network network = networks.define("mynetwork")
 
 #### Create a network security group
 
-You can create a network security group instance by using a `define() �� create()` method chain.
+You can create a network security group instance by using a `define() … create()` method chain.
 
 ```java
 NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
@@ -177,7 +177,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
 
 #### Create an Application Gateway
 
-You can create a application gateway instance by using a `define() �� create()` method chain.
+You can create a application gateway instance by using a `define() … create()` method chain.
 
 ```java
 ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
@@ -263,7 +263,7 @@ ApplicationGateway applicationGateway = azure.applicationGateways().define("myFi
 
 #### Create a Web App
 
-You can create a Web App instance by using a `define() �� create()` method chain.
+You can create a Web App instance by using a `define() … create()` method chain.
 
 ```java
 WebApp webApp = azure.webApps()
@@ -331,7 +331,7 @@ WebApp webApp = azure.webApps()
 
 #### Create a Cosmos DB with CosmosDB Programming Model
 
-You can create a Cosmos DB account by using a `define() �� create()` method chain.
+You can create a Cosmos DB account by using a `define() … create()` method chain.
 
 ```java
 CosmosAccount cosmosDBAccount = azure.cosmosDBAccounts().define(cosmosDBName)
@@ -346,7 +346,7 @@ CosmosAccount cosmosDBAccount = azure.cosmosDBAccounts().define(cosmosDBName)
 
 #### Create a SQL Database
 
-You can create a SQL server instance by using a `define() �� create()` method chain.
+You can create a SQL server instance by using a `define() … create()` method chain.
 
 ```java
 SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
@@ -359,7 +359,7 @@ SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
     .create();
 ```
 
-Then, you can create a SQL database instance by using a `define() �� create()` method chain.
+Then, you can create a SQL database instance by using a `define() … create()` method chain.
 
 ```java
 SqlDatabase database = sqlServer.databases().define("myNewDatabase")
