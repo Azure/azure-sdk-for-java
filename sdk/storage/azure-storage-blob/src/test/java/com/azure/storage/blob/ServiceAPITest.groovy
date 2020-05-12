@@ -690,15 +690,9 @@ class ServiceAPITest extends APISpec {
             assert it != null
             assert it.getStatusCode() == 201
             assert it.getValue() != null
+            assert it.getValue().getBlobContainerName() == cc1.getBlobContainerName()
         })
         .verifyComplete()
-
-        StepVerifier.create(responseMono.flatMap {r -> r.getValue().listBlobs().collectList()})
-            .assertNext({
-                assert it.size() == 1
-                assert it.first().getName() == blobName
-            })
-            .verifyComplete()
     }
 
     def "Restore Container error"() {
