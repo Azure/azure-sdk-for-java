@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The parameters to list service SAS credentials of a speicific resource.
+ * The parameters to list service SAS credentials of a specific resource.
  */
 public class ServiceSasParameters {
     /**
