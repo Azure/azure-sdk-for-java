@@ -303,17 +303,15 @@ public interface FailureValidator {
             return this;
         }
 
-        public <T extends Throwable> Builder documentClientExceptionHeaderRequestExcludesKey(String key) {
+        public <T extends Throwable> Builder documentClientExceptionToStringExcludesHeader(String header) {
             validators.add(new FailureValidator() {
                 @Override
                 public void validate(Throwable t) {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosClientException.class);
                     CosmosClientException ex = (CosmosClientException) t;
-                    Map<String, String> requestHeaders = BridgeInternal.getRequestHeaders(ex);
-                    if (requestHeaders != null) {
-                        assertThat(requestHeaders).doesNotContainKey(key);
-                    }
+                    String exceptionToString = ex.toString();
+                    assertThat(exceptionToString).doesNotContain(header);
                 }
             });
             return this;

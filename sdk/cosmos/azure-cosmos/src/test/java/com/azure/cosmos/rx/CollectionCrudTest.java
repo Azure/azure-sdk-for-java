@@ -232,7 +232,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
         FailureValidator validator = new FailureValidator.Builder()
             .resourceNotFound()
-            .documentClientExceptionHeaderRequestExcludesKey(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
             .build();
         validateFailure(readObservable, validator);
     }

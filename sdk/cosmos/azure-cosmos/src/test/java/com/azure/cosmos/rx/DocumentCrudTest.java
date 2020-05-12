@@ -137,7 +137,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions());
         FailureValidator validator = new FailureValidator.Builder()
             .resourceAlreadyExists()
-            .documentClientExceptionHeaderRequestExcludesKey(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
             .build();
         validateItemFailure(createObservable, validator);
     }
@@ -211,7 +211,7 @@ public class DocumentCrudTest extends TestSuiteBase {
         FailureValidator validator = new FailureValidator.Builder()
             .instanceOf(CosmosClientException.class)
             .statusCode(404)
-            .documentClientExceptionHeaderRequestExcludesKey(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
             .build();
         validateItemFailure(readObservable, validator);
     }
@@ -241,7 +241,7 @@ public class DocumentCrudTest extends TestSuiteBase {
                                                                           options, CosmosItemProperties.class);
         FailureValidator notFoundValidator = new FailureValidator.Builder()
             .resourceNotFound()
-            .documentClientExceptionHeaderRequestExcludesKey(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
             .build();
         validateItemFailure(readObservable, notFoundValidator);
     }
