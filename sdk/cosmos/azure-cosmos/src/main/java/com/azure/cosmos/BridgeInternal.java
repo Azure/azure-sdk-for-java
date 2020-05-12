@@ -226,7 +226,14 @@ public final class BridgeInternal {
 
     public static <E extends CosmosClientException> void setRequestHeaders(CosmosClientException cosmosClientException,
                                                                            Map<String, String> requestHeaders) {
-        cosmosClientException.requestHeaders = requestHeaders;
+        Map<String, String> requestHeadersMap = new HashMap<>();
+        requestHeaders.forEach((key, value) -> {
+            //  Skip the authorization header
+            if (!key.equals(HttpConstants.HttpHeaders.AUTHORIZATION)) {
+                requestHeadersMap.put(key, value);
+            }
+        });
+        cosmosClientException.requestHeaders = requestHeadersMap;
     }
 
     public static <E extends CosmosClientException> Map<String, String> getRequestHeaders(

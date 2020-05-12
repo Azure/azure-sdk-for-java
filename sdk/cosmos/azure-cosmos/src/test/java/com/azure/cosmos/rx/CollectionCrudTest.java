@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -27,8 +28,6 @@ import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.RetryAnalyzer;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -231,7 +230,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncContainerResponse> readObservable = database
                 .getContainer("I don't exist").read();
 
-        FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionHeaderRequestExcludesKey(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(readObservable, validator);
     }
 

@@ -10,6 +10,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -297,6 +298,22 @@ public interface FailureValidator {
                     assertThat(t).isInstanceOf(CosmosClientException.class);
                     CosmosClientException ex = (CosmosClientException) t;
                     assertThat(BridgeInternal.getRequestHeaders(ex)).containsEntry(key, value);
+                }
+            });
+            return this;
+        }
+
+        public <T extends Throwable> Builder documentClientExceptionHeaderRequestExcludesKey(String key) {
+            validators.add(new FailureValidator() {
+                @Override
+                public void validate(Throwable t) {
+                    assertThat(t).isNotNull();
+                    assertThat(t).isInstanceOf(CosmosClientException.class);
+                    CosmosClientException ex = (CosmosClientException) t;
+                    Map<String, String> requestHeaders = BridgeInternal.getRequestHeaders(ex);
+                    if (requestHeaders != null) {
+                        assertThat(requestHeaders).doesNotContainKey(key);
+                    }
                 }
             });
             return this;
