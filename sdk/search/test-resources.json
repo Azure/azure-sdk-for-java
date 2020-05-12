@@ -18,7 +18,7 @@
     },
     "storageEndpointSuffix": {
       "type": "string",
-      "defaultValue": "search.windows.net",
+      "defaultValue": "core.windows.net",
       "metadata": {
         "description": "The Storage account endpoint suffix."
       }
