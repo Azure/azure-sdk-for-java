@@ -22,7 +22,6 @@ autorest --java --use=C:/work/autorest.java
 ``` yaml
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master/specification/cognitiveservices/data-plane/FormRecognizer/preview/v2.0/FormRecognizer.json
 java: true
-enable-xml: true
 output-folder: ..\
 generate-client-as-impl: true
 namespace: com.azure.ai.formrecognizer
@@ -34,17 +33,4 @@ models-subpackage: implementation.models
 context-client-method-parameter: true
 custom-types-subpackage: models
 custom-types: ErrorResponseException,ErrorResponse,ErrorInformation
-```
-
-### Change TrainSourceFilter to TrainingFileFilter
-```yaml
-- from: swagger-document
-  where: $.definitions
-  transform: >
-    if (!$.TrainingFileFilter) {
-      $.TrainingFileFilter = $.TrainSourceFilter;
-      delete $.TrainSourceFilter;
-      $.TrainingFileFilter.xml = {"name": "TrainSourceFilter"};
-      $.TrainSourceFilters.items["$ref"] = "#/definitions/TrainingFileFilter";
-    }
 ```

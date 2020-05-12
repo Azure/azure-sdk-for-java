@@ -36,7 +36,7 @@ public class ManageCustomModels {
         // First, we see how many custom models we have, and what our limit is
         AccountProperties accountProperties = client.getAccountProperties();
         System.out.printf("The account has %s custom models, and we can have at most %s custom models",
-            accountProperties.getCount(), accountProperties.getLimit());
+            accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit());
 
         // Next, we get a paged list of all of our custom models
         PagedIterable<CustomFormModelInfo> customModels = client.getModelInfos();

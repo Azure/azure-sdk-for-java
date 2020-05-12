@@ -6,7 +6,11 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
-import com.azure.core.util.Context;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.test.TestMode;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.AfterAll;
@@ -91,9 +95,9 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             CustomFormModel trainedModel = syncPoller.getFinalResult();
 
             StepVerifier.create(client.getCustomModelWithResponse(trainedModel.getModelId())).assertNext(customFormModelResponse -> {
-                    assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
-                    validateCustomModelData(syncPoller.getFinalResult(), false);
-                });
+                assertEquals(customFormModelResponse.getStatusCode(), HttpResponseStatus.OK.code());
+                validateCustomModelData(syncPoller.getFinalResult(), false);
+            });
         });
     }
 
@@ -204,18 +208,6 @@ public class FormTrainingAsyncClientTest extends FormTrainingClientTestBase {
             .thenConsumeWhile(customFormModelInfo ->
                 customFormModelInfo.getModelId() != null && customFormModelInfo.getCreatedOn() != null
                     && customFormModelInfo.getLastUpdatedOn() != null && customFormModelInfo.getStatus() != null)
-            .verifyComplete();
-    }
-
-    /**
-     * Test for listing all models information with {@link Context}.
-     */
-    @Test
-    void getModelInfosWithContext() {
-        StepVerifier.create(client.getModelInfos())
-            .thenConsumeWhile(modelInfo ->
-                modelInfo.getModelId() != null && modelInfo.getCreatedOn() != null
-                    && modelInfo.getLastUpdatedOn() != null && modelInfo.getStatus() != null)
             .verifyComplete();
     }
 

@@ -39,8 +39,6 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 
-import static com.azure.ai.formrecognizer.implementation.Utility.getFilePrefix;
-import static com.azure.ai.formrecognizer.implementation.Utility.getIncludeSubFolder;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.DEFAULT_DURATION;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
@@ -74,7 +72,8 @@ public class FormTrainingAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
+    // TODO (savaity): Should not be a public constructore, still deciding the best approach here,
+    //  to be redone in #10909
     public FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
@@ -100,19 +99,21 @@ public class FormTrainingAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean}
      *
-     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
+     * @param trainingFilesUrl source URL parameter that is either an externally accessible Azure
      * storage blob container Uri (preferably a Shared Access Signature Uri).
-     * @param useLabelFile Boolean to specify the use of labeled files for training the model.
+     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link PollerFlux} that polls the training model operation until it has completed, has failed, or has
      * been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, null, null);
+    public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels) {
+        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null);
     }
 
     /**
+     * s
      * Create and train a custom model.
      * <p>Models are trained using documents that are of the following content type -
      * 'application/pdf', 'image/jpeg', 'image/png', 'image/tiff'.
@@ -122,28 +123,28 @@ public class FormTrainingAsyncClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-boolean-string-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainModelOptions-Duration}
      *
-     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure
-     * storage blob container Uri (preferably a Shared Access Signature Uri).
-     * @param useLabelFile Boolean to specify the use of labeled files for training the model.
+     * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
+     * Shared Access Signature Uri).
+     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param trainModelOptions Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
-     * @param trainModelOptions Filter to apply to the documents in the source path for training.
      *
      * @return A {@link PollerFlux} that polls the extract receipt operation until it
      * has completed, has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl,
-        boolean useLabelFile, Duration pollInterval, TrainModelOptions trainModelOptions) {
+    public PollerFlux<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
         final Duration interval = pollInterval != null ? pollInterval : DEFAULT_DURATION;
         return new PollerFlux<OperationResult, CustomFormModel>(
             interval,
-            getTrainingActivationOperation(fileSourceUrl,
-                getIncludeSubFolder(trainModelOptions),
-                getFilePrefix(trainModelOptions),
-                useLabelFile),
+            getTrainingActivationOperation(trainingFilesUrl,
+                trainModelOptions != null ? trainModelOptions.isIncludeSubFolders() : false,
+                trainModelOptions != null ? trainModelOptions.getPrefix() : null,
+                useTrainingLabels),
             createTrainingPollOperation(),
             (activationResponse, context) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchTrainingModelResultOperation());
@@ -358,14 +359,14 @@ public class FormTrainingAsyncClient {
     }
 
     private Function<PollingContext<OperationResult>, Mono<OperationResult>> getTrainingActivationOperation(
-        String fileSourceUrl, boolean includeSubFolders, String filePrefix, boolean useLabelFile) {
+        String fileSourceUrl, boolean includeSubFolders, String filePrefix, boolean useTrainingLabels) {
         return (pollingContext) -> {
             try {
                 Objects.requireNonNull(fileSourceUrl, "'fileSourceUrl' cannot be null.");
                 TrainSourceFilter trainSourceFilter = new TrainSourceFilter().setIncludeSubFolders(includeSubFolders)
                     .setPrefix(filePrefix);
                 TrainRequest serviceTrainRequest = new TrainRequest().setSource(fileSourceUrl).
-                    setSourceFilter(trainSourceFilter).setUseLabelFile(useLabelFile);
+                    setSourceFilter(trainSourceFilter).setUseLabelFile(useTrainingLabels);
                 return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest)
                     .map(response ->
                         new OperationResult(parseModelId(response.getDeserializedHeaders().getLocation())));

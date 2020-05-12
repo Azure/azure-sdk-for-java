@@ -52,7 +52,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration
         String trainingSetSource = "{training-set-SAS-URL}";
         TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix(
             "Invoice");
@@ -67,7 +67,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
             customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
                 System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                     key, customFormModelField.getName(), customFormModelField.getAccuracy())));
-        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration
+        // END: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration
     }
 
     /**
@@ -111,8 +111,8 @@ public class FormTrainingClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties
         AccountProperties accountProperties = formTrainingClient.getAccountProperties();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            accountProperties.getLimit());
-        System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
+            accountProperties.getCustomModelLimit());
+        System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCustomModelCount());
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties
     }
 
@@ -125,8 +125,8 @@ public class FormTrainingClientJavaDocCodeSnippets {
         System.out.printf("Response Status Code: %d.", response.getStatusCode());
         AccountProperties accountProperties = response.getValue();
         System.out.printf("Max number of models that can be trained for this account: %s%n",
-            accountProperties.getLimit());
-        System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
+            accountProperties.getCustomModelLimit());
+        System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCustomModelCount());
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountPropertiesWithResponse#Context
     }
 

@@ -28,7 +28,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean}
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean)}
      */
     public void beginTraining() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean
@@ -50,18 +50,17 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, Duration, TrainModelOptions)}
+     * Code snippet for {@link FormTrainingAsyncClient#beginTraining(String, boolean, TrainModelOptions, Duration)}
      * with options
      */
     public void beginTrainingWithOptions() {
-        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient
-        // .beginTraining#string-boolean-boolean-string-Duration
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainModelOptions-Duration
         String trainingSetSource = "{training-set-SAS-URL}";
         TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix(
             "Invoice");
 
-        formTrainingAsyncClient.beginTraining(trainingSetSource, true, Duration.ofSeconds(5),
-            trainModelOptions).subscribe(recognizePollingOperation -> {
+        formTrainingAsyncClient.beginTraining(trainingSetSource, true, trainModelOptions, Duration.ofSeconds(5)
+        ).subscribe(recognizePollingOperation -> {
             // if training polling operation completed, retrieve the final result.
             recognizePollingOperation.getFinalResult().subscribe(customFormModel -> {
                 System.out.printf("Model Id: %s%n", customFormModel.getModelId());
@@ -70,10 +69,9 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
                     customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
                         System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
                             key, customFormModelField.getName(), customFormModelField.getAccuracy())));
+                });
             });
-        });
-        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient
-        // .beginTraining#string-boolean-boolean-string-Duration
+        // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainModelOptions-Duration
     }
 
     /**
@@ -120,8 +118,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties
         formTrainingAsyncClient.getAccountProperties().subscribe(accountProperties -> {
             System.out.printf("Max number of models that can be trained for this account: %s%n",
-                accountProperties.getLimit());
-            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
+                accountProperties.getCustomModelLimit());
+            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCustomModelCount());
         });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountProperties
     }
@@ -135,8 +133,8 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
             System.out.printf("Response Status Code: %d.", response.getStatusCode());
             AccountProperties accountProperties = response.getValue();
             System.out.printf("Max number of models that can be trained for this account: %s%n",
-                accountProperties.getLimit());
-            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCount());
+                accountProperties.getCustomModelLimit());
+            System.out.printf("Current count of trained custom models: %d%n", accountProperties.getCustomModelCount());
         });
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.getAccountPropertiesWithResponse
     }

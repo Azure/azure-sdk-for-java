@@ -32,7 +32,7 @@ public class ManageCustomModelsAsync {
         // First, we see how many custom models we have, and what our limit is
         client.getAccountProperties().subscribe(accountProperties ->
             System.out.printf("The account has %s custom models, and we can have at most %s custom models.%n",
-                accountProperties.getCount(), accountProperties.getLimit()));
+                accountProperties.getCustomModelCount(), accountProperties.getCustomModelLimit()));
         // Next, we get a paged list of all of our custom models
         System.out.println("We have following models in the account:");
         client.getModelInfos().subscribe(customFormModelInfo -> {
