@@ -3,13 +3,13 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -222,7 +222,7 @@ public class UniqueIndexTest extends TestSuiteBase {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
+            .directMode(DirectConnectionConfig.getDefaultConfig())
             .consistencyLevel(ConsistencyLevel.SESSION)
             .contentResponseOnWriteEnabled(true)
             .buildAsyncClient();

@@ -2,7 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
@@ -75,10 +76,10 @@ public final class CosmosPartitionKeyTests extends TestSuiteBase {
     }
 
     private void createContainerWithoutPk() throws URISyntaxException, IOException {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         HttpClientConfig httpClientConfig = new HttpClientConfig(new Configs())
                 .withMaxIdleConnectionTimeout(connectionPolicy.getIdleConnectionTimeout())
-                .withPoolSize(connectionPolicy.getMaxPoolSize())
+                .withPoolSize(connectionPolicy.getMaxConnectionPoolSize())
                 .withHttpProxy(connectionPolicy.getProxy())
                 .withRequestTimeout(connectionPolicy.getRequestTimeout());
 

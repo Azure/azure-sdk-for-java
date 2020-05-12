@@ -68,14 +68,13 @@ public class OperationsInner {
     /**
      * List all the available operations the KubernetesConfiguration resource provider supports.
      *
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PagedList&lt;ResourceProviderOperationInner&gt; object if successful.
      */
-    public PagedList<ResourceProviderOperationInner> list(final String apiVersion) {
-        ServiceResponse<Page<ResourceProviderOperationInner>> response = listSinglePageAsync(apiVersion).toBlocking().single();
+    public PagedList<ResourceProviderOperationInner> list() {
+        ServiceResponse<Page<ResourceProviderOperationInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<ResourceProviderOperationInner>(response.body()) {
             @Override
             public Page<ResourceProviderOperationInner> nextPage(String nextPageLink) {
@@ -87,14 +86,13 @@ public class OperationsInner {
     /**
      * List all the available operations the KubernetesConfiguration resource provider supports.
      *
-     * @param apiVersion The API version to be used with the HTTP request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<ResourceProviderOperationInner>> listAsync(final String apiVersion, final ListOperationCallback<ResourceProviderOperationInner> serviceCallback) {
+    public ServiceFuture<List<ResourceProviderOperationInner>> listAsync(final ListOperationCallback<ResourceProviderOperationInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(apiVersion),
+            listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<ResourceProviderOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> call(String nextPageLink) {
@@ -107,12 +105,11 @@ public class OperationsInner {
     /**
      * List all the available operations the KubernetesConfiguration resource provider supports.
      *
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceProviderOperationInner&gt; object
      */
-    public Observable<Page<ResourceProviderOperationInner>> listAsync(final String apiVersion) {
-        return listWithServiceResponseAsync(apiVersion)
+    public Observable<Page<ResourceProviderOperationInner>> listAsync() {
+        return listWithServiceResponseAsync()
             .map(new Func1<ServiceResponse<Page<ResourceProviderOperationInner>>, Page<ResourceProviderOperationInner>>() {
                 @Override
                 public Page<ResourceProviderOperationInner> call(ServiceResponse<Page<ResourceProviderOperationInner>> response) {
@@ -124,12 +121,11 @@ public class OperationsInner {
     /**
      * List all the available operations the KubernetesConfiguration resource provider supports.
      *
-     * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ResourceProviderOperationInner&gt; object
      */
-    public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> listWithServiceResponseAsync(final String apiVersion) {
-        return listSinglePageAsync(apiVersion)
+    public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<ResourceProviderOperationInner>>, Observable<ServiceResponse<Page<ResourceProviderOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> call(ServiceResponse<Page<ResourceProviderOperationInner>> page) {
@@ -145,15 +141,14 @@ public class OperationsInner {
     /**
      * List all the available operations the KubernetesConfiguration resource provider supports.
      *
-    ServiceResponse<PageImpl<ResourceProviderOperationInner>> * @param apiVersion The API version to be used with the HTTP request.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ResourceProviderOperationInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> listSinglePageAsync(final String apiVersion) {
-        if (apiVersion == null) {
-            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+    public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> listSinglePageAsync() {
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceProviderOperationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ResourceProviderOperationInner>>> call(Response<ResponseBody> response) {
