@@ -4,7 +4,7 @@ The Azure Management Libraries for Java is a higher-level, object-oriented API f
 that is optimized for ease of use, succinctness and consistency.
 
 - [API reference documentation][docs]
-- [Samples][samples]
+- [Code snippets and samples][sample]
 
 ## Getting started
 
@@ -65,7 +65,7 @@ In addition, Azure subscription ID can be configured via environment variable `A
 
 With above configuration, `azure` client can be authenticated by following code:
 
-```
+```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
 TokenCredential credential = new DefaultAzureCredentialBuilder()
     .authorityHost(profile.environment().getActiveDirectoryEndpoint())
@@ -76,6 +76,10 @@ Azure azure = Azure
 ```
 
 See [Authentication][authenticate] for more options.
+
+### Code snippets and samples
+
+See [Samples][sample] for code snippets and samples.
 
 ## Key concepts
 
@@ -104,24 +108,24 @@ You can create a virtual machine instance, together with required virtual networ
 
 ```java
 VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
-	.withRegion(Region.US_EAST)
-	.withNewResourceGroup(rgName)
-	.withNewPrimaryNetwork("10.0.0.0/28")
-	.withPrimaryPrivateIPAddressDynamic()
-	.withNewPrimaryPublicIPAddress("mylinuxvm")
-	.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-	.withRootUsername("tirekicker")
-	.withSsh(sshKey)
-	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-	.create();
+    .withRegion(Region.US_EAST)
+    .withNewResourceGroup(rgName)
+    .withNewPrimaryNetwork("10.0.0.0/28")
+    .withPrimaryPrivateIPAddressDynamic()
+    .withNewPrimaryPublicIPAddress("mylinuxvm")
+    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+    .withRootUsername("tirekicker")
+    .withSsh(sshKey)
+    .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+    .create();
 ```
 
 Update.
 
 ```java
 linuxVM.update()
-	.withNewDataDisk(20, lun, CachingTypes.READ_WRITE)
-	.apply();
+    .withNewDataDisk(20, lun, CachingTypes.READ_WRITE)
+    .apply();
 ```
 
 ### Asynchronous operations
@@ -220,7 +224,6 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 <!-- LINKS -->
-[samples]: samples
 [docs]: http://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
@@ -230,4 +233,5 @@ If you would like to become an active contributor to this project please follow 
 [azure_core]: ../core/azure-core
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [authenticate]: docs/AUTH.md
+[sample]: docs/SAMPLE.md
 [reactor]: https://projectreactor.io/
