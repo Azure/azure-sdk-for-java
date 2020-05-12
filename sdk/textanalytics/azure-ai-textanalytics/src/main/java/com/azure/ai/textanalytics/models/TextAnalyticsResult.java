@@ -8,11 +8,11 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Locale;
 
 /**
- * The {@link DocumentResult} model.
+ * The {@link TextAnalyticsResult} model.
  */
 @Immutable
-public class DocumentResult {
-    private final ClientLogger logger = new ClientLogger(DocumentResult.class);
+public class TextAnalyticsResult {
+    private final ClientLogger logger = new ClientLogger(TextAnalyticsResult.class);
 
     private final String id;
     private final TextDocumentStatistics textDocumentStatistics;
@@ -20,15 +20,14 @@ public class DocumentResult {
     private final boolean isError;
 
     /**
-     * Create a {@link DocumentResult} model that maintains document id, information about the document payload,
-     * and document error.
+     * Create a {@link TextAnalyticsResult} model that maintains document id, information about the document
+     * payload, and document error.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    DocumentResult(String id, TextDocumentStatistics textDocumentStatistics,
-        TextAnalyticsError error) {
+    TextAnalyticsResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         this.id = id;
         this.error = error;
         this.isError = error != null;
@@ -81,7 +80,7 @@ public class DocumentResult {
                 String.format(Locale.ROOT,
                     "Error in accessing the property on document id: %s, when %s returned with an error: %s",
                     this.id, this.getClass().getSimpleName(), this.error.getMessage()),
-                this.error.getCode().toString(), null));
+                this.error.getErrorCode().toString(), null));
         }
     }
 }

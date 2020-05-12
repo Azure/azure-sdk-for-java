@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
 import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
@@ -14,7 +15,7 @@ import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PermissionMode;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.models.ResourceWrapper;
 import com.azure.cosmos.models.SpatialSpec;
 import com.azure.cosmos.models.SpatialType;
 import com.azure.cosmos.models.TriggerOperation;
@@ -63,19 +64,19 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
 
         private Resource getResource(T resourceResponse) {
             if (resourceResponse instanceof CosmosAsyncDatabaseResponse) {
-                return ((CosmosAsyncDatabaseResponse)resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncDatabaseResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncContainerResponse) {
-                return ((CosmosAsyncContainerResponse)resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncContainerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncStoredProcedureResponse) {
-                return ((CosmosAsyncStoredProcedureResponse)resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncStoredProcedureResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncTriggerResponse) {
-                return ((CosmosAsyncTriggerResponse)resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncTriggerResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncUserDefinedFunctionResponse) {
-                return ((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncUserDefinedFunctionResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncUserResponse) {
-                return ((CosmosAsyncUserResponse)resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncUserResponse)resourceResponse).getProperties());
             } else if (resourceResponse instanceof CosmosAsyncPermissionResponse) {
-                return ((CosmosAsyncPermissionResponse) resourceResponse).getProperties();
+                return ModelBridgeInternal.getResourceFromResourceWrapper(((CosmosAsyncPermissionResponse) resourceResponse).getProperties());
             }
             return null;
         }
@@ -226,7 +227,15 @@ public interface CosmosResponseValidator<T extends CosmosResponse> {
                 @Override
                 public void validate(T resourceResponse) {
                     assertThat(resourceResponse.getProperties()).isNotNull();
-                    assertThat(resourceResponse.getProperties().getETag()).isNotNull();
+                    if (resourceResponse.getProperties() instanceof Resource) {
+                        assertThat(((Resource)resourceResponse.getProperties()).getETag()).isNotNull();
+                    }
+                    if (resourceResponse.getProperties() instanceof ResourceWrapper) {
+                        assertThat(
+                            ModelBridgeInternal.getResourceFromResourceWrapper((ResourceWrapper)resourceResponse
+                                .getProperties()).getETag())
+                            .isNotNull();
+                    }
                 }
             });
             return this;
