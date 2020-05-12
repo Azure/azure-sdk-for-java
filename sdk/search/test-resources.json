@@ -83,7 +83,7 @@
     "outputs": {
       "AZURE_SEARCH_SERVICE_ENDPOINT": {
         "type": "string",
-        "value": "[concat('https://', variables('searchServiceName'), '.', variables('searchEndpointSuffix')]"
+        "value": "[concat('https://', variables('searchServiceName'), '.', variables('searchEndpointSuffix'))]"
       },
       "AZURE_SEARCH_SERVICE_API_KEY": {
         "type": "string",
