@@ -115,7 +115,7 @@ public final class BuilderHelper {
      * may have had "-secondary" stripped from the end of the account name.
      */
     private static String getPrimaryEndpointForTokenAuth(String endpoint) {
-        String[] parts = endpoint.split(".");
+        String[] parts = endpoint.split("\\.");
         parts[0] = parts[0].endsWith("-secondary") ? parts[0].substring(0, parts[0].length() - "-secondary".length())
             : parts[0];
         return String.join(".", parts);

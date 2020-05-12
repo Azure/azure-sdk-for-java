@@ -8,6 +8,7 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
@@ -2170,5 +2171,19 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    def "OAuth on secondary"() {
+        setup:
+        def secondaryEndpoint = String.format(defaultEndpointTemplate,
+            primaryCredential.getAccountName() + "-secondary")
+        def serviceClient = getServiceClientBuilder(null, secondaryEndpoint)
+            .credential(new EnvironmentCredentialBuilder().build()).buildClient()
+
+        when:
+        serviceClient.getProperties()
+
+        then:
+        notThrown(Exception)
     }
 }
