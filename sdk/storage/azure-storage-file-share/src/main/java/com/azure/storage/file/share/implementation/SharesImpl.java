@@ -130,7 +130,7 @@ public final class SharesImpl {
         @Put("{shareName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ShareStorageException.class)
-        Mono<SharesRestoreResponse> restore(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-share-name") String deletedShareName, @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<SharesRestoreResponse> restore(@PathParam("shareName") String shareName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-share-name") String deletedShareName, @HeaderParam("x-ms-deleted-share-version") String deletedShareVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
     }
 
     /**
@@ -505,24 +505,26 @@ public final class SharesImpl {
     /**
      * Restores a previously deleted Share.
      *
+     * @param shareName The name of the target share.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesRestoreResponse> restoreWithRestResponseAsync(Context context) {
+    public Mono<SharesRestoreResponse> restoreWithRestResponseAsync(String shareName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String deletedShareName = null;
         final String deletedShareVersion = null;
         final String restype = "share";
         final String comp = "undelete";
-        return service.restore(this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, restype, comp, context);
+        return service.restore(shareName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, restype, comp, context);
     }
 
     /**
      * Restores a previously deleted Share.
      *
+     * @param shareName The name of the target share.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Setting-Timeouts-for-File-Service-Operations?redirectedfrom=MSDN"&gt;Setting Timeouts for File Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param deletedShareName Specifies the name of the preivously-deleted share.
@@ -532,9 +534,9 @@ public final class SharesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SharesRestoreResponse> restoreWithRestResponseAsync(Integer timeout, String requestId, String deletedShareName, String deletedShareVersion, Context context) {
+    public Mono<SharesRestoreResponse> restoreWithRestResponseAsync(String shareName, Integer timeout, String requestId, String deletedShareName, String deletedShareVersion, Context context) {
         final String restype = "share";
         final String comp = "undelete";
-        return service.restore(this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, restype, comp, context);
+        return service.restore(shareName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion, restype, comp, context);
     }
 }

@@ -169,6 +169,19 @@ directive:
     }
 ```
 
+### /{shareName}?restype=share&comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{shareName}?restype=share&comp=undelete"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ShareName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ShareName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
 ### /{shareName}/{directoryPath}?restype=directory
 ``` yaml
 directive:
