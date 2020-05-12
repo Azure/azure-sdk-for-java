@@ -5,6 +5,7 @@ jobs:
     parameters:
       ServiceDirectory: search
       Timeout: 120
+      MaxParallel: 2
       EnvVars:
         AZURE_TEST_MODE: LIVE
         AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
