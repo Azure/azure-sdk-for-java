@@ -430,5 +430,6 @@ class ChangefeedTest extends HelperSpec {
         return true;
     }
 
+    /* TODO: (gapra): Test cursor. Test lastConsumable before endTime. */
 
 }

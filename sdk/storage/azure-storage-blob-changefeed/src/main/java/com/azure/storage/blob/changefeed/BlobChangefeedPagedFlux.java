@@ -51,10 +51,10 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     @Override
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken, int preferredPageSize) {
 
-        /* TODO (gapra) : Continuation token is currently ignored. */
-//        if (continuationToken != null) {
-//            this.changefeed = new Changefeed(client, continuationToken);
-//        }
+        if (continuationToken != null) {
+            return Flux.error(new UnsupportedOperationException("continuationToken not supported. Use "
+                + "client.getEvents(String) to pass in a cursor."));
+        }
         if (preferredPageSize <= 0) {
             return Flux.error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
                 + preferredPageSize));

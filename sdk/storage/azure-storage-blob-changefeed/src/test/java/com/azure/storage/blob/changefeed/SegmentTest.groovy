@@ -82,7 +82,6 @@ class SegmentTest extends HelperSpec {
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index) {
         boolean verify = true
-        wrapper.getCursor()
 
         return verify
     }

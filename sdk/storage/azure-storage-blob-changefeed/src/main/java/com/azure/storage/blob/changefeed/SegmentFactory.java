@@ -25,7 +25,7 @@ class SegmentFactory {
     }
 
     /**
-     * Gets a new instance of a Shard.
+     * Gets a new instance of a Segment.
      */
     Segment getSegment(BlobContainerAsyncClient client, String segmentPath, ChangefeedCursor cfCursor,
         ChangefeedCursor userCursor) {

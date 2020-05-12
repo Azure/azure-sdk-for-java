@@ -51,8 +51,8 @@ class BlobLazyDownloader {
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range ->
             client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
 
-        return ChunkedDownloadUtils.getSetupMono(range, options, requestConditions,
-            downloadFunc, Schedulers.immediate())
+        return ChunkedDownloadUtils.getSetupMono(range, options, requestConditions, downloadFunc,
+            Schedulers.immediate())
             .flatMapMany(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
                 BlobRequestConditions finalConditions = setupTuple3.getT2();

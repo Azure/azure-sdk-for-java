@@ -50,6 +50,6 @@ class ChangefeedFactory {
         OffsetDateTime start = OffsetDateTime.parse(userCursor.getSegmentTime());
         OffsetDateTime end = OffsetDateTime.parse(userCursor.getEndTime());
 
-        return new Changefeed(client, start, end, ChangefeedCursor.deserialize(cursor), segmentFactory);
+        return new Changefeed(client, start, end, userCursor, segmentFactory);
     }
 }

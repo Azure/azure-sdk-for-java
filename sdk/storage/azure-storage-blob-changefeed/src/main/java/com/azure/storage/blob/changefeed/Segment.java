@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +35,8 @@ import java.util.Map;
  * ...}
  */
 class Segment {
+
+    private static final String CHUNK_FILE_PATHS = "chunkFilePaths";
 
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String segmentPath; /* Segment manifest location. */
@@ -65,9 +66,9 @@ class Segment {
         return DownloadUtils.downloadToString(client, segmentPath)
             .flatMap(this::parseJson)
             /* Parse the JSON for shards. */
-            .map(this::getShards)
-            /* Round robin among shards in this segment. */
-            .flatMapMany(Flux::merge);
+            .flatMapMany(this::getShards)
+            /* Get all events for each shard. */
+            .concatMap(Shard::getEvents);
     }
 
     private Mono<JsonNode> parseJson(String json) {
@@ -80,38 +81,30 @@ class Segment {
         }
     }
 
-    private List<Flux<BlobChangefeedEventWrapper>> getShards(JsonNode node) {
-        /* Initialize a new map of cursors for this shard. */
+    private Flux<Shard> getShards(JsonNode node) {
+        /* Initialize a new map of cursors for this shard. Every shard under this segment will share a common map and
+           the events will update the map appropriately. */
         Map<String, ShardCursor> shardCursors = new HashMap<>();
-        List<Flux<BlobChangefeedEventWrapper>> shards = new ArrayList<>();
+        List<Shard> shards = new ArrayList<>();
 
-        int distance = 0;
-        int index = 0;
-        for (JsonNode shard : node.withArray("chunkFilePaths")) {
+        /* Iterate over each shard element. */
+        for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
+            /* Strip out the changefeed container name and the subsequent / */
             String shardPath =
                 shard.asText().substring(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME.length() + 1);
 
             /* Initialize the map of cursors appropriately. */
             shardCursors.put(shardPath, null);
 
-            ShardCursor shardCursor = null;
-
-            /* If a user cursor was provided, figure out the index of the current shard. */
+            /* If a user cursor was provided, figure out the associated user shard cursor. */
+            ShardCursor userShardCursor = null;
             if (userCursor != null) {
-                if (shardPath.equals(userCursor.getShardPath())) {
-                    distance = index;
-                }
-                shardCursor = userCursor.getShardCursor(shardPath);
+                userShardCursor = userCursor.getShardCursor(shardPath);
             }
-            index++;
 
-            /* They all need to share the same shardCursors. */
             shards.add(shardFactory.getShard(client, shardPath, cfCursor.toShardCursor(shardPath, shardCursors),
-                shardCursor)
-                .getEvents());
+                userShardCursor));
         }
-        /* Rotate the list so the shard we care about is first. */
-        Collections.rotate(shards, distance);
-        return shards;
+        return Flux.fromIterable(shards);
     }
 }

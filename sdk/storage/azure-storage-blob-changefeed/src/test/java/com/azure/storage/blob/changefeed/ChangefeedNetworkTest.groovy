@@ -1,21 +1,24 @@
 package com.azure.storage.blob.changefeed
 
+import org.junit.Ignore
 import reactor.test.StepVerifier
 
 class ChangefeedNetworkTest extends APISpec {
 
-    def "cf"() {
+    @Ignore
+    def "min"() {
         when:
         def sv = StepVerifier.create(
             new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
                 .buildAsyncClient().getEvents()
         )
         then:
-        sv.expectNextCount(2000)
+        sv.expectNextCount(2000) /* Note this number should be adjusted to verify the number of events expected. */
             .verifyComplete()
     }
 
-    def "real cf paged 50"() {
+    @Ignore
+    def "byPage size"() {
         setup:
         BlobChangefeedPagedFlux pagedFlux = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient().getEvents()
@@ -28,9 +31,9 @@ class ChangefeedNetworkTest extends APISpec {
         sv.expectNextCount(34).verifyComplete()
     }
 
-    def "real cf actually paged"() {
+    @Ignore
+    def "byPage continuationToken"() {
         setup:
-
         BlobChangefeedAsyncClient client = new BlobChangefeedClientBuilder(primaryBlobServiceAsyncClient)
             .buildAsyncClient()
 
