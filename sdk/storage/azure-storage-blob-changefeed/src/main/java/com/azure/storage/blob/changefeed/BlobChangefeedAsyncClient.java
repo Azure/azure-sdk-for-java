@@ -43,7 +43,9 @@ public class BlobChangefeedAsyncClient {
      * Returns a reactive Publisher emitting all the changefeed events for this account lazily as needed.
      *
      * <p>
-     * Changefeed events are returned in approximate temporal order. For more information, see the
+     * Changefeed events are returned in approximate temporal order.
+     *
+     * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -60,7 +62,9 @@ public class BlobChangefeedAsyncClient {
      * Returns a reactive Publisher emitting all the changefeed events for this account lazily as needed.
      *
      * <p>
-     * Changefeed events are returned in approximate temporal order. For more information, see the
+     * Changefeed events are returned in approximate temporal order.
+     *
+     * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
@@ -79,7 +83,9 @@ public class BlobChangefeedAsyncClient {
      * Returns a reactive Publisher emitting all the changefeed events for this account lazily as needed.
      *
      * <p>
-     * Changefeed events are returned in approximate temporal order. For more information, see the
+     * Changefeed events are returned in approximate temporal order.
+     *
+     * <p>For more information, see the
      * <a href="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-change-feed?tabs=azure-portal">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
