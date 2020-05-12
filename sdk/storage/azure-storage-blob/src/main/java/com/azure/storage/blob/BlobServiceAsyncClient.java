@@ -725,10 +725,11 @@ public final class BlobServiceAsyncClient {
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
-     * A {@link Mono} containing a {@link BlobContainerAsyncClient} used
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
      * to interact with the restored container.
      */
-    public Mono<BlobContainerAsyncClient> undeleteContainer(String deletedContainerName, String deletedContainerVersion) {
+    public Mono<BlobContainerAsyncClient> undeleteContainer(
+        String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteContainer(deletedContainerName,
             deletedContainerVersion, deletedContainerName);
     }
@@ -763,8 +764,8 @@ public final class BlobServiceAsyncClient {
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
-     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
-     * to interact with the restored container.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * BlobContainerAsyncClient} used to interact with the restored container.
      */
     public Mono<Response<BlobContainerAsyncClient>> undeleteContainerWithResponse(
         String deletedContainerName, String deletedContainerVersion) {
@@ -788,8 +789,8 @@ public final class BlobServiceAsyncClient {
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
      * @param destinationContainerName The name of the destination container.
-     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
-     * to interact with the restored container.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * BlobContainerAsyncClient} used to interact with the restored container.
      */
     public Mono<Response<BlobContainerAsyncClient>> undeleteContainerWithResponse(
         String deletedContainerName, String deletedContainerVersion, String destinationContainerName) {

@@ -409,6 +409,7 @@ public final class BlobServiceClient {
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
+     * @return The {@link BlobContainerClient} used to interact with the restored container.
      */
     public BlobContainerClient undeleteContainer(String deletedContainerName, String deletedContainerVersion) {
         return this.undeleteContainer(deletedContainerName, deletedContainerVersion, deletedContainerName);
@@ -425,6 +426,7 @@ public final class BlobServiceClient {
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
      * @param destinationContainerName The name of the destination container.
+     * @return The {@link BlobContainerClient} used to interact with the restored container.
      */
     public BlobContainerClient undeleteContainer(
         String deletedContainerName, String deletedContainerVersion, String destinationContainerName) {
@@ -445,7 +447,8 @@ public final class BlobServiceClient {
      * @param deletedContainerVersion The version of the previously deleted container.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
+     * to interact with the restored container.
      */
     public Response<BlobContainerClient> undeleteContainerWithResponse(
         String deletedContainerName, String deletedContainerVersion,
@@ -467,7 +470,8 @@ public final class BlobServiceClient {
      * @param destinationContainerName The name of the destination container.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A response containing status code and HTTP headers.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link BlobContainerClient} used
+     * to interact with the restored container.
      */
     public Response<BlobContainerClient> undeleteContainerWithResponse(
         String deletedContainerName, String deletedContainerVersion, String destinationContainerName,
