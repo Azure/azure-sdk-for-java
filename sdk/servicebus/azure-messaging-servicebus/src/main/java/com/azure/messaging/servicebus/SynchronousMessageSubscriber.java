@@ -13,6 +13,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
@@ -23,17 +24,18 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final long prefetch;
     private final AtomicInteger wip = new AtomicInteger();
     private final Queue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
+    private final Queue<ServiceBusReceivedMessageContext> bufferMessages = new ConcurrentLinkedQueue<>();
     private final SynchronousReceiveWork initialWork;
-    private volatile Subscription subscription;
+    private final AtomicLong remaining = new AtomicLong();
 
+    private volatile Subscription subscription;
 
     private SynchronousReceiveWork currentWork;
     private Disposable timeoutOperation;
-    private Disposable drainQueueDisposable;
 
-    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initWork) {
+    SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
         this.prefetch = prefetch;
-        this.initialWork = initWork;
+        this.initialWork = initialWork;
     }
 
     /**
@@ -44,7 +46,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     protected void hookOnSubscribe(Subscription subscription) {
         this.subscription = subscription;
 
-        logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", initialWork.getId(),
+        logger.info("[{}] onSubscribe Pending: {}, Scheduling receive timeout task '{}'.", initialWork.getId(),
             initialWork.getNumberOfEvents(), initialWork.getTimeout());
 
         // This will trigger subscription.request(N) and queue up the work
@@ -58,38 +60,50 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessageContext message) {
+        if (currentWork == null ) {
+            logger.error("!!! Received message but no receive operation waitting.");
+            bufferMessages.add(message);
+            return;
+        }
         currentWork.next(message);
+        remaining.decrementAndGet();
 
         if (currentWork.isTerminal()) {
-            logger.info("[{}] Completed. Closing Flux and cancelling subscription.", currentWork.getId());
-            completeCurrentWork(currentWork);
+            currentWork.complete();
+            if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
+                timeoutOperation.dispose();
+            }
+
+            // Now see if there is more queued up work
+            currentWork = workQueue.poll();
+            if (currentWork != null) {
+
+                logger.verbose("[{}] Picking up next receive request.", currentWork.getId());
+
+                // timer to complete the current in case of timeout trigger
+                timeoutOperation = getTimeoutOperation();
+
+                requestCredits(currentWork.getNumberOfEvents());
+            } else {
+                if (wip.decrementAndGet() != 0) {
+                    logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
+                }
+            }
         }
     }
 
-    private void completeCurrentWork(SynchronousReceiveWork currentWork) {
-
-        if (isTerminated()) {
-            return;
+    /**
+     *
+     * @param requested credits for current {@link SynchronousReceiveWork}.
+     */
+    private void requestCredits(long requested) {
+        long creditToAdd = requested - remaining.get();
+        if (creditToAdd > 0) {
+            remaining.addAndGet(creditToAdd);
+            logger.verbose(" !!! work id = "+currentWork.getId()+" request credit for " + creditToAdd);
+            subscription.request(creditToAdd);
         }
 
-        currentWork.complete();
-        logger.verbose("[{}] work completed.", currentWork.getId());
-
-        if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
-            timeoutOperation.dispose();
-        }
-        if (drainQueueDisposable != null && !drainQueueDisposable.isDisposed()) {
-            drainQueueDisposable.dispose();
-        }
-
-        if (wip.decrementAndGet() != 0) {
-            logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
-        }
-
-        // After current work finished and there more receive requests
-        if (workQueue.size() > 0) {
-            drain();
-        }
     }
 
     void queueWork(SynchronousReceiveWork work) {
@@ -105,14 +119,15 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         if (!wip.compareAndSet(0, 1)) {
             return;
         }
+
         // Drain queue..
-        drainQueueDisposable = Mono.just(true)
-            .subscribe(l -> {
-                drainQueue();
-            });
+        drainQueue();
+
     }
 
+
     private void drainQueue() {
+        logger.verbose(" !!!  in drainQueue ");
         if (isTerminated()) {
             return;
         }
@@ -120,18 +135,41 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         if (currentWork == null) {
             return;
         }
+        long sentFromBuffer = 0;
+        if (bufferMessages.size() > 0) {
+            // If  we already have messages in buffer, we should send it first
 
-        subscription.request(currentWork.getNumberOfEvents());
-
+            while(!bufferMessages.isEmpty() || sentFromBuffer < currentWork.getNumberOfEvents()) {
+                currentWork.next(bufferMessages.poll());
+                remaining.decrementAndGet();
+                ++sentFromBuffer;
+                logger.verbose(" !!! Sent one message from buffer  work id : " + currentWork.getId());
+            }
+            if (sentFromBuffer == currentWork.getNumberOfEvents()) {
+                currentWork.complete();
+                logger.verbose(" !!! Sent from buffer  work id : " + currentWork.getId());
+                drainQueue();
+            }
+        }
         // timer to complete the current in case of timeout trigger
-        timeoutOperation = Mono.delay(currentWork.getTimeout())
-            .subscribe(l -> {
-                if (!currentWork.isTerminal()) {
-                    completeCurrentWork(currentWork);
-                }
-            });
+        timeoutOperation = getTimeoutOperation();
+
+        requestCredits(currentWork.getNumberOfEvents() - sentFromBuffer);
     }
 
+    private Disposable getTimeoutOperation() {
+        return Mono.delay(currentWork.getTimeout())
+            .subscribe(l -> {
+                logger.verbose(" !!! Timeout operation work id : " + currentWork.getId() + ", any more work : " + workQueue.size());
+                if (currentWork != null && !currentWork.isTerminal()) {
+                    currentWork.complete();
+                }
+                if (wip.decrementAndGet() != 0) {
+                    logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
+                }
+                drainQueue();
+            });
+    }
     /**
      * {@inheritDoc}
      */
@@ -144,16 +182,18 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     @Override
     protected void hookOnCancel() {
+        logger.error("[{}] !!! Cancelled.");
+
         if (isDisposed.getAndSet(true)) {
             return;
         }
 
-        if (currentWork.getError() != null) {
-            currentWork.error(currentWork.getError());
-        } else {
+        if (currentWork != null) {
             currentWork.complete();
         }
+
         subscription.cancel();
+
         if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
             timeoutOperation.dispose();
         }
@@ -163,4 +203,3 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         return isDisposed.get();
     }
 }
-

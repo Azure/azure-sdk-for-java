@@ -11,6 +11,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -98,6 +99,58 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     }
 
     /**
+     * Verifies that we can only call receive() multiple times and with one of the receive does timeout.
+     */
+    @MethodSource("messagingEntityWithSessions")
+    @ParameterizedTest
+    void multipleReceiveByOneSubscriberMessageTimeout(MessagingEntityType entityType, boolean isSessionEnabled) {
+        // Arrange
+        setSenderAndReceiver(entityType, isSessionEnabled);
+        final int maxMessages = 2;
+        final int totalReceive = 1;
+        final Duration shortTimeOut = Duration.ofSeconds(8);
+        final Duration longTimeOut = Duration.ofSeconds(10);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        Mono.just(true)
+            .delayElement(longTimeOut)
+            .map(aBoolean -> {
+                System.out.println("!!! Sending message");
+                for (int i = 0; i < totalReceive * maxMessages; ++i) {
+                    sendMessage(message);
+                }
+                return aBoolean;
+            })
+            .subscribe();
+        // Act & Assert
+        IterableStream<ServiceBusReceivedMessageContext> messages = receiver.receive(maxMessages, shortTimeOut);
+        long received = messages.stream().count();
+        assertEquals(0, received);
+
+        System.out.println("!!! Test Now start receiving message..");
+        int receivedMessageCount;
+        int totalReceivedCount = 0;
+        for (int i = 0; i < totalReceive; ++i) {
+            messages = receiver.receive(maxMessages, shortTimeOut);
+            receivedMessageCount = 0;
+            for (ServiceBusReceivedMessageContext receivedMessage : messages) {
+                System.out.println("!!! Test receiver ["+(i)+"] Message SQ " + receivedMessage.getMessage().getSequenceNumber());
+                assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
+                receiver.complete(receivedMessage.getMessage());
+                messagesPending.decrementAndGet();
+                ++receivedMessageCount;
+            }
+            System.out.println("!!! Test receiver ["+(i)+"]  Stop receiving ....  ");
+            assertEquals(maxMessages, receivedMessageCount);
+            totalReceivedCount += receivedMessageCount;
+        }
+
+        assertEquals(totalReceive * maxMessages, totalReceivedCount);
+    }
+
+    /**
      * Verifies that we can only call receive() multiple times.
      */
     @MethodSource("messagingEntityWithSessions")
@@ -106,7 +159,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 3;
-        final int totalReceive = 10;
+        final int totalReceive = 7;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
@@ -145,8 +198,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void parallelReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessagesEachReceive = 4;
-        final int totalReceiver = 10;
+        final int maxMessagesEachReceive = 3;
+        final int totalReceiver = 6;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
@@ -167,7 +220,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 int receivedMessageCount = 0;
                 long lastSequenceReceiver = 0;
                 for (ServiceBusReceivedMessageContext receivedMessage : messages1) {
-                    logger.verbose("Receiver [{}}] Received Sequence Number: ", (finalI + 1), receivedMessage
+                    logger.verbose("Receiver [{}}] Received Sequence Number: [{}] ", (finalI + 1), receivedMessage
                         .getMessage().getSequenceNumber());
                     assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
                     receiver.complete(receivedMessage.getMessage());
