@@ -41,12 +41,18 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
     @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws Exception {
         assertThat(this.gatewayClient).isNull();
-        cosmosClientBuilder = new CosmosClientBuilder()
+        gatewayClient = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .contentResponseOnWriteEnabled(true);
-        gatewayClient = cosmosClientBuilder.gatewayMode(GatewayConnectionConfig.getDefaultConfig()).buildClient();
-        directClient = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
+            .contentResponseOnWriteEnabled(true)
+            .gatewayMode()
+            .buildClient();
+        directClient = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .directMode()
+            .buildClient();
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(this.gatewayClient.asyncClient());
         container = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
     }
@@ -80,7 +86,12 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
         try {
-            client = cosmosClientBuilder.gatewayMode(GatewayConnectionConfig.getDefaultConfig()).buildClient();
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .gatewayMode()
+                .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
@@ -145,7 +156,12 @@ public class CosmosResponseDiagnosticsTest extends TestSuiteBase {
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
         try {
-            client = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig()).buildClient();
+            client = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .directMode()
+                .buildClient();
             CosmosContainer container = client.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
             createResponse = container.createItem(cosmosItemProperties);
             CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
