@@ -87,7 +87,7 @@
       },
       "AZURE_SEARCH_SERVICE_API_KEY": {
         "type": "string",
-        "value": "[listKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), variables('searviceApiVersion')).keys[0].value]"
+        "value": "[listKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), variables('searchApiVersion')).keys[0].value]"
       },
       "AZURE_SEARCH_STORAGE_NAME": {
         "type": "string",
