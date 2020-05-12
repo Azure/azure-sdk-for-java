@@ -37,7 +37,7 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
             );
             serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
             super.setProperties(props);
-            database = BridgeInternal.createCosmosAsyncDatabase(props.getId(), client);
+            database = BridgeInternal.createCosmosAsyncDatabase(ModelBridgeInternal.getResourceFromResourceWrapper(props).getId(), client);
         }
     }
 

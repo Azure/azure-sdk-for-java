@@ -155,7 +155,7 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        ModelBridgeInternal.validateResource(containerProperties);
+        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(containerProperties, options);
@@ -196,7 +196,7 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        ModelBridgeInternal.validateResource(containerProperties);
+        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
@@ -632,8 +632,7 @@ public class CosmosAsyncDatabase {
         return this.read()
                    .flatMap(cosmosDatabaseResponse -> getDocClientWrapper()
                                                           .queryOffers("select * from c where c.offerResourceId = '"
-                                                                           + cosmosDatabaseResponse
-                                                                                 .getProperties()
+                                                                           + cosmosDatabaseResponse.getProperties()
                                                                                  .getResourceId() + "'",
                                                                        new FeedOptions())
                                                           .single()

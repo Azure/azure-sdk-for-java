@@ -3,8 +3,6 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.CompositePath;
-import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
@@ -12,26 +10,36 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncClientTest;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
-import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.models.CosmosContainerProperties;
-import com.azure.cosmos.models.CosmosContainerRequestOptions;
-import com.azure.cosmos.models.JsonSerializable;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.TestNGLogListener;
-import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.CosmosResponseValidator;
+import com.azure.cosmos.TestNGLogListener;
+import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.PathParser;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.directconnectivity.Protocol;
+import com.azure.cosmos.implementation.guava25.base.CaseFormat;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.CompositePathSortOrder;
+import com.azure.cosmos.models.CosmosAsyncDatabaseResponse;
+import com.azure.cosmos.models.CosmosAsyncItemResponse;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.DataType;
@@ -40,25 +48,15 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.IncludedPath;
 import com.azure.cosmos.models.Index;
 import com.azure.cosmos.models.IndexingPolicy;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Resource;
-import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.FailureValidator;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.PathParser;
-import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.directconnectivity.Protocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.cosmos.implementation.guava25.base.CaseFormat;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -78,7 +76,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -543,11 +540,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(stringIndex, "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(numberIndex, "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
@@ -767,7 +764,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @SuppressWarnings("rawtypes")
-    public <T extends Resource, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
+    public <T, U extends CosmosResponse> void validateFailure(Mono<U> mono, FailureValidator validator)
         throws InterruptedException {
         validateFailure(mono.flux(), validator, subscriberValidationTimeout);
     }
@@ -811,12 +808,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate((Throwable) testSubscriber.getEvents().get(1).get(0));
     }
 
-    public <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
+    public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                           FeedResponseListValidator<T> validator) {
         validateQuerySuccess(flowable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
+    public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
                                                                  FeedResponseListValidator<T> validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
@@ -828,11 +825,11 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         validator.validate(testSubscriber.values());
     }
 
-    public <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
+    public <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable, FailureValidator validator) {
         validateQueryFailure(flowable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
+    public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
                                                                  FailureValidator validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();

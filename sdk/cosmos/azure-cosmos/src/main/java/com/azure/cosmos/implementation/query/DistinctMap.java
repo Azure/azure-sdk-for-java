@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

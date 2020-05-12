@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -19,7 +18,7 @@ import java.time.ZoneOffset;
 public class Resource extends JsonSerializable {
     private String altLink;
 
-    static void validateResource(Resource resource) {
+    public static void validateResource(Resource resource) {
         if (!StringUtils.isEmpty(resource.getId())) {
             if (resource.getId().indexOf('/') != -1
                     || resource.getId().indexOf('\\') != -1
@@ -139,7 +138,7 @@ public class Resource extends JsonSerializable {
      * @param resourceId the ID associated with the resource.
      * @return the resource.
      */
-    Resource setResourceId(String resourceId) {
+    public Resource setResourceId(String resourceId) {
         super.set(Constants.Properties.R_ID, resourceId);
         return this;
     }
@@ -158,7 +157,7 @@ public class Resource extends JsonSerializable {
      *
      * @param selfLink the self link.
      */
-    Resource setSelfLink(String selfLink) {
+    public Resource setSelfLink(String selfLink) {
         super.set(Constants.Properties.SELF_LINK, selfLink);
         return this;
     }
@@ -181,7 +180,7 @@ public class Resource extends JsonSerializable {
      *
      * @param timestamp the timestamp.
      */
-    Resource setTimestamp(OffsetDateTime timestamp) {
+    public Resource setTimestamp(OffsetDateTime timestamp) {
         long seconds = timestamp.toEpochSecond();
         super.set(Constants.Properties.LAST_MODIFIED, seconds);
         return this;
@@ -210,7 +209,7 @@ public class Resource extends JsonSerializable {
      * Sets the alt-link associated with the resource from the Azure Cosmos DB
      * service.
      */
-    Resource setAltLink(String altLink) {
+    public Resource setAltLink(String altLink) {
         this.altLink = altLink;
         return this;
     }
@@ -219,7 +218,7 @@ public class Resource extends JsonSerializable {
      * Gets the alt-link associated with the resource from the Azure Cosmos DB
      * service.
      */
-    String getAltLink() {
+    public String getAltLink() {
         return this.altLink;
     }
 }
