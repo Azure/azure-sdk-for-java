@@ -99,7 +99,7 @@
   "outputs": {
     "SEARCH_SERVICE_ENDPOINT": {
       "type": "string",
-      "value": "[concat('https://', variables('searchServiceName'), parameters('searchEndpointSuffix'))]"
+      "value": "[concat('https://', variables('searchServiceName'), '.', parameters('searchEndpointSuffix'))]"
     },
     "SEARCH_SERVICE_API_KEY": {
       "type": "string",
