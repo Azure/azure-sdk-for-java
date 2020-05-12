@@ -61,7 +61,7 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
 
         //validate udf replace
         CosmosResponseValidator<CosmosAsyncUserDefinedFunctionResponse> validatorForReplace = new CosmosResponseValidator.Builder<CosmosAsyncUserDefinedFunctionResponse>()
-                .withId(udf.getId())
+                .withId(readBackUdf.getId())
                 .withUserDefinedFunctionBody("function() {var x = 11;}")
                 .notNullEtag()
                 .build();
