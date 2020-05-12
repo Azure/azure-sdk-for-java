@@ -5,6 +5,7 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
+    property = "odata\\.type",
     defaultImpl = Action.class)
 @JsonTypeName("Action")
 @JsonSubTypes({
@@ -29,7 +30,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
                 + ".Resources.ScheduledQueryRules.LogToMetricAction",
         value = LogToMetricAction.class)
 })
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@JsonFlatten
 @Immutable
 public class Action {
 }

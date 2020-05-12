@@ -5,6 +5,7 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
-    property = "odata.type",
+    property = "odata\\.type",
     defaultImpl = RuleDataSource.class)
 @JsonTypeName("RuleDataSource")
 @JsonSubTypes({
@@ -26,7 +27,7 @@ import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
         name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
         value = RuleManagementEventDataSource.class)
 })
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@JsonFlatten
 @Fluent
 public class RuleDataSource {
     /*
