@@ -10,14 +10,14 @@ import java.time.Duration;
  * All options default to not specified (null)
  */
 public class EventHubClientOptions {
-    public static final int WATCHDOG_OFF = 0;
-    public static final int WATCHDOG_MINIMUM_SECONDS = 30;
+    public static final int SILENT_OFF = 0;
+    public static final int SILENT_MINIMUM_SECONDS = 30;
 
     private Duration operationTimeout = null;
     private TransportType transportType = null;
     private RetryPolicy retryPolicy = null;
     private ProxyConfiguration proxyConfiguration = null;
-    private int watchdogTriggerSeconds = WATCHDOG_OFF;
+    private int maximumSilentTime = SILENT_OFF;
 
     /**
      * Create with all defaults
@@ -100,25 +100,26 @@ public class EventHubClientOptions {
     }
 
     /**
-     * Sets the watchdog trigger time in seconds.
+     * Sets the maximum silent time, in seconds.
+     * Use only on recommendation from the product group.
      * 
-     * @param watchdogTriggerSeconds The time in seconds, or WATCHDOG_OFF. Time must be at least WATCHDOG_MINIMUM_SECONDS.
+     * @param maximumSilentTime The time in seconds, or SILENT_OFF. Time must be at least SILENT_MINIMUM_SECONDS.
      * @return The updated options object.
      */
-    public EventHubClientOptions setWatchdogTriggerTime(int watchdogTriggerSeconds) {
-        if (watchdogTriggerSeconds < EventHubClientOptions.WATCHDOG_MINIMUM_SECONDS) {
-            throw new IllegalArgumentException("Watchdog trigger time must be at least " + EventHubClientOptions.WATCHDOG_MINIMUM_SECONDS + " seconds");
+    public EventHubClientOptions setMaximumSilentTime(int maximumSilentTime) {
+        if (maximumSilentTime < EventHubClientOptions.SILENT_MINIMUM_SECONDS) {
+            throw new IllegalArgumentException("Maximum silent time must be at least " + EventHubClientOptions.SILENT_MINIMUM_SECONDS + " seconds");
         }
-        this.watchdogTriggerSeconds = watchdogTriggerSeconds;
+        this.maximumSilentTime = maximumSilentTime;
         return this;
     }
 
     /**
-     * Gets the watchdog trigger time in seconds.
+     * Gets the maximum silent time in seconds.
      * 
-     * @return The watchdog trigger time, or WATCHDOG_OFF.
+     * @return The maximum silent time, or SILENT_OFF.
      */
-    public int getWatchdogTriggerTime() {
-        return this.watchdogTriggerSeconds;
+    public int getMaximumSilentTime() {
+        return this.maximumSilentTime;
     }
 }

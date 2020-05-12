@@ -114,7 +114,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
                 .setTransportType(options.getTransportType())
                 .setRetryPolicy(options.getRetryPolicy())
                 .setProxyConfiguration(options.getProxyConfiguration())
-                .setWatchdogTriggerTime(options.getWatchdogTriggerTime());
+                .setWatchdogTriggerTime(options.getMaximumSilentTime());
         }
 
         return builder.build()

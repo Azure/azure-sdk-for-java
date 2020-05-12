@@ -71,6 +71,27 @@ public interface EventHubClient {
 
 
     /**
+     * Synchronous version of {@link #createFromConnectionString(String, RetryPolicy, ScheduledExecutorService, ProxyConfiguration, int)}.
+     *
+     * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+     * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
+     * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
+     * @param configuration    The proxy configuration for this EventHubClient connection; {@code null} or
+     *      {@link ProxyConfiguration#SYSTEM_DEFAULTS} if the system configured proxy settings should be used.
+     * @param maximumSilentTime Use {@link EventHubClientOptions#SILENT_OFF} except on recommendation from the product group.
+     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @throws EventHubException If Service Bus service encountered problems during connection creation.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
+     */
+    static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy,
+                                                         final ScheduledExecutorService executor,
+                                                         final ProxyConfiguration configuration,
+                                                         final int maximumSilentTime)
+        throws EventHubException, IOException {
+        return ExceptionUtil.syncWithIOException(() -> createFromConnectionString(connectionString, retryPolicy, executor, configuration, maximumSilentTime).get());
+    }
+
+    /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
      * In a normal scenario (when re-direct is not enabled) - one EventHubClient instance maps to one Connection to the Azure ServiceBus EventHubs service.
      * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
@@ -139,15 +160,14 @@ public interface EventHubClient {
      * @param executor         An {@link ScheduledExecutorService} to run all tasks performed by {@link EventHubClient}.
      * @param proxyConfiguration The proxy configuration for this EventHubClient connection; {@code null} or
      *      {@link ProxyConfiguration#SYSTEM_DEFAULTS} if the system configured proxy settings should be used.
-     * @param watchdogTriggerSeconds If no receiver on this client gets a message for this many seconds, then the connection
-     *      will be recreated. Use with caution! {@link EventHubClientOptions#WATCHDOG_OFF} to disable watchdog (the default).
+     * @param maximumSilentTime Use {@link EventHubClientOptions#SILENT_OFF} except on recommendation from the product group.
      * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub.
      * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
     static CompletableFuture<EventHubClient> createFromConnectionString(
         final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
-        final ProxyConfiguration proxyConfiguration, final int watchdogTriggerSeconds) throws IOException {
-        return EventHubClientImpl.create(connectionString, retryPolicy, executor, proxyConfiguration, watchdogTriggerSeconds);
+        final ProxyConfiguration proxyConfiguration, final int maximumSilentTime) throws IOException {
+        return EventHubClientImpl.create(connectionString, retryPolicy, executor, proxyConfiguration, maximumSilentTime);
     }
 
     /**
