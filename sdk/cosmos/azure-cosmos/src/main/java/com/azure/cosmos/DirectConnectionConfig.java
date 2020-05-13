@@ -24,7 +24,6 @@ public final class DirectConnectionConfig {
      * Constructor.
      */
     public DirectConnectionConfig() {
-        this.connectionTimeout = null;
         this.idleConnectionTimeout = Duration.ZERO;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
