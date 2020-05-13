@@ -10,11 +10,11 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The AddEntityOptionalParameter model.
+ * The UpdateHierarchicalEntityOptionalParameter model.
  */
-public class AddEntityOptionalParameter {
+public class UpdateHierarchicalEntityOptionalParameter {
     /**
-     * Name of the new entity extractor.
+     * The entity's new name.
      */
     private String name;
 
@@ -36,9 +36,9 @@ public class AddEntityOptionalParameter {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the AddEntityOptionalParameter object itself.
+     * @return the UpdateHierarchicalEntityOptionalParameter object itself.
      */
-    public AddEntityOptionalParameter withName(String name) {
+    public UpdateHierarchicalEntityOptionalParameter withName(String name) {
         this.name = name;
         return this;
     }
@@ -56,9 +56,9 @@ public class AddEntityOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the AddEntityOptionalParameter object itself.
+     * @return the UpdateHierarchicalEntityOptionalParameter object itself.
      */
-    public AddEntityOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public UpdateHierarchicalEntityOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

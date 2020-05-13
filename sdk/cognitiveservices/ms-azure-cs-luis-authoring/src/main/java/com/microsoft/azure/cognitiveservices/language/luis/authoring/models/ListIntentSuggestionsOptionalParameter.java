@@ -10,14 +10,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The GetRegexEntityInfosOptionalParameter model.
+ * The ListIntentSuggestionsOptionalParameter model.
  */
-public class GetRegexEntityInfosOptionalParameter {
-    /**
-     * The number of entries to skip. Default value is 0.
-     */
-    private Integer skip;
-
+public class ListIntentSuggestionsOptionalParameter {
     /**
      * The number of entries to return. Maximum page size is 500. Default is
      * 100.
@@ -28,26 +23,6 @@ public class GetRegexEntityInfosOptionalParameter {
      * Gets or sets the preferred language for the response.
      */
     private String thisclientacceptLanguage;
-
-    /**
-     * Get the skip value.
-     *
-     * @return the skip value
-     */
-    public Integer skip() {
-        return this.skip;
-    }
-
-    /**
-     * Set the skip value.
-     *
-     * @param skip the skip value to set
-     * @return the GetRegexEntityInfosOptionalParameter object itself.
-     */
-    public GetRegexEntityInfosOptionalParameter withSkip(Integer skip) {
-        this.skip = skip;
-        return this;
-    }
 
     /**
      * Get the take value.
@@ -62,9 +37,9 @@ public class GetRegexEntityInfosOptionalParameter {
      * Set the take value.
      *
      * @param take the take value to set
-     * @return the GetRegexEntityInfosOptionalParameter object itself.
+     * @return the ListIntentSuggestionsOptionalParameter object itself.
      */
-    public GetRegexEntityInfosOptionalParameter withTake(Integer take) {
+    public ListIntentSuggestionsOptionalParameter withTake(Integer take) {
         this.take = take;
         return this;
     }
@@ -82,9 +57,9 @@ public class GetRegexEntityInfosOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the GetRegexEntityInfosOptionalParameter object itself.
+     * @return the ListIntentSuggestionsOptionalParameter object itself.
      */
-    public GetRegexEntityInfosOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ListIntentSuggestionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

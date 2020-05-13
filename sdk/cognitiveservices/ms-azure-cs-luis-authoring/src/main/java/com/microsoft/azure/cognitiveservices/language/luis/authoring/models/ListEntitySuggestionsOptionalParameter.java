@@ -10,15 +10,14 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The ImportMethodAppsOptionalParameter model.
+ * The ListEntitySuggestionsOptionalParameter model.
  */
-public class ImportMethodAppsOptionalParameter {
+public class ListEntitySuggestionsOptionalParameter {
     /**
-     * The application name to create. If not specified, the application name
-     * will be read from the imported object. If the application name already
-     * exists, an error is returned.
+     * The number of entries to return. Maximum page size is 500. Default is
+     * 100.
      */
-    private String appName;
+    private Integer take;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -26,22 +25,22 @@ public class ImportMethodAppsOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the appName value.
+     * Get the take value.
      *
-     * @return the appName value
+     * @return the take value
      */
-    public String appName() {
-        return this.appName;
+    public Integer take() {
+        return this.take;
     }
 
     /**
-     * Set the appName value.
+     * Set the take value.
      *
-     * @param appName the appName value to set
-     * @return the ImportMethodAppsOptionalParameter object itself.
+     * @param take the take value to set
+     * @return the ListEntitySuggestionsOptionalParameter object itself.
      */
-    public ImportMethodAppsOptionalParameter withAppName(String appName) {
-        this.appName = appName;
+    public ListEntitySuggestionsOptionalParameter withTake(Integer take) {
+        this.take = take;
         return this;
     }
 
@@ -58,9 +57,9 @@ public class ImportMethodAppsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the ImportMethodAppsOptionalParameter object itself.
+     * @return the ListEntitySuggestionsOptionalParameter object itself.
      */
-    public ImportMethodAppsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ListEntitySuggestionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

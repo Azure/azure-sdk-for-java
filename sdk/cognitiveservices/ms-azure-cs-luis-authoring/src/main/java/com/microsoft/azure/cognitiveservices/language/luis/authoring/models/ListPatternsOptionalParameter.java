@@ -10,9 +10,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The GetPatternsOptionalParameter model.
+ * The ListPatternsOptionalParameter model.
  */
-public class GetPatternsOptionalParameter {
+public class ListPatternsOptionalParameter {
     /**
      * The number of entries to skip. Default value is 0.
      */
@@ -42,9 +42,9 @@ public class GetPatternsOptionalParameter {
      * Set the skip value.
      *
      * @param skip the skip value to set
-     * @return the GetPatternsOptionalParameter object itself.
+     * @return the ListPatternsOptionalParameter object itself.
      */
-    public GetPatternsOptionalParameter withSkip(Integer skip) {
+    public ListPatternsOptionalParameter withSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
@@ -62,9 +62,9 @@ public class GetPatternsOptionalParameter {
      * Set the take value.
      *
      * @param take the take value to set
-     * @return the GetPatternsOptionalParameter object itself.
+     * @return the ListPatternsOptionalParameter object itself.
      */
-    public GetPatternsOptionalParameter withTake(Integer take) {
+    public ListPatternsOptionalParameter withTake(Integer take) {
         this.take = take;
         return this;
     }
@@ -82,9 +82,9 @@ public class GetPatternsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the GetPatternsOptionalParameter object itself.
+     * @return the ListPatternsOptionalParameter object itself.
      */
-    public GetPatternsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ListPatternsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

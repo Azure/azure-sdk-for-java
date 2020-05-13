@@ -12,14 +12,20 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The HierarchicalModel model.
+ * The JsonChild model.
  */
-public class HierarchicalModel {
+public class JsonChild {
     /**
      * The name property.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /**
+     * The instanceOfProperty property.
+     */
+    @JsonProperty(value = "instanceOf")
+    private String instanceOfProperty;
 
     /**
      * The children property.
@@ -34,18 +40,6 @@ public class HierarchicalModel {
     private List<JsonModelFeatureInformation> features;
 
     /**
-     * The roles property.
-     */
-    @JsonProperty(value = "roles")
-    private List<String> roles;
-
-    /**
-     * The inherits property.
-     */
-    @JsonProperty(value = "inherits")
-    private PrebuiltDomainObject inherits;
-
-    /**
      * Get the name value.
      *
      * @return the name value
@@ -58,10 +52,30 @@ public class HierarchicalModel {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the HierarchicalModel object itself.
+     * @return the JsonChild object itself.
      */
-    public HierarchicalModel withName(String name) {
+    public JsonChild withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the instanceOfProperty value.
+     *
+     * @return the instanceOfProperty value
+     */
+    public String instanceOfProperty() {
+        return this.instanceOfProperty;
+    }
+
+    /**
+     * Set the instanceOfProperty value.
+     *
+     * @param instanceOfProperty the instanceOfProperty value to set
+     * @return the JsonChild object itself.
+     */
+    public JsonChild withInstanceOfProperty(String instanceOfProperty) {
+        this.instanceOfProperty = instanceOfProperty;
         return this;
     }
 
@@ -78,9 +92,9 @@ public class HierarchicalModel {
      * Set the children value.
      *
      * @param children the children value to set
-     * @return the HierarchicalModel object itself.
+     * @return the JsonChild object itself.
      */
-    public HierarchicalModel withChildren(List<JsonChild> children) {
+    public JsonChild withChildren(List<JsonChild> children) {
         this.children = children;
         return this;
     }
@@ -98,50 +112,10 @@ public class HierarchicalModel {
      * Set the features value.
      *
      * @param features the features value to set
-     * @return the HierarchicalModel object itself.
+     * @return the JsonChild object itself.
      */
-    public HierarchicalModel withFeatures(List<JsonModelFeatureInformation> features) {
+    public JsonChild withFeatures(List<JsonModelFeatureInformation> features) {
         this.features = features;
-        return this;
-    }
-
-    /**
-     * Get the roles value.
-     *
-     * @return the roles value
-     */
-    public List<String> roles() {
-        return this.roles;
-    }
-
-    /**
-     * Set the roles value.
-     *
-     * @param roles the roles value to set
-     * @return the HierarchicalModel object itself.
-     */
-    public HierarchicalModel withRoles(List<String> roles) {
-        this.roles = roles;
-        return this;
-    }
-
-    /**
-     * Get the inherits value.
-     *
-     * @return the inherits value
-     */
-    public PrebuiltDomainObject inherits() {
-        return this.inherits;
-    }
-
-    /**
-     * Set the inherits value.
-     *
-     * @param inherits the inherits value to set
-     * @return the HierarchicalModel object itself.
-     */
-    public HierarchicalModel withInherits(PrebuiltDomainObject inherits) {
-        this.inherits = inherits;
         return this;
     }
 
