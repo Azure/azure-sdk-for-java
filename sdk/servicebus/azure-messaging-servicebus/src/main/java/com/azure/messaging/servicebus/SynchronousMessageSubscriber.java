@@ -97,7 +97,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * @param requested credits for current {@link SynchronousReceiveWork}.
      */
     private void requestCredits(long requested) {
-        long creditToAdd = requested - remaining.get();
+        long creditToAdd = requested - (remaining.get() + bufferMessages.size());
         if (creditToAdd > 0) {
             remaining.addAndGet(creditToAdd);
             subscription.request(creditToAdd);

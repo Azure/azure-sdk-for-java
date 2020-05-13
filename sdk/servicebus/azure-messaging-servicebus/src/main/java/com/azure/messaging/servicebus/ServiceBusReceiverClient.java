@@ -639,9 +639,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 if (!synchronousMessageSubscriber.compareAndSet(null, newMessageSubscriber)) {
                     newMessageSubscriber.dispose();
                 }
-
             } else {
-
                 messageSubscriber.queueWork(work);
             }
             logger.verbose("[{}] Receive request queued up.", work.getId());

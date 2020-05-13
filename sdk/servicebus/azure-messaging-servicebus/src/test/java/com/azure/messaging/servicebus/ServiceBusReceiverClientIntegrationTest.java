@@ -155,24 +155,25 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
     void multipleReceiveByOneSubscriber(MessagingEntityType entityType, boolean isSessionEnabled) {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
-        final int maxMessages = 3;
-        final int totalReceive = 7;
+        final int maxMessagesEachReceive = 3;
+        final int totalReceiver = 7;
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        for (int i = 0; i < totalReceive * maxMessages; ++i) {
-            sendMessage(message);
+        final List<ServiceBusMessage> messageList = new ArrayList<>();
+        for (int i = 0; i < totalReceiver * maxMessagesEachReceive; ++i) {
+            messageList.add(getMessage(messageId, isSessionEnabled));
         }
+
+        sendMessages(messageList);
 
         // Act & Assert
         IterableStream<ServiceBusReceivedMessageContext> messages;
 
         int receivedMessageCount;
         int totalReceivedCount = 0;
-        for (int i = 0; i < totalReceive; ++i) {
-            messages = receiver.receive(maxMessages, shortTimeOut);
+        for (int i = 0; i < totalReceiver; ++i) {
+            messages = receiver.receive(maxMessagesEachReceive, shortTimeOut);
             receivedMessageCount = 0;
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
                 assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -180,11 +181,11 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 messagesPending.decrementAndGet();
                 ++receivedMessageCount;
             }
-            assertEquals(maxMessages, receivedMessageCount);
+            assertEquals(maxMessagesEachReceive, receivedMessageCount);
             totalReceivedCount += receivedMessageCount;
         }
 
-        assertEquals(totalReceive * maxMessages, totalReceivedCount);
+        assertEquals(totalReceiver * maxMessagesEachReceive, totalReceivedCount);
     }
 
     /**
@@ -200,11 +201,12 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
+        final List<ServiceBusMessage> messageList = new ArrayList<>();
         for (int i = 0; i < totalReceiver * maxMessagesEachReceive; ++i) {
-            sendMessage(message);
+            messageList.add(getMessage(messageId, isSessionEnabled));
         }
+
+        sendMessages(messageList);
 
         // Act & Assert
         AtomicInteger totalReceivedMessages = new AtomicInteger();
