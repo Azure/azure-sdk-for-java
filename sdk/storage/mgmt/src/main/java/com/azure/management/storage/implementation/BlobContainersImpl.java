@@ -95,10 +95,7 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     @Override
     public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
-        BlobContainersInner client = this.inner();
-        return client
-            .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName)
-            .map(this::wrapImmutabilityPolicyModel);
+        return getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
@@ -111,21 +108,21 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     }
 
     @Override
-    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
+    public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
-        return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName);
+        return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
-    public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
+    public Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue) {
-        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue);
+        return inner().deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue).then();
     }
 
     @Override
     public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
-        return lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName);
+        return lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
     }
 
     @Override
@@ -149,7 +146,8 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
             accountName,
             containerName,
             immutabilityPeriodSinceCreationInDays,
-            allowProtectedAppendWrites);
+            allowProtectedAppendWrites,
+            null);
     }
 
     @Override

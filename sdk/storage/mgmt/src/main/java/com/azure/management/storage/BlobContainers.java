@@ -5,7 +5,6 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.management.storage.models.ImmutabilityPolicyInner;
 import com.azure.management.storage.models.ListContainerItemInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -158,7 +157,7 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
+    Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName);
 
     /**
@@ -179,7 +178,7 @@ public interface BlobContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
+    Mono<Void> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName, String eTagValue);
 
     /**
