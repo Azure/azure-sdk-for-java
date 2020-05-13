@@ -75,10 +75,8 @@ public final class AzureFilesIdentityBasedAuthentication {
      */
     public void validate() {
         if (directoryServiceOptions() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property directoryServiceOptions in model AzureFilesIdentityBasedAuthentication"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property directoryServiceOptions in model AzureFilesIdentityBasedAuthentication"));
         }
         if (activeDirectoryProperties() != null) {
             activeDirectoryProperties().validate();

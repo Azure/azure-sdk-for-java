@@ -111,10 +111,8 @@ public final class ApplicationGatewayFirewallExclusion {
                         "Missing required property matchVariable in model ApplicationGatewayFirewallExclusion"));
         }
         if (selectorMatchOperator() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectorMatchOperator in model ApplicationGatewayFirewallExclusion"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property selectorMatchOperator in model ApplicationGatewayFirewallExclusion"));
         }
         if (selector() == null) {
             throw logger

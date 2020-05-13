@@ -95,9 +95,10 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                                         Flux.range(1, 30),
                                         (throwable, integer) -> {
                                             if (throwable instanceof ManagementException) {
-                                                ManagementException ManagementException = (ManagementException) throwable;
+                                                ManagementException managementException =
+                                                    (ManagementException) throwable;
                                                 String exceptionMessage =
-                                                    ManagementException.getMessage().toLowerCase(Locale.ROOT);
+                                                    managementException.getMessage().toLowerCase(Locale.ROOT);
                                                 if (exceptionMessage.contains("principalnotfound")
                                                     || exceptionMessage.contains("does not exist in the directory")) {
                                                     /*

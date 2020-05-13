@@ -77,10 +77,8 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleGroupName in model ApplicationGatewayFirewallDisabledRuleGroup"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleGroupName in model ApplicationGatewayFirewallDisabledRuleGroup"));
         }
     }
 }

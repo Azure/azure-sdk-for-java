@@ -123,10 +123,8 @@ public class P2SVpnServerConfigVpnClientRootCertificate extends SubResource {
      */
     public void validate() {
         if (publicCertData() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicCertData in model P2SVpnServerConfigVpnClientRootCertificate"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publicCertData in model P2SVpnServerConfigVpnClientRootCertificate"));
         }
     }
 }

@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** The AlertingAction model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName(
-    "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction")
+    "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources"
+        + ".ScheduledQueryRules.AlertingAction")
 @JsonFlatten
 @Fluent
 public class AlertingAction extends Action {
