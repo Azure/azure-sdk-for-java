@@ -4,28 +4,19 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
- * Compute resource sku tier.
- */
+/** Compute resource sku tier. */
 @Fluent
 public class ComputeSkuTier extends ExpandableStringEnum<ComputeSkuTier> {
-    /**
-     * Static value Basic for ComputeSkuTier.
-     */
+    /** Static value Basic for ComputeSkuTier. */
     public static final ComputeSkuTier BASIC = fromString("Basic");
-    /**
-     * Static value Standard for ComputeSkuTier.
-     */
+    /** Static value Standard for ComputeSkuTier. */
     public static final ComputeSkuTier STANDARD = fromString("Standard");
-    /**
-     * Static value Premium for ComputeSkuTier.
-     */
+    /** Static value Premium for ComputeSkuTier. */
     public static final ComputeSkuTier PREMIUM = fromString("Premium");
-
 
     /**
      * Creates or finds a ComputeSkuTier from its string representation.
@@ -37,9 +28,7 @@ public class ComputeSkuTier extends ExpandableStringEnum<ComputeSkuTier> {
         return fromString(name, ComputeSkuTier.class);
     }
 
-    /**
-     * @return known ComputeSkuTier values
-     */
+    /** @return known ComputeSkuTier values */
     public static Collection<ComputeSkuTier> values() {
         return values(ComputeSkuTier.class);
     }

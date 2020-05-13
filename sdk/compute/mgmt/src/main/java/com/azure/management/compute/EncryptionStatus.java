@@ -3,13 +3,11 @@
 
 package com.azure.management.compute;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
- * Defines values for EncryptionStatuses.
- */
+/** Defines values for EncryptionStatuses. */
 public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatus> {
     /** Static value Encrypted for EncryptionInProgress. */
     public static final EncryptionStatus ENCRYPTION_INPROGRESS = fromString("EncryptionInProgress");
@@ -31,6 +29,7 @@ public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatu
 
     /**
      * Creates of finds an encryption status based on its name.
+     *
      * @param name a name to look for
      * @return an EncryptionStatus
      */
@@ -38,9 +37,7 @@ public final class EncryptionStatus extends ExpandableStringEnum<EncryptionStatu
         return fromString(name, EncryptionStatus.class);
     }
 
-    /**
-     * @return known encryption statuses
-     */
+    /** @return known encryption statuses */
     public static Collection<EncryptionStatus> values() {
         return values(EncryptionStatus.class);
     }

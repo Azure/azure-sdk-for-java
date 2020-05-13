@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentWhatIfProperties model. */
 @Fluent
 public final class DeploymentWhatIfProperties extends DeploymentProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentWhatIfProperties.class);
+
     /*
      * Optional What-If operation settings.
      */
@@ -34,5 +38,18 @@ public final class DeploymentWhatIfProperties extends DeploymentProperties {
     public DeploymentWhatIfProperties withWhatIfSettings(DeploymentWhatIfSettings whatIfSettings) {
         this.whatIfSettings = whatIfSettings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (whatIfSettings() != null) {
+            whatIfSettings().validate();
+        }
     }
 }

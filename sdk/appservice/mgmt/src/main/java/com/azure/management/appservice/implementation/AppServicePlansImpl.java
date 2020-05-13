@@ -9,17 +9,11 @@ import com.azure.management.appservice.models.AppServicePlanInner;
 import com.azure.management.appservice.models.AppServicePlansInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * The implementation for AppServicePlans.
- */
+/** The implementation for AppServicePlans. */
 class AppServicePlansImpl
-        extends TopLevelModifiableResourcesImpl<
-        AppServicePlan,
-                AppServicePlanImpl,
-                AppServicePlanInner,
-                AppServicePlansInner,
-                AppServiceManager>
-        implements AppServicePlans {
+    extends TopLevelModifiableResourcesImpl<
+        AppServicePlan, AppServicePlanImpl, AppServicePlanInner, AppServicePlansInner, AppServiceManager>
+    implements AppServicePlans {
 
     AppServicePlansImpl(AppServiceManager manager) {
         super(manager.inner().appServicePlans(), manager);
@@ -35,7 +29,7 @@ class AppServicePlansImpl
         if (inner == null) {
             return null;
         }
-        return new AppServicePlanImpl(inner.getName(), inner, this.manager());
+        return new AppServicePlanImpl(inner.name(), inner, this.manager());
     }
 
     @Override

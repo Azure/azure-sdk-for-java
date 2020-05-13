@@ -6,13 +6,13 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.IterableStream;
 
 /**
- * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue
- * using sync client.
+ * Sample demonstrates how to receive a batch of {@link ServiceBusReceivedMessage} from an Azure Service Bus Queue using
+ * sync client.
  */
 public class ReceiveMessageSyncSample {
     /**
-     * Main method to invoke this demo on how to receive a stream of {@link ServiceBusMessage} from an
-     * Azure Service Bus Queue.
+     * Main method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
+     * Service Bus Queue.
      *
      * @param args Unused arguments to the program.
      */
@@ -29,18 +29,22 @@ public class ReceiveMessageSyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
-
         ServiceBusReceiverClient receiverClient = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
             .queueName("<<queue-name>>")
             .buildClient();
 
-        final IterableStream<ServiceBusReceivedMessage> receivedMessages =  receiverClient.receive(5);
+        final IterableStream<ServiceBusReceivedMessageContext> receivedMessages =
+            receiverClient.receive(5);
 
-        receivedMessages.stream().forEach(message -> {
-            System.out.println("Received Message Id:" + message.getMessageId());
-            System.out.println("Received Message:" + new String(message.getBody()));
+        receivedMessages.stream().forEach(context -> {
+            ServiceBusReceivedMessage message = context.getMessage();
+
+            System.out.println("Received Message Id: " + message.getMessageId());
+            System.out.println("Received Message: " + new String(message.getBody()));
+
+            receiverClient.complete(message);
         });
 
         // Close the receiver.

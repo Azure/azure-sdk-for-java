@@ -3,23 +3,23 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Conflict;
-import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Resource;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos conflict properties.
  */
-public final class CosmosConflictProperties extends Resource {
+public final class CosmosConflictProperties extends ResourceWrapper{
+
+    private Conflict conflict;
 
     /**
      * Initialize a conflict object.
      */
     CosmosConflictProperties() {
-        super();
+        this.conflict = new Conflict();
     }
 
     /**
@@ -28,7 +28,7 @@ public final class CosmosConflictProperties extends Resource {
      * @param jsonString the json string that represents the conflict.
      */
     CosmosConflictProperties(String jsonString) {
-        super(jsonString);
+        this.conflict = new Conflict(jsonString);
     }
 
     /**
@@ -37,7 +37,7 @@ public final class CosmosConflictProperties extends Resource {
      * @return the operation kind.
      */
     public String getOperationKind() {
-        return super.getString(Constants.Properties.OPERATION_TYPE);
+        return this.conflict.getOperationKind();
     }
 
     /**
@@ -46,7 +46,7 @@ public final class CosmosConflictProperties extends Resource {
      * @return the resource type.
      */
     public String getResourceType() {
-        return super.getString(Constants.Properties.RESOURCE_TYPE);
+        return this.conflict.getResouceType();
     }
 
     /**
@@ -55,34 +55,16 @@ public final class CosmosConflictProperties extends Resource {
      * @return resource Id for the conflict.
      */
     String getSourceResourceId() {
-        return super.getString(Constants.Properties.SOURCE_RESOURCE_ID);
-    }
-
-    /**
-     * Gets the conflicting resource in the Azure Cosmos DB service.
-     *
-     * @param <T> the type of the object.
-     * @param classType The returned type of conflicting resource.
-     * @return The conflicting resource.
-     * @throws IllegalStateException thrown if an error occurs
-     */
-    public <T extends Resource> T getResource(Class<T> classType) {
-        String resourceAsString = super.getString(Constants.Properties.CONTENT);
-
-        if (!Strings.isNullOrEmpty(resourceAsString)) {
-            try {
-                return classType.getConstructor(String.class).newInstance(resourceAsString);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-                throw new IllegalStateException("Failed to instantiate class object.", e);
-            }
-        } else {
-            return null;
-        }
+        return this.conflict.getResourceId();
     }
 
     static List<CosmosConflictProperties> getFromV2Results(List<Conflict> results) {
         return results.stream().map(conflict -> new CosmosConflictProperties(conflict.toJson()))
                    .collect(Collectors.toList());
+    }
+
+    @Override
+    Resource getResource() {
+        return this.conflict;
     }
 }

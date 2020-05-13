@@ -3,25 +3,23 @@
 package com.azure.management.appservice.implementation;
 
 import com.azure.management.appservice.RepositoryType;
+import com.azure.management.appservice.WebAppBase;
+import com.azure.management.appservice.WebAppSourceControl;
 import com.azure.management.appservice.models.SiteSourceControlInner;
 import com.azure.management.appservice.models.SourceControlInner;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import com.azure.management.appservice.WebAppBase;
-import com.azure.management.appservice.WebAppSourceControl;
 import reactor.core.publisher.Mono;
 
 /**
- *  Implementation for WebAppSourceControl and its create and update interfaces.
- *  @param <FluentT> the fluent interface of the parent web app
- *  @param <FluentImplT> the fluent implementation of the parent web app
+ * Implementation for WebAppSourceControl and its create and update interfaces.
+ *
+ * @param <FluentT> the fluent interface of the parent web app
+ * @param <FluentImplT> the fluent implementation of the parent web app
  */
-class WebAppSourceControlImpl<
-        FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+class WebAppSourceControlImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteSourceControlInner>
-    implements
-        WebAppSourceControl,
+    implements WebAppSourceControl,
         WebAppSourceControl.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         WebAppSourceControl.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
@@ -35,7 +33,7 @@ class WebAppSourceControlImpl<
 
     @Override
     public String name() {
-        return inner().getName();
+        return inner().name();
     }
 
     @Override
@@ -98,8 +96,10 @@ class WebAppSourceControlImpl<
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String organization, String repository) {
-        return withContinuouslyIntegratedGitHubRepository(String.format("https://github.com/%s/%s", organization, repository));
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(
+        String organization, String repository) {
+        return withContinuouslyIntegratedGitHubRepository(
+            String.format("https://github.com/%s/%s", organization, repository));
     }
 
     @Override

@@ -11,33 +11,26 @@ import com.azure.management.monitor.ActivityLogAlertLeafCondition;
 import com.azure.management.monitor.models.ActivityLogAlertResourceInner;
 import com.azure.management.resources.fluentcore.arm.models.HasId;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ActivityLogAlert.
- */
+/** Implementation for ActivityLogAlert. */
 class ActivityLogAlertImpl
-        extends GroupableResourceImpl<
-            ActivityLogAlert,
-            ActivityLogAlertResourceInner,
-            ActivityLogAlertImpl,
-            MonitorManager>
-        implements
-            ActivityLogAlert,
-            ActivityLogAlert.Definition,
-            ActivityLogAlert.Update,
-            ActivityLogAlert.UpdateStages.WithActivityLogUpdate {
+    extends GroupableResourceImpl<ActivityLogAlert, ActivityLogAlertResourceInner, ActivityLogAlertImpl, MonitorManager>
+    implements ActivityLogAlert,
+        ActivityLogAlert.Definition,
+        ActivityLogAlert.Update,
+        ActivityLogAlert.UpdateStages.WithActivityLogUpdate {
 
     private Map<String, String> conditions;
 
-    ActivityLogAlertImpl(String name, final ActivityLogAlertResourceInner innerModel, final MonitorManager monitorManager) {
+    ActivityLogAlertImpl(
+        String name, final ActivityLogAlertResourceInner innerModel, final MonitorManager monitorManager) {
         super(name, innerModel, monitorManager);
         this.conditions = new TreeMap<>();
         if (innerModel.condition() != null && innerModel.condition().allOf() != null) {
@@ -64,8 +57,7 @@ class ActivityLogAlertImpl
 
     @Override
     public Collection<String> actionGroupIds() {
-        if (this.inner().actions() != null
-                && this.inner().actions().actionGroups() != null) {
+        if (this.inner().actions() != null && this.inner().actions().actionGroups() != null) {
             List<String> ids = new ArrayList<>();
             for (ActivityLogAlertActionGroup alaag : this.inner().actions().actionGroups()) {
                 ids.add(alaag.actionGroupId());
@@ -82,7 +74,7 @@ class ActivityLogAlertImpl
 
     @Override
     public Mono<ActivityLogAlert> createResourceAsync() {
-        this.inner().setLocation("global");
+        this.inner().withLocation("global");
         ActivityLogAlertAllOfCondition condition = new ActivityLogAlertAllOfCondition();
         condition.withAllOf(new ArrayList<ActivityLogAlertLeafCondition>());
         for (Map.Entry<String, String> cds : conditions.entrySet()) {
@@ -92,13 +84,21 @@ class ActivityLogAlertImpl
             condition.allOf().add(alalc);
         }
         this.inner().withCondition(condition);
-        return this.manager().inner().activityLogAlerts().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .activityLogAlerts()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<ActivityLogAlertResourceInner> getInnerAsync() {
-        return this.manager().inner().activityLogAlerts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .activityLogAlerts()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -188,4 +188,3 @@ class ActivityLogAlertImpl
         return this;
     }
 }
-

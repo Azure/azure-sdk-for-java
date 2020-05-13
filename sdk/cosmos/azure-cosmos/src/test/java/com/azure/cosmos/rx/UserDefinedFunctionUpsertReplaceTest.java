@@ -8,6 +8,7 @@ import com.azure.cosmos.models.CosmosAsyncUserDefinedFunctionResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -65,8 +66,6 @@ public class UserDefinedFunctionUpsertReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    // TODO (DANOBLE) UserDefinedFunctionUpsertReplaceTest initialization consistently times out in CI environments.
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6383
     @BeforeClass(groups = { "simple" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_UserDefinedFunctionUpsertReplaceTest() {
         client = getClientBuilder().buildAsyncClient();

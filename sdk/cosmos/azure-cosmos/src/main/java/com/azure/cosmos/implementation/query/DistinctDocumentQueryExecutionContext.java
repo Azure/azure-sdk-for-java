@@ -9,7 +9,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;

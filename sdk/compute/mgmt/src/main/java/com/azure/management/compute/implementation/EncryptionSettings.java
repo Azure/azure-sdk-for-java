@@ -10,26 +10,17 @@ import com.azure.management.compute.KeyVaultKeyReference;
 import com.azure.management.compute.KeyVaultSecretReference;
 import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.VirtualMachineEncryptionConfiguration;
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.UUID;
 
-/**
- * Internal base type exposing settings to enable and disable disk encryption extension.
- */
+/** Internal base type exposing settings to enable and disable disk encryption extension. */
 abstract class EncryptionSettings {
-    /**
-     * @return encryption specific settings to be set on virtual machine storage profile
-     */
+    /** @return encryption specific settings to be set on virtual machine storage profile */
     abstract DiskEncryptionSettings storageProfileEncryptionSettings();
-    /**
-     * @return encryption extension public settings
-     */
+    /** @return encryption extension public settings */
     abstract HashMap<String, Object> extensionPublicSettings();
-    /**
-     * @return encryption extension protected settings
-     */
+    /** @return encryption extension protected settings */
     abstract HashMap<String, Object> extensionProtectedSettings();
 
     /**
@@ -39,7 +30,8 @@ abstract class EncryptionSettings {
      * @param <T> the config type
      * @return enable settings
      */
-    static <T extends VirtualMachineEncryptionConfiguration<T>> Enable<T> createEnable(final VirtualMachineEncryptionConfiguration<T> config) {
+    static <T extends VirtualMachineEncryptionConfiguration<T>> Enable<T> createEnable(
+        final VirtualMachineEncryptionConfiguration<T> config) {
         return new Enable<T>(config);
     }
 
@@ -68,20 +60,20 @@ abstract class EncryptionSettings {
         @Override
         DiskEncryptionSettings storageProfileEncryptionSettings() {
             KeyVaultKeyReference keyEncryptionKey = null;
-            if (config.keyEncryptionKeyURL() != null) {
+            if (config.keyEncryptionKeyUrl() != null) {
                 keyEncryptionKey = new KeyVaultKeyReference();
-                keyEncryptionKey.withKeyUrl(config.keyEncryptionKeyURL());
+                keyEncryptionKey.withKeyUrl(config.keyEncryptionKeyUrl());
                 if (config.keyEncryptionKeyVaultId() != null) {
-                    keyEncryptionKey.withSourceVault(new SubResource().setId(config.keyEncryptionKeyVaultId()));
+                    keyEncryptionKey.withSourceVault(new SubResource().withId(config.keyEncryptionKeyVaultId()));
                 }
             }
             DiskEncryptionSettings diskEncryptionSettings = new DiskEncryptionSettings();
             diskEncryptionSettings
-                    .withEnabled(true)
-                    .withKeyEncryptionKey(keyEncryptionKey)
-                    .withDiskEncryptionKey(new KeyVaultSecretReference())
-                    .diskEncryptionKey()
-                    .withSourceVault(new SubResource().setId(config.keyVaultId()));
+                .withEnabled(true)
+                .withKeyEncryptionKey(keyEncryptionKey)
+                .withDiskEncryptionKey(new KeyVaultSecretReference())
+                .diskEncryptionKey()
+                .withSourceVault(new SubResource().withId(config.keyVaultId()));
             return diskEncryptionSettings;
         }
 
@@ -93,18 +85,25 @@ abstract class EncryptionSettings {
             publicSettings.put("KeyVaultURL", config.keyVaultUrl()); // KeyVault to hold "Disk Encryption Key".
             publicSettings.put("VolumeType", config.volumeType().toString());
             publicSettings.put("SequenceVersion", UUID.randomUUID());
-            if (config.keyEncryptionKeyURL() != null) {
-                publicSettings.put("KeyEncryptionKeyURL", config.keyEncryptionKeyURL()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka kek).
+            if (config.keyEncryptionKeyUrl() != null) {
+                publicSettings
+                    .put(
+                        "KeyEncryptionKeyURL",
+                        config
+                            .keyEncryptionKeyUrl()); // KeyVault to hold Key for encrypting "Disk Encryption Key" (aka
+                                                     // kek).
             }
             if (this.requestedForLegacyEncryptExtension()) {
-                // Legacy-Encrypt-Extension requires AAD credentials (AADClientID in PublicSettings & AADClientSecret in ProtectedSettings) to access KeyVault.
+                // Legacy-Encrypt-Extension requires AAD credentials (AADClientID in PublicSettings & AADClientSecret in
+                // ProtectedSettings) to access KeyVault.
                 publicSettings.put("AADClientID", config.aadClientId());
             } else {
-                // Without AAD credentials (AADClientID in PublicSettings & AADClientSecret in ProtectedSettings) to access KeyVault,
+                // Without AAD credentials (AADClientID in PublicSettings & AADClientSecret in ProtectedSettings) to
+                // access KeyVault,
                 // ARM resource id of KeyVaults are required.
                 //
                 publicSettings.put("KeyVaultResourceId", config.keyVaultId());
-                if (config.keyEncryptionKeyURL() != null && config.keyEncryptionKeyVaultId() != null) {
+                if (config.keyEncryptionKeyUrl() != null && config.keyEncryptionKeyVaultId() != null) {
                     publicSettings.put("KekVaultResourceId", config.keyEncryptionKeyVaultId());
                 }
             }
@@ -115,10 +114,10 @@ abstract class EncryptionSettings {
         HashMap<String, Object> extensionProtectedSettings() {
             if (this.requestedForLegacyEncryptExtension()) {
                 HashMap<String, Object> protectedSettings = new LinkedHashMap<>();
-                // NoAAD-Encrypt-Extension requires AAD credentials (AADClientID in PublicSettings & AADClientSecret in ProtectedSettings) to access KeyVault.
+                // NoAAD-Encrypt-Extension requires AAD credentials (AADClientID in PublicSettings & AADClientSecret in
+                // ProtectedSettings) to access KeyVault.
                 protectedSettings.put("AADClientSecret", config.aadSecret());
-                if (config.osType() == OperatingSystemTypes.LINUX
-                        && config.linuxPassPhrase() != null) {
+                if (config.osType() == OperatingSystemTypes.LINUX && config.linuxPassPhrase() != null) {
                     protectedSettings.put("Passphrase", config.linuxPassPhrase());
                 }
                 return protectedSettings;
@@ -129,31 +128,23 @@ abstract class EncryptionSettings {
             }
         }
 
-        /**
-         * @return the encryption version based on user selected OS and encryption extension.
-         */
+        /** @return the encryption version based on user selected OS and encryption extension. */
         String encryptionExtensionVersion() {
             return EncryptionExtensionIdentifier.version(this.config.osType(), requestedForNoAADEncryptExtension());
         }
 
-        /**
-         * @return true if user requested for NoAAD-Encrypt-Extension.
-         */
+        /** @return true if user requested for NoAAD-Encrypt-Extension. */
         boolean requestedForNoAADEncryptExtension() {
             return this.config.aadClientId() == null && this.config.aadSecret() == null;
         }
 
-        /**
-         * @return true if user requested for Legacy-Encrypt-Extension.
-         */
+        /** @return true if user requested for Legacy-Encrypt-Extension. */
         boolean requestedForLegacyEncryptExtension() {
             return !requestedForNoAADEncryptExtension();
         }
     }
 
-    /**
-     * Internal type exposing settings for disabling disk encryption.
-     */
+    /** Internal type exposing settings for disabling disk encryption. */
     static class Disable extends EncryptionSettings {
         private final DiskVolumeType volumeType;
 
@@ -164,8 +155,7 @@ abstract class EncryptionSettings {
         @Override
         DiskEncryptionSettings storageProfileEncryptionSettings() {
             DiskEncryptionSettings diskEncryptionSettings = new DiskEncryptionSettings();
-            diskEncryptionSettings
-                    .withEnabled(false);
+            diskEncryptionSettings.withEnabled(false);
             return diskEncryptionSettings;
         }
 

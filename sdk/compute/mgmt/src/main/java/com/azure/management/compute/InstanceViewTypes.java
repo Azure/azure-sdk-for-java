@@ -7,15 +7,13 @@ package com.azure.management.compute;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for InstanceViewTypes.
- */
+/** Defines values for InstanceViewTypes. */
 public enum InstanceViewTypes {
     /** Enum value instanceView. */
     INSTANCE_VIEW("instanceView");
 
     /** The actual serialized value for a InstanceViewTypes instance. */
-    private String value;
+    private final String value;
 
     InstanceViewTypes(String value) {
         this.value = value;

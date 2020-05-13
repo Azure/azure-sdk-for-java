@@ -3,6 +3,9 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.JavaVersion;
@@ -12,9 +15,9 @@ import com.azure.management.appservice.RuntimeStack;
 import com.azure.management.appservice.WebApp;
 import com.azure.management.appservice.WebContainer;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -101,7 +104,7 @@ public final class ManageWebAppSourceControl {
             // Create a second web app with local git source control
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -212,14 +215,14 @@ public final class ManageWebAppSourceControl {
             System.out.println("Deploying helloworld.war to " + app5Name + " through web deploy...");
 
             app5.deploy()
-                    .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-samples/src/main/resources/helloworld.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/helloworld.zip")
                     .withExistingDeploymentsDeleted(true)
                     .execute();
 
             System.out.println("Deploying coffeeshop.war to " + app5Name + " through web deploy...");
 
             app5.deploy()
-                    .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-samples/src/main/resources/coffeeshop.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/coffeeshop.zip")
                     .withExistingDeploymentsDeleted(false)
                     .execute();
 
@@ -341,13 +344,16 @@ public final class ManageWebAppSourceControl {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

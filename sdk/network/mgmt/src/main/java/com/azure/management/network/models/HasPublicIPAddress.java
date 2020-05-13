@@ -6,24 +6,16 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.network.PublicIPAddress;
 import com.azure.management.resources.fluentcore.model.Creatable;
 
-/**
- * An interface representing a model's ability to reference a public IP address.
- */
+/** An interface representing a model's ability to reference a public IP address. */
 @Fluent
 public interface HasPublicIPAddress {
-    /**
-     * @return the resource ID of the associated public IP address
-     */
+    /** @return the resource ID of the associated public IP address */
     String publicIPAddressId();
 
-    /**
-     * @return the associated public IP address
-     */
+    /** @return the associated public IP address */
     PublicIPAddress getPublicIPAddress();
 
-    /**
-     * Grouping of definition stages involving specifying the public IP address.
-     */
+    /** Grouping of definition stages involving specifying the public IP address. */
     interface DefinitionStages {
         /**
          * The stage of the definition allowing to associate the resource with an existing public IP address.
@@ -63,9 +55,10 @@ public interface HasPublicIPAddress {
             ReturnT withNewPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
             /**
-             * Creates a new public IP address in the same region and group as the resource and associates it with the resource.
-             * <p>
-             * The internal name and DNS label for the public IP address will be derived from the resource's name.
+             * Creates a new public IP address in the same region and group as the resource and associates it with the
+             * resource.
+             *
+             * <p>The internal name and DNS label for the public IP address will be derived from the resource's name.
              *
              * @return the next stage of the definition
              */
@@ -79,10 +72,10 @@ public interface HasPublicIPAddress {
          */
         interface WithNewPublicIPAddress<ReturnT> extends WithNewPublicIPAddressNoDnsLabel<ReturnT> {
             /**
-             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-             * and associates it with the resource.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label.
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS
+             * label and associates it with the resource.
+             *
+             * <p>The internal name for the public IP address will be derived from the DNS label.
              *
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the definition
@@ -91,14 +84,13 @@ public interface HasPublicIPAddress {
         }
 
         /**
-         * The stage of the definition allowing to associate the resource with a public IP address,
-         * but not allowing to create one with a DNS leaf label.
+         * The stage of the definition allowing to associate the resource with a public IP address, but not allowing to
+         * create one with a DNS leaf label.
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIPAddressNoDnsLabel<ReturnT> extends
-                WithExistingPublicIPAddress<ReturnT>,
-                WithNewPublicIPAddressNoDnsLabel<ReturnT> {
+        interface WithPublicIPAddressNoDnsLabel<ReturnT>
+            extends WithExistingPublicIPAddress<ReturnT>, WithNewPublicIPAddressNoDnsLabel<ReturnT> {
         }
 
         /**
@@ -106,15 +98,12 @@ public interface HasPublicIPAddress {
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIPAddress<ReturnT> extends
-                WithExistingPublicIPAddress<ReturnT>,
-                WithNewPublicIPAddress<ReturnT> {
+        interface WithPublicIPAddress<ReturnT>
+            extends WithExistingPublicIPAddress<ReturnT>, WithNewPublicIPAddress<ReturnT> {
         }
     }
 
-    /**
-     * Grouping of update stages involving modifying an existing reference to a public IP address.
-     */
+    /** Grouping of update stages involving modifying an existing reference to a public IP address. */
     interface UpdateStages {
         /**
          * The stage of the update allowing to associate the resource with an existing public IP address.
@@ -161,9 +150,10 @@ public interface HasPublicIPAddress {
             ReturnT withNewPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
             /**
-             * Creates a new public IP address in the same region and group as the resource and associates it with the resource.
-             * <p>
-             * The internal name and DNS label for the public IP address will be derived from the resource's name.
+             * Creates a new public IP address in the same region and group as the resource and associates it with the
+             * resource.
+             *
+             * <p>The internal name and DNS label for the public IP address will be derived from the resource's name.
              *
              * @return the next stage of the definition
              */
@@ -177,10 +167,10 @@ public interface HasPublicIPAddress {
          */
         interface WithNewPublicIPAddress<ReturnT> extends WithNewPublicIPAddressNoDnsLabel<ReturnT> {
             /**
-             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-             * and associates it with the resource.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label.
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS
+             * label and associates it with the resource.
+             *
+             * <p>The internal name for the public IP address will be derived from the DNS label.
              *
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the definition
@@ -189,14 +179,13 @@ public interface HasPublicIPAddress {
         }
 
         /**
-         * The stage of the update allowing to associate the resource with a public IP address,
-         * but not allowing to create one with a DNS leaf label.
+         * The stage of the update allowing to associate the resource with a public IP address, but not allowing to
+         * create one with a DNS leaf label.
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIPAddressNoDnsLabel<ReturnT> extends
-                WithExistingPublicIPAddress<ReturnT>,
-                WithNewPublicIPAddressNoDnsLabel<ReturnT> {
+        interface WithPublicIPAddressNoDnsLabel<ReturnT>
+            extends WithExistingPublicIPAddress<ReturnT>, WithNewPublicIPAddressNoDnsLabel<ReturnT> {
         }
 
         /**
@@ -204,14 +193,14 @@ public interface HasPublicIPAddress {
          *
          * @param <ReturnT> the next stage of the update
          */
-        interface WithPublicIPAddress<ReturnT> extends
-                WithExistingPublicIPAddress<ReturnT>,
-                WithNewPublicIPAddress<ReturnT> {
+        interface WithPublicIPAddress<ReturnT>
+            extends WithExistingPublicIPAddress<ReturnT>, WithNewPublicIPAddress<ReturnT> {
         }
     }
 
     /**
-     * Grouping of definition stages applicable as part of a parent resource update, involving specifying a public IP address.
+     * Grouping of definition stages applicable as part of a parent resource update, involving specifying a public IP
+     * address.
      */
     interface UpdateDefinitionStages {
         /**
@@ -252,9 +241,10 @@ public interface HasPublicIPAddress {
             ReturnT withNewPublicIPAddress(Creatable<PublicIPAddress> creatable);
 
             /**
-             * Creates a new public IP address in the same region and group as the resource and associates it with the resource.
-             * <p>
-             * The internal name and DNS label for the public IP address will be derived from the resource's name.
+             * Creates a new public IP address in the same region and group as the resource and associates it with the
+             * resource.
+             *
+             * <p>The internal name and DNS label for the public IP address will be derived from the resource's name.
              *
              * @return the next stage of the definition
              */
@@ -262,14 +252,13 @@ public interface HasPublicIPAddress {
         }
 
         /**
-         * The stage of the definition allowing to associate the resource with a public IP address,
-         * but not allowing to create one with a DNS leaf label.
+         * The stage of the definition allowing to associate the resource with a public IP address, but not allowing to
+         * create one with a DNS leaf label.
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIPAddressNoDnsLabel<ReturnT> extends
-                WithExistingPublicIPAddress<ReturnT>,
-                WithNewPublicIPAddressNoDnsLabel<ReturnT> {
+        interface WithPublicIPAddressNoDnsLabel<ReturnT>
+            extends WithExistingPublicIPAddress<ReturnT>, WithNewPublicIPAddressNoDnsLabel<ReturnT> {
         }
 
         /**
@@ -279,10 +268,10 @@ public interface HasPublicIPAddress {
          */
         interface WithNewPublicIPAddress<ReturnT> extends WithNewPublicIPAddressNoDnsLabel<ReturnT> {
             /**
-             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-             * and associates it with the resource.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label.
+             * Creates a new public IP address in the same region and group as the resource, with the specified DNS
+             * label and associates it with the resource.
+             *
+             * <p>The internal name for the public IP address will be derived from the DNS label.
              *
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the definition
@@ -295,9 +284,8 @@ public interface HasPublicIPAddress {
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIPAddress<ReturnT> extends
-                WithExistingPublicIPAddress<ReturnT>,
-                WithNewPublicIPAddress<ReturnT> {
+        interface WithPublicIPAddress<ReturnT>
+            extends WithExistingPublicIPAddress<ReturnT>, WithNewPublicIPAddress<ReturnT> {
         }
     }
 }

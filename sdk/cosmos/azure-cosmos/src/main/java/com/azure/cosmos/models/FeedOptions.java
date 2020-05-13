@@ -236,7 +236,7 @@ public final class FeedOptions {
      * @param maxItemCount the max number of items.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions setMaxItemCount(Integer maxItemCount) {
+    FeedOptions setMaxItemCount(Integer maxItemCount) {
         this.maxItemCount = maxItemCount;
         return this;
     }
@@ -256,7 +256,7 @@ public final class FeedOptions {
      * @param requestContinuation the request continuation.
      * @return the FeedOptionsBase.
      */
-    public FeedOptions setRequestContinuation(String requestContinuation) {
+    FeedOptions setRequestContinuation(String requestContinuation) {
         this.requestContinuation = requestContinuation;
         return this;
     }
@@ -335,8 +335,10 @@ public final class FeedOptions {
     /**
      * Sets the option to allow empty result pages in feed response. Defaults to false
      * @param emptyPagesAllowed whether to allow empty pages in feed response
+     * @return the FeedOptionsBase.
      */
-    public void setEmptyPagesAllowed(boolean emptyPagesAllowed) {
+    public FeedOptions setEmptyPagesAllowed(boolean emptyPagesAllowed) {
         this.emptyPagesAllowed = emptyPagesAllowed;
+        return this;
     }
 }

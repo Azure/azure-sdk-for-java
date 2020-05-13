@@ -3,9 +3,9 @@
 
 package com.azure.management.keyvault.implementation;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.CloudException;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.management.RestClient;
 import com.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.azure.management.keyvault.AccessPolicy;
 import com.azure.management.keyvault.AccessPolicyEntry;
@@ -48,7 +48,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
 
     private SecretAsyncClient secretClient;
     private KeyAsyncClient keyClient;
-    private RestClient vaultRestClient;
+    private HttpPipeline vaultHttpPipeline;
 
     private Keys keys;
     private Secrets secrets;
@@ -65,7 +65,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             }
         }
 
-        vaultRestClient = manager().newRestClientBuilder().buildClient();
+        vaultHttpPipeline = manager().httpPipeline();
         init();
     }
 
@@ -75,19 +75,19 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
             this.secretClient =
                 new SecretClientBuilder()
                     .vaultUrl(vaultUrl)
-                    .pipeline(vaultRestClient.getHttpPipeline())
+                    .pipeline(vaultHttpPipeline)
                     .buildAsyncClient();
             this.keyClient =
                 new KeyClientBuilder()
                     .vaultUrl(vaultUrl)
-                    .pipeline(vaultRestClient.getHttpPipeline())
+                    .pipeline(vaultHttpPipeline)
                     .buildAsyncClient();
         }
     }
 
     @Override
-    public RestClient vaultRestClient() {
-        return vaultRestClient;
+    public HttpPipeline vaultHttpPipeline() {
+        return vaultHttpPipeline;
     }
 
     @Override
@@ -348,7 +348,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                             VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
                             parameters.withLocation(regionName());
                             parameters.withProperties(inner().properties());
-                            parameters.withTags(inner().getTags());
+                            parameters.withTags(inner().tags());
                             parameters.properties().withAccessPolicies(new ArrayList<>());
                             for (AccessPolicy accessPolicy : accessPolicies) {
                                 parameters.properties().accessPolicies().add(accessPolicy.inner());

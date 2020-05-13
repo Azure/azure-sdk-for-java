@@ -42,7 +42,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
 
     private CreateKeyOptions createKeyRequest;
     private UpdateKeyOptions updateKeyRequest;
-    private ImportKeyOptions importKeyRequest;
+    private ImportKeyOptions importKeyRequest = null;
 
     private CryptographyAsyncClient cryptographyClient;
 
@@ -61,8 +61,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
     }
 
     private void init(boolean createNewCryptographyClient) {
-        createKeyRequest = null;
-        updateKeyRequest = null;
+        this.createKeyRequest = null;
         this.updateKeyRequest = new UpdateKeyOptions();
         if (inner() != null) {
             updateKeyRequest.keyProperties = inner().getProperties();
@@ -70,7 +69,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyVaultKey, KeyImpl>
                 cryptographyClient =
                     new CryptographyClientBuilder()
                         .keyIdentifier(inner().getKey().getId())
-                        .pipeline(vault.vaultRestClient().getHttpPipeline())
+                        .pipeline(vault.vaultHttpPipeline())
                         .buildAsyncClient();
             }
         }

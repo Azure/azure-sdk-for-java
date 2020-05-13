@@ -2,23 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.ApplicationGatewayBackendHealthServerInner;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * A client-side representation of the health information of an application gateway backend server.
- */
+/** A client-side representation of the health information of an application gateway backend server. */
 @Fluent
-public interface ApplicationGatewayBackendServerHealth extends
-        HasInner<ApplicationGatewayBackendHealthServerInner>,
+public interface ApplicationGatewayBackendServerHealth
+    extends HasInner<ApplicationGatewayBackendHealthServerInner>,
         HasParent<ApplicationGatewayBackendHttpConfigurationHealth> {
 
-    /**
-     * @return IP address of the server this health information pertains to
-     */
+    /** @return IP address of the server this health information pertains to */
     String ipAddress();
 
     /**
@@ -28,8 +23,6 @@ public interface ApplicationGatewayBackendServerHealth extends
      */
     NicIPConfiguration getNetworkInterfaceIPConfiguration();
 
-    /**
-     * @return the health status of the server
-     */
+    /** @return the health status of the server */
     ApplicationGatewayBackendHealthStatus status();
 }

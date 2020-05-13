@@ -17,23 +17,19 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * A utility class to operate on role assignments for a resource with service principal (object id).
- * This type is used for internal implementations, client should not take dependency on this as
- * the method signature and behaviour can change in future releases.
+ * A utility class to operate on role assignments for a resource with service principal (object id). This type is used
+ * for internal implementations, client should not take dependency on this as the method signature and behaviour can
+ * change in future releases.
  */
 public class RoleAssignmentHelper {
     /**
-     * A type that provide the service principal id (object id) and ARM resource
-     * id of the resource for which role assignments needs to be done.
+     * A type that provide the service principal id (object id) and ARM resource id of the resource for which role
+     * assignments needs to be done.
      */
     public interface IdProvider {
-        /**
-         * @return the service principal id (object id)
-         */
+        /** @return the service principal id (object id) */
         String principalId();
-        /**
-         * @return ARM resource id of the resource
-         */
+        /** @return ARM resource id of the resource */
         String resourceId();
     }
 
@@ -50,18 +46,15 @@ public class RoleAssignmentHelper {
      * @param taskGroup the pre-run task group after which role assignments create/remove tasks should run
      * @param idProvider the provider that provides service principal id and resource id
      */
-    public RoleAssignmentHelper(final GraphRbacManager rbacManager,
-                         TaskGroup taskGroup,
-                         IdProvider idProvider) {
+    public RoleAssignmentHelper(final GraphRbacManager rbacManager, TaskGroup taskGroup, IdProvider idProvider) {
         this.rbacManager = Objects.requireNonNull(rbacManager);
         this.idProvider = Objects.requireNonNull(idProvider);
         this.preRunTaskGroup = Objects.requireNonNull(taskGroup);
     }
 
     /**
-     * Specifies that applications running on an Azure service with this identity requires
-     * the given access role with scope of access limited to the current resource group that
-     * the identity resides.
+     * Specifies that applications running on an Azure service with this identity requires the given access role with
+     * scope of access limited to the current resource group that the identity resides.
      *
      * @param asRole access role to assigned to the identity
      * @return RoleAssignmentHelper
@@ -71,28 +64,28 @@ public class RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that applications running on an Azure service with this identity requires
-     * the given access role with scope of access limited to the ARM resource identified by
-     * the resource ID specified in the scope parameter.
+     * Specifies that applications running on an Azure service with this identity requires the given access role with
+     * scope of access limited to the ARM resource identified by the resource ID specified in the scope parameter.
      *
      * @param scope scope of the access represented in ARM resource ID format
      * @param asRole access role to assigned to the identity
      * @return RoleAssignmentHelper
      */
     public RoleAssignmentHelper withAccessTo(final String scope, final BuiltInRole asRole) {
-        FunctionalTaskItem creator = cxt -> {
-            final String principalId = idProvider.principalId();
-            if (principalId == null) {
-                return cxt.voidMono();
-            }
-            final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
-            final String resourceScope;
-            if (scope == CURRENT_RESOURCE_GROUP_SCOPE) {
-                resourceScope = resourceGroupId(idProvider.resourceId());
-            } else {
-                resourceScope = scope;
-            }
-            return rbacManager
+        FunctionalTaskItem creator =
+            cxt -> {
+                final String principalId = idProvider.principalId();
+                if (principalId == null) {
+                    return cxt.voidMono();
+                }
+                final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
+                final String resourceScope;
+                if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
+                    resourceScope = resourceGroupId(idProvider.resourceId());
+                } else {
+                    resourceScope = scope;
+                }
+                return rbacManager
                     .roleAssignments()
                     .define(roleAssignmentName)
                     .forObjectId(principalId)
@@ -100,21 +93,22 @@ public class RoleAssignmentHelper {
                     .withScope(resourceScope)
                     .createAsync()
                     .last()
-                    .onErrorResume((Function<Throwable, Mono<Indexable>>) throwable -> {
-                        if (isRoleAssignmentExists(throwable)) {
-                            return cxt.voidMono();
-                        }
-                        return Mono.error(throwable);
-                    });
-        };
+                    .onErrorResume(
+                        (Function<Throwable, Mono<Indexable>>)
+                        throwable -> {
+                            if (isRoleAssignmentExists(throwable)) {
+                                return cxt.voidMono();
+                            }
+                            return Mono.error(throwable);
+                        });
+            };
         this.preRunTaskGroup.addPostRunDependent(creator, rbacManager.sdkContext());
         return this;
     }
 
     /**
-     * Specifies that applications running on an Azure service with this identity requires
-     * the given access role with scope of access limited to the current resource group that
-     * the identity resides.
+     * Specifies that applications running on an Azure service with this identity requires the given access role with
+     * scope of access limited to the current resource group that the identity resides.
      *
      * @param roleDefinitionId access role definition to assigned to the identity
      * @return RoleAssignmentHelper
@@ -124,28 +118,28 @@ public class RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that applications running on an Azure service with this identity requires
-     * the access described in the given role definition with scope of access limited
-     * to an ARM resource.
+     * Specifies that applications running on an Azure service with this identity requires the access described in the
+     * given role definition with scope of access limited to an ARM resource.
      *
      * @param scope scope of the access represented in ARM resource ID format
      * @param roleDefinitionId access role definition to assigned to the identity
      * @return RoleAssignmentHelper
      */
     public RoleAssignmentHelper withAccessTo(final String scope, final String roleDefinitionId) {
-        FunctionalTaskItem creator = cxt -> {
-            final String principalId = idProvider.principalId();
-            if (principalId == null) {
-                return cxt.voidMono();
-            }
-            final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
-            final String resourceScope;
-            if (scope == CURRENT_RESOURCE_GROUP_SCOPE) {
-                resourceScope = resourceGroupId(idProvider.resourceId());
-            } else {
-                resourceScope = scope;
-            }
-            return rbacManager
+        FunctionalTaskItem creator =
+            cxt -> {
+                final String principalId = idProvider.principalId();
+                if (principalId == null) {
+                    return cxt.voidMono();
+                }
+                final String roleAssignmentName = rbacManager.sdkContext().randomUuid();
+                final String resourceScope;
+                if (scope.equals(CURRENT_RESOURCE_GROUP_SCOPE)) {
+                    resourceScope = resourceGroupId(idProvider.resourceId());
+                } else {
+                    resourceScope = scope;
+                }
+                return rbacManager
                     .roleAssignments()
                     .define(roleAssignmentName)
                     .forObjectId(principalId)
@@ -153,13 +147,15 @@ public class RoleAssignmentHelper {
                     .withScope(resourceScope)
                     .createAsync()
                     .last()
-                    .onErrorResume((Function<Throwable, Mono<Indexable>>) throwable -> {
-                        if (isRoleAssignmentExists(throwable)) {
-                            return cxt.voidMono();
-                        }
-                        return Mono.error(throwable);
-                    });
-        };
+                    .onErrorResume(
+                        (Function<Throwable, Mono<Indexable>>)
+                        throwable -> {
+                            if (isRoleAssignmentExists(throwable)) {
+                                return cxt.voidMono();
+                            }
+                            return Mono.error(throwable);
+                        });
+            };
         this.preRunTaskGroup.addPostRunDependent(creator, rbacManager.sdkContext());
         return this;
     }
@@ -175,10 +171,8 @@ public class RoleAssignmentHelper {
         if (principalId == null || !principalId.equalsIgnoreCase(idProvider.principalId())) {
             return this;
         }
-        FunctionalTaskItem remover = cxt -> rbacManager
-                .roleAssignments()
-                .deleteByIdAsync(roleAssignment.id())
-                .then(cxt.voidMono());
+        FunctionalTaskItem remover =
+            cxt -> rbacManager.roleAssignments().deleteByIdAsync(roleAssignment.id()).then(cxt.voidMono());
         this.preRunTaskGroup.addPostRunDependent(remover);
         return this;
     }
@@ -191,31 +185,44 @@ public class RoleAssignmentHelper {
      * @return RoleAssignmentHelper
      */
     public RoleAssignmentHelper withoutAccessTo(final String scope, final BuiltInRole asRole) {
-        FunctionalTaskItem remover = cxt -> rbacManager
-                .roleDefinitions()
-                .getByScopeAndRoleNameAsync(scope, asRole.toString())
-                .flatMap((Function<RoleDefinition, Mono<RoleAssignment>>) roleDefinition -> rbacManager
-                        .roleAssignments()
-                        .listByScopeAsync(scope)
-                        .filter(roleAssignment -> {
-                            if (roleDefinition != null && roleAssignment != null) {
-                                return roleAssignment.roleDefinitionId().equalsIgnoreCase(roleDefinition.id())
-                                        && roleAssignment.principalId().equalsIgnoreCase(idProvider.principalId());
-                            } else {
-                                return false;
-                            }
-                        }).last())
-                .flatMap((Function<RoleAssignment, Mono<Indexable>>) roleAssignment -> rbacManager
-                        .roleAssignments()
-                        .deleteByIdAsync(roleAssignment.id())
-                        .then(cxt.voidMono()));
+        FunctionalTaskItem remover =
+            cxt ->
+                rbacManager
+                    .roleDefinitions()
+                    .getByScopeAndRoleNameAsync(scope, asRole.toString())
+                    .flatMap(
+                        (Function<RoleDefinition, Mono<RoleAssignment>>)
+                        roleDefinition ->
+                            rbacManager
+                                .roleAssignments()
+                                .listByScopeAsync(scope)
+                                .filter(
+                                    roleAssignment -> {
+                                        if (roleDefinition != null && roleAssignment != null) {
+                                            return roleAssignment
+                                                    .roleDefinitionId()
+                                                    .equalsIgnoreCase(roleDefinition.id())
+                                                && roleAssignment
+                                                    .principalId()
+                                                    .equalsIgnoreCase(idProvider.principalId());
+                                        } else {
+                                            return false;
+                                        }
+                                    })
+                                .last())
+                    .flatMap(
+                        (Function<RoleAssignment, Mono<Indexable>>)
+                        roleAssignment ->
+                            rbacManager
+                                .roleAssignments()
+                                .deleteByIdAsync(roleAssignment.id())
+                                .then(cxt.voidMono()));
         this.preRunTaskGroup.addPostRunDependent(remover);
         return this;
     }
 
     /**
-     * This method returns ARM id of the resource group from the given ARM id of a resource
-     * in the resource group.
+     * This method returns ARM id of the resource group from the given ARM id of a resource in the resource group.
      *
      * @param id ARM id
      * @return the ARM id of resource group
@@ -223,10 +230,11 @@ public class RoleAssignmentHelper {
     private static String resourceGroupId(String id) {
         final ResourceId resourceId = ResourceId.fromString(id);
         final StringBuilder builder = new StringBuilder();
-        builder.append("/subscriptions/")
-                .append(resourceId.subscriptionId())
-                .append("/resourceGroups/")
-                .append(resourceId.resourceGroupName());
+        builder
+            .append("/subscriptions/")
+            .append(resourceId.subscriptionId())
+            .append("/resourceGroups/")
+            .append(resourceId.resourceGroupName());
         return builder.toString();
     }
 
@@ -240,8 +248,8 @@ public class RoleAssignmentHelper {
         if (throwable instanceof CloudException) {
             CloudException exception = (CloudException) throwable;
             if (exception.getValue() != null
-                    && exception.getValue().getCode() != null
-                    && exception.getValue().getCode().equalsIgnoreCase("RoleAssignmentExists")) {
+                && exception.getValue().getCode() != null
+                && exception.getValue().getCode().equalsIgnoreCase("RoleAssignmentExists")) {
                 return true;
             }
         }

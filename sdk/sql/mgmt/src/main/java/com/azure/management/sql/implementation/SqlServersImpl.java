@@ -64,7 +64,7 @@ class SqlServersImpl
             return null;
         }
 
-        return new SqlServerImpl(inner.getName(), inner, this.manager());
+        return new SqlServerImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -182,8 +182,7 @@ class SqlServersImpl
             .inner()
             .checkNameAvailabilityAsync(name)
             .map(
-                checkNameAvailabilityResponseInner ->
-                    new CheckNameAvailabilityResultImpl(checkNameAvailabilityResponseInner));
+                CheckNameAvailabilityResultImpl::new);
     }
 
     @Override
@@ -200,7 +199,7 @@ class SqlServersImpl
             .inner()
             .capabilities()
             .listByLocationAsync(region.name())
-            .map(capabilitiesInner -> new RegionCapabilitiesImpl(capabilitiesInner));
+            .map(RegionCapabilitiesImpl::new);
     }
 
     @Override
@@ -209,10 +208,8 @@ class SqlServersImpl
         List<SqlSubscriptionUsageMetric> subscriptionUsages = new ArrayList<>();
         PagedIterable<SubscriptionUsageInner> subscriptionUsageInners =
             this.manager().inner().subscriptionUsages().listByLocation(region.name());
-        if (subscriptionUsageInners != null) {
-            for (SubscriptionUsageInner inner : subscriptionUsageInners) {
-                subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
-            }
+        for (SubscriptionUsageInner inner : subscriptionUsageInners) {
+            subscriptionUsages.add(new SqlSubscriptionUsageMetricImpl(region.name(), inner, this.manager()));
         }
         return Collections.unmodifiableList(subscriptionUsages);
     }

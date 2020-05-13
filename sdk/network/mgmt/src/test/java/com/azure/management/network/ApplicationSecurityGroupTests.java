@@ -15,7 +15,10 @@ public class ApplicationSecurityGroupTests extends NetworkManagementTest {
     public void canCRUDApplicationSecurityGroup() throws Exception {
         String asgName = sdkContext.randomResourceName("asg", 15);
 
-        ApplicationSecurityGroup applicationSecurityGroup = networkManager.applicationSecurityGroups().define(asgName)
+        ApplicationSecurityGroup applicationSecurityGroup =
+            networkManager
+                .applicationSecurityGroups()
+                .define(asgName)
                 .withRegion(Region.US_SOUTH_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withTag("tag1", "value1")

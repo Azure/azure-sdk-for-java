@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 
 import java.util.List;
@@ -11,13 +11,14 @@ import java.util.stream.Collectors;
 /**
  * The type Cosmos user defined function properties.
  */
-public final class CosmosUserDefinedFunctionProperties extends Resource {
+public final class CosmosUserDefinedFunctionProperties extends ResourceWrapper {
 
+    private UserDefinedFunction userDefinedFunction;
     /**
      * Constructor
      */
     public CosmosUserDefinedFunctionProperties() {
-        super();
+        this.userDefinedFunction = new UserDefinedFunction();
     }
 
     /**
@@ -26,7 +27,7 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @param jsonString the json string that represents the cosmos user defined function properties.
      */
     CosmosUserDefinedFunctionProperties(String jsonString) {
-        super(jsonString);
+        this.userDefinedFunction = new UserDefinedFunction(jsonString);
     }
 
     /**
@@ -36,7 +37,7 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @return the current instance of cosmos user defined function properties
      */
     public CosmosUserDefinedFunctionProperties setId(String id) {
-        super.setId(id);
+        this.userDefinedFunction.setId(id);
         return this;
     }
 
@@ -46,7 +47,7 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @return the body.
      */
     public String getBody() {
-        return super.getString(Constants.Properties.BODY);
+        return this.userDefinedFunction.getBody();
     }
 
     /**
@@ -56,8 +57,13 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @return the CosmosUserDefinedFunctionProperties.
      */
     public CosmosUserDefinedFunctionProperties setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
+        this.userDefinedFunction.setBody(body);
         return this;
+    }
+
+    @Override
+    Resource getResource() {
+        return this.userDefinedFunction;
     }
 
     static List<CosmosUserDefinedFunctionProperties> getFromV2Results(List<UserDefinedFunction> results) {

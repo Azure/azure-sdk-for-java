@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncPermission;
 import com.azure.cosmos.CosmosAsyncUser;
+import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -23,7 +24,7 @@ public class CosmosAsyncPermissionResponse extends CosmosResponse<CosmosPermissi
         } else {
             CosmosPermissionProperties props = new CosmosPermissionProperties(bodyAsString);
             super.setProperties(props);
-            permissionClient = BridgeInternal.createCosmosAsyncPermission(props.getId(), cosmosUser);
+            permissionClient = BridgeInternal.createCosmosAsyncPermission(ModelBridgeInternal.getResourceFromResourceWrapper(props).getId(), cosmosUser);
         }
     }
 

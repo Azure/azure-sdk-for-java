@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
@@ -13,7 +14,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class defines a custom exception type for all operations on
@@ -31,7 +34,7 @@ import java.util.Map;
  * When a transport level error happens that request is not able to reach the
  * service, an IllegalStateException is thrown instead of CosmosClientException.
  */
-public class CosmosClientException extends RuntimeException {
+public class CosmosClientException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
@@ -258,7 +261,7 @@ public class CosmosClientException extends RuntimeException {
         return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='"
                    + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
                    + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
-                   + requestHeaders + '}';
+                   + filterSensitiveData(requestHeaders) + '}';
     }
 
     String innerErrorMessage() {
@@ -278,6 +281,14 @@ public class CosmosClientException extends RuntimeException {
             return String.format("[class: %s, message: %s]", cause.getClass(), cause.getMessage());
         }
         return null;
+    }
+
+    private List<Map.Entry<String, String>> filterSensitiveData(Map<String, String> requestHeaders) {
+        if (requestHeaders == null) {
+            return null;
+        }
+        return requestHeaders.entrySet().stream().filter(entry -> !HttpConstants.HttpHeaders.AUTHORIZATION.equalsIgnoreCase(entry.getKey()))
+                             .collect(Collectors.toList());
     }
 
     void setResourceAddress(String resourceAddress) {

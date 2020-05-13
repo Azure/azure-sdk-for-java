@@ -14,9 +14,9 @@ import com.azure.management.network.ApplicationGatewayProtocol;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -25,19 +25,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Base implementation for ApplicationGatewayBackendConfiguration.
- */
+/** Base implementation for ApplicationGatewayBackendConfiguration. */
 class ApplicationGatewayBackendHttpConfigurationImpl
-        extends
-        ChildResourceImpl<ApplicationGatewayBackendHttpSettings, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayBackendHttpConfiguration,
+    extends ChildResourceImpl<ApplicationGatewayBackendHttpSettings, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayBackendHttpConfiguration,
         ApplicationGatewayBackendHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayBackendHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayBackendHttpConfiguration.Update {
 
-    ApplicationGatewayBackendHttpConfigurationImpl(ApplicationGatewayBackendHttpSettings inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayBackendHttpConfigurationImpl(
+        ApplicationGatewayBackendHttpSettings inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -50,7 +47,8 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return Collections.unmodifiableMap(certs);
         } else {
             for (SubResource ref : this.inner().authenticationCertificates()) {
-                ApplicationGatewayAuthenticationCertificate cert = this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.getId()));
+                ApplicationGatewayAuthenticationCertificate cert =
+                    this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.id()));
                 if (cert != null) {
                     certs.put(cert.name(), cert);
                 }
@@ -67,7 +65,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public ApplicationGatewayProbe probe() {
         if (this.parent().probes() != null && this.inner().probe() != null) {
-            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().getId()));
+            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().id()));
         } else {
             return null;
         }
@@ -167,8 +165,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         if (name == null) {
             return this.withoutProbe();
         } else {
-            SubResource probeRef = new SubResource()
-                    .setId(this.parent().futureResourceId() + "/probes/" + name);
+            SubResource probeRef = new SubResource().withId(this.parent().futureResourceId() + "/probes/" + name);
             this.inner().withProbe(probeRef);
             return this;
         }
@@ -180,23 +177,17 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeaderFromBackend() {
-        this.inner()
-                .withPickHostNameFromBackendAddress(true)
-                .withHostName(null);
+        this.inner().withPickHostNameFromBackendAddress(true).withHostName(null);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withHostHeader(String hostHeader) {
-        this.inner()
-                .withHostName(hostHeader)
-                .withPickHostNameFromBackendAddress(false);
+        this.inner().withHostName(hostHeader).withPickHostNameFromBackendAddress(false);
         return this;
     }
 
     public ApplicationGatewayBackendHttpConfigurationImpl withoutHostHeader() {
-        this.inner()
-                .withHostName(null)
-                .withPickHostNameFromBackendAddress(false);
+        this.inner().withHostName(null).withPickHostNameFromBackendAddress(false);
         return this;
     }
 
@@ -238,15 +229,15 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         if (name == null) {
             return this;
         }
-        SubResource certRef = new SubResource()
-                .setId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
+        SubResource certRef =
+            new SubResource().withId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
         List<SubResource> refs = this.inner().authenticationCertificates();
         if (refs == null) {
             refs = new ArrayList<>();
             this.inner().withAuthenticationCertificates(refs);
         }
         for (SubResource ref : refs) {
-            if (ref.getId().equalsIgnoreCase(certRef.getId())) {
+            if (ref.id().equalsIgnoreCase(certRef.id())) {
                 return this;
             }
         }
@@ -260,7 +251,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
 
-        String encoded = new String(Base64.getEncoder().encode(derData));
+        String encoded = new String(Base64.getEncoder().encode(derData), StandardCharsets.UTF_8);
         return this.withAuthenticationCertificateFromBase64(encoded);
     }
 
@@ -281,16 +272,15 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         // If matching cert reference not found, create a new one
         if (certName == null) {
             certName = this.parent().manager().getSdkContext().randomResourceName("cert", 20);
-            this.parent().defineAuthenticationCertificate(certName)
-                    .fromBase64(base64Data)
-                    .attach();
+            this.parent().defineAuthenticationCertificate(certName).fromBase64(base64Data).attach();
         }
 
         return this.withAuthenticationCertificate(certName).withHttps();
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withAuthenticationCertificateFromFile(File certificateFile) throws IOException {
+    public ApplicationGatewayBackendHttpConfigurationImpl withAuthenticationCertificateFromFile(File certificateFile)
+        throws IOException {
         if (certificateFile == null) {
             return this;
         } else {
@@ -305,7 +295,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
         for (SubResource ref : this.inner().authenticationCertificates()) {
-            if (ResourceUtils.nameFromResourceId(ref.getId()).equalsIgnoreCase(name)) {
+            if (ResourceUtils.nameFromResourceId(ref.id()).equalsIgnoreCase(name)) {
                 this.inner().authenticationCertificates().remove(ref);
                 break;
             }
@@ -320,9 +310,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl withHttp() {
-        return this
-                .withoutAuthenticationCertificates()
-                .withProtocol(ApplicationGatewayProtocol.HTTP);
+        return this.withoutAuthenticationCertificates().withProtocol(ApplicationGatewayProtocol.HTTP);
     }
 
     @Override

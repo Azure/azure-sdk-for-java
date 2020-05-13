@@ -4,8 +4,6 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.models.AvailabilitySetInner;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.compute.AvailabilitySet;
 import com.azure.management.compute.AvailabilitySetSkuTypes;
 import com.azure.management.compute.InstanceViewStatus;
@@ -13,30 +11,21 @@ import com.azure.management.compute.ProximityPlacementGroup;
 import com.azure.management.compute.ProximityPlacementGroupType;
 import com.azure.management.compute.Sku;
 import com.azure.management.compute.VirtualMachineSize;
+import com.azure.management.compute.models.AvailabilitySetInner;
+import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AvailabilitySet and its create and update interfaces.
- */
+/** The implementation for AvailabilitySet and its create and update interfaces. */
 class AvailabilitySetImpl
-    extends
-        GroupableResourceImpl<
-                AvailabilitySet,
-                AvailabilitySetInner,
-                AvailabilitySetImpl,
-                ComputeManager>
-    implements
-        AvailabilitySet,
-        AvailabilitySet.Definition,
-        AvailabilitySet.Update {
+    extends GroupableResourceImpl<AvailabilitySet, AvailabilitySetInner, AvailabilitySetImpl, ComputeManager>
+    implements AvailabilitySet, AvailabilitySet.Definition, AvailabilitySet.Update {
 
     private Set<String> idOfVMsInSet;
     // Name of the new proximity placement group
@@ -74,7 +63,7 @@ class AvailabilitySetImpl
         if (idOfVMsInSet == null) {
             idOfVMsInSet = new HashSet<>();
             for (SubResource resource : this.inner().virtualMachines()) {
-                idOfVMsInSet.add(resource.getId());
+                idOfVMsInSet.add(resource.id());
             }
         }
         return Collections.unmodifiableSet(idOfVMsInSet);
@@ -82,8 +71,9 @@ class AvailabilitySetImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().getId());
-        ProximityPlacementGroupInner plgInner = manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
+        ProximityPlacementGroupInner plgInner =
+            manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
             return null;
         } else {
@@ -98,15 +88,19 @@ class AvailabilitySetImpl
 
     @Override
     public PagedIterable<VirtualMachineSize> listVirtualMachineSizes() {
-        return manager().inner().availabilitySets()
-                .listAvailableSizes(resourceGroupName(), name())
-                .mapPage(virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
+        return manager()
+            .inner()
+            .availabilitySets()
+            .listAvailableSizes(resourceGroupName(), name())
+            .mapPage(virtualMachineSizeInner -> new VirtualMachineSizeImpl(virtualMachineSizeInner));
     }
 
     @Override
     public Mono<AvailabilitySet> refreshAsync() {
-        return super.refreshAsync()
-                .map(availabilitySet -> {
+        return super
+            .refreshAsync()
+            .map(
+                availabilitySet -> {
                     AvailabilitySetImpl impl = (AvailabilitySetImpl) availabilitySet;
                     impl.idOfVMsInSet = null;
                     return impl;
@@ -115,8 +109,7 @@ class AvailabilitySetImpl
 
     @Override
     protected Mono<AvailabilitySetInner> getInnerAsync() {
-        return this.manager().inner().availabilitySets()
-                .getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().availabilitySets().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -140,17 +133,17 @@ class AvailabilitySetImpl
         return this;
     }
 
-
     @Override
     public AvailabilitySetImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().setId(proximityPlacementGroupId));
+        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         this.newProximityPlacementGroupType = null;
         this.newProximityPlacementGroupName = null;
         return this;
     }
 
     @Override
-    public AvailabilitySetImpl withNewProximityPlacementGroup(String proximityPlacementGroupName, ProximityPlacementGroupType type) {
+    public AvailabilitySetImpl withNewProximityPlacementGroup(
+        String proximityPlacementGroupName, ProximityPlacementGroupType type) {
         this.newProximityPlacementGroupName = proximityPlacementGroupName;
         this.newProximityPlacementGroupType = type;
 
@@ -176,14 +169,20 @@ class AvailabilitySetImpl
         if (this.inner().platformUpdateDomainCount() == null) {
             this.inner().withPlatformUpdateDomainCount(5);
         }
-        return this.createNewProximityPlacementGroupAsync()
-                .flatMap(availabilitySet -> manager().inner().availabilitySets()
-                    .createOrUpdateAsync(resourceGroupName(), name(), inner())
-                    .map(availabilitySetInner -> {
-                        self.setInner(availabilitySetInner);
-                        idOfVMsInSet = null;
-                        return self;
-                    }));
+        return this
+            .createNewProximityPlacementGroupAsync()
+            .flatMap(
+                availabilitySet ->
+                    manager()
+                        .inner()
+                        .availabilitySets()
+                        .createOrUpdateAsync(resourceGroupName(), name(), inner())
+                        .map(
+                            availabilitySetInner -> {
+                                self.setInner(availabilitySetInner);
+                                idOfVMsInSet = null;
+                                return self;
+                            }));
     }
 
     private Mono<AvailabilitySetImpl> createNewProximityPlacementGroupAsync() {
@@ -191,11 +190,15 @@ class AvailabilitySetImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.setLocation(this.inner().getLocation());
-                return this.manager().inner().proximityPlacementGroups()
-                        .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
-                        .map(createdPlgInner -> {
-                            this.inner().withProximityPlacementGroup(new SubResource().setId(createdPlgInner.getId()));
+                plgInner.withLocation(this.inner().location());
+                return this
+                    .manager()
+                    .inner()
+                    .proximityPlacementGroups()
+                    .createOrUpdateAsync(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner)
+                    .map(
+                        createdPlgInner -> {
+                            this.inner().withProximityPlacementGroup(new SubResource().withId(createdPlgInner.id()));
                             return this;
                         });
             }

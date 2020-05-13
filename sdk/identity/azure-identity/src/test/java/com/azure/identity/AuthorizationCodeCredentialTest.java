@@ -47,7 +47,7 @@ public class AuthorizationCodeCredentialTest {
         IdentityClient identityClient = PowerMockito.mock(IdentityClient.class);
         when(identityClient.authenticateWithAuthorizationCode(eq(request1), eq(authCode1), eq(redirectUri)))
             .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        when(identityClient.authenticateWithUserRefreshToken(any(), any()))
+        when(identityClient.authenticateWithMsalAccount(any(), any()))
             .thenAnswer(invocation -> {
                 TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
                 if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {

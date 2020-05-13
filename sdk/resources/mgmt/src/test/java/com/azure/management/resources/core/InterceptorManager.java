@@ -30,11 +30,11 @@ import java.util.zip.GZIPInputStream;
 /**
  * Created by vlashch on 7/13/2017.
  */
-public class InterceptorManager {
+public final class InterceptorManager {
 
-    private final static String RECORD_FOLDER = "session-records/";
-    private final static String BODY_LOGGING = "x-ms-body-logging";
-    private final static int HTTP_TEMPORARY_REDIRECT = 307; // HTTP Status Code
+    private static final String RECORD_FOLDER = "session-records/";
+    private static final String BODY_LOGGING = "x-ms-body-logging";
+    private static final int HTTP_TEMPORARY_REDIRECT = 307; // HTTP Status Code
 
     private Map<String, String> textReplacementRules = new HashMap<>();
     // Stores a map of all the HTTP properties in a session
@@ -91,7 +91,7 @@ public class InterceptorManager {
                 break;
             default:
                 System.out.println("==> Unknown AZURE_TEST_MODE: " + testMode);
-        };
+        }
         return null;
     }
 
@@ -106,7 +106,7 @@ public class InterceptorManager {
                 break;
             default:
                 System.out.println("==> Unknown AZURE_TEST_MODE: " + testMode);
-        };
+        }
     }
 
     private Mono<HttpResponse> record(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
@@ -114,30 +114,32 @@ public class InterceptorManager {
         HttpHeaders headers = request.getHeaders();
 
         NetworkCallRecord networkCallRecord = new NetworkCallRecord();
-        networkCallRecord.Headers = new HashMap<>();
+        networkCallRecord.setHeaders(new HashMap<>());
 
         if (headers.get("Content-Type") != null) {
-            networkCallRecord.Headers.put("Content-Type", headers.getValue("Content-Type"));
+            networkCallRecord.headers().put("Content-Type", headers.getValue("Content-Type"));
         }
         if (headers.get("x-ms-version") != null) {
-            networkCallRecord.Headers.put("x-ms-version", headers.getValue("x-ms-version"));
+            networkCallRecord.headers().put("x-ms-version", headers.getValue("x-ms-version"));
         }
         if (headers.get("User-Agent") != null) {
-            networkCallRecord.Headers.put("User-Agent", headers.getValue("User-Agent"));
+            networkCallRecord.headers().put("User-Agent", headers.getValue("User-Agent"));
         }
 
-        networkCallRecord.Method = request.getHttpMethod().toString();
-        networkCallRecord.Uri = applyReplacementRule(request.getUrl().toString().replaceAll("\\?$", ""));
+        networkCallRecord.setMethod(request.getHttpMethod().toString());
+        networkCallRecord.setUri(applyReplacementRule(request.getUrl().toString().replaceAll("\\?$", "")));
 
         return next.process().flatMap(response -> {
-            networkCallRecord.Response = new HashMap<>();
-            networkCallRecord.Response.put("StatusCode", Integer.toString(response.getStatusCode()));
-            Mono<HttpResponse> bufferResponse = extractResponseData(networkCallRecord.Response, response);
+            networkCallRecord.setResponse(new HashMap<>());
+            networkCallRecord.response().put("StatusCode", Integer.toString(response.getStatusCode()));
+            Mono<HttpResponse> bufferResponse = extractResponseData(networkCallRecord.response(), response);
 
             // remove pre-added header if this is a waiting or redirection
-            if (networkCallRecord.Response.containsKey("Body") && networkCallRecord.Response.get("Body").contains("<Status>InProgress</Status>")
-                    || Integer.parseInt(networkCallRecord.Response.get("StatusCode")) == HTTP_TEMPORARY_REDIRECT) {
+            if (networkCallRecord.response().containsKey("Body")
+                    && networkCallRecord.response().get("Body").contains("<Status>InProgress</Status>")
+                    || Integer.parseInt(networkCallRecord.response().get("StatusCode")) == HTTP_TEMPORARY_REDIRECT) {
                 // Do nothing
+                return bufferResponse;
             } else {
                 synchronized (recordedData.getNetworkCallRecords()) {
                     recordedData.getNetworkCallRecords().add(networkCallRecord);
@@ -156,9 +158,9 @@ public class InterceptorManager {
         incomingUrl = removeHost(incomingUrl);
         NetworkCallRecord networkCallRecord = null;
         synchronized (recordedData) {
-            for (Iterator<NetworkCallRecord> iterator = recordedData.getNetworkCallRecords().iterator(); iterator.hasNext(); ) {
+            for (Iterator<NetworkCallRecord> iterator = recordedData.getNetworkCallRecords().iterator(); iterator.hasNext();) {
                 NetworkCallRecord record = iterator.next();
-                if (record.Method.equalsIgnoreCase(incomingMethod) && removeHost(record.Uri).equalsIgnoreCase(incomingUrl)) {
+                if (record.method().equalsIgnoreCase(incomingMethod) && removeHost(record.uri()).equalsIgnoreCase(incomingUrl)) {
                     networkCallRecord = record;
                     iterator.remove();
                     break;
@@ -172,13 +174,13 @@ public class InterceptorManager {
             return Mono.error(new IOException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
 
-        int recordStatusCode = Integer.parseInt(networkCallRecord.Response.get("StatusCode"));
+        int recordStatusCode = Integer.parseInt(networkCallRecord.response().get("StatusCode"));
 
         final NetworkCallRecord finalNetworkCallRecord = networkCallRecord;
 
         RecordedHttpResponse response = new RecordedHttpResponse(recordStatusCode, context.getHttpRequest());
 
-        for (Map.Entry<String, String> pair : finalNetworkCallRecord.Response.entrySet()) {
+        for (Map.Entry<String, String> pair : finalNetworkCallRecord.response().entrySet()) {
             if (!pair.getKey().equals("StatusCode") && !pair.getKey().equals("Body") && !pair.getKey().equals("Content-Length")) {
                 String rawHeader = pair.getValue();
                 for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
@@ -191,7 +193,7 @@ public class InterceptorManager {
         }
 
         try {
-            String rawBody = finalNetworkCallRecord.Response.get("Body");
+            String rawBody = finalNetworkCallRecord.response().get("Body");
             if (rawBody != null) {
                 for (Map.Entry<String, String> rule : textReplacementRules.entrySet()) {
                     if (rule.getValue() != null) {
@@ -199,7 +201,7 @@ public class InterceptorManager {
                     }
                 }
 
-                String rawContentType = finalNetworkCallRecord.Response.get("content-type");
+                String rawContentType = finalNetworkCallRecord.response().get("content-type");
                 String contentType = rawContentType == null
                         ? "application/json; charset=utf-8"
                         : rawContentType;
@@ -281,7 +283,7 @@ public class InterceptorManager {
 
         try {
             contentLength = Long.parseLong(contentLengthString);
-        } catch (NumberFormatException e) {}
+        } catch (NumberFormatException e) { }
 
         return contentLength;
     }

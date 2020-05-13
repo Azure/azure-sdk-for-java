@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The IdentityUserAssignedIdentities model. */
 @Immutable
 public final class IdentityUserAssignedIdentities {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityUserAssignedIdentities.class);
+
     /*
      * The principal id of user assigned identity.
      */
@@ -38,5 +42,13 @@ public final class IdentityUserAssignedIdentities {
      */
     public String clientId() {
         return this.clientId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

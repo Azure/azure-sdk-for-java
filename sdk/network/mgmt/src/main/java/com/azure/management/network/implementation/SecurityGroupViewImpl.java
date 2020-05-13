@@ -7,18 +7,15 @@ import com.azure.management.network.SecurityGroupNetworkInterface;
 import com.azure.management.network.SecurityGroupView;
 import com.azure.management.network.models.SecurityGroupViewResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation of SecurityGroupView.
- */
+/** The implementation of SecurityGroupView. */
 class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResultInner, SecurityGroupView>
-        implements SecurityGroupView {
+    implements SecurityGroupView {
     private Map<String, SecurityGroupNetworkInterface> networkInterfaces;
     private final NetworkWatcherImpl parent;
     private final String vmId;
@@ -35,7 +32,7 @@ class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResu
         List<SecurityGroupNetworkInterface> securityGroupNetworkInterfaces = this.inner().networkInterfaces();
         if (securityGroupNetworkInterfaces != null) {
             for (SecurityGroupNetworkInterface networkInterface : securityGroupNetworkInterfaces) {
-                this.networkInterfaces.put(networkInterface.getId(), networkInterface);
+                this.networkInterfaces.put(networkInterface.id(), networkInterface);
             }
         }
     }
@@ -57,16 +54,23 @@ class SecurityGroupViewImpl extends RefreshableWrapperImpl<SecurityGroupViewResu
 
     @Override
     public Mono<SecurityGroupView> refreshAsync() {
-        return super.refreshAsync().map(securityGroupView -> {
-            SecurityGroupViewImpl impl = (SecurityGroupViewImpl) securityGroupView;
-            impl.initializeFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                securityGroupView -> {
+                    SecurityGroupViewImpl impl = (SecurityGroupViewImpl) securityGroupView;
+                    impl.initializeFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<SecurityGroupViewResultInner> getInnerAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getVMSecurityRulesAsync(parent.resourceGroupName(), parent.name(), vmId);
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getVMSecurityRulesAsync(parent.resourceGroupName(), parent.name(), vmId);
     }
 }

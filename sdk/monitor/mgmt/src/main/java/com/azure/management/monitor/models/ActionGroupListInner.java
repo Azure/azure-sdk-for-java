@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActionGroupList model.
- */
+/** The ActionGroupList model. */
 @Fluent
 public final class ActionGroupListInner {
     /*
@@ -27,7 +25,7 @@ public final class ActionGroupListInner {
 
     /**
      * Get the value property: The list of action groups.
-     * 
+     *
      * @return the value value.
      */
     public List<ActionGroupResourceInner> value() {
@@ -36,7 +34,7 @@ public final class ActionGroupListInner {
 
     /**
      * Set the value property: The list of action groups.
-     * 
+     *
      * @param value the value value to set.
      * @return the ActionGroupListInner object itself.
      */
@@ -46,9 +44,8 @@ public final class ActionGroupListInner {
     }
 
     /**
-     * Get the nextLink property: Provides the link to retrieve the next set of
-     * elements.
-     * 
+     * Get the nextLink property: Provides the link to retrieve the next set of elements.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,9 +53,8 @@ public final class ActionGroupListInner {
     }
 
     /**
-     * Set the nextLink property: Provides the link to retrieve the next set of
-     * elements.
-     * 
+     * Set the nextLink property: Provides the link to retrieve the next set of elements.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ActionGroupListInner object itself.
      */

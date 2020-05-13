@@ -4,19 +4,17 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.VirtualMachineSizeInner;
-import com.azure.management.compute.models.VirtualMachineSizesInner;
 import com.azure.management.compute.VirtualMachineSize;
 import com.azure.management.compute.VirtualMachineSizes;
+import com.azure.management.compute.models.VirtualMachineSizeInner;
+import com.azure.management.compute.models.VirtualMachineSizesInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
-/**
- * The implementation for {@link VirtualMachineSizes}.
- */
+/** The implementation for {@link VirtualMachineSizes}. */
 class VirtualMachineSizesImpl
-        extends ReadableWrappersImpl<VirtualMachineSize, VirtualMachineSizeImpl, VirtualMachineSizeInner>
-        implements VirtualMachineSizes {
+    extends ReadableWrappersImpl<VirtualMachineSize, VirtualMachineSizeImpl, VirtualMachineSizeInner>
+    implements VirtualMachineSizes {
     private final VirtualMachineSizesInner innerCollection;
 
     VirtualMachineSizesImpl(VirtualMachineSizesInner innerCollection) {
@@ -48,7 +46,6 @@ class VirtualMachineSizesImpl
 
     @Override
     public PagedFlux<VirtualMachineSize> listByRegionAsync(String regionName) {
-        return innerCollection.listAsync(regionName)
-                .mapPage(VirtualMachineSizeImpl::new);
+        return innerCollection.listAsync(regionName).mapPage(VirtualMachineSizeImpl::new);
     }
 }

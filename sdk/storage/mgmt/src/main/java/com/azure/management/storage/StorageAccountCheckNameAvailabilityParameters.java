@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The StorageAccountCheckNameAvailabilityParameters model.
- */
+/** The StorageAccountCheckNameAvailabilityParameters model. */
 @Fluent
 public final class StorageAccountCheckNameAvailabilityParameters {
     /*
@@ -24,17 +22,14 @@ public final class StorageAccountCheckNameAvailabilityParameters {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /**
-     * Creates an instance of StorageAccountCheckNameAvailabilityParameters
-     * class.
-     */
+    /** Creates an instance of StorageAccountCheckNameAvailabilityParameters class. */
     public StorageAccountCheckNameAvailabilityParameters() {
         type = "Microsoft.Storage/storageAccounts";
     }
 
     /**
      * Get the name property: The storage account name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -43,7 +38,7 @@ public final class StorageAccountCheckNameAvailabilityParameters {
 
     /**
      * Set the name property: The storage account name.
-     * 
+     *
      * @param name the name value to set.
      * @return the StorageAccountCheckNameAvailabilityParameters object itself.
      */
@@ -53,9 +48,8 @@ public final class StorageAccountCheckNameAvailabilityParameters {
     }
 
     /**
-     * Get the type property: The type of resource,
-     * Microsoft.Storage/storageAccounts.
-     * 
+     * Get the type property: The type of resource, Microsoft.Storage/storageAccounts.
+     *
      * @return the type value.
      */
     public String type() {
@@ -63,9 +57,8 @@ public final class StorageAccountCheckNameAvailabilityParameters {
     }
 
     /**
-     * Set the type property: The type of resource,
-     * Microsoft.Storage/storageAccounts.
-     * 
+     * Set the type property: The type of resource, Microsoft.Storage/storageAccounts.
+     *
      * @param type the type value to set.
      * @return the StorageAccountCheckNameAvailabilityParameters object itself.
      */

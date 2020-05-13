@@ -2,26 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosKeyCredential;
-import com.azure.cosmos.models.CosmosResourceType;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
-import com.azure.cosmos.models.Permission;
-import com.azure.cosmos.models.RequestVerb;
-import com.azure.cosmos.models.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.SqlParameter;
-import com.azure.cosmos.CosmosAuthorizationTokenResolver;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -41,9 +35,9 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
+import com.azure.cosmos.models.AccessConditionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -54,6 +48,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -79,6 +75,8 @@ import static com.azure.cosmos.models.ModelBridgeInternal.toDatabaseAccount;
  * This is meant to be internally used only by our sdk.
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
+
+    private static final char PREFER_HEADER_SEPERATOR = ';';
     private final static ObjectMapper mapper = Utils.getSimpleObjectMapper();
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKeyOrResourceToken;
@@ -100,6 +98,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private GlobalAddressResolver addressResolver;
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
+    private final boolean contentResponseOnWriteEnabled;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -133,8 +132,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverride,
-                                boolean connectionSharingAcrossClientsEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled);
+                                boolean connectionSharingAcrossClientsEnabled,
+                                boolean contentResponseOnWriteEnabled) {
+        this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
+            cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -146,8 +147,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 Configs configs,
                                 CosmosKeyCredential cosmosKeyCredential,
                                 boolean sessionCapturingOverrideEnabled,
-                                boolean connectionSharingAcrossClientsEnabled) {
-        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled);
+                                boolean connectionSharingAcrossClientsEnabled,
+                                boolean contentResponseOnWriteEnabled) {
+        this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
+            cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -197,7 +200,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          Configs configs,
                          CosmosKeyCredential cosmosKeyCredential,
                          boolean sessionCapturingOverrideEnabled,
-                         boolean connectionSharingAcrossClientsEnabled) {
+                         boolean connectionSharingAcrossClientsEnabled,
+                         boolean contentResponseOnWriteEnabled) {
 
         logger.info(
             "Initializing DocumentClient with"
@@ -209,6 +213,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
         this.cosmosKeyCredential = cosmosKeyCredential;
+        this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
 
         if (this.cosmosKeyCredential != null) {
             hasAuthKeyResourceToken = false;
@@ -228,7 +233,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (connectionPolicy != null) {
             this.connectionPolicy = connectionPolicy;
         } else {
-            this.connectionPolicy = new ConnectionPolicy();
+            this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         }
 
         boolean disableSessionCapturing = (ConsistencyLevel.SESSION != consistencyLevel && !sessionCapturingOverrideEnabled);
@@ -256,7 +261,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         // this.globalEndpointManager.init() must have been already called
         // hence asserting it
         assert(databaseAccount != null);
-        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
+        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled() && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
 
         // TODO: add support for openAsync
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/332589
@@ -292,9 +297,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.storeClientFactory = new StoreClientFactory(
             this.configs,
-            this.connectionPolicy.getRequestTimeout(),
+            this.connectionPolicy,
            // this.maxConcurrentConnectionOpenRequests,
-            0,
             this.userAgentContainer,
             this.connectionSharingAcrossClientsEnabled
         );
@@ -354,7 +358,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs)
                 .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleConnectionTimeout())
-                .withPoolSize(this.connectionPolicy.getMaxPoolSize())
+                .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
                 .withHttpProxy(this.connectionPolicy.getProxy())
                 .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
 
@@ -418,13 +422,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Creating a Database. id: [{}]", database.getId());
             validateResource(database);
 
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Create);
+            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(database);
+            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTimeUTC,
+                SerializationDiagnosticsContext.SerializationType.DATABASE_SERIALIZATION);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
-                ResourceType.Database, Paths.DATABASES_ROOT, database, requestHeaders, options);
+                ResourceType.Database, Paths.DATABASES_ROOT, byteBuffer, requestHeaders, options);
 
             if (retryPolicyInstance != null) {
                 retryPolicyInstance.onBeforeSendRequest(request);
             }
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, Database.class));
         } catch (Exception e) {
             logger.debug("Failure in creating a database. due to [{}]", e.getMessage(), e);
@@ -447,7 +464,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a Database. databaseLink: [{}]", databaseLink);
             String path = Utils.joinPath(databaseLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                 ResourceType.Database, path, requestHeaders, options);
 
@@ -476,7 +493,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a Database. databaseLink: [{}]", databaseLink);
             String path = Utils.joinPath(databaseLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Database, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 ResourceType.Database, path, requestHeaders, options);
 
@@ -582,12 +599,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             validateResource(collection);
 
             String path = Utils.joinPath(databaseLink, Paths.COLLECTIONS_PATH_SEGMENT);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Create);
+
+            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTimeUTC,
+                SerializationDiagnosticsContext.SerializationType.CONTAINER_SERIALIZATION);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Create,
-                ResourceType.DocumentCollection, path, collection, requestHeaders, options);
+                ResourceType.DocumentCollection, path, byteBuffer, requestHeaders, options);
 
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
 
             return this.create(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
@@ -621,15 +651,26 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             validateResource(collection);
 
             String path = Utils.joinPath(collection.getSelfLink(), null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
-
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Replace);
+            ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            ByteBuffer byteBuffer = ModelBridgeInternal.serializeJsonToByteBuffer(collection);
+            ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTimeUTC,
+                serializationEndTimeUTC,
+                SerializationDiagnosticsContext.SerializationType.CONTAINER_SERIALIZATION);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
-                ResourceType.DocumentCollection, path, collection, requestHeaders, options);
+                ResourceType.DocumentCollection, path, byteBuffer, requestHeaders, options);
 
             // TODO: .Net has some logic for updating session token which we don't
             // have here
             if (retryPolicyInstance != null){
                 retryPolicyInstance.onBeforeSendRequest(request);
+            }
+
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
             }
 
             return this.replace(request, retryPolicyInstance).map(response -> toResourceResponse(response, DocumentCollection.class))
@@ -664,7 +705,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a Collection. collectionLink: [{}]", collectionLink);
             String path = Utils.joinPath(collectionLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                 ResourceType.DocumentCollection, path, requestHeaders, options);
 
@@ -736,7 +777,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a Collection. collectionLink: [{}]", collectionLink);
             String path = Utils.joinPath(collectionLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.DocumentCollection, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 ResourceType.DocumentCollection, path, requestHeaders, options);
 
@@ -808,7 +849,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private Map<String, String> getRequestHeaders(RequestOptions options) {
+    private Map<String, String> getRequestHeaders(RequestOptions options, ResourceType resourceType, OperationType operationType) {
         Map<String, String> headers = new HashMap<>();
 
         if (this.useMultipleWriteLocations) {
@@ -817,6 +858,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         if (consistencyLevel != null) {
             headers.put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, consistencyLevel.toString());
+        }
+
+        //  If content response on write is not enabled, and operation is document write - then add minimal prefer header
+        if (resourceType.equals(ResourceType.Document) && operationType.isWriteOperation() && !this.contentResponseOnWriteEnabled) {
+            headers.put(HttpConstants.HttpHeaders.PREFER, HttpConstants.HeaderValues.PREFER_RETURN_MINIMAL);
         }
 
         if (options == null) {
@@ -869,6 +915,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.put(HttpConstants.HttpHeaders.OFFER_TYPE, options.getOfferType());
         }
 
+        if (options.getOfferThroughput() == null) {
+            if (options.getThroughputProperties() != null) {
+                Offer offer = ModelBridgeInternal.getOfferFromThroughputProperties(options.getThroughputProperties());
+                final OfferAutoscaleSettings offerAutoscaleSettings = offer.getOfferAutoScaleSettings();
+                OfferAutoscaleAutoUpgradeProperties autoscaleAutoUpgradeProperties = null;
+                if (offerAutoscaleSettings != null) {
+                     autoscaleAutoUpgradeProperties
+                        = offer.getOfferAutoScaleSettings().getAutoscaleAutoUpgradeProperties();
+                }
+                if (offer.hasOfferThroughput() &&
+                        (offerAutoscaleSettings != null && offerAutoscaleSettings.getMaxThroughput() >= 0 ||
+                             autoscaleAutoUpgradeProperties != null &&
+                                 autoscaleAutoUpgradeProperties
+                                     .getAutoscaleThroughputProperties()
+                                     .getIncrementPercent() >= 0)) {
+                    throw new IllegalArgumentException("Autoscale provisioned throughput can not be configured with "
+                                                           + "fixed offer");
+                }
+
+                if (offer.hasOfferThroughput()) {
+                    headers.put(HttpConstants.HttpHeaders.OFFER_THROUGHPUT, String.valueOf(offer.getThroughput()));
+                } else if (offer.getOfferAutoScaleSettings() != null) {
+                    headers.put(HttpConstants.HttpHeaders.OFFER_AUTOPILOT_SETTINGS,
+                                ModelBridgeInternal.toJsonFromJsonSerializable(offer.getOfferAutoScaleSettings()));
+                }
+            }
+        }
+
         if (options.isPopulateQuotaInfo()) {
             headers.put(HttpConstants.HttpHeaders.POPULATE_QUOTA_INFO, String.valueOf(true));
         }
@@ -885,7 +959,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                       Document document,
                                                                       RequestOptions options) {
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return collectionObs
                 .map(collectionValueHolder -> {
                     addPartitionKeyInformation(request, contentAsByteBuffer, document, options, collectionValueHolder.v);
@@ -929,7 +1003,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 cosmosItemProperties = new CosmosItemProperties(contentAsByteBuffer);
             }
 
-            partitionKeyInternal = extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
+            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            partitionKeyInternal =  extractPartitionKeyValueFromDocument(cosmosItemProperties, partitionKeyDefinition);
+            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.PARTITION_KEY_FETCH_SERIALIZATION
+            );
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+            if (serializationDiagnosticsContext != null) {
+                serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+            }
+
         } else {
             throw new UnsupportedOperationException("PartitionKey value must be supplied for this operation.");
         }
@@ -961,8 +1047,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return null;
     }
 
-    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(String documentCollectionLink, Object document,
-                                                                      RequestOptions options, boolean disableAutomaticIdGeneration, OperationType operationType) {
+    private Mono<RxDocumentServiceRequest> getCreateDocumentRequest(DocumentClientRetryPolicy requestRetryPolicy,
+                                                                    String documentCollectionLink,
+                                                                    Object document,
+                                                                    RequestOptions options,
+                                                                    boolean disableAutomaticIdGeneration,
+                                                                    OperationType operationType) {
 
         if (StringUtils.isEmpty(documentCollectionLink)) {
             throw new IllegalArgumentException("documentCollectionLink");
@@ -971,15 +1061,29 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             throw new IllegalArgumentException("document");
         }
 
+        ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
         ByteBuffer content = BridgeInternal.serializeJsonToByteBuffer(document, mapper);
+        ZonedDateTime serializationEndTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTimeUTC,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
         String path = Utils.joinPath(documentCollectionLink, Paths.DOCUMENTS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
+        Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, operationType);
 
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Document, path,
                                                                            requestHeaders, options, content);
+        if (requestRetryPolicy != null) {
+            requestRetryPolicy.onBeforeSendRequest(request);
+        }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         return addPartitionKeyInformation(request, content, document, options, collectionObs);
     }
 
@@ -1109,14 +1213,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(collectionLink, document,
+            Mono<RxDocumentServiceRequest> requestObs = getCreateDocumentRequest(requestRetryPolicy, collectionLink, document,
                 options, disableAutomaticIdGeneration, OperationType.Create);
 
             Mono<RxDocumentServiceResponse> responseObservable = requestObs.flatMap(request -> {
-                if (requestRetryPolicy != null) {
-                    requestRetryPolicy.onBeforeSendRequest(request);
-                }
-
                 return create(request, requestRetryPolicy);
             });
 
@@ -1145,14 +1245,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         try {
             logger.debug("Upserting a Document. collectionLink: [{}]", collectionLink);
 
-            Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(collectionLink, document,
+            Mono<RxDocumentServiceRequest> reqObs = getCreateDocumentRequest(retryPolicyInstance, collectionLink, document,
                 options, disableAutomaticIdGeneration, OperationType.Upsert);
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(request);
-                }
-
                 return upsert(request, retryPolicyInstance);
             });
 
@@ -1235,20 +1331,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         logger.debug("Replacing a Document. documentLink: [{}]", documentLink);
         final String path = Utils.joinPath(documentLink, null);
-        final Map<String, String> requestHeaders = getRequestHeaders(options);
-
+        final Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Document, OperationType.Replace);
+        ZonedDateTime serializationStartTimeUTC = ZonedDateTime.now(ZoneOffset.UTC);
         ByteBuffer content = serializeJsonToByteBuffer(document);
+        ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+        SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+            serializationStartTimeUTC,
+            serializationEndTime,
+            SerializationDiagnosticsContext.SerializationType.ITEM_SERIALIZATION);
 
         final RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
             ResourceType.Document, path, requestHeaders, options, content);
+        if (retryPolicyInstance != null) {
+            retryPolicyInstance.onBeforeSendRequest(request);
+        }
 
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(request.requestContext.cosmosResponseDiagnostics);
+        if (serializationDiagnosticsContext != null) {
+            serializationDiagnosticsContext.addSerializationDiagnostics(serializationDiagnostics);
+        }
+
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
         Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, content, document, options, collectionObs);
 
         return requestObs.flatMap(req -> {
-            if (retryPolicyInstance != null) {
-                retryPolicyInstance.onBeforeSendRequest(request);
-            }
             return replace(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));} );
     }
@@ -1268,18 +1374,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a Document. documentLink: [{}]", documentLink);
             String path = Utils.joinPath(documentLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                 ResourceType.Document, path, requestHeaders, options);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
             return requestObs.flatMap(req -> {
-                if (retryPolicyInstance != null) {
-                    retryPolicyInstance.onBeforeSendRequest(req);
-                }
                 return this.delete(req, retryPolicyInstance)
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));});
 
@@ -1304,11 +1410,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a Document. documentLink: [{}]", documentLink);
             String path = Utils.joinPath(documentLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.Document, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                 ResourceType.Document, path, requestHeaders, options);
+            if (retryPolicyInstance != null) {
+                retryPolicyInstance.onBeforeSendRequest(request);
+            }
 
-            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(request);
+            Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
 
@@ -1347,7 +1456,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             ResourceType.Document,
             collectionLink, null
         ); // This should not got to backend
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(request);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = collectionCache.resolveCollectionAsync(null, request);
 
         return collectionObs
                    .flatMap(documentCollectionResourceResponse -> {
@@ -1357,8 +1466,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 }
 
                                 Mono<Utils.ValueHolder<CollectionRoutingMap>> valueHolderMono = partitionKeyRangeCache
-                                                                                                    .tryLookupAsync(collection
-                                                                                                                        .getResourceId(),
+                                                                                                    .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosResponseDiagnostics),
+                                                                                                        collection.getResourceId(),
                                                                                                                     null,
                                                                                                                     null);
                                 return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
@@ -1666,7 +1775,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         validateResource(storedProcedure);
 
         String path = Utils.joinPath(collectionLink, Paths.STORED_PROCEDURES_PATH_SEGMENT);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
+        Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.StoredProcedure, operationType);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.StoredProcedure,
                 path, storedProcedure, requestHeaders, options);
 
@@ -1685,7 +1794,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         validateResource(udf);
 
         String path = Utils.joinPath(collectionLink, Paths.USER_DEFINED_FUNCTIONS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = this.getRequestHeaders(options);
+        Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.UserDefinedFunction, operationType);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType,
                 ResourceType.UserDefinedFunction, path, udf, requestHeaders, options);
 
@@ -1775,7 +1884,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentClientImpl.validateResource(storedProcedure);
 
             String path = Utils.joinPath(storedProcedure.getSelfLink(), null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.StoredProcedure, OperationType.Replace);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.StoredProcedure, path, storedProcedure, requestHeaders, options);
 
@@ -1812,7 +1921,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a StoredProcedure. storedProcedureLink [{}]", storedProcedureLink);
             String path = Utils.joinPath(storedProcedureLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.StoredProcedure, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.StoredProcedure, path, requestHeaders, options);
 
@@ -1851,7 +1960,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a StoredProcedure. storedProcedureLink [{}]", storedProcedureLink);
             String path = Utils.joinPath(storedProcedureLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.StoredProcedure, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.StoredProcedure, path, requestHeaders, options);
 
@@ -1912,7 +2021,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             logger.debug("Executing a StoredProcedure. storedProcedureLink [{}]", storedProcedureLink);
             String path = Utils.joinPath(storedProcedureLink, null);
 
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.StoredProcedure, OperationType.ExecuteJavaScript);
             requestHeaders.put(HttpConstants.HttpHeaders.ACCEPT, RuntimeConstants.MediaTypes.JSON);
 
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.ExecuteJavaScript,
@@ -1999,7 +2108,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentClientImpl.validateResource(trigger);
 
         String path = Utils.joinPath(collectionLink, Paths.TRIGGERS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = getRequestHeaders(options);
+        Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Trigger, operationType);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Trigger, path,
                 trigger, requestHeaders, options);
 
@@ -2024,7 +2133,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentClientImpl.validateResource(trigger);
 
             String path = Utils.joinPath(trigger.getSelfLink(), null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Trigger, OperationType.Replace);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.Trigger, path, trigger, requestHeaders, options);
 
@@ -2054,7 +2163,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a Trigger. triggerLink [{}]", triggerLink);
             String path = Utils.joinPath(triggerLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Trigger, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Trigger, path, requestHeaders, options);
 
@@ -2085,7 +2194,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a Trigger. triggerLink [{}]", triggerLink);
             String path = Utils.joinPath(triggerLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Trigger, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Trigger, path, requestHeaders, options);
 
@@ -2208,7 +2317,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             validateResource(udf);
 
             String path = Utils.joinPath(udf.getSelfLink(), null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.UserDefinedFunction, OperationType.Replace);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.UserDefinedFunction, path, udf, requestHeaders, options);
 
@@ -2245,7 +2354,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a UserDefinedFunction. udfLink [{}]", udfLink);
             String path = Utils.joinPath(udfLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.UserDefinedFunction, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.UserDefinedFunction, path, requestHeaders, options);
 
@@ -2282,7 +2391,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a UserDefinedFunction. udfLink [{}]", udfLink);
             String path = Utils.joinPath(udfLink, null);
-            Map<String, String> requestHeaders = this.getRequestHeaders(options);
+            Map<String, String> requestHeaders = this.getRequestHeaders(options, ResourceType.UserDefinedFunction, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.UserDefinedFunction, path, requestHeaders, options);
 
@@ -2338,7 +2447,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Reading a Conflict. conflictLink [{}]", conflictLink);
             String path = Utils.joinPath(conflictLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Conflict, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Conflict, path, requestHeaders, options);
 
@@ -2396,7 +2505,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             logger.debug("Deleting a Conflict. conflictLink [{}]", conflictLink);
             String path = Utils.joinPath(conflictLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Conflict, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Conflict, path, requestHeaders, options);
 
@@ -2468,7 +2577,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentClientImpl.validateResource(user);
 
         String path = Utils.joinPath(databaseLink, Paths.USERS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = getRequestHeaders(options);
+        Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.User, operationType);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.User, path, user,
                 requestHeaders, options);
 
@@ -2490,7 +2599,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentClientImpl.validateResource(user);
 
             String path = Utils.joinPath(user.getSelfLink(), null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.User, OperationType.Replace);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.User, path, user, requestHeaders, options);
             if (retryPolicyInstance != null) {
@@ -2520,7 +2629,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
             logger.debug("Deleting a User. userLink [{}]", userLink);
             String path = Utils.joinPath(userLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.User, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.User, path, requestHeaders, options);
 
@@ -2548,7 +2657,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
             logger.debug("Reading a User. userLink [{}]", userLink);
             String path = Utils.joinPath(userLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.User, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.User, path, requestHeaders, options);
 
@@ -2645,7 +2754,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RxDocumentClientImpl.validateResource(permission);
 
         String path = Utils.joinPath(userLink, Paths.PERMISSIONS_PATH_SEGMENT);
-        Map<String, String> requestHeaders = getRequestHeaders(options);
+        Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Permission, operationType);
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(operationType, ResourceType.Permission, path,
                 permission, requestHeaders, options);
 
@@ -2667,7 +2776,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentClientImpl.validateResource(permission);
 
             String path = Utils.joinPath(permission.getSelfLink(), null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Permission, OperationType.Replace);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Replace,
                     ResourceType.Permission, path, permission, requestHeaders, options);
 
@@ -2698,7 +2807,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
             logger.debug("Deleting a Permission. permissionLink [{}]", permissionLink);
             String path = Utils.joinPath(permissionLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Permission, OperationType.Delete);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Delete,
                     ResourceType.Permission, path, requestHeaders, options);
 
@@ -2727,7 +2836,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
             logger.debug("Reading a Permission. permissionLink [{}]", permissionLink);
             String path = Utils.joinPath(permissionLink, null);
-            Map<String, String> requestHeaders = getRequestHeaders(options);
+            Map<String, String> requestHeaders = getRequestHeaders(options, ResourceType.Permission, OperationType.Read);
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(OperationType.Read,
                     ResourceType.Permission, path, requestHeaders, options);
 
@@ -2943,7 +3052,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 logger.warn(message);
             }).map(rsp -> rsp.getResource(DatabaseAccount.class))
                     .doOnNext(databaseAccount -> {
-                        this.useMultipleWriteLocations = this.connectionPolicy.isUsingMultipleWriteLocations()
+                        this.useMultipleWriteLocations = this.connectionPolicy.isMultipleWriteRegionsEnabled()
                                 && BridgeInternal.isEnableMultipleWriteLocations(databaseAccount);
                     });
         });

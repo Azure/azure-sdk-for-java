@@ -19,12 +19,10 @@ import com.azure.management.storage.implementation.StorageManager;
 import com.azure.management.storage.models.StorageAccountsInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point for storage accounts management API.
- */
+/** Entry point for storage accounts management API. */
 @Fluent
-public interface StorageAccounts extends
-        SupportsListing<StorageAccount>,
+public interface StorageAccounts
+    extends SupportsListing<StorageAccount>,
         SupportsCreating<StorageAccount.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByResourceGroup<StorageAccount>,
@@ -47,10 +45,10 @@ public interface StorageAccounts extends
      * Checks that account name is valid and is not in use asynchronously.
      *
      * @param name the account name to check
-     * @return a representation of the deferred computation of this call, returning whether the name is available and other info if not
+     * @return a representation of the deferred computation of this call, returning whether the name is available and
+     *     other info if not
      */
     Mono<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
-
 
     /**
      * Creates an Sas token for the storage account.
@@ -81,7 +79,8 @@ public interface StorageAccounts extends
     void failover(String resourceGroupName, String accountName);
 
     /**
-     * Sets a failover request asynchronously that can be triggered for a storage account in case of availability issues.
+     * Sets a failover request asynchronously that can be triggered for a storage account in case of availability
+     * issues.
      *
      * @param resourceGroupName the resource group name of the storage account
      * @param accountName the account name to check
