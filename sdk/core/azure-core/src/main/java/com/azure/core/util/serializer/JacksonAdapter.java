@@ -182,18 +182,32 @@ public class JacksonAdapter implements SerializerAdapter {
         Object convertedValue;
         if (type.isAssignableFrom(byte.class)) {
             convertedValue = Byte.parseByte(value);
+        } else if (type.isAssignableFrom(Byte.class)) {
+            convertedValue = Byte.valueOf(value);
         } else if (type.isAssignableFrom(short.class)) {
             convertedValue = Short.parseShort(value);
+        } else if (type.isAssignableFrom(Short.class)) {
+            convertedValue = Short.valueOf(value);
         } else if (type.isAssignableFrom(int.class)) {
             convertedValue = Integer.parseInt(value);
+        } else if (type.isAssignableFrom(Integer.class)) {
+            convertedValue = Integer.valueOf(value);
         } else if (type.isAssignableFrom(long.class)) {
             convertedValue = Long.parseLong(value);
+        } else if (type.isAssignableFrom(Long.class)) {
+            convertedValue = Long.valueOf(value);
         } else if (type.isAssignableFrom(float.class)) {
             convertedValue = Float.parseFloat(value);
+        } else if (type.isAssignableFrom(Float.class)) {
+            convertedValue = Float.valueOf(value);
         } else if (type.isAssignableFrom(double.class)) {
             convertedValue = Double.parseDouble(value);
+        } else if (type.isAssignableFrom(Double.class)) {
+            convertedValue = Double.valueOf(value);
         } else if (type.isAssignableFrom(boolean.class)) {
             convertedValue = Boolean.parseBoolean(value);
+        } else if (type.isAssignableFrom(Boolean.class)) {
+            convertedValue = Boolean.valueOf(value);
         } else {
             // Should this check if there are any String only constructors or static factories?
             convertedValue = value;
@@ -225,40 +239,42 @@ public class JacksonAdapter implements SerializerAdapter {
             }
 
             final Type[] mapTypeArguments = TypeUtil.getTypeArguments(declaredFieldType);
-            if (mapTypeArguments.length == 2
-                && mapTypeArguments[0] == String.class
-                && mapTypeArguments[1] == String.class) {
-                final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
-                final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
-                final int headerCollectionPrefixLength = headerCollectionPrefix.length();
-                if (headerCollectionPrefixLength > 0) {
-                    final Map<String, String> headerCollection = new HashMap<>();
-                    for (final HttpHeader header : headers) {
-                        final String headerName = header.getName();
-                        if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
-                            headerCollection.put(headerName.substring(headerCollectionPrefixLength),
-                                header.getValue());
-                        }
-                    }
+            if (mapTypeArguments.length != 2 || mapTypeArguments[0] != String.class || mapTypeArguments[1] != String.class) {
+                continue;
+            }
 
-                    final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
-                    try {
-                        if (!declaredFieldAccessibleBackup) {
-                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(true);
-                                return null;
-                            });
-                        }
-                        declaredField.set(deserializedHeaders, headerCollection);
-                    } catch (IllegalAccessException ignored) {
-                    } finally {
-                        if (!declaredFieldAccessibleBackup) {
-                            AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-                                declaredField.setAccessible(declaredFieldAccessibleBackup);
-                                return null;
-                            });
-                        }
-                    }
+            final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
+            final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase(Locale.ROOT);
+            final int headerCollectionPrefixLength = headerCollectionPrefix.length();
+            if (headerCollectionPrefixLength == 0) {
+                continue;
+            }
+
+            final Map<String, String> headerCollection = new HashMap<>();
+            for (final HttpHeader header : headers) {
+                final String headerName = header.getName();
+                if (headerName.toLowerCase(Locale.ROOT).startsWith(headerCollectionPrefix)) {
+                    headerCollection.put(headerName.substring(headerCollectionPrefixLength),
+                        header.getValue());
+                }
+            }
+
+            final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
+            try {
+                if (!declaredFieldAccessibleBackup) {
+                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                        declaredField.setAccessible(true);
+                        return null;
+                    });
+                }
+                declaredField.set(deserializedHeaders, headerCollection);
+            } catch (IllegalAccessException ignored) {
+            } finally {
+                if (!declaredFieldAccessibleBackup) {
+                    AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+                        declaredField.setAccessible(declaredFieldAccessibleBackup);
+                        return null;
+                    });
                 }
             }
         }
