@@ -125,6 +125,25 @@ public interface BlobContainers {
         String resourceGroupName, String accountName, String containerName);
 
     /**
+     * Gets the existing immutability policy along with the corresponding ETag in response headers and body.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param containerName The name of the blob container within the specified storage account. Blob container names
+     *     must be between 3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every
+     *     dash (-) character must be immediately preceded and followed by a letter or number.
+     * @param eTagValue The entity state (ETag) version of the immutability policy to update. A value of "*" can be used
+     *     to apply the operation only if the immutability policy already exists. If omitted, this operation will always
+     *     be applied.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
+        String resourceGroupName, String accountName, String containerName, String eTagValue);
+
+    /**
      * Aborts an unlocked immutability policy. The response of delete has immutabilityPeriodSinceCreationInDays set to
      * 0. ETag in If-Match is required for this operation. Deleting a locked immutability policy is not allowed, only
      * way is to delete the container after deleting all blobs inside the container.

@@ -54,14 +54,6 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
         return new ImmutabilityPolicyImpl(inner, manager());
     }
 
-    public Mono<ImmutabilityPolicyInner> getImmutabilityPolicyInnerUsingBlobContainersInnerAsync(String id) {
-        String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
-        String accountName = IdParsingUtils.getValueFromIdByName(id, "storageAccounts");
-        String containerName = IdParsingUtils.getValueFromIdByName(id, "containers");
-        BlobContainersInner client = this.inner();
-        return client.getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName);
-    }
-
     @Override
     public PagedFlux<ListContainerItemInner> listAsync(String resourceGroupName, String accountName) {
         BlobContainersInner client = this.inner();
@@ -110,9 +102,18 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     }
 
     @Override
+    public Mono<ImmutabilityPolicy> getImmutabilityPolicyAsync(
+        String resourceGroupName, String accountName, String containerName, String eTagValue) {
+        BlobContainersInner client = this.inner();
+        return client
+            .getImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, eTagValue)
+            .map(this::wrapImmutabilityPolicyModel);
+    }
+
+    @Override
     public Mono<ImmutabilityPolicyInner> deleteImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
-        return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
+        return deleteImmutabilityPolicyAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override
@@ -124,7 +125,7 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
     @Override
     public Mono<ImmutabilityPolicy> lockImmutabilityPolicyAsync(
         String resourceGroupName, String accountName, String containerName) {
-        return lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName, null);
+        return lockImmutabilityPolicyAsync(resourceGroupName, accountName, containerName);
     }
 
     @Override
@@ -148,8 +149,7 @@ class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements Blo
             accountName,
             containerName,
             immutabilityPeriodSinceCreationInDays,
-            allowProtectedAppendWrites,
-            null);
+            allowProtectedAppendWrites);
     }
 
     @Override
