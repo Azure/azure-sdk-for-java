@@ -9,22 +9,16 @@
 package com.microsoft.azure.management.signalr.v2018_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.Resource;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
-import com.microsoft.azure.arm.resources.models.HasResourceGroup;
-import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRManager;
-import java.util.List;
+import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRServiceManager;
 import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRResourceInner;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Type representing SignalRResource.
  */
-public interface SignalRResource extends HasInner<SignalRResourceInner>, Resource, GroupableResourceCore<SignalRManager, SignalRResourceInner>, HasResourceGroup, Refreshable<SignalRResource>, Updatable<SignalRResource.Update>, HasManager<SignalRManager> {
+public interface SignalRResource extends HasInner<SignalRResourceInner>, HasManager<SignalRServiceManager> {
     /**
      * @return the cors value.
      */
@@ -51,6 +45,21 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, Resourc
     String hostNamePrefix();
 
     /**
+     * @return the id value.
+     */
+    String id();
+
+    /**
+     * @return the location value.
+     */
+    String location();
+
+    /**
+     * @return the name value.
+     */
+    String name();
+
+    /**
      * @return the provisioningState value.
      */
     ProvisioningState provisioningState();
@@ -71,97 +80,18 @@ public interface SignalRResource extends HasInner<SignalRResourceInner>, Resourc
     ResourceSku sku();
 
     /**
+     * @return the tags value.
+     */
+    Map<String, String> tags();
+
+    /**
+     * @return the type value.
+     */
+    String type();
+
+    /**
      * @return the version value.
      */
     String version();
 
-    /**
-     * The entirety of the SignalRResource definition.
-     */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
-    }
-
-    /**
-     * Grouping of SignalRResource definition stages.
-     */
-    interface DefinitionStages {
-        /**
-         * The first stage of a SignalRResource definition.
-         */
-        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
-         * The stage of the SignalRResource definition allowing to specify the resource group.
-         */
-        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies properties.
-             * @param properties Settings used to provision or configure the resource
-             * @return the next definition stage
-             */
-            WithCreate withProperties(SignalRCreateOrUpdateProperties properties);
-        }
-
-        /**
-         * The stage of the signalrresource definition allowing to specify Sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies sku.
-             * @param sku The billing information of the resource.(e.g. basic vs. standard)
-             * @return the next definition stage
-             */
-            WithCreate withSku(ResourceSku sku);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends Creatable<SignalRResource>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithProperties, DefinitionStages.WithSku {
-        }
-    }
-    /**
-     * The template for a SignalRResource update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<SignalRResource>, Resource.UpdateWithTags<Update>, UpdateStages.WithProperties, UpdateStages.WithSku {
-    }
-
-    /**
-     * Grouping of SignalRResource update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the signalrresource update allowing to specify Properties.
-         */
-        interface WithProperties {
-            /**
-             * Specifies properties.
-             * @param properties Settings used to provision or configure the resource
-             * @return the next update stage
-             */
-            Update withProperties(SignalRCreateOrUpdateProperties properties);
-        }
-
-        /**
-         * The stage of the signalrresource update allowing to specify Sku.
-         */
-        interface WithSku {
-            /**
-             * Specifies sku.
-             * @param sku The billing information of the resource.(e.g. basic vs. standard)
-             * @return the next update stage
-             */
-            Update withSku(ResourceSku sku);
-        }
-
-    }
 }
