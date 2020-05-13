@@ -43,6 +43,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.ServiceLoader;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
@@ -853,5 +854,13 @@ public final class ServiceBusClientBuilder {
         public ServiceBusReceiverClient buildClient() {
             return new ServiceBusReceiverClient(buildAsyncClient(), retryOptions.getTryTimeout());
         }
+    }
+
+    public TransactionManager buildTransactionManager() {
+        return null;
+    }
+
+    public TransactionManagerAsync buildAsyncTransactionManager() {
+        return null;
     }
 }

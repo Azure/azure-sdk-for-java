@@ -176,6 +176,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return abandon(lockToken, receiverOptions.getSessionId());
     }
 
+    public Mono<Void> abandon(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Abandon a {@link ServiceBusReceivedMessage message} with its lock token. This will make the message available
      * again for processing. Abandoning a message will increase the delivery count on the message.
@@ -191,6 +195,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, String sessionId) {
         return abandon(lockToken, null, sessionId);
+    }
+
+    public Mono<Void> abandon(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -209,6 +217,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId());
+    }
+
+    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -231,6 +243,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             propertiesToModify, sessionId);
     }
 
+    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
+    }
+
     /**
      * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
      * service.
@@ -245,6 +263,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(MessageLockToken lockToken) {
         return complete(lockToken, receiverOptions.getSessionId());
+    }
+
+    public Mono<Void> complete(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -265,6 +287,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             null, sessionId);
     }
 
+    public Mono<Void> complete(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
      * subqueue.
@@ -282,6 +308,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(lockToken, receiverOptions.getSessionId());
     }
 
+    public Mono<Void> defer(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
+    }
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
      * subqueue.
@@ -300,6 +330,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(lockToken, null, sessionId);
     }
 
+    public Mono<Void> defer(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
      * move message into the deferred subqueue.
@@ -316,6 +350,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         return defer(lockToken, propertiesToModify, receiverOptions.getSessionId());
+    }
+
+    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**
@@ -338,6 +378,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             propertiesToModify, sessionId);
     }
 
+    public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
+    }
+
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
@@ -353,6 +399,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> deadLetter(MessageLockToken lockToken) {
         return deadLetter(lockToken, receiverOptions.getSessionId());
+    }
+
+    public Mono<Void> deadLetter(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -373,6 +423,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId);
     }
 
+    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
@@ -388,6 +442,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
         return deadLetter(lockToken, deadLetterOptions, receiverOptions.getSessionId());
+    }
+
+    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**
@@ -411,6 +471,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
             deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId);
+    }
+
+    public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**

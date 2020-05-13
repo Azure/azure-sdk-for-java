@@ -137,6 +137,13 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return sendInternal(Flux.just(message));
     }
 
+    public Mono<Void> send(ServiceBusMessage message, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public Mono<Void> send(Iterable<ServiceBusMessage> messages, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
     /**
      * Sends a set of messages to a Service Bus queue or topic using a batched approach. If the size of messages
      * exceed the maximum size of a single batch, an exception will be triggered and the send will fail.
@@ -201,6 +208,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return Mono.just(
                 new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracerProvider, messageSerializer));
         }));
+    }
+
+    public Mono<Void> send(ServiceBusMessageBatch batch, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -277,6 +288,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     }
                 }), retryOptions.getTryTimeout(), retryPolicy);
 
+    }
+
+    public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**

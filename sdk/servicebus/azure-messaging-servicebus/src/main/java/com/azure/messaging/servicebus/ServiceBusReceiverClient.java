@@ -88,6 +88,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.abandon(lockToken).block(operationTimeout);
     }
 
+    public void abandon(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Abandon a {@link ServiceBusReceivedMessage message} with its lock token and updates the message's properties.
      * This will make the message available again for processing. Abandoning a message will increase the delivery count
@@ -103,6 +107,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         asyncClient.abandon(lockToken, propertiesToModify).block(operationTimeout);
+    }
+
+    public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -123,6 +131,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.abandon(lockToken, propertiesToModify, sessionId).block(operationTimeout);
     }
 
+    public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Completes a {@link ServiceBusReceivedMessage message} using its lock token. This will delete the message from the
      * service.
@@ -136,6 +149,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void complete(MessageLockToken lockToken) {
         asyncClient.complete(lockToken).block(operationTimeout);
+    }
+
+    public void complete(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -154,6 +171,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.complete(lockToken, sessionId).block(operationTimeout);
     }
 
+    public void complete(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
      * subqueue.
@@ -168,6 +189,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void defer(MessageLockToken lockToken) {
         asyncClient.defer(lockToken).block(operationTimeout);
+    }
+
+    public void defer(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**
@@ -187,6 +213,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.defer(lockToken, sessionId).block(operationTimeout);
     }
 
+    public void defer(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
+    }
+
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
      * move message into the deferred subqueue.
@@ -202,6 +233,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify) {
         asyncClient.defer(lockToken, propertiesToModify).block(operationTimeout);
+    }
+
+    public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**
@@ -222,6 +258,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.defer(lockToken, propertiesToModify, sessionId).block(operationTimeout);
     }
 
+    public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
+    }
+
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter sub-queue.
      *
@@ -236,6 +278,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void deadLetter(MessageLockToken lockToken) {
         asyncClient.deadLetter(lockToken).block(operationTimeout);
+    }
+
+    public void deadLetter(MessageLockToken lockToken, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**
@@ -255,6 +302,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.deadLetter(lockToken, sessionId).block(operationTimeout);
     }
 
+    public void deadLetter(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
+    }
+
     /**
      * Moves a {@link ServiceBusReceivedMessage message} to the deadletter subqueue with deadletter reason, error
      * description, and/or modified properties.
@@ -269,6 +321,11 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions) {
         asyncClient.deadLetter(lockToken, deadLetterOptions).block(operationTimeout);
+    }
+
+    public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**
@@ -286,6 +343,12 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId) {
         asyncClient.deadLetter(lockToken, deadLetterOptions, sessionId).block(operationTimeout);
+    }
+
+    public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
+        Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+
     }
 
     /**

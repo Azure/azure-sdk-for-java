@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpSendLink;
+import com.azure.messaging.servicebus.TransactionManager;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Mono;
 
@@ -63,4 +64,13 @@ public interface ServiceBusAmqpConnection extends AmqpConnection {
      */
     Mono<ServiceBusReceiveLink> createReceiveLink(String linkName, String entityPath, ReceiveMode receiveMode,
         String transferEntityPath, MessagingEntityType entityType, String sessionId);
+
+    /**
+     * Gets the transaction manager for a Service Bus resource and performs transaction related operations using it.
+     *
+     * @param entityPath Name of the Service bus resource.
+     * @param entityType Messaging entity type.
+     * @return A Mono that completes with that resources's management node.
+     */
+    Mono<TransactionManager> getTransactionManager(String entityPath, MessagingEntityType entityType);
 }

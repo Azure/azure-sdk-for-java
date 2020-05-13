@@ -101,6 +101,22 @@ public class ServiceBusSenderClient implements AutoCloseable {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
     }
 
+    public void send(ServiceBusMessage message, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public void send(Iterable<ServiceBusMessage> messages, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    public void send(ServiceBusMessageBatch batch, Transaction transaction) {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
     /**
      * Cancels the enqueuing of an already scheduled message, if it was not already enqueued.
      *
