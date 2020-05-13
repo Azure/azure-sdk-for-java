@@ -8,14 +8,11 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-<<<<<<< HEAD
-=======
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.RequestOptions;
 import com.azure.search.documents.models.SearchErrorException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -218,27 +215,27 @@ public final class TestHelpers {
     public static final String BLOB_DATASOURCE_TEST_NAME = "azs-java-test-blob";
     public static final String SQL_DATASOURCE_NAME = "azs-java-test-sql";
 
-    public static <T> void uploadDocuments(SearchIndexClient client, List<T> uploadDoc) {
+    public static <T> void uploadDocuments(SearchClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc);
         waitForIndexing();
     }
 
-    public static <T> void uploadDocuments(SearchIndexAsyncClient client, List<T> uploadDoc) {
+    public static <T> void uploadDocuments(SearchAsyncClient client, List<T> uploadDoc) {
         client.uploadDocuments(uploadDoc).block();
         waitForIndexing();
     }
 
-    public static <T> void uploadDocument(SearchIndexClient client, T uploadDoc) {
+    public static <T> void uploadDocument(SearchClient client, T uploadDoc) {
         client.uploadDocuments(Collections.singletonList(uploadDoc));
         waitForIndexing();
     }
 
-    public static <T> void uploadDocument(SearchIndexAsyncClient client, T uploadDoc) {
+    public static <T> void uploadDocument(SearchAsyncClient client, T uploadDoc) {
         client.uploadDocuments(Collections.singletonList(uploadDoc)).block();
         waitForIndexing();
     }
 
-    public static List<Map<String, Object>> uploadDocumentsJson(SearchIndexClient client, String dataJson) {
+    public static List<Map<String, Object>> uploadDocumentsJson(SearchClient client, String dataJson) {
         List<Map<String, Object>> documents = readJsonFileToList(dataJson);
         uploadDocuments(client, documents);
 

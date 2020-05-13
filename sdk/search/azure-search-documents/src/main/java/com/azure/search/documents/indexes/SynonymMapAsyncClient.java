@@ -13,7 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.implementation.SynonymMapsImpl;
 import com.azure.search.documents.indexes.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import reactor.core.publisher.Mono;
@@ -38,14 +38,14 @@ public class SynonymMapAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final SynonymMapsImpl restClient;
 
     SynonymMapAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .build().synonymMaps();
     }
     /**
      * Creates a new Azure Cognitive Search synonym map.
@@ -74,7 +74,7 @@ public class SynonymMapAsyncClient {
         Context context) {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         try {
-            return restClient.synonymMaps()
+            return restClient
                 .createWithRestResponseAsync(synonymMap, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -107,7 +107,7 @@ public class SynonymMapAsyncClient {
     Mono<Response<SynonymMap>> getSynonymMapWithResponse(String synonymMapName, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.synonymMaps()
+            return restClient
                 .getWithRestResponseAsync(synonymMapName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -150,7 +150,7 @@ public class SynonymMapAsyncClient {
 
     private Mono<PagedResponse<SynonymMap>> listSynonymMapsWithResponse(String select, RequestOptions requestOptions,
         Context context) {
-        return restClient.synonymMaps()
+        return restClient
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -192,7 +192,7 @@ public class SynonymMapAsyncClient {
         Objects.requireNonNull(synonymMap, "'SynonymMap' cannot be null.");
         String ifMatch = onlyIfUnchanged ? synonymMap.getETag() : null;
         try {
-            return restClient.synonymMaps()
+            return restClient
                 .createOrUpdateWithRestResponseAsync(synonymMap.getName(), synonymMap, ifMatch, null, requestOptions,
                     context)
                 .map(Function.identity());
@@ -233,7 +233,7 @@ public class SynonymMapAsyncClient {
     Mono<Response<Void>> deleteWithResponse(String synonymMapName, String etag,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.synonymMaps()
+            return restClient
                 .deleteWithRestResponseAsync(synonymMapName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {

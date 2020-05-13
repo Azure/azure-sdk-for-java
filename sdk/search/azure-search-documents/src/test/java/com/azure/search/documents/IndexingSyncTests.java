@@ -4,6 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -51,29 +52,24 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexingSyncTests extends SearchTestBase {
     private static final String BOOKS_INDEX_JSON = "BooksIndexData.json";
-
-<<<<<<< HEAD
     private SearchClient client;
-=======
     private final List<String> indexesToDelete = new ArrayList<>();
-    private SearchIndexClient client;
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient searchClient = getSearchServiceClientBuilder().buildClient().getSearchIndexClient();
         for (String index : indexesToDelete) {
-            serviceClient.deleteIndex(index);
+            searchClient.delete(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchIndexClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName).buildClient();
     }
 
     @Test
@@ -300,18 +296,11 @@ public class IndexingSyncTests extends SearchTestBase {
                 .setKey(Boolean.TRUE)
             ));
 
-<<<<<<< HEAD
-        if (!interceptorManager.isPlaybackMode()) {
-            SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-            searchServiceClient.getSearchIndexClient().createOrUpdate(indexWithReservedName);
-        }
-=======
-        SearchServiceClient searchServiceClient = getSearchServiceClientBuilder().buildClient();
-        searchServiceClient.createOrUpdateIndex(indexWithReservedName);
+        SearchIndexClient searchServiceClient = getSearchServiceClientBuilder().buildClient().getSearchIndexClient();
+        searchServiceClient.createOrUpdate(indexWithReservedName);
         indexesToDelete.add(indexWithReservedName.getName());
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4
 
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        client = getSearchClientBuilder(indexName).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
         Map<String, Object> doc = new HashMap<>();

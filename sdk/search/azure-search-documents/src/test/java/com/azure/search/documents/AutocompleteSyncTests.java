@@ -31,13 +31,13 @@ public class AutocompleteSyncTests extends SearchTestBase {
     protected void beforeTest() {
         super.beforeTest();
 
-        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
+        client = getSearchClientBuilder(createHotelIndex()).buildClient();
         uploadDocumentsJson(client, HOTELS_DATA_JSON);
     }
 
     @Override
     protected void afterTest() {
-        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
+        getSearchServiceClientBuilder().buildClient().getSearchIndexClient().delete(client.getIndexName());
     }
 
     @Test

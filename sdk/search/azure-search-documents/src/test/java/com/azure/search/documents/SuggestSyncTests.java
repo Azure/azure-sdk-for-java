@@ -53,15 +53,15 @@ public class SuggestSyncTests extends SearchTestBase {
 
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
         for (String index : indexesToDelete) {
-            serviceClient.deleteIndex(index);
+            serviceClient.getSearchIndexClient().delete(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchIndexClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName).buildClient();
     }
 
     @Test

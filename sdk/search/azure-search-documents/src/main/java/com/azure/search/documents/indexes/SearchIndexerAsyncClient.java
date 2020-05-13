@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.indexes.implementation.IndexersImpl;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.indexes.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndexer;
 import com.azure.search.documents.indexes.models.SearchIndexerStatus;
@@ -39,14 +39,14 @@ public class SearchIndexerAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final IndexersImpl restClient;
 
     SearchIndexerAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .build().indexers();
     }
 
     /**
@@ -75,7 +75,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexer>> createWithResponse(SearchIndexer indexer, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
+            return restClient
                 .createWithRestResponseAsync(indexer, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -114,7 +114,7 @@ public class SearchIndexerAsyncClient {
         Objects.requireNonNull(indexer, "'Indexer' cannot be 'null'");
         String ifMatch = onlyIfUnchanged ? indexer.getETag() : null;
         try {
-            return restClient.indexers()
+            return restClient
                 .createOrUpdateWithRestResponseAsync(indexer.getName(), indexer, ifMatch, null, requestOptions,
                     context)
                 .map(Function.identity());
@@ -148,7 +148,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexer>> getIndexerWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
+            return restClient
                 .getWithRestResponseAsync(indexerName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -188,7 +188,7 @@ public class SearchIndexerAsyncClient {
 
     private Mono<PagedResponse<SearchIndexer>> listIndexersWithResponse(String select, RequestOptions requestOptions,
         Context context) {
-        return restClient.indexers()
+        return restClient
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -240,7 +240,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<Void>> deleteWithResponse(String indexerName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
+            return restClient
                 .deleteWithRestResponseAsync(indexerName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -272,7 +272,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> resetWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
-            return restClient.indexers()
+            return restClient
                 .resetWithRestResponseAsync(indexerName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -304,7 +304,7 @@ public class SearchIndexerAsyncClient {
 
     Mono<Response<Void>> runWithResponse(String indexerName, RequestOptions requestOptions, Context context) {
         try {
-            return restClient.indexers().runWithRestResponseAsync(indexerName, requestOptions, context)
+            return restClient.runWithRestResponseAsync(indexerName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -337,7 +337,7 @@ public class SearchIndexerAsyncClient {
     Mono<Response<SearchIndexerStatus>> getStatusWithResponse(String indexerName, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexers()
+            return restClient
                 .getStatusWithRestResponseAsync(indexerName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {

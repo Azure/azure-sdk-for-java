@@ -4,13 +4,8 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.util.Context;
-<<<<<<< HEAD
 import com.azure.search.documents.SearchClient;
-import com.azure.search.documents.SearchIndexClientTestBase;
-=======
-import com.azure.search.documents.SearchIndexClient;
 import com.azure.search.documents.SearchTestBase;
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.indexes.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -18,10 +13,7 @@ import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.util.SearchPagedIterable;
 import com.azure.search.documents.util.SearchPagedResponse;
-<<<<<<< HEAD
-=======
 import com.fasterxml.jackson.core.type.TypeReference;
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
@@ -61,12 +53,12 @@ public class GeoPointTests extends SearchTestBase {
 
     @Override
     protected void afterTest() {
-        getSearchServiceClientBuilder().buildClient().deleteIndex(client.getIndexName());
+        getSearchServiceClientBuilder().buildClient().getSearchIndexClient().delete(client.getIndexName());
     }
 
     @Test
     public void canDeserializeGeoPoint() throws Exception {
-        client = getSearchIndexClientBuilder(createHotelIndex()).buildClient();
+        client = getSearchClientBuilder(createHotelIndex()).buildClient();
 
         uploadDocuments();
         SearchOptions searchOptions = new SearchOptions().setFilter("HotelId eq '1'");
@@ -105,7 +97,7 @@ public class GeoPointTests extends SearchTestBase {
                     .setSortable(true)
             ));
 
-        client = getSearchIndexClientBuilder(setupIndex(index)).buildClient();
+        client = getSearchClientBuilder(setupIndex(index)).buildClient();
 
         List<Map<String, Object>> docs = new ArrayList<>();
 

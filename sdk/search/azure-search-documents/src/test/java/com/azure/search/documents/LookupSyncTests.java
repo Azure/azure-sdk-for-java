@@ -4,6 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -36,32 +36,25 @@ import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-<<<<<<< HEAD
-public class LookupSyncTests extends SearchIndexClientTestBase {
-    private static final String INDEX_NAME = "hotels";
-
-    private SearchClient client;
-=======
 public class LookupSyncTests extends SearchTestBase {
     private final List<String> indexesToDelete = new ArrayList<>();
-    private SearchIndexClient client;
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4
+    private SearchClient client;
 
     @Override
     protected void afterTest() {
         super.afterTest();
 
-        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        SearchIndexClient searchIndexClient = getSearchServiceClientBuilder().buildClient().getSearchIndexClient();
         for (String index : indexesToDelete) {
-            serviceClient.deleteIndex(index);
+            searchIndexClient.delete(index);
         }
     }
 
-    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+    private SearchClient setupClient(Supplier<String> indexSupplier) {
         String indexName = indexSupplier.get();
         indexesToDelete.add(indexName);
 
-        return getSearchIndexClientBuilder(indexName).buildClient();
+        return getSearchClientBuilder(indexName).buildClient();
     }
 
     @Test

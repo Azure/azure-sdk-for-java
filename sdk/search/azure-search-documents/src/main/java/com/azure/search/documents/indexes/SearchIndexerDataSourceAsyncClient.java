@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.indexes.implementation.DataSourcesImpl;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.indexes.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
 import reactor.core.publisher.Mono;
@@ -38,7 +38,7 @@ public class SearchIndexerDataSourceAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final DataSourcesImpl restClient;
 
     SearchIndexerDataSourceAsyncClient(String endpoint, SearchServiceVersion serviceVersion,
         HttpPipeline httpPipeline) {
@@ -46,7 +46,7 @@ public class SearchIndexerDataSourceAsyncClient {
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .build().dataSources();
     }
 
     /**
@@ -81,7 +81,6 @@ public class SearchIndexerDataSourceAsyncClient {
         String ifMatch = onlyIfUnchanged ? dataSource.getETag() : null;
         try {
             return restClient
-                .dataSources()
                 .createOrUpdateWithRestResponseAsync(dataSource.getName(),
                     dataSource, ifMatch, null, requestOptions, context)
                 .map(Function.identity());
@@ -116,7 +115,7 @@ public class SearchIndexerDataSourceAsyncClient {
     Mono<Response<SearchIndexerDataSource>> createWithResponse(SearchIndexerDataSource dataSource,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.dataSources()
+            return restClient
                 .createWithRestResponseAsync(dataSource, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -150,7 +149,7 @@ public class SearchIndexerDataSourceAsyncClient {
     Mono<Response<SearchIndexerDataSource>> getDataSourceWithResponse(String dataSourceName,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.dataSources()
+            return restClient
                 .getWithRestResponseAsync(dataSourceName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -193,7 +192,7 @@ public class SearchIndexerDataSourceAsyncClient {
 
     private Mono<PagedResponse<SearchIndexerDataSource>> listDataSourcesWithResponse(String select,
         RequestOptions requestOptions, Context context) {
-        return restClient.dataSources()
+        return restClient
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -236,7 +235,7 @@ public class SearchIndexerDataSourceAsyncClient {
     Mono<Response<Void>> deleteWithResponse(String dataSourceName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.dataSources()
+            return restClient
                 .deleteWithRestResponseAsync(
                     dataSourceName,
                     etag, null,

@@ -12,8 +12,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
+import com.azure.search.documents.indexes.implementation.IndexesImpl;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.indexes.models.AnalyzeRequest;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
@@ -41,14 +41,14 @@ public class SearchIndexAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final IndexesImpl restClient;
 
     SearchIndexAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .build().indexes();
     }
 
     /**
@@ -77,7 +77,7 @@ public class SearchIndexAsyncClient {
         Context context) {
         Objects.requireNonNull(index, "'Index' cannot be null");
         try {
-            return restClient.indexes()
+            return restClient
                 .createWithRestResponseAsync(index, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -109,7 +109,7 @@ public class SearchIndexAsyncClient {
 
     Mono<Response<SearchIndex>> getIndexWithResponse(String indexName, RequestOptions requestOptions, Context context) {
         try {
-            return restClient.indexes()
+            return restClient
                 .getWithRestResponseAsync(indexName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -143,7 +143,7 @@ public class SearchIndexAsyncClient {
     Mono<Response<GetIndexStatisticsResult>> getStatisticsWithResponse(String indexName,
         RequestOptions requestOptions, Context context) {
         try {
-            return restClient.indexes()
+            return restClient
                 .getStatisticsWithRestResponseAsync(indexName, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -186,7 +186,7 @@ public class SearchIndexAsyncClient {
 
     private Mono<PagedResponse<SearchIndex>> listIndexesWithResponse(String select, RequestOptions requestOptions,
         Context context) {
-        return restClient.indexes()
+        return restClient
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -232,7 +232,7 @@ public class SearchIndexAsyncClient {
         try {
             Objects.requireNonNull(index, "'Index' cannot null.");
             String ifMatch = onlyIfUnchanged ? index.getETag() : null;
-            return restClient.indexes()
+            return restClient
                 .createOrUpdateWithRestResponseAsync(index.getName(), index, allowIndexDowntime, ifMatch, null,
                     requestOptions, context)
                 .map(Function.identity());
@@ -272,7 +272,7 @@ public class SearchIndexAsyncClient {
     Mono<Response<Void>> deleteWithResponse(String indexName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.indexes()
+            return restClient
                 .deleteWithRestResponseAsync(indexName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -321,7 +321,7 @@ public class SearchIndexAsyncClient {
 
     private Mono<PagedResponse<AnalyzedTokenInfo>> analyzeTextWithResponse(String indexName,
         AnalyzeRequest analyzeRequest, RequestOptions requestOptions, Context context) {
-        return restClient.indexes()
+        return restClient
             .analyzeWithRestResponseAsync(indexName, analyzeRequest, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),

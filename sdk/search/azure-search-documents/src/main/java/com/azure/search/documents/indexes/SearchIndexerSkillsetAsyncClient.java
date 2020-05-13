@@ -13,7 +13,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
 import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.implementation.SkillsetsImpl;
 import com.azure.search.documents.indexes.models.RequestOptions;
 import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 import reactor.core.publisher.Mono;
@@ -38,14 +38,14 @@ public class SearchIndexerSkillsetAsyncClient {
     /**
      * The underlying AutoRest client used to interact with the Search service
      */
-    private final SearchServiceRestClientImpl restClient;
+    private final SkillsetsImpl restClient;
 
     SearchIndexerSkillsetAsyncClient(String endpoint, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline) {
         this.restClient = new SearchServiceRestClientBuilder()
             .endpoint(endpoint)
             .apiVersion(serviceVersion.getVersion())
             .pipeline(httpPipeline)
-            .build();
+            .build().skillsets();
     }
 
     /**
@@ -76,7 +76,7 @@ public class SearchIndexerSkillsetAsyncClient {
         Context context) {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         try {
-            return restClient.skillsets()
+            return restClient
                 .createWithRestResponseAsync(skillset, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
@@ -110,7 +110,7 @@ public class SearchIndexerSkillsetAsyncClient {
     Mono<Response<SearchIndexerSkillset>> getSkillsetWithResponse(String skillsetName, RequestOptions requestOptions,
         Context context) {
         try {
-            return this.restClient.skillsets()
+            return this.restClient
                 .getWithRestResponseAsync(skillsetName, requestOptions, context)
                 .map(result -> result);
         } catch (RuntimeException ex) {
@@ -154,7 +154,7 @@ public class SearchIndexerSkillsetAsyncClient {
     private Mono<PagedResponse<SearchIndexerSkillset>> listSkillsetsWithResponse(String select,
         RequestOptions requestOptions,
         Context context) {
-        return this.restClient.skillsets()
+        return this.restClient
             .listWithRestResponseAsync(select, requestOptions, context)
             .map(response -> new PagedResponseBase<>(
                 response.getRequest(),
@@ -196,7 +196,7 @@ public class SearchIndexerSkillsetAsyncClient {
         Objects.requireNonNull(skillset, "'Skillset' cannot be null.");
         String ifMatch = onlyIfUnchanged ? skillset.getETag() : null;
         try {
-            return restClient.skillsets()
+            return restClient
                 .createOrUpdateWithRestResponseAsync(skillset.getName(), skillset, ifMatch, null, requestOptions,
                     context)
                 .map(Function.identity());
@@ -237,7 +237,7 @@ public class SearchIndexerSkillsetAsyncClient {
     Mono<Response<Void>> deleteWithResponse(String skillsetName, String etag, RequestOptions requestOptions,
         Context context) {
         try {
-            return restClient.skillsets()
+            return restClient
                 .deleteWithRestResponseAsync(skillsetName, etag, null, requestOptions, context)
                 .map(Function.identity());
         } catch (RuntimeException ex) {

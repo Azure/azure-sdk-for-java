@@ -28,27 +28,19 @@ import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-<<<<<<< HEAD:sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchAsyncClientImplTest.java
-public class SearchAsyncClientImplTest extends SearchIndexClientTestBase {
-
-    private static final String INDEX_NAME = "hotels";
+public class SearchAsyncClientImplTest extends SearchTestBase {
     private SearchAsyncClient asyncClient;
-=======
-public class SearchIndexAsyncClientImplTest extends SearchTestBase {
-    private SearchIndexAsyncClient asyncClient;
->>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4:sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchIndexAsyncClientImplTest.java
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        asyncClient = getSearchIndexClientBuilder(createHotelIndex()).buildAsyncClient();
+        asyncClient = getSearchClientBuilder(createHotelIndex()).buildAsyncClient();
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
-
-        getSearchServiceClientBuilder().buildClient().deleteIndex(asyncClient.getIndexName());
+        getSearchServiceClientBuilder().buildClient().getSearchIndexClient().delete(asyncClient.getIndexName());
     }
 
     @Test
