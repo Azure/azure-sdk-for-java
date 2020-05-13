@@ -5,17 +5,21 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PublicIPPrefixListResult model. */
+/** The PublicIpPrefixListResult model. */
 @Fluent
-public final class PublicIPPrefixListResultInner {
+public final class PublicIpPrefixListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixListResultInner.class);
+
     /*
      * A list of public IP prefixes that exists in a resource group.
      */
     @JsonProperty(value = "value")
-    private List<PublicIPPrefixInner> value;
+    private List<PublicIpPrefixInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -28,7 +32,7 @@ public final class PublicIPPrefixListResultInner {
      *
      * @return the value value.
      */
-    public List<PublicIPPrefixInner> value() {
+    public List<PublicIpPrefixInner> value() {
         return this.value;
     }
 
@@ -36,9 +40,9 @@ public final class PublicIPPrefixListResultInner {
      * Set the value property: A list of public IP prefixes that exists in a resource group.
      *
      * @param value the value value to set.
-     * @return the PublicIPPrefixListResultInner object itself.
+     * @return the PublicIpPrefixListResultInner object itself.
      */
-    public PublicIPPrefixListResultInner withValue(List<PublicIPPrefixInner> value) {
+    public PublicIpPrefixListResultInner withValue(List<PublicIpPrefixInner> value) {
         this.value = value;
         return this;
     }
@@ -56,10 +60,21 @@ public final class PublicIPPrefixListResultInner {
      * Set the nextLink property: The URL to get the next set of results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the PublicIPPrefixListResultInner object itself.
+     * @return the PublicIpPrefixListResultInner object itself.
      */
-    public PublicIPPrefixListResultInner withNextLink(String nextLink) {
+    public PublicIpPrefixListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

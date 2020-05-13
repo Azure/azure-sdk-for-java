@@ -5,17 +5,22 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LoadBalancerFrontendIPConfigurationListResult model. */
+/** The LoadBalancerFrontendIpConfigurationListResult model. */
 @Fluent
-public final class LoadBalancerFrontendIPConfigurationListResultInner {
+public final class LoadBalancerFrontendIpConfigurationListResultInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(LoadBalancerFrontendIpConfigurationListResultInner.class);
+
     /*
      * A list of frontend IP configurations in a load balancer.
      */
     @JsonProperty(value = "value")
-    private List<FrontendIPConfigurationInner> value;
+    private List<FrontendIpConfigurationInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -28,7 +33,7 @@ public final class LoadBalancerFrontendIPConfigurationListResultInner {
      *
      * @return the value value.
      */
-    public List<FrontendIPConfigurationInner> value() {
+    public List<FrontendIpConfigurationInner> value() {
         return this.value;
     }
 
@@ -36,9 +41,9 @@ public final class LoadBalancerFrontendIPConfigurationListResultInner {
      * Set the value property: A list of frontend IP configurations in a load balancer.
      *
      * @param value the value value to set.
-     * @return the LoadBalancerFrontendIPConfigurationListResultInner object itself.
+     * @return the LoadBalancerFrontendIpConfigurationListResultInner object itself.
      */
-    public LoadBalancerFrontendIPConfigurationListResultInner withValue(List<FrontendIPConfigurationInner> value) {
+    public LoadBalancerFrontendIpConfigurationListResultInner withValue(List<FrontendIpConfigurationInner> value) {
         this.value = value;
         return this;
     }
@@ -50,5 +55,16 @@ public final class LoadBalancerFrontendIPConfigurationListResultInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

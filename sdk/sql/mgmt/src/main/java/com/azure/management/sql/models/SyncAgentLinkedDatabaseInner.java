@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SyncMemberDbType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SyncAgentLinkedDatabase model. */
 @JsonFlatten
 @Immutable
 public class SyncAgentLinkedDatabaseInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncAgentLinkedDatabaseInner.class);
+
     /*
      * Type of the sync agent linked database.
      */
@@ -48,7 +52,7 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
      * User name of the sync agent linked database.
      */
     @JsonProperty(value = "properties.userName", access = JsonProperty.Access.WRITE_ONLY)
-    private String userName;
+    private String username;
 
     /**
      * Get the databaseType property: Type of the sync agent linked database.
@@ -96,11 +100,19 @@ public class SyncAgentLinkedDatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the userName property: User name of the sync agent linked database.
+     * Get the username property: User name of the sync agent linked database.
      *
-     * @return the userName value.
+     * @return the username value.
      */
-    public String userName() {
-        return this.userName;
+    public String username() {
+        return this.username;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

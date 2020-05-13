@@ -5,61 +5,76 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HubIPAddresses model. */
+/** The HubIpAddresses model. */
 @Fluent
-public final class HubIPAddresses {
+public final class HubIpAddresses {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubIpAddresses.class);
+
     /*
      * List of Public IP addresses associated with azure firewall.
      */
     @JsonProperty(value = "publicIPAddresses")
-    private List<AzureFirewallPublicIPAddress> publicIPAddresses;
+    private List<AzureFirewallPublicIpAddress> publicIpAddresses;
 
     /*
      * Private IP Address associated with azure firewall.
      */
     @JsonProperty(value = "privateIPAddress")
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /**
-     * Get the publicIPAddresses property: List of Public IP addresses associated with azure firewall.
+     * Get the publicIpAddresses property: List of Public IP addresses associated with azure firewall.
      *
-     * @return the publicIPAddresses value.
+     * @return the publicIpAddresses value.
      */
-    public List<AzureFirewallPublicIPAddress> publicIPAddresses() {
-        return this.publicIPAddresses;
+    public List<AzureFirewallPublicIpAddress> publicIpAddresses() {
+        return this.publicIpAddresses;
     }
 
     /**
-     * Set the publicIPAddresses property: List of Public IP addresses associated with azure firewall.
+     * Set the publicIpAddresses property: List of Public IP addresses associated with azure firewall.
      *
-     * @param publicIPAddresses the publicIPAddresses value to set.
-     * @return the HubIPAddresses object itself.
+     * @param publicIpAddresses the publicIpAddresses value to set.
+     * @return the HubIpAddresses object itself.
      */
-    public HubIPAddresses withPublicIPAddresses(List<AzureFirewallPublicIPAddress> publicIPAddresses) {
-        this.publicIPAddresses = publicIPAddresses;
+    public HubIpAddresses withPublicIpAddresses(List<AzureFirewallPublicIpAddress> publicIpAddresses) {
+        this.publicIpAddresses = publicIpAddresses;
         return this;
     }
 
     /**
-     * Get the privateIPAddress property: Private IP Address associated with azure firewall.
+     * Get the privateIpAddress property: Private IP Address associated with azure firewall.
      *
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: Private IP Address associated with azure firewall.
+     * Set the privateIpAddress property: Private IP Address associated with azure firewall.
      *
-     * @param privateIPAddress the privateIPAddress value to set.
-     * @return the HubIPAddresses object itself.
+     * @param privateIpAddress the privateIpAddress value to set.
+     * @return the HubIpAddresses object itself.
      */
-    public HubIPAddresses withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public HubIpAddresses withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publicIpAddresses() != null) {
+            publicIpAddresses().forEach(e -> e.validate());
+        }
     }
 }

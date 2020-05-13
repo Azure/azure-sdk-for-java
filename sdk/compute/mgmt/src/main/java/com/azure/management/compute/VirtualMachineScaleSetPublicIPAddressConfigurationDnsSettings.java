@@ -5,11 +5,17 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings model. */
+/** The VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings model. */
 @Fluent
-public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings {
+public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
+    @JsonIgnore
+    private final ClientLogger logger =
+        new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.class);
+
     /*
      * The Domain name label.The concatenation of the domain name label and vm
      * index will be the domain name labels of the PublicIPAddress resources
@@ -33,10 +39,24 @@ public final class VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings
      * will be the domain name labels of the PublicIPAddress resources that will be created.
      *
      * @param domainNameLabel the domainNameLabel value to set.
-     * @return the VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings object itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings object itself.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings withDomainNameLabel(String domainNameLabel) {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (domainNameLabel() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property domainNameLabel in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
+        }
     }
 }

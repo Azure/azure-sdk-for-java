@@ -28,6 +28,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.network.ErrorException;
 import com.azure.management.network.TagsObject;
@@ -42,6 +43,8 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in VpnSites. */
 public final class VpnSitesInner
     implements InnerSupportsGet<VpnSiteInner>, InnerSupportsListing<VpnSiteInner>, InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(VpnSitesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final VpnSitesService service;
 
@@ -218,6 +221,23 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<VpnSiteInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String vpnSiteName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -231,6 +251,48 @@ public final class VpnSitesInner
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Retrieves the details of a VPN site.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<VpnSiteInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String vpnSiteName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vpnSiteName,
+                apiVersion,
+                context);
     }
 
     /**
@@ -285,6 +347,29 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
+        if (vpnSiteParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnSiteParameters is required and cannot be null."));
+        } else {
+            vpnSiteParameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -355,6 +440,23 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
         String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         TagsObject vpnSiteParameters = new TagsObject();
         vpnSiteParameters.withTags(tags);
@@ -424,6 +526,23 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String vpnSiteName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -484,6 +603,20 @@ public final class VpnSitesInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VpnSiteInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -511,6 +644,48 @@ public final class VpnSitesInner
      * Lists all the vpnSites in a resource group.
      *
      * @param resourceGroupName The resource group name of the VpnSite.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list VpnSites.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<VpnSiteInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the vpnSites in a resource group.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -520,6 +695,23 @@ public final class VpnSitesInner
     public PagedFlux<VpnSiteInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the vpnSites in a resource group.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list VpnSites.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VpnSiteInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
@@ -546,6 +738,16 @@ public final class VpnSitesInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VpnSiteInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -565,6 +767,41 @@ public final class VpnSitesInner
     /**
      * Lists all the VpnSites in a subscription.
      *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list VpnSites.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<VpnSiteInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the VpnSites in a subscription.
+     *
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnSites.
@@ -572,6 +809,20 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VpnSiteInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the VpnSites in a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list VpnSites.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<VpnSiteInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
@@ -600,6 +851,29 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<VpnSiteInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
+        if (vpnSiteParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnSiteParameters is required and cannot be null."));
+        } else {
+            vpnSiteParameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -614,6 +888,56 @@ public final class VpnSitesInner
                             vpnSiteParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Creates a VpnSite resource if it doesn't exist else updates the existing VpnSite.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being created or updated.
+     * @param vpnSiteParameters VpnSite Resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<VpnSiteInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String vpnSiteName, VpnSiteInner vpnSiteParameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
+        if (vpnSiteParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter vpnSiteParameters is required and cannot be null."));
+        } else {
+            vpnSiteParameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vpnSiteName,
+                apiVersion,
+                vpnSiteParameters,
+                context);
     }
 
     /**
@@ -672,6 +996,23 @@ public final class VpnSitesInner
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<VpnSiteInner>> beginUpdateTagsWithResponseAsync(
         String resourceGroupName, String vpnSiteName, Map<String, String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         TagsObject vpnSiteParameters = new TagsObject();
         vpnSiteParameters.withTags(tags);
@@ -688,6 +1029,52 @@ public final class VpnSitesInner
                             vpnSiteParameters,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Updates VpnSite tags.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being updated.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSite Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<VpnSiteInner>> beginUpdateTagsWithResponseAsync(
+        String resourceGroupName, String vpnSiteName, Map<String, String> tags, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        TagsObject vpnSiteParameters = new TagsObject();
+        vpnSiteParameters.withTags(tags);
+        return service
+            .beginUpdateTags(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vpnSiteName,
+                apiVersion,
+                vpnSiteParameters,
+                context);
     }
 
     /**
@@ -743,6 +1130,23 @@ public final class VpnSitesInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String vpnSiteName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -756,6 +1160,48 @@ public final class VpnSitesInner
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Deletes a VpnSite.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite being deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String vpnSiteName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vpnSiteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vpnSiteName,
+                apiVersion,
+                context);
     }
 
     /**
@@ -799,6 +1245,9 @@ public final class VpnSitesInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VpnSiteInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<VpnSiteInner>>map(
@@ -817,6 +1266,34 @@ public final class VpnSitesInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list VpnSites.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<VpnSiteInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -824,6 +1301,9 @@ public final class VpnSitesInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<VpnSiteInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<VpnSiteInner>>map(
@@ -836,5 +1316,33 @@ public final class VpnSitesInner
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the request to list VpnSites.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<VpnSiteInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

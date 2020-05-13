@@ -8,10 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.BgpSettings;
 import com.azure.management.network.DeviceProperties;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,6 +21,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VpnSiteInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -282,5 +286,25 @@ public class VpnSiteInner extends Resource {
     public VpnSiteInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (deviceProperties() != null) {
+            deviceProperties().validate();
+        }
+        if (addressSpace() != null) {
+            addressSpace().validate();
+        }
+        if (bgpProperties() != null) {
+            bgpProperties().validate();
+        }
+        if (vpnSiteLinks() != null) {
+            vpnSiteLinks().forEach(e -> e.validate());
+        }
     }
 }

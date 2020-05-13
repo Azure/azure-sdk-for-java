@@ -7,10 +7,12 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.Delegation;
 import com.azure.management.network.ResourceNavigationLink;
 import com.azure.management.network.ServiceAssociationLink;
 import com.azure.management.network.ServiceEndpointPropertiesFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class SubnetInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetInner.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -84,13 +88,13 @@ public class SubnetInner extends SubResource {
      * using subnet.
      */
     @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<IPConfigurationInner> ipConfigurations;
+    private List<IpConfigurationInner> ipConfigurations;
 
     /*
      * Array of IP configuration profiles which reference this subnet.
      */
     @JsonProperty(value = "properties.ipConfigurationProfiles", access = JsonProperty.Access.WRITE_ONLY)
-    private List<IPConfigurationProfileInner> ipConfigurationProfiles;
+    private List<IpConfigurationProfileInner> ipConfigurationProfiles;
 
     /*
      * Gets an array of references to the external resources using subnet.
@@ -334,7 +338,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the ipConfigurations value.
      */
-    public List<IPConfigurationInner> ipConfigurations() {
+    public List<IpConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -343,7 +347,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the ipConfigurationProfiles value.
      */
-    public List<IPConfigurationProfileInner> ipConfigurationProfiles() {
+    public List<IpConfigurationProfileInner> ipConfigurationProfiles() {
         return this.ipConfigurationProfiles;
     }
 
@@ -479,5 +483,43 @@ public class SubnetInner extends SubResource {
     public SubnetInner withPrivateLinkServiceNetworkPolicies(String privateLinkServiceNetworkPolicies) {
         this.privateLinkServiceNetworkPolicies = privateLinkServiceNetworkPolicies;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkSecurityGroup() != null) {
+            networkSecurityGroup().validate();
+        }
+        if (routeTable() != null) {
+            routeTable().validate();
+        }
+        if (serviceEndpoints() != null) {
+            serviceEndpoints().forEach(e -> e.validate());
+        }
+        if (serviceEndpointPolicies() != null) {
+            serviceEndpointPolicies().forEach(e -> e.validate());
+        }
+        if (privateEndpoints() != null) {
+            privateEndpoints().forEach(e -> e.validate());
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
+        if (ipConfigurationProfiles() != null) {
+            ipConfigurationProfiles().forEach(e -> e.validate());
+        }
+        if (resourceNavigationLinks() != null) {
+            resourceNavigationLinks().forEach(e -> e.validate());
+        }
+        if (serviceAssociationLinks() != null) {
+            serviceAssociationLinks().forEach(e -> e.validate());
+        }
+        if (delegations() != null) {
+            delegations().forEach(e -> e.validate());
+        }
     }
 }

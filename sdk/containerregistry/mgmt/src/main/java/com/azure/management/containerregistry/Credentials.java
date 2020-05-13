@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The Credentials model. */
 @Fluent
 public final class Credentials {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Credentials.class);
+
     /*
      * Describes the credential parameters for accessing the source registry.
      */
@@ -70,5 +74,19 @@ public final class Credentials {
     public Credentials withCustomRegistries(Map<String, CustomRegistryCredentials> customRegistries) {
         this.customRegistries = customRegistries;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceRegistry() != null) {
+            sourceRegistry().validate();
+        }
+        if (customRegistries() != null) {
+            customRegistries().values().forEach(e -> e.validate());
+        }
     }
 }

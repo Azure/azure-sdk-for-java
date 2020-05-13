@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.Access;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VerificationIPFlowResult model. */
+/** The VerificationIpFlowResult model. */
 @Fluent
-public final class VerificationIPFlowResultInner {
+public final class VerificationIpFlowResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerificationIpFlowResultInner.class);
+
     /*
      * Indicates whether the traffic is allowed or denied.
      */
@@ -37,9 +41,9 @@ public final class VerificationIPFlowResultInner {
      * Set the access property: Indicates whether the traffic is allowed or denied.
      *
      * @param access the access value to set.
-     * @return the VerificationIPFlowResultInner object itself.
+     * @return the VerificationIpFlowResultInner object itself.
      */
-    public VerificationIPFlowResultInner withAccess(Access access) {
+    public VerificationIpFlowResultInner withAccess(Access access) {
         this.access = access;
         return this;
     }
@@ -59,10 +63,18 @@ public final class VerificationIPFlowResultInner {
      * displayed.
      *
      * @param ruleName the ruleName value to set.
-     * @return the VerificationIPFlowResultInner object itself.
+     * @return the VerificationIpFlowResultInner object itself.
      */
-    public VerificationIPFlowResultInner withRuleName(String ruleName) {
+    public VerificationIpFlowResultInner withRuleName(String ruleName) {
         this.ruleName = ruleName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

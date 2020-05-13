@@ -6,14 +6,18 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.TriggerTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StaticSiteFunctionOverviewARMResource model. */
+/** The StaticSiteFunctionOverviewArmResource model. */
 @JsonFlatten
 @Immutable
-public class StaticSiteFunctionOverviewARMResourceInner extends ProxyOnlyResource {
+public class StaticSiteFunctionOverviewArmResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteFunctionOverviewArmResourceInner.class);
+
     /*
      * The name for the function
      */
@@ -42,5 +46,15 @@ public class StaticSiteFunctionOverviewARMResourceInner extends ProxyOnlyResourc
      */
     public TriggerTypes triggerType() {
         return this.triggerType;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

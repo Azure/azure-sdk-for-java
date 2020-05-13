@@ -5,7 +5,9 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.TroubleshootingDetails;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 /** The TroubleshootingResult model. */
 @Fluent
 public final class TroubleshootingResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingResultInner.class);
+
     /*
      * The start time of the troubleshooting.
      */
@@ -115,5 +119,16 @@ public final class TroubleshootingResultInner {
     public TroubleshootingResultInner withResults(List<TroubleshootingDetails> results) {
         this.results = results;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (results() != null) {
+            results().forEach(e -> e.validate());
+        }
     }
 }

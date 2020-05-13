@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BGPCommunity model. */
+/** The BgpCommunity model. */
 @Fluent
-public final class BGPCommunity {
+public final class BgpCommunity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpCommunity.class);
+
     /*
      * The region which the service support. e.g. For O365, region is Global.
      */
@@ -61,9 +65,9 @@ public final class BGPCommunity {
      * Set the serviceSupportedRegion property: The region which the service support. e.g. For O365, region is Global.
      *
      * @param serviceSupportedRegion the serviceSupportedRegion value to set.
-     * @return the BGPCommunity object itself.
+     * @return the BgpCommunity object itself.
      */
-    public BGPCommunity withServiceSupportedRegion(String serviceSupportedRegion) {
+    public BgpCommunity withServiceSupportedRegion(String serviceSupportedRegion) {
         this.serviceSupportedRegion = serviceSupportedRegion;
         return this;
     }
@@ -81,9 +85,9 @@ public final class BGPCommunity {
      * Set the communityName property: The name of the bgp community. e.g. Skype.
      *
      * @param communityName the communityName value to set.
-     * @return the BGPCommunity object itself.
+     * @return the BgpCommunity object itself.
      */
-    public BGPCommunity withCommunityName(String communityName) {
+    public BgpCommunity withCommunityName(String communityName) {
         this.communityName = communityName;
         return this;
     }
@@ -103,9 +107,9 @@ public final class BGPCommunity {
      * https://docs.microsoft.com/en-us/azure/expressroute/expressroute-routing.
      *
      * @param communityValue the communityValue value to set.
-     * @return the BGPCommunity object itself.
+     * @return the BgpCommunity object itself.
      */
-    public BGPCommunity withCommunityValue(String communityValue) {
+    public BgpCommunity withCommunityValue(String communityValue) {
         this.communityValue = communityValue;
         return this;
     }
@@ -123,9 +127,9 @@ public final class BGPCommunity {
      * Set the communityPrefixes property: The prefixes that the bgp community contains.
      *
      * @param communityPrefixes the communityPrefixes value to set.
-     * @return the BGPCommunity object itself.
+     * @return the BgpCommunity object itself.
      */
-    public BGPCommunity withCommunityPrefixes(List<String> communityPrefixes) {
+    public BgpCommunity withCommunityPrefixes(List<String> communityPrefixes) {
         this.communityPrefixes = communityPrefixes;
         return this;
     }
@@ -143,9 +147,9 @@ public final class BGPCommunity {
      * Set the isAuthorizedToUse property: Customer is authorized to use bgp community or not.
      *
      * @param isAuthorizedToUse the isAuthorizedToUse value to set.
-     * @return the BGPCommunity object itself.
+     * @return the BgpCommunity object itself.
      */
-    public BGPCommunity withIsAuthorizedToUse(Boolean isAuthorizedToUse) {
+    public BgpCommunity withIsAuthorizedToUse(Boolean isAuthorizedToUse) {
         this.isAuthorizedToUse = isAuthorizedToUse;
         return this;
     }
@@ -163,10 +167,18 @@ public final class BGPCommunity {
      * Set the serviceGroup property: The service group of the bgp community contains.
      *
      * @param serviceGroup the serviceGroup value to set.
-     * @return the BGPCommunity object itself.
+     * @return the BgpCommunity object itself.
      */
-    public BGPCommunity withServiceGroup(String serviceGroup) {
+    public BgpCommunity withServiceGroup(String serviceGroup) {
         this.serviceGroup = serviceGroup;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

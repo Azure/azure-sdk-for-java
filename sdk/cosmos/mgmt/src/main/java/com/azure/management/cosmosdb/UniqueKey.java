@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The UniqueKey model. */
 @Fluent
 public final class UniqueKey {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UniqueKey.class);
+
     /*
      * List of paths must be unique for each document in the Azure Cosmos DB
      * service
@@ -36,5 +40,13 @@ public final class UniqueKey {
     public UniqueKey withPaths(List<String> paths) {
         this.paths = paths;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IPAddressAvailabilityResult model. */
+/** The IpAddressAvailabilityResult model. */
 @Fluent
-public final class IPAddressAvailabilityResultInner {
+public final class IpAddressAvailabilityResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddressAvailabilityResultInner.class);
+
     /*
      * Private IP address availability.
      */
@@ -22,7 +26,7 @@ public final class IPAddressAvailabilityResultInner {
      * is taken.
      */
     @JsonProperty(value = "availableIPAddresses")
-    private List<String> availableIPAddresses;
+    private List<String> availableIpAddresses;
 
     /**
      * Get the available property: Private IP address availability.
@@ -37,32 +41,40 @@ public final class IPAddressAvailabilityResultInner {
      * Set the available property: Private IP address availability.
      *
      * @param available the available value to set.
-     * @return the IPAddressAvailabilityResultInner object itself.
+     * @return the IpAddressAvailabilityResultInner object itself.
      */
-    public IPAddressAvailabilityResultInner withAvailable(Boolean available) {
+    public IpAddressAvailabilityResultInner withAvailable(Boolean available) {
         this.available = available;
         return this;
     }
 
     /**
-     * Get the availableIPAddresses property: Contains other available private IP addresses if the asked for address is
+     * Get the availableIpAddresses property: Contains other available private IP addresses if the asked for address is
      * taken.
      *
-     * @return the availableIPAddresses value.
+     * @return the availableIpAddresses value.
      */
-    public List<String> availableIPAddresses() {
-        return this.availableIPAddresses;
+    public List<String> availableIpAddresses() {
+        return this.availableIpAddresses;
     }
 
     /**
-     * Set the availableIPAddresses property: Contains other available private IP addresses if the asked for address is
+     * Set the availableIpAddresses property: Contains other available private IP addresses if the asked for address is
      * taken.
      *
-     * @param availableIPAddresses the availableIPAddresses value to set.
-     * @return the IPAddressAvailabilityResultInner object itself.
+     * @param availableIpAddresses the availableIpAddresses value to set.
+     * @return the IpAddressAvailabilityResultInner object itself.
      */
-    public IPAddressAvailabilityResultInner withAvailableIPAddresses(List<String> availableIPAddresses) {
-        this.availableIPAddresses = availableIPAddresses;
+    public IpAddressAvailabilityResultInner withAvailableIpAddresses(List<String> availableIpAddresses) {
+        this.availableIpAddresses = availableIpAddresses;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

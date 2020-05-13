@@ -7,31 +7,31 @@ package com.azure.management.appservice;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CustomHostNameDnsRecordType. */
-public enum CustomHostNameDnsRecordType {
+/** Defines values for CustomHostnameDnsRecordType. */
+public enum CustomHostnameDnsRecordType {
     /** Enum value CName. */
     CNAME("CName"),
 
     /** Enum value A. */
     A("A");
 
-    /** The actual serialized value for a CustomHostNameDnsRecordType instance. */
+    /** The actual serialized value for a CustomHostnameDnsRecordType instance. */
     private final String value;
 
-    CustomHostNameDnsRecordType(String value) {
+    CustomHostnameDnsRecordType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a CustomHostNameDnsRecordType instance.
+     * Parses a serialized value to a CustomHostnameDnsRecordType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed CustomHostNameDnsRecordType object, or null if unable to parse.
+     * @return the parsed CustomHostnameDnsRecordType object, or null if unable to parse.
      */
     @JsonCreator
-    public static CustomHostNameDnsRecordType fromString(String value) {
-        CustomHostNameDnsRecordType[] items = CustomHostNameDnsRecordType.values();
-        for (CustomHostNameDnsRecordType item : items) {
+    public static CustomHostnameDnsRecordType fromString(String value) {
+        CustomHostnameDnsRecordType[] items = CustomHostnameDnsRecordType.values();
+        for (CustomHostnameDnsRecordType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

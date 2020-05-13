@@ -6,7 +6,9 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.models.AutoscaleProfileInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class AutoscaleSettingResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSettingResourcePatch.class);
+
     /*
      * Resource tags
      */
@@ -179,5 +183,19 @@ public class AutoscaleSettingResourcePatch {
     public AutoscaleSettingResourcePatch withTargetResourceUri(String targetResourceUri) {
         this.targetResourceUri = targetResourceUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (profiles() != null) {
+            profiles().forEach(e -> e.validate());
+        }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
+        }
     }
 }

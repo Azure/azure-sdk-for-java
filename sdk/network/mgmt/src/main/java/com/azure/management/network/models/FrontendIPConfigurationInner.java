@@ -7,15 +7,19 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.IpAllocationMethod;
+import com.azure.management.network.IpVersion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The FrontendIPConfiguration model. */
+/** The FrontendIpConfiguration model. */
 @JsonFlatten
 @Fluent
-public class FrontendIPConfigurationInner extends SubResource {
+public class FrontendIpConfigurationInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendIpConfigurationInner.class);
+
     /*
      * The name of the resource that is unique within the set of frontend IP
      * configurations used by the load balancer. This name can be used to
@@ -71,20 +75,20 @@ public class FrontendIPConfigurationInner extends SubResource {
      * The private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The Private IP allocation method.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IPAllocationMethod privateIPAllocationMethod;
+    private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * It represents whether the specific ipconfiguration is IPv4 or IPv6.
      * Default is taken as IPv4.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IPVersion privateIPAddressVersion;
+    private IpVersion privateIpAddressVersion;
 
     /*
      * The reference of the subnet resource.
@@ -96,13 +100,13 @@ public class FrontendIPConfigurationInner extends SubResource {
      * The reference of the Public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIPAddressInner publicIPAddress;
+    private PublicIpAddressInner publicIpAddress;
 
     /*
      * The reference of the Public IP Prefix resource.
      */
     @JsonProperty(value = "properties.publicIPPrefix")
-    private SubResource publicIPPrefix;
+    private SubResource publicIpPrefix;
 
     /*
      * Gets the provisioning state of the public IP resource. Possible values
@@ -126,9 +130,9 @@ public class FrontendIPConfigurationInner extends SubResource {
      * by the load balancer. This name can be used to access the resource.
      *
      * @param name the name value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withName(String name) {
+    public FrontendIpConfigurationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -146,9 +150,9 @@ public class FrontendIPConfigurationInner extends SubResource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withEtag(String etag) {
+    public FrontendIpConfigurationInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -177,9 +181,9 @@ public class FrontendIPConfigurationInner extends SubResource {
      * from.
      *
      * @param zones the zones value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withZones(List<String> zones) {
+    public FrontendIpConfigurationInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
     }
@@ -221,64 +225,64 @@ public class FrontendIPConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      *
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: The private IP address of the IP configuration.
+     * Set the privateIpAddress property: The private IP address of the IP configuration.
      *
-     * @param privateIPAddress the privateIPAddress value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @param privateIpAddress the privateIpAddress value to set.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public FrontendIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
     /**
-     * Get the privateIPAllocationMethod property: The Private IP allocation method.
+     * Get the privateIpAllocationMethod property: The Private IP allocation method.
      *
-     * @return the privateIPAllocationMethod value.
+     * @return the privateIpAllocationMethod value.
      */
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.privateIPAllocationMethod;
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.privateIpAllocationMethod;
     }
 
     /**
-     * Set the privateIPAllocationMethod property: The Private IP allocation method.
+     * Set the privateIpAllocationMethod property: The Private IP allocation method.
      *
-     * @param privateIPAllocationMethod the privateIPAllocationMethod value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withPrivateIPAllocationMethod(IPAllocationMethod privateIPAllocationMethod) {
-        this.privateIPAllocationMethod = privateIPAllocationMethod;
+    public FrontendIpConfigurationInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
+        this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
-     * Get the privateIPAddressVersion property: It represents whether the specific ipconfiguration is IPv4 or IPv6.
+     * Get the privateIpAddressVersion property: It represents whether the specific ipconfiguration is IPv4 or IPv6.
      * Default is taken as IPv4.
      *
-     * @return the privateIPAddressVersion value.
+     * @return the privateIpAddressVersion value.
      */
-    public IPVersion privateIPAddressVersion() {
-        return this.privateIPAddressVersion;
+    public IpVersion privateIpAddressVersion() {
+        return this.privateIpAddressVersion;
     }
 
     /**
-     * Set the privateIPAddressVersion property: It represents whether the specific ipconfiguration is IPv4 or IPv6.
+     * Set the privateIpAddressVersion property: It represents whether the specific ipconfiguration is IPv4 or IPv6.
      * Default is taken as IPv4.
      *
-     * @param privateIPAddressVersion the privateIPAddressVersion value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @param privateIpAddressVersion the privateIpAddressVersion value to set.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withPrivateIPAddressVersion(IPVersion privateIPAddressVersion) {
-        this.privateIPAddressVersion = privateIPAddressVersion;
+    public FrontendIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
+        this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
     }
 
@@ -295,50 +299,50 @@ public class FrontendIPConfigurationInner extends SubResource {
      * Set the subnet property: The reference of the subnet resource.
      *
      * @param subnet the subnet value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withSubnet(SubnetInner subnet) {
+    public FrontendIpConfigurationInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
 
     /**
-     * Get the publicIPAddress property: The reference of the Public IP resource.
+     * Get the publicIpAddress property: The reference of the Public IP resource.
      *
-     * @return the publicIPAddress value.
+     * @return the publicIpAddress value.
      */
-    public PublicIPAddressInner publicIPAddress() {
-        return this.publicIPAddress;
+    public PublicIpAddressInner publicIpAddress() {
+        return this.publicIpAddress;
     }
 
     /**
-     * Set the publicIPAddress property: The reference of the Public IP resource.
+     * Set the publicIpAddress property: The reference of the Public IP resource.
      *
-     * @param publicIPAddress the publicIPAddress value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @param publicIpAddress the publicIpAddress value to set.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public FrontendIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
         return this;
     }
 
     /**
-     * Get the publicIPPrefix property: The reference of the Public IP Prefix resource.
+     * Get the publicIpPrefix property: The reference of the Public IP Prefix resource.
      *
-     * @return the publicIPPrefix value.
+     * @return the publicIpPrefix value.
      */
-    public SubResource publicIPPrefix() {
-        return this.publicIPPrefix;
+    public SubResource publicIpPrefix() {
+        return this.publicIpPrefix;
     }
 
     /**
-     * Set the publicIPPrefix property: The reference of the Public IP Prefix resource.
+     * Set the publicIpPrefix property: The reference of the Public IP Prefix resource.
      *
-     * @param publicIPPrefix the publicIPPrefix value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @param publicIpPrefix the publicIpPrefix value to set.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withPublicIPPrefix(SubResource publicIPPrefix) {
-        this.publicIPPrefix = publicIPPrefix;
+    public FrontendIpConfigurationInner withPublicIpPrefix(SubResource publicIpPrefix) {
+        this.publicIpPrefix = publicIpPrefix;
         return this;
     }
 
@@ -357,10 +361,24 @@ public class FrontendIPConfigurationInner extends SubResource {
      * 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set.
-     * @return the FrontendIPConfigurationInner object itself.
+     * @return the FrontendIpConfigurationInner object itself.
      */
-    public FrontendIPConfigurationInner withProvisioningState(String provisioningState) {
+    public FrontendIpConfigurationInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subnet() != null) {
+            subnet().validate();
+        }
+        if (publicIpAddress() != null) {
+            publicIpAddress().validate();
+        }
     }
 }

@@ -7,12 +7,16 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IPConfigurationProfile model. */
+/** The IpConfigurationProfile model. */
 @JsonFlatten
 @Fluent
-public class IPConfigurationProfileInner extends SubResource {
+public class IpConfigurationProfileInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationProfileInner.class);
+
     /*
      * The name of the resource. This name can be used to access the resource.
      */
@@ -57,9 +61,9 @@ public class IPConfigurationProfileInner extends SubResource {
      * Set the name property: The name of the resource. This name can be used to access the resource.
      *
      * @param name the name value to set.
-     * @return the IPConfigurationProfileInner object itself.
+     * @return the IpConfigurationProfileInner object itself.
      */
-    public IPConfigurationProfileInner withName(String name) {
+    public IpConfigurationProfileInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -86,9 +90,9 @@ public class IPConfigurationProfileInner extends SubResource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the IPConfigurationProfileInner object itself.
+     * @return the IpConfigurationProfileInner object itself.
      */
-    public IPConfigurationProfileInner withEtag(String etag) {
+    public IpConfigurationProfileInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -108,9 +112,9 @@ public class IPConfigurationProfileInner extends SubResource {
      * configuration.
      *
      * @param subnet the subnet value to set.
-     * @return the IPConfigurationProfileInner object itself.
+     * @return the IpConfigurationProfileInner object itself.
      */
-    public IPConfigurationProfileInner withSubnet(SubnetInner subnet) {
+    public IpConfigurationProfileInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -122,5 +126,16 @@ public class IPConfigurationProfileInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subnet() != null) {
+            subnet().validate();
+        }
     }
 }

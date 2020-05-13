@@ -5,36 +5,52 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ManagedClusterLoadBalancerProfileOutboundIPPrefixes model. */
+/** The ManagedClusterLoadBalancerProfileOutboundIpPrefixes model. */
 @Fluent
-public final class ManagedClusterLoadBalancerProfileOutboundIPPrefixes {
+public final class ManagedClusterLoadBalancerProfileOutboundIpPrefixes {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileOutboundIpPrefixes.class);
+
     /*
      * A list of public IP prefix resources.
      */
     @JsonProperty(value = "publicIPPrefixes")
-    private List<ResourceReference> publicIPPrefixes;
+    private List<ResourceReference> publicIpPrefixes;
 
     /**
-     * Get the publicIPPrefixes property: A list of public IP prefix resources.
+     * Get the publicIpPrefixes property: A list of public IP prefix resources.
      *
-     * @return the publicIPPrefixes value.
+     * @return the publicIpPrefixes value.
      */
-    public List<ResourceReference> publicIPPrefixes() {
-        return this.publicIPPrefixes;
+    public List<ResourceReference> publicIpPrefixes() {
+        return this.publicIpPrefixes;
     }
 
     /**
-     * Set the publicIPPrefixes property: A list of public IP prefix resources.
+     * Set the publicIpPrefixes property: A list of public IP prefix resources.
      *
-     * @param publicIPPrefixes the publicIPPrefixes value to set.
-     * @return the ManagedClusterLoadBalancerProfileOutboundIPPrefixes object itself.
+     * @param publicIpPrefixes the publicIpPrefixes value to set.
+     * @return the ManagedClusterLoadBalancerProfileOutboundIpPrefixes object itself.
      */
-    public ManagedClusterLoadBalancerProfileOutboundIPPrefixes withPublicIPPrefixes(
-        List<ResourceReference> publicIPPrefixes) {
-        this.publicIPPrefixes = publicIPPrefixes;
+    public ManagedClusterLoadBalancerProfileOutboundIpPrefixes withPublicIpPrefixes(
+        List<ResourceReference> publicIpPrefixes) {
+        this.publicIpPrefixes = publicIpPrefixes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publicIpPrefixes() != null) {
+            publicIpPrefixes().forEach(e -> e.validate());
+        }
     }
 }

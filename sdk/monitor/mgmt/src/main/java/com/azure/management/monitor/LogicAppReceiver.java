@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LogicAppReceiver model. */
 @Fluent
 public final class LogicAppReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogicAppReceiver.class);
+
     /*
      * The name of the logic app receiver. Names must be unique across all
      * receivers within an action group.
@@ -115,5 +119,28 @@ public final class LogicAppReceiver {
     public LogicAppReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
         this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
+        }
+        if (resourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
+        }
+        if (callbackUrl() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
+        }
     }
 }

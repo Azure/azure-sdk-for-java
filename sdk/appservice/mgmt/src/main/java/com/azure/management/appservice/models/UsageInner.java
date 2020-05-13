@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ComputeModeOptions;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -15,6 +17,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Immutable
 public class UsageInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+
     /*
      * Friendly name shown in the UI.
      */
@@ -133,5 +137,15 @@ public class UsageInner extends ProxyOnlyResource {
      */
     public String siteMode() {
         return this.siteMode;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

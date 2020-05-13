@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AaaaRecord model. */
 @Fluent
 public final class AaaaRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AaaaRecord.class);
+
     /*
      * The IPv6 address of this AAAA record.
      */
@@ -34,5 +38,13 @@ public final class AaaaRecord {
     public AaaaRecord withIpv6Address(String ipv6Address) {
         this.ipv6Address = ipv6Address;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

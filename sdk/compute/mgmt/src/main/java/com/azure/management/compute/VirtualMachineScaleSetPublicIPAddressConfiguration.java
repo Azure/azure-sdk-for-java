@@ -7,13 +7,18 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetPublicIPAddressConfiguration model. */
+/** The VirtualMachineScaleSetPublicIpAddressConfiguration model. */
 @JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetPublicIPAddressConfiguration {
+public class VirtualMachineScaleSetPublicIpAddressConfiguration {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfiguration.class);
+
     /*
      * The publicIP address configuration name.
      */
@@ -30,7 +35,7 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      * The dns settings to be applied on the publicIP addresses .
      */
     @JsonProperty(value = "properties.dnsSettings")
-    private VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings;
+    private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
 
     /*
      * The list of IP tags associated with the public IP address.
@@ -42,7 +47,7 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      * The PublicIPPrefix from which to allocate publicIP addresses.
      */
     @JsonProperty(value = "properties.publicIPPrefix")
-    private SubResource publicIPPrefix;
+    private SubResource publicIpPrefix;
 
     /**
      * Get the name property: The publicIP address configuration name.
@@ -57,9 +62,9 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      * Set the name property: The publicIP address configuration name.
      *
      * @param name the name value to set.
-     * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfiguration withName(String name) {
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -77,9 +82,9 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
-     * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfiguration withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
     }
@@ -89,7 +94,7 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      *
      * @return the dnsSettings value.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings() {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
         return this.dnsSettings;
     }
 
@@ -97,10 +102,10 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      * Set the dnsSettings property: The dns settings to be applied on the publicIP addresses .
      *
      * @param dnsSettings the dnsSettings value to set.
-     * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfiguration withDnsSettings(
-        VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withDnsSettings(
+        VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
@@ -118,30 +123,50 @@ public class VirtualMachineScaleSetPublicIPAddressConfiguration {
      * Set the ipTags property: The list of IP tags associated with the public IP address.
      *
      * @param ipTags the ipTags value to set.
-     * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfiguration withIpTags(List<VirtualMachineScaleSetIpTag> ipTags) {
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withIpTags(List<VirtualMachineScaleSetIpTag> ipTags) {
         this.ipTags = ipTags;
         return this;
     }
 
     /**
-     * Get the publicIPPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
      *
-     * @return the publicIPPrefix value.
+     * @return the publicIpPrefix value.
      */
-    public SubResource publicIPPrefix() {
-        return this.publicIPPrefix;
+    public SubResource publicIpPrefix() {
+        return this.publicIpPrefix;
     }
 
     /**
-     * Set the publicIPPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
      *
-     * @param publicIPPrefix the publicIPPrefix value to set.
-     * @return the VirtualMachineScaleSetPublicIPAddressConfiguration object itself.
+     * @param publicIpPrefix the publicIpPrefix value to set.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfiguration withPublicIPPrefix(SubResource publicIPPrefix) {
-        this.publicIPPrefix = publicIPPrefix;
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpPrefix(SubResource publicIpPrefix) {
+        this.publicIpPrefix = publicIpPrefix;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model VirtualMachineScaleSetPublicIpAddressConfiguration"));
+        }
+        if (dnsSettings() != null) {
+            dnsSettings().validate();
+        }
+        if (ipTags() != null) {
+            ipTags().forEach(e -> e.validate());
+        }
     }
 }

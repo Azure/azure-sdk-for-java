@@ -7,15 +7,19 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.SkuDescription;
 import com.azure.management.appservice.StaticSiteBuildProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The StaticSiteARMResource model. */
+/** The StaticSiteArmResource model. */
 @JsonFlatten
 @Fluent
-public class StaticSiteARMResourceInner extends Resource {
+public class StaticSiteArmResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteArmResourceInner.class);
+
     /*
      * Description of a SKU for a scalable resource.
      */
@@ -78,9 +82,9 @@ public class StaticSiteARMResourceInner extends Resource {
      * Set the sku property: Description of a SKU for a scalable resource.
      *
      * @param sku the sku value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withSku(SkuDescription sku) {
+    public StaticSiteArmResourceInner withSku(SkuDescription sku) {
         this.sku = sku;
         return this;
     }
@@ -107,9 +111,9 @@ public class StaticSiteARMResourceInner extends Resource {
      * Set the repositoryUrl property: URL for the repository of the static site.
      *
      * @param repositoryUrl the repositoryUrl value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withRepositoryUrl(String repositoryUrl) {
+    public StaticSiteArmResourceInner withRepositoryUrl(String repositoryUrl) {
         this.repositoryUrl = repositoryUrl;
         return this;
     }
@@ -127,9 +131,9 @@ public class StaticSiteARMResourceInner extends Resource {
      * Set the branch property: The target branch in the repository.
      *
      * @param branch the branch value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withBranch(String branch) {
+    public StaticSiteArmResourceInner withBranch(String branch) {
         this.branch = branch;
         return this;
     }
@@ -158,9 +162,9 @@ public class StaticSiteARMResourceInner extends Resource {
      * workflow file and API secrets.
      *
      * @param repositoryToken the repositoryToken value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withRepositoryToken(String repositoryToken) {
+    public StaticSiteArmResourceInner withRepositoryToken(String repositoryToken) {
         this.repositoryToken = repositoryToken;
         return this;
     }
@@ -178,9 +182,9 @@ public class StaticSiteARMResourceInner extends Resource {
      * Set the buildProperties property: Build properties to configure on the repository.
      *
      * @param buildProperties the buildProperties value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withBuildProperties(StaticSiteBuildProperties buildProperties) {
+    public StaticSiteArmResourceInner withBuildProperties(StaticSiteBuildProperties buildProperties) {
         this.buildProperties = buildProperties;
         return this;
     }
@@ -198,10 +202,24 @@ public class StaticSiteARMResourceInner extends Resource {
      * Set the kind property: Kind of resource.
      *
      * @param kind the kind value to set.
-     * @return the StaticSiteARMResourceInner object itself.
+     * @return the StaticSiteArmResourceInner object itself.
      */
-    public StaticSiteARMResourceInner withKind(String kind) {
+    public StaticSiteArmResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (buildProperties() != null) {
+            buildProperties().validate();
+        }
     }
 }

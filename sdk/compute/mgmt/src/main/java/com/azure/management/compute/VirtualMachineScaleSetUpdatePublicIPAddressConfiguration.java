@@ -6,12 +6,18 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualMachineScaleSetUpdatePublicIPAddressConfiguration model. */
+/** The VirtualMachineScaleSetUpdatePublicIpAddressConfiguration model. */
 @JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
+public class VirtualMachineScaleSetUpdatePublicIpAddressConfiguration {
+    @JsonIgnore
+    private final ClientLogger logger =
+        new ClientLogger(VirtualMachineScaleSetUpdatePublicIpAddressConfiguration.class);
+
     /*
      * The publicIP address configuration name.
      */
@@ -28,7 +34,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
      * The dns settings to be applied on the publicIP addresses .
      */
     @JsonProperty(value = "properties.dnsSettings")
-    private VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings;
+    private VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings;
 
     /**
      * Get the name property: The publicIP address configuration name.
@@ -43,9 +49,9 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
      * Set the name property: The publicIP address configuration name.
      *
      * @param name the name value to set.
-     * @return the VirtualMachineScaleSetUpdatePublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIPAddressConfiguration withName(String name) {
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -63,9 +69,9 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
-     * @return the VirtualMachineScaleSetUpdatePublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIPAddressConfiguration withIdleTimeoutInMinutes(
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withIdleTimeoutInMinutes(
         Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
@@ -76,7 +82,7 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
      *
      * @return the dnsSettings value.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings() {
+    public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
         return this.dnsSettings;
     }
 
@@ -84,11 +90,22 @@ public class VirtualMachineScaleSetUpdatePublicIPAddressConfiguration {
      * Set the dnsSettings property: The dns settings to be applied on the publicIP addresses .
      *
      * @param dnsSettings the dnsSettings value to set.
-     * @return the VirtualMachineScaleSetUpdatePublicIPAddressConfiguration object itself.
+     * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIPAddressConfiguration withDnsSettings(
-        VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration withDnsSettings(
+        VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dnsSettings() != null) {
+            dnsSettings().validate();
+        }
     }
 }

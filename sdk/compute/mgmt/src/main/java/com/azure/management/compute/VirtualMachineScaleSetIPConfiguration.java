@@ -7,13 +7,17 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualMachineScaleSetIPConfiguration model. */
+/** The VirtualMachineScaleSetIpConfiguration model. */
 @JsonFlatten
 @Fluent
-public class VirtualMachineScaleSetIPConfiguration extends SubResource {
+public class VirtualMachineScaleSetIpConfiguration extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIpConfiguration.class);
+
     /*
      * The IP configuration name.
      */
@@ -37,7 +41,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * The publicIPAddressConfiguration.
      */
     @JsonProperty(value = "properties.publicIPAddressConfiguration")
-    private VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration;
+    private VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
      * Available from Api-Version 2017-03-30 onwards, it represents whether the
@@ -45,7 +49,7 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IPVersion privateIPAddressVersion;
+    private IpVersion privateIpAddressVersion;
 
     /*
      * Specifies an array of references to backend address pools of application
@@ -93,9 +97,9 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * Set the name property: The IP configuration name.
      *
      * @param name the name value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withName(String name) {
+    public VirtualMachineScaleSetIpConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -113,9 +117,9 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * Set the subnet property: Specifies the identifier of the subnet.
      *
      * @param subnet the subnet value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withSubnet(ApiEntityReference subnet) {
+    public VirtualMachineScaleSetIpConfiguration withSubnet(ApiEntityReference subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -135,53 +139,53 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * network interface.
      *
      * @param primary the primary value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withPrimary(Boolean primary) {
+    public VirtualMachineScaleSetIpConfiguration withPrimary(Boolean primary) {
         this.primary = primary;
         return this;
     }
 
     /**
-     * Get the publicIPAddressConfiguration property: The publicIPAddressConfiguration.
+     * Get the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
      *
-     * @return the publicIPAddressConfiguration value.
+     * @return the publicIpAddressConfiguration value.
      */
-    public VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration() {
-        return this.publicIPAddressConfiguration;
+    public VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration() {
+        return this.publicIpAddressConfiguration;
     }
 
     /**
-     * Set the publicIPAddressConfiguration property: The publicIPAddressConfiguration.
+     * Set the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
      *
-     * @param publicIPAddressConfiguration the publicIPAddressConfiguration value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withPublicIPAddressConfiguration(
-        VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration) {
-        this.publicIPAddressConfiguration = publicIPAddressConfiguration;
+    public VirtualMachineScaleSetIpConfiguration withPublicIpAddressConfiguration(
+        VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration) {
+        this.publicIpAddressConfiguration = publicIpAddressConfiguration;
         return this;
     }
 
     /**
-     * Get the privateIPAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
+     * Get the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      *
-     * @return the privateIPAddressVersion value.
+     * @return the privateIpAddressVersion value.
      */
-    public IPVersion privateIPAddressVersion() {
-        return this.privateIPAddressVersion;
+    public IpVersion privateIpAddressVersion() {
+        return this.privateIpAddressVersion;
     }
 
     /**
-     * Set the privateIPAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
+     * Set the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      *
-     * @param privateIPAddressVersion the privateIPAddressVersion value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @param privateIpAddressVersion the privateIpAddressVersion value to set.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withPrivateIPAddressVersion(IPVersion privateIPAddressVersion) {
-        this.privateIPAddressVersion = privateIPAddressVersion;
+    public VirtualMachineScaleSetIpConfiguration withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
+        this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
     }
 
@@ -202,9 +206,9 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * Multiple scale sets cannot use the same application gateway.
      *
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withApplicationGatewayBackendAddressPools(
+    public VirtualMachineScaleSetIpConfiguration withApplicationGatewayBackendAddressPools(
         List<SubResource> applicationGatewayBackendAddressPools) {
         this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
         return this;
@@ -223,9 +227,9 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * Set the applicationSecurityGroups property: Specifies an array of references to application security group.
      *
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withApplicationSecurityGroups(
+    public VirtualMachineScaleSetIpConfiguration withApplicationSecurityGroups(
         List<SubResource> applicationSecurityGroups) {
         this.applicationSecurityGroups = applicationSecurityGroups;
         return this;
@@ -248,9 +252,9 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * Multiple scale sets cannot use the same load balancer.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withLoadBalancerBackendAddressPools(
+    public VirtualMachineScaleSetIpConfiguration withLoadBalancerBackendAddressPools(
         List<SubResource> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
@@ -273,11 +277,31 @@ public class VirtualMachineScaleSetIPConfiguration extends SubResource {
      * scale sets cannot use the same load balancer.
      *
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set.
-     * @return the VirtualMachineScaleSetIPConfiguration object itself.
+     * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIPConfiguration withLoadBalancerInboundNatPools(
+    public VirtualMachineScaleSetIpConfiguration withLoadBalancerInboundNatPools(
         List<SubResource> loadBalancerInboundNatPools) {
         this.loadBalancerInboundNatPools = loadBalancerInboundNatPools;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model VirtualMachineScaleSetIpConfiguration"));
+        }
+        if (subnet() != null) {
+            subnet().validate();
+        }
+        if (publicIpAddressConfiguration() != null) {
+            publicIpAddressConfiguration().validate();
+        }
     }
 }

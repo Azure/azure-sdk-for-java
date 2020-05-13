@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PublicIPAddressDnsSettings model. */
+/** The PublicIpAddressDnsSettings model. */
 @Fluent
-public final class PublicIPAddressDnsSettings {
+public final class PublicIpAddressDnsSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressDnsSettings.class);
+
     /*
      * Gets or sets the Domain name label.The concatenation of the domain name
      * label and the regionalized DNS zone make up the fully qualified domain
@@ -54,9 +58,9 @@ public final class PublicIPAddressDnsSettings {
      * domain name label is specified, an A DNS record is created for the public IP in the Microsoft Azure DNS system.
      *
      * @param domainNameLabel the domainNameLabel value to set.
-     * @return the PublicIPAddressDnsSettings object itself.
+     * @return the PublicIpAddressDnsSettings object itself.
      */
-    public PublicIPAddressDnsSettings withDomainNameLabel(String domainNameLabel) {
+    public PublicIpAddressDnsSettings withDomainNameLabel(String domainNameLabel) {
         this.domainNameLabel = domainNameLabel;
         return this;
     }
@@ -76,9 +80,9 @@ public final class PublicIPAddressDnsSettings {
      * IP. This is the concatenation of the domainNameLabel and the regionalized DNS zone.
      *
      * @param fqdn the fqdn value to set.
-     * @return the PublicIPAddressDnsSettings object itself.
+     * @return the PublicIpAddressDnsSettings object itself.
      */
-    public PublicIPAddressDnsSettings withFqdn(String fqdn) {
+    public PublicIpAddressDnsSettings withFqdn(String fqdn) {
         this.fqdn = fqdn;
         return this;
     }
@@ -100,10 +104,18 @@ public final class PublicIPAddressDnsSettings {
      * from the IP address in the in-addr.arpa domain to the reverse FQDN.
      *
      * @param reverseFqdn the reverseFqdn value to set.
-     * @return the PublicIPAddressDnsSettings object itself.
+     * @return the PublicIpAddressDnsSettings object itself.
      */
-    public PublicIPAddressDnsSettings withReverseFqdn(String reverseFqdn) {
+    public PublicIpAddressDnsSettings withReverseFqdn(String reverseFqdn) {
         this.reverseFqdn = reverseFqdn;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

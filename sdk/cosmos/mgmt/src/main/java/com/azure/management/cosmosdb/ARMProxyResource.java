@@ -6,8 +6,19 @@ package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-/** The ARMProxyResource model. */
+/** The ArmProxyResource model. */
 @Immutable
-public class ARMProxyResource extends ProxyResource {
+public class ArmProxyResource extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmProxyResource.class);
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+    }
 }

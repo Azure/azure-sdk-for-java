@@ -5,11 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UpgradeOperationHistoricalStatusInfoProperties model. */
 @Immutable
 public final class UpgradeOperationHistoricalStatusInfoProperties {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UpgradeOperationHistoricalStatusInfoProperties.class);
+
     /*
      * Information about the overall status of the upgrade operation.
      */
@@ -98,5 +103,28 @@ public final class UpgradeOperationHistoricalStatusInfoProperties {
      */
     public RollbackStatusInfo rollbackInfo() {
         return this.rollbackInfo;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (runningStatus() != null) {
+            runningStatus().validate();
+        }
+        if (progress() != null) {
+            progress().validate();
+        }
+        if (error() != null) {
+            error().validate();
+        }
+        if (targetImageReference() != null) {
+            targetImageReference().validate();
+        }
+        if (rollbackInfo() != null) {
+            rollbackInfo().validate();
+        }
     }
 }

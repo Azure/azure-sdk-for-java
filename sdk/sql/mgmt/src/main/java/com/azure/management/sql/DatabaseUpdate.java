@@ -6,6 +6,8 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class DatabaseUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseUpdate.class);
+
     /*
      * The name and tier of the SKU.
      */
@@ -195,7 +199,9 @@ public class DatabaseUpdate {
     private Boolean zoneRedundant;
 
     /*
-     * The license type to apply for this database.
+     * The license type to apply for this database. `LicenseIncluded` if you
+     * need a license, or `BasePrice` if you have a license and are eligible
+     * for the Azure Hybrid Benefit.
      */
     @JsonProperty(value = "properties.licenseType")
     private DatabaseLicenseType licenseType;
@@ -711,7 +717,8 @@ public class DatabaseUpdate {
     }
 
     /**
-     * Get the licenseType property: The license type to apply for this database.
+     * Get the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @return the licenseType value.
      */
@@ -720,7 +727,8 @@ public class DatabaseUpdate {
     }
 
     /**
-     * Set the licenseType property: The license type to apply for this database.
+     * Set the licenseType property: The license type to apply for this database. `LicenseIncluded` if you need a
+     * license, or `BasePrice` if you have a license and are eligible for the Azure Hybrid Benefit.
      *
      * @param licenseType the licenseType value to set.
      * @return the DatabaseUpdate object itself.
@@ -866,5 +874,19 @@ public class DatabaseUpdate {
      */
     public OffsetDateTime resumedDate() {
         return this.resumedDate;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (currentSku() != null) {
+            currentSku().validate();
+        }
     }
 }

@@ -5,22 +5,27 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApiError model. */
 @Fluent
-public final class ApiError {
+public final class ApiError extends ManagementError {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiError.class);
+
     /*
      * The Api error details
      */
-    @JsonProperty(value = "details")
-    private List<ApiErrorBase> details;
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagementError> details;
 
     /*
      * The Api inner error
      */
-    @JsonProperty(value = "innererror")
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
 
     /*
@@ -46,19 +51,8 @@ public final class ApiError {
      *
      * @return the details value.
      */
-    public List<ApiErrorBase> details() {
+    public List<ManagementError> getDetails() {
         return this.details;
-    }
-
-    /**
-     * Set the details property: The Api error details.
-     *
-     * @param details the details value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withDetails(List<ApiErrorBase> details) {
-        this.details = details;
-        return this;
     }
 
     /**
@@ -66,19 +60,8 @@ public final class ApiError {
      *
      * @return the innererror value.
      */
-    public InnerError innererror() {
+    public InnerError getInnererror() {
         return this.innererror;
-    }
-
-    /**
-     * Set the innererror property: The Api inner error.
-     *
-     * @param innererror the innererror value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withInnererror(InnerError innererror) {
-        this.innererror = innererror;
-        return this;
     }
 
     /**
@@ -86,7 +69,7 @@ public final class ApiError {
      *
      * @return the code value.
      */
-    public String code() {
+    public String getCode() {
         return this.code;
     }
 
@@ -106,7 +89,7 @@ public final class ApiError {
      *
      * @return the target value.
      */
-    public String target() {
+    public String getTarget() {
         return this.target;
     }
 
@@ -126,7 +109,7 @@ public final class ApiError {
      *
      * @return the message value.
      */
-    public String message() {
+    public String getMessage() {
         return this.message;
     }
 
@@ -139,5 +122,16 @@ public final class ApiError {
     public ApiError withMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (innererror() != null) {
+            innererror().validate();
+        }
     }
 }

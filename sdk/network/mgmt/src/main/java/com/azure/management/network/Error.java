@@ -4,121 +4,37 @@
 
 package com.azure.management.network;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Error model. */
-@Fluent
-public final class Error {
-    /*
-     * Error code.
-     */
-    @JsonProperty(value = "code")
-    private String code;
-
-    /*
-     * Error message.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /*
-     * Error target.
-     */
-    @JsonProperty(value = "target")
-    private String target;
+@Immutable
+public final class Error extends ManagementError {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Error.class);
 
     /*
      * Error details.
      */
-    @JsonProperty(value = "details")
-    private List<ErrorDetails> details;
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
+    private List<ManagementError> details;
 
     /*
      * Inner error message.
      */
-    @JsonProperty(value = "innerError")
+    @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private String innerError;
-
-    /**
-     * Get the code property: Error code.
-     *
-     * @return the code value.
-     */
-    public String code() {
-        return this.code;
-    }
-
-    /**
-     * Set the code property: Error code.
-     *
-     * @param code the code value to set.
-     * @return the Error object itself.
-     */
-    public Error withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the message property: Error message.
-     *
-     * @return the message value.
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: Error message.
-     *
-     * @param message the message value to set.
-     * @return the Error object itself.
-     */
-    public Error withMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
-     * Get the target property: Error target.
-     *
-     * @return the target value.
-     */
-    public String target() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: Error target.
-     *
-     * @param target the target value to set.
-     * @return the Error object itself.
-     */
-    public Error withTarget(String target) {
-        this.target = target;
-        return this;
-    }
 
     /**
      * Get the details property: Error details.
      *
      * @return the details value.
      */
-    public List<ErrorDetails> details() {
+    public List<ManagementError> getDetails() {
         return this.details;
-    }
-
-    /**
-     * Set the details property: Error details.
-     *
-     * @param details the details value to set.
-     * @return the Error object itself.
-     */
-    public Error withDetails(List<ErrorDetails> details) {
-        this.details = details;
-        return this;
     }
 
     /**
@@ -126,18 +42,15 @@ public final class Error {
      *
      * @return the innerError value.
      */
-    public String innerError() {
+    public String getInnerError() {
         return this.innerError;
     }
 
     /**
-     * Set the innerError property: Inner error message.
+     * Validates the instance.
      *
-     * @param innerError the innerError value to set.
-     * @return the Error object itself.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public Error withInnerError(String innerError) {
-        this.innerError = innerError;
-        return this;
+    public void validate() {
     }
 }

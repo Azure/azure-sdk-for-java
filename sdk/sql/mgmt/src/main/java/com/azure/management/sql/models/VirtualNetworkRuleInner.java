@@ -7,13 +7,17 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.VirtualNetworkRuleState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualNetworkRule model. */
 @JsonFlatten
 @Fluent
 public class VirtualNetworkRuleInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRuleInner.class);
+
     /*
      * The ARM resource id of the virtual network subnet.
      */
@@ -82,5 +86,13 @@ public class VirtualNetworkRuleInner extends ProxyResource {
      */
     public VirtualNetworkRuleState state() {
         return this.state;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

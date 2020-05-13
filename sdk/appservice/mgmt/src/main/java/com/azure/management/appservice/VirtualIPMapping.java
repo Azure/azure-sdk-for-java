@@ -5,16 +5,20 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualIPMapping model. */
+/** The VirtualIpMapping model. */
 @Fluent
-public final class VirtualIPMapping {
+public final class VirtualIpMapping {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualIpMapping.class);
+
     /*
      * Virtual IP address.
      */
     @JsonProperty(value = "virtualIP")
-    private String virtualIP;
+    private String virtualIp;
 
     /*
      * Internal HTTP port.
@@ -41,22 +45,22 @@ public final class VirtualIPMapping {
     private String serviceName;
 
     /**
-     * Get the virtualIP property: Virtual IP address.
+     * Get the virtualIp property: Virtual IP address.
      *
-     * @return the virtualIP value.
+     * @return the virtualIp value.
      */
-    public String virtualIP() {
-        return this.virtualIP;
+    public String virtualIp() {
+        return this.virtualIp;
     }
 
     /**
-     * Set the virtualIP property: Virtual IP address.
+     * Set the virtualIp property: Virtual IP address.
      *
-     * @param virtualIP the virtualIP value to set.
-     * @return the VirtualIPMapping object itself.
+     * @param virtualIp the virtualIp value to set.
+     * @return the VirtualIpMapping object itself.
      */
-    public VirtualIPMapping withVirtualIP(String virtualIP) {
-        this.virtualIP = virtualIP;
+    public VirtualIpMapping withVirtualIp(String virtualIp) {
+        this.virtualIp = virtualIp;
         return this;
     }
 
@@ -73,9 +77,9 @@ public final class VirtualIPMapping {
      * Set the internalHttpPort property: Internal HTTP port.
      *
      * @param internalHttpPort the internalHttpPort value to set.
-     * @return the VirtualIPMapping object itself.
+     * @return the VirtualIpMapping object itself.
      */
-    public VirtualIPMapping withInternalHttpPort(Integer internalHttpPort) {
+    public VirtualIpMapping withInternalHttpPort(Integer internalHttpPort) {
         this.internalHttpPort = internalHttpPort;
         return this;
     }
@@ -93,9 +97,9 @@ public final class VirtualIPMapping {
      * Set the internalHttpsPort property: Internal HTTPS port.
      *
      * @param internalHttpsPort the internalHttpsPort value to set.
-     * @return the VirtualIPMapping object itself.
+     * @return the VirtualIpMapping object itself.
      */
-    public VirtualIPMapping withInternalHttpsPort(Integer internalHttpsPort) {
+    public VirtualIpMapping withInternalHttpsPort(Integer internalHttpsPort) {
         this.internalHttpsPort = internalHttpsPort;
         return this;
     }
@@ -113,9 +117,9 @@ public final class VirtualIPMapping {
      * Set the inUse property: Is virtual IP mapping in use.
      *
      * @param inUse the inUse value to set.
-     * @return the VirtualIPMapping object itself.
+     * @return the VirtualIpMapping object itself.
      */
-    public VirtualIPMapping withInUse(Boolean inUse) {
+    public VirtualIpMapping withInUse(Boolean inUse) {
         this.inUse = inUse;
         return this;
     }
@@ -133,10 +137,18 @@ public final class VirtualIPMapping {
      * Set the serviceName property: name of the service that virtual IP is assigned to.
      *
      * @param serviceName the serviceName value to set.
-     * @return the VirtualIPMapping object itself.
+     * @return the VirtualIpMapping object itself.
      */
-    public VirtualIPMapping withServiceName(String serviceName) {
+    public VirtualIpMapping withServiceName(String serviceName) {
         this.serviceName = serviceName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

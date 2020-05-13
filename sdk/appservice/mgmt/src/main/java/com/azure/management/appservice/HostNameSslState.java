@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HostNameSslState model. */
+/** The HostnameSslState model. */
 @Fluent
-public final class HostNameSslState {
+public final class HostnameSslState {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostnameSslState.class);
+
     /*
      * Hostname.
      */
@@ -26,7 +30,7 @@ public final class HostNameSslState {
      * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
     @JsonProperty(value = "virtualIP")
-    private String virtualIP;
+    private String virtualIp;
 
     /*
      * SSL certificate thumbprint.
@@ -59,9 +63,9 @@ public final class HostNameSslState {
      * Set the name property: Hostname.
      *
      * @param name the name value to set.
-     * @return the HostNameSslState object itself.
+     * @return the HostnameSslState object itself.
      */
-    public HostNameSslState withName(String name) {
+    public HostnameSslState withName(String name) {
         this.name = name;
         return this;
     }
@@ -79,30 +83,30 @@ public final class HostNameSslState {
      * Set the sslState property: SSL type.
      *
      * @param sslState the sslState value to set.
-     * @return the HostNameSslState object itself.
+     * @return the HostnameSslState object itself.
      */
-    public HostNameSslState withSslState(SslState sslState) {
+    public HostnameSslState withSslState(SslState sslState) {
         this.sslState = sslState;
         return this;
     }
 
     /**
-     * Get the virtualIP property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
+     * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
      *
-     * @return the virtualIP value.
+     * @return the virtualIp value.
      */
-    public String virtualIP() {
-        return this.virtualIP;
+    public String virtualIp() {
+        return this.virtualIp;
     }
 
     /**
-     * Set the virtualIP property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
+     * Set the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
      *
-     * @param virtualIP the virtualIP value to set.
-     * @return the HostNameSslState object itself.
+     * @param virtualIp the virtualIp value to set.
+     * @return the HostnameSslState object itself.
      */
-    public HostNameSslState withVirtualIP(String virtualIP) {
-        this.virtualIP = virtualIP;
+    public HostnameSslState withVirtualIp(String virtualIp) {
+        this.virtualIp = virtualIp;
         return this;
     }
 
@@ -119,9 +123,9 @@ public final class HostNameSslState {
      * Set the thumbprint property: SSL certificate thumbprint.
      *
      * @param thumbprint the thumbprint value to set.
-     * @return the HostNameSslState object itself.
+     * @return the HostnameSslState object itself.
      */
-    public HostNameSslState withThumbprint(String thumbprint) {
+    public HostnameSslState withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
     }
@@ -139,9 +143,9 @@ public final class HostNameSslState {
      * Set the toUpdate property: Set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
      *
      * @param toUpdate the toUpdate value to set.
-     * @return the HostNameSslState object itself.
+     * @return the HostnameSslState object itself.
      */
-    public HostNameSslState withToUpdate(Boolean toUpdate) {
+    public HostnameSslState withToUpdate(Boolean toUpdate) {
         this.toUpdate = toUpdate;
         return this;
     }
@@ -159,10 +163,18 @@ public final class HostNameSslState {
      * Set the hostType property: Indicates whether the hostname is a standard or repository hostname.
      *
      * @param hostType the hostType value to set.
-     * @return the HostNameSslState object itself.
+     * @return the HostnameSslState object itself.
      */
-    public HostNameSslState withHostType(HostType hostType) {
+    public HostnameSslState withHostType(HostType hostType) {
         this.hostType = hostType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

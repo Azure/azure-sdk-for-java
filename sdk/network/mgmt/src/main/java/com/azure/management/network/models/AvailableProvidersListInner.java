@@ -5,13 +5,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AvailableProvidersListCountry;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AvailableProvidersList model. */
 @Fluent
 public final class AvailableProvidersListInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListInner.class);
+
     /*
      * List of available countries.
      */
@@ -36,5 +40,21 @@ public final class AvailableProvidersListInner {
     public AvailableProvidersListInner withCountries(List<AvailableProvidersListCountry> countries) {
         this.countries = countries;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (countries() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property countries in model AvailableProvidersListInner"));
+        } else {
+            countries().forEach(e -> e.validate());
+        }
     }
 }

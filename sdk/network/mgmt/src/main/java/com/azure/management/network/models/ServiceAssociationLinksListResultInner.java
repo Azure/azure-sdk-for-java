@@ -5,13 +5,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ServiceAssociationLink;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ServiceAssociationLinksListResult model. */
 @Fluent
 public final class ServiceAssociationLinksListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAssociationLinksListResultInner.class);
+
     /*
      * The service association links in a subnet.
      */
@@ -51,5 +55,16 @@ public final class ServiceAssociationLinksListResultInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

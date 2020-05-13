@@ -8,27 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicIPAddressSkuName. */
-public final class PublicIPAddressSkuName extends ExpandableStringEnum<PublicIPAddressSkuName> {
-    /** Static value Basic for PublicIPAddressSkuName. */
-    public static final PublicIPAddressSkuName BASIC = fromString("Basic");
+/** Defines values for PublicIpAddressSkuName. */
+public final class PublicIpAddressSkuName extends ExpandableStringEnum<PublicIpAddressSkuName> {
+    /** Static value Basic for PublicIpAddressSkuName. */
+    public static final PublicIpAddressSkuName BASIC = fromString("Basic");
 
-    /** Static value Standard for PublicIPAddressSkuName. */
-    public static final PublicIPAddressSkuName STANDARD = fromString("Standard");
+    /** Static value Standard for PublicIpAddressSkuName. */
+    public static final PublicIpAddressSkuName STANDARD = fromString("Standard");
 
     /**
-     * Creates or finds a PublicIPAddressSkuName from its string representation.
+     * Creates or finds a PublicIpAddressSkuName from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding PublicIPAddressSkuName.
+     * @return the corresponding PublicIpAddressSkuName.
      */
     @JsonCreator
-    public static PublicIPAddressSkuName fromString(String name) {
-        return fromString(name, PublicIPAddressSkuName.class);
+    public static PublicIpAddressSkuName fromString(String name) {
+        return fromString(name, PublicIpAddressSkuName.class);
     }
 
-    /** @return known PublicIPAddressSkuName values. */
-    public static Collection<PublicIPAddressSkuName> values() {
-        return values(PublicIPAddressSkuName.class);
+    /** @return known PublicIpAddressSkuName values. */
+    public static Collection<PublicIpAddressSkuName> values() {
+        return values(PublicIpAddressSkuName.class);
     }
 }

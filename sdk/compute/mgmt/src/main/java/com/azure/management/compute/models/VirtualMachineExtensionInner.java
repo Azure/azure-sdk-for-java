@@ -7,13 +7,17 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.VirtualMachineExtensionInstanceView;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineExtension model. */
 @JsonFlatten
 @Fluent
 public class VirtualMachineExtensionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionInner.class);
+
     /*
      * How the extension handler should be forced to update even if the
      * extension configuration has not changed.
@@ -32,7 +36,7 @@ public class VirtualMachineExtensionInner extends Resource {
      * "CustomScriptExtension".
      */
     @JsonProperty(value = "properties.type")
-    private String virtualMachineExtensionType;
+    private String typePropertiesType;
 
     /*
      * Specifies the version of the script handler.
@@ -69,7 +73,7 @@ public class VirtualMachineExtensionInner extends Resource {
     private String provisioningState;
 
     /*
-     * The instance view of a virtual machine extension.
+     * The virtual machine extension instance view.
      */
     @JsonProperty(value = "properties.instanceView")
     private VirtualMachineExtensionInstanceView instanceView;
@@ -121,19 +125,18 @@ public class VirtualMachineExtensionInner extends Resource {
      *
      * @return the typePropertiesType value.
      */
-    public String virtualMachineExtensionType() {
-        return this.virtualMachineExtensionType;
+    public String typePropertiesType() {
+        return this.typePropertiesType;
     }
 
     /**
-     * Set the virtualMachineExtensionType property: Specifies the type of the extension; an example is
-     * "CustomScriptExtension".
+     * Set the typePropertiesType property: Specifies the type of the extension; an example is "CustomScriptExtension".
      *
-     * @param virtualMachineExtensionType the typePropertiesType value to set.
+     * @param typePropertiesType the typePropertiesType value to set.
      * @return the VirtualMachineExtensionInner object itself.
      */
-    public VirtualMachineExtensionInner withVirtualMachineExtensionType(String virtualMachineExtensionType) {
-        this.virtualMachineExtensionType = virtualMachineExtensionType;
+    public VirtualMachineExtensionInner withTypePropertiesType(String typePropertiesType) {
+        this.typePropertiesType = typePropertiesType;
         return this;
     }
 
@@ -250,5 +253,16 @@ public class VirtualMachineExtensionInner extends Resource {
     public VirtualMachineExtensionInner withInstanceView(VirtualMachineExtensionInstanceView instanceView) {
         this.instanceView = instanceView;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
     }
 }

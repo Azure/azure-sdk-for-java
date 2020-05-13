@@ -7,13 +7,17 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.management.network.IPAllocationMethod;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.IpAllocationMethod;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IPConfiguration model. */
+/** The IpConfiguration model. */
 @JsonFlatten
 @Fluent
-public class IPConfigurationInner extends SubResource {
+public class IpConfigurationInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationInner.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -31,13 +35,13 @@ public class IPConfigurationInner extends SubResource {
      * The private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IPAllocationMethod privateIPAllocationMethod;
+    private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * The reference of the subnet resource.
@@ -49,7 +53,7 @@ public class IPConfigurationInner extends SubResource {
      * The reference of the public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIPAddressInner publicIPAddress;
+    private PublicIpAddressInner publicIpAddress;
 
     /*
      * Gets the provisioning state of the public IP resource. Possible values
@@ -73,9 +77,9 @@ public class IPConfigurationInner extends SubResource {
      * access the resource.
      *
      * @param name the name value to set.
-     * @return the IPConfigurationInner object itself.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withName(String name) {
+    public IpConfigurationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -93,50 +97,50 @@ public class IPConfigurationInner extends SubResource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the IPConfigurationInner object itself.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withEtag(String etag) {
+    public IpConfigurationInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
 
     /**
-     * Get the privateIPAddress property: The private IP address of the IP configuration.
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
      *
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: The private IP address of the IP configuration.
+     * Set the privateIpAddress property: The private IP address of the IP configuration.
      *
-     * @param privateIPAddress the privateIPAddress value to set.
-     * @return the IPConfigurationInner object itself.
+     * @param privateIpAddress the privateIpAddress value to set.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public IpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
     /**
-     * Get the privateIPAllocationMethod property: The private IP address allocation method.
+     * Get the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @return the privateIPAllocationMethod value.
+     * @return the privateIpAllocationMethod value.
      */
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.privateIPAllocationMethod;
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.privateIpAllocationMethod;
     }
 
     /**
-     * Set the privateIPAllocationMethod property: The private IP address allocation method.
+     * Set the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @param privateIPAllocationMethod the privateIPAllocationMethod value to set.
-     * @return the IPConfigurationInner object itself.
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withPrivateIPAllocationMethod(IPAllocationMethod privateIPAllocationMethod) {
-        this.privateIPAllocationMethod = privateIPAllocationMethod;
+    public IpConfigurationInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
+        this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
@@ -153,30 +157,30 @@ public class IPConfigurationInner extends SubResource {
      * Set the subnet property: The reference of the subnet resource.
      *
      * @param subnet the subnet value to set.
-     * @return the IPConfigurationInner object itself.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withSubnet(SubnetInner subnet) {
+    public IpConfigurationInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
 
     /**
-     * Get the publicIPAddress property: The reference of the public IP resource.
+     * Get the publicIpAddress property: The reference of the public IP resource.
      *
-     * @return the publicIPAddress value.
+     * @return the publicIpAddress value.
      */
-    public PublicIPAddressInner publicIPAddress() {
-        return this.publicIPAddress;
+    public PublicIpAddressInner publicIpAddress() {
+        return this.publicIpAddress;
     }
 
     /**
-     * Set the publicIPAddress property: The reference of the public IP resource.
+     * Set the publicIpAddress property: The reference of the public IP resource.
      *
-     * @param publicIPAddress the publicIPAddress value to set.
-     * @return the IPConfigurationInner object itself.
+     * @param publicIpAddress the publicIpAddress value to set.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public IpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
         return this;
     }
 
@@ -195,10 +199,24 @@ public class IPConfigurationInner extends SubResource {
      * 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set.
-     * @return the IPConfigurationInner object itself.
+     * @return the IpConfigurationInner object itself.
      */
-    public IPConfigurationInner withProvisioningState(String provisioningState) {
+    public IpConfigurationInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subnet() != null) {
+            subnet().validate();
+        }
+        if (publicIpAddress() != null) {
+            publicIpAddress().validate();
+        }
     }
 }

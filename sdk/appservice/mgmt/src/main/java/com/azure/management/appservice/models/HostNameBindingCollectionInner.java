@@ -5,17 +5,21 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HostNameBindingCollection model. */
+/** The HostnameBindingCollection model. */
 @Fluent
-public final class HostNameBindingCollectionInner {
+public final class HostnameBindingCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostnameBindingCollectionInner.class);
+
     /*
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<HostNameBindingInner> value;
+    private List<HostnameBindingInner> value;
 
     /*
      * Link to next page of resources.
@@ -28,7 +32,7 @@ public final class HostNameBindingCollectionInner {
      *
      * @return the value value.
      */
-    public List<HostNameBindingInner> value() {
+    public List<HostnameBindingInner> value() {
         return this.value;
     }
 
@@ -36,9 +40,9 @@ public final class HostNameBindingCollectionInner {
      * Set the value property: Collection of resources.
      *
      * @param value the value value to set.
-     * @return the HostNameBindingCollectionInner object itself.
+     * @return the HostnameBindingCollectionInner object itself.
      */
-    public HostNameBindingCollectionInner withValue(List<HostNameBindingInner> value) {
+    public HostnameBindingCollectionInner withValue(List<HostnameBindingInner> value) {
         this.value = value;
         return this;
     }
@@ -50,5 +54,21 @@ public final class HostNameBindingCollectionInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model HostnameBindingCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

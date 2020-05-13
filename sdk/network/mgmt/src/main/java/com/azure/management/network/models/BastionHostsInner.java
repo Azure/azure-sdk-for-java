@@ -26,9 +26,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.network.ErrorException;
 import com.azure.management.network.TagsObject;
@@ -43,6 +44,8 @@ import reactor.core.publisher.Mono;
 /** An instance of this class provides access to all the operations defined in BastionHosts. */
 public final class BastionHostsInner
     implements InnerSupportsGet<BastionHostInner>, InnerSupportsListing<BastionHostInner>, InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(BastionHostsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final BastionHostsService service;
 
@@ -72,11 +75,11 @@ public final class BastionHostsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -86,11 +89,11 @@ public final class BastionHostsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BastionHostInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -100,11 +103,11 @@ public final class BastionHostsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BastionHostInner parameters,
@@ -120,7 +123,7 @@ public final class BastionHostsInner
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsObject bastionHostParameters,
             Context context);
@@ -128,7 +131,7 @@ public final class BastionHostsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/bastionHosts")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BastionHostListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -140,7 +143,7 @@ public final class BastionHostsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BastionHostListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -153,11 +156,11 @@ public final class BastionHostsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             Context context);
@@ -167,11 +170,11 @@ public final class BastionHostsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/bastionHosts/{bastionHostName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BastionHostInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") BastionHostInner parameters,
@@ -187,7 +190,7 @@ public final class BastionHostsInner
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("bastionHostName") String bastionHostName,
+            @PathParam("bastionHostName") String bastionHostname,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") TagsObject bastionHostParameters,
             Context context);
@@ -195,14 +198,14 @@ public final class BastionHostsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BastionHostListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<BastionHostListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -211,15 +214,33 @@ public final class BastionHostsInner
      * Deletes the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String bastionHostName) {
+        String resourceGroupName, String bastionHostname) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -228,7 +249,7 @@ public final class BastionHostsInner
                         .delete(
                             this.client.getHost(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
@@ -239,15 +260,15 @@ public final class BastionHostsInner
      * Deletes the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String bastionHostName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostName);
+    public Mono<Void> deleteAsync(String resourceGroupName, String bastionHostname) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -259,29 +280,47 @@ public final class BastionHostsInner
      * Deletes the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String bastionHostName) {
-        deleteAsync(resourceGroupName, bastionHostName).block();
+    public void delete(String resourceGroupName, String bastionHostname) {
+        deleteAsync(resourceGroupName, bastionHostname).block();
     }
 
     /**
      * Gets the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Bastion Host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BastionHostInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String bastionHostName) {
+        String resourceGroupName, String bastionHostname) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -290,7 +329,7 @@ public final class BastionHostsInner
                         .getByResourceGroup(
                             this.client.getHost(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
@@ -301,15 +340,58 @@ public final class BastionHostsInner
      * Gets the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Bastion Host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BastionHostInner> getByResourceGroupAsync(String resourceGroupName, String bastionHostName) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, bastionHostName)
+    public Mono<SimpleResponse<BastionHostInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String bastionHostname, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Bastion Host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BastionHostInner> getByResourceGroupAsync(String resourceGroupName, String bastionHostname) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, bastionHostname)
             .flatMap(
                 (SimpleResponse<BastionHostInner> res) -> {
                     if (res.getValue() != null) {
@@ -324,31 +406,54 @@ public final class BastionHostsInner
      * Gets the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Bastion Host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner getByResourceGroup(String resourceGroupName, String bastionHostName) {
-        return getByResourceGroupAsync(resourceGroupName, bastionHostName).block();
+    public BastionHostInner getByResourceGroup(String resourceGroupName, String bastionHostname) {
+        return getByResourceGroupAsync(resourceGroupName, bastionHostname).block();
     }
 
     /**
      * Creates or updates the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @param parameters Bastion Host resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String bastionHostName, BastionHostInner parameters) {
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -357,7 +462,7 @@ public final class BastionHostsInner
                         .createOrUpdate(
                             this.client.getHost(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
@@ -369,18 +474,18 @@ public final class BastionHostsInner
      * Creates or updates the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @param parameters Bastion Host resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BastionHostInner> createOrUpdateAsync(
-        String resourceGroupName, String bastionHostName, BastionHostInner parameters) {
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, bastionHostName, parameters);
+            createOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters);
         return this
             .client
             .<BastionHostInner, BastionHostInner>getLroResultAsync(
@@ -393,24 +498,24 @@ public final class BastionHostsInner
      * Creates or updates the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @param parameters Bastion Host resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BastionHostInner createOrUpdate(
-        String resourceGroupName, String bastionHostName, BastionHostInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, bastionHostName, parameters).block();
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, bastionHostname, parameters).block();
     }
 
     /**
      * Updates bastion host tags.
      *
      * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostName The name of the bastionHost.
+     * @param bastionHostname The name of the bastionHost.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -419,7 +524,25 @@ public final class BastionHostsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         TagsObject bastionHostParameters = new TagsObject();
         bastionHostParameters.withTags(tags);
@@ -431,7 +554,7 @@ public final class BastionHostsInner
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             bastionHostParameters,
                             context))
@@ -442,7 +565,7 @@ public final class BastionHostsInner
      * Updates bastion host tags.
      *
      * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostName The name of the bastionHost.
+     * @param bastionHostname The name of the bastionHost.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -451,9 +574,9 @@ public final class BastionHostsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BastionHostInner> updateTagsAsync(
-        String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            updateTagsWithResponseAsync(resourceGroupName, bastionHostName, tags);
+            updateTagsWithResponseAsync(resourceGroupName, bastionHostname, tags);
         return this
             .client
             .<BastionHostInner, BastionHostInner>getLroResultAsync(
@@ -466,7 +589,7 @@ public final class BastionHostsInner
      * Updates bastion host tags.
      *
      * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostName The name of the bastionHost.
+     * @param bastionHostname The name of the bastionHost.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -474,19 +597,29 @@ public final class BastionHostsInner
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BastionHostInner updateTags(String resourceGroupName, String bastionHostName, Map<String, String> tags) {
-        return updateTagsAsync(resourceGroupName, bastionHostName, tags).block();
+    public BastionHostInner updateTags(String resourceGroupName, String bastionHostname, Map<String, String> tags) {
+        return updateTagsAsync(resourceGroupName, bastionHostname, tags).block();
     }
 
     /**
      * Lists all Bastion Hosts in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BastionHostInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -506,7 +639,42 @@ public final class BastionHostsInner
     /**
      * Lists all Bastion Hosts in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListBastionHosts API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionHostInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all Bastion Hosts in a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
@@ -518,7 +686,21 @@ public final class BastionHostsInner
     /**
      * Lists all Bastion Hosts in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListBastionHosts API service call.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BastionHostInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all Bastion Hosts in a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
@@ -532,12 +714,26 @@ public final class BastionHostsInner
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BastionHostInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -565,8 +761,50 @@ public final class BastionHostsInner
      * Lists all Bastion Hosts in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListBastionHosts API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionHostInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all Bastion Hosts in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
@@ -581,8 +819,25 @@ public final class BastionHostsInner
      * Lists all Bastion Hosts in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListBastionHosts API service call.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<BastionHostInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all Bastion Hosts in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
@@ -595,14 +850,32 @@ public final class BastionHostsInner
      * Deletes the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String bastionHostName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String bastionHostname) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -611,7 +884,7 @@ public final class BastionHostsInner
                         .beginDelete(
                             this.client.getHost(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             context))
@@ -622,15 +895,58 @@ public final class BastionHostsInner
      * Deletes the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(String resourceGroupName, String bastionHostName) {
-        return beginDeleteWithResponseAsync(resourceGroupName, bastionHostName)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String bastionHostname, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> beginDeleteAsync(String resourceGroupName, String bastionHostname) {
+        return beginDeleteWithResponseAsync(resourceGroupName, bastionHostname)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -638,30 +954,53 @@ public final class BastionHostsInner
      * Deletes the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String resourceGroupName, String bastionHostName) {
-        beginDeleteAsync(resourceGroupName, bastionHostName).block();
+    public void beginDelete(String resourceGroupName, String bastionHostname) {
+        beginDeleteAsync(resourceGroupName, bastionHostname).block();
     }
 
     /**
      * Creates or updates the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @param parameters Bastion Host resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BastionHostInner>> beginCreateOrUpdateWithResponseAsync(
-        String resourceGroupName, String bastionHostName, BastionHostInner parameters) {
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -670,7 +1009,7 @@ public final class BastionHostsInner
                         .beginCreateOrUpdate(
                             this.client.getHost(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             this.client.getSubscriptionId(),
                             parameters,
@@ -682,17 +1021,67 @@ public final class BastionHostsInner
      * Creates or updates the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
+     * @param parameters Bastion Host resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<BastionHostInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates the specified Bastion Host.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param bastionHostname The name of the Bastion Host.
      * @param parameters Bastion Host resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BastionHostInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String bastionHostName, BastionHostInner parameters) {
-        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, bastionHostName, parameters)
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
+        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, bastionHostname, parameters)
             .flatMap(
                 (SimpleResponse<BastionHostInner> res) -> {
                     if (res.getValue() != null) {
@@ -707,24 +1096,24 @@ public final class BastionHostsInner
      * Creates or updates the specified Bastion Host.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param bastionHostName The name of the Bastion Host.
+     * @param bastionHostname The name of the Bastion Host.
      * @param parameters Bastion Host resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BastionHostInner beginCreateOrUpdate(
-        String resourceGroupName, String bastionHostName, BastionHostInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostName, parameters).block();
+        String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters).block();
     }
 
     /**
      * Updates bastion host tags.
      *
      * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostName The name of the bastionHost.
+     * @param bastionHostname The name of the bastionHost.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -733,7 +1122,25 @@ public final class BastionHostsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<BastionHostInner>> beginUpdateTagsWithResponseAsync(
-        String resourceGroupName, String bastionHostName, Map<String, String> tags) {
+        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         TagsObject bastionHostParameters = new TagsObject();
         bastionHostParameters.withTags(tags);
@@ -745,7 +1152,7 @@ public final class BastionHostsInner
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            bastionHostName,
+                            bastionHostname,
                             apiVersion,
                             bastionHostParameters,
                             context))
@@ -756,7 +1163,54 @@ public final class BastionHostsInner
      * Updates bastion host tags.
      *
      * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostName The name of the bastionHost.
+     * @param bastionHostname The name of the bastionHost.
+     * @param tags Resource tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bastion Host resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<BastionHostInner>> beginUpdateTagsWithResponseAsync(
+        String resourceGroupName, String bastionHostname, Map<String, String> tags, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (bastionHostname == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter bastionHostname is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        TagsObject bastionHostParameters = new TagsObject();
+        bastionHostParameters.withTags(tags);
+        return service
+            .beginUpdateTags(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                bastionHostname,
+                apiVersion,
+                bastionHostParameters,
+                context);
+    }
+
+    /**
+     * Updates bastion host tags.
+     *
+     * @param resourceGroupName The resource group name of the BastionHost.
+     * @param bastionHostname The name of the bastionHost.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -765,8 +1219,8 @@ public final class BastionHostsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BastionHostInner> beginUpdateTagsAsync(
-        String resourceGroupName, String bastionHostName, Map<String, String> tags) {
-        return beginUpdateTagsWithResponseAsync(resourceGroupName, bastionHostName, tags)
+        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
+        return beginUpdateTagsWithResponseAsync(resourceGroupName, bastionHostname, tags)
             .flatMap(
                 (SimpleResponse<BastionHostInner> res) -> {
                     if (res.getValue() != null) {
@@ -781,7 +1235,7 @@ public final class BastionHostsInner
      * Updates bastion host tags.
      *
      * @param resourceGroupName The resource group name of the BastionHost.
-     * @param bastionHostName The name of the bastionHost.
+     * @param bastionHostname The name of the bastionHost.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -790,8 +1244,8 @@ public final class BastionHostsInner
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BastionHostInner beginUpdateTags(
-        String resourceGroupName, String bastionHostName, Map<String, String> tags) {
-        return beginUpdateTagsAsync(resourceGroupName, bastionHostName, tags).block();
+        String resourceGroupName, String bastionHostname, Map<String, String> tags) {
+        return beginUpdateTagsAsync(resourceGroupName, bastionHostname, tags).block();
     }
 
     /**
@@ -799,12 +1253,15 @@ public final class BastionHostsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BastionHostInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<BastionHostInner>>map(
@@ -823,13 +1280,44 @@ public final class BastionHostsInner
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListBastionHosts API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionHostInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListBastionHosts API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<BastionHostInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByResourceGroupNext(nextLink, context))
             .<PagedResponse<BastionHostInner>>map(
@@ -842,5 +1330,34 @@ public final class BastionHostsInner
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListBastionHosts API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<BastionHostInner>> listByResourceGroupNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

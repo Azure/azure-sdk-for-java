@@ -5,13 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The VirtualMachineScaleSetIdentity model. */
 @Fluent
-public class VirtualMachineScaleSetIdentity {
+public final class VirtualMachineScaleSetIdentity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIdentity.class);
+
     /*
      * The principal id of virtual machine scale set identity. This property
      * will only be provided for a system assigned identity.
@@ -42,7 +45,6 @@ public class VirtualMachineScaleSetIdentity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
-    @JsonInclude(content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
@@ -112,5 +114,16 @@ public class VirtualMachineScaleSetIdentity {
         Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> e.validate());
+        }
     }
 }

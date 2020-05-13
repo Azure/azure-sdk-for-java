@@ -5,17 +5,22 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkInterfaceIPConfigurationListResult model. */
+/** The NetworkInterfaceIpConfigurationListResult model. */
 @Fluent
-public final class NetworkInterfaceIPConfigurationListResultInner {
+public final class NetworkInterfaceIpConfigurationListResultInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationListResultInner.class);
+
     /*
      * A list of ip configurations.
      */
     @JsonProperty(value = "value")
-    private List<NetworkInterfaceIPConfigurationInner> value;
+    private List<NetworkInterfaceIpConfigurationInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -28,7 +33,7 @@ public final class NetworkInterfaceIPConfigurationListResultInner {
      *
      * @return the value value.
      */
-    public List<NetworkInterfaceIPConfigurationInner> value() {
+    public List<NetworkInterfaceIpConfigurationInner> value() {
         return this.value;
     }
 
@@ -36,9 +41,9 @@ public final class NetworkInterfaceIPConfigurationListResultInner {
      * Set the value property: A list of ip configurations.
      *
      * @param value the value value to set.
-     * @return the NetworkInterfaceIPConfigurationListResultInner object itself.
+     * @return the NetworkInterfaceIpConfigurationListResultInner object itself.
      */
-    public NetworkInterfaceIPConfigurationListResultInner withValue(List<NetworkInterfaceIPConfigurationInner> value) {
+    public NetworkInterfaceIpConfigurationListResultInner withValue(List<NetworkInterfaceIpConfigurationInner> value) {
         this.value = value;
         return this;
     }
@@ -50,5 +55,16 @@ public final class NetworkInterfaceIPConfigurationListResultInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The HostName model. */
+/** The Hostname model. */
 @Fluent
-public final class HostName {
+public final class Hostname {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Hostname.class);
+
     /*
      * Name of the hostname.
      */
@@ -42,13 +46,13 @@ public final class HostName {
      * Type of the DNS record.
      */
     @JsonProperty(value = "customHostNameDnsRecordType")
-    private CustomHostNameDnsRecordType customHostNameDnsRecordType;
+    private CustomHostnameDnsRecordType customHostnameDnsRecordType;
 
     /*
      * Type of the hostname.
      */
     @JsonProperty(value = "hostNameType")
-    private HostNameType hostNameType;
+    private HostnameType hostnameType;
 
     /**
      * Get the name property: Name of the hostname.
@@ -63,9 +67,9 @@ public final class HostName {
      * Set the name property: Name of the hostname.
      *
      * @param name the name value to set.
-     * @return the HostName object itself.
+     * @return the Hostname object itself.
      */
-    public HostName withName(String name) {
+    public Hostname withName(String name) {
         this.name = name;
         return this;
     }
@@ -85,9 +89,9 @@ public final class HostName {
      * if the hostname is pointing to a Traffic Manager.
      *
      * @param siteNames the siteNames value to set.
-     * @return the HostName object itself.
+     * @return the Hostname object itself.
      */
-    public HostName withSiteNames(List<String> siteNames) {
+    public Hostname withSiteNames(List<String> siteNames) {
         this.siteNames = siteNames;
         return this;
     }
@@ -107,9 +111,9 @@ public final class HostName {
      * a Traffic Manager then it will be the Traffic Manager name otherwise it will be the app name.
      *
      * @param azureResourceName the azureResourceName value to set.
-     * @return the HostName object itself.
+     * @return the Hostname object itself.
      */
-    public HostName withAzureResourceName(String azureResourceName) {
+    public Hostname withAzureResourceName(String azureResourceName) {
         this.azureResourceName = azureResourceName;
         return this;
     }
@@ -127,50 +131,58 @@ public final class HostName {
      * Set the azureResourceType property: Type of the Azure resource the hostname is assigned to.
      *
      * @param azureResourceType the azureResourceType value to set.
-     * @return the HostName object itself.
+     * @return the Hostname object itself.
      */
-    public HostName withAzureResourceType(AzureResourceType azureResourceType) {
+    public Hostname withAzureResourceType(AzureResourceType azureResourceType) {
         this.azureResourceType = azureResourceType;
         return this;
     }
 
     /**
-     * Get the customHostNameDnsRecordType property: Type of the DNS record.
+     * Get the customHostnameDnsRecordType property: Type of the DNS record.
      *
-     * @return the customHostNameDnsRecordType value.
+     * @return the customHostnameDnsRecordType value.
      */
-    public CustomHostNameDnsRecordType customHostNameDnsRecordType() {
-        return this.customHostNameDnsRecordType;
+    public CustomHostnameDnsRecordType customHostnameDnsRecordType() {
+        return this.customHostnameDnsRecordType;
     }
 
     /**
-     * Set the customHostNameDnsRecordType property: Type of the DNS record.
+     * Set the customHostnameDnsRecordType property: Type of the DNS record.
      *
-     * @param customHostNameDnsRecordType the customHostNameDnsRecordType value to set.
-     * @return the HostName object itself.
+     * @param customHostnameDnsRecordType the customHostnameDnsRecordType value to set.
+     * @return the Hostname object itself.
      */
-    public HostName withCustomHostNameDnsRecordType(CustomHostNameDnsRecordType customHostNameDnsRecordType) {
-        this.customHostNameDnsRecordType = customHostNameDnsRecordType;
+    public Hostname withCustomHostnameDnsRecordType(CustomHostnameDnsRecordType customHostnameDnsRecordType) {
+        this.customHostnameDnsRecordType = customHostnameDnsRecordType;
         return this;
     }
 
     /**
-     * Get the hostNameType property: Type of the hostname.
+     * Get the hostnameType property: Type of the hostname.
      *
-     * @return the hostNameType value.
+     * @return the hostnameType value.
      */
-    public HostNameType hostNameType() {
-        return this.hostNameType;
+    public HostnameType hostnameType() {
+        return this.hostnameType;
     }
 
     /**
-     * Set the hostNameType property: Type of the hostname.
+     * Set the hostnameType property: Type of the hostname.
      *
-     * @param hostNameType the hostNameType value to set.
-     * @return the HostName object itself.
+     * @param hostnameType the hostnameType value to set.
+     * @return the Hostname object itself.
      */
-    public HostName withHostNameType(HostNameType hostNameType) {
-        this.hostNameType = hostNameType;
+    public Hostname withHostnameType(HostnameType hostnameType) {
+        this.hostnameType = hostnameType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

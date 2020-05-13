@@ -5,11 +5,15 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SiteSeal model. */
 @Fluent
 public final class SiteSealInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteSealInner.class);
+
     /*
      * HTML snippet
      */
@@ -34,5 +38,18 @@ public final class SiteSealInner {
     public SiteSealInner withHtml(String html) {
         this.html = html;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (html() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property html in model SiteSealInner"));
+        }
     }
 }

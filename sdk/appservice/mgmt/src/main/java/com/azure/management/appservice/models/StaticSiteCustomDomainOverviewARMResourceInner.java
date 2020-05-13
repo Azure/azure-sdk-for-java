@@ -6,14 +6,19 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The StaticSiteCustomDomainOverviewARMResource model. */
+/** The StaticSiteCustomDomainOverviewArmResource model. */
 @JsonFlatten
 @Immutable
-public class StaticSiteCustomDomainOverviewARMResourceInner extends ProxyOnlyResource {
+public class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyResource {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(StaticSiteCustomDomainOverviewArmResourceInner.class);
+
     /*
      * The domain name for the static site custom domain.
      */
@@ -43,5 +48,15 @@ public class StaticSiteCustomDomainOverviewARMResourceInner extends ProxyOnlyRes
      */
     public OffsetDateTime createdOn() {
         return this.createdOn;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

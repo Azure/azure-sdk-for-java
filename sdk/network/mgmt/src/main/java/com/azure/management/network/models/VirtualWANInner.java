@@ -8,15 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.OfficeTrafficCategory;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The VirtualWAN model. */
+/** The VirtualWan model. */
 @JsonFlatten
 @Fluent
-public class VirtualWANInner extends Resource {
+public class VirtualWanInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -106,9 +110,9 @@ public class VirtualWANInner extends Resource {
      * Set the disableVpnEncryption property: Vpn encryption to be disabled or not.
      *
      * @param disableVpnEncryption the disableVpnEncryption value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withDisableVpnEncryption(Boolean disableVpnEncryption) {
+    public VirtualWanInner withDisableVpnEncryption(Boolean disableVpnEncryption) {
         this.disableVpnEncryption = disableVpnEncryption;
         return this;
     }
@@ -144,9 +148,9 @@ public class VirtualWANInner extends Resource {
      * Set the securityProviderName property: The Security Provider name.
      *
      * @param securityProviderName the securityProviderName value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withSecurityProviderName(String securityProviderName) {
+    public VirtualWanInner withSecurityProviderName(String securityProviderName) {
         this.securityProviderName = securityProviderName;
         return this;
     }
@@ -164,9 +168,9 @@ public class VirtualWANInner extends Resource {
      * Set the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
      *
      * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
+    public VirtualWanInner withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
         this.allowBranchToBranchTraffic = allowBranchToBranchTraffic;
         return this;
     }
@@ -184,9 +188,9 @@ public class VirtualWANInner extends Resource {
      * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
      *
      * @param allowVnetToVnetTraffic the allowVnetToVnetTraffic value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withAllowVnetToVnetTraffic(Boolean allowVnetToVnetTraffic) {
+    public VirtualWanInner withAllowVnetToVnetTraffic(Boolean allowVnetToVnetTraffic) {
         this.allowVnetToVnetTraffic = allowVnetToVnetTraffic;
         return this;
     }
@@ -215,9 +219,9 @@ public class VirtualWANInner extends Resource {
      * wan.
      *
      * @param p2SVpnServerConfigurations the p2SVpnServerConfigurations value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withP2SVpnServerConfigurations(
+    public VirtualWanInner withP2SVpnServerConfigurations(
         List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations) {
         this.p2SVpnServerConfigurations = p2SVpnServerConfigurations;
         return this;
@@ -245,10 +249,21 @@ public class VirtualWANInner extends Resource {
      * Set the id property: Resource ID.
      *
      * @param id the id value to set.
-     * @return the VirtualWANInner object itself.
+     * @return the VirtualWanInner object itself.
      */
-    public VirtualWANInner withId(String id) {
+    public VirtualWanInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (p2SVpnServerConfigurations() != null) {
+            p2SVpnServerConfigurations().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TroubleshootingRecommendedActions model. */
 @Fluent
 public final class TroubleshootingRecommendedActions {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingRecommendedActions.class);
+
     /*
      * ID of the recommended action.
      */
@@ -114,5 +118,13 @@ public final class TroubleshootingRecommendedActions {
     public TroubleshootingRecommendedActions withActionUriText(String actionUriText) {
         this.actionUriText = actionUriText;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

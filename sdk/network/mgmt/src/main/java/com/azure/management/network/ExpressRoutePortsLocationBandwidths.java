@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRoutePorts Location Bandwidthsnull. */
 @Immutable
 public final class ExpressRoutePortsLocationBandwidths {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationBandwidths.class);
+
     /*
      * Bandwidth descriptive name.
      */
@@ -38,5 +42,13 @@ public final class ExpressRoutePortsLocationBandwidths {
      */
     public Integer valueInGbps() {
         return this.valueInGbps;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

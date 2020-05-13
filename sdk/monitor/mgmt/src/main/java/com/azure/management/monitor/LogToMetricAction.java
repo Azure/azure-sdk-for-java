@@ -6,6 +6,8 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,11 +16,12 @@ import java.util.List;
 /** The LogToMetricAction model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName(
-    "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources"
-        + ".ScheduledQueryRules.LogToMetricAction")
+    "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.LogToMetricAction")
 @JsonFlatten
 @Fluent
-public final class LogToMetricAction extends Action {
+public class LogToMetricAction extends Action {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogToMetricAction.class);
+
     /*
      * Criteria of Metric
      */
@@ -43,5 +46,22 @@ public final class LogToMetricAction extends Action {
     public LogToMetricAction withCriteria(List<Criteria> criteria) {
         this.criteria = criteria;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (criteria() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property criteria in model LogToMetricAction"));
+        } else {
+            criteria().forEach(e -> e.validate());
+        }
     }
 }

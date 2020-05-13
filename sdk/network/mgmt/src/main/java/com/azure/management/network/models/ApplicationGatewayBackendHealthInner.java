@@ -5,13 +5,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayBackendHealthPool;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationGatewayBackendHealth model. */
 @Fluent
 public final class ApplicationGatewayBackendHealthInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthInner.class);
+
     /*
      * A list of ApplicationGatewayBackendHealthPool resources.
      */
@@ -37,5 +41,16 @@ public final class ApplicationGatewayBackendHealthInner {
         List<ApplicationGatewayBackendHealthPool> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backendAddressPools() != null) {
+            backendAddressPools().forEach(e -> e.validate());
+        }
     }
 }

@@ -6,15 +6,19 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.BuildStatus;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The StaticSiteBuildARMResource model. */
+/** The StaticSiteBuildArmResource model. */
 @JsonFlatten
 @Immutable
-public class StaticSiteBuildARMResourceInner extends ProxyOnlyResource {
+public class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteBuildArmResourceInner.class);
+
     /*
      * An identifier for the static site build.
      */
@@ -118,5 +122,15 @@ public class StaticSiteBuildARMResourceInner extends ProxyOnlyResource {
      */
     public BuildStatus status() {
         return this.status;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

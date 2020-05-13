@@ -7,12 +7,16 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImageUpdate model. */
 @JsonFlatten
 @Fluent
 public class ImageUpdate extends UpdateResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageUpdate.class);
+
     /*
      * The source virtual machine from which Image is created.
      */
@@ -105,5 +109,18 @@ public class ImageUpdate extends UpdateResource {
     public ImageUpdate withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
     }
 }

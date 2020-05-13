@@ -5,23 +5,27 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PublicIPPrefixSku model. */
+/** The PublicIpPrefixSku model. */
 @Fluent
-public final class PublicIPPrefixSku {
+public final class PublicIpPrefixSku {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixSku.class);
+
     /*
      * Name of a public IP prefix SKU.
      */
     @JsonProperty(value = "name")
-    private NatGatewaySkuName name;
+    private PublicIpPrefixSkuName name;
 
     /**
      * Get the name property: Name of a public IP prefix SKU.
      *
      * @return the name value.
      */
-    public NatGatewaySkuName name() {
+    public PublicIpPrefixSkuName name() {
         return this.name;
     }
 
@@ -29,10 +33,18 @@ public final class PublicIPPrefixSku {
      * Set the name property: Name of a public IP prefix SKU.
      *
      * @param name the name value to set.
-     * @return the PublicIPPrefixSku object itself.
+     * @return the PublicIpPrefixSku object itself.
      */
-    public PublicIPPrefixSku withName(NatGatewaySkuName name) {
+    public PublicIpPrefixSku withName(PublicIpPrefixSkuName name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

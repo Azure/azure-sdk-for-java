@@ -8,24 +8,28 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.DdosSettings;
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.management.network.IpAllocationMethod;
 import com.azure.management.network.IpTag;
-import com.azure.management.network.PublicIPAddressDnsSettings;
-import com.azure.management.network.PublicIPAddressSku;
+import com.azure.management.network.IpVersion;
+import com.azure.management.network.PublicIpAddressDnsSettings;
+import com.azure.management.network.PublicIpAddressSku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PublicIPAddress model. */
+/** The PublicIpAddress model. */
 @JsonFlatten
 @Fluent
-public class PublicIPAddressInner extends Resource {
+public class PublicIpAddressInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressInner.class);
+
     /*
      * The public IP address SKU.
      */
     @JsonProperty(value = "sku")
-    private PublicIPAddressSku sku;
+    private PublicIpAddressSku sku;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -44,25 +48,25 @@ public class PublicIPAddressInner extends Resource {
      * The public IP address allocation method.
      */
     @JsonProperty(value = "properties.publicIPAllocationMethod")
-    private IPAllocationMethod publicIPAllocationMethod;
+    private IpAllocationMethod publicIpAllocationMethod;
 
     /*
      * The public IP address version.
      */
     @JsonProperty(value = "properties.publicIPAddressVersion")
-    private IPVersion publicIPAddressVersion;
+    private IpVersion publicIpAddressVersion;
 
     /*
      * The IP configuration associated with the public IP address.
      */
     @JsonProperty(value = "properties.ipConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private IPConfigurationInner ipConfiguration;
+    private IpConfigurationInner ipConfiguration;
 
     /*
      * The FQDN of the DNS record associated with the public IP address.
      */
     @JsonProperty(value = "properties.dnsSettings")
-    private PublicIPAddressDnsSettings dnsSettings;
+    private PublicIpAddressDnsSettings dnsSettings;
 
     /*
      * The DDoS protection custom policy associated with the public IP address.
@@ -86,7 +90,7 @@ public class PublicIPAddressInner extends Resource {
      * The Public IP Prefix this Public IP Address should be allocated from.
      */
     @JsonProperty(value = "properties.publicIPPrefix")
-    private SubResource publicIPPrefix;
+    private SubResource publicIpPrefix;
 
     /*
      * The idle timeout of the public IP address.
@@ -118,7 +122,7 @@ public class PublicIPAddressInner extends Resource {
      *
      * @return the sku value.
      */
-    public PublicIPAddressSku sku() {
+    public PublicIpAddressSku sku() {
         return this.sku;
     }
 
@@ -126,9 +130,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the sku property: The public IP address SKU.
      *
      * @param sku the sku value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withSku(PublicIPAddressSku sku) {
+    public PublicIpAddressInner withSku(PublicIpAddressSku sku) {
         this.sku = sku;
         return this;
     }
@@ -146,9 +150,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withEtag(String etag) {
+    public PublicIpAddressInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -168,50 +172,50 @@ public class PublicIPAddressInner extends Resource {
      * from.
      *
      * @param zones the zones value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withZones(List<String> zones) {
+    public PublicIpAddressInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
     }
 
     /**
-     * Get the publicIPAllocationMethod property: The public IP address allocation method.
+     * Get the publicIpAllocationMethod property: The public IP address allocation method.
      *
-     * @return the publicIPAllocationMethod value.
+     * @return the publicIpAllocationMethod value.
      */
-    public IPAllocationMethod publicIPAllocationMethod() {
-        return this.publicIPAllocationMethod;
+    public IpAllocationMethod publicIpAllocationMethod() {
+        return this.publicIpAllocationMethod;
     }
 
     /**
-     * Set the publicIPAllocationMethod property: The public IP address allocation method.
+     * Set the publicIpAllocationMethod property: The public IP address allocation method.
      *
-     * @param publicIPAllocationMethod the publicIPAllocationMethod value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @param publicIpAllocationMethod the publicIpAllocationMethod value to set.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withPublicIPAllocationMethod(IPAllocationMethod publicIPAllocationMethod) {
-        this.publicIPAllocationMethod = publicIPAllocationMethod;
+    public PublicIpAddressInner withPublicIpAllocationMethod(IpAllocationMethod publicIpAllocationMethod) {
+        this.publicIpAllocationMethod = publicIpAllocationMethod;
         return this;
     }
 
     /**
-     * Get the publicIPAddressVersion property: The public IP address version.
+     * Get the publicIpAddressVersion property: The public IP address version.
      *
-     * @return the publicIPAddressVersion value.
+     * @return the publicIpAddressVersion value.
      */
-    public IPVersion publicIPAddressVersion() {
-        return this.publicIPAddressVersion;
+    public IpVersion publicIpAddressVersion() {
+        return this.publicIpAddressVersion;
     }
 
     /**
-     * Set the publicIPAddressVersion property: The public IP address version.
+     * Set the publicIpAddressVersion property: The public IP address version.
      *
-     * @param publicIPAddressVersion the publicIPAddressVersion value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @param publicIpAddressVersion the publicIpAddressVersion value to set.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withPublicIPAddressVersion(IPVersion publicIPAddressVersion) {
-        this.publicIPAddressVersion = publicIPAddressVersion;
+    public PublicIpAddressInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
+        this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
 
@@ -220,7 +224,7 @@ public class PublicIPAddressInner extends Resource {
      *
      * @return the ipConfiguration value.
      */
-    public IPConfigurationInner ipConfiguration() {
+    public IpConfigurationInner ipConfiguration() {
         return this.ipConfiguration;
     }
 
@@ -229,7 +233,7 @@ public class PublicIPAddressInner extends Resource {
      *
      * @return the dnsSettings value.
      */
-    public PublicIPAddressDnsSettings dnsSettings() {
+    public PublicIpAddressDnsSettings dnsSettings() {
         return this.dnsSettings;
     }
 
@@ -237,9 +241,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the dnsSettings property: The FQDN of the DNS record associated with the public IP address.
      *
      * @param dnsSettings the dnsSettings value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withDnsSettings(PublicIPAddressDnsSettings dnsSettings) {
+    public PublicIpAddressInner withDnsSettings(PublicIpAddressDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
@@ -257,9 +261,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the ddosSettings property: The DDoS protection custom policy associated with the public IP address.
      *
      * @param ddosSettings the ddosSettings value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withDdosSettings(DdosSettings ddosSettings) {
+    public PublicIpAddressInner withDdosSettings(DdosSettings ddosSettings) {
         this.ddosSettings = ddosSettings;
         return this;
     }
@@ -277,9 +281,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the ipTags property: The list of tags associated with the public IP address.
      *
      * @param ipTags the ipTags value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withIpTags(List<IpTag> ipTags) {
+    public PublicIpAddressInner withIpTags(List<IpTag> ipTags) {
         this.ipTags = ipTags;
         return this;
     }
@@ -297,30 +301,30 @@ public class PublicIPAddressInner extends Resource {
      * Set the ipAddress property: The IP address associated with the public IP address resource.
      *
      * @param ipAddress the ipAddress value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withIpAddress(String ipAddress) {
+    public PublicIpAddressInner withIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
         return this;
     }
 
     /**
-     * Get the publicIPPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
+     * Get the publicIpPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
      *
-     * @return the publicIPPrefix value.
+     * @return the publicIpPrefix value.
      */
-    public SubResource publicIPPrefix() {
-        return this.publicIPPrefix;
+    public SubResource publicIpPrefix() {
+        return this.publicIpPrefix;
     }
 
     /**
-     * Set the publicIPPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
+     * Set the publicIpPrefix property: The Public IP Prefix this Public IP Address should be allocated from.
      *
-     * @param publicIPPrefix the publicIPPrefix value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @param publicIpPrefix the publicIpPrefix value to set.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withPublicIPPrefix(SubResource publicIPPrefix) {
-        this.publicIPPrefix = publicIPPrefix;
+    public PublicIpAddressInner withPublicIpPrefix(SubResource publicIpPrefix) {
+        this.publicIpPrefix = publicIpPrefix;
         return this;
     }
 
@@ -337,9 +341,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
      *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
+    public PublicIpAddressInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
     }
@@ -357,9 +361,9 @@ public class PublicIPAddressInner extends Resource {
      * Set the resourceGuid property: The resource GUID property of the public IP resource.
      *
      * @param resourceGuid the resourceGuid value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withResourceGuid(String resourceGuid) {
+    public PublicIpAddressInner withResourceGuid(String resourceGuid) {
         this.resourceGuid = resourceGuid;
         return this;
     }
@@ -379,9 +383,9 @@ public class PublicIPAddressInner extends Resource {
      * 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withProvisioningState(String provisioningState) {
+    public PublicIpAddressInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -399,10 +403,33 @@ public class PublicIPAddressInner extends Resource {
      * Set the id property: Resource ID.
      *
      * @param id the id value to set.
-     * @return the PublicIPAddressInner object itself.
+     * @return the PublicIpAddressInner object itself.
      */
-    public PublicIPAddressInner withId(String id) {
+    public PublicIpAddressInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (ipConfiguration() != null) {
+            ipConfiguration().validate();
+        }
+        if (dnsSettings() != null) {
+            dnsSettings().validate();
+        }
+        if (ddosSettings() != null) {
+            ddosSettings().validate();
+        }
+        if (ipTags() != null) {
+            ipTags().forEach(e -> e.validate());
+        }
     }
 }

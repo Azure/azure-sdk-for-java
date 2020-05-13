@@ -6,17 +6,21 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AzureResourceType;
-import com.azure.management.appservice.CustomHostNameDnsRecordType;
-import com.azure.management.appservice.HostNameType;
+import com.azure.management.appservice.CustomHostnameDnsRecordType;
+import com.azure.management.appservice.HostnameType;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.SslState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The HostNameBinding model. */
+/** The HostnameBinding model. */
 @JsonFlatten
 @Fluent
-public class HostNameBindingInner extends ProxyOnlyResource {
+public class HostnameBindingInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostnameBindingInner.class);
+
     /*
      * App Service app name.
      */
@@ -45,13 +49,13 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Custom DNS record type.
      */
     @JsonProperty(value = "properties.customHostNameDnsRecordType")
-    private CustomHostNameDnsRecordType customHostNameDnsRecordType;
+    private CustomHostnameDnsRecordType customHostnameDnsRecordType;
 
     /*
      * Hostname type.
      */
     @JsonProperty(value = "properties.hostNameType")
-    private HostNameType hostNameType;
+    private HostnameType hostnameType;
 
     /*
      * SSL type
@@ -69,7 +73,7 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
     @JsonProperty(value = "properties.virtualIP", access = JsonProperty.Access.WRITE_ONLY)
-    private String virtualIP;
+    private String virtualIp;
 
     /**
      * Get the siteName property: App Service app name.
@@ -84,9 +88,9 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Set the siteName property: App Service app name.
      *
      * @param siteName the siteName value to set.
-     * @return the HostNameBindingInner object itself.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withSiteName(String siteName) {
+    public HostnameBindingInner withSiteName(String siteName) {
         this.siteName = siteName;
         return this;
     }
@@ -104,9 +108,9 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Set the domainId property: Fully qualified ARM domain resource URI.
      *
      * @param domainId the domainId value to set.
-     * @return the HostNameBindingInner object itself.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withDomainId(String domainId) {
+    public HostnameBindingInner withDomainId(String domainId) {
         this.domainId = domainId;
         return this;
     }
@@ -124,9 +128,9 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Set the azureResourceName property: Azure resource name.
      *
      * @param azureResourceName the azureResourceName value to set.
-     * @return the HostNameBindingInner object itself.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withAzureResourceName(String azureResourceName) {
+    public HostnameBindingInner withAzureResourceName(String azureResourceName) {
         this.azureResourceName = azureResourceName;
         return this;
     }
@@ -144,51 +148,51 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Set the azureResourceType property: Azure resource type.
      *
      * @param azureResourceType the azureResourceType value to set.
-     * @return the HostNameBindingInner object itself.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withAzureResourceType(AzureResourceType azureResourceType) {
+    public HostnameBindingInner withAzureResourceType(AzureResourceType azureResourceType) {
         this.azureResourceType = azureResourceType;
         return this;
     }
 
     /**
-     * Get the customHostNameDnsRecordType property: Custom DNS record type.
+     * Get the customHostnameDnsRecordType property: Custom DNS record type.
      *
-     * @return the customHostNameDnsRecordType value.
+     * @return the customHostnameDnsRecordType value.
      */
-    public CustomHostNameDnsRecordType customHostNameDnsRecordType() {
-        return this.customHostNameDnsRecordType;
+    public CustomHostnameDnsRecordType customHostnameDnsRecordType() {
+        return this.customHostnameDnsRecordType;
     }
 
     /**
-     * Set the customHostNameDnsRecordType property: Custom DNS record type.
+     * Set the customHostnameDnsRecordType property: Custom DNS record type.
      *
-     * @param customHostNameDnsRecordType the customHostNameDnsRecordType value to set.
-     * @return the HostNameBindingInner object itself.
+     * @param customHostnameDnsRecordType the customHostnameDnsRecordType value to set.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withCustomHostNameDnsRecordType(
-        CustomHostNameDnsRecordType customHostNameDnsRecordType) {
-        this.customHostNameDnsRecordType = customHostNameDnsRecordType;
+    public HostnameBindingInner withCustomHostnameDnsRecordType(
+        CustomHostnameDnsRecordType customHostnameDnsRecordType) {
+        this.customHostnameDnsRecordType = customHostnameDnsRecordType;
         return this;
     }
 
     /**
-     * Get the hostNameType property: Hostname type.
+     * Get the hostnameType property: Hostname type.
      *
-     * @return the hostNameType value.
+     * @return the hostnameType value.
      */
-    public HostNameType hostNameType() {
-        return this.hostNameType;
+    public HostnameType hostnameType() {
+        return this.hostnameType;
     }
 
     /**
-     * Set the hostNameType property: Hostname type.
+     * Set the hostnameType property: Hostname type.
      *
-     * @param hostNameType the hostNameType value to set.
-     * @return the HostNameBindingInner object itself.
+     * @param hostnameType the hostnameType value to set.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withHostNameType(HostNameType hostNameType) {
-        this.hostNameType = hostNameType;
+    public HostnameBindingInner withHostnameType(HostnameType hostnameType) {
+        this.hostnameType = hostnameType;
         return this;
     }
 
@@ -205,9 +209,9 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Set the sslState property: SSL type.
      *
      * @param sslState the sslState value to set.
-     * @return the HostNameBindingInner object itself.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withSslState(SslState sslState) {
+    public HostnameBindingInner withSslState(SslState sslState) {
         this.sslState = sslState;
         return this;
     }
@@ -225,19 +229,29 @@ public class HostNameBindingInner extends ProxyOnlyResource {
      * Set the thumbprint property: SSL certificate thumbprint.
      *
      * @param thumbprint the thumbprint value to set.
-     * @return the HostNameBindingInner object itself.
+     * @return the HostnameBindingInner object itself.
      */
-    public HostNameBindingInner withThumbprint(String thumbprint) {
+    public HostnameBindingInner withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
         return this;
     }
 
     /**
-     * Get the virtualIP property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
+     * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
      *
-     * @return the virtualIP value.
+     * @return the virtualIp value.
      */
-    public String virtualIP() {
-        return this.virtualIP;
+    public String virtualIp() {
+        return this.virtualIp;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

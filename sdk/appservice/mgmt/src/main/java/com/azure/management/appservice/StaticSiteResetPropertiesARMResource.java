@@ -6,12 +6,16 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StaticSiteResetPropertiesARMResource model. */
+/** The StaticSiteResetPropertiesArmResource model. */
 @JsonFlatten
 @Fluent
-public class StaticSiteResetPropertiesARMResource extends ProxyOnlyResource {
+public class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteResetPropertiesArmResource.class);
+
     /*
      * The token which proves admin privileges to the repository.
      */
@@ -38,9 +42,9 @@ public class StaticSiteResetPropertiesARMResource extends ProxyOnlyResource {
      * Set the repositoryToken property: The token which proves admin privileges to the repository.
      *
      * @param repositoryToken the repositoryToken value to set.
-     * @return the StaticSiteResetPropertiesARMResource object itself.
+     * @return the StaticSiteResetPropertiesArmResource object itself.
      */
-    public StaticSiteResetPropertiesARMResource withRepositoryToken(String repositoryToken) {
+    public StaticSiteResetPropertiesArmResource withRepositoryToken(String repositoryToken) {
         this.repositoryToken = repositoryToken;
         return this;
     }
@@ -60,10 +64,20 @@ public class StaticSiteResetPropertiesARMResource extends ProxyOnlyResource {
      * properties.
      *
      * @param shouldUpdateRepository the shouldUpdateRepository value to set.
-     * @return the StaticSiteResetPropertiesARMResource object itself.
+     * @return the StaticSiteResetPropertiesArmResource object itself.
      */
-    public StaticSiteResetPropertiesARMResource withShouldUpdateRepository(Boolean shouldUpdateRepository) {
+    public StaticSiteResetPropertiesArmResource withShouldUpdateRepository(Boolean shouldUpdateRepository) {
         this.shouldUpdateRepository = shouldUpdateRepository;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

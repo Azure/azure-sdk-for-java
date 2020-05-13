@@ -7,12 +7,16 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BastionHostIPConfiguration model. */
+/** The BastionHostIpConfiguration model. */
 @JsonFlatten
 @Fluent
-public class BastionHostIPConfiguration extends SubResource {
+public class BastionHostIpConfiguration extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostIpConfiguration.class);
+
     /*
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
@@ -42,7 +46,7 @@ public class BastionHostIPConfiguration extends SubResource {
      * Reference of the PublicIP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIPAddress;
+    private SubResource publicIpAddress;
 
     /*
      * The provisioning state of the resource.
@@ -54,7 +58,7 @@ public class BastionHostIPConfiguration extends SubResource {
      * Private IP allocation method.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IPAllocationMethod privateIPAllocationMethod;
+    private IpAllocationMethod privateIpAllocationMethod;
 
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
@@ -71,9 +75,9 @@ public class BastionHostIPConfiguration extends SubResource {
      * access the resource.
      *
      * @param name the name value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withName(String name) {
+    public BastionHostIpConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -109,30 +113,30 @@ public class BastionHostIPConfiguration extends SubResource {
      * Set the subnet property: Reference of the subnet resource.
      *
      * @param subnet the subnet value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withSubnet(SubResource subnet) {
+    public BastionHostIpConfiguration withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
 
     /**
-     * Get the publicIPAddress property: Reference of the PublicIP resource.
+     * Get the publicIpAddress property: Reference of the PublicIP resource.
      *
-     * @return the publicIPAddress value.
+     * @return the publicIpAddress value.
      */
-    public SubResource publicIPAddress() {
-        return this.publicIPAddress;
+    public SubResource publicIpAddress() {
+        return this.publicIpAddress;
     }
 
     /**
-     * Set the publicIPAddress property: Reference of the PublicIP resource.
+     * Set the publicIpAddress property: Reference of the PublicIP resource.
      *
-     * @param publicIPAddress the publicIPAddress value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @param publicIpAddress the publicIpAddress value to set.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withPublicIPAddress(SubResource publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public BastionHostIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
         return this;
     }
 
@@ -146,22 +150,30 @@ public class BastionHostIPConfiguration extends SubResource {
     }
 
     /**
-     * Get the privateIPAllocationMethod property: Private IP allocation method.
+     * Get the privateIpAllocationMethod property: Private IP allocation method.
      *
-     * @return the privateIPAllocationMethod value.
+     * @return the privateIpAllocationMethod value.
      */
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.privateIPAllocationMethod;
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.privateIpAllocationMethod;
     }
 
     /**
-     * Set the privateIPAllocationMethod property: Private IP allocation method.
+     * Set the privateIpAllocationMethod property: Private IP allocation method.
      *
-     * @param privateIPAllocationMethod the privateIPAllocationMethod value to set.
-     * @return the BastionHostIPConfiguration object itself.
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
+     * @return the BastionHostIpConfiguration object itself.
      */
-    public BastionHostIPConfiguration withPrivateIPAllocationMethod(IPAllocationMethod privateIPAllocationMethod) {
-        this.privateIPAllocationMethod = privateIPAllocationMethod;
+    public BastionHostIpConfiguration withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
+        this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

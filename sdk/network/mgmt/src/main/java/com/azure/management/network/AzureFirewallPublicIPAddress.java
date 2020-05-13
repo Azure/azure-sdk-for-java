@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureFirewallPublicIPAddress model. */
+/** The AzureFirewallPublicIpAddress model. */
 @Fluent
-public final class AzureFirewallPublicIPAddress {
+public final class AzureFirewallPublicIpAddress {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallPublicIpAddress.class);
+
     /*
      * Public IP Address value.
      */
@@ -29,10 +33,18 @@ public final class AzureFirewallPublicIPAddress {
      * Set the address property: Public IP Address value.
      *
      * @param address the address value to set.
-     * @return the AzureFirewallPublicIPAddress object itself.
+     * @return the AzureFirewallPublicIpAddress object itself.
      */
-    public AzureFirewallPublicIPAddress withAddress(String address) {
+    public AzureFirewallPublicIpAddress withAddress(String address) {
         this.address = address;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

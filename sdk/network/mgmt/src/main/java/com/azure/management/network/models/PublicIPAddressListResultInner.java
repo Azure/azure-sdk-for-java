@@ -5,17 +5,21 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PublicIPAddressListResult model. */
+/** The PublicIpAddressListResult model. */
 @Fluent
-public final class PublicIPAddressListResultInner {
+public final class PublicIpAddressListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressListResultInner.class);
+
     /*
      * A list of public IP addresses that exists in a resource group.
      */
     @JsonProperty(value = "value")
-    private List<PublicIPAddressInner> value;
+    private List<PublicIpAddressInner> value;
 
     /*
      * The URL to get the next set of results.
@@ -28,7 +32,7 @@ public final class PublicIPAddressListResultInner {
      *
      * @return the value value.
      */
-    public List<PublicIPAddressInner> value() {
+    public List<PublicIpAddressInner> value() {
         return this.value;
     }
 
@@ -36,9 +40,9 @@ public final class PublicIPAddressListResultInner {
      * Set the value property: A list of public IP addresses that exists in a resource group.
      *
      * @param value the value value to set.
-     * @return the PublicIPAddressListResultInner object itself.
+     * @return the PublicIpAddressListResultInner object itself.
      */
-    public PublicIPAddressListResultInner withValue(List<PublicIPAddressInner> value) {
+    public PublicIpAddressListResultInner withValue(List<PublicIpAddressInner> value) {
         this.value = value;
         return this;
     }
@@ -56,10 +60,21 @@ public final class PublicIPAddressListResultInner {
      * Set the nextLink property: The URL to get the next set of results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the PublicIPAddressListResultInner object itself.
+     * @return the PublicIpAddressListResultInner object itself.
      */
-    public PublicIPAddressListResultInner withNextLink(String nextLink) {
+    public PublicIpAddressListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

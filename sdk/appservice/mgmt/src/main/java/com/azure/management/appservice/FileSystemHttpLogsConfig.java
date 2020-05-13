@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FileSystemHttpLogsConfig model. */
 @Fluent
 public final class FileSystemHttpLogsConfig {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileSystemHttpLogsConfig.class);
+
     /*
      * Maximum size in megabytes that http log files can use.
      * When reached old log files will be removed to make space for new ones.
@@ -97,5 +101,13 @@ public final class FileSystemHttpLogsConfig {
     public FileSystemHttpLogsConfig withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

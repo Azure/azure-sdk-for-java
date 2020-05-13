@@ -5,23 +5,27 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NatGatewaySku model. */
 @Fluent
 public final class NatGatewaySku {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NatGatewaySku.class);
+
     /*
      * Name of Nat Gateway SKU.
      */
     @JsonProperty(value = "name")
-    private NatGatewaySkuName name;
+    private PublicIpPrefixSkuName name;
 
     /**
      * Get the name property: Name of Nat Gateway SKU.
      *
      * @return the name value.
      */
-    public NatGatewaySkuName name() {
+    public PublicIpPrefixSkuName name() {
         return this.name;
     }
 
@@ -31,8 +35,16 @@ public final class NatGatewaySku {
      * @param name the name value to set.
      * @return the NatGatewaySku object itself.
      */
-    public NatGatewaySku withName(NatGatewaySkuName name) {
+    public NatGatewaySku withName(PublicIpPrefixSkuName name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

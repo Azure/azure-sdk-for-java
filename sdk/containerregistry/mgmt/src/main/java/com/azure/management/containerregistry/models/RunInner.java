@@ -7,6 +7,7 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.AgentProperties;
 import com.azure.management.containerregistry.ImageDescriptor;
 import com.azure.management.containerregistry.ImageUpdateTrigger;
@@ -15,6 +16,7 @@ import com.azure.management.containerregistry.ProvisioningState;
 import com.azure.management.containerregistry.RunStatus;
 import com.azure.management.containerregistry.RunType;
 import com.azure.management.containerregistry.SourceTriggerDescriptor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,6 +25,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class RunInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunInner.class);
+
     /*
      * The unique identifier for the run.
      */
@@ -488,5 +492,28 @@ public class RunInner extends ProxyResource {
     public RunInner withIsArchiveEnabled(Boolean isArchiveEnabled) {
         this.isArchiveEnabled = isArchiveEnabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (outputImages() != null) {
+            outputImages().forEach(e -> e.validate());
+        }
+        if (imageUpdateTrigger() != null) {
+            imageUpdateTrigger().validate();
+        }
+        if (sourceTrigger() != null) {
+            sourceTrigger().validate();
+        }
+        if (platform() != null) {
+            platform().validate();
+        }
+        if (agentConfiguration() != null) {
+            agentConfiguration().validate();
+        }
     }
 }

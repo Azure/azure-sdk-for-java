@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KeyVaultAndSecretReference model. */
 @Fluent
 public final class KeyVaultAndSecretReference {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultAndSecretReference.class);
+
     /*
      * Resource id of the KeyVault containing the key or secret
      */
@@ -60,5 +64,27 @@ public final class KeyVaultAndSecretReference {
     public KeyVaultAndSecretReference withSecretUrl(String secretUrl) {
         this.secretUrl = secretUrl;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceVault() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sourceVault in model KeyVaultAndSecretReference"));
+        } else {
+            sourceVault().validate();
+        }
+        if (secretUrl() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property secretUrl in model KeyVaultAndSecretReference"));
+        }
     }
 }

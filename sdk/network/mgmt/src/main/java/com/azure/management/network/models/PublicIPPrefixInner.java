@@ -8,22 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.management.network.IPVersion;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.IpTag;
-import com.azure.management.network.PublicIPPrefixSku;
+import com.azure.management.network.IpVersion;
+import com.azure.management.network.PublicIpPrefixSku;
 import com.azure.management.network.ReferencedPublicIpAddress;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PublicIPPrefix model. */
+/** The PublicIpPrefix model. */
 @JsonFlatten
 @Fluent
-public class PublicIPPrefixInner extends Resource {
+public class PublicIpPrefixInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixInner.class);
+
     /*
      * The public IP prefix SKU.
      */
     @JsonProperty(value = "sku")
-    private PublicIPPrefixSku sku;
+    private PublicIpPrefixSku sku;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -42,7 +46,7 @@ public class PublicIPPrefixInner extends Resource {
      * The public IP address version.
      */
     @JsonProperty(value = "properties.publicIPAddressVersion")
-    private IPVersion publicIPAddressVersion;
+    private IpVersion publicIpAddressVersion;
 
     /*
      * The list of tags associated with the public IP prefix.
@@ -66,7 +70,7 @@ public class PublicIPPrefixInner extends Resource {
      * The list of all referenced PublicIPAddresses.
      */
     @JsonProperty(value = "properties.publicIPAddresses")
-    private List<ReferencedPublicIpAddress> publicIPAddresses;
+    private List<ReferencedPublicIpAddress> publicIpAddresses;
 
     /*
      * The reference to load balancer frontend IP configuration associated with
@@ -99,7 +103,7 @@ public class PublicIPPrefixInner extends Resource {
      *
      * @return the sku value.
      */
-    public PublicIPPrefixSku sku() {
+    public PublicIpPrefixSku sku() {
         return this.sku;
     }
 
@@ -107,9 +111,9 @@ public class PublicIPPrefixInner extends Resource {
      * Set the sku property: The public IP prefix SKU.
      *
      * @param sku the sku value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withSku(PublicIPPrefixSku sku) {
+    public PublicIpPrefixInner withSku(PublicIpPrefixSku sku) {
         this.sku = sku;
         return this;
     }
@@ -127,9 +131,9 @@ public class PublicIPPrefixInner extends Resource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withEtag(String etag) {
+    public PublicIpPrefixInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -149,30 +153,30 @@ public class PublicIPPrefixInner extends Resource {
      * from.
      *
      * @param zones the zones value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withZones(List<String> zones) {
+    public PublicIpPrefixInner withZones(List<String> zones) {
         this.zones = zones;
         return this;
     }
 
     /**
-     * Get the publicIPAddressVersion property: The public IP address version.
+     * Get the publicIpAddressVersion property: The public IP address version.
      *
-     * @return the publicIPAddressVersion value.
+     * @return the publicIpAddressVersion value.
      */
-    public IPVersion publicIPAddressVersion() {
-        return this.publicIPAddressVersion;
+    public IpVersion publicIpAddressVersion() {
+        return this.publicIpAddressVersion;
     }
 
     /**
-     * Set the publicIPAddressVersion property: The public IP address version.
+     * Set the publicIpAddressVersion property: The public IP address version.
      *
-     * @param publicIPAddressVersion the publicIPAddressVersion value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @param publicIpAddressVersion the publicIpAddressVersion value to set.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withPublicIPAddressVersion(IPVersion publicIPAddressVersion) {
-        this.publicIPAddressVersion = publicIPAddressVersion;
+    public PublicIpPrefixInner withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
+        this.publicIpAddressVersion = publicIpAddressVersion;
         return this;
     }
 
@@ -189,9 +193,9 @@ public class PublicIPPrefixInner extends Resource {
      * Set the ipTags property: The list of tags associated with the public IP prefix.
      *
      * @param ipTags the ipTags value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withIpTags(List<IpTag> ipTags) {
+    public PublicIpPrefixInner withIpTags(List<IpTag> ipTags) {
         this.ipTags = ipTags;
         return this;
     }
@@ -209,9 +213,9 @@ public class PublicIPPrefixInner extends Resource {
      * Set the prefixLength property: The Length of the Public IP Prefix.
      *
      * @param prefixLength the prefixLength value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withPrefixLength(Integer prefixLength) {
+    public PublicIpPrefixInner withPrefixLength(Integer prefixLength) {
         this.prefixLength = prefixLength;
         return this;
     }
@@ -229,30 +233,30 @@ public class PublicIPPrefixInner extends Resource {
      * Set the ipPrefix property: The allocated Prefix.
      *
      * @param ipPrefix the ipPrefix value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withIpPrefix(String ipPrefix) {
+    public PublicIpPrefixInner withIpPrefix(String ipPrefix) {
         this.ipPrefix = ipPrefix;
         return this;
     }
 
     /**
-     * Get the publicIPAddresses property: The list of all referenced PublicIPAddresses.
+     * Get the publicIpAddresses property: The list of all referenced PublicIPAddresses.
      *
-     * @return the publicIPAddresses value.
+     * @return the publicIpAddresses value.
      */
-    public List<ReferencedPublicIpAddress> publicIPAddresses() {
-        return this.publicIPAddresses;
+    public List<ReferencedPublicIpAddress> publicIpAddresses() {
+        return this.publicIpAddresses;
     }
 
     /**
-     * Set the publicIPAddresses property: The list of all referenced PublicIPAddresses.
+     * Set the publicIpAddresses property: The list of all referenced PublicIPAddresses.
      *
-     * @param publicIPAddresses the publicIPAddresses value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @param publicIpAddresses the publicIpAddresses value to set.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withPublicIPAddresses(List<ReferencedPublicIpAddress> publicIPAddresses) {
-        this.publicIPAddresses = publicIPAddresses;
+    public PublicIpPrefixInner withPublicIpAddresses(List<ReferencedPublicIpAddress> publicIpAddresses) {
+        this.publicIpAddresses = publicIpAddresses;
         return this;
     }
 
@@ -279,9 +283,9 @@ public class PublicIPPrefixInner extends Resource {
      * Set the resourceGuid property: The resource GUID property of the public IP prefix resource.
      *
      * @param resourceGuid the resourceGuid value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withResourceGuid(String resourceGuid) {
+    public PublicIpPrefixInner withResourceGuid(String resourceGuid) {
         this.resourceGuid = resourceGuid;
         return this;
     }
@@ -301,9 +305,9 @@ public class PublicIPPrefixInner extends Resource {
      * 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withProvisioningState(String provisioningState) {
+    public PublicIpPrefixInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -321,10 +325,27 @@ public class PublicIPPrefixInner extends Resource {
      * Set the id property: Resource ID.
      *
      * @param id the id value to set.
-     * @return the PublicIPPrefixInner object itself.
+     * @return the PublicIpPrefixInner object itself.
      */
-    public PublicIPPrefixInner withId(String id) {
+    public PublicIpPrefixInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (ipTags() != null) {
+            ipTags().forEach(e -> e.validate());
+        }
+        if (publicIpAddresses() != null) {
+            publicIpAddresses().forEach(e -> e.validate());
+        }
     }
 }

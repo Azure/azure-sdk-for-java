@@ -5,6 +5,8 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 /** The MongoDBCollectionResource model. */
 @Fluent
 public class MongoDBCollectionResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDBCollectionResource.class);
+
     /*
      * Name of the Cosmos DB MongoDB collection
      */
@@ -88,5 +92,21 @@ public class MongoDBCollectionResource {
     public MongoDBCollectionResource withIndexes(List<MongoIndex> indexes) {
         this.indexes = indexes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
+        }
+        if (indexes() != null) {
+            indexes().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VerificationIPFlowParameters model. */
+/** The VerificationIpFlowParameters model. */
 @Fluent
-public final class VerificationIPFlowParameters {
+public final class VerificationIpFlowParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerificationIpFlowParameters.class);
+
     /*
      * The ID of the target resource to perform next-hop on.
      */
@@ -48,13 +52,13 @@ public final class VerificationIPFlowParameters {
      * The local IP address. Acceptable values are valid IPv4 addresses.
      */
     @JsonProperty(value = "localIPAddress", required = true)
-    private String localIPAddress;
+    private String localIpAddress;
 
     /*
      * The remote IP address. Acceptable values are valid IPv4 addresses.
      */
     @JsonProperty(value = "remoteIPAddress", required = true)
-    private String remoteIPAddress;
+    private String remoteIpAddress;
 
     /*
      * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
@@ -76,9 +80,9 @@ public final class VerificationIPFlowParameters {
      * Set the targetResourceId property: The ID of the target resource to perform next-hop on.
      *
      * @param targetResourceId the targetResourceId value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withTargetResourceId(String targetResourceId) {
+    public VerificationIpFlowParameters withTargetResourceId(String targetResourceId) {
         this.targetResourceId = targetResourceId;
         return this;
     }
@@ -96,9 +100,9 @@ public final class VerificationIPFlowParameters {
      * Set the direction property: The direction of the packet represented as a 5-tuple.
      *
      * @param direction the direction value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withDirection(Direction direction) {
+    public VerificationIpFlowParameters withDirection(Direction direction) {
         this.direction = direction;
         return this;
     }
@@ -116,9 +120,9 @@ public final class VerificationIPFlowParameters {
      * Set the protocol property: Protocol to be verified on.
      *
      * @param protocol the protocol value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withProtocol(IpFlowProtocol protocol) {
+    public VerificationIpFlowParameters withProtocol(IpFlowProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -138,9 +142,9 @@ public final class VerificationIPFlowParameters {
      * Support for * for the source port, which depends on the direction.
      *
      * @param localPort the localPort value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withLocalPort(String localPort) {
+    public VerificationIpFlowParameters withLocalPort(String localPort) {
         this.localPort = localPort;
         return this;
     }
@@ -160,50 +164,50 @@ public final class VerificationIPFlowParameters {
      * Support for * for the source port, which depends on the direction.
      *
      * @param remotePort the remotePort value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withRemotePort(String remotePort) {
+    public VerificationIpFlowParameters withRemotePort(String remotePort) {
         this.remotePort = remotePort;
         return this;
     }
 
     /**
-     * Get the localIPAddress property: The local IP address. Acceptable values are valid IPv4 addresses.
+     * Get the localIpAddress property: The local IP address. Acceptable values are valid IPv4 addresses.
      *
-     * @return the localIPAddress value.
+     * @return the localIpAddress value.
      */
-    public String localIPAddress() {
-        return this.localIPAddress;
+    public String localIpAddress() {
+        return this.localIpAddress;
     }
 
     /**
-     * Set the localIPAddress property: The local IP address. Acceptable values are valid IPv4 addresses.
+     * Set the localIpAddress property: The local IP address. Acceptable values are valid IPv4 addresses.
      *
-     * @param localIPAddress the localIPAddress value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @param localIpAddress the localIpAddress value to set.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withLocalIPAddress(String localIPAddress) {
-        this.localIPAddress = localIPAddress;
+    public VerificationIpFlowParameters withLocalIpAddress(String localIpAddress) {
+        this.localIpAddress = localIpAddress;
         return this;
     }
 
     /**
-     * Get the remoteIPAddress property: The remote IP address. Acceptable values are valid IPv4 addresses.
+     * Get the remoteIpAddress property: The remote IP address. Acceptable values are valid IPv4 addresses.
      *
-     * @return the remoteIPAddress value.
+     * @return the remoteIpAddress value.
      */
-    public String remoteIPAddress() {
-        return this.remoteIPAddress;
+    public String remoteIpAddress() {
+        return this.remoteIpAddress;
     }
 
     /**
-     * Set the remoteIPAddress property: The remote IP address. Acceptable values are valid IPv4 addresses.
+     * Set the remoteIpAddress property: The remote IP address. Acceptable values are valid IPv4 addresses.
      *
-     * @param remoteIPAddress the remoteIPAddress value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @param remoteIpAddress the remoteIpAddress value to set.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withRemoteIPAddress(String remoteIPAddress) {
-        this.remoteIPAddress = remoteIPAddress;
+    public VerificationIpFlowParameters withRemoteIpAddress(String remoteIpAddress) {
+        this.remoteIpAddress = remoteIpAddress;
         return this;
     }
 
@@ -222,10 +226,60 @@ public final class VerificationIPFlowParameters {
      * them, then this parameter must be specified. Otherwise optional).
      *
      * @param targetNicResourceId the targetNicResourceId value to set.
-     * @return the VerificationIPFlowParameters object itself.
+     * @return the VerificationIpFlowParameters object itself.
      */
-    public VerificationIPFlowParameters withTargetNicResourceId(String targetNicResourceId) {
+    public VerificationIpFlowParameters withTargetNicResourceId(String targetNicResourceId) {
         this.targetNicResourceId = targetNicResourceId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model VerificationIpFlowParameters"));
+        }
+        if (direction() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property direction in model VerificationIpFlowParameters"));
+        }
+        if (protocol() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property protocol in model VerificationIpFlowParameters"));
+        }
+        if (localPort() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property localPort in model VerificationIpFlowParameters"));
+        }
+        if (remotePort() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property remotePort in model VerificationIpFlowParameters"));
+        }
+        if (localIpAddress() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property localIpAddress in model VerificationIpFlowParameters"));
+        }
+        if (remoteIpAddress() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property remoteIpAddress in model VerificationIpFlowParameters"));
+        }
     }
 }

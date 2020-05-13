@@ -7,16 +7,20 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayBackendAddressPool;
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.management.network.IpAllocationMethod;
+import com.azure.management.network.IpVersion;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The NetworkInterfaceIPConfiguration model. */
+/** The NetworkInterfaceIpConfiguration model. */
 @JsonFlatten
 @Fluent
-public class NetworkInterfaceIPConfigurationInner extends SubResource {
+public class NetworkInterfaceIpConfigurationInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationInner.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -58,20 +62,20 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IPAllocationMethod privateIPAllocationMethod;
+    private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Available from Api-Version 2016-03-30 onwards, it represents whether the
      * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      */
     @JsonProperty(value = "properties.privateIPAddressVersion")
-    private IPVersion privateIPAddressVersion;
+    private IpVersion privateIpAddressVersion;
 
     /*
      * Subnet bound to the IP configuration.
@@ -90,7 +94,7 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Public IP address bound to the IP configuration.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private PublicIPAddressInner publicIPAddress;
+    private PublicIpAddressInner publicIpAddress;
 
     /*
      * Application security groups in which the IP configuration is included.
@@ -120,9 +124,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * access the resource.
      *
      * @param name the name value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withName(String name) {
+    public NetworkInterfaceIpConfigurationInner withName(String name) {
         this.name = name;
         return this;
     }
@@ -140,9 +144,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withEtag(String etag) {
+    public NetworkInterfaceIpConfigurationInner withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -160,9 +164,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Set the virtualNetworkTaps property: The reference to Virtual Network Taps.
      *
      * @param virtualNetworkTaps the virtualNetworkTaps value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withVirtualNetworkTaps(
+    public NetworkInterfaceIpConfigurationInner withVirtualNetworkTaps(
         List<VirtualNetworkTapInner> virtualNetworkTaps) {
         this.virtualNetworkTaps = virtualNetworkTaps;
         return this;
@@ -183,9 +187,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * resource.
      *
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withApplicationGatewayBackendAddressPools(
+    public NetworkInterfaceIpConfigurationInner withApplicationGatewayBackendAddressPools(
         List<ApplicationGatewayBackendAddressPool> applicationGatewayBackendAddressPools) {
         this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
         return this;
@@ -204,9 +208,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Set the loadBalancerBackendAddressPools property: The reference of LoadBalancerBackendAddressPool resource.
      *
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withLoadBalancerBackendAddressPools(
+    public NetworkInterfaceIpConfigurationInner withLoadBalancerBackendAddressPools(
         List<BackendAddressPoolInner> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
@@ -225,74 +229,74 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Set the loadBalancerInboundNatRules property: A list of references of LoadBalancerInboundNatRules.
      *
      * @param loadBalancerInboundNatRules the loadBalancerInboundNatRules value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withLoadBalancerInboundNatRules(
+    public NetworkInterfaceIpConfigurationInner withLoadBalancerInboundNatRules(
         List<InboundNatRuleInner> loadBalancerInboundNatRules) {
         this.loadBalancerInboundNatRules = loadBalancerInboundNatRules;
         return this;
     }
 
     /**
-     * Get the privateIPAddress property: Private IP address of the IP configuration.
+     * Get the privateIpAddress property: Private IP address of the IP configuration.
      *
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: Private IP address of the IP configuration.
+     * Set the privateIpAddress property: Private IP address of the IP configuration.
      *
-     * @param privateIPAddress the privateIPAddress value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @param privateIpAddress the privateIpAddress value to set.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public NetworkInterfaceIpConfigurationInner withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
     /**
-     * Get the privateIPAllocationMethod property: The private IP address allocation method.
+     * Get the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @return the privateIPAllocationMethod value.
+     * @return the privateIpAllocationMethod value.
      */
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.privateIPAllocationMethod;
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.privateIpAllocationMethod;
     }
 
     /**
-     * Set the privateIPAllocationMethod property: The private IP address allocation method.
+     * Set the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @param privateIPAllocationMethod the privateIPAllocationMethod value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPrivateIPAllocationMethod(
-        IPAllocationMethod privateIPAllocationMethod) {
-        this.privateIPAllocationMethod = privateIPAllocationMethod;
+    public NetworkInterfaceIpConfigurationInner withPrivateIpAllocationMethod(
+        IpAllocationMethod privateIpAllocationMethod) {
+        this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
-     * Get the privateIPAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
+     * Get the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      *
-     * @return the privateIPAddressVersion value.
+     * @return the privateIpAddressVersion value.
      */
-    public IPVersion privateIPAddressVersion() {
-        return this.privateIPAddressVersion;
+    public IpVersion privateIpAddressVersion() {
+        return this.privateIpAddressVersion;
     }
 
     /**
-     * Set the privateIPAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
+     * Set the privateIpAddressVersion property: Available from Api-Version 2016-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      *
-     * @param privateIPAddressVersion the privateIPAddressVersion value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @param privateIpAddressVersion the privateIpAddressVersion value to set.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPrivateIPAddressVersion(IPVersion privateIPAddressVersion) {
-        this.privateIPAddressVersion = privateIPAddressVersion;
+    public NetworkInterfaceIpConfigurationInner withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
+        this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
     }
 
@@ -309,9 +313,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Set the subnet property: Subnet bound to the IP configuration.
      *
      * @param subnet the subnet value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withSubnet(SubnetInner subnet) {
+    public NetworkInterfaceIpConfigurationInner withSubnet(SubnetInner subnet) {
         this.subnet = subnet;
         return this;
     }
@@ -329,30 +333,30 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * Set the primary property: Gets whether this is a primary customer address on the network interface.
      *
      * @param primary the primary value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPrimary(Boolean primary) {
+    public NetworkInterfaceIpConfigurationInner withPrimary(Boolean primary) {
         this.primary = primary;
         return this;
     }
 
     /**
-     * Get the publicIPAddress property: Public IP address bound to the IP configuration.
+     * Get the publicIpAddress property: Public IP address bound to the IP configuration.
      *
-     * @return the publicIPAddress value.
+     * @return the publicIpAddress value.
      */
-    public PublicIPAddressInner publicIPAddress() {
-        return this.publicIPAddress;
+    public PublicIpAddressInner publicIpAddress() {
+        return this.publicIpAddress;
     }
 
     /**
-     * Set the publicIPAddress property: Public IP address bound to the IP configuration.
+     * Set the publicIpAddress property: Public IP address bound to the IP configuration.
      *
-     * @param publicIPAddress the publicIPAddress value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @param publicIpAddress the publicIpAddress value to set.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withPublicIPAddress(PublicIPAddressInner publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public NetworkInterfaceIpConfigurationInner withPublicIpAddress(PublicIpAddressInner publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
         return this;
     }
 
@@ -371,9 +375,9 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * included.
      *
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withApplicationSecurityGroups(
+    public NetworkInterfaceIpConfigurationInner withApplicationSecurityGroups(
         List<ApplicationSecurityGroupInner> applicationSecurityGroups) {
         this.applicationSecurityGroups = applicationSecurityGroups;
         return this;
@@ -394,10 +398,39 @@ public class NetworkInterfaceIPConfigurationInner extends SubResource {
      * values are: 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set.
-     * @return the NetworkInterfaceIPConfigurationInner object itself.
+     * @return the NetworkInterfaceIpConfigurationInner object itself.
      */
-    public NetworkInterfaceIPConfigurationInner withProvisioningState(String provisioningState) {
+    public NetworkInterfaceIpConfigurationInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualNetworkTaps() != null) {
+            virtualNetworkTaps().forEach(e -> e.validate());
+        }
+        if (applicationGatewayBackendAddressPools() != null) {
+            applicationGatewayBackendAddressPools().forEach(e -> e.validate());
+        }
+        if (loadBalancerBackendAddressPools() != null) {
+            loadBalancerBackendAddressPools().forEach(e -> e.validate());
+        }
+        if (loadBalancerInboundNatRules() != null) {
+            loadBalancerInboundNatRules().forEach(e -> e.validate());
+        }
+        if (subnet() != null) {
+            subnet().validate();
+        }
+        if (publicIpAddress() != null) {
+            publicIpAddress().validate();
+        }
+        if (applicationSecurityGroups() != null) {
+            applicationSecurityGroups().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatabaseAccountRegenerateKeyParameters model. */
 @Fluent
 public final class DatabaseAccountRegenerateKeyParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountRegenerateKeyParameters.class);
+
     /*
      * The access key to regenerate.
      */
@@ -34,5 +38,19 @@ public final class DatabaseAccountRegenerateKeyParameters {
     public DatabaseAccountRegenerateKeyParameters withKeyKind(KeyKind keyKind) {
         this.keyKind = keyKind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keyKind() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property keyKind in model DatabaseAccountRegenerateKeyParameters"));
+        }
     }
 }

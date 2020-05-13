@@ -8,27 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IPAllocationMethod. */
-public final class IPAllocationMethod extends ExpandableStringEnum<IPAllocationMethod> {
-    /** Static value Static for IPAllocationMethod. */
-    public static final IPAllocationMethod STATIC = fromString("Static");
+/** Defines values for IpAllocationMethod. */
+public final class IpAllocationMethod extends ExpandableStringEnum<IpAllocationMethod> {
+    /** Static value Static for IpAllocationMethod. */
+    public static final IpAllocationMethod STATIC = fromString("Static");
 
-    /** Static value Dynamic for IPAllocationMethod. */
-    public static final IPAllocationMethod DYNAMIC = fromString("Dynamic");
+    /** Static value Dynamic for IpAllocationMethod. */
+    public static final IpAllocationMethod DYNAMIC = fromString("Dynamic");
 
     /**
-     * Creates or finds a IPAllocationMethod from its string representation.
+     * Creates or finds a IpAllocationMethod from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding IPAllocationMethod.
+     * @return the corresponding IpAllocationMethod.
      */
     @JsonCreator
-    public static IPAllocationMethod fromString(String name) {
-        return fromString(name, IPAllocationMethod.class);
+    public static IpAllocationMethod fromString(String name) {
+        return fromString(name, IpAllocationMethod.class);
     }
 
-    /** @return known IPAllocationMethod values. */
-    public static Collection<IPAllocationMethod> values() {
-        return values(IPAllocationMethod.class);
+    /** @return known IpAllocationMethod values. */
+    public static Collection<IpAllocationMethod> values() {
+        return values(IpAllocationMethod.class);
     }
 }

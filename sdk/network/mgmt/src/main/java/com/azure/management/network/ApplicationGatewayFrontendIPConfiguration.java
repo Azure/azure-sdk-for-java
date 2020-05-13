@@ -7,12 +7,16 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationGatewayFrontendIPConfiguration model. */
+/** The ApplicationGatewayFrontendIpConfiguration model. */
 @JsonFlatten
 @Fluent
-public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
+public class ApplicationGatewayFrontendIpConfiguration extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFrontendIpConfiguration.class);
+
     /*
      * Name of the frontend IP configuration that is unique within an
      * Application Gateway.
@@ -36,13 +40,13 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * PrivateIPAddress of the network interface IP Configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
-    private String privateIPAddress;
+    private String privateIpAddress;
 
     /*
      * The private IP address allocation method.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
-    private IPAllocationMethod privateIPAllocationMethod;
+    private IpAllocationMethod privateIpAllocationMethod;
 
     /*
      * Reference of the subnet resource.
@@ -54,7 +58,7 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * Reference of the PublicIP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
-    private SubResource publicIPAddress;
+    private SubResource publicIpAddress;
 
     /*
      * Provisioning state of the public IP resource. Possible values are:
@@ -76,9 +80,9 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * Set the name property: Name of the frontend IP configuration that is unique within an Application Gateway.
      *
      * @param name the name value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withName(String name) {
+    public ApplicationGatewayFrontendIpConfiguration withName(String name) {
         this.name = name;
         return this;
     }
@@ -96,9 +100,9 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * Set the etag property: A unique read-only string that changes whenever the resource is updated.
      *
      * @param etag the etag value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withEtag(String etag) {
+    public ApplicationGatewayFrontendIpConfiguration withEtag(String etag) {
         this.etag = etag;
         return this;
     }
@@ -116,51 +120,51 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * Set the type property: Type of the resource.
      *
      * @param type the type value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withType(String type) {
+    public ApplicationGatewayFrontendIpConfiguration withType(String type) {
         this.type = type;
         return this;
     }
 
     /**
-     * Get the privateIPAddress property: PrivateIPAddress of the network interface IP Configuration.
+     * Get the privateIpAddress property: PrivateIPAddress of the network interface IP Configuration.
      *
-     * @return the privateIPAddress value.
+     * @return the privateIpAddress value.
      */
-    public String privateIPAddress() {
-        return this.privateIPAddress;
+    public String privateIpAddress() {
+        return this.privateIpAddress;
     }
 
     /**
-     * Set the privateIPAddress property: PrivateIPAddress of the network interface IP Configuration.
+     * Set the privateIpAddress property: PrivateIPAddress of the network interface IP Configuration.
      *
-     * @param privateIPAddress the privateIPAddress value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @param privateIpAddress the privateIpAddress value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withPrivateIPAddress(String privateIPAddress) {
-        this.privateIPAddress = privateIPAddress;
+    public ApplicationGatewayFrontendIpConfiguration withPrivateIpAddress(String privateIpAddress) {
+        this.privateIpAddress = privateIpAddress;
         return this;
     }
 
     /**
-     * Get the privateIPAllocationMethod property: The private IP address allocation method.
+     * Get the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @return the privateIPAllocationMethod value.
+     * @return the privateIpAllocationMethod value.
      */
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.privateIPAllocationMethod;
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.privateIpAllocationMethod;
     }
 
     /**
-     * Set the privateIPAllocationMethod property: The private IP address allocation method.
+     * Set the privateIpAllocationMethod property: The private IP address allocation method.
      *
-     * @param privateIPAllocationMethod the privateIPAllocationMethod value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withPrivateIPAllocationMethod(
-        IPAllocationMethod privateIPAllocationMethod) {
-        this.privateIPAllocationMethod = privateIPAllocationMethod;
+    public ApplicationGatewayFrontendIpConfiguration withPrivateIpAllocationMethod(
+        IpAllocationMethod privateIpAllocationMethod) {
+        this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
@@ -177,30 +181,30 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * Set the subnet property: Reference of the subnet resource.
      *
      * @param subnet the subnet value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withSubnet(SubResource subnet) {
+    public ApplicationGatewayFrontendIpConfiguration withSubnet(SubResource subnet) {
         this.subnet = subnet;
         return this;
     }
 
     /**
-     * Get the publicIPAddress property: Reference of the PublicIP resource.
+     * Get the publicIpAddress property: Reference of the PublicIP resource.
      *
-     * @return the publicIPAddress value.
+     * @return the publicIpAddress value.
      */
-    public SubResource publicIPAddress() {
-        return this.publicIPAddress;
+    public SubResource publicIpAddress() {
+        return this.publicIpAddress;
     }
 
     /**
-     * Set the publicIPAddress property: Reference of the PublicIP resource.
+     * Set the publicIpAddress property: Reference of the PublicIP resource.
      *
-     * @param publicIPAddress the publicIPAddress value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @param publicIpAddress the publicIpAddress value to set.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withPublicIPAddress(SubResource publicIPAddress) {
-        this.publicIPAddress = publicIPAddress;
+    public ApplicationGatewayFrontendIpConfiguration withPublicIpAddress(SubResource publicIpAddress) {
+        this.publicIpAddress = publicIpAddress;
         return this;
     }
 
@@ -219,10 +223,18 @@ public class ApplicationGatewayFrontendIPConfiguration extends SubResource {
      * 'Updating', 'Deleting', and 'Failed'.
      *
      * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayFrontendIPConfiguration object itself.
+     * @return the ApplicationGatewayFrontendIpConfiguration object itself.
      */
-    public ApplicationGatewayFrontendIPConfiguration withProvisioningState(String provisioningState) {
+    public ApplicationGatewayFrontendIpConfiguration withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

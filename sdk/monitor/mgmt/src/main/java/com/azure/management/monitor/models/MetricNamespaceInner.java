@@ -5,12 +5,16 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.MetricNamespaceName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MetricNamespace model. */
 @Fluent
 public final class MetricNamespaceInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricNamespaceInner.class);
+
     /*
      * The ID of the metricNamespace.
      */
@@ -113,5 +117,16 @@ public final class MetricNamespaceInner {
     public MetricNamespaceInner withProperties(MetricNamespaceName properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

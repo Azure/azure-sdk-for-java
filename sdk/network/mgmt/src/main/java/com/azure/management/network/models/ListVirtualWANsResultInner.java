@@ -5,17 +5,21 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ListVirtualWANsResult model. */
+/** The ListVirtualWansResult model. */
 @Fluent
-public final class ListVirtualWANsResultInner {
+public final class ListVirtualWansResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVirtualWansResultInner.class);
+
     /*
      * List of VirtualWANs.
      */
     @JsonProperty(value = "value")
-    private List<VirtualWANInner> value;
+    private List<VirtualWanInner> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
@@ -28,7 +32,7 @@ public final class ListVirtualWANsResultInner {
      *
      * @return the value value.
      */
-    public List<VirtualWANInner> value() {
+    public List<VirtualWanInner> value() {
         return this.value;
     }
 
@@ -36,9 +40,9 @@ public final class ListVirtualWANsResultInner {
      * Set the value property: List of VirtualWANs.
      *
      * @param value the value value to set.
-     * @return the ListVirtualWANsResultInner object itself.
+     * @return the ListVirtualWansResultInner object itself.
      */
-    public ListVirtualWANsResultInner withValue(List<VirtualWANInner> value) {
+    public ListVirtualWansResultInner withValue(List<VirtualWanInner> value) {
         this.value = value;
         return this;
     }
@@ -56,10 +60,21 @@ public final class ListVirtualWANsResultInner {
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
      *
      * @param nextLink the nextLink value to set.
-     * @return the ListVirtualWANsResultInner object itself.
+     * @return the ListVirtualWansResultInner object itself.
      */
-    public ListVirtualWANsResultInner withNextLink(String nextLink) {
+    public ListVirtualWansResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

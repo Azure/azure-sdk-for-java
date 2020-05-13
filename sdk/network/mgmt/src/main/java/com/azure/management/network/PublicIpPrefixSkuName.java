@@ -7,28 +7,28 @@ package com.azure.management.network;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for NatGatewaySkuName. */
-public enum NatGatewaySkuName {
+/** Defines values for PublicIpPrefixSkuName. */
+public enum PublicIpPrefixSkuName {
     /** Enum value Standard. */
     STANDARD("Standard");
 
-    /** The actual serialized value for a NatGatewaySkuName instance. */
+    /** The actual serialized value for a PublicIpPrefixSkuName instance. */
     private final String value;
 
-    NatGatewaySkuName(String value) {
+    PublicIpPrefixSkuName(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a NatGatewaySkuName instance.
+     * Parses a serialized value to a PublicIpPrefixSkuName instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed NatGatewaySkuName object, or null if unable to parse.
+     * @return the parsed PublicIpPrefixSkuName object, or null if unable to parse.
      */
     @JsonCreator
-    public static NatGatewaySkuName fromString(String value) {
-        NatGatewaySkuName[] items = NatGatewaySkuName.values();
-        for (NatGatewaySkuName item : items) {
+    public static PublicIpPrefixSkuName fromString(String value) {
+        PublicIpPrefixSkuName[] items = PublicIpPrefixSkuName.values();
+        for (PublicIpPrefixSkuName item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

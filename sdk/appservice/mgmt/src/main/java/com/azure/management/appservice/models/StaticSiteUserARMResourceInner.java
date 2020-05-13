@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StaticSiteUserARMResource model. */
+/** The StaticSiteUserArmResource model. */
 @JsonFlatten
 @Fluent
-public class StaticSiteUserARMResourceInner extends ProxyOnlyResource {
+public class StaticSiteUserArmResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserArmResourceInner.class);
+
     /*
      * The identity provider for the static site user.
      */
@@ -77,10 +81,20 @@ public class StaticSiteUserARMResourceInner extends ProxyOnlyResource {
      * Set the roles property: The roles for the static site user, in free-form string format.
      *
      * @param roles the roles value to set.
-     * @return the StaticSiteUserARMResourceInner object itself.
+     * @return the StaticSiteUserArmResourceInner object itself.
      */
-    public StaticSiteUserARMResourceInner withRoles(String roles) {
+    public StaticSiteUserArmResourceInner withRoles(String roles) {
         this.roles = roles;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }
