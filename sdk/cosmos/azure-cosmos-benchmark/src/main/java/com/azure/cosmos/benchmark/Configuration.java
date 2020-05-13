@@ -4,7 +4,6 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.benchmark.Configuration.Operation.OperationTypeConverter;
 import com.beust.jcommander.IStringConverter;
@@ -256,11 +255,12 @@ class Configuration {
         return documentDataFieldCount;
     }
 
-    ConnectionPolicy getConnectionPolicy() {
-        ConnectionPolicy policy = new ConnectionPolicy();
-        policy.setConnectionMode(connectionMode);
-        policy.setMaxPoolSize(maxConnectionPoolSize);
-        return policy;
+    Integer getMaxConnectionPoolSize() {
+        return maxConnectionPoolSize;
+    }
+
+    ConnectionMode getConnectionMode() {
+        return connectionMode;
     }
 
     ConsistencyLevel getConsistencyLevel() {

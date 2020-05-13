@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -51,7 +52,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
@@ -67,18 +67,18 @@ public class HttpTransportClient extends TransportClient {
     private final Map<String, String> defaultHeaders;
     private final Configs configs;
 
-    HttpClient createHttpClient(Duration requestTimeout) {
+    HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
         // TODO: use one instance of SSL context everywhere
         HttpClientConfig httpClientConfig = new HttpClientConfig(this.configs);
-        httpClientConfig.withRequestTimeout(requestTimeout);
+        httpClientConfig.withRequestTimeout(connectionPolicy.getRequestTimeout());
         httpClientConfig.withPoolSize(configs.getDirectHttpsMaxConnectionLimit());
 
         return HttpClient.createFixed(httpClientConfig);
     }
 
-    public HttpTransportClient(Configs configs, Duration requestTimeout, UserAgentContainer userAgent) {
+    public HttpTransportClient(Configs configs, ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
         this.configs = configs;
-        this.httpClient = createHttpClient(requestTimeout);
+        this.httpClient = createHttpClient(connectionPolicy);
 
         this.defaultHeaders = new HashMap<>();
 

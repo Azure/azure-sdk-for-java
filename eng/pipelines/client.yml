@@ -164,27 +164,21 @@ jobs:
     strategy:
       matrix:
         Linux - Java 8:
-          OSName: 'Linux'
           OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.8'
         macOS - Java 8:
-          OSName: 'macOS'
           OSVmImage: 'macOS-10.15'
           JavaVersion: '1.8'
         Windows - Java 8:
-          OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.8'
         Linux - Java 11:
-          OSName: 'Linux'
           OSVmImage: 'ubuntu-18.04'
           JavaVersion: '1.11'
         macOS - Java 11:
-          OSName: 'macOS'
           OSVmImage: 'macOS-10.15'
           JavaVersion: '1.11'
         Windows - Java 11:
-          OSName: 'Windows'
           OSVmImage: 'windows-2019'
           JavaVersion: '1.11'
 
@@ -192,9 +186,7 @@ jobs:
       vmImage: $(OSVmImage)
 
     steps:
-      - template: eng/pipelines/templates/scripts/verify-agent-os.yml@azure-sdk-tools
-        parameters:
-          OSName: $(OSVmImage)
+      - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - task: Maven@3
         displayName: 'Compile all code and run tests'
