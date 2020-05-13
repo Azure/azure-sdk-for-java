@@ -23,6 +23,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.implementation.UnixTime;
 import com.azure.core.test.http.MockHttpClient;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
@@ -83,6 +84,10 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @Get("DateTimeRfc1123")
         @ReturnValueWireType(DateTimeRfc1123.class)
         OffsetDateTime getDateTimeRfc1123();
+
+        @Get("UnixTime")
+        @ReturnValueWireType(UnixTime.class)
+        OffsetDateTime getDateTimeUnix();
     }
 
     @Test
@@ -161,6 +166,13 @@ public class RestProxyWithMockTests extends RestProxyTests {
         assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
 
+    @Test
+    public void service1GetDateTimeUnix() {
+        final OffsetDateTime dateTime = createService(Service1.class)
+            .getDateTimeUnix();
+        assertNotNull(dateTime);
+        assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
+    }
 
     @Host("http://localhost")
     @ServiceInterface(name = "ServiceErrorWithCharsetService")

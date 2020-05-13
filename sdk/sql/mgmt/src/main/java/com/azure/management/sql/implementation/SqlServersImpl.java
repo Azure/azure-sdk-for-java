@@ -64,7 +64,7 @@ class SqlServersImpl
             return null;
         }
 
-        return new SqlServerImpl(inner.getName(), inner, this.manager());
+        return new SqlServerImpl(inner.name(), inner, this.manager());
     }
 
     @Override

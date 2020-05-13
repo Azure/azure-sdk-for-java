@@ -82,7 +82,7 @@ public class CosmosAsyncStoredProcedure {
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -96,7 +96,7 @@ public class CosmosAsyncStoredProcedure {
      * Deletes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored 
+     * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -118,7 +118,7 @@ public class CosmosAsyncStoredProcedure {
      * Executes a stored procedure by the stored procedure link.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure 
+     * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure
      * response.
      * In case of failure the {@link Mono} will error.
      *
@@ -142,7 +142,7 @@ public class CosmosAsyncStoredProcedure {
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -157,7 +157,7 @@ public class CosmosAsyncStoredProcedure {
      * Replaces a stored procedure.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored 
+     * The {@link Mono} upon successful completion will contain a single resource response with the replaced stored
      * procedure.
      * In case of failure the {@link Mono} will error.
      *
@@ -172,7 +172,8 @@ public class CosmosAsyncStoredProcedure {
         }
         return cosmosContainer.getDatabase()
                    .getDocClientWrapper()
-                   .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(storedProcedureSettings)),
+                   .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
+                       ModelBridgeInternal.getResourceFromResourceWrapper(storedProcedureSettings))),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncStoredProcedureResponse(response, cosmosContainer))
                    .single();

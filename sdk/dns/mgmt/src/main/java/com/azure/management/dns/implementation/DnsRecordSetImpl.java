@@ -53,7 +53,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
@@ -399,6 +399,6 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
     }
 
     private boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 }

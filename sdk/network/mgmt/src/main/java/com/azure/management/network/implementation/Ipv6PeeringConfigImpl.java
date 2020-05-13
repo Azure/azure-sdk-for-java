@@ -61,7 +61,7 @@ class Ipv6PeeringConfigImpl extends IndexableWrapperImpl<Ipv6ExpressRouteCircuit
 
     @Override
     public Ipv6PeeringConfigImpl withRouteFilter(String routeFilterId) {
-        inner().withRouteFilter(new SubResource().setId(routeFilterId));
+        inner().withRouteFilter(new SubResource().withId(routeFilterId));
         return this;
     }
 

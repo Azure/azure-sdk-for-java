@@ -43,6 +43,8 @@ public class ReceiveMessageSyncSample {
 
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message: " + new String(message.getBody()));
+
+            receiverClient.complete(message);
         });
 
         // Close the receiver.

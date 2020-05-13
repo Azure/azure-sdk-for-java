@@ -266,8 +266,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             return null;
         }
 
-        String vnetId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
-        String subnetName = ResourceUtils.nameFromResourceId(subnetRef.getId());
+        String vnetId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
+        String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
 
         if (vnetId == null || subnetName == null) {
             return null;
@@ -288,14 +288,14 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
 
         if (subnetRefs != null) {
             for (SubnetInner subnetRef : subnetRefs) {
-                String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+                String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
                 Network network = networks.get(networkId.toLowerCase(Locale.ROOT));
                 if (network == null) {
                     network = this.networks().getById(networkId);
                     networks.put(networkId.toLowerCase(Locale.ROOT), network);
                 }
 
-                String subnetName = ResourceUtils.nameFromResourceId(subnetRef.getId());
+                String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
                 subnets.add(network.subnets().get(subnetName));
             }
         }
@@ -311,14 +311,14 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
 
         if (backendRefs != null) {
             for (ApplicationGatewayBackendAddressPool backendRef : backendRefs) {
-                String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(backendRef.getId());
+                String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
                 ApplicationGateway appGateway = appGateways.get(appGatewayId.toLowerCase(Locale.ROOT));
                 if (appGateway == null) {
                     appGateway = this.applicationGateways().getById(appGatewayId);
                     appGateways.put(appGatewayId.toLowerCase(Locale.ROOT), appGateway);
                 }
 
-                String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
+                String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
                 backends.add(appGateway.backends().get(backendName));
             }
         }

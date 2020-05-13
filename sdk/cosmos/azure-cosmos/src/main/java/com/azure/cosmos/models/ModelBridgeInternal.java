@@ -14,16 +14,21 @@ import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Permission;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.ReplicationPolicy;
 import com.azure.cosmos.implementation.RequestOptions;
+import com.azure.cosmos.implementation.RequestVerb;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
 import com.azure.cosmos.implementation.StoredProcedure;
@@ -222,6 +227,22 @@ public final class ModelBridgeInternal {
     public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
                                                                    Integer offerThroughput) {
         return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
+    }
+
+    public static CosmosDatabaseRequestOptions setOfferProperties(
+        CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
+        ThroughputProperties throughputProperties) {
+        return cosmosDatabaseRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    public static CosmosContainerRequestOptions setOfferProperties(
+        CosmosContainerRequestOptions containerRequestOptions,
+        ThroughputProperties throughputProperties) {
+        return containerRequestOptions.setThroughputProperties(throughputProperties);
+    }
+
+    public static Offer updateOfferFromProperties(Offer offer, ThroughputProperties properties) {
+        return properties.updateOfferFromProperties(offer);
     }
 
     public static CosmosItemRequestOptions setPartitionKey(CosmosItemRequestOptions cosmosItemRequestOptions,
@@ -481,4 +502,43 @@ public final class ModelBridgeInternal {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
+    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializableWrapper jsonSerializableWrapper) {
+        jsonSerializableWrapper.populatePropertyBag();
+        return jsonSerializableWrapper.jsonSerializable.serializeJsonToByteBuffer();
+    }
+
+    public static JsonSerializableWrapper instantiateJsonSerializableWrapper(ObjectNode objectNode, Class<?> klassType) {
+        try {
+            return (JsonSerializableWrapper) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    public static void populatePropertyBagJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
+        jsonSerializableWrapper.populatePropertyBag();
+    }
+
+    public static Resource getResourceFromResourceWrapper(ResourceWrapper resourceWrapper) {
+        if (resourceWrapper == null) {
+            return null;
+        }
+        return resourceWrapper.getResource();
+    }
+
+    public static JsonSerializable getJsonSerializableFromIndex(Index index) {
+        return index.getJsonSerializable();
+    }
+
+    public static JsonSerializable getJsonSerializableFromJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
+        return jsonSerializableWrapper.getJsonSerializable();
+    }
+
+    public static Offer getOfferFromThroughputProperties(ThroughputProperties properties) {
+        return properties.getOffer();
+    }
+
+    public static ThroughputResponse createThroughputRespose(ResourceResponse<Offer> offerResourceResponse) {
+        return new ThroughputResponse(offerResourceResponse);
+    }
 }

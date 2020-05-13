@@ -67,6 +67,6 @@ class CNameRecordSetsImpl extends DnsRecordSetsBaseImpl<CNameRecordSet, CNameRec
         if (inner == null) {
             return null;
         }
-        return new CNameRecordSetImpl(inner.getName(), this.dnsZone, inner);
+        return new CNameRecordSetImpl(inner.name(), this.dnsZone, inner);
     }
 }

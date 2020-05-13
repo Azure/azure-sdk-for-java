@@ -41,6 +41,9 @@ module com.azure.core {
     // Exports HttpProviders#getAllHttpClients API to azure-core-test module
     exports com.azure.core.implementation.http to com.azure.core.test;
 
+    // Exports UnixTime for testing.
+    exports com.azure.core.implementation to com.azure.core.test;
+
     // Exports JsonSerializer to azure-core-serializer-json-gson and azure-core-serializer-json-jackson
     exports com.azure.core.implementation.serializer to com.azure.core.serializer.json.gson,
         com.azure.core.serializer.json.jackson;

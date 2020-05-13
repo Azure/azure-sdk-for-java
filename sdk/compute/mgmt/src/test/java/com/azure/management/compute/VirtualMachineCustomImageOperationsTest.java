@@ -319,8 +319,8 @@ public class VirtualMachineCustomImageOperationsTest extends ComputeManagementTe
             Assertions.assertNotNull(diskImage.managedDisk());
             Assertions
                 .assertTrue(
-                    diskImage.managedDisk().getId().equalsIgnoreCase(managedDataDisk1.id())
-                        || diskImage.managedDisk().getId().equalsIgnoreCase(managedDataDisk2.id()));
+                    diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk1.id())
+                        || diskImage.managedDisk().id().equalsIgnoreCase(managedDataDisk2.id()));
         }
         computeManager.disks().deleteById(managedOsDisk.id());
         computeManager.disks().deleteById(managedDataDisk1.id());

@@ -89,7 +89,7 @@ class LoadBalancerImpl
 
     @Override
     protected Mono<LoadBalancerInner> applyTagsToInnerAsync() {
-        return this.manager().inner().loadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this.manager().inner().loadBalancers().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Helpers
@@ -122,7 +122,7 @@ class LoadBalancerImpl
         }
 
         // Return frontend reference
-        return new SubResource().setId(this.futureResourceId() + "/frontendIPConfigurations/" + frontend.name());
+        return new SubResource().withId(this.futureResourceId() + "/frontendIPConfigurations/" + frontend.name());
     }
 
     protected LoadBalancerFrontendImpl ensureUniqueFrontend() {
@@ -225,7 +225,7 @@ class LoadBalancerImpl
         for (LoadBalancerInboundNatRule natRule : this.inboundNatRules.values()) {
             // Clear deleted frontend references
             SubResource ref = natRule.inner().frontendIPConfiguration();
-            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))) {
+            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 natRule.inner().withFrontendIPConfiguration(null);
             }
         }
@@ -239,7 +239,7 @@ class LoadBalancerImpl
         for (LoadBalancerInboundNatPool natPool : this.inboundNatPools.values()) {
             // Clear deleted frontend references
             SubResource ref = natPool.inner().frontendIPConfiguration();
-            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))) {
+            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 natPool.inner().withFrontendIPConfiguration(null);
             }
         }
@@ -255,22 +255,22 @@ class LoadBalancerImpl
 
             // Clear deleted frontend references
             ref = lbRule.inner().frontendIPConfiguration();
-            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))) {
+            if (ref != null && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.inner().withFrontendIPConfiguration(null);
             }
 
             // Clear deleted backend references
             ref = lbRule.inner().backendAddressPool();
-            if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))) {
+            if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.inner().withBackendAddressPool(null);
             }
 
             // Clear deleted probe references
             ref = lbRule.inner().probe();
             if (ref != null
-                && !this.httpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))
-                && !this.httpsProbes().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))
-                && !this.tcpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.getId()))) {
+                && !this.httpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
+                && !this.httpsProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
+                && !this.tcpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.inner().withProbe(null);
             }
         }

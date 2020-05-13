@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,11 +17,9 @@ import java.util.stream.Collectors;
  * Being schema-free, the items in a container do not need to share the same structure or fields. Since containers
  * are application resources, they can be authorized using either the master key or resource keys.
  */
-public final class CosmosContainerProperties extends Resource {
+public final class CosmosContainerProperties extends ResourceWrapper {
 
-    private IndexingPolicy indexingPolicy;
-    private UniqueKeyPolicy uniqueKeyPolicy;
-    private PartitionKeyDefinition partitionKeyDefinition;
+    private DocumentCollection documentCollection;
 
     /**
      * Constructor
@@ -30,12 +28,14 @@ public final class CosmosContainerProperties extends Resource {
      * @param partitionKeyPath partition key path
      */
     public CosmosContainerProperties(String id, String partitionKeyPath) {
-        super.setId(id);
+        this.documentCollection = new DocumentCollection();
+        documentCollection.setId(id);
+
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<>();
         paths.add(partitionKeyPath);
         partitionKeyDef.setPaths(paths);
-        setPartitionKeyDefinition(partitionKeyDef);
+        this.documentCollection.setPartitionKey(partitionKeyDef);
     }
 
     /**
@@ -45,17 +45,18 @@ public final class CosmosContainerProperties extends Resource {
      * @param partitionKeyDefinition the {@link PartitionKeyDefinition}
      */
     public CosmosContainerProperties(String id, PartitionKeyDefinition partitionKeyDefinition) {
-        super.setId(id);
-        setPartitionKeyDefinition(partitionKeyDefinition);
+        this.documentCollection = new DocumentCollection();
+        documentCollection.setId(id);
+        documentCollection.setPartitionKey(partitionKeyDefinition);
     }
 
     CosmosContainerProperties(String json) {
-        super(json);
+        this.documentCollection = new DocumentCollection(json);
     }
 
     // Converting document collection to CosmosContainerProperties
     CosmosContainerProperties(DocumentCollection collection) {
-        super(collection.toJson());
+        this.documentCollection = new DocumentCollection(collection.toJson());
     }
 
     static List<CosmosContainerProperties> getFromV2Results(List<DocumentCollection> results) {
@@ -68,15 +69,7 @@ public final class CosmosContainerProperties extends Resource {
      * @return the indexing policy.
      */
     public IndexingPolicy getIndexingPolicy() {
-        if (this.indexingPolicy == null) {
-            if (super.has(Constants.Properties.INDEXING_POLICY)) {
-                this.indexingPolicy = super.getObject(Constants.Properties.INDEXING_POLICY, IndexingPolicy.class);
-            } else {
-                this.indexingPolicy = new IndexingPolicy();
-            }
-        }
-
-        return this.indexingPolicy;
+        return this.documentCollection.getIndexingPolicy();
     }
 
     /**
@@ -87,11 +80,7 @@ public final class CosmosContainerProperties extends Resource {
      * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setIndexingPolicy(IndexingPolicy indexingPolicy) {
-        if (indexingPolicy == null) {
-            throw new IllegalArgumentException("IndexingPolicy cannot be null.");
-        }
-        this.indexingPolicy = indexingPolicy;
-        super.set(Constants.Properties.INDEXING_POLICY, indexingPolicy);
+        this.documentCollection.setIndexingPolicy(indexingPolicy);
         return this;
     }
 
@@ -101,17 +90,7 @@ public final class CosmosContainerProperties extends Resource {
      * @return the unique key policy
      */
     public UniqueKeyPolicy getUniqueKeyPolicy() {
-
-        // Thread safe lazy initialization for case when collection is cached (and is basically readonly).
-        if (this.uniqueKeyPolicy == null) {
-            this.uniqueKeyPolicy = super.getObject(Constants.Properties.UNIQUE_KEY_POLICY, UniqueKeyPolicy.class);
-
-            if (this.uniqueKeyPolicy == null) {
-                this.uniqueKeyPolicy = new UniqueKeyPolicy();
-            }
-        }
-
-        return this.uniqueKeyPolicy;
+        return this.documentCollection.getUniqueKeyPolicy();
     }
 
     /**
@@ -122,12 +101,7 @@ public final class CosmosContainerProperties extends Resource {
      * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
-        if (uniqueKeyPolicy == null) {
-            throw new IllegalArgumentException("uniqueKeyPolicy cannot be null.");
-        }
-
-        this.uniqueKeyPolicy = uniqueKeyPolicy;
-        super.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
+        this.documentCollection.setUniqueKeyPolicy(uniqueKeyPolicy);
         return this;
     }
 
@@ -137,17 +111,7 @@ public final class CosmosContainerProperties extends Resource {
      * @return the partition key definition.
      */
     public PartitionKeyDefinition getPartitionKeyDefinition() {
-        if (this.partitionKeyDefinition == null) {
-
-            if (super.has(Constants.Properties.PARTITION_KEY)) {
-                this.partitionKeyDefinition = super.getObject(Constants.Properties.PARTITION_KEY,
-                                                              PartitionKeyDefinition.class);
-            } else {
-                this.partitionKeyDefinition = new PartitionKeyDefinition();
-            }
-        }
-
-        return this.partitionKeyDefinition;
+        return this.documentCollection.getPartitionKey();
     }
 
     /**
@@ -158,12 +122,7 @@ public final class CosmosContainerProperties extends Resource {
      * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
-        if (partitionKeyDefinition == null) {
-            throw new IllegalArgumentException(
-                "partitionKeyDefinition cannot be null.");
-        }
-
-        this.partitionKeyDefinition = partitionKeyDefinition;
+        this.documentCollection.setPartitionKey(partitionKeyDefinition);
         return this;
     }
 
@@ -174,7 +133,7 @@ public final class CosmosContainerProperties extends Resource {
      * @return ConflictResolutionPolicy
      */
     public ConflictResolutionPolicy getConflictResolutionPolicy() {
-        return super.getObject(Constants.Properties.CONFLICT_RESOLUTION_POLICY, ConflictResolutionPolicy.class);
+        return this.documentCollection.getConflictResolutionPolicy();
     }
 
     /**
@@ -186,12 +145,7 @@ public final class CosmosContainerProperties extends Resource {
      * @throws IllegalArgumentException the cosmos client exception
      */
     public CosmosContainerProperties setConflictResolutionPolicy(ConflictResolutionPolicy value) {
-        if (value == null) {
-            throw new IllegalArgumentException(
-                "CONFLICT_RESOLUTION_POLICY cannot be null.");
-        }
-
-        super.set(Constants.Properties.CONFLICT_RESOLUTION_POLICY, value);
+        this.documentCollection.setConflictResolutionPolicy(value);
         return this;
     }
 
@@ -201,11 +155,7 @@ public final class CosmosContainerProperties extends Resource {
      * @return the default time-to-live value in seconds.
      */
     public Integer getDefaultTimeToLiveInSeconds() {
-        if (super.has(Constants.Properties.DEFAULT_TTL)) {
-            return super.getInt(Constants.Properties.DEFAULT_TTL);
-        }
-
-        return null;
+        return this.documentCollection.getDefaultTimeToLive();
     }
 
     /**
@@ -234,60 +184,51 @@ public final class CosmosContainerProperties extends Resource {
     public CosmosContainerProperties setDefaultTimeToLiveInSeconds(Integer timeToLive) {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
-        if (timeToLive != null) {
-            super.set(Constants.Properties.DEFAULT_TTL, timeToLive);
-        } else if (super.has(Constants.Properties.DEFAULT_TTL)) {
-            super.remove(Constants.Properties.DEFAULT_TTL);
-        }
+        this.documentCollection.setDefaultTimeToLive(timeToLive);
 
         return this;
     }
 
     /**
-     * Sets the analytical storage time to live in seconds for items in a container from the Azure Cosmos DB service.
+     * Sets the analytical store time to live in seconds for items in a container from the Azure Cosmos DB service.
      *
      * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
-     * By default, AnalyticalStorageTimeToLive is set to 0 meaning the analytical store is turned off for the container;
+     * By default, AnalyticalStoreTimeToLive is set to 0 meaning the analytical store is turned off for the container;
      * -1 means documents in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
-     * @param timeToLive the analytical storage time to live in seconds.
+     * @param timeToLive the analytical store time to live in seconds.
      * @return the CosmosContainerProperties.
      */
-    public CosmosContainerProperties setAnalyticalStorageTimeToLiveInSeconds(Integer timeToLive) {
-        // a "null" value is represented as a missing element on the wire.
-        // setting timeToLive to null should remove the property from the property bag.
-        if (timeToLive != null) {
-            super.set(Constants.Properties.ANALYTICAL_STORAGE_TTL, timeToLive);
-        } else if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
-            super.remove(Constants.Properties.ANALYTICAL_STORAGE_TTL);
-        }
+    public CosmosContainerProperties setAnalyticalStoreTimeToLiveInSeconds(Integer timeToLive) {
+        this.documentCollection.setAnalyticalStorageTimeToLiveInSeconds(timeToLive);
 
         return this;
     }
 
     /**
-     * Gets the analytical storage time to live in seconds for items in a container from the Azure Cosmos DB service.
+     * Gets the analytical store time to live in seconds for items in a container from the Azure Cosmos DB service.
      *
      * It is an optional property. A valid value must be either a nonzero positive integer, '-1', or 0.
-     * By default, AnalyticalStorageTimeToLive is set to 0 meaning the analytical store is turned off for the container;
+     * By default, AnalyticalStoreTimeToLive is set to 0 meaning the analytical store is turned off for the container;
      * -1 means documents in analytical store never expire.
      * The unit of measurement is seconds. The maximum allowed value is 2147483647.
      *
      * @return analytical ttl
      */
-    public Integer getAnalyticalStorageTimeToLiveInSeconds() {
-        if (super.has(Constants.Properties.ANALYTICAL_STORAGE_TTL)) {
-            return super.getInt(Constants.Properties.ANALYTICAL_STORAGE_TTL);
-        }
-
-        return null;
+    public Integer getAnalyticalStoreTimeToLiveInSeconds() {
+        return this.documentCollection.getAnalyticalStorageTimeToLiveInSeconds();
     }
 
     DocumentCollection getV2Collection() {
-        DocumentCollection collection = new DocumentCollection(this.toJson());
+        DocumentCollection collection = new DocumentCollection(this.documentCollection.toJson());
         collection.setPartitionKey(this.getPartitionKeyDefinition());
         collection.setIndexingPolicy(this.getIndexingPolicy());
         return collection;
+    }
+
+    @Override
+    Resource getResource() {
+        return this.documentCollection;
     }
 }

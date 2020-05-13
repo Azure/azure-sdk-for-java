@@ -2,21 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Permission;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.azure.cosmos.implementation.Resource;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos permission properties.
  */
-public final class CosmosPermissionProperties extends Resource {
+public final class CosmosPermissionProperties extends ResourceWrapper{
 
+    private Permission permission;
     static List<CosmosPermissionProperties> getFromV2Results(List<Permission> results) {
         return results.stream().map(permission -> new CosmosPermissionProperties(permission.toJson()))
                    .collect(Collectors.toList());
@@ -26,7 +23,7 @@ public final class CosmosPermissionProperties extends Resource {
      * Initialize a permission object.
      */
     public CosmosPermissionProperties() {
-        super();
+        this.permission = new Permission();
     }
 
     /**
@@ -36,7 +33,9 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties setId(String id) {
-        super.setId(id);
+        this.permission = new Permission();
+        permission.setId(id);
+
         return this;
     }
 
@@ -46,7 +45,7 @@ public final class CosmosPermissionProperties extends Resource {
      * @param jsonString the json string that represents the getPermission.
      */
     CosmosPermissionProperties(String jsonString) {
-        super(jsonString);
+        this.permission = new Permission(jsonString);
     }
 
     /**
@@ -55,7 +54,7 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the resource link.
      */
     public String getResourceLink() {
-        return super.getString(Constants.Properties.RESOURCE_LINK);
+        return this.permission.getResourceLink();
     }
 
     /**
@@ -65,7 +64,7 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties setResourceLink(String resourceLink) {
-        super.set(Constants.Properties.RESOURCE_LINK, resourceLink);
+        this.permission.setResourceLink(resourceLink);
         return this;
     }
 
@@ -75,8 +74,7 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the permission mode.
      */
     public PermissionMode getPermissionMode() {
-        String value = super.getString(Constants.Properties.PERMISSION_MODE);
-        return PermissionMode.valueOf(StringUtils.upperCase(value));
+        return this.permission.getPermissionMode();
     }
 
     /**
@@ -86,8 +84,7 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties setPermissionMode(PermissionMode permissionMode) {
-        this.set(Constants.Properties.PERMISSION_MODE,
-            permissionMode.toString().toLowerCase(Locale.ROOT));
+        this.permission.setPermissionMode(permissionMode);
         return this;
     }
 
@@ -97,14 +94,7 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the partition key.
      */
     public PartitionKey getResourcePartitionKey() {
-        PartitionKey key = null;
-        Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
-        if (value != null) {
-            ArrayNode arrayValue = (ArrayNode) value;
-            key = new PartitionKey(JsonSerializable.getValue(arrayValue.get(0)));
-        }
-
-        return key;
+        return this.permission.getResourcePartitionKey();
     }
 
     /**
@@ -114,11 +104,16 @@ public final class CosmosPermissionProperties extends Resource {
      * @return the current {@link CosmosPermissionProperties} object
      */
     public CosmosPermissionProperties setResourcePartitionKey(PartitionKey partitionKey) {
-        super.set(Constants.Properties.RESOURCE_PARTITION_KEY, BridgeInternal.getPartitionKeyInternal(partitionKey).toJson());
+        this.permission.setResourcePartitionKey(partitionKey);
         return this;
     }
 
     Permission getV2Permissions() {
-        return new Permission(this.toJson());
+        return new Permission(this.permission.toJson());
+    }
+
+    @Override
+    Resource getResource() {
+        return this.permission;
     }
 }

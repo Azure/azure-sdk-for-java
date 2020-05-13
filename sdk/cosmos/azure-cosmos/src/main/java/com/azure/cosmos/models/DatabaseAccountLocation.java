@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
@@ -11,7 +12,7 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
 /**
  * Represents the location of a database account in the Azure Cosmos DB database service.
  */
-public final class DatabaseAccountLocation extends JsonSerializable {
+public final class DatabaseAccountLocation extends JsonSerializableWrapper{
 
     /**
      * Constructor.
@@ -20,7 +21,7 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * {@link JsonSerializable}
      */
     DatabaseAccountLocation(ObjectNode objectNode) {
-        super(objectNode);
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -28,7 +29,7 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * DatabaseAccountLocation object.
      */
     public DatabaseAccountLocation() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -38,7 +39,7 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @param jsonString the JSON string that represents the DatabaseAccountLocation object.
      */
     public DatabaseAccountLocation(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
     /**
@@ -47,7 +48,7 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @return the name of the database account location.
      */
     public String getName() {
-        return super.getString(Constants.Properties.Name);
+        return this.jsonSerializable.getString(Constants.Properties.Name);
     }
 
     /**
@@ -56,7 +57,8 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @param name the name of the database account location.
      */
     void setName(String name) {
-        setProperty(this, Constants.Properties.Name, name);
+
+        setProperty(this.jsonSerializable, Constants.Properties.Name, name);
     }
 
     /**
@@ -65,7 +67,7 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @return the endpoint of the database account location.
      */
     public String getEndpoint() {
-        return super.getString(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT);
+        return this.jsonSerializable.getString(Constants.Properties.DATABASE_ACCOUNT_ENDPOINT);
     }
 
     /**
@@ -74,6 +76,6 @@ public final class DatabaseAccountLocation extends JsonSerializable {
      * @param endpoint the endpoint of the database account location.
      */
     void setEndpoint(String endpoint) {
-        setProperty(this, Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
+        setProperty(this.jsonSerializable, Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
     }
 }

@@ -103,6 +103,8 @@ class ServiceBusReceiverAsyncClientTest {
     @Mock
     private ServiceBusReactorReceiver amqpReceiveLink;
     @Mock
+    private ServiceBusReactorReceiver sessionReceiveLink;
+    @Mock
     private ServiceBusAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
@@ -151,7 +153,9 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(managementNode));
 
         when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
-            any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
+            any(MessagingEntityType.class))).thenReturn(Mono.just(amqpReceiveLink));
+        when(connection.createReceiveLink(anyString(), anyString(), any(ReceiveMode.class), any(),
+            any(MessagingEntityType.class), anyString())).thenReturn(Mono.just(sessionReceiveLink));
 
         connectionProcessor =
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
