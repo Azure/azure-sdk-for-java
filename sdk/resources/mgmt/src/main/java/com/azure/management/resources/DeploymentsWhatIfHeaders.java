@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentsWhatIfHeaders model. */
 @Fluent
 public final class DeploymentsWhatIfHeaders {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentsWhatIfHeaders.class);
+
     /*
      * The Retry-After property.
      */
@@ -60,5 +64,13 @@ public final class DeploymentsWhatIfHeaders {
     public DeploymentsWhatIfHeaders withLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }
