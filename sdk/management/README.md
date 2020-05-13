@@ -27,8 +27,9 @@ that is optimized for ease of use, succinctness and consistency.
 
 ### Include the recommended packages
 
-It requires a `TokenCredential` implementation for authentication and an `HttpClient` implementation for HTTP client.
-`azure-identity` package and `azure-core-http-netty` package provide recommended implementation.
+Azure Management Libraries require a `TokenCredential` implementation for authentication and an `HttpClient` implementation for HTTP client.
+
+`azure-identity` package and `azure-core-http-netty` package provide the default implementation.
 
 [Azure Identity][azure_identity] provides Azure Active Directory token authentication support across the Azure SDK.
 
@@ -86,7 +87,7 @@ See [Samples][sample] for code snippets and samples.
 
 ## Key concepts
 
-The key concepts of Azure Management Library includes:
+The key concepts of Azure Management Libraries includes:
 
 - Fluent interface to manage Azure resources.
 - Asynchronous operations with [Reactor][reactor].
@@ -168,7 +169,7 @@ Azure azure = Azure
 
 ### Include single package
 
-Instead of include the complete Azure Management Library, you can choose to include a single service package.
+Instead of include the complete Azure Management Libraries, you can choose to include a single service package.
 
 For example, here is sample maven dependency for Compute package.
 
@@ -204,7 +205,7 @@ Azure SDKs for Java offer a consistent logging story to help aid in troubleshoot
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
-Sample code to enable logging in Azure Management Library.
+Sample code to enable logging in Azure Management Libraries.
 ```java
 Azure azure = Azure
     .configure()
