@@ -407,11 +407,47 @@ public final class ShareServiceClient {
         return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
 
+    /**
+     * Restores a previously deleted share.
+     * If the share associated with provided <code>deletedShareName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Share Soft Delete is enabled
+     * for the storage account associated with the share.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareServiceClient.undeleteShare#String-String}
+     *
+     * @param deletedShareName The name of the previously deleted share.
+     * @param deletedShareVersion The version of the previously deleted share.
+     * @return A {@link ShareClient} used
+     * to interact with the restored share.
+     */
     public ShareClient undeleteShare(String deletedShareName, String deletedShareVersion) {
         return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE)
             .getValue();
     }
 
+    /**
+     * Restores a previously deleted share.
+     * If the share associated with provided <code>deletedShareName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Share Soft Delete is enabled
+     * for the storage account associated with the share.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.file.share.ShareServiceClient.undeleteShareWithResponse#String-String-Duration-Context}
+     *
+     * @param deletedShareName The name of the previously deleted share.
+     * @param deletedShareVersion The version of the previously deleted share.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareClient} used
+     * to interact with the restored share.
+     */
     public Response<ShareClient> undeleteShareWithResponse(
         String deletedShareName, String deletedShareVersion, Duration timeout, Context context) {
         Mono<Response<ShareClient>> response =
