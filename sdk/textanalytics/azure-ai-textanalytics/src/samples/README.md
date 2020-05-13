@@ -63,8 +63,7 @@ Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 See [Next steps][SDK_README_NEXT_STEPS]. 
 
 ## Contributing
-If you would like to become an active contributor to this project please refer to our [Contribution
-Guidelines](../../CONTRIBUTING.md) for more information.
+This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
 [KEYS_SDK_README]: ../../README.md

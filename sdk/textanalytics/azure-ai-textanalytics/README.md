@@ -28,8 +28,8 @@ and includes six main functions:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-
-### Create a Text Analytics resource
+### Authenticate the client
+#### Create a Cognitive Services or Text Analytics resource
 Text Analytics supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Text Analytics access only,
 create a Text Analytics resource.
@@ -58,8 +58,7 @@ az cognitiveservices account create \
     --location westus2 \
     --yes
 ```
-### Authenticate the client
-In order to interact with the Text Analytics service, you will need to create an instance of the `TextAnalyticsClient` 
+In order to interact with the Text Analytics service, you will need to create an instance of the [TextAnalyticsClient][text_analytics_sync_client] 
 class. You will need an **endpoint** and either an **API key** or **AAD TokenCredential** to instantiate a client 
 object. And they can be found in the [Azure Portal][azure_portal] under the "Quickstart" in your created
 Text Analytics resource. See the full details regarding [authentication][authentication] of Cognitive Services.
@@ -67,15 +66,16 @@ Text Analytics resource. See the full details regarding [authentication][authent
 #### Get credentials
 The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
 
-
-##### **Option 1**: Create TextAnalyticsClient with AzureKeyCredential
-To use AzureKeyCredential authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. This can be found in the [Azure Portal][azure_portal] 
-   under the "Quickstart" section or by running the following Azure CLI command:
+##### **Option 1**: Create TextAnalyticsClient with API Key Credential
+Once you have the value for the API key, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential].
+This can be found in the [Azure Portal][azure_portal] under the "Quickstart" section in your created Text Analytics resource 
+or by running the following Azure CLI command:
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
-Use the key as the credential parameter to authenticate the client:
+
+With the value of endpoint and an `AzureKeyCredential`, you can create the [TextAnalyticsClient][text_analytics_sync_client]:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
@@ -130,10 +130,17 @@ asynchronous operations to access a specific use of Text Analytics, such as lang
 
 ### Input
 A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
-in the Text Analytics service. Operations on Text Analytics client may take a single document or a collection
+in the Text Analytics service. Operations on `TextAnalyticsClient` may take a single document or a collection
 of documents to be analyzed as a batch. 
 See [service limitations][service_input_limitation] for the document, including document length limits, maximum batch size,
 and supported text encoding.
+
+### Operation on multiple documents
+For each supported operation, the `TextAnalyticsClient` provides method overloads to take a single document, a batch 
+of documents as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
+taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
+indicate that the documents in the batch are written in different languages, or provide a country hint about the 
+language of the document.
 
 ### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
@@ -149,13 +156,6 @@ or the number of operation transactions that have gone through, simply call `get
 An operation result collection, such as `TextAnalyticsPagedResponse<AnalyzeSentimentResult>`, which is the collection of 
 the result of a Text Analytics analyzing sentiment operation. For `TextAnalyticsPagedResponse` includes the model
 version of the operation and statistics of the batch documents. 
-
-### Operation on multiple documents
-For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
-of documents as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
-taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
-indicate that the documents in the batch are written in different languages, or provide a country hint about the 
-language of the document.
 
 **Note**: It is recommended to use the batch methods when working on production environments as they allow you to send one 
 request with multiple documents. This is more performant than sending a request per each document.
@@ -195,6 +195,12 @@ See [Language and regional support][language_regional_support] for what is curre
 ## Examples
 The following sections provide several code snippets covering some of the most common text analytics tasks, including:
 
+* [Analyze Sentiment](#analyze-sentiment "Analyze sentiment")
+* [Detect Language](#detect-language "Detect language")
+* [Extract Key Phrases](#extract-key-phrases "Extract key phrases")
+* [Recognize Entities](#recognize-entities "Recognize entities")
+* [Recognize Linked Entities](#recognize-linked-entities "Recognize linked entities")
+
 ### Text Analytics Client
 Text analytics support both synchronous and asynchronous client creation by using
 `TextAnalyticsClientBuilder`,
@@ -215,6 +221,9 @@ TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 ```
 
 ### Analyze sentiment
+Run a Text Analytics predictive model to identify the positive, negative, neutral or mixed sentiment contained in the 
+passed-in document or batch of documents.
+
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L102-L106 -->
 ```java
 String document = "The hotel was dark and unclean. I like microsoft.";
@@ -223,8 +232,12 @@ System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSen
 documentSentiment.getSentences().forEach(sentenceSentiment ->
     System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
 ```
+For samples on using the production recommended option `AnalyzeSentimentBatch` see [here][analyze_sentiment_sample].
+Please refer to the service documentation for a conceptual discussion of [sentiment analysis][sentiment_analysis].
 
 ### Detect language
+Run a Text Analytics predictive model to determine the language that the passed-in document or batch of documents are written in.
+
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L113-L116 -->
 ```java
 String document = "Bonjour tout le monde";
@@ -232,8 +245,26 @@ DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document)
 System.out.printf("Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n",
     detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
 ```
+For samples on using the production recommended option `DetectLanguageBatch` see [here][detect_language_sample].
+Please refer to the service documentation for a conceptual discussion of [language detection][language_detection].
+
+### Extract key phrases
+Run a model to identify a collection of significant phrases found in the passed-in document or batch of documents.
+
+<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L147-L149 -->
+```java
+String document = "My cat might need to see a veterinarian.";
+System.out.println("Extracted phrases:");
+textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
+```
+For samples on using the production recommended option `ExtractKeyPhrasesBatch` see [here][extract_key_phrases_sample].
+Please refer to the service documentation for a conceptual discussion of [key phrase extraction][key_phrase_extraction].
 
 ### Recognize entity
+Run a predictive model to identify a collection of named entities in the passed-in document or batch of documents and 
+categorize those entities into categories such as person, location, or organization.  For more information on available
+categories, see [Text Analytics Named Entity Categories][named_entities_categories].
+
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L123-L126 -->
 ```java
 String document = "Satya Nadella is the CEO of Microsoft";
@@ -241,8 +272,13 @@ textAnalyticsClient.recognizeEntities(document).forEach(entity ->
     System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, confidence score: %f.%n",
         entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
 ```
+For samples on using the production recommended option `RecognizeEntitiesBatch` see [here][recognize_entities_sample].
+Please refer to the service documentation for a conceptual discussion of [named entity recognition][named_entity_recognition].
 
 ### Recognize linked entity
+Run a predictive model to identify a collection of entities found in the passed-in document or batch of documents, 
+and include information linking the entities to their corresponding entries in a well-known knowledge base.
+
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L133-L140 -->
 
 ```java
@@ -255,16 +291,11 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
         System.out.printf("Text: %s, confidence score: %f.%n", match.getText(), match.getConfidenceScore()));
 });
 ```
-### Extract key phrases
-<!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L147-L149 -->
-```java
-String document = "My cat might need to see a veterinarian.";
-System.out.println("Extracted phrases:");
-textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
-```
+For samples on using the production recommended option `RecognizeLinkedEntitiesBatch` see [here][recognize_linked_entities_sample].
+Please refer to the service documentation for a conceptual discussion of [entity linking][named_entity_recognition].
 
-The above examples cover the scenario of having a single document as input.
-For more examples, such as batch operation, refer to [here][samples_readme].
+
+For more examples, such as asynchronous samples, refer to [here][samples_readme].
 
 ## Troubleshooting
 ### General
@@ -338,19 +369,26 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [language_regional_support]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support
 [named_entity_recognition]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-entity-linking
 [named_entity_recognition_types]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/named-entity-types?tabs=personal
+[named_entities_categories]: https://docs.microsoft.com/azure/cognitive-services/Text-Analytics/named-entity-types
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-textanalytics
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[samples_readme]: src/samples/README.md
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_input_limitation]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits
 [sentiment_analysis]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-sentiment-analysis
 [source_code]: src
-[supported_language]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection
+[supported_languages]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support#language-detection
 [text_analytics_account]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [text_analytics_async_client]: src/main/java/com/azure/ai/textanalytics/TextAnalyticsAsyncClient.java
 [text_analytics_sync_client]: src/main/java/com/azure/ai/textanalytics/TextAnalyticsClient.java
 [LogLevels]: ../../core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
+
+[samples_readme]: src/samples/README.md
+[detect_language_sample]: src/samples/java/com/azure/ai/textanalytics/batch/DetectLanguageBatchDocuments.java
+[analyze_sentiment_sample]: src/samples/java/com/azure/ai/textanalytics/batch/AnalyzeSentimentBatchDocuments.java
+[extract_key_phrases_sample]: src/samples/java/com/azure/ai/textanalytics/batch/ExtractKeyPhrasesBatchDocuments.java
+[recognize_entities_sample]: src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
+[recognize_linked_entities_sample]: src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)
