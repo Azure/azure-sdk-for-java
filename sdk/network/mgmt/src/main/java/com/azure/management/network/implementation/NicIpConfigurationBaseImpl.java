@@ -5,18 +5,18 @@ package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.management.network.ApplicationGatewayBackend;
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.management.network.IpAllocationMethod;
+import com.azure.management.network.IpVersion;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerBackend;
 import com.azure.management.network.LoadBalancerInboundNatRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkSecurityGroup;
-import com.azure.management.network.NicIPConfigurationBase;
+import com.azure.management.network.NicIpConfigurationBase;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.models.BackendAddressPoolInner;
 import com.azure.management.network.models.InboundNatRuleInner;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -35,14 +35,14 @@ import java.util.Map;
  * @param <ParentImplT> parent implementation
  * @param <ParentT> parent interface
  */
-abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT extends HasManager<NetworkManager>>
-    extends ChildResourceImpl<NetworkInterfaceIPConfigurationInner, ParentImplT, ParentT>
-    implements NicIPConfigurationBase {
+abstract class NicIpConfigurationBaseImpl<ParentImplT extends ParentT, ParentT extends HasManager<NetworkManager>>
+    extends ChildResourceImpl<NetworkInterfaceIpConfigurationInner, ParentImplT, ParentT>
+    implements NicIpConfigurationBase {
     /** the network client. */
     private final NetworkManager networkManager;
 
-    protected NicIPConfigurationBaseImpl(
-        NetworkInterfaceIPConfigurationInner inner, ParentImplT parent, NetworkManager networkManager) {
+    protected NicIpConfigurationBaseImpl(
+        NetworkInterfaceIpConfigurationInner inner, ParentImplT parent, NetworkManager networkManager) {
         super(inner, parent);
         this.networkManager = networkManager;
     }
@@ -76,18 +76,18 @@ abstract class NicIPConfigurationBaseImpl<ParentImplT extends ParentT, ParentT e
     }
 
     @Override
-    public String privateIPAddress() {
-        return this.inner().privateIPAddress();
+    public String privateIpAddress() {
+        return this.inner().privateIpAddress();
     }
 
     @Override
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.inner().privateIPAllocationMethod();
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.inner().privateIpAllocationMethod();
     }
 
     @Override
-    public IPVersion privateIPAddressVersion() {
-        return this.inner().privateIPAddressVersion();
+    public IpVersion privateIpAddressVersion() {
+        return this.inner().privateIpAddressVersion();
     }
 
     public String networkId() {

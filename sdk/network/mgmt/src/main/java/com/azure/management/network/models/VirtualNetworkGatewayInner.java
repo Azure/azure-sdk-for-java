@@ -11,7 +11,6 @@ import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.BgpSettings;
-import com.azure.management.network.VirtualNetworkGatewayIpConfiguration;
 import com.azure.management.network.VirtualNetworkGatewaySku;
 import com.azure.management.network.VirtualNetworkGatewayType;
 import com.azure.management.network.VpnClientConfiguration;
@@ -37,7 +36,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * IP configurations for virtual network gateway.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualNetworkGatewayIpConfiguration> ipConfigurations;
+    private List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations;
 
     /*
      * The type of this virtual network gateway.
@@ -143,7 +142,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the ipConfigurations value.
      */
-    public List<VirtualNetworkGatewayIpConfiguration> ipConfigurations() {
+    public List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -154,7 +153,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @return the VirtualNetworkGatewayInner object itself.
      */
     public VirtualNetworkGatewayInner withIpConfigurations(
-        List<VirtualNetworkGatewayIpConfiguration> ipConfigurations) {
+        List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }

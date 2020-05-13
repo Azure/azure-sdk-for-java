@@ -13,7 +13,7 @@ import java.util.List;
  * The base IP configuration shared across IP configurations in regular and virtual machine scale set network interface.
  */
 @Fluent
-public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIpAddress {
+public interface NicIpConfigurationBase extends HasSubnet, HasPrivateIpAddress {
     /** @return true if this is the primary IP configuration */
     boolean isPrimary();
 
@@ -28,7 +28,7 @@ public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIpAddress {
     NetworkSecurityGroup getNetworkSecurityGroup();
 
     /** @return private IP address version */
-    IPVersion privateIPAddressVersion();
+    IpVersion privateIpAddressVersion();
 
     /** @return the load balancer backends associated with this network interface IP configuration */
     // TODO: This should be a Collection

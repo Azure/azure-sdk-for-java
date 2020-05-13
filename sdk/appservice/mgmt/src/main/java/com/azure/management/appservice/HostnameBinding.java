@@ -4,7 +4,7 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.appservice.models.HostNameBindingInner;
+import com.azure.management.appservice.models.HostnameBindingInner;
 import com.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.model.Attachable;
@@ -12,8 +12,8 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 
 /** An immutable representation of a host name binding. */
 @Fluent
-public interface HostNameBinding
-    extends HasInner<HostNameBindingInner>, ExternalChildResource<HostNameBinding, WebAppBase>, Resource {
+public interface HostnameBinding
+    extends HasInner<HostnameBindingInner>, ExternalChildResource<HostnameBinding, WebAppBase>, Resource {
     /** @return the web app name */
     String webAppName();
 
@@ -27,10 +27,10 @@ public interface HostNameBinding
     AzureResourceType azureResourceType();
 
     /** @return custom DNS record type */
-    CustomHostNameDnsRecordType dnsRecordType();
+    CustomHostnameDnsRecordType dnsRecordType();
 
     /** @return the host name type */
-    HostNameType hostNameType();
+    HostnameType hostNameType();
 
     /**
      * The entirety of a hostname binding definition.
@@ -105,7 +105,7 @@ public interface HostNameBinding
              * @param hostNameDnsRecordType the DNS record type
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostnameDnsRecordType hostNameDnsRecordType);
         }
 
         /**
@@ -193,7 +193,7 @@ public interface HostNameBinding
              * @param hostNameDnsRecordType the DNS record type
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostnameDnsRecordType hostNameDnsRecordType);
         }
 
         /**

@@ -105,7 +105,7 @@ class FunctionAppImpl
 
     private void initializeFunctionService() {
         if (functionService == null) {
-            UrlBuilder urlBuilder = UrlBuilder.parse(defaultHostName());
+            UrlBuilder urlBuilder = UrlBuilder.parse(this.defaultHostname());
             String baseUrl;
             if (urlBuilder.getScheme() == null) {
                 urlBuilder.setScheme("https");

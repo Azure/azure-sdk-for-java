@@ -6,12 +6,12 @@ package com.azure.management.appservice.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AzureResourceType;
-import com.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.azure.management.appservice.CustomHostnameDnsRecordType;
 import com.azure.management.appservice.DeploymentSlot;
-import com.azure.management.appservice.HostNameBinding;
-import com.azure.management.appservice.HostNameType;
+import com.azure.management.appservice.HostnameBinding;
+import com.azure.management.appservice.HostnameType;
 import com.azure.management.appservice.WebAppBase;
-import com.azure.management.appservice.models.HostNameBindingInner;
+import com.azure.management.appservice.models.HostnameBindingInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
@@ -24,17 +24,17 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Implementation for {@link HostNameBinding} and its create and update interfaces.
+ * Implementation for {@link HostnameBinding} and its create and update interfaces.
  *
  * @param <FluentT> the fluent interface of the parent web app
  * @param <FluentImplT> the fluent implementation of the parent web app
  */
-class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
-    extends IndexableWrapperImpl<HostNameBindingInner>
-    implements Creatable<HostNameBinding>,
-        HostNameBinding,
-        HostNameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-        HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+class HostnameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+    extends IndexableWrapperImpl<HostnameBindingInner>
+    implements Creatable<HostnameBinding>,
+    HostnameBinding,
+        HostnameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+        HostnameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
@@ -42,7 +42,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     private String domainName;
     private String name;
 
-    HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent) {
+    HostnameBindingImpl(HostnameBindingInner innerObject, FluentImplT parent) {
         super(innerObject);
         this.parent = parent;
         this.name = innerObject.name();
@@ -97,13 +97,13 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     }
 
     @Override
-    public CustomHostNameDnsRecordType dnsRecordType() {
-        return inner().customHostNameDnsRecordType();
+    public CustomHostnameDnsRecordType dnsRecordType() {
+        return inner().customHostnameDnsRecordType();
     }
 
     @Override
-    public HostNameType hostNameType() {
-        return inner().hostNameType();
+    public HostnameType hostNameType() {
+        return inner().hostnameType();
     }
 
     @Override
@@ -113,28 +113,28 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> withDnsRecordType(
-        CustomHostNameDnsRecordType hostNameDnsRecordType) {
+    public HostnameBindingImpl<FluentT, FluentImplT> withDnsRecordType(
+        CustomHostnameDnsRecordType hostNameDnsRecordType) {
         Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
         Matcher matcher = pattern.matcher(name);
-        if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
+        if (hostNameDnsRecordType == CustomHostnameDnsRecordType.CNAME && !matcher.matches()) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("root hostname cannot be assigned with a CName record"));
         }
-        inner().withCustomHostNameDnsRecordType(hostNameDnsRecordType);
+        inner().withCustomHostnameDnsRecordType(hostNameDnsRecordType);
         return this;
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> refresh() {
+    public HostnameBindingImpl<FluentT, FluentImplT> refresh() {
 
         return this;
     }
 
     @Override
-    public Mono<HostNameBinding> refreshAsync() {
-        final HostNameBindingImpl<FluentT, FluentImplT> self = this;
-        Mono<HostNameBindingInner> observable = null;
+    public Mono<HostnameBinding> refreshAsync() {
+        final HostnameBindingImpl<FluentT, FluentImplT> self = this;
+        Mono<HostnameBindingInner> observable = null;
 
         if (parent instanceof DeploymentSlot) {
             observable =
@@ -143,7 +143,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .manager()
                     .inner()
                     .webApps()
-                    .getHostNameBindingSlotAsync(
+                    .getHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
                         ((DeploymentSlot) parent).parent().name(),
                         parent().name(),
@@ -155,7 +155,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .manager()
                     .inner()
                     .webApps()
-                    .getHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name());
+                    .getHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
 
         return observable
@@ -167,15 +167,15 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     }
 
     @Override
-    public HostNameBinding create() {
+    public HostnameBinding create() {
         createAsync().blockLast();
         return this;
     }
 
     @Override
     public Flux<Indexable> createAsync() {
-        final HostNameBinding self = this;
-        Function<HostNameBindingInner, HostNameBinding> mapper =
+        final HostnameBinding self = this;
+        Function<HostnameBindingInner, HostnameBinding> mapper =
             hostNameBindingInner -> {
                 setInner(hostNameBindingInner);
                 return self;
@@ -189,7 +189,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .manager()
                     .inner()
                     .webApps()
-                    .createOrUpdateHostNameBindingSlotAsync(
+                    .createOrUpdateHostnameBindingSlotAsync(
                         parent().resourceGroupName(),
                         ((DeploymentSlot) parent).parent().name(),
                         name,
@@ -203,7 +203,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
                     .manager()
                     .inner()
                     .webApps()
-                    .createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
+                    .createOrUpdateHostnameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
                     .map(mapper);
         }
 
@@ -221,16 +221,16 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> withAzureManagedDomain(AppServiceDomain domain) {
+    public HostnameBindingImpl<FluentT, FluentImplT> withAzureManagedDomain(AppServiceDomain domain) {
         inner().withDomainId(domain.id());
-        inner().withHostNameType(HostNameType.MANAGED);
+        inner().withHostnameType(HostnameType.MANAGED);
         this.domainName = domain.name();
         return this;
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> withThirdPartyDomain(String domain) {
-        inner().withHostNameType(HostNameType.VERIFIED);
+    public HostnameBindingImpl<FluentT, FluentImplT> withThirdPartyDomain(String domain) {
+        inner().withHostnameType(HostnameType.VERIFIED);
         this.domainName = domain;
         return this;
     }
@@ -257,7 +257,7 @@ class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebApp
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> withSubDomain(String subDomain) {
+    public HostnameBindingImpl<FluentT, FluentImplT> withSubDomain(String subDomain) {
         this.name = normalizeHostNameBindingName(subDomain, domainName);
         return this;
     }

@@ -21,7 +21,7 @@ public class KubernetesClusterAgentPoolImpl
 
     KubernetesClusterAgentPoolImpl(ManagedClusterAgentPoolProfile inner, KubernetesClusterImpl parent) {
         super(inner, parent);
-        String subnetId = (inner != null) ? this.inner().vnetSubnetID() : null;
+        String subnetId = (inner != null) ? this.inner().vnetSubnetId() : null;
         this.subnetName = ResourceUtils.nameFromResourceId(subnetId);
     }
 
@@ -60,13 +60,13 @@ public class KubernetesClusterAgentPoolImpl
         if (this.subnetName != null) {
             return this.subnetName;
         } else {
-            return ResourceUtils.nameFromResourceId(this.inner().vnetSubnetID());
+            return ResourceUtils.nameFromResourceId(this.inner().vnetSubnetId());
         }
     }
 
     @Override
     public String networkId() {
-        String subnetId = (this.inner() != null) ? this.inner().vnetSubnetID() : null;
+        String subnetId = (this.inner() != null) ? this.inner().vnetSubnetId() : null;
         return (subnetId != null) ? ResourceUtils.parentResourceIdFromResourceId(subnetId) : null;
     }
 
@@ -116,7 +116,7 @@ public class KubernetesClusterAgentPoolImpl
     public KubernetesClusterAgentPoolImpl withVirtualNetwork(String virtualNetworkId, String subnetName) {
         String vnetSubnetId = virtualNetworkId + "/subnets/" + subnetName;
         this.subnetName = subnetName;
-        this.inner().withVnetSubnetID(vnetSubnetId);
+        this.inner().withVnetSubnetId(vnetSubnetId);
         return this;
     }
 

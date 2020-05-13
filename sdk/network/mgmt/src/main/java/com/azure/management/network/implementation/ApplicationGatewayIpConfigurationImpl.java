@@ -4,22 +4,22 @@ package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.management.network.ApplicationGateway;
-import com.azure.management.network.ApplicationGatewayIPConfiguration;
+import com.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.azure.management.network.Network;
 import com.azure.management.network.Subnet;
-import com.azure.management.network.models.ApplicationGatewayIPConfigurationInner;
+import com.azure.management.network.models.ApplicationGatewayIpConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/** Implementation for ApplicationGatewayIPConfiguration. */
-class ApplicationGatewayIPConfigurationImpl
-    extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
-    implements ApplicationGatewayIPConfiguration,
-        ApplicationGatewayIPConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayIPConfiguration.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayIPConfiguration.Update {
+/** Implementation for ApplicationGatewayIpConfiguration. */
+class ApplicationGatewayIpConfigurationImpl
+    extends ChildResourceImpl<ApplicationGatewayIpConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayIpConfiguration,
+        ApplicationGatewayIpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+        ApplicationGatewayIpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayIpConfiguration.Update {
 
-    ApplicationGatewayIPConfigurationImpl(ApplicationGatewayIPConfigurationInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayIpConfigurationImpl(ApplicationGatewayIpConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -32,17 +32,17 @@ class ApplicationGatewayIPConfigurationImpl
     // Fluent setters
 
     @Override
-    public ApplicationGatewayIPConfigurationImpl withExistingSubnet(Subnet subnet) {
+    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(Subnet subnet) {
         return this.withExistingSubnet(subnet.parent().id(), subnet.name());
     }
 
     @Override
-    public ApplicationGatewayIPConfigurationImpl withExistingSubnet(Network network, String subnetName) {
+    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(Network network, String subnetName) {
         return this.withExistingSubnet(network.id(), subnetName);
     }
 
     @Override
-    public ApplicationGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
+    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;

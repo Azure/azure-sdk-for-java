@@ -4,16 +4,16 @@
 package com.azure.management.network.implementation;
 
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
-import com.azure.management.network.VirtualMachineScaleSetNicIPConfiguration;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
+import com.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
 
 /** Implementation for NicIPConfiguration for network interfaces associated with virtual machine scale set. */
-class VirtualMachineScaleSetNicIPConfigurationImpl
-    extends NicIPConfigurationBaseImpl<
-        VirtualMachineScaleSetNetworkInterfaceImpl, VirtualMachineScaleSetNetworkInterface>
-    implements VirtualMachineScaleSetNicIPConfiguration {
-    VirtualMachineScaleSetNicIPConfigurationImpl(
-        NetworkInterfaceIPConfigurationInner inner,
+class VirtualMachineScaleSetNicIpConfigurationImpl
+    extends NicIpConfigurationBaseImpl<
+            VirtualMachineScaleSetNetworkInterfaceImpl, VirtualMachineScaleSetNetworkInterface>
+    implements VirtualMachineScaleSetNicIpConfiguration {
+    VirtualMachineScaleSetNicIpConfigurationImpl(
+        NetworkInterfaceIpConfigurationInner inner,
         VirtualMachineScaleSetNetworkInterfaceImpl parent,
         NetworkManager networkManager) {
         super(inner, parent, networkManager);

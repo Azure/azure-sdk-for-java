@@ -3,17 +3,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.fluentcore.model.Creatable;
 
 /** An interface representing a model's ability to reference a public IP address. */
 @Fluent
-public interface HasPublicIPAddress {
+public interface HasPublicIpAddress {
     /** @return the resource ID of the associated public IP address */
-    String publicIPAddressId();
+    String publicIpAddressId();
 
     /** @return the associated public IP address */
-    PublicIPAddress getPublicIPAddress();
+    PublicIpAddress getPublicIpAddress();
 
     /** Grouping of definition stages involving specifying the public IP address. */
     interface DefinitionStages {
@@ -29,7 +29,7 @@ public interface HasPublicIPAddress {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Associates an existing public IP address with the resource.
@@ -37,7 +37,7 @@ public interface HasPublicIPAddress {
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIPAddress(String resourceId);
+            ReturnT withExistingPublicIpAddress(String resourceId);
         }
 
         /**
@@ -52,7 +52,7 @@ public interface HasPublicIPAddress {
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress(Creatable<PublicIPAddress> creatable);
+            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associates it with the
@@ -62,7 +62,7 @@ public interface HasPublicIPAddress {
              *
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress();
+            ReturnT withNewPublicIpAddress();
         }
 
         /**
@@ -80,7 +80,7 @@ public interface HasPublicIPAddress {
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress(String leafDnsLabel);
+            ReturnT withNewPublicIpAddress(String leafDnsLabel);
         }
 
         /**
@@ -117,7 +117,7 @@ public interface HasPublicIPAddress {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the update
              */
-            ReturnT withExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Associates an existing public IP address with the resource.
@@ -125,14 +125,14 @@ public interface HasPublicIPAddress {
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIPAddress(String resourceId);
+            ReturnT withExistingPublicIpAddress(String resourceId);
 
             /**
              * Removes the existing reference to a public IP address.
              *
              * @return the next stage of the update.
              */
-            ReturnT withoutPublicIPAddress();
+            ReturnT withoutPublicIpAddress();
         }
 
         /**
@@ -147,7 +147,7 @@ public interface HasPublicIPAddress {
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress(Creatable<PublicIPAddress> creatable);
+            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associates it with the
@@ -157,7 +157,7 @@ public interface HasPublicIPAddress {
              *
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress();
+            ReturnT withNewPublicIpAddress();
         }
 
         /**
@@ -175,7 +175,7 @@ public interface HasPublicIPAddress {
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress(String leafDnsLabel);
+            ReturnT withNewPublicIpAddress(String leafDnsLabel);
         }
 
         /**
@@ -215,7 +215,7 @@ public interface HasPublicIPAddress {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Associates an existing public IP address with the resource.
@@ -223,7 +223,7 @@ public interface HasPublicIPAddress {
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT withExistingPublicIPAddress(String resourceId);
+            ReturnT withExistingPublicIpAddress(String resourceId);
         }
 
         /**
@@ -238,7 +238,7 @@ public interface HasPublicIPAddress {
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress(Creatable<PublicIPAddress> creatable);
+            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and group as the resource and associates it with the
@@ -248,7 +248,7 @@ public interface HasPublicIPAddress {
              *
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress();
+            ReturnT withNewPublicIpAddress();
         }
 
         /**
@@ -276,7 +276,7 @@ public interface HasPublicIPAddress {
              * @param leafDnsLabel the leaf domain label
              * @return the next stage of the definition
              */
-            ReturnT withNewPublicIPAddress(String leafDnsLabel);
+            ReturnT withNewPublicIpAddress(String leafDnsLabel);
         }
 
         /**

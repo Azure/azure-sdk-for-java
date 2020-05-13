@@ -83,7 +83,7 @@ public final class ManageSimpleApplicationGateway {
                     .toBackendIPAddress("11.1.1.3")
                     .toBackendIPAddress("11.1.1.4")
                     .attach()
-                    .withNewPublicIPAddress()
+                    .withNewPublicIpAddress()
                     .create();
 
             long t2 = System.currentTimeMillis();

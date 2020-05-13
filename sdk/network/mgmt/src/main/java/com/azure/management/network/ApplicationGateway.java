@@ -5,7 +5,7 @@ package com.azure.management.network;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.network.models.ApplicationGatewayInner;
 import com.azure.management.network.models.HasPrivateIpAddress;
-import com.azure.management.network.models.HasPublicIPAddress;
+import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.network.models.UpdatableWithTags;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -201,7 +201,7 @@ public interface ApplicationGateway
          * IP address.
          */
         interface WithPublicIPAddress
-            extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
+            extends HasPublicIpAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<WithCreate> {
         }
 
         /**
@@ -760,7 +760,7 @@ public interface ApplicationGateway
         /**
          * The stage of an application gateway update allowing to specify a public IP address for the public frontend.
          */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
+        interface WithPublicIPAddress extends HasPublicIpAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
         }
 
         /** The stage of an application gateway update allowing to modify frontend IP configurations. */

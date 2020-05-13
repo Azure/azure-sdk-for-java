@@ -11,7 +11,7 @@ import java.io.File;
 
 /** An immutable representation of an host name SSL binding. */
 @Fluent
-public interface HostNameSslBinding extends HasInner<HostNameSslState>, ChildResource<WebAppBase> {
+public interface HostnameSslBinding extends HasInner<HostnameSslState>, ChildResource<WebAppBase> {
     /** @return the SSL type */
     SslState sslState();
 

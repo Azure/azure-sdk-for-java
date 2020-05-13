@@ -50,11 +50,11 @@ class KuduClient {
     private KuduService service;
 
     KuduClient(WebAppBase webAppBase) {
-        if (webAppBase.defaultHostName() == null) {
+        if (webAppBase.defaultHostname() == null) {
             throw logger.logExceptionAsError(
                 new UnsupportedOperationException("Cannot initialize kudu client before web app is created"));
         }
-        String host = webAppBase.defaultHostName().toLowerCase(Locale.ROOT)
+        String host = webAppBase.defaultHostname().toLowerCase(Locale.ROOT)
             .replace("http://", "")
             .replace("https://", "");
         String[] parts = host.split("\\.", 2);

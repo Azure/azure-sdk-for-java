@@ -2,19 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.management.network.IpAllocationMethod;
 import com.azure.management.network.IpTag;
+import com.azure.management.network.IpVersion;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
-import com.azure.management.network.PublicIPAddress;
-import com.azure.management.network.PublicIPAddressDnsSettings;
+import com.azure.management.network.NicIpConfiguration;
+import com.azure.management.network.PublicIpAddress;
+import com.azure.management.network.PublicIpAddressDnsSettings;
 import com.azure.management.network.PublicIPSkuType;
 import com.azure.management.network.models.AppliableWithTags;
-import com.azure.management.network.models.IPConfigurationInner;
-import com.azure.management.network.models.PublicIPAddressInner;
+import com.azure.management.network.models.IpConfigurationInner;
+import com.azure.management.network.models.PublicIpAddressInner;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -28,53 +28,53 @@ import java.util.Set;
 import reactor.core.publisher.Mono;
 
 /** Implementation for PublicIPAddress and its create and update interfaces. */
-class PublicIPAddressImpl
-    extends GroupableResourceImpl<PublicIPAddress, PublicIPAddressInner, PublicIPAddressImpl, NetworkManager>
-    implements PublicIPAddress, PublicIPAddress.Definition, PublicIPAddress.Update, AppliableWithTags<PublicIPAddress> {
+class PublicIpAddressImpl
+    extends GroupableResourceImpl<PublicIpAddress, PublicIpAddressInner, PublicIpAddressImpl, NetworkManager>
+    implements PublicIpAddress, PublicIpAddress.Definition, PublicIpAddress.Update, AppliableWithTags<PublicIpAddress> {
 
-    PublicIPAddressImpl(String name, PublicIPAddressInner innerModel, final NetworkManager networkManager) {
+    PublicIpAddressImpl(String name, PublicIpAddressInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
     // Verbs
 
     @Override
-    protected Mono<PublicIPAddressInner> getInnerAsync() {
+    protected Mono<PublicIpAddressInner> getInnerAsync() {
         return this
             .manager()
             .inner()
-            .publicIPAddresses()
+            .publicIpAddresses()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
     }
 
     // Setters (fluent)
 
     @Override
-    public PublicIPAddressImpl withIdleTimeoutInMinutes(int minutes) {
+    public PublicIpAddressImpl withIdleTimeoutInMinutes(int minutes) {
         this.inner().withIdleTimeoutInMinutes(minutes);
         return this;
     }
 
     @Override
-    public PublicIPAddressImpl withStaticIP() {
-        this.inner().withPublicIPAllocationMethod(IPAllocationMethod.STATIC);
+    public PublicIpAddressImpl withStaticIP() {
+        this.inner().withPublicIpAllocationMethod(IpAllocationMethod.STATIC);
         return this;
     }
 
     @Override
-    public PublicIPAddressImpl withDynamicIP() {
-        this.inner().withPublicIPAllocationMethod(IPAllocationMethod.DYNAMIC);
+    public PublicIpAddressImpl withDynamicIP() {
+        this.inner().withPublicIpAllocationMethod(IpAllocationMethod.DYNAMIC);
         return this;
     }
 
     @Override
-    public PublicIPAddressImpl withLeafDomainLabel(String dnsName) {
+    public PublicIpAddressImpl withLeafDomainLabel(String dnsName) {
         this.inner().dnsSettings().withDomainNameLabel((dnsName == null) ? null : dnsName.toLowerCase(Locale.ROOT));
         return this;
     }
 
     @Override
-    public PublicIPAddressImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
+    public PublicIpAddressImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
         // Note: Zone is not updatable as of now, so this is available only during definition time.
         // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
         // zone or remove one. Trying to remove the last one means attempt to change resource from
@@ -88,7 +88,7 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public PublicIPAddressImpl withSku(PublicIPSkuType skuType) {
+    public PublicIpAddressImpl withSku(PublicIPSkuType skuType) {
         // Note: SKU is not updatable as of now, so this is available only during definition time.
         // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
         // Service default is PublicIPSkuType.BASIC
@@ -98,18 +98,18 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public PublicIPAddressImpl withoutLeafDomainLabel() {
+    public PublicIpAddressImpl withoutLeafDomainLabel() {
         return this.withLeafDomainLabel(null);
     }
 
     @Override
-    public PublicIPAddressImpl withReverseFqdn(String reverseFqdn) {
+    public PublicIpAddressImpl withReverseFqdn(String reverseFqdn) {
         this.inner().dnsSettings().withReverseFqdn(reverseFqdn != null ? reverseFqdn.toLowerCase(Locale.ROOT) : null);
         return this;
     }
 
     @Override
-    public PublicIPAddressImpl withoutReverseFqdn() {
+    public PublicIpAddressImpl withoutReverseFqdn() {
         return this.withReverseFqdn(null);
     }
 
@@ -121,13 +121,13 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public IPAllocationMethod ipAllocationMethod() {
-        return this.inner().publicIPAllocationMethod();
+    public IpAllocationMethod ipAllocationMethod() {
+        return this.inner().publicIpAllocationMethod();
     }
 
     @Override
-    public IPVersion version() {
-        return this.inner().publicIPAddressVersion();
+    public IpVersion version() {
+        return this.inner().publicIpAddressVersion();
     }
 
     @Override
@@ -164,9 +164,9 @@ class PublicIPAddressImpl
 
     // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
-    public Mono<PublicIPAddress> createResourceAsync() {
+    public Mono<PublicIpAddress> createResourceAsync() {
         // Clean up empty DNS settings
-        final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
+        final PublicIpAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
             if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
                 && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
@@ -178,13 +178,13 @@ class PublicIPAddressImpl
         return this
             .manager()
             .inner()
-            .publicIPAddresses()
+            .publicIpAddresses()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 
     private boolean equalsResourceType(String resourceType) {
-        IPConfigurationInner ipConfig = this.inner().ipConfiguration();
+        IpConfigurationInner ipConfig = this.inner().ipConfiguration();
         if (ipConfig == null || resourceType == null) {
             return false;
         } else {
@@ -239,7 +239,7 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public NicIPConfiguration getAssignedNetworkInterfaceIPConfiguration() {
+    public NicIpConfiguration getAssignedNetworkInterfaceIPConfiguration() {
         if (this.hasAssignedNetworkInterface()) {
             final String refId = this.inner().ipConfiguration().id();
             final String parentId = ResourceUtils.parentResourceIdFromResourceId(refId);
@@ -252,31 +252,31 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public PublicIPAddressImpl updateTags() {
+    public PublicIpAddressImpl updateTags() {
         return this;
     }
 
     @Override
-    public PublicIPAddress applyTags() {
+    public PublicIpAddress applyTags() {
         return applyTagsAsync().block();
     }
 
     @Override
-    public Mono<PublicIPAddress> applyTagsAsync() {
+    public Mono<PublicIpAddress> applyTagsAsync() {
         return this
             .manager()
             .inner()
-            .publicIPAddresses()
+            .publicIpAddresses()
             .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);
-                    return Mono.just((PublicIPAddress) PublicIPAddressImpl.this);
+                    return Mono.just((PublicIpAddress) PublicIpAddressImpl.this);
                 });
     }
 
     @Override
-    public PublicIPAddressImpl withIpTag(String tag) {
+    public PublicIpAddressImpl withIpTag(String tag) {
         if (inner().ipTags() == null) {
             inner().withIpTags(new ArrayList<IpTag>());
         }
@@ -285,7 +285,7 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public PublicIPAddressImpl withIpTag(String tag, String ipTagType) {
+    public PublicIpAddressImpl withIpTag(String tag, String ipTagType) {
         if (inner().ipTags() == null) {
             inner().withIpTags(new ArrayList<IpTag>());
         }
@@ -294,7 +294,7 @@ class PublicIPAddressImpl
     }
 
     @Override
-    public PublicIPAddressImpl withoutIpTag(String tag) {
+    public PublicIpAddressImpl withoutIpTag(String tag) {
         if (tag != null && inner().ipTags() != null) {
             for (IpTag ipTag : inner().ipTags()) {
                 if (tag.equals(ipTag.tag())) {

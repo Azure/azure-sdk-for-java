@@ -28,24 +28,6 @@ public final class ApiError extends ManagementError {
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
 
-    /*
-     * The error code.
-     */
-    @JsonProperty(value = "code")
-    private String code;
-
-    /*
-     * The target of the particular error.
-     */
-    @JsonProperty(value = "target")
-    private String target;
-
-    /*
-     * The error message.
-     */
-    @JsonProperty(value = "message")
-    private String message;
-
     /**
      * Get the details property: The Api error details.
      *
@@ -65,73 +47,13 @@ public final class ApiError extends ManagementError {
     }
 
     /**
-     * Get the code property: The error code.
-     *
-     * @return the code value.
-     */
-    public String getCode() {
-        return this.code;
-    }
-
-    /**
-     * Set the code property: The error code.
-     *
-     * @param code the code value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the target property: The target of the particular error.
-     *
-     * @return the target value.
-     */
-    public String getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: The target of the particular error.
-     *
-     * @param target the target value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the message property: The error message.
-     *
-     * @return the message value.
-     */
-    public String getMessage() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: The error message.
-     *
-     * @param message the message value to set.
-     * @return the ApiError object itself.
-     */
-    public ApiError withMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innererror() != null) {
-            innererror().validate();
+        if (getInnererror() != null) {
+            getInnererror().validate();
         }
     }
 }

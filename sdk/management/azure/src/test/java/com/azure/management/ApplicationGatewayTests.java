@@ -3,7 +3,7 @@
 package com.azure.management;
 
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.network.ApplicationGateway;
@@ -15,7 +15,7 @@ import com.azure.management.network.ApplicationGatewayOperationalState;
 import com.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -174,7 +174,7 @@ public class ApplicationGatewayTests extends TestBase {
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
                     for (ApplicationGatewayBackendServerHealth serverHealth
                         : backendConfigHealth.serverHealths().values()) {
-                        NicIPConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
+                        NicIpConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
                         if (ipConfig != null) {
                             info
                                 .append("\n\t\t\t\tServer NIC ID: ")
@@ -223,7 +223,7 @@ public class ApplicationGatewayTests extends TestBase {
             Assertions.assertEquals(1, httpConfigHealth2.serverHealths().size());
             ApplicationGatewayBackendServerHealth serverHealth =
                 httpConfigHealth2.serverHealths().values().iterator().next();
-            NicIPConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
+            NicIpConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
             Assertions.assertEquals(nic.primaryIPConfiguration().name(), ipConfig2.name());
         } catch (Exception e) {
             throw e;
@@ -340,7 +340,7 @@ public class ApplicationGatewayTests extends TestBase {
             try {
                 ApplicationGateway ag = azure.applicationGateways().getById(id);
                 Assertions.assertNull(ag);
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
                 Assertions.assertEquals(404, e.getResponse().getStatusCode());
             }
         }

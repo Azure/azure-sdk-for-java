@@ -4,7 +4,7 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.implementation.NetworkManager;
-import com.azure.management.network.models.PublicIPAddressesInner;
+import com.azure.management.network.models.PublicIpAddressesInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -19,16 +19,16 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 
 /** Entry point to public IP address management. */
 @Fluent()
-public interface PublicIPAddresses
-    extends SupportsListing<PublicIPAddress>,
-        SupportsCreating<PublicIPAddress.DefinitionStages.Blank>,
+public interface PublicIpAddresses
+    extends SupportsListing<PublicIpAddress>,
+        SupportsCreating<PublicIpAddress.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByResourceGroup<PublicIPAddress>,
-        SupportsGettingByResourceGroup<PublicIPAddress>,
-        SupportsGettingById<PublicIPAddress>,
+        SupportsListingByResourceGroup<PublicIpAddress>,
+        SupportsGettingByResourceGroup<PublicIpAddress>,
+        SupportsGettingById<PublicIpAddress>,
         SupportsDeletingByResourceGroup,
-        SupportsBatchCreation<PublicIPAddress>,
+        SupportsBatchCreation<PublicIpAddress>,
         SupportsBatchDeletion,
         HasManager<NetworkManager>,
-        HasInner<PublicIPAddressesInner> {
+        HasInner<PublicIpAddressesInner> {
 }

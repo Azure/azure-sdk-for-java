@@ -6,10 +6,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.network.IpAllocationMethod;
 
 /** An interface representing a model's ability to reference a private IP address. */
-@Fluent()
-public interface HasPrivateIPAddress {
+@Fluent
+public interface HasPrivateIpAddress {
     /** @return the private IP address associated with this resource */
-    String privateIPAddress();
+    String privateIpAddress();
 
     /** @return the private IP address allocation method within the associated subnet */
     IpAllocationMethod privateIpAllocationMethod();
@@ -27,7 +27,7 @@ public interface HasPrivateIPAddress {
              *
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIPAddressDynamic();
+            ReturnT withPrivateIpAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the associated subnet.
@@ -35,7 +35,7 @@ public interface HasPrivateIPAddress {
              * @param ipAddress a static IP address within the associated private IP range
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIPAddressStatic(String ipAddress);
+            ReturnT withPrivateIpAddressStatic(String ipAddress);
         }
     }
 
@@ -52,7 +52,7 @@ public interface HasPrivateIPAddress {
              *
              * @return the next stage of the update
              */
-            ReturnT withPrivateIPAddressDynamic();
+            ReturnT withPrivateIpAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the associated subnet.
@@ -60,7 +60,7 @@ public interface HasPrivateIPAddress {
              * @param ipAddress a static IP address within the associated private IP range
              * @return the next stage of the update
              */
-            ReturnT withPrivateIPAddressStatic(String ipAddress);
+            ReturnT withPrivateIpAddressStatic(String ipAddress);
         }
     }
 
@@ -80,7 +80,7 @@ public interface HasPrivateIPAddress {
              *
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIPAddressDynamic();
+            ReturnT withPrivateIpAddressDynamic();
 
             /**
              * Assigns the specified static private IP address within the associated subnet.
@@ -88,7 +88,7 @@ public interface HasPrivateIPAddress {
              * @param ipAddress a static IP address within the associated private IP range
              * @return the next stage of the definition
              */
-            ReturnT withPrivateIPAddressStatic(String ipAddress);
+            ReturnT withPrivateIpAddressStatic(String ipAddress);
         }
     }
 }

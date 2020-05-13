@@ -15,7 +15,7 @@ import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -104,7 +104,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
 
                 // Define a PIP for each VM
                 String pipName = azure.sdkContext().randomResourceName("pip", 14);
-                Creatable<PublicIPAddress> pipDefinition = azure.publicIPAddresses().define(pipName)
+                Creatable<PublicIpAddress> pipDefinition = azure.publicIpAddresses().define(pipName)
                         .withRegion(region)
                         .withExistingResourceGroup(resourceGroup);
                 relatedDefinitions.add(pipDefinition);
@@ -251,7 +251,7 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             final int actualNetworkCount = Utils.getSize(azure.networks().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining virtual networks (should be %d): %d", actualVMCount, actualNetworkCount));
 
-            final int actualPipCount = Utils.getSize(azure.publicIPAddresses().listByResourceGroup(resourceGroupName));
+            final int actualPipCount = Utils.getSize(azure.publicIpAddresses().listByResourceGroup(resourceGroupName));
             System.out.println(String.format("Remaining public IP addresses (should be %d): %d", actualVMCount, actualPipCount));
 
             final int actualAvailabilitySetCount = Utils.getSize(azure.availabilitySets().listByResourceGroup(resourceGroupName));

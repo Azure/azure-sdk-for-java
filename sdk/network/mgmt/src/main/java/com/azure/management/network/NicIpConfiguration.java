@@ -5,8 +5,8 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.HasPrivateIpAddress;
-import com.azure.management.network.models.HasPublicIPAddress;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
+import com.azure.management.network.models.HasPublicIpAddress;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.Creatable;
@@ -15,11 +15,11 @@ import com.azure.management.resources.fluentcore.model.Settable;
 
 /** An IP configuration in a network interface. */
 @Fluent()
-public interface NicIPConfiguration
-    extends NicIPConfigurationBase,
-        HasInner<NetworkInterfaceIPConfigurationInner>,
+public interface NicIpConfiguration
+    extends NicIpConfigurationBase,
+        HasInner<NetworkInterfaceIpConfigurationInner>,
         ChildResource<NetworkInterface>,
-        HasPublicIPAddress {
+    HasPublicIpAddress {
 
     /**
      * The entirety of the network interface IP configuration definition.
@@ -114,7 +114,7 @@ public interface NicIPConfiguration
              * @param ipVersion an IP version
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateIPVersion(IPVersion ipVersion);
+            WithAttach<ParentT> withPrivateIpVersion(IpVersion ipVersion);
         }
 
         /**
@@ -140,7 +140,7 @@ public interface NicIPConfiguration
          *     definition
          */
         interface WithPublicIPAddress<ParentT>
-            extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
+            extends HasPublicIpAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -297,7 +297,7 @@ public interface NicIPConfiguration
              * @param ipVersion an IP version
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPrivateIPVersion(IPVersion ipVersion);
+            WithAttach<ParentT> withPrivateIpVersion(IpVersion ipVersion);
         }
 
         /**
@@ -324,7 +324,7 @@ public interface NicIPConfiguration
          *     definition
          */
         interface WithPublicIPAddress<ParentT>
-            extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
+            extends HasPublicIpAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -422,11 +422,11 @@ public interface NicIPConfiguration
              * @param ipVersion an IP version
              * @return the next stage of the update
              */
-            Update withPrivateIPVersion(IPVersion ipVersion);
+            Update withPrivateIpVersion(IpVersion ipVersion);
         }
 
         /** The stage of the network interface IP configuration update allowing to specify public IP address. */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddress<Update> {
+        interface WithPublicIPAddress extends HasPublicIpAddress.UpdateStages.WithPublicIPAddress<Update> {
         }
 
         /**

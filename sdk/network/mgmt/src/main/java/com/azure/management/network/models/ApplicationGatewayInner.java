@@ -16,7 +16,6 @@ import com.azure.management.network.ApplicationGatewayCustomError;
 import com.azure.management.network.ApplicationGatewayFrontendIpConfiguration;
 import com.azure.management.network.ApplicationGatewayFrontendPort;
 import com.azure.management.network.ApplicationGatewayHttpListener;
-import com.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.azure.management.network.ApplicationGatewayOperationalState;
 import com.azure.management.network.ApplicationGatewayRewriteRuleSet;
 import com.azure.management.network.ApplicationGatewaySku;
@@ -77,7 +76,7 @@ public class ApplicationGatewayInner extends Resource {
      * limits](https://docs.microsoft.com/azure/azure-subscription-service-limits#application-gateway-limits).
      */
     @JsonProperty(value = "properties.gatewayIPConfigurations")
-    private List<ApplicationGatewayIpConfiguration> gatewayIpConfigurations;
+    private List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations;
 
     /*
      * Authentication certificates of the application gateway resource. For
@@ -348,7 +347,7 @@ public class ApplicationGatewayInner extends Resource {
      *
      * @return the gatewayIpConfigurations value.
      */
-    public List<ApplicationGatewayIpConfiguration> gatewayIpConfigurations() {
+    public List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations() {
         return this.gatewayIpConfigurations;
     }
 
@@ -361,7 +360,7 @@ public class ApplicationGatewayInner extends Resource {
      * @return the ApplicationGatewayInner object itself.
      */
     public ApplicationGatewayInner withGatewayIpConfigurations(
-        List<ApplicationGatewayIpConfiguration> gatewayIpConfigurations) {
+        List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations) {
         this.gatewayIpConfigurations = gatewayIpConfigurations;
         return this;
     }

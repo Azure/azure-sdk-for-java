@@ -3,27 +3,27 @@
 package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.network.IPAllocationMethod;
+import com.azure.management.network.IpAllocationMethod;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.VirtualNetworkGateway;
-import com.azure.management.network.VirtualNetworkGatewayIPConfiguration;
-import com.azure.management.network.models.VirtualNetworkGatewayIPConfigurationInner;
+import com.azure.management.network.VirtualNetworkGatewayIpConfiguration;
+import com.azure.management.network.models.VirtualNetworkGatewayIpConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/** Implementation for VirtualNetworkGatewayIPConfiguration. */
-class VirtualNetworkGatewayIPConfigurationImpl
+/** Implementation for VirtualNetworkGatewayIpConfiguration. */
+class VirtualNetworkGatewayIpConfigurationImpl
     extends ChildResourceImpl<
-        VirtualNetworkGatewayIPConfigurationInner, VirtualNetworkGatewayImpl, VirtualNetworkGateway>
-    implements VirtualNetworkGatewayIPConfiguration,
-        VirtualNetworkGatewayIPConfiguration.Definition<VirtualNetworkGateway.DefinitionStages.WithCreate>,
-        VirtualNetworkGatewayIPConfiguration.UpdateDefinition<VirtualNetworkGateway.Update>,
-        VirtualNetworkGatewayIPConfiguration.Update {
+        VirtualNetworkGatewayIpConfigurationInner, VirtualNetworkGatewayImpl, VirtualNetworkGateway>
+    implements VirtualNetworkGatewayIpConfiguration,
+        VirtualNetworkGatewayIpConfiguration.Definition<VirtualNetworkGateway.DefinitionStages.WithCreate>,
+        VirtualNetworkGatewayIpConfiguration.UpdateDefinition<VirtualNetworkGateway.Update>,
+        VirtualNetworkGatewayIpConfiguration.Update {
 
-    VirtualNetworkGatewayIPConfigurationImpl(
-        VirtualNetworkGatewayIPConfigurationInner inner, VirtualNetworkGatewayImpl parent) {
+    VirtualNetworkGatewayIpConfigurationImpl(
+        VirtualNetworkGatewayIpConfigurationInner inner, VirtualNetworkGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -33,9 +33,9 @@ class VirtualNetworkGatewayIPConfigurationImpl
     }
 
     @Override
-    public String publicIPAddressId() {
-        if (this.inner().publicIPAddress() != null) {
-            return this.inner().publicIPAddress().id();
+    public String publicIpAddressId() {
+        if (this.inner().publicIpAddress() != null) {
+            return this.inner().publicIpAddress().id();
         } else {
             return null;
         }
@@ -62,8 +62,8 @@ class VirtualNetworkGatewayIPConfigurationImpl
     }
 
     @Override
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return inner().privateIPAllocationMethod();
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return inner().privateIpAllocationMethod();
     }
 
     @Override
@@ -72,19 +72,19 @@ class VirtualNetworkGatewayIPConfigurationImpl
     }
 
     @Override
-    public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
+    public VirtualNetworkGatewayIpConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;
     }
 
     @Override
-    public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(Subnet subnet) {
+    public VirtualNetworkGatewayIpConfigurationImpl withExistingSubnet(Subnet subnet) {
         return this.withExistingSubnet(subnet.parent().id(), subnet.name());
     }
 
     @Override
-    public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(Network network, String subnetName) {
+    public VirtualNetworkGatewayIpConfigurationImpl withExistingSubnet(Network network, String subnetName) {
         return this.withExistingSubnet(network.id(), subnetName);
     }
 
@@ -94,14 +94,14 @@ class VirtualNetworkGatewayIPConfigurationImpl
     }
 
     @Override
-    public VirtualNetworkGatewayIPConfigurationImpl withExistingPublicIPAddress(PublicIPAddress pip) {
-        return this.withExistingPublicIPAddress(pip.id());
+    public VirtualNetworkGatewayIpConfigurationImpl withExistingPublicIpAddress(PublicIpAddress pip) {
+        return this.withExistingPublicIpAddress(pip.id());
     }
 
     @Override
-    public VirtualNetworkGatewayIPConfigurationImpl withExistingPublicIPAddress(String resourceId) {
+    public VirtualNetworkGatewayIpConfigurationImpl withExistingPublicIpAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
-        this.inner().withPublicIPAddress(pipRef);
+        this.inner().withPublicIpAddress(pipRef);
         return this;
     }
 }

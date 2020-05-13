@@ -4,7 +4,7 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.implementation.NetworkManager;
-import com.azure.management.network.models.PublicIPAddressInner;
+import com.azure.management.network.models.PublicIpAddressInner;
 import com.azure.management.network.models.UpdatableWithTags;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -18,16 +18,16 @@ import java.util.Set;
 
 /** Public IP address. */
 @Fluent()
-public interface PublicIPAddress
-    extends GroupableResource<NetworkManager, PublicIPAddressInner>,
-        Refreshable<PublicIPAddress>,
-        Updatable<PublicIPAddress.Update>,
-        UpdatableWithTags<PublicIPAddress> {
+public interface PublicIpAddress
+    extends GroupableResource<NetworkManager, PublicIpAddressInner>,
+        Refreshable<PublicIpAddress>,
+        Updatable<PublicIpAddress.Update>,
+        UpdatableWithTags<PublicIpAddress> {
 
     // Getters
 
     /** @return the IP version of the public IP address */
-    IPVersion version();
+    IpVersion version();
 
     /** @return the assigned IP address */
     String ipAddress();
@@ -42,7 +42,7 @@ public interface PublicIPAddress
     String reverseFqdn();
 
     /** @return the IP address allocation method (Static/Dynamic) */
-    IPAllocationMethod ipAllocationMethod();
+    IpAllocationMethod ipAllocationMethod();
 
     /** @return the idle connection timeout setting (in minutes) */
     int idleTimeoutInMinutes();
@@ -54,7 +54,7 @@ public interface PublicIPAddress
     boolean hasAssignedLoadBalancer();
 
     /** @return the network interface IP configuration that this public IP address is assigned to */
-    NicIPConfiguration getAssignedNetworkInterfaceIPConfiguration();
+    NicIpConfiguration getAssignedNetworkInterfaceIPConfiguration();
 
     /** @return true if this public IP address is assigned to a network interface */
     boolean hasAssignedNetworkInterface();
@@ -87,7 +87,7 @@ public interface PublicIPAddress
             /**
              * Enables static IP address allocation.
              *
-             * <p>Use {@link PublicIPAddress#ipAddress()} after the public IP address is created to obtain the actual IP
+             * <p>Use {@link PublicIpAddress#ipAddress()} after the public IP address is created to obtain the actual IP
              * address allocated for this resource by Azure
              *
              * @return the next stage of the definition
@@ -204,7 +204,7 @@ public interface PublicIPAddress
          * created (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<PublicIPAddress>,
+            extends Creatable<PublicIpAddress>,
                 DefinitionStages.WithLeafDomainLabel,
                 DefinitionStages.WithIPAddress,
                 DefinitionStages.WithReverseFQDN,
@@ -222,7 +222,7 @@ public interface PublicIPAddress
      * <p>Use {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update
-        extends Appliable<PublicIPAddress>,
+        extends Appliable<PublicIpAddress>,
             UpdateStages.WithIPAddress,
             UpdateStages.WithLeafDomainLabel,
             UpdateStages.WithReverseFQDN,
@@ -238,7 +238,7 @@ public interface PublicIPAddress
             /**
              * Enables static IP address allocation.
              *
-             * <p>Use {@link PublicIPAddress#ipAddress()} after the public IP address is updated to obtain the actual IP
+             * <p>Use {@link PublicIpAddress#ipAddress()} after the public IP address is updated to obtain the actual IP
              * address allocated for this resource by Azure
              *
              * @return the next stage of the resource update

@@ -6,17 +6,17 @@ package com.azure.management.network.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGateway;
 import com.azure.management.network.ApplicationGatewayBackendAddressPool;
-import com.azure.management.network.IPAllocationMethod;
-import com.azure.management.network.IPVersion;
+import com.azure.management.network.IpAllocationMethod;
+import com.azure.management.network.IpVersion;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.NicIPConfiguration;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.NicIpConfiguration;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.models.BackendAddressPoolInner;
 import com.azure.management.network.models.InboundNatRuleInner;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
-import com.azure.management.network.models.PublicIPAddressInner;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
+import com.azure.management.network.models.PublicIpAddressInner;
 import com.azure.management.network.models.SubnetInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import java.util.Collection;
 import java.util.List;
 
 /** Implementation for NicIPConfiguration and its create and update interfaces. */
-class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
-    implements NicIPConfiguration,
-        NicIPConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
-        NicIPConfiguration.UpdateDefinition<NetworkInterface.Update>,
-        NicIPConfiguration.Update {
+class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
+    implements NicIpConfiguration,
+        NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
+        NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
+        NicIpConfiguration.Update {
     /** the network client. */
     private final NetworkManager networkManager;
     /** flag indicating whether IP configuration is in create or update mode. */
@@ -48,8 +48,8 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
 
     private final ClientLogger logger = new ClientLogger(getClass());
 
-    protected NicIPConfigurationImpl(
-        NetworkInterfaceIPConfigurationInner inner,
+    protected NicIpConfigurationImpl(
+        NetworkInterfaceIpConfigurationInner inner,
         NetworkInterfaceImpl parent,
         NetworkManager networkManager,
         final boolean isInCreateModel) {
@@ -58,29 +58,29 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
         this.networkManager = networkManager;
     }
 
-    protected static NicIPConfigurationImpl prepareNicIPConfiguration(
+    protected static NicIpConfigurationImpl prepareNicIPConfiguration(
         String name, NetworkInterfaceImpl parent, final NetworkManager networkManager) {
-        NetworkInterfaceIPConfigurationInner ipConfigurationInner = new NetworkInterfaceIPConfigurationInner();
+        NetworkInterfaceIpConfigurationInner ipConfigurationInner = new NetworkInterfaceIpConfigurationInner();
         ipConfigurationInner.withName(name);
-        return new NicIPConfigurationImpl(ipConfigurationInner, parent, networkManager, true);
+        return new NicIpConfigurationImpl(ipConfigurationInner, parent, networkManager, true);
     }
 
     @Override
-    public String publicIPAddressId() {
-        if (this.inner().publicIPAddress() == null) {
+    public String publicIpAddressId() {
+        if (this.inner().publicIpAddress() == null) {
             return null;
         }
-        return this.inner().publicIPAddress().id();
+        return this.inner().publicIpAddress().id();
     }
 
     @Override
-    public PublicIPAddress getPublicIPAddress() {
-        String id = publicIPAddressId();
+    public PublicIpAddress getPublicIpAddress() {
+        String id = publicIpAddressId();
         if (id == null) {
             return null;
         }
 
-        return this.networkManager.publicIPAddresses().getById(id);
+        return this.networkManager.publicIpAddresses().getById(id);
     }
 
     @Override
@@ -89,14 +89,14 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIPConfigurationImpl withNewNetwork(Creatable<Network> creatable) {
+    public NicIpConfigurationImpl withNewNetwork(Creatable<Network> creatable) {
         this.creatableVirtualNetworkKey = creatable.key();
         this.parent().addToCreatableDependencies(creatable);
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
+    public NicIpConfigurationImpl withNewNetwork(String name, String addressSpaceCidr) {
         Network.DefinitionStages.WithGroup definitionWithGroup =
             this.networkManager.networks().define(name).withRegion(this.parent().regionName());
 
@@ -110,32 +110,32 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIPConfigurationImpl withNewNetwork(String addressSpaceCidr) {
+    public NicIpConfigurationImpl withNewNetwork(String addressSpaceCidr) {
         return withNewNetwork(this.parent().namer.randomName("vnet", 20), addressSpaceCidr);
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingNetwork(Network network) {
+    public NicIpConfigurationImpl withExistingNetwork(Network network) {
         this.existingVirtualNetworkToAssociate = network;
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withPrivateIPAddressDynamic() {
-        this.inner().withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
-        this.inner().withPrivateIPAddress(null);
+    public NicIpConfigurationImpl withPrivateIpAddressDynamic() {
+        this.inner().withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC);
+        this.inner().withPrivateIpAddress(null);
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withPrivateIPAddressStatic(String staticPrivateIPAddress) {
-        this.inner().withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
-        this.inner().withPrivateIPAddress(staticPrivateIPAddress);
+    public NicIpConfigurationImpl withPrivateIpAddressStatic(String staticPrivateIPAddress) {
+        this.inner().withPrivateIpAllocationMethod(IpAllocationMethod.STATIC);
+        this.inner().withPrivateIpAddress(staticPrivateIPAddress);
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+    public NicIpConfigurationImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         if (this.creatablePublicIPKey == null) {
             this.creatablePublicIPKey = creatable.key();
             this.parent().addToCreatableDependencies(creatable);
@@ -144,42 +144,42 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIPConfigurationImpl withNewPublicIPAddress() {
+    public NicIpConfigurationImpl withNewPublicIpAddress() {
         String name = this.parent().namer.randomName("pip", 15);
-        return withNewPublicIPAddress(prepareCreatablePublicIP(name, name));
+        return withNewPublicIpAddress(prepareCreatablePublicIP(name, name));
     }
 
     @Override
-    public NicIPConfigurationImpl withNewPublicIPAddress(String leafDnsLabel) {
-        return withNewPublicIPAddress(
+    public NicIpConfigurationImpl withNewPublicIpAddress(String leafDnsLabel) {
+        return withNewPublicIpAddress(
             prepareCreatablePublicIP(this.parent().namer.randomName("pip", 15), leafDnsLabel));
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
-        return this.withExistingPublicIPAddress(publicIPAddress.id());
+    public NicIpConfigurationImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+        return this.withExistingPublicIpAddress(publicIpAddress.id());
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingPublicIPAddress(String resourceId) {
+    public NicIpConfigurationImpl withExistingPublicIpAddress(String resourceId) {
         this.existingPublicIPAddressIdToAssociate = resourceId;
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withoutPublicIPAddress() {
+    public NicIpConfigurationImpl withoutPublicIpAddress() {
         this.removePrimaryPublicIPAssociation = true;
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withSubnet(String name) {
+    public NicIpConfigurationImpl withSubnet(String name) {
         this.subnetToAssociate = name;
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
+    public NicIpConfigurationImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
         if (loadBalancer != null) {
             for (BackendAddressPoolInner pool : loadBalancer.inner().backendAddressPools()) {
                 if (pool.name().equalsIgnoreCase(backendName)) {
@@ -193,7 +193,7 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingApplicationGatewayBackend(
+    public NicIpConfigurationImpl withExistingApplicationGatewayBackend(
         ApplicationGateway appGateway, String backendName) {
         if (appGateway != null) {
             for (ApplicationGatewayBackendAddressPool pool : appGateway.inner().backendAddressPools()) {
@@ -208,7 +208,7 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
     }
 
     @Override
-    public NicIPConfigurationImpl withExistingLoadBalancerInboundNatRule(
+    public NicIpConfigurationImpl withExistingLoadBalancerInboundNatRule(
         LoadBalancer loadBalancer, String inboundNatRuleName) {
         if (loadBalancer != null) {
             for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
@@ -249,20 +249,20 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIPConfiguration> nicIPConfigurations) {
-        for (NicIPConfiguration nicIPConfiguration : nicIPConfigurations) {
-            NicIPConfigurationImpl config = (NicIPConfigurationImpl) nicIPConfiguration;
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations) {
+        for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
+            NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.inner().withSubnet(config.subnetToAssociate());
-            config.inner().withPublicIPAddress(config.publicIPToAssociate());
+            config.inner().withPublicIpAddress(config.publicIPToAssociate());
         }
     }
 
     // Creates a creatable public IP address definition with the given name and DNS label.
-    private Creatable<PublicIPAddress> prepareCreatablePublicIP(String name, String leafDnsLabel) {
-        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup =
-            this.networkManager.publicIPAddresses().define(name).withRegion(this.parent().regionName());
+    private Creatable<PublicIpAddress> prepareCreatablePublicIP(String name, String leafDnsLabel) {
+        PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
+            this.networkManager.publicIpAddresses().define(name).withRegion(this.parent().regionName());
 
-        PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
+        PublicIpAddress.DefinitionStages.WithCreate definitionAfterGroup;
         if (this.parent().newGroup() != null) {
             definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.parent().newGroup());
         } else {
@@ -323,45 +323,45 @@ class NicIPConfigurationImpl extends NicIPConfigurationBaseImpl<NetworkInterface
      *
      * @return public IP SubResource
      */
-    private PublicIPAddressInner publicIPToAssociate() {
+    private PublicIpAddressInner publicIPToAssociate() {
         String pipId = null;
         if (this.removePrimaryPublicIPAssociation) {
             return null;
         } else if (this.creatablePublicIPKey != null) {
-            pipId = ((PublicIPAddress) this.parent().createdDependencyResource(this.creatablePublicIPKey)).id();
+            pipId = ((PublicIpAddress) this.parent().createdDependencyResource(this.creatablePublicIPKey)).id();
         } else if (this.existingPublicIPAddressIdToAssociate != null) {
             pipId = this.existingPublicIPAddressIdToAssociate;
         }
 
         if (pipId != null) {
-            return new PublicIPAddressInner().withId(pipId);
+            return new PublicIpAddressInner().withId(pipId);
         } else if (!this.isInCreateMode) {
-            return this.inner().publicIPAddress();
+            return this.inner().publicIpAddress();
         } else {
             return null;
         }
     }
 
     @Override
-    public NicIPConfigurationImpl withPrivateIPVersion(IPVersion ipVersion) {
-        this.inner().withPrivateIPAddressVersion(ipVersion);
+    public NicIpConfigurationImpl withPrivateIpVersion(IpVersion ipVersion) {
+        this.inner().withPrivateIpAddressVersion(ipVersion);
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withoutApplicationGatewayBackends() {
+    public NicIpConfigurationImpl withoutApplicationGatewayBackends() {
         this.inner().withApplicationGatewayBackendAddressPools(null);
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withoutLoadBalancerBackends() {
+    public NicIpConfigurationImpl withoutLoadBalancerBackends() {
         this.inner().withLoadBalancerBackendAddressPools(null);
         return this;
     }
 
     @Override
-    public NicIPConfigurationImpl withoutLoadBalancerInboundNatRules() {
+    public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
         this.inner().withLoadBalancerInboundNatRules(null);
         return this;
     }
