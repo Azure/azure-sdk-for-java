@@ -117,7 +117,7 @@ class VirtualMachineScaleSetMsiHandler extends RoleAssignmentHelper {
      * @return VirtualMachineScaleSetMsiHandler
      */
     VirtualMachineScaleSetMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
-        this.userAssignedIdentities.put(identityId, null);
+        this.userAssignedIdentities.remove(identityId);
         return this;
     }
 

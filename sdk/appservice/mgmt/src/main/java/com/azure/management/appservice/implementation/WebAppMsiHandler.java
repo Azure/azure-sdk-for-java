@@ -120,7 +120,7 @@ public class WebAppMsiHandler extends RoleAssignmentHelper {
      * @return WebAppMsiHandler
      */
     WebAppMsiHandler withoutExternalManagedServiceIdentity(String identityId) {
-        this.userAssignedIdentities.put(identityId, null);
+        this.userAssignedIdentities.remove(identityId);
         return this;
     }
 
