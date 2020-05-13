@@ -4,9 +4,7 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.specialized.BlobInputStream;
-import com.azure.storage.common.implementation.Constants;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -151,6 +149,9 @@ public class NioBlobInputStream extends InputStream {
      */
     @Override
     public int read(final byte[] b, final int off, final int len) throws IOException {
+        if (off < 0 || len < 0 || len > b.length - off) {
+            throw logger.logExceptionAsError(new IndexOutOfBoundsException());
+        }
         try {
             return this.blobInputStream.read(b, off, len);
         } catch (RuntimeException e) {
