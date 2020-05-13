@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Information about the destination for an event subscription.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType", defaultImpl = EventSubscriptionDestination.class)
 @JsonTypeName("EventSubscriptionDestination")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "WebHook", value = WebHookEventSubscriptionDestination.class),
