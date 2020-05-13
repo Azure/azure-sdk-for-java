@@ -3,10 +3,14 @@
 
 package com.azure.cosmos;
 
+import io.netty.channel.ChannelOption;
+
 import java.time.Duration;
 
 /**
  * Represents the connection config with {@link ConnectionMode#DIRECT} associated with Cosmos Client in the Azure Cosmos DB database service.
+ * For performance tips on how to optimize Direct connection configuration,
+ * refer to performance tips guide: https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
  */
 public final class DirectConnectionConfig {
     //  Constants
@@ -41,7 +45,11 @@ public final class DirectConnectionConfig {
 
     /**
      * Gets the connection timeout for direct client,
-     * represents timeout for establishing connections with an endpoint
+     * represents timeout for establishing connections with an endpoint.
+     *
+     * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
+     *
+     * By default, the connection timeout is disabled, unless specified by user.
      *
      * @return direct connection timeout
      */
@@ -50,8 +58,12 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     *  Sets the connection timeout for direct client,
-     *  represents timeout for establishing connections with an endpoint
+     * Sets the connection timeout for direct client,
+     * represents timeout for establishing connections with an endpoint.
+     *
+     * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
+     *
+     * By default, the connection timeout is disabled, unless specified by user.
      *
      * @param connectionTimeout the connection timeout
      * @return the {@link DirectConnectionConfig}
@@ -63,8 +75,10 @@ public final class DirectConnectionConfig {
 
     /**
      * Gets the idle connection timeout for direct client
+     *
      * Default value is {@link Duration#ZERO}
-     * Direct client doesn't close connections to an endpoint
+     *
+     * Direct client doesn't close a single connection to an endpoint
      * by default unless specified.
      *
      * @return idle connection timeout
@@ -75,8 +89,10 @@ public final class DirectConnectionConfig {
 
     /**
      * Sets the idle connection timeout
+     *
      * Default value is {@link Duration#ZERO}
-     * Direct client doesn't close connections to an endpoint
+     *
+     * Direct client doesn't close a single connection to an endpoint
      * by default unless specified.
      *
      * @param idleConnectionTimeout idle connection timeout
@@ -89,10 +105,11 @@ public final class DirectConnectionConfig {
 
     /**
      * Gets the idle endpoint timeout
+     *
      * Default value is 70 seconds.
      *
-     * If there are no connections to a specific endpoint for idle endpoint timeout,
-     * direct client closes that endpoint to save resources and I/O cost.
+     * If there are no requests to a specific endpoint for idle endpoint timeout duration,
+     * direct client closes all connections to that endpoint to save resources and I/O cost.
      *
      * @return the idle endpoint timeout
      */
@@ -102,10 +119,11 @@ public final class DirectConnectionConfig {
 
     /**
      * Sets the idle endpoint timeout
+     *
      * Default value is 70 seconds.
      *
-     * If there are no connections to a specific endpoint for idle endpoint timeout,
-     * direct client closes that endpoint to save resources and I/O cost.
+     * If there are no requests to a specific endpoint for idle endpoint timeout duration,
+     * direct client closes all connections to that endpoint to save resources and I/O cost.
      *
      * @param idleEndpointTimeout the idle endpoint timeout
      * @return the {@link DirectConnectionConfig}
@@ -117,6 +135,8 @@ public final class DirectConnectionConfig {
 
     /**
      * Gets the max connections per endpoint
+     * This represents the size of connection pool for a specific endpoint
+     *
      * Default value is 30
      *
      * @return the max connections per endpoint
@@ -127,6 +147,8 @@ public final class DirectConnectionConfig {
 
     /**
      * Sets the max connections per endpoint
+     * This represents the size of connection pool for a specific endpoint
+     *
      * Default value is 30
      *
      * @param maxConnectionsPerEndpoint the max connections per endpoint
@@ -139,6 +161,9 @@ public final class DirectConnectionConfig {
 
     /**
      * Gets the max requests per connection per endpoint
+     * This represents the number of requests that will be queued
+     * on a single connection for a specific endpoint
+     *
      * Default value is 10
      *
      * @return the max requests per endpoint
@@ -149,6 +174,9 @@ public final class DirectConnectionConfig {
 
     /**
      * Sets the max requests per connection per endpoint
+     * This represents the number of requests that will be queued
+     * on a single connection for a specific endpoint
+     *
      * Default value is 10
      *
      * @param maxRequestsPerConnection the max requests per endpoint
