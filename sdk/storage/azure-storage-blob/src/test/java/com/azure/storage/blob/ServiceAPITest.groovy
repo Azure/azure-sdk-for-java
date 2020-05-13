@@ -524,8 +524,7 @@ class ServiceAPITest extends APISpec {
         setup:
         def secondaryEndpoint = String.format(defaultEndpointTemplate,
             primaryCredential.getAccountName() + "-secondary")
-        def serviceClient = getServiceClientBuilder(null, secondaryEndpoint)
-            .credential(new EnvironmentCredentialBuilder().build()).buildClient()
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, secondaryEndpoint)).buildClient()
 
         when:
         serviceClient.getProperties()
