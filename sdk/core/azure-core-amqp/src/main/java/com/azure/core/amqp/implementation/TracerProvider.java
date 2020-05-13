@@ -41,11 +41,11 @@ public class TracerProvider {
         if (tracer == null) {
             return context;
         }
-        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(processKind, "'processKind' cannot be null.");
         String spanName = getSpanName(processKind);
 
-        return tracer.start(spanName, local, processKind);
+        return tracer.start(spanName, context, processKind);
     }
 
     /**
@@ -109,9 +109,9 @@ public class TracerProvider {
         if (tracer == null) {
             return context;
         }
-        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(context, "'context' cannot be null.");
         Objects.requireNonNull(diagnosticId, "'diagnosticId' cannot be null.");
-        return tracer.extractContext(diagnosticId, local);
+        return tracer.extractContext(diagnosticId, context);
     }
 
     /**
@@ -123,9 +123,9 @@ public class TracerProvider {
         if (tracer == null) {
             return context;
         }
-        Context local = Objects.requireNonNull(context, "'context' cannot be null.");
+        Objects.requireNonNull(context, "'context' cannot be null.");
         String spanName = getSpanName(ProcessKind.SEND);
-        return tracer.getSharedSpanBuilder(spanName, local);
+        return tracer.getSharedSpanBuilder(spanName, context);
     }
 
     private void end(String statusMessage, Throwable throwable, Context context) {
