@@ -121,4 +121,14 @@ public class CosmosItemResponse<T> {
         return responseWrapper.getRequestLatency();
     }
 
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    public String getETag() {
+        return responseWrapper.getETag();
+    }
 }

@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AzureFilesIdentityBasedAuthentication model.
- */
+/** The AzureFilesIdentityBasedAuthentication model. */
 @Fluent
 public final class AzureFilesIdentityBasedAuthentication {
     /*
@@ -25,9 +23,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     private ActiveDirectoryProperties activeDirectoryProperties;
 
     /**
-     * Get the directoryServiceOptions property: Indicates the directory
-     * service used.
-     * 
+     * Get the directoryServiceOptions property: Indicates the directory service used.
+     *
      * @return the directoryServiceOptions value.
      */
     public DirectoryServiceOptions directoryServiceOptions() {
@@ -35,20 +32,20 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Set the directoryServiceOptions property: Indicates the directory
-     * service used.
-     * 
+     * Set the directoryServiceOptions property: Indicates the directory service used.
+     *
      * @param directoryServiceOptions the directoryServiceOptions value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication withDirectoryServiceOptions(DirectoryServiceOptions directoryServiceOptions) {
+    public AzureFilesIdentityBasedAuthentication withDirectoryServiceOptions(
+        DirectoryServiceOptions directoryServiceOptions) {
         this.directoryServiceOptions = directoryServiceOptions;
         return this;
     }
 
     /**
      * Get the activeDirectoryProperties property: Required if choose AD.
-     * 
+     *
      * @return the activeDirectoryProperties value.
      */
     public ActiveDirectoryProperties activeDirectoryProperties() {
@@ -57,12 +54,12 @@ public final class AzureFilesIdentityBasedAuthentication {
 
     /**
      * Set the activeDirectoryProperties property: Required if choose AD.
-     * 
-     * @param activeDirectoryProperties the activeDirectoryProperties value to
-     * set.
+     *
+     * @param activeDirectoryProperties the activeDirectoryProperties value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
-    public AzureFilesIdentityBasedAuthentication withActiveDirectoryProperties(ActiveDirectoryProperties activeDirectoryProperties) {
+    public AzureFilesIdentityBasedAuthentication withActiveDirectoryProperties(
+        ActiveDirectoryProperties activeDirectoryProperties) {
         this.activeDirectoryProperties = activeDirectoryProperties;
         return this;
     }

@@ -14,24 +14,18 @@ import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point for Network Watcher API in Azure.
- */
+/** Entry point for Network Watcher API in Azure. */
 @Fluent
-public interface NetworkWatcher extends
-        GroupableResource<NetworkManager, NetworkWatcherInner>,
+public interface NetworkWatcher
+    extends GroupableResource<NetworkManager, NetworkWatcherInner>,
         Refreshable<NetworkWatcher>,
         Updatable<NetworkWatcher.Update>,
         UpdatableWithTags<NetworkWatcher> {
 
-    /**
-     * @return entry point to manage packet captures associated with network watcher
-     */
+    /** @return entry point to manage packet captures associated with network watcher */
     PacketCaptures packetCaptures();
 
-    /**
-     * @return entry point to manage connection monitors associated with network watcher
-     */
+    /** @return entry point to manage connection monitors associated with network watcher */
     ConnectionMonitors connectionMonitors();
 
     /**
@@ -116,46 +110,29 @@ public interface NetworkWatcher extends
      */
     AzureReachabilityReport.DefinitionStages.WithProviderLocation azureReachabilityReport();
 
-    /**
-     * Container interface for all the definitions.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate {
+    /** Container interface for all the definitions. */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of network watcher definition stages.
-     */
+    /** Grouping of network watcher definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a network watcher definition.
-         */
+        /** The first stage of a network watcher definition. */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * The stage of the network watcher definition allowing to specify the resource group.
-         */
+        /** The stage of the network watcher definition allowing to specify the resource group. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
         }
 
         /**
-         * A network watcher with sufficient inputs to create a new network watcher in the cloud,
-         * but exposing additional optional inputs to specify.
+         * A network watcher with sufficient inputs to create a new network watcher in the cloud, but exposing
+         * additional optional inputs to specify.
          */
-        interface WithCreate extends
-                Creatable<NetworkWatcher>,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<NetworkWatcher>, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
-    /**
-     * The template for update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<NetworkWatcher>,
-            Resource.UpdateWithTags<Update> {
+    /** The template for update operation, containing all the settings that can be modified. */
+    interface Update extends Appliable<NetworkWatcher>, Resource.UpdateWithTags<Update> {
     }
 }

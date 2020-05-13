@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourceType model.
- */
+/** The ResourceType model. */
 @Fluent
 public final class ResourceType {
     /*
@@ -33,7 +31,7 @@ public final class ResourceType {
 
     /**
      * Get the name property: The resource type name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,7 +40,7 @@ public final class ResourceType {
 
     /**
      * Set the name property: The resource type name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ResourceType object itself.
      */
@@ -53,7 +51,7 @@ public final class ResourceType {
 
     /**
      * Get the displayName property: The resource type display name.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -62,7 +60,7 @@ public final class ResourceType {
 
     /**
      * Set the displayName property: The resource type display name.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the ResourceType object itself.
      */
@@ -73,7 +71,7 @@ public final class ResourceType {
 
     /**
      * Get the operations property: The resource type operations.
-     * 
+     *
      * @return the operations value.
      */
     public List<ProviderOperation> operations() {
@@ -82,7 +80,7 @@ public final class ResourceType {
 
     /**
      * Set the operations property: The resource type operations.
-     * 
+     *
      * @param operations the operations value to set.
      * @return the ResourceType object itself.
      */

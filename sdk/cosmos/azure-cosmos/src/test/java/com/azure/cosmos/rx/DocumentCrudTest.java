@@ -5,6 +5,7 @@ package com.azure.cosmos.rx;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
@@ -65,8 +66,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(createObservable, validator);
     }
 
-    // TODO (DANOBLE) DocumentCrudTest::createLargeDocument fails in some  environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6335
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void createLargeDocument(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -105,8 +104,6 @@ public class DocumentCrudTest extends TestSuiteBase {
         this.validateItemSuccess(createObservable, validator);
     }
 
-    // TODO (DANOBLE) DocumentCrudTest::readDocumentWithVeryLargePartitionKey test fails in some environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6336
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void readDocumentWithVeryLargePartitionKey(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -138,7 +135,10 @@ public class DocumentCrudTest extends TestSuiteBase {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = container.createItem(docDefinition, new CosmosItemRequestOptions());
-        FailureValidator validator = new FailureValidator.Builder().resourceAlreadyExists().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceAlreadyExists()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateItemFailure(createObservable, validator);
     }
 
@@ -208,13 +208,14 @@ public class DocumentCrudTest extends TestSuiteBase {
                                                                           new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                           options, CosmosItemProperties.class);
 
-        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
-                .statusCode(404).build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .instanceOf(CosmosClientException.class)
+            .statusCode(404)
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateItemFailure(readObservable, validator);
     }
 
-    // TODO (DANOBLE) DocumentCrudTest::deleteDocument test fails in some test environments
-    //  see https://github.com/Azure/azure-sdk-for-java/issues/6337
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "documentCrudArgProvider")
     public void deleteDocument(String documentId) throws InterruptedException {
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
@@ -238,7 +239,10 @@ public class DocumentCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
                                                                           new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
                                                                           options, CosmosItemProperties.class);
-        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator notFoundValidator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateItemFailure(readObservable, notFoundValidator);
     }
 

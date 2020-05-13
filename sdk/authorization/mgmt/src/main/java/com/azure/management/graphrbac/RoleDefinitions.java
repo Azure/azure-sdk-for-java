@@ -13,14 +13,10 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to role definition management API.
- */
+/** Entry point to role definition management API. */
 @Fluent
-public interface RoleDefinitions extends
-        SupportsGettingById<RoleDefinition>,
-        HasManager<GraphRbacManager>,
-        HasInner<RoleDefinitionsInner> {
+public interface RoleDefinitions
+    extends SupportsGettingById<RoleDefinition>, HasManager<GraphRbacManager>, HasInner<RoleDefinitionsInner> {
     /**
      * Gets the information about a role definition based on scope and name.
      *

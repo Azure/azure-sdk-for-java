@@ -726,6 +726,7 @@ public interface SqlDatabase
             /**
              * Sets a "Basic" edition and maximum storage capacity for the SQL Database.
              *
+             * @param maxStorageCapacity the maximum storage capacity
              * @return The next stage of the definition
              */
             SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withBasicEdition(
@@ -902,6 +903,7 @@ public interface SqlDatabase
             /**
              * Sets a "Basic" edition and maximum storage capacity for the SQL Database.
              *
+             * @param maxStorageCapacity the maximum storage capacity
              * @return The next stage of the definition
              */
             Update withBasicEdition(SqlDatabaseBasicStorage maxStorageCapacity);

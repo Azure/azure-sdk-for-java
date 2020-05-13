@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.storage.v2019_06_01;
 
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -26,6 +27,12 @@ public class RestorePolicyProperties {
      */
     @JsonProperty(value = "days")
     private Integer days;
+
+    /**
+     * Returns the date and time the restore policy was last enabled.
+     */
+    @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastEnabledTime;
 
     /**
      * Get blob restore is enabled if set to true.
@@ -65,6 +72,15 @@ public class RestorePolicyProperties {
     public RestorePolicyProperties withDays(Integer days) {
         this.days = days;
         return this;
+    }
+
+    /**
+     * Get returns the date and time the restore policy was last enabled.
+     *
+     * @return the lastEnabledTime value
+     */
+    public DateTime lastEnabledTime() {
+        return this.lastEnabledTime;
     }
 
 }

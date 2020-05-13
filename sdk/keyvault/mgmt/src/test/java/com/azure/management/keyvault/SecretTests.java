@@ -3,11 +3,9 @@
 
 package com.azure.management.keyvault;
 
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import java.io.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -22,9 +20,6 @@ public class SecretTests extends KeyVaultManagementTest {
         String vaultName = sdkContext.randomResourceName("vault", 20);
         String secretName = sdkContext.randomResourceName("secret", 20);
 
-        ApplicationTokenCredential credentials =
-            ApplicationTokenCredential.fromFile(new File(System.getenv("AZURE_AUTH_LOCATION")));
-
         Vault vault =
             keyVaultManager
                 .vaults()
@@ -32,7 +27,7 @@ public class SecretTests extends KeyVaultManagementTest {
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(rgName)
                 .defineAccessPolicy()
-                .forServicePrincipal(credentials.getClientId())
+                .forServicePrincipal(clientIdFromFile())
                 .allowSecretAllPermissions()
                 .attach()
                 .create();

@@ -3,23 +3,17 @@
 
 package com.azure.management.monitor.implementation;
 
-import com.azure.management.monitor.AutoscaleSettings;
 import com.azure.management.monitor.AutoscaleSetting;
+import com.azure.management.monitor.AutoscaleSettings;
 import com.azure.management.monitor.models.AutoscaleSettingResourceInner;
 import com.azure.management.monitor.models.AutoscaleSettingsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for {@link AutoscaleSettings}.
- */
+/** Implementation for {@link AutoscaleSettings}. */
 class AutoscaleSettingsImpl
-        extends TopLevelModifiableResourcesImpl<
-            AutoscaleSetting,
-            AutoscaleSettingImpl,
-            AutoscaleSettingResourceInner,
-            AutoscaleSettingsInner,
-            MonitorManager>
-        implements AutoscaleSettings {
+    extends TopLevelModifiableResourcesImpl<
+        AutoscaleSetting, AutoscaleSettingImpl, AutoscaleSettingResourceInner, AutoscaleSettingsInner, MonitorManager>
+    implements AutoscaleSettings {
 
     AutoscaleSettingsImpl(final MonitorManager monitorManager) {
         super(monitorManager.inner().autoscaleSettings(), monitorManager);
@@ -32,10 +26,10 @@ class AutoscaleSettingsImpl
 
     @Override
     protected AutoscaleSettingImpl wrapModel(AutoscaleSettingResourceInner inner) {
-        if (inner ==  null) {
+        if (inner == null) {
             return null;
         }
-        return new AutoscaleSettingImpl(inner.getName(), inner, this.manager());
+        return new AutoscaleSettingImpl(inner.name(), inner, this.manager());
     }
 
     @Override

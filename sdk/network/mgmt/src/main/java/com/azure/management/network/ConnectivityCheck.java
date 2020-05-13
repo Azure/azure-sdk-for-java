@@ -7,69 +7,46 @@ import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.network.models.HasProtocol;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Executable;
-
 import java.util.List;
 
 /**
- * A client-side representation allowing user to verify the possibility of establishing a direct TCP connection
- * from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
+ * A client-side representation allowing user to verify the possibility of establishing a direct TCP connection from a
+ * virtual machine to a given endpoint including another VM or an arbitrary remote server.
  */
 @Fluent
-public interface ConnectivityCheck extends
-        Executable<ConnectivityCheck>,
-        HasParent<NetworkWatcher> {
-    /**
-     * @return list of hops between the source and the destination
-     */
+public interface ConnectivityCheck extends Executable<ConnectivityCheck>, HasParent<NetworkWatcher> {
+    /** @return list of hops between the source and the destination */
     List<ConnectivityHop> hops();
 
-    /**
-     * @return the connection status
-     */
+    /** @return the connection status */
     ConnectionStatus connectionStatus();
 
-    /**
-     * @return average latency in milliseconds
-     */
+    /** @return average latency in milliseconds */
     int avgLatencyInMs();
 
-    /**
-     * @return minimum latency in milliseconds
-     */
+    /** @return minimum latency in milliseconds */
     int minLatencyInMs();
 
-    /**
-     * @return maximum latency in milliseconds
-     */
+    /** @return maximum latency in milliseconds */
     int maxLatencyInMs();
 
-    /**
-     * @return total number of probes sent
-     */
+    /** @return total number of probes sent */
     int probesSent();
 
-    /**
-     * @return number of failed probes
-     */
+    /** @return number of failed probes */
     int probesFailed();
 
-    /**
-     * The entirety of connectivity check parameters definition.
-     */
-    interface Definition extends
-            DefinitionStages.ToDestination,
+    /** The entirety of connectivity check parameters definition. */
+    interface Definition
+        extends DefinitionStages.ToDestination,
             DefinitionStages.ToDestinationPort,
             DefinitionStages.FromSourceVirtualMachine,
             DefinitionStages.WithExecute {
     }
 
-    /**
-     * Grouping of connectivity check parameters definition stages.
-     */
+    /** Grouping of connectivity check parameters definition stages. */
     interface DefinitionStages {
-        /**
-         * Sets the source property.
-         */
+        /** Sets the source property. */
         interface FromSourceVirtualMachine {
             /**
              * @param resourceId the ID of the virtual machine from which a connectivity check will be initiated
@@ -83,9 +60,7 @@ public interface ConnectivityCheck extends
             WithExecute fromSourceVirtualMachine(HasNetworkInterfaces vm);
         }
 
-        /**
-         * Sets the destination property.
-         */
+        /** Sets the destination property. */
         interface ToDestination {
             /**
              * @param resourceId the ID of the resource to which a connection attempt will be made
@@ -100,9 +75,7 @@ public interface ConnectivityCheck extends
             ToDestinationPort toDestinationAddress(String address);
         }
 
-        /**
-         * Sets the destination port on which check connectivity will be performed.
-         */
+        /** Sets the destination port on which check connectivity will be performed. */
         interface ToDestinationPort {
             /**
              * @param port destination port
@@ -111,9 +84,7 @@ public interface ConnectivityCheck extends
             FromSourceVirtualMachine toDestinationPort(int port);
         }
 
-        /**
-         * Sets the source port from which a connectivity check will be performed.
-         */
+        /** Sets the source port from which a connectivity check will be performed. */
         interface FromSourcePort {
             /**
              * @param port source port
@@ -123,11 +94,11 @@ public interface ConnectivityCheck extends
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for execution, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
+         * any other optional settings to be specified.
          */
-        interface WithExecute extends
-                Executable<ConnectivityCheck>,
+        interface WithExecute
+            extends Executable<ConnectivityCheck>,
                 FromSourcePort,
                 HasProtocol.DefinitionStages.WithProtocol<WithExecute, Protocol> {
         }

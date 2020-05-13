@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EmailNotification model.
- */
+/** The EmailNotification model. */
 @Fluent
 public final class EmailNotification {
     /*
@@ -34,9 +32,9 @@ public final class EmailNotification {
     private List<String> customEmails;
 
     /**
-     * Get the sendToSubscriptionAdministrator property: a value indicating
-     * whether to send email to subscription administrator.
-     * 
+     * Get the sendToSubscriptionAdministrator property: a value indicating whether to send email to subscription
+     * administrator.
+     *
      * @return the sendToSubscriptionAdministrator value.
      */
     public Boolean sendToSubscriptionAdministrator() {
@@ -44,11 +42,10 @@ public final class EmailNotification {
     }
 
     /**
-     * Set the sendToSubscriptionAdministrator property: a value indicating
-     * whether to send email to subscription administrator.
-     * 
-     * @param sendToSubscriptionAdministrator the
-     * sendToSubscriptionAdministrator value to set.
+     * Set the sendToSubscriptionAdministrator property: a value indicating whether to send email to subscription
+     * administrator.
+     *
+     * @param sendToSubscriptionAdministrator the sendToSubscriptionAdministrator value to set.
      * @return the EmailNotification object itself.
      */
     public EmailNotification withSendToSubscriptionAdministrator(Boolean sendToSubscriptionAdministrator) {
@@ -57,9 +54,9 @@ public final class EmailNotification {
     }
 
     /**
-     * Get the sendToSubscriptionCoAdministrators property: a value indicating
-     * whether to send email to subscription co-administrators.
-     * 
+     * Get the sendToSubscriptionCoAdministrators property: a value indicating whether to send email to subscription
+     * co-administrators.
+     *
      * @return the sendToSubscriptionCoAdministrators value.
      */
     public Boolean sendToSubscriptionCoAdministrators() {
@@ -67,11 +64,10 @@ public final class EmailNotification {
     }
 
     /**
-     * Set the sendToSubscriptionCoAdministrators property: a value indicating
-     * whether to send email to subscription co-administrators.
-     * 
-     * @param sendToSubscriptionCoAdministrators the
-     * sendToSubscriptionCoAdministrators value to set.
+     * Set the sendToSubscriptionCoAdministrators property: a value indicating whether to send email to subscription
+     * co-administrators.
+     *
+     * @param sendToSubscriptionCoAdministrators the sendToSubscriptionCoAdministrators value to set.
      * @return the EmailNotification object itself.
      */
     public EmailNotification withSendToSubscriptionCoAdministrators(Boolean sendToSubscriptionCoAdministrators) {
@@ -80,9 +76,9 @@ public final class EmailNotification {
     }
 
     /**
-     * Get the customEmails property: the custom e-mails list. This value can
-     * be null or empty, in which case this attribute will be ignored.
-     * 
+     * Get the customEmails property: the custom e-mails list. This value can be null or empty, in which case this
+     * attribute will be ignored.
+     *
      * @return the customEmails value.
      */
     public List<String> customEmails() {
@@ -90,9 +86,9 @@ public final class EmailNotification {
     }
 
     /**
-     * Set the customEmails property: the custom e-mails list. This value can
-     * be null or empty, in which case this attribute will be ignored.
-     * 
+     * Set the customEmails property: the custom e-mails list. This value can be null or empty, in which case this
+     * attribute will be ignored.
+     *
      * @param customEmails the customEmails value to set.
      * @return the EmailNotification object itself.
      */

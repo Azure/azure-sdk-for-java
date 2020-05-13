@@ -28,6 +28,8 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.CloudException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.dns.ZoneUpdate;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
@@ -38,24 +40,18 @@ import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * Zones.
- */
-public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSupportsListing<ZoneInner>, InnerSupportsDelete<Void> {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private ZonesService service;
+/** An instance of this class provides access to all the operations defined in Zones. */
+public final class ZonesInner
+    implements InnerSupportsGet<ZoneInner>, InnerSupportsListing<ZoneInner>, InnerSupportsDelete<Void> {
+    /** The proxy service used to perform REST calls. */
+    private final ZonesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private DnsManagementClientImpl client;
+    /** The service client containing this operation class. */
+    private final DnsManagementClientImpl client;
 
     /**
      * Initializes an instance of ZonesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ZonesInner(DnsManagementClientImpl client) {
@@ -64,223 +60,341 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
     }
 
     /**
-     * The interface defining all the services for DnsManagementClientZones to
-     * be used by the proxy service to perform REST calls.
+     * The interface defining all the services for DnsManagementClientZones to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "DnsManagementClientZones")
+    @ServiceInterface(name = "DnsManagementClientZ")
     private interface ZonesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/dnsZones/{zoneName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneInner>> createOrUpdate(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("zoneName") String zoneName, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ZoneInner parameters);
+        Mono<SimpleResponse<ZoneInner>> createOrUpdate(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("zoneName") String zoneName,
+            @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ZoneInner parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/dnsZones/{zoneName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("zoneName") String zoneName, @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("zoneName") String zoneName,
+            @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/dnsZones/{zoneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneInner>> getByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("zoneName") String zoneName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ZoneInner>> getByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("zoneName") String zoneName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/dnsZones/{zoneName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneInner>> update(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("zoneName") String zoneName, @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") ZoneUpdate parameters);
+        Mono<SimpleResponse<ZoneInner>> update(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("zoneName") String zoneName,
+            @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ZoneUpdate parameters,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones")
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/dnsZones")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneListResultInner>> listByResourceGroup(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ZoneListResultInner>> listByResourceGroup(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/dnszones")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneListResultInner>> list(@HostParam("$host") String host, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<SimpleResponse<ZoneListResultInner>> list(
+            @HostParam("$host") String host,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/dnsZones/{zoneName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/dnsZones/{zoneName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<Response<Void>> beginDelete(@HostParam("$host") String host, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("zoneName") String zoneName, @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId);
+        Mono<Response<Void>> beginDelete(
+            @HostParam("$host") String host,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("zoneName") String zoneName,
+            @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneListResultInner>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ZoneListResultInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Mono<SimpleResponse<ZoneListResultInner>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
+        Mono<SimpleResponse<ZoneListResultInner>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Describes a DNS zone.
-     * @param ifMatch 
-     * @param ifNoneMatch 
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
+     *     Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ZoneInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
-        return service.createOrUpdate(this.client.getHost(), resourceGroupName, zoneName, ifMatch, ifNoneMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+    public Mono<SimpleResponse<ZoneInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            zoneName,
+                            ifMatch,
+                            ifNoneMatch,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Describes a DNS zone.
-     * @param ifMatch 
-     * @param ifNoneMatch 
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
+     *     Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
+    public Mono<ZoneInner> createOrUpdateAsync(
+        String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
         return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
-            .flatMap((SimpleResponse<ZoneInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ZoneInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Describes a DNS zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ZoneInner> createOrUpdateAsync(String resourceGroupName, String zoneName, ZoneInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
+        final Context context = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch)
-            .flatMap((SimpleResponse<ZoneInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ZoneInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Describes a DNS zone.
-     * @param ifMatch 
-     * @param ifNoneMatch 
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new DNS zone to be created, but to prevent updating an existing zone.
+     *     Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
+    public ZoneInner createOrUpdate(
+        String resourceGroupName, String zoneName, ZoneInner parameters, String ifMatch, String ifNoneMatch) {
         return createOrUpdateAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**
      * Creates or updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param parameters Describes a DNS zone.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZoneInner createOrUpdate(String resourceGroupName, String zoneName, ZoneInner parameters) {
         final String ifMatch = null;
         final String ifNoneMatch = null;
+        final Context context = null;
         return createOrUpdateAsync(resourceGroupName, zoneName, parameters, ifMatch, ifNoneMatch).block();
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
+     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String zoneName, String ifMatch) {
-        return service.delete(this.client.getHost(), resourceGroupName, zoneName, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId());
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String zoneName, String ifMatch) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            zoneName,
+                            ifMatch,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
+     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, zoneName, ifMatch);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String zoneName) {
         final String ifMatch = null;
+        final Context context = null;
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, zoneName, ifMatch);
-        return this.client.<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
+        return this
+            .client
+            .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
+     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -292,9 +406,9 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,52 +416,69 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String zoneName) {
         final String ifMatch = null;
+        final Context context = null;
         deleteAsync(resourceGroupName, zoneName, ifMatch).block();
     }
 
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ZoneInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String zoneName) {
-        return service.getByResourceGroup(this.client.getHost(), resourceGroupName, zoneName, this.client.getApiVersion(), this.client.getSubscriptionId());
+    public Mono<SimpleResponse<ZoneInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String zoneName) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            zoneName,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ZoneInner> getByResourceGroupAsync(String resourceGroupName, String zoneName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, zoneName)
-            .flatMap((SimpleResponse<ZoneInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ZoneInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets a DNS zone. Retrieves the zone properties, but not the record sets within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZoneInner getByResourceGroup(String resourceGroupName, String zoneName) {
@@ -356,55 +487,77 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<ZoneInner>> updateWithResponseAsync(String resourceGroupName, String zoneName, String ifMatch, Map<String, String> tags) {
+    public Mono<SimpleResponse<ZoneInner>> updateWithResponseAsync(
+        String resourceGroupName, String zoneName, String ifMatch, Map<String, String> tags) {
         ZoneUpdate parameters = new ZoneUpdate();
         parameters.withTags(tags);
-        return service.update(this.client.getHost(), resourceGroupName, zoneName, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            zoneName,
+                            ifMatch,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ZoneInner> updateAsync(String resourceGroupName, String zoneName, String ifMatch, Map<String, String> tags) {
+    public Mono<ZoneInner> updateAsync(
+        String resourceGroupName, String zoneName, String ifMatch, Map<String, String> tags) {
         return updateWithResponseAsync(resourceGroupName, zoneName, ifMatch, tags)
-            .flatMap((SimpleResponse<ZoneInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<ZoneInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Updates a DNS zone. Does not modify DNS records within the zone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always overwrite the current zone. Specify the
+     *     last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ZoneInner update(String resourceGroupName, String zoneName, String ifMatch, Map<String, String> tags) {
@@ -413,33 +566,48 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Lists the DNS zones within a resource group.
-     * 
-     * @param resourceGroupName 
-     * @param top 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ZoneInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Integer top) {
-        return service.listByResourceGroup(this.client.getHost(), resourceGroupName, top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            top,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<ZoneInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the DNS zones within a resource group.
-     * 
-     * @param resourceGroupName 
-     * @param top 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listByResourceGroupAsync(String resourceGroupName, Integer top) {
@@ -450,15 +618,17 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Lists the DNS zones within a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -466,12 +636,13 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Lists the DNS zones within a resource group.
-     * 
-     * @param resourceGroupName 
-     * @param top 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> listByResourceGroup(String resourceGroupName, Integer top) {
@@ -480,74 +651,89 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Lists the DNS zones within a resource group.
-     * 
-     * @param resourceGroupName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> listByResourceGroup(String resourceGroupName) {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top));
     }
 
     /**
      * Lists the DNS zones in all resource groups in a subscription.
-     * 
-     * @param top 
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ZoneInner>> listSinglePageAsync(Integer top) {
-        return service.list(this.client.getHost(), top, this.client.getApiVersion(), this.client.getSubscriptionId())
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getHost(),
+                            top,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .<PagedResponse<ZoneInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the DNS zones in all resource groups in a subscription.
-     * 
-     * @param top 
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listAsync(Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the DNS zones in all resource groups in a subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ZoneInner> listAsync() {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        final Context context = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(top), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the DNS zones in all resource groups in a subscription.
-     * 
-     * @param top 
+     *
+     * @param top The maximum number of DNS zones to return. If not specified, returns up to 100 zones.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> list(Integer top) {
@@ -556,40 +742,59 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Lists the DNS zones in all resource groups in a subscription.
-     * 
+     *
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ZoneInner> list() {
         final Integer top = null;
+        final Context context = null;
         return new PagedIterable<>(listAsync(top));
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
+     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String zoneName, String ifMatch) {
-        return service.beginDelete(this.client.getHost(), resourceGroupName, zoneName, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId());
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String zoneName, String ifMatch) {
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginDelete(
+                            this.client.getHost(),
+                            resourceGroupName,
+                            zoneName,
+                            ifMatch,
+                            this.client.getApiVersion(),
+                            this.client.getSubscriptionId(),
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
+     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String zoneName, String ifMatch) {
@@ -599,26 +804,29 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDeleteAsync(String resourceGroupName, String zoneName) {
         final String ifMatch = null;
+        final Context context = null;
         return beginDeleteWithResponseAsync(resourceGroupName, zoneName, ifMatch)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
-     * @param ifMatch 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param ifMatch The etag of the DNS zone. Omit this value to always delete the current zone. Specify the last-seen
+     *     etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -630,9 +838,9 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
 
     /**
      * Deletes a DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be undone.
-     * 
-     * @param resourceGroupName 
-     * @param zoneName 
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -640,46 +848,57 @@ public final class ZonesInner implements InnerSupportsGet<ZoneInner>, InnerSuppo
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void beginDelete(String resourceGroupName, String zoneName) {
         final String ifMatch = null;
+        final Context context = null;
         beginDeleteAsync(resourceGroupName, zoneName, ifMatch).block();
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ZoneInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
-        return service.listByResourceGroupNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<ZoneInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Get the next page of items.
-     * 
-     * @param nextLink null
+     *
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a Zone List or ListAll operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ZoneInner>> listNextSinglePageAsync(String nextLink) {
-        return service.listNext(nextLink)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<ZoneInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 }

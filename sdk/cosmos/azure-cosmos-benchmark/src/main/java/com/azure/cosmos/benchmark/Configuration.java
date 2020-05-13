@@ -4,7 +4,6 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.benchmark.Configuration.Operation.OperationTypeConverter;
 import com.beust.jcommander.IStringConverter;
@@ -130,6 +129,9 @@ class Configuration {
     @Parameter(names = "-useSync", description = "Uses Sync API")
     private boolean useSync = false;
 
+    @Parameter(names = "-contentResponseOnWriteEnabled", description = "if set to false, does not returns content response on document write operations")
+    private String contentResponseOnWriteEnabled = String.valueOf(true);
+
     @Parameter(names = {"-h", "-help", "--help"}, description = "Help", help = true)
     private boolean help = false;
 
@@ -253,15 +255,20 @@ class Configuration {
         return documentDataFieldCount;
     }
 
-    ConnectionPolicy getConnectionPolicy() {
-        ConnectionPolicy policy = new ConnectionPolicy();
-        policy.setConnectionMode(connectionMode);
-        policy.setMaxPoolSize(maxConnectionPoolSize);
-        return policy;
+    Integer getMaxConnectionPoolSize() {
+        return maxConnectionPoolSize;
+    }
+
+    ConnectionMode getConnectionMode() {
+        return connectionMode;
     }
 
     ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
+    }
+
+    String isContentResponseOnWriteEnabled() {
+        return contentResponseOnWriteEnabled;
     }
 
     String getDatabaseId() {

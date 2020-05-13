@@ -9,12 +9,8 @@ import com.azure.management.storage.StorageSku;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.models.SkusInner;
 
-/**
- * The implementation for {@link StorageSkus}.
- */
-class StorageSkusImpl
-        implements
-        StorageSkus {
+/** The implementation for {@link StorageSkus}. */
+class StorageSkusImpl implements StorageSkus {
 
     private final StorageManager manager;
 
@@ -39,6 +35,6 @@ class StorageSkusImpl
 
     @Override
     public SkusInner inner() {
-        return this.inner();
+        return manager.inner().skus();
     }
 }

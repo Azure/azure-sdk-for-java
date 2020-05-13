@@ -10,17 +10,11 @@ import com.azure.management.monitor.models.ActionGroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation for {@link ActionGroups}.
- */
+/** Implementation for {@link ActionGroups}. */
 class ActionGroupsImpl
-        extends TopLevelModifiableResourcesImpl<
-        ActionGroup,
-        ActionGroupImpl,
-        ActionGroupResourceInner,
-        ActionGroupsInner,
-        MonitorManager>
-        implements ActionGroups {
+    extends TopLevelModifiableResourcesImpl<
+        ActionGroup, ActionGroupImpl, ActionGroupResourceInner, ActionGroupsInner, MonitorManager>
+    implements ActionGroups {
 
     ActionGroupsImpl(final MonitorManager monitorManager) {
         super(monitorManager.inner().actionGroups(), monitorManager);
@@ -33,10 +27,10 @@ class ActionGroupsImpl
 
     @Override
     protected ActionGroupImpl wrapModel(ActionGroupResourceInner inner) {
-        if (inner ==  null) {
+        if (inner == null) {
             return null;
         }
-        return new ActionGroupImpl(inner.getName(), inner, this.manager());
+        return new ActionGroupImpl(inner.name(), inner, this.manager());
     }
 
     @Override

@@ -3,10 +3,7 @@
 
 package com.azure.management.storage;
 
-
-/**
- * Defines sku values for storage account resource.
- */
+/** Defines sku values for storage account resource. */
 public final class StorageAccountSkuType {
     /** Static value STANDARD_LRS for StorageAccountSkuType. */
     public static final StorageAccountSkuType STANDARD_LRS = new StorageAccountSkuType(SkuName.STANDARD_LRS);
@@ -25,9 +22,7 @@ public final class StorageAccountSkuType {
 
     private final SkuName name;
 
-    /**
-     * @return the storage account sku name
-     */
+    /** @return the storage account sku name */
     public SkuName name() {
         return this.name;
     }

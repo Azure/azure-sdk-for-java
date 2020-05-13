@@ -12,22 +12,15 @@ import com.azure.management.appservice.models.DomainInner;
 import com.azure.management.appservice.models.DomainsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * The implementation for AppServiceDomains.
- */
+/** The implementation for AppServiceDomains. */
 class AppServiceDomainsImpl
-        extends TopLevelModifiableResourcesImpl<
-        AppServiceDomain,
-                AppServiceDomainImpl,
-                DomainInner,
-                DomainsInner,
-                AppServiceManager>
-        implements AppServiceDomains {
+    extends TopLevelModifiableResourcesImpl<
+        AppServiceDomain, AppServiceDomainImpl, DomainInner, DomainsInner, AppServiceManager>
+    implements AppServiceDomains {
 
     AppServiceDomainsImpl(AppServiceManager manager) {
         super(manager.inner().domains(), manager);
     }
-
 
     @Override
     protected AppServiceDomainImpl wrapModel(String name) {
@@ -39,7 +32,7 @@ class AppServiceDomainsImpl
         if (inner == null) {
             return null;
         }
-        return new AppServiceDomainImpl(inner.getName(), inner, this.manager());
+        return new AppServiceDomainImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -49,7 +42,11 @@ class AppServiceDomainsImpl
 
     @Override
     public PagedIterable<DomainLegalAgreement> listAgreements(String topLevelExtension) {
-        return this.manager().inner().topLevelDomains().listAgreements(topLevelExtension, new TopLevelDomainAgreementOption())
-                .mapPage(DomainLegalAgreementImpl::new);
+        return this
+            .manager()
+            .inner()
+            .topLevelDomains()
+            .listAgreements(topLevelExtension, new TopLevelDomainAgreementOption())
+            .mapPage(DomainLegalAgreementImpl::new);
     }
 }

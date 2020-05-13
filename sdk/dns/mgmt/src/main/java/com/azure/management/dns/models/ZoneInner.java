@@ -12,9 +12,7 @@ import com.azure.management.dns.ZoneType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Zone model.
- */
+/** The Zone model. */
 @JsonFlatten
 @Fluent
 public class ZoneInner extends Resource {
@@ -25,7 +23,7 @@ public class ZoneInner extends Resource {
     private String etag;
 
     /*
-     * The maximum number of record sets that can be created in this DNS zone. 
+     * The maximum number of record sets that can be created in this DNS zone.
      * This is a read-only property and any attempt to set this value will be
      * ignored.
      */
@@ -68,7 +66,7 @@ public class ZoneInner extends Resource {
 
     /**
      * Get the etag property: The etag of the zone.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -77,7 +75,7 @@ public class ZoneInner extends Resource {
 
     /**
      * Set the etag property: The etag of the zone.
-     * 
+     *
      * @param etag the etag value to set.
      * @return the ZoneInner object itself.
      */
@@ -87,10 +85,9 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the maxNumberOfRecordSets property: The maximum number of record
-     * sets that can be created in this DNS zone.  This is a read-only property
-     * and any attempt to set this value will be ignored.
-     * 
+     * Get the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this DNS zone.
+     * This is a read-only property and any attempt to set this value will be ignored.
+     *
      * @return the maxNumberOfRecordSets value.
      */
     public Long maxNumberOfRecordSets() {
@@ -98,10 +95,9 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the numberOfRecordSets property: The current number of record sets
-     * in this DNS zone.  This is a read-only property and any attempt to set
-     * this value will be ignored.
-     * 
+     * Get the numberOfRecordSets property: The current number of record sets in this DNS zone. This is a read-only
+     * property and any attempt to set this value will be ignored.
+     *
      * @return the numberOfRecordSets value.
      */
     public Long numberOfRecordSets() {
@@ -109,10 +105,9 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the nameServers property: The name servers for this DNS zone. This
-     * is a read-only property and any attempt to set this value will be
-     * ignored.
-     * 
+     * Get the nameServers property: The name servers for this DNS zone. This is a read-only property and any attempt to
+     * set this value will be ignored.
+     *
      * @return the nameServers value.
      */
     public List<String> nameServers() {
@@ -120,9 +115,8 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the zoneType property: The type of this DNS zone (Public or
-     * Private).
-     * 
+     * Get the zoneType property: The type of this DNS zone (Public or Private).
+     *
      * @return the zoneType value.
      */
     public ZoneType zoneType() {
@@ -130,9 +124,8 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the zoneType property: The type of this DNS zone (Public or
-     * Private).
-     * 
+     * Set the zoneType property: The type of this DNS zone (Public or Private).
+     *
      * @param zoneType the zoneType value to set.
      * @return the ZoneInner object itself.
      */
@@ -142,10 +135,9 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the registrationVirtualNetworks property: A list of references to
-     * virtual networks that register hostnames in this DNS zone. This is a
-     * only when ZoneType is Private.
-     * 
+     * Get the registrationVirtualNetworks property: A list of references to virtual networks that register hostnames in
+     * this DNS zone. This is a only when ZoneType is Private.
+     *
      * @return the registrationVirtualNetworks value.
      */
     public List<SubResource> registrationVirtualNetworks() {
@@ -153,12 +145,10 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the registrationVirtualNetworks property: A list of references to
-     * virtual networks that register hostnames in this DNS zone. This is a
-     * only when ZoneType is Private.
-     * 
-     * @param registrationVirtualNetworks the registrationVirtualNetworks value
-     * to set.
+     * Set the registrationVirtualNetworks property: A list of references to virtual networks that register hostnames in
+     * this DNS zone. This is a only when ZoneType is Private.
+     *
+     * @param registrationVirtualNetworks the registrationVirtualNetworks value to set.
      * @return the ZoneInner object itself.
      */
     public ZoneInner withRegistrationVirtualNetworks(List<SubResource> registrationVirtualNetworks) {
@@ -167,10 +157,9 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Get the resolutionVirtualNetworks property: A list of references to
-     * virtual networks that resolve records in this DNS zone. This is a only
-     * when ZoneType is Private.
-     * 
+     * Get the resolutionVirtualNetworks property: A list of references to virtual networks that resolve records in this
+     * DNS zone. This is a only when ZoneType is Private.
+     *
      * @return the resolutionVirtualNetworks value.
      */
     public List<SubResource> resolutionVirtualNetworks() {
@@ -178,12 +167,10 @@ public class ZoneInner extends Resource {
     }
 
     /**
-     * Set the resolutionVirtualNetworks property: A list of references to
-     * virtual networks that resolve records in this DNS zone. This is a only
-     * when ZoneType is Private.
-     * 
-     * @param resolutionVirtualNetworks the resolutionVirtualNetworks value to
-     * set.
+     * Set the resolutionVirtualNetworks property: A list of references to virtual networks that resolve records in this
+     * DNS zone. This is a only when ZoneType is Private.
+     *
+     * @param resolutionVirtualNetworks the resolutionVirtualNetworks value to set.
      * @return the ZoneInner object itself.
      */
     public ZoneInner withResolutionVirtualNetworks(List<SubResource> resolutionVirtualNetworks) {

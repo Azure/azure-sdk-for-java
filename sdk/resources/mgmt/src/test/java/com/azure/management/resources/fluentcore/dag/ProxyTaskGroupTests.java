@@ -447,12 +447,14 @@ public class ProxyTaskGroupTests {
         // Invocation of group-1 should run group-1 and it's "post run" dependent group-2
         //
         group1.invokeAsync(group1.newInvocationContext())
-                .subscribe(value -> {
+            .subscribe(
+                value -> {
                     StringIndexable stringIndexable = toStringIndexable(value);
                     Assertions.assertTrue(group1Items.contains(stringIndexable.str()));
                     group1Items.remove(stringIndexable.str());
                 }, throwable -> {
-                });
+                }
+            );
 
         Assertions.assertEquals(0, group1Items.size());
 
@@ -518,9 +520,9 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(13, seen.size()); // 2 groups each with 6 nodes + 1 proxy (proxy-F)
         Set<String> expectedToSee = new HashSet<>();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "G", "H",
-                "I", "J", "K", "L",
-                "proxy-F"}));
+            "E", "F", "G", "H",
+            "I", "J", "K", "L",
+            "proxy-F"}));
         Sets.SetView<String> diff = Sets.difference(seen, expectedToSee);
         Assertions.assertEquals(0, diff.size());
 
@@ -677,8 +679,8 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(12, seen.size()); // 2 groups each with 6 nodes no proxy
         Set<String> expectedToSee = new HashSet<>();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "G", "H",
-                "I", "J", "K", "L"}));
+            "E", "F", "G", "H",
+            "I", "J", "K", "L"}));
         Sets.SetView<String> diff = Sets.difference(seen, expectedToSee);
         Assertions.assertEquals(0, diff.size());
     }
@@ -903,10 +905,10 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(19, seen.size()); // 3 groups each with 6 nodes + one proxy (proxy-F)
         Set<String> expectedToSee = new HashSet<>();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "G", "H",
-                "I", "J", "K", "L",
-                "M", "N", "O", "P",
-                "Q", "proxy-F", "R"}));
+            "E", "F", "G", "H",
+            "I", "J", "K", "L",
+            "M", "N", "O", "P",
+            "Q", "proxy-F", "R"}));
         Sets.SetView<String> diff = Sets.difference(seen, expectedToSee);
         Assertions.assertEquals(0, diff.size());
 
@@ -929,9 +931,9 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(13, seen.size()); // 2 groups each with 6 nodes + one proxy (proxy-F)
         expectedToSee.clear();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "M", "N",
-                "O", "P", "Q", "proxy-F",
-                "R"}));
+            "E", "F", "M", "N",
+            "O", "P", "Q", "proxy-F",
+            "R"}));
     }
 
     @Test
@@ -953,9 +955,9 @@ public class ProxyTaskGroupTests {
          */
         final LinkedList<String> group1Items = new LinkedList<>();
         final TaskGroup group1 = createSampleTaskGroup("A", "B",
-                "C", "D",
-                "E", "F",
-                group1Items);
+            "C", "D",
+            "E", "F",
+            group1Items);
 
         // Prepare group-2
         //
@@ -974,9 +976,9 @@ public class ProxyTaskGroupTests {
          */
         final List<String> group2Items = new ArrayList<>();
         final TaskGroup group2 = createSampleTaskGroup("G", "H",
-                "I", "J",
-                "K", "L",
-                group2Items);
+            "I", "J",
+            "K", "L",
+            group2Items);
 
         // Make group-2 as group-1's parent by adding group-1 as group-2's dependency.
         //
@@ -1029,9 +1031,9 @@ public class ProxyTaskGroupTests {
 
         final LinkedList<String> group3Items = new LinkedList<>();
         final TaskGroup group3 = createSampleTaskGroup("M", "N",
-                "O", "P",
-                "Q", "R",
-                group3Items);
+            "O", "P",
+            "Q", "R",
+            group3Items);
 
         // Make group-3 (Root-R) as group-1's (Root-F) 'post-run" dependent. This activate "group-1 proxy group",
         // should do parent re-assignment i.e. the parent "group-2" of "group-1" will become parent of "group-1's proxy".
@@ -1094,9 +1096,9 @@ public class ProxyTaskGroupTests {
 
         final LinkedList<String> group4Items = new LinkedList<>();
         final TaskGroup group4 = createSampleTaskGroup("S", "T",
-                "U", "V",
-                "W", "X",
-                group4Items);
+            "U", "V",
+            "W", "X",
+            group4Items);
 
         // Prepare group-5
         //
@@ -1116,9 +1118,9 @@ public class ProxyTaskGroupTests {
 
         final LinkedList<String> group5Items = new LinkedList<>();
         final TaskGroup group5 = createSampleTaskGroup("1", "2",
-                "3", "4",
-                "5", "6",
-                group5Items);
+            "3", "4",
+            "5", "6",
+            group5Items);
 
         // Make group-5 as group-4's 'post-run" dependent. This activates "group-4 proxy group".
 
@@ -1335,12 +1337,12 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(26, seen.size()); // 4 groups each with 6 nodes + two proxy (proxy-F and proxy-X)
         Set<String> expectedToSee = new HashSet<>();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "M", "N",
-                "O", "P", "Q", "R",
-                "S", "T", "U", "V",
-                "W", "X", "proxy-X",
-                "1", "proxy-F", "2",
-                "3", "4", "5", "6"}));
+            "E", "F", "M", "N",
+            "O", "P", "Q", "R",
+            "S", "T", "U", "V",
+            "W", "X", "proxy-X",
+            "1", "proxy-F", "2",
+            "3", "4", "5", "6"}));
         Sets.SetView<String> diff = Sets.difference(seen, expectedToSee);
         Assertions.assertEquals(0, diff.size());
 
@@ -1364,10 +1366,10 @@ public class ProxyTaskGroupTests {
 
         expectedToSee.clear();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "S", "T",
-                "U", "V", "W", "X",
-                "proxy-X", "1", "2",
-                "3", "4", "5", "6"}));
+            "E", "F", "S", "T",
+            "U", "V", "W", "X",
+            "proxy-X", "1", "2",
+            "3", "4", "5", "6"}));
 
         diff = Sets.difference(seen, expectedToSee);
         Assertions.assertEquals(0, diff.size());
@@ -1390,13 +1392,13 @@ public class ProxyTaskGroupTests {
 
         expectedToSee.clear();
         expectedToSee.addAll(Arrays.asList(new String[]{"A", "B", "C", "D",
-                "E", "F", "G", "H",
-                "I", "J", "K", "L",
-                "M", "N", "O", "P",
-                "Q", "R", "S", "T",
-                "U", "V", "W", "X",
-                "proxy-X", "1", "proxy-F", "2", "3",
-                "4", "5", "6"}));
+            "E", "F", "G", "H",
+            "I", "J", "K", "L",
+            "M", "N", "O", "P",
+            "Q", "R", "S", "T",
+            "U", "V", "W", "X",
+            "proxy-X", "1", "proxy-F", "2", "3",
+            "4", "5", "6"}));
 
         diff = Sets.difference(seen, expectedToSee);
         Assertions.assertEquals(0, diff.size());
@@ -1450,11 +1452,11 @@ public class ProxyTaskGroupTests {
         final ArrayList<String> seen = new ArrayList<>();
         CountDownLatch down = new CountDownLatch(1);
         itiC.taskGroup()
-                .invokeAsync(itiC.taskGroup().newInvocationContext())
-                .subscribe(indexable ->
-                                seen.add(indexable.key()),
-                        throwable -> down.countDown(),
-                        () -> down.countDown());
+            .invokeAsync(itiC.taskGroup().newInvocationContext())
+            .subscribe(
+                indexable -> seen.add(indexable.key()),
+                throwable -> down.countDown(),
+                () -> down.countDown());
         down.await();
 
         boolean b1 = seen.equals(new ArrayList<>(Arrays.asList(new String[]{"A", "C", "B", "C"})));
@@ -1515,10 +1517,10 @@ public class ProxyTaskGroupTests {
         final CountDownLatch monitor = new CountDownLatch(1);
         seen.clear();
         itiF.taskGroup()
-                .invokeAsync(itiC.taskGroup().newInvocationContext())
-                .subscribe(indexable -> seen.add(indexable.key()),
-                        throwable -> monitor.countDown(),
-                        () -> monitor.countDown());
+            .invokeAsync(itiC.taskGroup().newInvocationContext())
+            .subscribe(indexable -> seen.add(indexable.key()),
+                throwable -> monitor.countDown(),
+                () -> monitor.countDown());
 
         monitor.await();
 

@@ -18,11 +18,14 @@ import reactor.core.publisher.Flux;
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
-        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);;
+        final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
+
         final VirtualMachine[] vms = new VirtualMachine[1];
         final SettableFuture<VirtualMachine> future = SettableFuture.create();
 
-        Flux<Indexable> resourceStream = virtualMachines.define(vmName)
+        Flux<Indexable> resourceStream =
+            virtualMachines
+                .define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -51,10 +54,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
 
     @Override
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
-        resource = resource.update()
-                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
-                .withNewDataDisk(100)
-                .apply();
+        resource = resource.update().withSize(VirtualMachineSizeTypes.STANDARD_D3_V2).withNewDataDisk(100).apply();
         return resource;
     }
 

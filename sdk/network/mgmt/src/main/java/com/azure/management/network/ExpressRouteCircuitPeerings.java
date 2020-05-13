@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -13,12 +12,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingByNa
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for express route circuit peerings management API in Azure.
- */
+/** Entry point for express route circuit peerings management API in Azure. */
 @Fluent
-public interface ExpressRouteCircuitPeerings extends
-        SupportsListing<ExpressRouteCircuitPeering>,
+public interface ExpressRouteCircuitPeerings
+    extends SupportsListing<ExpressRouteCircuitPeering>,
         SupportsGettingByName<ExpressRouteCircuitPeering>,
         SupportsGettingById<ExpressRouteCircuitPeering>,
         SupportsDeletingByName,

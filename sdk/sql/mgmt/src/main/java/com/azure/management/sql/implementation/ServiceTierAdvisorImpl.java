@@ -8,7 +8,6 @@ import com.azure.management.resources.fluentcore.model.implementation.Refreshabl
 import com.azure.management.sql.ServiceLevelObjectiveUsageMetric;
 import com.azure.management.sql.ServiceTierAdvisor;
 import com.azure.management.sql.SloUsageMetric;
-import com.azure.management.sql.SloUsageMetricInterface;
 import com.azure.management.sql.models.ServiceTierAdvisorInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -23,7 +22,6 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
     private final String resourceGroupName;
     private final SqlServerManager sqlServerManager;
     private final ResourceId resourceId;
-    private List<SloUsageMetricInterface> sloUsageMetrics;
     private List<ServiceLevelObjectiveUsageMetric> serviceLevelObjectiveUsageMetrics;
 
     protected ServiceTierAdvisorImpl(
@@ -35,17 +33,17 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().getId());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -168,7 +166,6 @@ class ServiceTierAdvisorImpl extends RefreshableWrapperImpl<ServiceTierAdvisorIn
 
     @Override
     protected Mono<ServiceTierAdvisorInner> getInnerAsync() {
-        this.sloUsageMetrics = null;
         this.serviceLevelObjectiveUsageMetrics = null;
 
         return this

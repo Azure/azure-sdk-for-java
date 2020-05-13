@@ -1,17 +1,20 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk41576fde09a.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('thisdoesnotexist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "c7e88c6a-a419-485e-bcc6-158ebd20cf8a"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "acc4a312-f4e7-42db-9e31-87d0a639d48d",
+      "request-id" : "c7e88c6a-a419-485e-bcc6-158ebd20cf8a",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:55:22 GMT",
+      "Date" : "Mon, 11 May 2020 18:09:59 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "35",
+      "client-request-id" : "c7e88c6a-a419-485e-bcc6-158ebd20cf8a",
+      "elapsed-time" : "49",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Content-Length" : "158",
@@ -22,5 +25,5 @@
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk41576fde09a" ]
+  "variables" : [ ]
 }

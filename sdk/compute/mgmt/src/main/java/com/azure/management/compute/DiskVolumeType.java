@@ -3,9 +3,7 @@
 
 package com.azure.management.compute;
 
-/**
- * Defines values for DiskVolumeType.
- */
+/** Defines values for DiskVolumeType. */
 public enum DiskVolumeType {
     /** Enum value OS. */
     OS("OS"),

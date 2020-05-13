@@ -9,23 +9,27 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
+import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceiveLinkHandler extends LinkHandler {
-    private final String receiverName;
+    private final String linkName;
     private AtomicBoolean isFirstResponse = new AtomicBoolean(true);
-    private final Flux<Delivery> deliveries;
+    private final DirectProcessor<Delivery> deliveries;
     private FluxSink<Delivery> deliverySink;
 
-    public ReceiveLinkHandler(String connectionId, String hostname, String receiverName, String entityPath) {
+    public ReceiveLinkHandler(String connectionId, String hostname, String linkName, String entityPath) {
         super(connectionId, hostname, entityPath, new ClientLogger(ReceiveLinkHandler.class));
-        this.deliveries = Flux.create(sink -> {
-            deliverySink = sink;
-        });
-        this.receiverName = receiverName;
+        this.deliveries = DirectProcessor.create();
+        this.deliverySink = deliveries.sink(FluxSink.OverflowStrategy.BUFFER);
+        this.linkName = linkName;
+    }
+
+    public String getLinkName() {
+        return linkName;
     }
 
     public Flux<Delivery> getDeliveredMessages() {

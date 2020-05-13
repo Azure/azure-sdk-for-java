@@ -9,18 +9,16 @@ import com.azure.management.compute.models.VirtualMachineExtensionImageInner;
 import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The implementation for VirtualMachineExtensionImageType.
- */
-class VirtualMachineExtensionImageTypeImpl
-        extends WrapperImpl<VirtualMachineExtensionImageInner>
-        implements VirtualMachineExtensionImageType {
+/** The implementation for VirtualMachineExtensionImageType. */
+class VirtualMachineExtensionImageTypeImpl extends WrapperImpl<VirtualMachineExtensionImageInner>
+    implements VirtualMachineExtensionImageType {
     private final VirtualMachineExtensionImagesInner client;
     private final VirtualMachinePublisher publisher;
 
-    VirtualMachineExtensionImageTypeImpl(VirtualMachineExtensionImagesInner client,
-                                         VirtualMachinePublisher publisher,
-                                         VirtualMachineExtensionImageInner inner) {
+    VirtualMachineExtensionImageTypeImpl(
+        VirtualMachineExtensionImagesInner client,
+        VirtualMachinePublisher publisher,
+        VirtualMachineExtensionImageInner inner) {
         super(inner);
         this.client = client;
         this.publisher = publisher;
@@ -28,17 +26,17 @@ class VirtualMachineExtensionImageTypeImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override

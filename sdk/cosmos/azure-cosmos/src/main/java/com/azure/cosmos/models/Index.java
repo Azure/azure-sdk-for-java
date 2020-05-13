@@ -4,13 +4,14 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.IndexKind;
 
 /**
  * Represents the index of a collection in the Azure Cosmos DB database service.
  */
-public abstract class Index extends JsonSerializable {
+public abstract class Index extends JsonSerializableWrapper{
 
     /**
      * Constructor.
@@ -18,7 +19,7 @@ public abstract class Index extends JsonSerializable {
      * @param indexKind the kind of the index
      */
     Index(IndexKind indexKind) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setKind(indexKind);
     }
 
@@ -29,7 +30,7 @@ public abstract class Index extends JsonSerializable {
      * @param indexKind the kind of the index
      */
     Index(String jsonString, IndexKind indexKind) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
         this.setKind(indexKind);
     }
 
@@ -111,9 +112,9 @@ public abstract class Index extends JsonSerializable {
     IndexKind getKind() {
         IndexKind result = null;
         try {
-            result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));
+            result = IndexKind.valueOf(StringUtils.upperCase(this.jsonSerializable.getString(Constants.Properties.INDEX_KIND)));
         } catch (IllegalArgumentException e) {
-            this.getLogger().warn("INVALID index kind value %s.", super.getString(Constants.Properties.INDEX_KIND));
+            this.jsonSerializable.getLogger().warn("INVALID index kind value %s.", this.jsonSerializable.getString(Constants.Properties.INDEX_KIND));
         }
 
         return result;
@@ -125,12 +126,7 @@ public abstract class Index extends JsonSerializable {
      * @param indexKind the index kind.
      */
     private Index setKind(IndexKind indexKind) {
-        super.set(Constants.Properties.INDEX_KIND, indexKind.toString());
+        this.jsonSerializable.set(Constants.Properties.INDEX_KIND, indexKind.toString());
         return this;
-    }
-
-    @Override
-    protected void populatePropertyBag() {
-        super.populatePropertyBag();
     }
 }

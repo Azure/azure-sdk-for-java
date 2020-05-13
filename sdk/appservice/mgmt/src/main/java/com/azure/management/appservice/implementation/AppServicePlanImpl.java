@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.OperatingSystem;
 import com.azure.management.appservice.PricingTier;
@@ -11,20 +12,14 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.utils.Utils;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AppServicePlan.
- */
+import java.util.Locale;
+
+/** The implementation for AppServicePlan. */
 class AppServicePlanImpl
-        extends
-        GroupableResourceImpl<
-                AppServicePlan,
-                AppServicePlanInner,
-                AppServicePlanImpl,
-                AppServiceManager>
-        implements
-        AppServicePlan,
-        AppServicePlan.Definition,
-        AppServicePlan.Update {
+    extends GroupableResourceImpl<AppServicePlan, AppServicePlanInner, AppServicePlanImpl, AppServiceManager>
+    implements AppServicePlan, AppServicePlan.Definition, AppServicePlan.Update {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
 
     AppServicePlanImpl(String name, AppServicePlanInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -32,8 +27,12 @@ class AppServicePlanImpl
 
     @Override
     public Mono<AppServicePlan> createResourceAsync() {
-        return this.manager().inner().appServicePlans().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .appServicePlans()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -68,7 +67,7 @@ class AppServicePlanImpl
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().kind().toLowerCase().contains("linux")) {
+        if (inner().kind().toLowerCase(Locale.ROOT).contains("linux")) {
             return OperatingSystem.LINUX;
         } else {
             return OperatingSystem.WINDOWS;
@@ -88,7 +87,7 @@ class AppServicePlanImpl
     @Override
     public AppServicePlanImpl withPricingTier(PricingTier pricingTier) {
         if (pricingTier == null) {
-            throw new IllegalArgumentException("pricingTier == null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("pricingTier == null"));
         }
         inner().withSku(pricingTier.toSkuDescription());
         return this;
@@ -103,7 +102,7 @@ class AppServicePlanImpl
     @Override
     public AppServicePlanImpl withCapacity(int capacity) {
         if (capacity < 1) {
-            throw new IllegalArgumentException("Capacity is at least 1.");
+            throw logger.logExceptionAsError(new IllegalArgumentException("Capacity is at least 1."));
         }
         inner().sku().withCapacity(capacity);
         return this;

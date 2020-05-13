@@ -16,7 +16,9 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = virtualMachines.manager().getSdkContext().randomResourceName("vm", 10);
-        VirtualMachine virtualMachine = virtualMachines.define(vmName)
+        VirtualMachine virtualMachine =
+            virtualMachines
+                .define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
@@ -51,7 +53,9 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
 
     @Override
     public VirtualMachine updateResource(VirtualMachine virtualMachine) throws Exception {
-        virtualMachine = virtualMachine.update()
+        virtualMachine =
+            virtualMachine
+                .update()
                 .withoutUnmanagedDataDisk("disk2")
                 .defineUnmanagedDataDisk("disk3")
                 .withNewVhd(10)

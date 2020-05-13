@@ -3,13 +3,11 @@
 
 package com.azure.management.appservice;
 
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
-/**
- * Defines values for Java versions.
- */
+/** Defines values for Java versions. */
 public final class JavaVersion extends ExpandableStringEnum<JavaVersion> {
     /** Static value 'Off' for JavaVersion. */
     public static final JavaVersion OFF = fromString("null");
@@ -79,6 +77,7 @@ public final class JavaVersion extends ExpandableStringEnum<JavaVersion> {
 
     /**
      * Finds or creates a Java version value based on the provided name.
+     *
      * @param name a name
      * @return a JavaVersion instance
      */
@@ -86,9 +85,7 @@ public final class JavaVersion extends ExpandableStringEnum<JavaVersion> {
         return fromString(name, JavaVersion.class);
     }
 
-    /**
-     * @return known Java versions
-     */
+    /** @return known Java versions */
     public static Collection<JavaVersion> values() {
         return values(JavaVersion.class);
     }

@@ -5,21 +5,26 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
-/**
- * The RuleAction model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = RuleAction.class)
+/** The RuleAction model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "odata\\.type",
+    defaultImpl = RuleAction.class)
 @JsonTypeName("RuleAction")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction", value = RuleEmailAction.class),
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction", value = RuleWebhookAction.class)
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.RuleEmailAction",
+        value = RuleEmailAction.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.RuleWebhookAction",
+        value = RuleWebhookAction.class)
 })
+@JsonFlatten
 @Immutable
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public class RuleAction {
 }

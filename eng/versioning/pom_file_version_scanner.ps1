@@ -44,6 +44,11 @@ $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
 $StartTime = $(get-date)
 
+# This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
+# form <include>groupId:artifactId:[version]</include> which locks to a specific version. The exception
+# to this is the blanket, wildcard include for com.azure and com.microsoft.azure libraries.
+$ComAzureWhitelistIncludes = ("com.azure:*", "com.microsoft.azure:*")
+
 function Write-Error-With-Color([string]$msg)
 {
     Write-Host "$($msg)" -ForegroundColor Red
@@ -259,7 +264,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     $pomFile = $_.FullName
     $xmlPomFile = $null
 
-    if ($_.Name -eq "pom.management.xml")
+    if ($_.FullName -like "*azure-arm-parent*")
     {
         return
     }
@@ -288,14 +293,13 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         Write-Error-With-Color "Error: <dependencyManagement> is not allowed. Every dependency must have its own version and version update tag"
     }
 
+    $xmlNsManager = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
+    $xmlNsManager.AddNamespace("ns", $xmlPomFile.DocumentElement.NamespaceURI)
+
     # Ensure that the project has a version tag with the exception of projects under the eng directory which
     # aren't releasing libraries but still need to have their dependencies checked
     if ($pomFile.Split([IO.Path]::DirectorySeparatorChar) -notcontains "eng") 
     {
-
-        $xmlNsManager = New-Object -TypeName "Xml.XmlNamespaceManager" -ArgumentList $xmlPomFile.NameTable
-        $xmlNsManager.AddNamespace("ns", $xmlPomFile.DocumentElement.NamespaceURI)
-
         $versionNode = $xmlPomFile.SelectSingleNode("/ns:project/ns:version", $xmlNsManager)
         if ($xmlPomFile.project.version -and $versionNode)
         {
@@ -492,7 +496,85 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             $script:FoundError = $true
             Write-Error-With-Color "Error: Missing plugin version update tag for groupId=$($groupId), artifactId=$($artifactId). The tag should be <!-- {x-version-update;$($groupId):$($artifactId);current|dependency|external_dependency<select one>} -->"
         }
-    }    
+    }
+
+    # This is for the whitelist dependencies. Fetch the banned dependencies
+    foreach($bannedDependencies in $xmlPomFile.GetElementsByTagName("bannedDependencies"))
+    {
+        # Include nodes will look like the following:
+        # <include>groupId:artifactId:[version]</include> <!-- {x-include-update;groupId:artifactId;external_dependency} -->
+        foreach($includeNode in $bannedDependencies.GetElementsByTagName("include"))
+        {
+            $rawIncludeText = $includeNode.InnerText.Trim()
+            $split = $rawIncludeText.Split(":")
+            if ($split.Count -eq 3)
+            {
+                $groupId = $split[0]
+                $artifactId = $split[1]
+                $version = $split[2]
+                # The groupId match has to be able to deal with <area>_ for external dependency exceptions
+                if (!$includeNode.NextSibling -or $includeNode.NextSibling.NodeType -ne "Comment")
+                {
+                    $script:FoundError = $true
+                    Write-Error-With-Color "Error: <include> is missing the update tag which should be <!-- {x-include-update;$($groupId):$($artifactId);external_dependency} -->"
+                }
+                elseif ($includeNode.NextSibling.Value.Trim() -notmatch "{x-include-update;(\w+)?$($groupId):$($artifactId);external_dependency}")
+                {
+                    $script:FoundError = $true
+                    Write-Error-With-Color "Error: <include> version update tag for $($includeNode.InnerText) should be <!-- {x-include-update;$($groupId):$($artifactId);external_dependency} -->"
+                }
+                else
+                {
+                    # verify that the version is formatted correctly
+                    if (!$version.StartsWith("[") -or !$version.EndsWith("]"))
+                    {
+                        $script:FoundError = $true
+                        Write-Error-With-Color "Error: the version entry '$($version)' for <include> '$($rawIncludeText)' is not formatted correctly. The include version needs to of the form '[<version>]', the braces lock the include to a specific version for these entries. -->"
+                    }
+                    # verify the version has the correct value
+                    else
+                    {
+                        $versionWithoutBraces = $version.Substring(1, $version.Length -2)
+                        # the key into the dependency has needs to be created from the tag's group/artifact
+                        # entries in case it's an external dependency entry. Because this has already
+                        # been validated for format, grab the group:artifact
+                        $depKey = $includeNode.NextSibling.Value.Trim().Split(";")[1]
+                        if ($extDepHash.ContainsKey($depKey))
+                        {
+                            if ($versionWithoutBraces -ne $extDepHash[$depKey].ver)
+                            {
+                                $script:FoundError = $true
+                                Write-Error-With-Color "Error: $($depKey)'s version is '$($versionWithoutBraces)' but the external_dependency version is listed as $($extDepHash[$depKey].ver)"
+                            }
+                        }
+                        else
+                        {
+                            $script:FoundError = $true
+                            Write-Error-With-Color "Error: the groupId:artifactId entry '$($depKey)' for <include> '$($rawIncludeText)' is not a valid external dependency. Please verify the entry exists in the external_dependencies.txt file. -->"
+                        }
+                    }
+                }
+            }
+            # The only time a split count of 2 is allowed is in the following case.
+            # <include>com.azure:*</include>
+            # These entries will not and should not have an update tag
+            elseif ($split.Count -eq 2)
+            {
+                if ($ComAzureWhitelistIncludes -notcontains $rawIncludeText)
+                {
+                    $script:FoundError = $true
+                    $WhiteListIncludeForError = $ComAzureWhitelistIncludes -join " and "
+                    Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. With the exception of the $($WhiteListIncludeForError), every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
+                }
+            }
+            else
+            {
+                # At this point the include entry is wildly incorrect.
+                $script:FoundError = $true
+                Write-Error-With-Color "Error:  $($rawIncludeText) is not a valid <include> entry. Every <include> entry must be of the form <include>groupId:artifactId:[version]<include>"
+            }
+        }
+    }
 }
 $ElapsedTime = $(get-date) - $StartTime
 $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)

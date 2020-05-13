@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The TriggerCondition model.
- */
+/** The TriggerCondition model. */
 @Fluent
 public final class TriggerCondition {
     /*
@@ -31,9 +29,8 @@ public final class TriggerCondition {
     private LogMetricTrigger metricTrigger;
 
     /**
-     * Get the thresholdOperator property: Evaluation operation for rule -
-     * 'GreaterThan' or 'LessThan.
-     * 
+     * Get the thresholdOperator property: Evaluation operation for rule - 'GreaterThan' or 'LessThan.
+     *
      * @return the thresholdOperator value.
      */
     public ConditionalOperator thresholdOperator() {
@@ -41,9 +38,8 @@ public final class TriggerCondition {
     }
 
     /**
-     * Set the thresholdOperator property: Evaluation operation for rule -
-     * 'GreaterThan' or 'LessThan.
-     * 
+     * Set the thresholdOperator property: Evaluation operation for rule - 'GreaterThan' or 'LessThan.
+     *
      * @param thresholdOperator the thresholdOperator value to set.
      * @return the TriggerCondition object itself.
      */
@@ -53,9 +49,8 @@ public final class TriggerCondition {
     }
 
     /**
-     * Get the threshold property: Result or count threshold based on which
-     * rule should be triggered.
-     * 
+     * Get the threshold property: Result or count threshold based on which rule should be triggered.
+     *
      * @return the threshold value.
      */
     public double threshold() {
@@ -63,9 +58,8 @@ public final class TriggerCondition {
     }
 
     /**
-     * Set the threshold property: Result or count threshold based on which
-     * rule should be triggered.
-     * 
+     * Set the threshold property: Result or count threshold based on which rule should be triggered.
+     *
      * @param threshold the threshold value to set.
      * @return the TriggerCondition object itself.
      */
@@ -76,7 +70,7 @@ public final class TriggerCondition {
 
     /**
      * Get the metricTrigger property: Trigger condition for metric query rule.
-     * 
+     *
      * @return the metricTrigger value.
      */
     public LogMetricTrigger metricTrigger() {
@@ -85,7 +79,7 @@ public final class TriggerCondition {
 
     /**
      * Set the metricTrigger property: Trigger condition for metric query rule.
-     * 
+     *
      * @param metricTrigger the metricTrigger value to set.
      * @return the TriggerCondition object itself.
      */

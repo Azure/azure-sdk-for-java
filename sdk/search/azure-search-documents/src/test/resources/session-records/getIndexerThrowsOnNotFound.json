@@ -1,26 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk10363025a45.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://REDACTED.search.windows.net/indexers('thisindexerdoesnotexist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "3dd28f80-b178-4e6d-b189-5a5ece366250"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2825e83b-8c8a-4d35-8211-97cec366bcea",
+      "request-id" : "3dd28f80-b178-4e6d-b189-5a5ece366250",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 19:32:49 GMT",
+      "Date" : "Mon, 11 May 2020 20:19:49 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "47",
+      "client-request-id" : "3dd28f80-b178-4e6d-b189-5a5ece366250",
+      "elapsed-time" : "5",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "114",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'azs-sdk10363025a45'.\"}}",
+      "Content-Length" : "111",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Indexer 'thisindexerdoesnotexist' was not found in service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk10363025a45" ]
+  "variables" : [ ]
 }

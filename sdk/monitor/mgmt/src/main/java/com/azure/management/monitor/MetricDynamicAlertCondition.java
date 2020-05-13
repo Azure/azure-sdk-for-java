@@ -7,16 +7,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
-
 import java.util.Collection;
 
-/**
- * An immutable client-side representation of an Azure metric alert criteria.
- */
+/** An immutable client-side representation of an Azure metric alert criteria. */
 @Fluent
-public interface MetricDynamicAlertCondition extends
-        HasInner<DynamicMetricCriteria>,
-        HasParent<MetricAlert> {
+public interface MetricDynamicAlertCondition extends HasInner<DynamicMetricCriteria>, HasParent<MetricAlert> {
 
     /**
      * Get name of the criteria.
@@ -54,7 +49,8 @@ public interface MetricDynamicAlertCondition extends
     MetricAlertRuleTimeAggregation timeAggregation();
 
     /**
-     * Get the extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric series pattern.
+     * Get the extent of deviation required to trigger an alert. This will affect how tight the threshold is to the
+     * metric series pattern.
      *
      * @return the threshold value
      */
@@ -68,31 +64,30 @@ public interface MetricDynamicAlertCondition extends
     Collection<MetricDimension> dimensions();
 
     /**
-     * Get the minimum number of violations required within the selected lookback time window required to raise an alert.
+     * Get the minimum number of violations required within the selected lookback time window required to raise an
+     * alert.
      *
      * @return the failingPeriods value
      */
     DynamicThresholdFailingPeriods failingPeriods();
 
     /**
-     * Get the date from which to start learning the metric historical data and calculate the dynamic thresholds (in ISO8601 format).
+     * Get the date from which to start learning the metric historical data and calculate the dynamic thresholds (in
+     * ISO8601 format).
      *
      * @return the ignoreDataBefore value
      */
     OffsetDateTime ignoreDataBefore();
 
-    /**
-     * Grouping of metric alerts condition definition stages.
-     */
+    /** Grouping of metric alerts condition definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a Metric Alert condition definition.
-         */
+        /** The first stage of a Metric Alert condition definition. */
         interface Blank {
             /**
              * The stage of the definition which specifies metric signal name.
              *
-             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this definition
+             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this
+             *     definition
              */
             interface MetricName<ParentT> {
                 /**
@@ -128,7 +123,10 @@ public interface MetricDynamicAlertCondition extends
              * @param alertSensitivity the extent of deviation required to trigger an alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithFailingPeriods<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation, DynamicThresholdOperator condition, DynamicThresholdSensitivity alertSensitivity);
+            WithFailingPeriods<ParentT> withCondition(
+                MetricAlertRuleTimeAggregation timeAggregation,
+                DynamicThresholdOperator condition,
+                DynamicThresholdSensitivity alertSensitivity);
         }
 
         /**
@@ -153,9 +151,11 @@ public interface MetricDynamicAlertCondition extends
          */
         interface WithConditionAttach<ParentT> {
             /**
-             * Sets the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+             * Sets the date from which to start learning the metric historical data and calculate the dynamic
+             * thresholds.
              *
-             * @param dateTime the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+             * @param dateTime the date from which to start learning the metric historical data and calculate the
+             *     dynamic thresholds.
              * @return the next stage of metric alert condition definition.
              */
             WithConditionAttach<ParentT> withIgnoreDataBefore(OffsetDateTime dateTime);
@@ -171,24 +171,22 @@ public interface MetricDynamicAlertCondition extends
 
             /**
              * Attaches the defined condition to the parent metric alert.
+             *
              * @return the next stage of metric alert definition.
              */
             ParentT attach();
         }
     }
 
-    /**
-     * The entirety of a metric alert condition definition as a part of a parent metric alert update.
-     */
+    /** The entirety of a metric alert condition definition as a part of a parent metric alert update. */
     interface UpdateDefinitionStages {
-        /**
-         * The first stage of a Metric Alert condition definition.
-         */
+        /** The first stage of a Metric Alert condition definition. */
         interface Blank {
             /**
-             * The stage of the definition which specifies metric signal name.
-             *              *
-             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this definition
+             * The stage of the definition which specifies metric signal name. *
+             *
+             * @param <ParentT> the stage of the parent Metric Alert definition to return to after attaching this
+             *     definition
              */
             interface MetricName<ParentT> {
                 /**
@@ -224,7 +222,10 @@ public interface MetricDynamicAlertCondition extends
              * @param alertSensitivity the extent of deviation required to trigger an alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithFailingPeriods<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation, DynamicThresholdOperator condition, DynamicThresholdSensitivity alertSensitivity);
+            WithFailingPeriods<ParentT> withCondition(
+                MetricAlertRuleTimeAggregation timeAggregation,
+                DynamicThresholdOperator condition,
+                DynamicThresholdSensitivity alertSensitivity);
         }
 
         /**
@@ -249,9 +250,11 @@ public interface MetricDynamicAlertCondition extends
          */
         interface WithConditionAttach<ParentT> {
             /**
-             * Sets the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+             * Sets the date from which to start learning the metric historical data and calculate the dynamic
+             * thresholds.
              *
-             * @param date the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+             * @param date the date from which to start learning the metric historical data and calculate the dynamic
+             *     thresholds.
              * @return the next stage of metric alert condition definition.
              */
             WithConditionAttach<ParentT> withIgnoreDataBefore(OffsetDateTime date);
@@ -267,15 +270,14 @@ public interface MetricDynamicAlertCondition extends
 
             /**
              * Attaches the defined condition to the parent metric alert.
+             *
              * @return the next stage of metric alert definition.
              */
             ParentT attach();
         }
     }
 
-    /**
-     * Grouping of metric alert condition update stages.
-     */
+    /** Grouping of metric alert condition update stages. */
     interface UpdateStages {
         /**
          * Sets the condition to monitor for the current metric alert.
@@ -285,7 +287,10 @@ public interface MetricDynamicAlertCondition extends
          * @param sensitivity the threshold sensitivity that activates the alert.
          * @return the next stage of metric alert condition definition.
          */
-        UpdateStages withCondition(MetricAlertRuleTimeAggregation timeAggregation, DynamicThresholdOperator condition, DynamicThresholdSensitivity sensitivity);
+        UpdateStages withCondition(
+            MetricAlertRuleTimeAggregation timeAggregation,
+            DynamicThresholdOperator condition,
+            DynamicThresholdSensitivity sensitivity);
 
         /**
          * Adds a metric dimension filter.
@@ -315,13 +320,15 @@ public interface MetricDynamicAlertCondition extends
         /**
          * Sets the date from which to start learning the metric historical data and calculate the dynamic thresholds.
          *
-         * @param date the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+         * @param date the date from which to start learning the metric historical data and calculate the dynamic
+         *     thresholds.
          * @return the next stage of metric alert condition definition.
          */
         UpdateStages withIgnoreDataBefore(OffsetDateTime date);
 
         /**
-         * Removes the date from which to start learning the metric historical data and calculate the dynamic thresholds.
+         * Removes the date from which to start learning the metric historical data and calculate the dynamic
+         * thresholds.
          *
          * @return the next stage of the metric alert condition update.
          */

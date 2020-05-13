@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.management.storage.implementation;
+
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -22,7 +23,7 @@ class IdParsingUtils {
         Iterator<String> itr = iterable.iterator();
         while (itr.hasNext()) {
             String part = itr.next();
-            if (part != null && part.trim() != "") {
+            if (part != null && !part.trim().isEmpty()) {
                 if (part.equalsIgnoreCase(name)) {
                     if (itr.hasNext()) {
                         return itr.next();
@@ -47,11 +48,11 @@ class IdParsingUtils {
             return null;
         }
         Iterable<String> iterable = Arrays.asList(id.split("/"));
-        Iterator <String> itr = iterable.iterator();
+        Iterator<String> itr = iterable.iterator();
         int index = 0;
         while (itr.hasNext()) {
             String part = itr.next();
-            if (part != null && part.trim() != "") {
+            if (part != null && !part.trim().isEmpty()) {
                 if (index == pos) {
                     if (itr.hasNext()) {
                         return itr.next();

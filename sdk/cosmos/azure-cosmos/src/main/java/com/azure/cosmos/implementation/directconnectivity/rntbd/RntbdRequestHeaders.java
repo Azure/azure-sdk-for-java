@@ -17,7 +17,6 @@ import com.azure.cosmos.implementation.ReadFeedKeyType;
 import com.azure.cosmos.implementation.RemoteStorageType;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.models.IndexingDirective;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -29,6 +28,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders;
+import static com.azure.cosmos.implementation.HttpConstants.HeaderValues;
 import static com.azure.cosmos.implementation.directconnectivity.WFConstants.BackendHeaders;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdConsistencyLevel;
 import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants.RntbdContentSerializationFormat;
@@ -112,6 +112,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         this.addStartAndEndKeys(headers);
         this.addSupportSpatialLegacyCoordinates(headers);
         this.addUsePolygonsSmallerThanAHemisphere(headers);
+        this.addReturnPreference(headers);
 
         // Normal headers (Strings, Ints, Longs, etc.)
 
@@ -277,6 +278,10 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     private RntbdToken getEffectivePartitionKey() {
         return this.get(RntbdRequestHeader.EffectivePartitionKey);
+    }
+
+    private RntbdToken getReturnPreference() {
+        return this.get(RntbdRequestHeader.ReturnPreference);
     }
 
     private RntbdToken getEmitVerboseTracesInQuery() {
@@ -1156,6 +1161,13 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
         final String value = headers.get(HttpHeaders.USE_POLYGONS_SMALLER_THAN_AHEMISPHERE);
         if (StringUtils.isNotEmpty(value)) {
             this.getUsePolygonsSmallerThanAHemisphere().setValue(Boolean.parseBoolean(value));
+        }
+    }
+
+    private void addReturnPreference(final Map<String, String> headers) {
+        final String value = headers.get(HttpHeaders.PREFER);
+        if (StringUtils.isNotEmpty(value) && value.contains(HeaderValues.PREFER_RETURN_MINIMAL)) {
+            this.getReturnPreference().setValue(true);
         }
     }
 

@@ -12,16 +12,8 @@ import com.azure.management.compute.models.DisksInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for Disks.
- */
-class DisksImpl
-    extends TopLevelModifiableResourcesImpl<
-        Disk,
-        DiskImpl,
-        DiskInner,
-        DisksInner,
-        ComputeManager>
+/** The implementation for Disks. */
+class DisksImpl extends TopLevelModifiableResourcesImpl<Disk, DiskImpl, DiskInner, DisksInner, ComputeManager>
     implements Disks {
 
     DisksImpl(ComputeManager computeManager) {
@@ -29,21 +21,19 @@ class DisksImpl
     }
 
     @Override
-    public String grantAccess(String resourceGroupName,
-                              String diskName,
-                              AccessLevel accessLevel,
-                              int accessDuration) {
-        return this.grantAccessAsync(resourceGroupName, diskName, accessLevel, accessDuration)
-                .block();
+    public String grantAccess(String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration) {
+        return this.grantAccessAsync(resourceGroupName, diskName, accessLevel, accessDuration).block();
     }
 
     @Override
-    public Mono<String> grantAccessAsync(String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration) {
+    public Mono<String> grantAccessAsync(
+        String resourceGroupName, String diskName, AccessLevel accessLevel, int accessDuration) {
         GrantAccessData grantAccessDataInner = new GrantAccessData();
-        grantAccessDataInner.withAccess(accessLevel)
-                .withDurationInSeconds(accessDuration);
-        return this.inner().grantAccessAsync(resourceGroupName, diskName, grantAccessDataInner)
-                .map(accessUriInner -> accessUriInner.accessSAS());
+        grantAccessDataInner.withAccess(accessLevel).withDurationInSeconds(accessDuration);
+        return this
+            .inner()
+            .grantAccessAsync(resourceGroupName, diskName, grantAccessDataInner)
+            .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override
@@ -66,7 +56,7 @@ class DisksImpl
         if (inner == null) {
             return null;
         }
-        return new DiskImpl(inner.getName(), inner, this.manager());
+        return new DiskImpl(inner.name(), inner, this.manager());
     }
 
     @Override

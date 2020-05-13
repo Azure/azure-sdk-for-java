@@ -1,22 +1,19 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//package com.azure.management;
+// package com.azure.management;
 //
-//import com.google.common.util.concurrent.SettableFuture;
-//import com.microsoft.azure.management.batch.BatchAccount;
-//import com.microsoft.azure.management.batch.BatchAccounts;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-//import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-//import org.junit.Assert;
-//import rx.Observable;
-//import rx.functions.Action1;
+// import com.google.common.util.concurrent.SettableFuture;
+// import com.microsoft.azure.management.batch.BatchAccount;
+// import com.microsoft.azure.management.batch.BatchAccounts;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+// import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+// import org.junit.Assert;
+// import rx.Observable;
+// import rx.functions.Action1;
 //
-//public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
+// public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
 //    @Override
 //    public BatchAccount createResource(BatchAccounts resources) throws Exception {
 //        final String batchAccountName = "batch" + this.testId;
@@ -59,6 +56,7 @@
 //
 //    @Override
 //    public void print(BatchAccount resource) {
-//        System.out.println(new StringBuilder().append("BatchAccount account: ").append(resource.id()).append(", Name: ").append(resource.name()).toString());
+//        System.out.println(new StringBuilder().append("BatchAccount account: ").append(resource.id()).append(", Name:
+// ").append(resource.name()).toString());
 //    }
-//}
+// }

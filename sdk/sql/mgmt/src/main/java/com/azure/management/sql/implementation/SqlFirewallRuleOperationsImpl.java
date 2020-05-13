@@ -41,7 +41,7 @@ public class SqlFirewallRuleOperationsImpl
         FirewallRuleInner inner =
             this.sqlServerManager.inner().firewallRules().get(resourceGroupName, sqlServerName, name);
         return (inner != null)
-            ? new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.getName(), inner, sqlServerManager)
+            ? new SqlFirewallRuleImpl(resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager)
             : null;
     }
 
@@ -56,7 +56,7 @@ public class SqlFirewallRuleOperationsImpl
             .map(
                 inner ->
                     new SqlFirewallRuleImpl(
-                        resourceGroupName, sqlServerName, inner.getName(), inner, sqlServerManager));
+                        resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SqlFirewallRuleOperationsImpl
         FirewallRuleInner inner =
             this.sqlServerManager.inner().firewallRules().get(sqlServer.resourceGroupName(), sqlServer.name(), name);
         return (inner != null)
-            ? new SqlFirewallRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager())
+            ? new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager())
             : null;
     }
 
@@ -166,13 +166,11 @@ public class SqlFirewallRuleOperationsImpl
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
         PagedIterable<FirewallRuleInner> firewallRuleInners =
             this.sqlServerManager.inner().firewallRules().listByServer(resourceGroupName, sqlServerName);
-        if (firewallRuleInners != null) {
-            for (FirewallRuleInner inner : firewallRuleInners) {
-                firewallRuleSet
-                    .add(
-                        new SqlFirewallRuleImpl(
-                            resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
-            }
+        for (FirewallRuleInner inner : firewallRuleInners) {
+            firewallRuleSet
+                .add(
+                    new SqlFirewallRuleImpl(
+                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(firewallRuleSet);
     }
@@ -187,17 +185,21 @@ public class SqlFirewallRuleOperationsImpl
             .mapPage(
                 inner ->
                     new SqlFirewallRuleImpl(
-                        resourceGroupName, sqlServerName, inner.getName(), inner, sqlServerManager));
+                        resourceGroupName, sqlServerName, inner.name(), inner, sqlServerManager));
     }
 
     @Override
     public List<SqlFirewallRule> listBySqlServer(SqlServer sqlServer) {
         Objects.requireNonNull(sqlServer);
         List<SqlFirewallRule> firewallRuleSet = new ArrayList<>();
-        for (FirewallRuleInner inner : sqlServer.manager().inner()
-            .firewallRules().listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
+        for (FirewallRuleInner inner
+            : sqlServer
+                .manager()
+                .inner()
+                .firewallRules()
+                .listByServer(sqlServer.resourceGroupName(), sqlServer.name())) {
             firewallRuleSet
-                .add(new SqlFirewallRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+                .add(new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }
         return Collections.unmodifiableList(firewallRuleSet);
     }
@@ -212,7 +214,7 @@ public class SqlFirewallRuleOperationsImpl
             .listByServerAsync(sqlServer.resourceGroupName(), sqlServer.name())
             .mapPage(
                 inner ->
-                    new SqlFirewallRuleImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
+                    new SqlFirewallRuleImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
     }
 
     @Override

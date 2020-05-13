@@ -7,9 +7,7 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ListAccountSasResponse model.
- */
+/** The ListAccountSasResponse model. */
 @Immutable
 public final class ListAccountSasResponseInner {
     /*
@@ -19,9 +17,8 @@ public final class ListAccountSasResponseInner {
     private String accountSasToken;
 
     /**
-     * Get the accountSasToken property: List SAS credentials of storage
-     * account.
-     * 
+     * Get the accountSasToken property: List SAS credentials of storage account.
+     *
      * @return the accountSasToken value.
      */
     public String accountSasToken() {
