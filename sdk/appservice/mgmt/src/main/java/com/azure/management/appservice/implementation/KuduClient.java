@@ -17,7 +17,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -297,8 +297,8 @@ class KuduClient {
                         .zipWith(
                             Flux.range(1, 30),
                             (Throwable throwable, Integer integer) -> {
-                                if (throwable instanceof CloudException
-                                        && ((CloudException) throwable).getResponse().getStatusCode() == 502
+                                if (throwable instanceof ManagementException
+                                        && ((ManagementException) throwable).getResponse().getStatusCode() == 502
                                     || throwable instanceof JsonParseException) {
                                     return integer;
                                 } else {

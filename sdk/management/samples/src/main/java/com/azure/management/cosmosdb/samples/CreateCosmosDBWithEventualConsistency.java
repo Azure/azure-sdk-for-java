@@ -7,7 +7,7 @@ package com.azure.management.cosmosdb.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClient;
@@ -77,10 +77,10 @@ public final class CreateCosmosDBWithEventualConsistency {
             //============================================================
             // Delete CosmosDB
             System.out.println("Deleting the CosmosDB");
-            // work around CosmosDB service issue returning 404 CloudException on delete operation
+            // work around CosmosDB service issue returning 404 ManagementException on delete operation
             try {
                 azure.cosmosDBAccounts().deleteById(cosmosDBAccount.id());
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
             }
             System.out.println("Deleted the CosmosDB");
 

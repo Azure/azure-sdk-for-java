@@ -6,7 +6,7 @@ package com.azure.management.compute.samples;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.compute.AvailabilitySet;
@@ -199,8 +199,8 @@ public final class CreateVirtualMachinesAsyncTrackingRelatedResources {
             // Show any errors
             for (Throwable error: errors) {
                 System.out.println("ERROR: Creation of virtual machines has been stopped due to a failure to create a resource.\n");
-                if (error instanceof CloudException) {
-                    CloudException ce = (CloudException) error;
+                if (error instanceof ManagementException) {
+                    ManagementException ce = (ManagementException) error;
                     System.out.println("Cloud Exception: " + ce.getMessage());
                 } else {
                     error.printStackTrace();

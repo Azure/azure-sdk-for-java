@@ -357,27 +357,27 @@ public class DnsZoneRecordSetETagTests extends TestBase {
     }
 
     /**
-     * Runs the action and assert that action throws CloudException with CloudError.Code property set to
+     * Runs the action and assert that action throws ManagementException with CloudError.Code property set to
      * 'PreconditionFailed'.
      *
      * @param runnable runnable to run
      */
     private void ensureETagExceptionIsThrown(final Runnable runnable) {
-        boolean isCloudExceptionThrown = false;
+        boolean isManagementExceptionThrown = false;
         boolean isCloudErrorSet = false;
         boolean isPreconditionFailedCodeSet = false;
         try {
             runnable.run();
         } catch (ManagementException exception) {
-            isCloudExceptionThrown = true;
+            isManagementExceptionThrown = true;
             ManagementError cloudError = exception.getValue();
             if (cloudError != null) {
                 isCloudErrorSet = true;
                 isPreconditionFailedCodeSet = cloudError.getCode().contains("PreconditionFailed");
             }
         }
-        Assertions.assertTrue(isCloudExceptionThrown, "Expected CloudException is not thrown");
-        Assertions.assertTrue(isCloudErrorSet, "Expected CloudError property is not set in CloudException");
+        Assertions.assertTrue(isManagementExceptionThrown, "Expected ManagementException is not thrown");
+        Assertions.assertTrue(isCloudErrorSet, "Expected CloudError property is not set in ManagementException");
         Assertions
             .assertTrue(
                 isPreconditionFailedCodeSet,

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerBackend;
@@ -83,7 +83,7 @@ class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner,
                 } else {
                     vmIds.add(nic.virtualMachineId());
                 }
-            } catch (CloudException | IllegalArgumentException e) {
+            } catch (ManagementException | IllegalArgumentException e) {
                 continue;
             }
         }

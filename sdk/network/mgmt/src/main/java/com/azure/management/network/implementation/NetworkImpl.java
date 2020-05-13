@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
@@ -107,7 +107,7 @@ class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNe
                     .networks()
                     .inner()
                     .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             if (!e.getValue().getCode().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
                 throw logger.logExceptionAsError(e);
                 // Rethrow if the exception reason is anything other than IP address not found

@@ -20,7 +20,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.AppServiceDomain;
@@ -372,7 +372,7 @@ public final class Utils {
      * Print network info.
      *
      * @param resource a network
-     * @throws CloudException Cloud errors
+     * @throws ManagementException Cloud errors
      */
     public static void print(Network resource) {
         StringBuilder info = new StringBuilder();

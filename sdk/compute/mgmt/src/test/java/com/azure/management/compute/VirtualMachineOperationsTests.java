@@ -5,7 +5,7 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkSecurityGroup;
@@ -219,7 +219,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // not run to assert
             Assertions.assertEquals((Double) 1500.0, foundVM.billingProfile().maxPrice());
             Assertions.fail();
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
         } // cannot change max price when vm is running
 
         foundVM.deallocate();
@@ -241,7 +241,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // not run to assert
             Assertions.assertEquals(VirtualMachinePriorityTypes.REGULAR, foundVM.priority());
             Assertions.fail();
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
         } // cannot change priority from low to regular
 
         // Delete VM
@@ -347,7 +347,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // Update Vm to remove it from proximity placement group
             VirtualMachine updatedVm =
                 foundVM.update().withProximityPlacementGroup(setCreated2.proximityPlacementGroup().id()).apply();
-        } catch (CloudException clEx) {
+        } catch (ManagementException clEx) {
             Assertions
                 .assertTrue(
                     clEx

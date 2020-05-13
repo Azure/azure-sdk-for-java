@@ -3,7 +3,7 @@
 
 package com.azure.management.graphrbac.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.RoleAssignment;
 import com.azure.management.graphrbac.RoleDefinition;
@@ -245,8 +245,8 @@ public class RoleAssignmentHelper {
      * @return true if role assignment exists, false otherwise
      */
     private static boolean isRoleAssignmentExists(Throwable throwable) {
-        if (throwable instanceof CloudException) {
-            CloudException exception = (CloudException) throwable;
+        if (throwable instanceof ManagementException) {
+            ManagementException exception = (ManagementException) throwable;
             if (exception.getValue() != null
                 && exception.getValue().getCode() != null
                 && exception.getValue().getCode().equalsIgnoreCase("RoleAssignmentExists")) {
