@@ -2,16 +2,11 @@ package com.azure.storage.blob.specialized
 
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
-import com.azure.storage.blob.models.BlobQueryDelimitedSerialization
-import com.azure.storage.blob.models.BlobQueryError
-import com.azure.storage.blob.models.BlobQueryJsonSerialization
-import com.azure.storage.blob.models.BlobQueryOptions
-import com.azure.storage.blob.models.BlobQuerySerialization
-import com.azure.storage.blob.models.BlobRequestConditions
-import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.*
 import com.azure.storage.common.ErrorReceiver
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
+import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Unroll
 
@@ -324,7 +319,7 @@ class BlobBaseAPITest extends APISpec {
         bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
-        thrown(UncheckedIOException)
+        thrown(Exceptions.ReactiveException)
     }
 
     def "Query progress receiver"() {

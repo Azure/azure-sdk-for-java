@@ -1820,9 +1820,8 @@ public class BlobAsyncClientBase {
             if (errorReceiver != null) {
                 errorReceiver.reportError(error);
             } else {
-                return Mono.error(new UncheckedIOException(
-                    new IOException("An error was reported during query response processing, "
-                        + System.lineSeparator() + error.toString())));
+                return Mono.error(new IOException("An error was reported during query response processing, "
+                        + System.lineSeparator() + error.toString()));
             }
         } else {
             return Mono.error(new IllegalArgumentException("Failed to parse error record from "
