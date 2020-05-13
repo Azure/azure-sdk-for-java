@@ -5,16 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import java.util.List;
 
 /** The MetricAlertMultipleResourceMultipleMetricCriteria model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria")
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@JsonFlatten
 @Fluent
 public final class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
     /*

@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -144,7 +145,10 @@ public class DocumentCrudTest extends TestSuiteBase {
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = container
             .createItem(docDefinition, new CosmosItemRequestOptions());
-        FailureValidator validator = new FailureValidator.Builder().resourceAlreadyExists().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceAlreadyExists()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateItemFailure(createObservable, validator);
     }
 
@@ -216,8 +220,11 @@ public class DocumentCrudTest extends TestSuiteBase {
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
             options, CosmosItemProperties.class);
 
-        FailureValidator validator = new FailureValidator.Builder().instanceOf(CosmosClientException.class)
-            .statusCode(404).build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .instanceOf(CosmosClientException.class)
+            .statusCode(404)
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateItemFailure(readObservable, validator);
     }
 
@@ -246,7 +253,10 @@ public class DocumentCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> readObservable = container.readItem(documentId,
             new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(docDefinition, "mypk")),
             options, CosmosItemProperties.class);
-        FailureValidator notFoundValidator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator notFoundValidator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateItemFailure(readObservable, notFoundValidator);
     }
 

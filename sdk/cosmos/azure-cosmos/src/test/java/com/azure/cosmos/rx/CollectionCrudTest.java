@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosResponseValidator;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.FailureValidator;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RetryAnalyzer;
 import com.azure.cosmos.implementation.models.CosmosAsyncItemResponseImpl;
 import com.azure.cosmos.models.CompositePath;
@@ -230,7 +231,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncContainerResponse> readObservable = database
                 .getContainer("I don't exist").read();
 
-        FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(readObservable, validator);
     }
 

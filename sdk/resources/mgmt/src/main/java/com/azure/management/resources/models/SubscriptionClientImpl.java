@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the SubscriptionClientImpl type. */
 public final class SubscriptionClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(SubscriptionClientImpl.class);
+
     /** server parameter. */
     private String host;
 
@@ -121,7 +124,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     public SubscriptionClientImpl(HttpPipeline httpPipeline, AzureEnvironment environment) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
-//        this.operations = new OperationsInner(this);
+        //this.operations = new OperationsInner(this);
         this.subscriptions = new SubscriptionsInner(this);
         this.tenants = new TenantsInner(this);
     }

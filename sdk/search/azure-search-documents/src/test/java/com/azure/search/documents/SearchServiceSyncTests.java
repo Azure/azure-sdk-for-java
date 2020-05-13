@@ -5,30 +5,32 @@ package com.azure.search.documents;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.ServiceCounters;
 import com.azure.search.documents.models.ServiceStatistics;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.UUID;
 
-import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class SearchServiceSyncTests extends SearchServiceTestBase {
+public class SearchServiceSyncTests extends SearchTestBase {
 
     @Test
     public void getServiceStatsReturnsCorrectDefinition() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatistics();
-        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
+        validateServiceStatistics(serviceClient.getServiceStatistics());
     }
 
     @Test
     public void getServiceStatsReturnsCorrectDefinitionWithResponse() {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
-        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(), Context.NONE).getValue();
-        assertObjectEquals(getExpectedServiceStatistics(), serviceStatistics, true);
+        ServiceStatistics serviceStatistics = serviceClient.getServiceStatisticsWithResponse(generateRequestOptions(),
+            Context.NONE).getValue();
+        validateServiceStatistics(serviceStatistics);
     }
 
     @Test
@@ -36,7 +38,8 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
         SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
 
         RequestOptions requestOptions = new RequestOptions().setXMsClientRequestId(UUID.randomUUID());
-        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions, Context.NONE);
+        Response<ServiceStatistics> response = serviceClient.getServiceStatisticsWithResponse(requestOptions,
+            Context.NONE);
 
         /*
          * The service will always return a request-id and will conditionally return client-request-id if
@@ -49,6 +52,15 @@ public class SearchServiceSyncTests extends SearchServiceTestBase {
 
         Assertions.assertNotNull(actualClientRequestId);
         Assertions.assertEquals(actualClientRequestId, actualRequestId);
-        assertObjectEquals(getExpectedServiceStatistics(), response.getValue(), true);
+        validateServiceStatistics(response.getValue());
+    }
+
+    private static void validateServiceStatistics(ServiceStatistics serviceStatistics) {
+        ServiceCounters serviceCounters = serviceStatistics.getCounters();
+        assertTrue(serviceCounters.getIndexCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getIndexerCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getDataSourceCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getStorageSizeCounter().getQuota() >= 1);
+        assertTrue(serviceCounters.getSynonymMapCounter().getQuota() >= 1);
     }
 }
