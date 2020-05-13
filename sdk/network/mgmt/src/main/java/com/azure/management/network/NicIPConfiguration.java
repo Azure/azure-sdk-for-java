@@ -4,7 +4,7 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.models.HasPrivateIPAddress;
+import com.azure.management.network.models.HasPrivateIpAddress;
 import com.azure.management.network.models.HasPublicIPAddress;
 import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -107,7 +107,7 @@ public interface NicIPConfiguration
          *     definition
          */
         interface WithPrivateIP<ParentT>
-            extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            extends HasPrivateIpAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
             /**
              * Specifies the IP version for the private IP address.
              *
@@ -290,7 +290,7 @@ public interface NicIPConfiguration
          *     definition
          */
         interface WithPrivateIP<ParentT>
-            extends HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
             /**
              * Specifies the IP version for the private IP address.
              *
@@ -415,7 +415,7 @@ public interface NicIPConfiguration
         }
 
         /** The stage of the network interface IP configuration update allowing to specify private IP. */
-        interface WithPrivateIP extends HasPrivateIPAddress.UpdateStages.WithPrivateIPAddress<Update> {
+        interface WithPrivateIP extends HasPrivateIpAddress.UpdateStages.WithPrivateIPAddress<Update> {
             /**
              * Specifies the IP version for the private IP address.
              *

@@ -6,7 +6,7 @@ package com.azure.management.storage.implementation;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.storage.Kind;
 import com.azure.management.storage.Restriction;
-import com.azure.management.storage.SKUCapability;
+import com.azure.management.storage.SkuCapability;
 import com.azure.management.storage.SkuName;
 import com.azure.management.storage.SkuTier;
 import com.azure.management.storage.StorageAccountSkuType;
@@ -55,7 +55,7 @@ class StorageSkuImpl implements StorageSku {
     }
 
     @Override
-    public List<SKUCapability> capabilities() {
+    public List<SkuCapability> capabilities() {
         if (this.inner.capabilities() != null) {
             return this.inner.capabilities();
         } else {

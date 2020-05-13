@@ -4,7 +4,7 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.models.HasPrivateIPAddress;
+import com.azure.management.network.models.HasPrivateIpAddress;
 import com.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * The base IP configuration shared across IP configurations in regular and virtual machine scale set network interface.
  */
 @Fluent
-public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIPAddress {
+public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIpAddress {
     /** @return true if this is the primary IP configuration */
     boolean isPrimary();
 

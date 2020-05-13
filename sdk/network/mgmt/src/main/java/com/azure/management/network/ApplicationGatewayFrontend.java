@@ -3,7 +3,7 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.models.HasPrivateIPAddress;
+import com.azure.management.network.models.HasPrivateIpAddress;
 import com.azure.management.network.models.HasPublicIPAddress;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.arm.models.HasSubnet;
@@ -14,9 +14,9 @@ import com.azure.management.resources.fluentcore.model.Settable;
 /** A client-side representation of an application gateway frontend. */
 @Fluent()
 public interface ApplicationGatewayFrontend
-    extends HasInner<ApplicationGatewayFrontendIPConfiguration>,
+    extends HasInner<ApplicationGatewayFrontendIpConfiguration>,
         ChildResource<ApplicationGateway>,
-        HasPrivateIPAddress,
+    HasPrivateIpAddress,
         HasSubnet,
         HasPublicIPAddress {
 
@@ -66,7 +66,7 @@ public interface ApplicationGatewayFrontend
          *     definition
          */
         interface WithPrivateIP<ParentT>
-            extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            extends HasPrivateIpAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -169,7 +169,7 @@ public interface ApplicationGatewayFrontend
          *     definition
          */
         interface WithPrivateIP<ParentT>
-            extends HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
         }
 
         /**

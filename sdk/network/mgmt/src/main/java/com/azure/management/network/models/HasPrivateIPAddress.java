@@ -3,7 +3,7 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.IPAllocationMethod;
+import com.azure.management.network.IpAllocationMethod;
 
 /** An interface representing a model's ability to reference a private IP address. */
 @Fluent()
@@ -12,7 +12,7 @@ public interface HasPrivateIPAddress {
     String privateIPAddress();
 
     /** @return the private IP address allocation method within the associated subnet */
-    IPAllocationMethod privateIPAllocationMethod();
+    IpAllocationMethod privateIpAllocationMethod();
 
     /** Grouping of definition stages involving specifying the private IP address. */
     interface DefinitionStages {
