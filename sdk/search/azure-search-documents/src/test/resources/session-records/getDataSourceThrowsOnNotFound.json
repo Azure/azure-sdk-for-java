@@ -1,29 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azsjavagetdatasourcethrowsonnotfound9ce05203a779160f.search.windows.net/datasources('thisdatasourcedoesnotexist')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/datasources('thisdatasourcedoesnotexist')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "2516684a-777c-4b0a-a2d6-af83ae023252"
+      "x-ms-client-request-id" : "c1b3100f-d5b0-4cd6-af40-191d70d6f423"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "2516684a-777c-4b0a-a2d6-af83ae023252",
+      "request-id" : "c1b3100f-d5b0-4cd6-af40-191d70d6f423",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 18:49:42 GMT",
+      "Date" : "Mon, 11 May 2020 17:57:14 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "2516684a-777c-4b0a-a2d6-af83ae023252",
-      "elapsed-time" : "21",
+      "client-request-id" : "c1b3100f-d5b0-4cd6-af40-191d70d6f423",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "168",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'thisdatasourcedoesnotexist' was found in service 'azsjavagetdatasourcethrowsonnotfound9ce05203a779160f'.\"}}",
+      "Content-Length" : "131",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No data source with the name 'thisdatasourcedoesnotexist' was found in service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavagetdatasourcethrowsonnotfound9ce05203a779160f" ]
+  "variables" : [ ]
 }
