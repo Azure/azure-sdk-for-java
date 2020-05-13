@@ -13,9 +13,11 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -37,6 +39,18 @@ public class ReadmeSamples {
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
+            .buildClient();
+    }
+
+    /**
+     * Code snippet for getting async client using AAD authentication.
+     */
+    public void useAadAsyncClient() {
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
+        FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
             .buildClient();
     }
 
