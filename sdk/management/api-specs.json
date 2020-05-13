@@ -224,7 +224,7 @@
   "policy": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.management.resources --tag=package-policy-2017-06"
+    "package": "com.azure.management.resources --tag=package-policy-2019-09"
   },
   "powerbi": {
     "dir": "../powerbi/mgmt",
@@ -326,7 +326,7 @@
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
     "package": "com.azure.management.resources",
-    "args": "--tag=package-subscriptions-2016-06"
+    "args": "--tag=package-subscriptions-2020-01"
   },
   "trafficmanager": {
     "dir": "../trafficmanager/mgmt",
