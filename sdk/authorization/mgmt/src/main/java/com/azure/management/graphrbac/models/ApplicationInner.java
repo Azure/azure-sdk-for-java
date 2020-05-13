@@ -5,6 +5,7 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.AppRole;
 import com.azure.management.graphrbac.GroupMembershipClaimTypes;
 import com.azure.management.graphrbac.InformationalUrl;
@@ -12,6 +13,7 @@ import com.azure.management.graphrbac.OAuth2Permission;
 import com.azure.management.graphrbac.OptionalClaims;
 import com.azure.management.graphrbac.PreAuthorizedApplication;
 import com.azure.management.graphrbac.RequiredResourceAccess;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,6 +24,8 @@ import java.util.List;
 @JsonTypeName("Application")
 @Fluent
 public final class ApplicationInner extends DirectoryObjectInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInner.class);
+
     /*
      * The application ID.
      */
@@ -906,5 +910,39 @@ public final class ApplicationInner extends DirectoryObjectInner {
     public ApplicationInner withWwwHomepage(String wwwHomepage) {
         this.wwwHomepage = wwwHomepage;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (appRoles() != null) {
+            appRoles().forEach(e -> e.validate());
+        }
+        if (informationalUrls() != null) {
+            informationalUrls().validate();
+        }
+        if (keyCredentials() != null) {
+            keyCredentials().forEach(e -> e.validate());
+        }
+        if (oauth2Permissions() != null) {
+            oauth2Permissions().forEach(e -> e.validate());
+        }
+        if (optionalClaims() != null) {
+            optionalClaims().validate();
+        }
+        if (passwordCredentials() != null) {
+            passwordCredentials().forEach(e -> e.validate());
+        }
+        if (preAuthorizedApplications() != null) {
+            preAuthorizedApplications().forEach(e -> e.validate());
+        }
+        if (requiredResourceAccess() != null) {
+            requiredResourceAccess().forEach(e -> e.validate());
+        }
     }
 }

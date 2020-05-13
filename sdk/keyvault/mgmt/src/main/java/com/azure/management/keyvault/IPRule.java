@@ -5,11 +5,15 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IPRule model. */
+/** The IpRule model. */
 @Fluent
-public final class IPRule {
+public final class IpRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpRule.class);
+
     /*
      * An IPv4 address range in CIDR notation, such as '124.56.78.91' (simple
      * IP address) or '124.56.78.0/24' (all addresses that start with
@@ -33,10 +37,22 @@ public final class IPRule {
      * '124.56.78.0/24' (all addresses that start with 124.56.78).
      *
      * @param value the value value to set.
-     * @return the IPRule object itself.
+     * @return the IpRule object itself.
      */
-    public IPRule withValue(String value) {
+    public IpRule withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property value in model IpRule"));
+        }
     }
 }

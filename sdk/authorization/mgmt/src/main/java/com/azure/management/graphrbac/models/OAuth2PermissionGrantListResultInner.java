@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OAuth2PermissionGrantListResult model. */
 @Fluent
 public final class OAuth2PermissionGrantListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantListResultInner.class);
+
     /*
      * the list of oauth2 permissions grants
      */
@@ -61,5 +65,16 @@ public final class OAuth2PermissionGrantListResultInner {
     public OAuth2PermissionGrantListResultInner withOdataNextLink(String odataNextLink) {
         this.odataNextLink = odataNextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }
