@@ -11,43 +11,43 @@ package com.microsoft.azure.management.storage.v2019_06_01;
 import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.storage.v2019_06_01.implementation.PrivateEndpointConnectionsInner;
+import com.microsoft.azure.management.storage.v2019_06_01.implementation.TablesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing PrivateEndpointConnections.
+ * Type representing Tables.
  */
-public interface PrivateEndpointConnections extends SupportsCreating<PrivateEndpointConnection.DefinitionStages.Blank>, HasInner<PrivateEndpointConnectionsInner> {
+public interface Tables extends SupportsCreating<Table.DefinitionStages.Blank>, HasInner<TablesInner> {
     /**
-     * Gets the specified private endpoint connection associated with the storage account.
+     * Gets the table with the specified table name, under the specified account if it exists.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PrivateEndpointConnection> getAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    Observable<Table> getAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
-     * List all the private endpoint connections associated with the storage account.
+     * Deletes the table with the specified table name, under the specified account if it exists.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     * @param tableName A table name must be unique within a storage account and must be between 3 and 63 characters.The name must comprise of only alphanumeric characters and it cannot begin with a numeric character.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<PrivateEndpointConnection> listAsync(String resourceGroupName, String accountName);
+    Completable deleteAsync(String resourceGroupName, String accountName, String tableName);
 
     /**
-     * Deletes the specified private endpoint connection associated with the storage account.
+     * Gets a list of all the tables under the specified storage account.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
      * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
-     * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure resource
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String resourceGroupName, String accountName, String privateEndpointConnectionName);
+    Observable<Table> listAsync(final String resourceGroupName, final String accountName);
 
 }
