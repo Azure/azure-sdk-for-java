@@ -71,13 +71,16 @@ public class NioBlobInputStream extends InputStream {
      *
      * @return An <code>int</code> which represents the total number of bytes read into the buffer, or -1 if there is no
      * more data because the end of the stream has been reached.
-     * @throws RuntimeException when no available bytes to read.
      * @throws IOException If an I/O error occurs.
      */
     @Override
     public int read() throws IOException {
         try {
             return this.blobInputStream.read();
+            /*
+            BlobInputStream only throws RuntimeException, and it doesn't preserve the cause, it only takes the message,
+            so we can't do any better than re-wrapping it in an IOException.
+             */
         } catch (RuntimeException e) {
             throw LoggingUtility.logError(logger, new IOException(e));
         }
@@ -163,7 +166,7 @@ public class NioBlobInputStream extends InputStream {
      * Repositions this stream to the position at the time the mark method was last called on this input stream. Note
      * repositioning the blob read stream will disable blob MD5 checking.
      *
-     * @throws RuntimeException If this stream has not been marked or if the mark has been invalidated.
+     * @throws IOException If this stream has not been marked or if the mark has been invalidated.
      */
     @Override
     public synchronized void reset() throws IOException {
