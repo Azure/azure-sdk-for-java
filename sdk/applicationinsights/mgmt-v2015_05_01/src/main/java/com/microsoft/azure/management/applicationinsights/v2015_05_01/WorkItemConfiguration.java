@@ -10,13 +10,15 @@ package com.microsoft.azure.management.applicationinsights.v2015_05_01;
 
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.WorkItemConfigurationInner;
+import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.applicationinsights.v2015_05_01.implementation.InsightsManager;
 
 /**
  * Type representing WorkItemConfiguration.
  */
-public interface WorkItemConfiguration extends HasInner<WorkItemConfigurationInner>, HasManager<InsightsManager> {
+public interface WorkItemConfiguration extends HasInner<WorkItemConfigurationInner>, Indexable, Refreshable<WorkItemConfiguration>, HasManager<InsightsManager> {
     /**
      * @return the configDisplayName value.
      */
