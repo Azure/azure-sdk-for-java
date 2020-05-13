@@ -6,6 +6,7 @@ package com.azure.storage.blob.nio;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlobCopyInfo;
@@ -26,13 +27,17 @@ import java.nio.file.FileStore;
 import java.nio.file.FileSystem;
 import java.nio.file.FileSystemAlreadyExistsException;
 import java.nio.file.FileSystemNotFoundException;
+import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.NotDirectoryException;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.DosFileAttributeView;
+import java.nio.file.attribute.DosFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
 import java.nio.file.spi.FileSystemProvider;
@@ -510,7 +515,13 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
      */
     @Override
     public <V extends FileAttributeView> V getFileAttributeView(Path path, Class<V> aClass, LinkOption... linkOptions) {
-        return null;
+        if (aClass == BasicFileAttributeView.class) {
+            return (V) new AzureStorageFileAttributeView();
+        } else if (aClass == AzureStorageFileAttributeView.class) {
+            return (V) new AzureStorageFileAttributeView();
+        } else {
+            throw new UnsupportedOperationException();
+        }
     }
 
     /**
@@ -519,6 +530,33 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     @Override
     public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> aClass, LinkOption... linkOptions)
         throws IOException {
+        // Have to check if it's a valid directory or file. If it's a directory, may not be able to get properties if virtual
+        AzureResource resource = new AzureResource(path);
+
+        Class<? extends BasicFileAttributeView> view;
+        if (aClass == BasicFileAttributes.class) {
+            view = BasicFileAttributeView.class;
+        } else if (aClass == AzureStorageFileAttributes.class) {
+            view = AzureStorageFileAttributeView.class;
+        } else {
+            throw new UnsupportedOperationException();
+        }
+
+        return (A) getFileAttributeView(path, view, linkOptions).readAttributes();
+
+        /*if (aClass == BasicFileAttributes.class) {
+            try {
+                BlobProperties properties = resource.getBlobClient().getProperties();
+                return (A) (new AzureStorageFileAttributes(properties));
+                Files.readAttributes(path, aClass);
+            } catch(BlobStorageException e) {
+                if (e.getErrorCode().equals(BlobErrorCode.BLOB_NOT_FOUND)) {
+                    throw new IOException("Properties could not be retrieved because the file either does not exist or "
+                        + "is a virtual directory. Path: " + path.toString());
+                }
+                throw new IOException(e);
+            }
+        }*/
         return null;
     }
 
