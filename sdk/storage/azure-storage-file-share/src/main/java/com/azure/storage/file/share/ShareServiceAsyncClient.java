@@ -538,4 +538,28 @@ public final class ShareServiceAsyncClient {
         return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()));
     }
+
+    public Mono<ShareAsyncClient> undeleteShare(
+        String deletedShareName, String deletedShareVersion) {
+        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion).flatMap(FluxUtil::toMono);
+    }
+
+    public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion) {
+        try {
+            return withContext(context ->
+                undeleteShareWithResponse(
+                    deletedShareName, deletedShareVersion, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion, Context context) {
+        return this.azureFileStorageClient.shares().restoreWithRestResponseAsync(
+            deletedShareName, null, null, deletedShareName, deletedShareVersion,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+        .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));
+    }
 }

@@ -406,4 +406,19 @@ public final class ShareServiceClient {
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
         return this.shareServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
     }
+
+    public ShareClient undeleteShare(String deletedShareName, String deletedShareVersion) {
+        return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion, null, Context.NONE)
+            .getValue();
+    }
+
+    public Response<ShareClient> undeleteShareWithResponse(
+        String deletedShareName, String deletedShareVersion, Duration timeout, Context context) {
+        Mono<Response<ShareClient>> response =
+            this.shareServiceAsyncClient.undeleteShareWithResponse(
+                deletedShareName, deletedShareVersion, context)
+                .map(r -> new SimpleResponse<>(r, getShareClient(r.getValue().getShareName())));
+
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
 }

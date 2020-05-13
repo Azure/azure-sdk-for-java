@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.share
 
+import com.azure.core.test.TestMode
+import com.azure.core.util.Context
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.file.share.models.ListSharesOptions
 import com.azure.storage.file.share.models.ShareCorsRule
@@ -249,5 +251,61 @@ class FileServiceAPITests extends APISpec {
         INVALID_EXPOSED_HEADER | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_ORIGIN | 400        | ShareErrorCode.INVALID_XML_DOCUMENT
         INVALID_ALLOWED_METHOD | 400        | ShareErrorCode.INVALID_XML_NODE_VALUE
+    }
+
+    def "Restore share min"() {
+        given:
+        def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
+        shareClient.create()
+        def fileName = generatePathName()
+        shareClient.getFileClient(fileName).create(2)
+        shareClient.delete()
+        if (TestMode.PLAYBACK != getTestMode()) {
+            Thread.sleep(30000)
+        }
+        def shareItem = primaryFileServiceClient.listShares(
+            new ListSharesOptions()
+                .setPrefix(shareClient.getShareName())
+                .setIncludeDeleted(true),
+            null, Context.NONE).first()
+
+        when:
+        def restoredShareClient = primaryFileServiceClient.undeleteShare(shareItem.getName(), shareItem.getVersion())
+
+        then:
+        restoredShareClient.getFileClient(fileName).exists()
+    }
+
+    def "Restore share max"() {
+        given:
+        def shareClient = primaryFileServiceClient.getShareClient(generateShareName())
+        shareClient.create()
+        def fileName = generatePathName()
+        shareClient.getFileClient(fileName).create(2)
+        shareClient.delete()
+        if (TestMode.PLAYBACK != getTestMode()) {
+            Thread.sleep(30000)
+        }
+        def shareItem = primaryFileServiceClient.listShares(
+            new ListSharesOptions()
+                .setPrefix(shareClient.getShareName())
+                .setIncludeDeleted(true),
+            null, Context.NONE).first()
+
+        when:
+        def restoredShareClient = primaryFileServiceClient.undeleteShareWithResponse(
+            shareItem.getName(), shareItem.getVersion(), null, Context.NONE)
+            .getValue()
+
+        then:
+        restoredShareClient.getFileClient(fileName).exists()
+    }
+
+    def "Restore share error"() {
+        when:
+        primaryFileServiceClient.undeleteShare(generateShareName(), "01D60F8BB59A4652")
+
+        then:
+        thrown(ShareStorageException.class)
     }
 }
