@@ -642,7 +642,7 @@ public class SearchSyncTests extends SearchTestBase {
         List<Map<String, Object>> response = getSearchResults(client.search("hotel",
             searchOptions, generateRequestOptions(), Context.NONE));
         assertEquals(2, response.size());
-        assertEquals(Arrays.asList("1", "2"),
+        assertEquals(Arrays.asList("2", "1"),
             response.stream().map(res -> res.get("HotelId").toString()).collect(Collectors.toList()));
     }
 
@@ -767,7 +767,7 @@ public class SearchSyncTests extends SearchTestBase {
         // Update the index with the SynonymMap
         searchServiceClient.createOrUpdateIndex(hotelsIndex);
 
-        sleepIfRunningAgainstService(5000);
+        sleepIfRunningAgainstService(10000);
 
         SearchOptions searchOptions = new SearchOptions()
             .setQueryType(QueryType.FULL)
