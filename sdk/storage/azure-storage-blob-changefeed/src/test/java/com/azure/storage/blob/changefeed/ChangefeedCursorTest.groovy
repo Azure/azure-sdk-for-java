@@ -1,7 +1,7 @@
 package com.azure.storage.blob.changefeed
 
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
+
 import spock.lang.Specification
 
 import java.time.OffsetDateTime
@@ -23,7 +23,6 @@ class ChangefeedCursorTest extends Specification {
         cursor.getEndTime() == endTime.toString()
         cursor.getSegmentTime() == null
         cursor.getShardPath() == null
-        cursor.getShardCursors() == null
     }
 
     def "toSegmentCursor"() {
@@ -35,58 +34,73 @@ class ChangefeedCursorTest extends Specification {
         cursor.getEndTime() == endTime.toString()
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == null
-        cursor.getShardCursors() == null
     }
 
     def "toShardCursor"() {
         when:
         ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath, new HashMap<String, ShardCursor>())
+            .toShardCursor(shardPath)
 
         then:
         cursor.getEndTime() == endTime.toString()
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == shardPath
-        cursor.getShardCursors().size() == 0
+    }
+
+    def "toChunkCursor"() {
+        when:
+        ChangefeedCursor cursor = new ChangefeedCursor(endTime)
+            .toSegmentCursor(segmentTime)
+            .toShardCursor(shardPath)
+            .toChunkCursor(chunkPath)
+
+        then:
+        cursor.getEndTime() == endTime.toString()
+        cursor.getSegmentTime() == segmentTime.toString()
+        cursor.getShardPath() == shardPath
+        cursor.getChunkPath() == chunkPath
     }
 
     def "toEventCursor"() {
         when:
         ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath, new HashMap<String, ShardCursor>())
-            .toEventCursor(chunkPath, blockOffset, objectBlockIndex)
+            .toShardCursor(shardPath)
+            .toChunkCursor(chunkPath)
+            .toEventCursor(blockOffset, objectBlockIndex)
 
         then:
         cursor.getEndTime() == endTime.toString()
         cursor.getSegmentTime() == segmentTime.toString()
         cursor.getShardPath() == shardPath
-        cursor.getShardCursor(shardPath).getChunkPath() == chunkPath
-        cursor.getShardCursor(shardPath).getBlockOffset() == blockOffset
-        cursor.getShardCursor(shardPath).getObjectBlockIndex() == objectBlockIndex
+        cursor.getChunkPath() == chunkPath
+        cursor.getBlockOffset() == blockOffset
+        cursor.getObjectBlockIndex() == objectBlockIndex
     }
 
     def "serialize"() {
         setup:
         ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath, new HashMap<String, ShardCursor>())
-            .toEventCursor(chunkPath, blockOffset, objectBlockIndex)
+            .toShardCursor(shardPath)
+            .toChunkCursor(chunkPath)
+            .toEventCursor(blockOffset, objectBlockIndex)
 
         when:
         String serialized = cursor.serialize()
 
         then:
-        serialized == "{" + "\"endTime\":\"" + endTime.toString() + "\"," + "\"segmentTime\":\"" + segmentTime.toString() + "\"," + "\"shardCursors\":{\"" + shardPath + "\":{\"chunkPath\":\"" + chunkPath + "\"," + "\"blockOffset\":" + blockOffset + "," + "\"objectBlockIndex\":" + objectBlockIndex + "}},\"shardPath\":\"" + shardPath + "\"}"
+        serialized == "{\"endTime\":\"" + endTime.toString() + "\",\"segmentTime\":\"" +segmentTime.toString() + "\",\"shardPath\":\"" + shardPath + "\",\"chunkPath\":\"" + chunkPath + "\",\"blockOffset\":" + blockOffset + ",\"objectBlockIndex\":" + objectBlockIndex + "}"
     }
 
     def "deserialize"() {
         setup:
         ChangefeedCursor cursor = new ChangefeedCursor(endTime)
             .toSegmentCursor(segmentTime)
-            .toShardCursor(shardPath, new HashMap<String, ShardCursor>())
-            .toEventCursor(chunkPath, blockOffset, objectBlockIndex)
+            .toShardCursor(shardPath)
+            .toChunkCursor(chunkPath)
+            .toEventCursor(blockOffset, objectBlockIndex)
         String serialized = cursor.serialize()
 
         when:
@@ -96,7 +110,6 @@ class ChangefeedCursorTest extends Specification {
         cursor.getEndTime() == deserialized.getEndTime()
         cursor.getSegmentTime() == deserialized.getSegmentTime()
         cursor.getShardPath() == deserialized.getShardPath()
-        cursor.getShardCursors() == deserialized.getShardCursors()
     }
 
 }

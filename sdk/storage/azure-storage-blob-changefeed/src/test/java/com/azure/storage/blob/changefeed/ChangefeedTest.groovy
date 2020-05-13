@@ -29,10 +29,38 @@ class ChangefeedTest extends HelperSpec {
 
     BlobContainerAsyncClient mockContainer
     SegmentFactory mockSegmentFactory
+    Segment mockSegment
+    BlobAsyncClient mockMetadataClient
 
     def setup() {
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockSegmentFactory = mock(SegmentFactory.class)
+
+        mockMetadataClient = mock(BlobAsyncClient.class)
+        when(mockContainer.exists())
+            .thenReturn(Mono.just(true))
+        when(mockContainer.getBlobAsyncClient(anyString()))
+            .thenReturn(mockMetadataClient)
+        when(mockMetadataClient.download())
+            .thenReturn(readFile("changefeed_manifest.json"))
+        when(mockContainer.listBlobsByHierarchy(anyString()))
+            .thenReturn(new PagedFlux<>(yearSupplier))
+        Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
+        when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
+            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
+        when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
+            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
+        when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
+            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
+        when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
+            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
+
+        mockSegment = mock(Segment.class)
+
+        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), nullable(ChangefeedCursor.class)))
+            .thenReturn(mockSegment)
+        when(mockSegment.getEvents())
+            .thenReturn(Flux.empty())
     }
 
     def "changefeed does not exist"() {
@@ -74,6 +102,27 @@ class ChangefeedTest extends HelperSpec {
         verify(mockMetadataClient).download() || true
     }
 
+    @Unroll
+    def "changefeed last consumable populated"() {
+        when:
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
+        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, endTime) /* End time definitely later than endTime*/
+        def sv = StepVerifier.create(changefeed.getEvents())
+
+        then:
+        sv.verifyComplete()
+        changefeed.lastConsumable == OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
+        changefeed.safeEndTime == safeEndTime
+        verify(mockContainer).exists() || true
+        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
+        verify(mockMetadataClient).download() || true
+
+        where:
+        endTime                                                     || safeEndTime
+        OffsetDateTime.MAX                                          || OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)    /* endTime is after. Limited by lastConsumable. */
+        OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)  || OffsetDateTime.of(2019, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)    /* endTime is before. Limited by endTime. */
+    }
+
     /* 4 years 2017-2020. */
     Supplier<Mono<PagedResponse<BlobItem>>> yearSupplier = new Supplier<Mono<PagedResponse<BlobItem>>>() {
         @Override
@@ -102,37 +151,9 @@ class ChangefeedTest extends HelperSpec {
 
     /* No options. */
     def "changefeed min"() {
-        setup:
-        BlobAsyncClient mockMetadataClient = mock(BlobAsyncClient.class)
-        when(mockContainer.exists())
-            .thenReturn(Mono.just(true))
-        when(mockContainer.getBlobAsyncClient(anyString()))
-            .thenReturn(mockMetadataClient)
-        when(mockMetadataClient.download())
-            .thenReturn(readFile("changefeed_manifest.json"))
-        when(mockContainer.listBlobsByHierarchy(anyString()))
-            .thenReturn(new PagedFlux<>(yearSupplier))
-        Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
-        when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
-
-        def mockSegment = mock(Segment.class)
-
-        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), isNull()))
-            .thenReturn(mockSegment)
-        when(mockSegment.getEvents())
-            .thenReturn(Flux.empty()) /* TODO (gapra) : Does it really matter I return real events? I check that we get the correct segments. */
-
         when:
         ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
         Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, null)
-
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -144,164 +165,16 @@ class ChangefeedTest extends HelperSpec {
         verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
         ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
         verify(mockContainer, times(4)).listBlobs(options.capture()) || true
-        verifyEvents(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15)
+        verifyEvents(OffsetDateTime.MAX, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], null)
         verifyYears(options.getAllValues(), "idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020")
         verify(mockSegment, times(16)).getEvents() || true
     }
 
-    /* startTime years. */
     @Unroll
-    def "changefeed startTime years"() {
-        setup:
-        BlobAsyncClient mockMetadataClient = mock(BlobAsyncClient.class)
-        when(mockContainer.exists())
-            .thenReturn(Mono.just(true))
-        when(mockContainer.getBlobAsyncClient(anyString()))
-            .thenReturn(mockMetadataClient)
-        when(mockMetadataClient.download())
-            .thenReturn(readFile("changefeed_manifest.json"))
-        when(mockContainer.listBlobsByHierarchy(anyString()))
-            .thenReturn(new PagedFlux<>(yearSupplier))
-        Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
-        when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
-
-        def mockSegment = mock(Segment.class)
-
-        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), isNull()))
-            .thenReturn(mockSegment)
-        when(mockSegment.getEvents())
-            .thenReturn(Flux.empty())
-
-        when:
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, OffsetDateTime.of(year, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC), null)
-
-        def sv = StepVerifier.create(changefeed.getEvents())
-
-        then:
-        sv.verifyComplete()
-        assert changefeed.lastConsumable == OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
-        verify(mockContainer).exists() || true
-        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
-        verify(mockMetadataClient).download() || true
-        verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
-        ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
-        verify(mockContainer, times(yearPaths.size())).listBlobs(options.capture()) || true
-        verifyEvents(OffsetDateTime.MAX, eventNums as int[])
-        verifyYears(options.getAllValues(), yearPaths as String[])
-        verify(mockSegment, times(eventNums.size())).getEvents() || true
-
-        where:
-        year || yearPaths                                                                               | eventNums
-        2016 || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]   | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        2017 || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]   | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        2018 || ["idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]                        | [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-        2019 || ["idx/segments/2019", "idx/segments/2020"]                                             | [8, 9, 10, 11, 12, 13, 14, 15]
-        2020 || ["idx/segments/2020"]                                                                  | [12, 13, 14, 15]
-        2021 || []                                                                                     | []
-    }
-
-    /* endTime years. */
-    @Unroll
-    def "changefeed endTime years"() {
-        setup:
-        BlobAsyncClient mockMetadataClient = mock(BlobAsyncClient.class)
-        when(mockContainer.exists())
-            .thenReturn(Mono.just(true))
-        when(mockContainer.getBlobAsyncClient(anyString()))
-            .thenReturn(mockMetadataClient)
-        when(mockMetadataClient.download())
-            .thenReturn(readFile("changefeed_manifest.json"))
-        when(mockContainer.listBlobsByHierarchy(anyString()))
-            .thenReturn(new PagedFlux<>(yearSupplier))
-        Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
-        when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
-
-        def mockSegment = mock(Segment.class)
-
-        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), isNull()))
-            .thenReturn(mockSegment)
-        when(mockSegment.getEvents())
-            .thenReturn(Flux.empty())
-
-        when:
-        OffsetDateTime end = OffsetDateTime.of(year, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)
-        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
-        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, end)
-
-        def sv = StepVerifier.create(changefeed.getEvents())
-
-        then:
-        sv.verifyComplete()
-        assert changefeed.lastConsumable == OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
-        verify(mockContainer).exists() || true
-        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
-        verify(mockMetadataClient).download() || true
-        verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
-        ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
-        verify(mockContainer, times(yearPaths.size())).listBlobs(options.capture()) || true
-        verifyEvents(end, eventNums as int[])
-        verifyYears(options.getAllValues(), yearPaths as String[])
-        verify(mockSegment, times(eventNums.size())).getEvents() || true
-
-        where:
-        year || yearPaths                                                                               | eventNums
-        2016 || []                                                                                      | []
-        2017 || ["idx/segments/2017"]                                                                   | []
-        2018 || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]
-        2019 || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7]
-        2020 || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-        2021 || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-    }
-
-    /* startTime segments. */
-    @Unroll
-    def "changefeed startTime segments"() {
-        setup:
-        BlobAsyncClient mockMetadataClient = mock(BlobAsyncClient.class)
-        when(mockContainer.exists())
-            .thenReturn(Mono.just(true))
-        when(mockContainer.getBlobAsyncClient(anyString()))
-            .thenReturn(mockMetadataClient)
-        when(mockMetadataClient.download())
-            .thenReturn(readFile("changefeed_manifest.json"))
-        when(mockContainer.listBlobsByHierarchy(anyString()))
-            .thenReturn(new PagedFlux<>(yearSupplier))
-        Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
-        when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
-
-        def mockSegment = mock(Segment.class)
-
-        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), isNull()))
-            .thenReturn(mockSegment)
-        when(mockSegment.getEvents())
-            .thenReturn(Flux.empty())
-
+    def "changefeed startTime"() {
         when:
         ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
         Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, startTime, null)
-
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -313,52 +186,29 @@ class ChangefeedTest extends HelperSpec {
         verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
         ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
         verify(mockContainer, times(yearPaths.size())).listBlobs(options.capture()) || true
-        verifyEvents(OffsetDateTime.MAX, eventNums as int[])
+        verifyEvents(OffsetDateTime.MAX, eventNums, null)
         verifyYears(options.getAllValues(), yearPaths as String[])
         verify(mockSegment, times(eventNums.size())).getEvents() || true
 
         where:
-         startTime                                                   || yearPaths                                                                               | eventNums
-         OffsetDateTime.of(2017, 1, 1, 2, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] /* All segments taken from year. */
-         OffsetDateTime.of(2018, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]                         | [8, 9, 10, 11, 12, 13, 14, 15]                         /* No segments taken from year. */
-         OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2019", "idx/segments/2020"]                                              | [10, 11, 12, 13, 14, 15]                               /* Partial segments taken from year. Checks isEqual. */
-         OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2020"]                                                                   | [15]                                                   /* Partial segments taken from year. Checks is strictly before. */
+        startTime                                                   || yearPaths                                                                               | eventNums
+        OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]                         | [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2019", "idx/segments/2020"]                                              | [8, 9, 10, 11, 12, 13, 14, 15]
+        OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2020"]                                                                   | [12, 13, 14, 15]
+        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || []                                                                                      | []
+        OffsetDateTime.of(2017, 1, 1, 2, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] /* All segments taken from year. */
+        OffsetDateTime.of(2018, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]                         | [8, 9, 10, 11, 12, 13, 14, 15]                         /* No segments taken from year. */
+        OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2019", "idx/segments/2020"]                                              | [10, 11, 12, 13, 14, 15]                               /* Partial segments taken from year. Checks isEqual. */
+        OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2020"]                                                                   | [15]                                                   /* Partial segments taken from year. Checks is strictly before. */
     }
 
-    /* endTime segments. */
     @Unroll
-    def "changefeed endTime segments"() {
-        setup:
-        BlobAsyncClient mockMetadataClient = mock(BlobAsyncClient.class)
-        when(mockContainer.exists())
-            .thenReturn(Mono.just(true))
-        when(mockContainer.getBlobAsyncClient(anyString()))
-            .thenReturn(mockMetadataClient)
-        when(mockMetadataClient.download())
-            .thenReturn(readFile("changefeed_manifest.json"))
-        when(mockContainer.listBlobsByHierarchy(anyString()))
-            .thenReturn(new PagedFlux<>(yearSupplier))
-        Function<String, ArgumentMatcher<ListBlobsOptions>> isYear = { year -> { options -> options == null ? false : options.getPrefix().equals("idx/segments/" + year) } }
-        when(mockContainer.listBlobs(argThat(isYear.apply("2017"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2017")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2018"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2018")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2019"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2019")))
-        when(mockContainer.listBlobs(argThat(isYear.apply("2020"))))
-            .thenReturn(new PagedFlux<>(segmentSupplier.apply("2020")))
-
-        def mockSegment = mock(Segment.class)
-
-        when(mockSegmentFactory.getSegment(any(BlobContainerAsyncClient.class), anyString(), any(ChangefeedCursor.class), isNull()))
-            .thenReturn(mockSegment)
-        when(mockSegment.getEvents())
-            .thenReturn(Flux.empty())
-
+    def "changefeed endTime"() {
         when:
         ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
         Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, null, endTime)
-
         def sv = StepVerifier.create(changefeed.getEvents())
 
         then:
@@ -370,17 +220,119 @@ class ChangefeedTest extends HelperSpec {
         verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
         ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
         verify(mockContainer, times(yearPaths.size())).listBlobs(options.capture()) || true
-        verifyEvents(endTime, eventNums as int[])
+        verifyEvents(endTime, eventNums, null)
         verifyYears(options.getAllValues(), yearPaths as String[])
         verify(mockSegment, times(eventNums.size())).getEvents() || true
 
         where:
         endTime                                                     || yearPaths                                                                               | eventNums
+        OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || []                                                                                      | []
+        OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017"]                                                                   | []
+        OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]
+        OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7]
+        OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         OffsetDateTime.of(2017, 12, 12, 2, 0, 0, 0, ZoneOffset.UTC) || ["idx/segments/2017"]                                                                   | [0, 1, 2, 3]                                         /* All segments taken from year. */
         OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]                                         /* No segments taken from year. */
         OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]                   /* Partial segments taken from year. Checks isEqual. */
         OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC)   || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]   /* Partial segments taken from year. Checks is strictly before. */
     }
+
+    List<ChangefeedCursor> cursorStart = [
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 2, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2018, 1, 2, 0, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)),
+        new ChangefeedCursor(OffsetDateTime.MAX).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC)),
+    ]
+
+    @Unroll
+    def "changefeed cursor startTime"() {
+        when:
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
+        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, cursorStart.get(cursorNum).serialize())
+        def sv = StepVerifier.create(changefeed.getEvents())
+
+        then:
+        sv.verifyComplete()
+        assert changefeed.lastConsumable == OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
+        verify(mockContainer).exists() || true
+        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
+        verify(mockMetadataClient).download() || true
+        verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
+        ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
+        verify(mockContainer, times(yearPaths.size())).listBlobs(options.capture()) || true
+        verifyEvents(OffsetDateTime.MAX, eventNums, cursorStart.get(cursorNum))
+        verifyYears(options.getAllValues(), yearPaths as String[])
+        verify(mockSegment, times(eventNums.size())).getEvents() || true
+
+        where:
+        cursorNum || yearPaths | eventNums
+        0         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]   | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        1         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]   | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        2         || ["idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]                        | [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        3         || ["idx/segments/2019", "idx/segments/2020"]                                             | [8, 9, 10, 11, 12, 13, 14, 15]
+        4         || ["idx/segments/2020"]                                                                  | [12, 13, 14, 15]
+        5         || []                                                                                     | []
+        6         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]   | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] /* All segments taken from year. */
+        7         || ["idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]                        | [8, 9, 10, 11, 12, 13, 14, 15]                         /* No segments taken from year. */
+        8         || ["idx/segments/2019", "idx/segments/2020"]                                             | [10, 11, 12, 13, 14, 15]                               /* Partial segments taken from year. Checks isEqual. */
+        9         || ["idx/segments/2020"]                                                                  | [15]                                                   /* Partial segments taken from year. Checks is strictly before. */
+    }
+
+    List<ChangefeedCursor> cursorEnd = [
+        new ChangefeedCursor(OffsetDateTime.of(2016, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2017, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2019, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2021, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2017, 12, 12, 2, 0, 0, 0, ZoneOffset.UTC)).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2018, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+        new ChangefeedCursor(OffsetDateTime.of(2020, 1, 1, 8, 0, 0, 0, ZoneOffset.UTC)  ).toSegmentCursor(OffsetDateTime.MIN),
+    ]
+
+    @Unroll
+    def "changefeed cursor endTime"() {
+        when:
+        ChangefeedFactory changefeedFactory = new ChangefeedFactory(mockSegmentFactory)
+        Changefeed changefeed = changefeedFactory.getChangefeed(mockContainer, cursorEnd.get(cursorNum).serialize())
+        def sv = StepVerifier.create(changefeed.getEvents())
+
+        then:
+        sv.verifyComplete()
+        assert changefeed.lastConsumable == OffsetDateTime.of(2020, 5, 4, 19, 0, 0, 0, ZoneOffset.UTC)
+        verify(mockContainer).exists() || true
+        verify(mockContainer).getBlobAsyncClient(Changefeed.METADATA_SEGMENT_PATH) || true
+        verify(mockMetadataClient).download() || true
+        verify(mockContainer).listBlobsByHierarchy(Changefeed.SEGMENT_PREFIX) || true
+        ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
+        verify(mockContainer, times(yearPaths.size())).listBlobs(options.capture()) || true
+        verifyEvents(OffsetDateTime.parse(cursorEnd.get(cursorNum).getEndTime()), eventNums, cursorEnd.get(cursorNum))
+        verifyYears(options.getAllValues(), yearPaths as String[])
+        verify(mockSegment, times(eventNums.size())).getEvents() || true
+
+        where:
+        cursorNum || yearPaths                                                                               | eventNums
+        0         || []                                                                                      | []
+        1         || ["idx/segments/2017"]                                                                   | []
+        2         || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]
+        3         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7]
+        4         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+        5         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        6         || ["idx/segments/2017"]                                                                   | [0, 1, 2, 3]                                         /* All segments taken from year. */
+        7         || ["idx/segments/2017", "idx/segments/2018"]                                              | [0, 1, 2, 3]                                         /* No segments taken from year. */
+        8         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019"]                         | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]                   /* Partial segments taken from year. Checks isEqual. */
+        9         || ["idx/segments/2017", "idx/segments/2018", "idx/segments/2019", "idx/segments/2020"]    | [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]   /* Partial segments taken from year. Checks is strictly before. */
+    }
+
+    // TODO (gapra) : Maybe add some that do both endTime + startTime
 
     boolean verifyYears(List<ListBlobsOptions> captured, String... yearPaths) {
         for (def yearPath : yearPaths) {
@@ -391,45 +343,43 @@ class ChangefeedTest extends HelperSpec {
         return true
     }
 
-    boolean verifyEvents(OffsetDateTime endTime, int... eventNum) {
+    boolean verifyEvents(OffsetDateTime endTime, List<Integer> eventNum, ChangefeedCursor userCursor) {
         if (0 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (1 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (2 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (3 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2017/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2017, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
 
         if (4 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (5 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (6 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (7 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2018/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2018, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
 
         if (8 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (9 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (10 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (11 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2019/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2019, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
 
         if (12 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0300/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 3, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (13 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0500/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 5, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (14 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/0600/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 6, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         if (15 in eventNum)
-            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), null) || true
+            assert verify(mockSegmentFactory).getSegment(mockContainer, "idx/segments/2020/01/01/1200/meta.json", new ChangefeedCursor(endTime).toSegmentCursor(OffsetDateTime.of(2020, 1, 1, 12, 0, 0, 0, ZoneOffset.UTC)), userCursor) || true
         return true;
     }
-
-    /* TODO: (gapra): Test cursor. Test lastConsumable before endTime. */
 
 }

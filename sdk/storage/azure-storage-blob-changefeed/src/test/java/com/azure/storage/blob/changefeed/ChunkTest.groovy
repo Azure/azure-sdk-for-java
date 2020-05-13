@@ -4,7 +4,7 @@ import com.azure.storage.blob.BlobAsyncClient
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
+
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEvent
 import com.azure.storage.blob.changefeed.models.BlobChangefeedEventData
 import com.azure.storage.internal.avro.implementation.AvroObject
@@ -28,12 +28,18 @@ class ChunkTest extends HelperSpec {
 
     String chunkPath = "chunkPath"
     String shardPath = "shardPath"
-    ChangefeedCursor shardCursor
+    ChangefeedCursor chunkCursor
 
     List<Map<String, Object>> mockRecords
     List<AvroObject> mockAvroObjects
 
     def setup() {
+        mockRecords = new LinkedList<>()
+        mockAvroObjects = new LinkedList<>()
+        getEvents()
+        getAvroObjects()
+        chunkCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, "chunkPath", 0, 0)
+
         mockContainer = mock(BlobContainerAsyncClient.class)
         mockBlob = mock(BlobAsyncClient.class)
         mockAvroReaderFactory = mock(AvroReaderFactory.class)
@@ -50,16 +56,6 @@ class ChunkTest extends HelperSpec {
             .thenReturn(Flux.empty())
         when(mockAvroReader.readAvroObjects())
             .thenReturn(Flux.fromIterable(mockAvroObjects))
-
-        Map<String, ShardCursor> shardCursors = new HashMap<>()
-        shardCursors.put(shardPath, null)
-        shardCursor = new ChangefeedCursor("endTime", "segmentTime", shardCursors, shardPath)
-
-        mockRecords = new LinkedList<>()
-        mockAvroObjects = new LinkedList<>()
-
-        getEvents()
-        getAvroObjects()
     }
 
     /* These are the records emitted in the AvroParser. */
@@ -92,7 +88,7 @@ class ChunkTest extends HelperSpec {
 
         when:
         ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
-        Chunk chunk = factory.getChunk(mockContainer, chunkPath, shardCursor, 0, 0)
+        Chunk chunk = factory.getChunk(mockContainer, chunkPath, chunkCursor, 0, 0)
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
@@ -126,7 +122,7 @@ class ChunkTest extends HelperSpec {
 
         when:
         ChunkFactory factory = new ChunkFactory(mockAvroReaderFactory, mockBlobLazyDownloaderFactory)
-        Chunk chunk = factory.getChunk(mockContainer, chunkPath, shardCursor, blockOffset, objectBlockIndex)
+        Chunk chunk = factory.getChunk(mockContainer, chunkPath, chunkCursor, blockOffset, objectBlockIndex)
         def sv = StepVerifier.create(chunk.getEvents().index())
 
         then:
@@ -165,14 +161,8 @@ class ChunkTest extends HelperSpec {
 
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, long blockOffset, long blockIndex) {
         boolean verify = true
-        /* Make sure shardCursor was alsop updated properly. */
-        verify &= shardCursor.getShardCursor(shardPath).getBlockOffset() == blockOffset
-        verify &= shardCursor.getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
-        verify &= shardCursor.getShardCursor(shardPath).getChunkPath() == chunkPath
-        /* Make sure the cursor associated with the event is also correct. */
-        verify &= wrapper.getCursor().getShardCursor(shardPath).getBlockOffset() == blockOffset
-        verify &= wrapper.getCursor().getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
-        verify &= wrapper.getCursor().getShardCursor(shardPath).getChunkPath() == chunkPath
+        verify &= wrapper.getCursor().getBlockOffset() == blockOffset
+        verify &= wrapper.getCursor().getObjectBlockIndex() == blockIndex
         /* Make sure the event in the wrapper is what was expected. */
         verify &= wrapper.getEvent().equals(mockEvents.get(index as int))
         return verify

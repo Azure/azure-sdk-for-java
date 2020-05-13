@@ -6,7 +6,6 @@ package com.azure.storage.blob.changefeed;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import reactor.core.publisher.Flux;
@@ -26,14 +25,14 @@ class Shard  {
     private final BlobContainerAsyncClient client; /* Changefeed container */
     private final String shardPath; /* Shard virtual directory path/prefix. */
     private final ChangefeedCursor segmentCursor; /* Cursor associated with parent segment. */
-    private final ShardCursor userCursor; /* User provided cursor for this shard. */
+    private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final ChunkFactory chunkFactory;
 
     /**
      * Creates a new Shard.
      */
     Shard(BlobContainerAsyncClient client, String shardPath, ChangefeedCursor segmentCursor,
-        ShardCursor userCursor, ChunkFactory chunkFactory) {
+        ChangefeedCursor userCursor, ChunkFactory chunkFactory) {
         this.client = client;
         this.shardPath = shardPath;
         this.segmentCursor = segmentCursor;
@@ -60,7 +59,8 @@ class Shard  {
                     blockOffset = userCursor.getBlockOffset();
                     objectBlockIndex = userCursor.getObjectBlockIndex();
                 }
-                return chunkFactory.getChunk(client, chunkPath, segmentCursor, blockOffset, objectBlockIndex)
+                return chunkFactory.getChunk(client, chunkPath, segmentCursor.toChunkCursor(chunkPath),
+                    blockOffset, objectBlockIndex)
                     .getEvents();
             });
     }

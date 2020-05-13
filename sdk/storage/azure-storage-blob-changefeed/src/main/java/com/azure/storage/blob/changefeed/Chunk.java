@@ -46,7 +46,7 @@ class Chunk {
                 Object object = avroObject.getObject();
 
                 /* Get the event cursor associated with this event. */
-                ChangefeedCursor eventCursor = shardCursor.toEventCursor(chunkPath, blockOffset, objectBlockIndex);
+                ChangefeedCursor eventCursor = shardCursor.toEventCursor(blockOffset, objectBlockIndex);
                 BlobChangefeedEvent event = BlobChangefeedEvent.fromRecord(object);
 
                 /* Wrap the event and cursor. */

@@ -6,7 +6,6 @@ package com.azure.storage.blob.changefeed;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor;
 import com.azure.storage.blob.changefeed.implementation.util.DownloadUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,11 +13,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Represents a Segment in Changefeed.
@@ -77,40 +73,33 @@ class Segment {
             JsonNode jsonNode = objectMapper.readTree(json);
             return Mono.just(jsonNode);
         } catch (IOException e) {
-            return Mono.error(new UncheckedIOException(e));
+            return Mono.error(e);
         }
     }
 
     private Flux<Shard> getShards(JsonNode node) {
-        /* Initialize a new map of cursors for this shard. Every shard under this segment will share a common map and
-           the events will update the map appropriately. */
-        Map<String, ShardCursor> shardCursors = new HashMap<>();
         List<Shard> shards = new ArrayList<>();
+        boolean validShard = false;
 
         /* Iterate over each shard element. */
-        int i = 0;
-        int index = 0; /* Index of the shard of interest. */
         for (JsonNode shard : node.withArray(CHUNK_FILE_PATHS)) {
             /* Strip out the changefeed container name and the subsequent / */
             String shardPath =
                 shard.asText().substring(BlobChangefeedAsyncClient.CHANGEFEED_CONTAINER_NAME.length() + 1);
 
-            /* Initialize the map of cursors appropriately. */
-            shardCursors.put(shardPath, null);
-
-            /* If a user cursor was provided, figure out the associated user shard cursor. */
-            ShardCursor userShardCursor = null;
-            if (userCursor != null) {
+            if (userCursor == null) {
+                validShard = true;
+            } else {
+                /* If a user cursor was provided, figure out the associated shard to start at. */
                 if (shardPath.equals(userCursor.getShardPath())) {
-                    index = i;
+                    validShard = true;
                 }
-                userShardCursor = userCursor.getShardCursor(shardPath);
             }
 
-            shards.add(shardFactory.getShard(client, shardPath, cfCursor.toShardCursor(shardPath, shardCursors),
-                userShardCursor));
-            i++;
+            if (validShard) {
+                shards.add(shardFactory.getShard(client, shardPath, cfCursor.toShardCursor(shardPath), userCursor));
+            }
         }
-        return Flux.fromIterable(shards.subList(index, shards.size()));
+        return Flux.fromIterable(shards);
     }
 }

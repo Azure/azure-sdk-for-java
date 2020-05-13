@@ -6,7 +6,7 @@ import com.azure.core.http.rest.PagedResponseBase
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
+
 import com.azure.storage.blob.models.BlobItem
 import com.azure.storage.blob.models.ListBlobsOptions
 import org.mockito.ArgumentCaptor
@@ -49,9 +49,7 @@ class ShardTest extends HelperSpec {
         }
         PagedFlux<BlobItem> mockPagedFlux = new PagedFlux<>(chunkSupplier)
 
-        Map<String, ShardCursor> shardCursors = new HashMap<>()
-        shardCursors.put(shardPath, null)
-        segmentCursor = new ChangefeedCursor("endTime", "segmentTime", shardCursors, shardPath)
+        segmentCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, null, 0, 0)
 
         when(mockContainer.listBlobs(any(ListBlobsOptions.class)))
             .thenReturn(mockPagedFlux)
@@ -73,9 +71,9 @@ class ShardTest extends HelperSpec {
 
     List<BlobChangefeedEventWrapper> getMockEventWrappers(String chunkPath) {
         List<BlobChangefeedEventWrapper> mockEventWrappers = new LinkedList<>()
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(0), segmentCursor.toEventCursor(chunkPath, 1234, 0)))
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(1), segmentCursor.toEventCursor(chunkPath, 1234, 1)))
-        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(2), segmentCursor.toEventCursor(chunkPath, 1234, 2)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(0), segmentCursor.toChunkCursor(chunkPath).toEventCursor(1234, 0)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(1), segmentCursor.toChunkCursor(chunkPath).toEventCursor(1234, 1)))
+        mockEventWrappers.add(new BlobChangefeedEventWrapper(mockEvents.get(2), segmentCursor.toChunkCursor(chunkPath).toEventCursor(1234, 2)))
         return mockEventWrappers
     }
 
@@ -102,9 +100,9 @@ class ShardTest extends HelperSpec {
         ArgumentCaptor<ListBlobsOptions> options = ArgumentCaptor.forClass(ListBlobsOptions.class);
         verify(mockContainer).listBlobs(options.capture()) || true
         options.getValue().getPrefix() == shardPath
-        verify(mockChunkFactory).getChunk(mockContainer, "chunk0", segmentCursor, 0, 0) || true
-        verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, 0, 0) || true
-        verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true
+        verify(mockChunkFactory).getChunk(mockContainer, "chunk0", segmentCursor.toChunkCursor("chunk0"), 0, 0) || true
+        verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor.toChunkCursor("chunk1"), 0, 0) || true
+        verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor.toChunkCursor("chunk2"), 0, 0) || true
         verify(mockChunk0).getEvents() || true
         verify(mockChunk1).getEvents() || true
         verify(mockChunk2).getEvents() || true
@@ -114,7 +112,7 @@ class ShardTest extends HelperSpec {
     @Unroll
     def "getEvents cursor"() {
         setup:
-        ShardCursor userCursor = new ShardCursor(chunkPath, blockOffset, objectBlockIndex)
+        ChangefeedCursor userCursor = new ChangefeedCursor("endTime", "segmentTime", shardPath, chunkPath, blockOffset, objectBlockIndex)
         when:
         ShardFactory shardFactory = new ShardFactory(mockChunkFactory)
         Shard shard = shardFactory.getShard(mockContainer, shardPath, segmentCursor, userCursor)
@@ -144,19 +142,19 @@ class ShardTest extends HelperSpec {
         options.getValue().getPrefix() == shardPath
 
         if (chunkPath == "chunk0") {
-            verify(mockChunkFactory).getChunk(mockContainer, "chunk0", segmentCursor, blockOffset, objectBlockIndex) || true
-            verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, 0, 0) || true
-            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk0", segmentCursor.toChunkCursor("chunk0"), blockOffset, objectBlockIndex) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor.toChunkCursor("chunk1"), 0, 0) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor.toChunkCursor("chunk2"), 0, 0) || true
             verify(mockChunk0).getEvents() || true
             verify(mockChunk1).getEvents() || true
             verify(mockChunk2).getEvents() || true
         } else if (chunkPath == "chunk1") {
-            verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor, blockOffset, objectBlockIndex) || true
-            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, 0, 0) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk1", segmentCursor.toChunkCursor("chunk1"), blockOffset, objectBlockIndex) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor.toChunkCursor("chunk2"), 0, 0) || true
             verify(mockChunk1).getEvents() || true
             verify(mockChunk2).getEvents() || true
         } else if (chunkPath == "chunk2") {
-            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor, blockOffset, objectBlockIndex) || true
+            verify(mockChunkFactory).getChunk(mockContainer, "chunk2", segmentCursor.toChunkCursor("chunk2"), blockOffset, objectBlockIndex) || true
             verify(mockChunk2).getEvents() || true
         }
 
@@ -170,9 +168,9 @@ class ShardTest extends HelperSpec {
     boolean verifyWrapper(BlobChangefeedEventWrapper wrapper, long index, String chunkPath, long blockOffset, long blockIndex) {
         boolean verify = true
         /* Make sure the cursor associated with the event is also correct. */
-        verify &= wrapper.getCursor().getShardCursor(shardPath).getBlockOffset() == blockOffset
-        verify &= wrapper.getCursor().getShardCursor(shardPath).getObjectBlockIndex() == blockIndex
-        verify &= wrapper.getCursor().getShardCursor(shardPath).getChunkPath() == chunkPath
+        verify &= wrapper.getCursor().getBlockOffset() == blockOffset
+        verify &= wrapper.getCursor().getObjectBlockIndex() == blockIndex
+        verify &= wrapper.getCursor().getChunkPath() == chunkPath
         /* Make sure the event in the wrapper is what was expected. */
         verify &= wrapper.getEvent().equals(mockEvents.get(index%3 as int))
         return verify

@@ -3,7 +3,7 @@ package com.azure.storage.blob.changefeed
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
-import com.azure.storage.blob.changefeed.implementation.models.ShardCursor
+
 import reactor.core.publisher.Flux
 import reactor.test.StepVerifier
 
@@ -34,16 +34,16 @@ class BlobChangefeedPagedFluxTest extends HelperSpec {
 
     List<ChangefeedCursor> getMockCursors() {
         List<ChangefeedCursor> mockCursors = new LinkedList<>()
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:15:00", new HashMap<String, ShardCursor>(), "shard0"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:16:00", new HashMap<String, ShardCursor>(), "shard1"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:17:00", new HashMap<String, ShardCursor>(), "shard2"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-02T20:01:00", new HashMap<String, ShardCursor>(), "shard3"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-03T20:08:00", new HashMap<String, ShardCursor>(), "shard4"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-04T20:06:00", new HashMap<String, ShardCursor>(), "shard5"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-05T20:04:00", new HashMap<String, ShardCursor>(), "shard6"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:03:00", new HashMap<String, ShardCursor>(), "shard7"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:06:00", new HashMap<String, ShardCursor>(), "shard8"))
-        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:12:00", new HashMap<String, ShardCursor>(), "shard9"))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:15:00", "shard0", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:16:00", "shard1", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-10-02T20:17:00", "shard2", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-02T20:01:00", "shard3", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-03T20:08:00", "shard4", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-04T20:06:00", "shard5", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-11-05T20:04:00", "shard6", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:03:00", "shard7", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:06:00", "shard8", null, 0, 0))
+        mockCursors.add(new ChangefeedCursor("2020-10-02T20:15:00", "2016-12-02T20:12:00", "shard9", null, 0, 0))
         return mockCursors
     }
 
