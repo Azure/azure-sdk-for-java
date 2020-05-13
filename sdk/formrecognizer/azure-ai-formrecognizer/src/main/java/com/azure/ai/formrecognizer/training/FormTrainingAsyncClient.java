@@ -72,7 +72,7 @@ public class FormTrainingAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    // TODO (savaity): Should not be a public constructore, still deciding the best approach here,
+    // TODO (savaity): Should not be a public constructor, still deciding the best approach here,
     //  to be redone in #10909
     public FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;

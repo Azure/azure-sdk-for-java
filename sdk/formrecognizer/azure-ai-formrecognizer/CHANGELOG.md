@@ -4,9 +4,9 @@
 
 FormTraining Client updates:
 - Adopt to `training` namespace for Form Recognizer Training Clients
-- Rename parameter `fileSourceUrl` to `trainingFilesUrl` on FormTrainingClients
-- Rename parameter `useLabelFile` to `useTrainingLabels()` on FormTrainingClients
-- Add `TrainModelOptions` model for training file filter properties of `filePrefix` and `includeSubFolders`
+- Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
+- Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
+- Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model 
 - Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
 
 ## 1.0.0-beta.2 (2020-05-06)
