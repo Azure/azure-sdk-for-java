@@ -63,7 +63,7 @@ public class CosmosAsyncUser {
             return readInternal();
         }
 
-        return withContext(context -> readInternal(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> readInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -77,7 +77,7 @@ public class CosmosAsyncUser {
             return replaceInternal(userSettings);
         }
 
-        return withContext(context -> replaceInternal(userSettings, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> replaceInternal(userSettings, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -90,7 +90,7 @@ public class CosmosAsyncUser {
             return deleteInternal();
         }
 
-        return withContext(context -> deleteInternal(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> deleteInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -117,7 +117,7 @@ public class CosmosAsyncUser {
         }
 
         final CosmosPermissionRequestOptions requesOptions = options;
-        return withContext(context -> createPermissionInternal(permission, requesOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createPermissionInternal(permission, requesOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -144,7 +144,7 @@ public class CosmosAsyncUser {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> upsertPermissionInternal(permission, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> upsertPermissionInternal(permission, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
 

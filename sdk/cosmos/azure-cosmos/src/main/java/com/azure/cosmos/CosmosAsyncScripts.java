@@ -79,7 +79,7 @@ public class CosmosAsyncScripts {
         }
 
         final CosmosStoredProcedureRequestOptions requestOptions = options;
-        return withContext(context -> createStoredProcedureInternal(sProc, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createStoredProcedureInternal(sProc, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
 
@@ -182,7 +182,7 @@ public class CosmosAsyncScripts {
             return createUserDefinedFunctionInternal(udf);
         }
 
-        return withContext(context -> createUserDefinedFunctionInternal(udf, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createUserDefinedFunctionInternal(udf, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -280,7 +280,7 @@ public class CosmosAsyncScripts {
             return createTriggerInternal(properties);
         }
 
-        return withContext(context -> createTriggerInternal(properties, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createTriggerInternal(properties, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**

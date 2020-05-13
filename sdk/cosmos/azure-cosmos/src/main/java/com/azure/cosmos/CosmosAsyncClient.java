@@ -7,6 +7,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -206,7 +207,7 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(databaseSettings.getId()),
-            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+            context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -223,7 +224,7 @@ public final class CosmosAsyncClient implements Closeable {
             return createDatabaseIfNotExistsInternal(getDatabase(id));
         }
 
-        return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(id), context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createDatabaseIfNotExistsInternal(getDatabase(id), context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -250,7 +251,7 @@ public final class CosmosAsyncClient implements Closeable {
         }
 
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -311,7 +312,7 @@ public final class CosmosAsyncClient implements Closeable {
 
 
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createDatabaseInternal(wrappedDatabase, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -474,17 +475,7 @@ public final class CosmosAsyncClient implements Closeable {
     private Mono<CosmosAsyncDatabaseResponse> createDatabaseIfNotExistsInternal(CosmosAsyncDatabase database,
                                                                                 Context context) {
         String spanName = "createDatabaseIfNotExists." + database.getId();
-        Mono<CosmosAsyncDatabaseResponse> responseMono = database.read().onErrorResume(exception -> {
-            final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosClientException) {
-                final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
-                if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                    return createDatabase(new CosmosDatabaseProperties(database.getId()),
-                        new CosmosDatabaseRequestOptions());
-                }
-            }
-            return Mono.error(unwrappedException);
-        });
+        Mono<CosmosAsyncDatabaseResponse> responseMono = createDatabaseIfNotExistsInternal(database);
         return tracerProvider.traceEnabledCosmosResponsePublisher(responseMono, context, spanName, database.getId(),
             this.serviceEndpoint);
     }

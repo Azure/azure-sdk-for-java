@@ -90,7 +90,7 @@ public class CosmosAsyncDatabase {
             return readInternal(options);
         }
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> readInternal(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> readInternal(requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -125,7 +125,7 @@ public class CosmosAsyncDatabase {
         }
 
         final CosmosDatabaseRequestOptions requestOptions = options;
-        return withContext(context -> deleteInternal(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> deleteInternal(requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /* CosmosAsyncContainer operations */
@@ -216,7 +216,7 @@ public class CosmosAsyncDatabase {
         }
 
         final CosmosContainerRequestOptions requestOptions = options;
-        return withContext(context -> createContainerInternal(containerProperties, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createContainerInternal(containerProperties, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
 
@@ -302,7 +302,7 @@ public class CosmosAsyncDatabase {
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, null,
-            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+            context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -329,7 +329,7 @@ public class CosmosAsyncDatabase {
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(containerProperties, container, options,
-            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+            context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -352,7 +352,7 @@ public class CosmosAsyncDatabase {
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id, partitionKeyPath), container, null,
-            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+            context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -380,7 +380,7 @@ public class CosmosAsyncDatabase {
         }
 
         return withContext(context -> createContainerIfNotExistsInternal(new CosmosContainerProperties(id,
-            partitionKeyPath), container, options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+            partitionKeyPath), container, options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -510,7 +510,7 @@ public class CosmosAsyncDatabase {
         if (!client.getTracerProvider().isEnabled()) {
             return createUserInternal(userProperties);
         }
-        return withContext(context -> createUserInternal(userProperties, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> createUserInternal(userProperties, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
 
@@ -530,7 +530,7 @@ public class CosmosAsyncDatabase {
             return upsertUserInternal(userProperties);
         }
 
-        return withContext(context -> upsertUserInternal(userProperties, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> upsertUserInternal(userProperties, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -653,7 +653,7 @@ public class CosmosAsyncDatabase {
             return readProvisionedThroughputInternal();
         }
 
-        return withContext(context -> readProvisionedThroughputInternal(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> readProvisionedThroughputInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -669,7 +669,7 @@ public class CosmosAsyncDatabase {
             return replaceProvisionedThroughputInternal(requestUnitsPerSecond);
         }
 
-        return withContext(context -> replaceProvisionedThroughputInternal(requestUnitsPerSecond, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> replaceProvisionedThroughputInternal(requestUnitsPerSecond, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**

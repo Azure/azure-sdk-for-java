@@ -8,6 +8,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TracerProvider;
 import com.azure.cosmos.models.FeedResponse;
 import reactor.core.CoreSubscriber;
@@ -44,7 +45,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
     @Override
     public Flux<FeedResponse<T>> byPage() {
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     @Override
@@ -52,7 +53,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     @Override
@@ -60,7 +61,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         CosmosPagedFluxOptions cosmosPagedFluxOptions = new CosmosPagedFluxOptions();
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     @Override
@@ -69,7 +70,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         cosmosPagedFluxOptions.setRequestContinuation(continuationToken);
         cosmosPagedFluxOptions.setMaxItemCount(preferredPageSize);
 
-        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return FluxUtil.fluxContext(context ->  byPage(cosmosPagedFluxOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -104,7 +105,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             }
         }).doOnComplete(() -> {
             if ( pagedFluxOptions.getTracerProvider().isEnabled() && !isNestedCall) {
-                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), 200);
+                pagedFluxOptions.getTracerProvider().endSpan(parentContext.get(), Signal.complete(), HttpConstants.StatusCodes.OK);
             }
         }).doOnError(throwable -> {
             if (pagedFluxOptions.getTracerProvider().isEnabled()) {

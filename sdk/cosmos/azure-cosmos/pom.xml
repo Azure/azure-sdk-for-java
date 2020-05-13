@@ -134,17 +134,16 @@ Licensed under the MIT License.
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-tracing-opentelemetry</artifactId>
+      <artifactId>azure-core-tracing-opentelemetry</artifactId> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <scope>test</scope>
       <version>1.0.0-beta.4</version>
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
-          <artifactId>*</artifactId>
+          <artifactId>netty-tcnative-boringssl-static</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
-
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>

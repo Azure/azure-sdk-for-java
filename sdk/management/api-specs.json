@@ -15,19 +15,19 @@
     "dir": "../appservice/mgmt",
     "source": "specification/web/resource-manager/readme.md",
     "package": "com.azure.management.appservice",
-    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=package-2019-08 --add-inner=AppServiceCertificate"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --add-inner=AppServiceCertificate"
   },
   "arm-keyvault": {
     "dir": "../keyvault/mgmt",
     "source": "specification/keyvault/resource-manager/readme.md",
     "package": "com.azure.management.keyvault",
-    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=package-2018-02"
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-02"
   },
   "authorization": {
     "dir": "../authorization/mgmt",
     "source": "specification/authorization/resource-manager/readme.md",
-    "package": "com.azure.management.graphrbac --tag=package-2018-01-01-preview",
-    "args": "--track1-naming=true --payload-flattening-threshold=1"
+    "package": "com.azure.management.graphrbac",
+    "args": "--tag=package-2018-01-01-preview --payload-flattening-threshold=1"
   },
   "automation": {
     "dir": "../automation/mgmt",
@@ -76,7 +76,7 @@
     "dir": "../compute/mgmt",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.management.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-03-01 --track1-naming=true"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-03-01"
   },
   "consumption": {
     "dir": "../consumption/mgmt",
@@ -94,19 +94,19 @@
     "dir": "../containerregistry/mgmt",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.azure.management.containerregistry",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-09 --track1-naming=true"
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-09"
   },
   "containerservice": {
     "dir": "../containerservice/mgmt",
     "source": "specification/containerservice/resource-manager/readme.md",
     "package": "com.azure.management.containerservice",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --title=ContainerServiceManagementClient --description=\"Container Service Client\" --track1-naming=true"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-08 --title=ContainerServiceManagementClient --description=\"Container Service Client\""
   },
   "cosmosdb": {
     "dir": "../cosmos/mgmt",
     "source": "specification/cosmos-db/resource-manager/readme.md",
     "package": "com.azure.management.cosmosdb",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-08-preview --track1-naming=true"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-08-preview"
   },
   "customerinsights": {
     "dir": "../customerinsights/mgmt",
@@ -152,7 +152,7 @@
     "dir": "../dns/mgmt",
     "source": "specification/dns/resource-manager/readme.md",
     "package": "com.azure.management.dns",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview --track1-naming=true"
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
   },
   "eventhub": {
     "dir": "../eventhub/mgmt",
@@ -163,14 +163,14 @@
   "features": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.management.resources --tag=package-features-2015-12",
-    "args": "--track1-naming=true"
+    "package": "com.azure.management.resources",
+    "args": "--tag=package-features-2015-12"
   },
   "graphrbac": {
     "dir": "../authorization/mgmt",
     "source": "specification/graphrbac/data-plane/readme.md",
     "package": "com.azure.management.graphrbac",
-    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=1.6"
+    "args": "--payload-flattening-threshold=1 --tag=1.6"
   },
   "iothub": {
     "dir": "../devices/mgmt",
@@ -207,13 +207,13 @@
     "dir": "../monitor/mgmt",
     "source": "specification/monitor/resource-manager/readme.md",
     "package": "com.azure.management.monitor",
-    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=AutoscaleProfile,ScaleRule,LocalizableString"
   },
   "network": {
     "dir": "../network/mgmt",
     "source": "specification/network/resource-manager/readme.md",
     "package": "com.azure.management.network",
-    "args": "--track1-naming=true --payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=ApplicationGatewayIPConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIPConfiguration,ConnectionMonitor,PacketCapture"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-06 --add-inner=ApplicationGatewayIPConfiguration,ApplicationGatewayPathRule,ApplicationGatewayProbe,ApplicationGatewayRedirectConfiguration,ApplicationGatewayRequestRoutingRule,ApplicationGatewaySslCertificate,ApplicationGatewayUrlPathMap,ApplicationGatewayAuthenticationCertificate,VirtualNetworkGatewayIPConfiguration,ConnectionMonitor,PacketCapture"
   },
   "notificationhubs": {
     "dir": "../notificationhubs/mgmt",
@@ -224,7 +224,7 @@
   "policy": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.management.resources --tag=package-policy-2017-06 --track1-naming=true"
+    "package": "com.azure.management.resources --tag=package-policy-2019-09"
   },
   "powerbi": {
     "dir": "../powerbi/mgmt",
@@ -265,8 +265,8 @@
   "resources": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.management.resources --tag=package-resources-2019-08",
-    "args": "--track1-naming=true --payload-flattening-threshold=1 --add-inner=Deployment"
+    "package": "com.azure.management.resources",
+    "args": "--tag=package-resources-2019-08 --payload-flattening-threshold=1 --add-inner=Deployment"
   },
   "scheduler": {
     "dir": "../scheduler/mgmt",
@@ -302,13 +302,13 @@
     "dir": "../sql/mgmt",
     "source": "specification/sql/resource-manager/readme.md",
     "package": "com.azure.management.sql",
-    "args": "--payload-flattening-threshold=1 --tag=package-composite-v3 --track1-naming=true"
+    "args": "--payload-flattening-threshold=1 --tag=package-composite-v3"
   },
   "storage": {
     "dir": "../storage/mgmt",
     "source": "specification/storage/resource-manager/readme.md",
     "package": "com.azure.management.storage",
-    "args": "--track1-naming=true --payload-flattening-threshold=2 --tag=package-2019-06"
+    "args": "--payload-flattening-threshold=2 --tag=package-2019-06"
   },
   "storsimple8000series": {
     "dir": "../storsimple8000series/mgmt",
@@ -325,8 +325,8 @@
   "subscriptions": {
     "dir": "../resources/mgmt",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.azure.management.resources --tag=package-subscriptions-2016-06",
-    "args": "--track1-naming=true"
+    "package": "com.azure.management.resources",
+    "args": "--tag=package-subscriptions-2020-01"
   },
   "trafficmanager": {
     "dir": "../trafficmanager/mgmt",

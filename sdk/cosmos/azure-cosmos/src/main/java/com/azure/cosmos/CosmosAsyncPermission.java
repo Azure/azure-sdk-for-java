@@ -66,7 +66,7 @@ public class CosmosAsyncPermission {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> readInternal(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> readInternal(requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -91,7 +91,7 @@ public class CosmosAsyncPermission {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> replaceInternal(permissionSettings, requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> replaceInternal(permissionSettings, requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -114,7 +114,7 @@ public class CosmosAsyncPermission {
         }
 
         final CosmosPermissionRequestOptions requestOptions = options;
-        return withContext(context -> deleteInternal(requestOptions, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> deleteInternal(requestOptions, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     String getURIPathSegment() {

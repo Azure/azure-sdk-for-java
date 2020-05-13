@@ -60,7 +60,7 @@ public class CosmosAsyncTrigger {
             return readInternal();
         }
 
-        return withContext(context -> readInternal(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> readInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -78,7 +78,7 @@ public class CosmosAsyncTrigger {
             return replaceInternal(triggerSettings);
         }
 
-        return withContext(context -> replaceInternal(triggerSettings, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> replaceInternal(triggerSettings, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -95,7 +95,7 @@ public class CosmosAsyncTrigger {
             return deleteInternal();
         }
 
-        return withContext(context -> deleteInternal(context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> deleteInternal(context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     String getURIPathSegment() {

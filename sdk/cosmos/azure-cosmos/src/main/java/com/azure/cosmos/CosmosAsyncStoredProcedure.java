@@ -78,7 +78,7 @@ public class CosmosAsyncStoredProcedure {
             return readInternal(options);
         }
 
-        return withContext(context -> readInternal(options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> readInternal(options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -111,7 +111,7 @@ public class CosmosAsyncStoredProcedure {
             return deleteInternal(options);
         }
 
-        return withContext(context -> deleteInternal(options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> deleteInternal(options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -132,7 +132,7 @@ public class CosmosAsyncStoredProcedure {
             return executeInternal(procedureParams, options);
         }
 
-        return withContext(context -> executeInternal(procedureParams, options, context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+        return withContext(context -> executeInternal(procedureParams, options, context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     /**
@@ -169,7 +169,7 @@ public class CosmosAsyncStoredProcedure {
         }
 
         return withContext(context -> replaceInternal(storedProcedureSettings, options,
-            context)).subscriberContext(TracerProvider.callDepthAttributeFunc);
+            context)).subscriberContext(TracerProvider.CALL_DEPTH_ATTRIBUTE_FUNC);
     }
 
     String getURIPathSegment() {

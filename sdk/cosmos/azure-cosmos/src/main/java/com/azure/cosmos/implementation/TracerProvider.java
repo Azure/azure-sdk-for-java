@@ -25,7 +25,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public class TracerProvider {
     private final List<Tracer> tracers = new ArrayList<>();
     private final boolean isEnabled;
-    public final static String DB_TYPE_VALUE = "cosmosdb";
+    public final static String DB_TYPE_VALUE = "cosmos";
     public final static String DB_TYPE = "db.type";
     public final static String DB_INSTANCE = "db.instance";
     public final static String DB_URL = "db.url";
@@ -34,10 +34,10 @@ public class TracerProvider {
     public static final String ERROR_TYPE = "error.type";
     public static final String ERROR_STACK = "error.stack";
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
-    public static final String MICROSOFT_DOCOMENTDB = "Microsoft.DocumentDB";
+    public static final String RESOURCE_PROVIDER_NAME = "Microsoft.DocumentDB";
 
 
-    public final static Function<reactor.util.context.Context, reactor.util.context.Context> callDepthAttributeFunc = (
+    public final static Function<reactor.util.context.Context, reactor.util.context.Context> CALL_DEPTH_ATTRIBUTE_FUNC = (
         reactor.util.context.Context reactorContext) -> {
         CallDepth callDepth = reactorContext.getOrDefault(COSMOS_CALL_DEPTH, CallDepth.ZERO);
         assert callDepth != null;
@@ -78,7 +78,7 @@ public class TracerProvider {
                 tracer.setAttribute(TracerProvider.DB_INSTANCE, databaseId, local);
             }
 
-            tracer.setAttribute(AZ_TRACING_NAMESPACE_KEY, MICROSOFT_DOCOMENTDB, local);
+            tracer.setAttribute(AZ_TRACING_NAMESPACE_KEY, RESOURCE_PROVIDER_NAME, local);
             tracer.setAttribute(TracerProvider.DB_TYPE, DB_TYPE_VALUE, local);
             tracer.setAttribute(TracerProvider.DB_URL, endpoint, local);
             tracer.setAttribute(TracerProvider.DB_STATEMENT, methodName, local);
@@ -136,7 +136,7 @@ public class TracerProvider {
                                                               String spanName,
                                                               String databaseId,
                                                               String endpoint) {
-        return traceEnabledPublisher(resultPublisher,  context, spanName, databaseId, endpoint, (T response) -> 200);
+        return traceEnabledPublisher(resultPublisher,  context, spanName, databaseId, endpoint, (T response) -> HttpConstants.StatusCodes.OK);
     }
 
     public <T> Mono<CosmosAsyncItemResponse<T>> traceEnabledCosmosItemResponsePublisher(Mono<CosmosAsyncItemResponse<T>> resultPublisher,
