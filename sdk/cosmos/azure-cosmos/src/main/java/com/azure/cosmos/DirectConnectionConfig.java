@@ -15,8 +15,9 @@ import java.time.Duration;
 public final class DirectConnectionConfig {
     //  Constants
     private static final Duration DEFAULT_IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(70L);
+    private static final Duration DEFAULT_CONNECTION_TIMEOUT = Duration.ofSeconds(60L);
     private static final int DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT = 30;
-    private static final int DEFAULT_MAX_REQUESTS_PER_ENDPOINT = 10;
+    private static final int DEFAULT_MAX_REQUESTS_PER_CONNECTION = 10;
 
     private Duration connectionTimeout;
     private Duration idleConnectionTimeout;
@@ -29,9 +30,10 @@ public final class DirectConnectionConfig {
      */
     public DirectConnectionConfig() {
         this.idleConnectionTimeout = Duration.ZERO;
+        this.connectionTimeout = DEFAULT_CONNECTION_TIMEOUT;
         this.idleEndpointTimeout = DEFAULT_IDLE_ENDPOINT_TIMEOUT;
         this.maxConnectionsPerEndpoint = DEFAULT_MAX_CONNECTIONS_PER_ENDPOINT;
-        this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_ENDPOINT;
+        this.maxRequestsPerConnection = DEFAULT_MAX_REQUESTS_PER_CONNECTION;
     }
 
     /**
@@ -49,7 +51,7 @@ public final class DirectConnectionConfig {
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connection timeout is disabled, unless specified by user.
+     * By default, the connection timeout is 60 seconds.
      *
      * @return direct connection timeout
      */
@@ -63,7 +65,7 @@ public final class DirectConnectionConfig {
      *
      * Configures timeout for underlying Netty Channel {@link ChannelOption#CONNECT_TIMEOUT_MILLIS}
      *
-     * By default, the connection timeout is disabled, unless specified by user.
+     * By default, the connection timeout is 60 seconds.
      *
      * @param connectionTimeout the connection timeout
      * @return the {@link DirectConnectionConfig}
@@ -160,7 +162,7 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Gets the max requests per connection per endpoint
+     * Gets the max requests per connection
      * This represents the number of requests that will be queued
      * on a single connection for a specific endpoint
      *
@@ -173,7 +175,7 @@ public final class DirectConnectionConfig {
     }
 
     /**
-     * Sets the max requests per connection per endpoint
+     * Sets the max requests per connection
      * This represents the number of requests that will be queued
      * on a single connection for a specific endpoint
      *
