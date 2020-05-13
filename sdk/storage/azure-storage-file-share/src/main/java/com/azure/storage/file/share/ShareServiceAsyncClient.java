@@ -199,16 +199,16 @@ public final class ShareServiceAsyncClient {
         List<ListSharesIncludeType> include = new ArrayList<>();
 
         if (options != null) {
+            if (options.isIncludeDeleted()) {
+                include.add(ListSharesIncludeType.DELETED);
+            }
+
             if (options.isIncludeMetadata()) {
                 include.add(ListSharesIncludeType.METADATA);
             }
 
             if (options.isIncludeSnapshots()) {
                 include.add(ListSharesIncludeType.SNAPSHOTS);
-            }
-
-            if (options.isIncludeDeleted()) {
-                include.add(ListSharesIncludeType.DELETED);
             }
         }
 

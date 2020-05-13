@@ -110,6 +110,7 @@ class FileServiceAPITests extends APISpec {
     def "List shares with filter"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
+        options.setPrefix(shareName)
         for (int i = 0; i < 4; i++) {
             ShareItem share = new ShareItem().setProperties(new ShareProperties().setQuota(i + 1)).setName(shareName + i)
             if (i == 2) {
@@ -135,19 +136,20 @@ class FileServiceAPITests extends APISpec {
         includeDeleted || !shares.hasNext()
 
         where:
-        options                                                                                                | limits | includeMetadata | includeSnapshot | includeDeleted
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter")                           | 3      | false           | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(true)  | 3      | true            | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeMetadata(false) | 3      | false           | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setMaxResultsPerPage(2)   | 3      | false           | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithfilter").setIncludeDeleted(true)   | 4      | false           | true            | true
+        options                                           | limits | includeMetadata | includeSnapshot | includeDeleted
+        new ListSharesOptions()                           | 3      | false           | true            | false
+        new ListSharesOptions().setIncludeMetadata(true)  | 3      | true            | true            | false
+        new ListSharesOptions().setIncludeMetadata(false) | 3      | false           | true            | false
+        new ListSharesOptions().setMaxResultsPerPage(2)   | 3      | false           | true            | false
+        new ListSharesOptions().setIncludeDeleted(true)   | 4      | false           | true            | true
     }
 
     @Unroll
     def "List shares with args"() {
         given:
         LinkedList<ShareItem> testShares = new LinkedList<>()
-        for (int i = 0; i < 3; i++) {
+        options.setPrefix(shareName)
+        for (int i = 0; i < 4; i++) {
             ShareItem share = new ShareItem().setName(shareName + i).setProperties(new ShareProperties().setQuota(2))
                 .setMetadata(testMetadata)
             def shareClient = primaryFileServiceClient.getShareClient(share.getName())
@@ -155,6 +157,10 @@ class FileServiceAPITests extends APISpec {
             if (i == 2) {
                 def snapshot = shareClient.createSnapshot().getSnapshot()
                 testShares.add(new ShareItem().setName(share.getName()).setMetadata(share.getMetadata()).setProperties(share.getProperties()).setSnapshot(snapshot))
+            }
+            if (i == 3) {
+                share.getProperties().setDeletedTime(OffsetDateTime.now())
+                primaryFileServiceClient.deleteShare(share.getName())
             }
             testShares.add(share)
         }
@@ -164,15 +170,16 @@ class FileServiceAPITests extends APISpec {
 
         then:
         for (int i = 0; i < limits; i++) {
-            assert FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot)
+            assert FileTestHelper.assertSharesAreEqual(testShares.pop(), shares.next(), includeMetadata, includeSnapshot, includeDeleted)
         }
         !shares.hasNext()
 
         where:
-        options                                                                                                                        | limits | includeMetadata | includeSnapshot
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs")                                                     | 3      | false           | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true)                           | 3      | true            | false
-        new ListSharesOptions().setPrefix("fileserviceapitestslistshareswithargs") .setIncludeMetadata(true).setIncludeSnapshots(true) | 4      | true            | true
+        options                                                                                            | limits | includeMetadata | includeSnapshot | includeDeleted
+        new ListSharesOptions()                                                                            | 3      | false           | false           | false
+        new ListSharesOptions().setIncludeMetadata(true)                                                   | 3      | true            | false           | false
+        new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true)                         | 4      | true            | true            | false
+        new ListSharesOptions().setIncludeMetadata(true).setIncludeSnapshots(true).setIncludeDeleted(true) | 5      | true            | true            | true
     }
 
     def "List shares with premium share"() {
