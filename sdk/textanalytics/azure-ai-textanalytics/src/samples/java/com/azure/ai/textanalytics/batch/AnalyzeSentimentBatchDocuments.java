@@ -37,9 +37,9 @@ public class AnalyzeSentimentBatchDocuments {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "The hotel was dark and unclean. I wouldn't recommend staying there.", "en"),
-            new TextDocumentInput("B", "The restaurant had amazing gnocchi! The waiters were excellent.", "en"),
-            new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!", "en")
+            new TextDocumentInput("A", "The hotel was dark and unclean. I wouldn't recommend staying there.").setLanguage("en"),
+            new TextDocumentInput("B", "The restaurant had amazing gnocchi! The waiters were excellent.").setLanguage("en"),
+            new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!").setLanguage("en")
         );
 
         // Request options: show statistics and model version

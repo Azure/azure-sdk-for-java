@@ -93,7 +93,7 @@ class NetworkSecurityGroupImpl
             .manager()
             .inner()
             .networkSecurityGroups()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -131,7 +131,7 @@ class NetworkSecurityGroupImpl
         Set<String> ids = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         if (this.inner().networkInterfaces() != null) {
             for (NetworkInterfaceInner inner : this.inner().networkInterfaces()) {
-                ids.add(inner.getId());
+                ids.add(inner.id());
             }
         }
         return Collections.unmodifiableSet(ids);

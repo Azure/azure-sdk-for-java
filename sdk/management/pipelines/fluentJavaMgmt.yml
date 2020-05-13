@@ -104,7 +104,7 @@ jobs:
         displayName: 'Run Tests on Java 8'
         inputs:
           mavenPomFile: sdk/management/pom.xml
-          options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-parent -amd -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
+          options: '$(DefaultOptions) $(ProfileFlag) -pl com.azure:azure-management-parent -amd -DskipOutput=true -Dsurefire.rerunFailingTestsCount=3 -Dparallel=classes -DthreadCount=2 -DforkCount=1C'
           mavenOptions: '$(LoggingOptions)'
           javaHomeOption: 'JDKVersion'
           jdkVersionOption: $(JavaVersion)

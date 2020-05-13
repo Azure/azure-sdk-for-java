@@ -56,7 +56,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayUrlPathMap urlPathMap() {
         SubResource urlMapRef = this.inner().urlPathMap();
         if (urlMapRef != null) {
-            String urlMapName = ResourceUtils.nameFromResourceId(urlMapRef.getId());
+            String urlMapName = ResourceUtils.nameFromResourceId(urlMapRef.id());
             return this.parent().urlPathMaps().get(urlMapName);
         } else {
             return null;
@@ -131,7 +131,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayBackend backend() {
         SubResource backendRef = this.inner().backendAddressPool();
         if (backendRef != null) {
-            String backendName = ResourceUtils.nameFromResourceId(backendRef.getId());
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
             return this.parent().backends().get(backendName);
         } else {
             return null;
@@ -142,7 +142,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayBackendHttpConfigurationImpl backendHttpConfiguration() {
         SubResource configRef = this.inner().backendHttpSettings();
         if (configRef != null) {
-            String configName = ResourceUtils.nameFromResourceId(configRef.getId());
+            String configName = ResourceUtils.nameFromResourceId(configRef.id());
             return (ApplicationGatewayBackendHttpConfigurationImpl)
                 this.parent().backendHttpConfigurations().get(configName);
         } else {
@@ -154,7 +154,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayListenerImpl listener() {
         SubResource listenerRef = this.inner().httpListener();
         if (listenerRef != null) {
-            String listenerName = ResourceUtils.nameFromResourceId(listenerRef.getId());
+            String listenerName = ResourceUtils.nameFromResourceId(listenerRef.id());
             return (ApplicationGatewayListenerImpl) this.parent().listeners().get(listenerName);
         } else {
             return null;
@@ -167,7 +167,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (ref == null) {
             return null;
         } else {
-            return this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(ref.getId()));
+            return this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(ref.id()));
         }
     }
 
@@ -209,7 +209,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpConfiguration(String name) {
         SubResource httpConfigRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
+            new SubResource().withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
         this.inner().withBackendHttpSettings(httpConfigRef);
         return this;
     }
@@ -248,7 +248,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromListener(String name) {
-        SubResource listenerRef = new SubResource().setId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
+        SubResource listenerRef = new SubResource().withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
         return this;
     }
@@ -396,7 +396,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             this.inner().withRedirectConfiguration(null);
         } else {
             SubResource ref =
-                new SubResource().setId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
+                new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
             this.inner().withRedirectConfiguration(ref).withBackendAddressPool(null).withBackendHttpSettings(null);
         }
         return this;
@@ -415,7 +415,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             this.inner().withUrlPathMap(null);
         } else {
             SubResource ref =
-                new SubResource().setId(this.parent().futureResourceId() + "/urlPathMaps/" + urlPathMapName);
+                new SubResource().withId(this.parent().futureResourceId() + "/urlPathMaps/" + urlPathMapName);
             this.inner().withUrlPathMap(ref);
         }
         return this;

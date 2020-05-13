@@ -136,8 +136,8 @@ final class IdentityImpl
             @Override
             public String resourceId() {
                 Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().getId());
-                return inner().getId();
+                Objects.requireNonNull(inner().id());
+                return inner().id();
             }
         };
     }

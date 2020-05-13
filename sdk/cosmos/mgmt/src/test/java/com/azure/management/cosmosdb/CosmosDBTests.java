@@ -131,7 +131,7 @@ public class CosmosDBTests extends TestBase {
                 .withPrivateLinkServiceConnections(Arrays.asList(privateLinkServiceConnection))
                 .withSubnet(network.subnets().get(subnetName).inner());
 
-        privateEndpoint.setLocation(region.toString());
+        privateEndpoint.withLocation(region.toString());
         privateEndpoint = networkManager.inner().privateEndpoints().createOrUpdate(rgName, pedName, privateEndpoint);
 
         cosmosDBAccount

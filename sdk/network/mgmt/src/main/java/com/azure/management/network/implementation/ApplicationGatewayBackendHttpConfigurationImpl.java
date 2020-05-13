@@ -48,7 +48,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         } else {
             for (SubResource ref : this.inner().authenticationCertificates()) {
                 ApplicationGatewayAuthenticationCertificate cert =
-                    this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.getId()));
+                    this.parent().authenticationCertificates().get(ResourceUtils.nameFromResourceId(ref.id()));
                 if (cert != null) {
                     certs.put(cert.name(), cert);
                 }
@@ -65,7 +65,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public ApplicationGatewayProbe probe() {
         if (this.parent().probes() != null && this.inner().probe() != null) {
-            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().getId()));
+            return this.parent().probes().get(ResourceUtils.nameFromResourceId(this.inner().probe().id()));
         } else {
             return null;
         }
@@ -165,7 +165,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         if (name == null) {
             return this.withoutProbe();
         } else {
-            SubResource probeRef = new SubResource().setId(this.parent().futureResourceId() + "/probes/" + name);
+            SubResource probeRef = new SubResource().withId(this.parent().futureResourceId() + "/probes/" + name);
             this.inner().withProbe(probeRef);
             return this;
         }
@@ -230,14 +230,14 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
         SubResource certRef =
-            new SubResource().setId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
+            new SubResource().withId(this.parent().futureResourceId() + "/authenticationCertificates/" + name);
         List<SubResource> refs = this.inner().authenticationCertificates();
         if (refs == null) {
             refs = new ArrayList<>();
             this.inner().withAuthenticationCertificates(refs);
         }
         for (SubResource ref : refs) {
-            if (ref.getId().equalsIgnoreCase(certRef.getId())) {
+            if (ref.id().equalsIgnoreCase(certRef.id())) {
                 return this;
             }
         }
@@ -295,7 +295,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
             return this;
         }
         for (SubResource ref : this.inner().authenticationCertificates()) {
-            if (ResourceUtils.nameFromResourceId(ref.getId()).equalsIgnoreCase(name)) {
+            if (ResourceUtils.nameFromResourceId(ref.id()).equalsIgnoreCase(name)) {
                 this.inner().authenticationCertificates().remove(ref);
                 break;
             }

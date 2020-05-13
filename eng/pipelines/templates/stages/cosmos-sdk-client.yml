@@ -13,43 +13,36 @@ stages:
         SDKType: ${{parameters.SDKType}}
         TestMatrix:
           Linux - Java 8:
-            OSName: 'Linux'
             OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.8'
             RunTitle: 'Linux on Java 1.8'
             ProfileFlag: '-Punit'
           macOS - Java 8:
-            OSName: 'macOS'
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.8'
             RunTitle: 'macOS on Java 1.8'
             ProfileFlag: '-Punit'
           Windows - Java 8:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             RunTitle: 'Windows on Java 1.8'
             ProfileFlag: '-Punit'
           Linux - Java 11:
-            OSName: 'Linux'
             OSVmImage: 'ubuntu-18.04'
             JavaVersion: '1.11'
             RunTitle: 'Linux on Java 1.11'
             ProfileFlag: '-Punit'
           macOS - Java 11:
-            OSName: 'macOS'
             OSVmImage: 'macOS-10.15'
             JavaVersion: '1.11'
             RunTitle: 'macOS on Java 1.11'
             ProfileFlag: '-Punit'
           Windows - Java 11:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.11'
             RunTitle: 'Windows on Java 1.11'
             ProfileFlag: '-Punit'
           Windows From Source - Java 8:
-            OSName: 'Windows'
             OSVmImage: 'windows-2019'
             JavaVersion: '1.8'
             RunTitle: 'From Source: Windows on Java 1.8'

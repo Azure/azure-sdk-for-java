@@ -40,7 +40,7 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
     @Override
     public String name() {
         if (this.inner.backendAddressPool() != null) {
-            return ResourceUtils.nameFromResourceId(this.inner.backendAddressPool().getId());
+            return ResourceUtils.nameFromResourceId(this.inner.backendAddressPool().id());
         } else {
             return null;
         }
@@ -52,7 +52,7 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
             return null;
         }
 
-        String backendName = ResourceUtils.nameFromResourceId(this.inner.backendAddressPool().getId());
+        String backendName = ResourceUtils.nameFromResourceId(this.inner.backendAddressPool().id());
         return this.appGateway.backends().get(backendName);
     }
 

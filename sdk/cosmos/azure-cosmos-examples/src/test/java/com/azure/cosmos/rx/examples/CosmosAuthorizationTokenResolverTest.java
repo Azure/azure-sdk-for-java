@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
@@ -63,13 +64,14 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_TokenResolverTest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 
@@ -138,13 +140,13 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
     public void readDocumentThroughTokenResolver() throws Exception {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverForRead())
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             List<ResourceResponse<Document>> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
@@ -176,13 +178,13 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
     public void deleteDocumentThroughTokenResolver() throws Exception {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverForReadWrite())
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
             List<ResourceResponse<Document>> capturedResponse = Collections
                     .synchronizedList(new ArrayList<>());
@@ -218,13 +220,13 @@ public class CosmosAuthorizationTokenResolverTest extends DocumentClientTest {
         AsyncDocumentClient asyncClientWithTokenResolver = null;
 
         try {
-            ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-            connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+            ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             asyncClientWithTokenResolver = new AsyncDocumentClient.Builder()
                     .withServiceEndpoint(TestConfigurations.HOST)
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withTokenResolver(getTokenResolverWithBlockList(blockListedUserId, errorMessage))
+                    .withContentResponseOnWriteEnabled(true)
                     .build();
 
             // READ a document using a block listed user, passing the 'userId' in the item.

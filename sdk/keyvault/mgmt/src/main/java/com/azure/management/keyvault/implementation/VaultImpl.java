@@ -348,7 +348,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
                             VaultCreateOrUpdateParameters parameters = new VaultCreateOrUpdateParameters();
                             parameters.withLocation(regionName());
                             parameters.withProperties(inner().properties());
-                            parameters.withTags(inner().getTags());
+                            parameters.withTags(inner().tags());
                             parameters.properties().withAccessPolicies(new ArrayList<>());
                             for (AccessPolicy accessPolicy : accessPolicies) {
                                 parameters.properties().accessPolicies().add(accessPolicy.inner());

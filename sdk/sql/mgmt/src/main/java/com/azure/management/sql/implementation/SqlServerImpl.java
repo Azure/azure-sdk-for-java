@@ -224,7 +224,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
             this.manager().inner().recommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
         for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
-            recommendedElasticPoolMap.put(inner.getName(), new RecommendedElasticPoolImpl(inner, this));
+            recommendedElasticPoolMap.put(inner.name(), new RecommendedElasticPoolImpl(inner, this));
         }
 
         return Collections.unmodifiableMap(recommendedElasticPoolMap);

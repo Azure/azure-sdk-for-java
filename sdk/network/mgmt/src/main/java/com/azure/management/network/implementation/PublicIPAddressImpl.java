@@ -188,7 +188,7 @@ class PublicIPAddressImpl
         if (ipConfig == null || resourceType == null) {
             return false;
         } else {
-            final String refId = this.inner().ipConfiguration().getId();
+            final String refId = this.inner().ipConfiguration().id();
             final String resourceType2 = ResourceUtils.resourceTypeFromResourceId(refId);
             return resourceType.equalsIgnoreCase(resourceType2);
         }
@@ -202,7 +202,7 @@ class PublicIPAddressImpl
     @Override
     public LoadBalancerPublicFrontend getAssignedLoadBalancerFrontend() {
         if (this.hasAssignedLoadBalancer()) {
-            final String refId = this.inner().ipConfiguration().getId();
+            final String refId = this.inner().ipConfiguration().id();
             final String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
             final String frontendName = ResourceUtils.nameFromResourceId(refId);
@@ -241,7 +241,7 @@ class PublicIPAddressImpl
     @Override
     public NicIPConfiguration getAssignedNetworkInterfaceIPConfiguration() {
         if (this.hasAssignedNetworkInterface()) {
-            final String refId = this.inner().ipConfiguration().getId();
+            final String refId = this.inner().ipConfiguration().id();
             final String parentId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final NetworkInterface nic = this.myManager.networkInterfaces().getById(parentId);
             final String childName = ResourceUtils.nameFromResourceId(refId);
@@ -267,7 +267,7 @@ class PublicIPAddressImpl
             .manager()
             .inner()
             .publicIPAddresses()
-            .updateTagsAsync(resourceGroupName(), name(), inner().getTags())
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
             .flatMap(
                 inner -> {
                     setInner(inner);

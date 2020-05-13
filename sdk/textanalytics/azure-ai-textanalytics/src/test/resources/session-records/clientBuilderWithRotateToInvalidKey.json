@@ -1,18 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://javatextanalyticstestresources.cognitiveservices.azure.com/text/analytics/v3.0-preview.1/languages",
+    "Uri" : "https://westus2.ppe.cognitiveservices.azure.com/text/analytics/v3.0//languages",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.4 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "6a544856-4a73-4773-bb7b-742a5f0b9af3",
+      "User-Agent" : "azsdk-java-azure-ai-textanalytics/1.0.0-beta.5 (11.0.4; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7263d388-8337-4f34-bd89-091877803b4e",
       "Content-Type" : "application/json"
     },
     "Response" : {
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
+      "x-content-type-options" : "nosniff",
+      "apim-request-id" : "8b1cf6a6-aa5b-44b4-8c44-8ab8038c5913",
+      "WWW-Authenticate" : "AzureApiManagementKey realm=\"https://westus2.ppe.cognitiveservices.azure.com/text/analytics\",name=\"Ocp-Apim-Subscription-Key\",type=\"header\"",
       "retry-after" : "0",
-      "Content-Length" : "224",
+      "Content-Length" : "225",
       "StatusCode" : "401",
-      "Body" : "{\"error\":{\"code\":\"401\",\"message\":\"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.\"}}",
-      "Date" : "Fri, 20 Mar 2020 16:53:40 GMT"
+      "Body" : "{\"error\":{\"code\":\"401\",\"message\": \"Access denied due to invalid subscription key or wrong API endpoint. Make sure to provide a valid key for an active subscription and use a correct regional API endpoint for your resource.\"}}",
+      "Date" : "Wed, 29 Apr 2020 17:12:18 GMT",
+      "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],

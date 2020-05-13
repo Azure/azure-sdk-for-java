@@ -148,8 +148,8 @@ public class FieldBuilderTest {
         return Arrays.asList(description, descriptionFr, type, baseRate, bedOptions, sleepsCount, smokingAllowed, tags);
     }
 
-    private List<SearchField> sortByFieldName(List<SearchField> fields) {
-        Collections.sort(fields, Comparator.comparing(SearchField::getName));
+    private List<Field> sortByFieldName(List<Field> fields) {
+        fields.sort(Comparator.comparing(Field::getName));
         return fields;
     }
 }

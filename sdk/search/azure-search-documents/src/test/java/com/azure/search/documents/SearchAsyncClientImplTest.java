@@ -20,19 +20,35 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.search.documents.TestHelpers.assertHttpResponseExceptionAsync;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocument;
+import static com.azure.search.documents.TestHelpers.uploadDocuments;
+import static com.azure.search.documents.TestHelpers.waitForIndexing;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+<<<<<<< HEAD:sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchAsyncClientImplTest.java
 public class SearchAsyncClientImplTest extends SearchIndexClientTestBase {
 
     private static final String INDEX_NAME = "hotels";
     private SearchAsyncClient asyncClient;
+=======
+public class SearchIndexAsyncClientImplTest extends SearchTestBase {
+    private SearchIndexAsyncClient asyncClient;
+>>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4:sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchIndexAsyncClientImplTest.java
 
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        createHotelIndex();
-        asyncClient = getSearchIndexClientBuilder(INDEX_NAME).buildAsyncClient();
+        asyncClient = getSearchIndexClientBuilder(createHotelIndex()).buildAsyncClient();
+    }
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+
+        getSearchServiceClientBuilder().buildClient().deleteIndex(asyncClient.getIndexName());
     }
 
     @Test
@@ -129,9 +145,7 @@ public class SearchAsyncClientImplTest extends SearchIndexClientTestBase {
         List<String> selectedFields = Arrays.asList("HotelId", "ThisFieldDoesNotExist");
 
         uploadDocument(asyncClient, hotelDoc);
-        assertHttpResponseExceptionAsync(
-            asyncClient.getDocumentWithResponse("2", selectedFields, null)
-        );
+        assertHttpResponseExceptionAsync(asyncClient.getDocumentWithResponse("2", selectedFields, null));
     }
 
     @Test

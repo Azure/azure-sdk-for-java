@@ -208,11 +208,17 @@ public class SearchClientBuilderTests {
             .httpClient(new SearchServiceClientBuilderTests.FreshDateTestClient())
             .buildAsyncClient();
 
+<<<<<<< HEAD:sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchClientBuilderTests.java
         StepVerifier.create(searchAsyncClient.getHttpPipeline().send(
             request(searchAsyncClient.getEndpoint())))
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
             })
+=======
+        StepVerifier.create(searchIndexAsyncClient.getHttpPipeline().send(
+            request(searchIndexAsyncClient.getEndpoint())))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+>>>>>>> 267f2127fffa8e81f77cfb9c9a7047e6307350c4:sdk/search/azure-search-documents/src/test/java/com/azure/search/documents/SearchIndexClientBuilderTests.java
             .verifyComplete();
     }
 }
