@@ -5,9 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.DirectConnectionConfig;
+import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -28,17 +29,16 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateReadSessionOnAsyncReplication() throws InterruptedException {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).block().getResource();
@@ -49,17 +49,16 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateWriteSessionOnAsyncReplication() throws InterruptedException {
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.GATEWAY);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).build();
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).block().getResource();
@@ -156,18 +155,17 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, enabled = false, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateNoChargeOnFailedSessionRead() throws Exception {
         // DIRECT clients for read and write operations
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         // Client locked to replica for pause/resume
         RxDocumentClientImpl readSecondaryClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
         try {
             // CREATE collection
@@ -216,12 +214,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             documents.add(documentDefinition);
         }
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy();
-        connectionPolicy.setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         RxDocumentClientImpl client = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
                 .build();
 
         try {

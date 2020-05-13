@@ -34,8 +34,8 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "My cat might need to see a veterinarian.", "en"),
-            new TextDocumentInput("B", "The pitot tube is used to measure airspeed.", "en")
+            new TextDocumentInput("A", "My cat might need to see a veterinarian.").setLanguage("en"),
+            new TextDocumentInput("B", "The pitot tube is used to measure airspeed.").setLanguage("en")
         );
 
         // Request options: show statistics and model version

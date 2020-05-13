@@ -107,20 +107,22 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         setSenderAndReceiver(entityType, isSessionEnabled);
         final int maxMessages = 1;
-        final int total = 2;
-        final Duration shortTimeOut = Duration.ofSeconds(5);
+        final int totalReceive = 3;
+        final Duration shortTimeOut = Duration.ofSeconds(8);
 
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message);
-        sendMessage(message);
+        for (int i = 0; i < totalReceive * maxMessages; ++i) {
+            sendMessage(message);
+        }
 
         // Act & Assert
         IterableStream<ServiceBusReceivedMessageContext> messages;
 
-        int receivedMessageCount = 0;
-        for (int i = 0; i < total; ++i) {
+        int receivedMessageCount;
+        int totalReceivedCount = 0;
+        for (int i = 0; i < totalReceive; ++i) {
             messages = receiver.receive(maxMessages, shortTimeOut);
             receivedMessageCount = 0;
             for (ServiceBusReceivedMessageContext receivedMessage : messages) {
@@ -130,7 +132,10 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 ++receivedMessageCount;
             }
             assertEquals(maxMessages, receivedMessageCount);
+            totalReceivedCount += receivedMessageCount;
         }
+
+        assertEquals(totalReceive * maxMessages, totalReceivedCount);
     }
 
     /**
@@ -595,10 +600,8 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
                 .buildClient();
         } else {
             receiver = getReceiverBuilder(false, entityType).buildClient();
-
-            receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
-                Function.identity(),
-                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+            receiveAndDeleteReceiver = getReceiverBuilder(false, entityType).
+                receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildClient();
         }
     }

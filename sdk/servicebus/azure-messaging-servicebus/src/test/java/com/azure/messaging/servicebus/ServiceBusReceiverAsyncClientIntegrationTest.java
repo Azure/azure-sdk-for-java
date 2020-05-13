@@ -14,7 +14,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-import reactor.test.StepVerifierOptions;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -45,6 +44,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
     private ServiceBusSenderAsyncClient sender;
     private boolean isSessionEnabled;
+    private String sessionId2;
 
     /**
      * Receiver used to clean up resources in {@link #afterTest()}.
@@ -673,8 +673,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         if (entityType == MessagingEntityType.QUEUE) {
             builder.queueName(getQueueName());
         } else if (entityType == MessagingEntityType.SUBSCRIPTION) {
-            builder.topicName(getTopicName());
-            builder.subscriptionName(getSubscriptionName());
+            builder.topicName(getTopicName()).subscriptionName(getSubscriptionName());
         }
 
         ServiceBusReceiverAsyncClient invalidReceiver = builder.sessionId(sessionId).buildAsyncClient();
@@ -700,13 +699,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages;
         if (isSessionEnabled) {
-            messages = TestUtils.getServiceBusMessages(firstBatch, CONTENTS_BYTES, messageId, isSessionEnabled,
-                sessionId);
-            messages.addAll(TestUtils.getServiceBusMessages(secondBatch, CONTENTS_BYTES, messageId, isSessionEnabled,
-                sessionId2));
+            messages = TestUtils.getServiceBusMessages(firstBatch, CONTENTS_BYTES, messageId, sessionId);
+            messages.addAll(TestUtils.getServiceBusMessages(secondBatch, CONTENTS_BYTES, messageId, sessionId2));
         } else {
-            messages = TestUtils.getServiceBusMessages(firstBatch + secondBatch, CONTENTS_BYTES,
-                messageId, isSessionEnabled, null);
+            messages = TestUtils.getServiceBusMessages(firstBatch + secondBatch, messageId,
+                CONTENTS_BYTES);
         }
 
         final Duration smallDuration = Duration.ofSeconds(5);
@@ -715,36 +712,35 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(messages).block(TIMEOUT);
 
         // Assert & Act
-            StepVerifier.create(receiver.receive(options))
+        StepVerifier.create(receiver.receive(options))
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 receiver.complete(message.getMessage()).block(smallDuration);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 receiver.complete(message.getMessage()).block(smallDuration);
-                messagesPending.decrementAndGet();
-            })
-                .thenCancel()
-                .verify();
-
-        receiver.close();
-
-        StepVerifier.create(receiver2.receive(options))
-            .assertNext(message -> {
-                assertNotNull(message);
-                receiver2.complete(message.getMessage()).block(smallDuration);
-                messagesPending.decrementAndGet();
-            })
-            .assertNext(message -> {
-                assertNotNull(message);
-                receiver2.complete(message.getMessage()).block(smallDuration);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
             .verify();
 
+        receiver.close();
+
+        StepVerifier.create(receiver2.receive(options))
+            .assertNext(message -> {
+                assertMessageEquals(message, messageId, isSessionEnabled);
+                receiver2.complete(message.getMessage()).block(smallDuration);
+                messagesPending.decrementAndGet();
+            })
+            .assertNext(message -> {
+                assertMessageEquals(message, messageId, isSessionEnabled);
+                receiver2.complete(message.getMessage()).block(smallDuration);
+                messagesPending.decrementAndGet();
+            })
+            .thenCancel()
+            .verify();
     }
 
     /**
@@ -762,13 +758,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final List<ServiceBusMessage> messages;
         if (isSessionEnabled) {
-            messages = TestUtils.getServiceBusMessages(firstBatch, CONTENTS_BYTES, messageId, isSessionEnabled,
-                sessionId);
-            messages.addAll(TestUtils.getServiceBusMessages(secondBatch, CONTENTS_BYTES, messageId, isSessionEnabled,
-                sessionId2));
+            messages = TestUtils.getServiceBusMessages(firstBatch, CONTENTS_BYTES, messageId, sessionId);
+            messages.addAll(TestUtils.getServiceBusMessages(secondBatch, CONTENTS_BYTES, messageId, sessionId2));
         } else {
-            messages = TestUtils.getServiceBusMessages(firstBatch + secondBatch, CONTENTS_BYTES,
-                messageId, isSessionEnabled, null);
+            messages = TestUtils.getServiceBusMessages(firstBatch + secondBatch, messageId,
+                CONTENTS_BYTES);
         }
 
         sendMessage(messages).block(TIMEOUT);
@@ -776,11 +770,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.receive(), firstBatch)
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
@@ -788,11 +782,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver2.receive(), secondBatch)
             .assertNext(message -> {
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
-                assertNotNull(message);
             })
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
@@ -816,20 +810,18 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         final List<ServiceBusMessage> messages;
         if (isSessionEnabled) {
-            messages = TestUtils.getServiceBusMessages(firstBatch, CONTENTS_BYTES, messageId, isSessionEnabled,
-                sessionId);
-            messages.addAll(TestUtils.getServiceBusMessages(secondBatch, CONTENTS_BYTES, messageId, isSessionEnabled,
-                sessionId2));
+            messages = TestUtils.getServiceBusMessages(firstBatch, CONTENTS_BYTES, messageId, sessionId);
+            messages.addAll(TestUtils.getServiceBusMessages(secondBatch, CONTENTS_BYTES, messageId, sessionId2));
         } else {
-            messages = TestUtils.getServiceBusMessages(firstBatch + secondBatch, CONTENTS_BYTES,
-                messageId, isSessionEnabled, null);
+            messages = TestUtils.getServiceBusMessages(firstBatch + secondBatch, messageId,
+                CONTENTS_BYTES);
         }
 
         sendMessage(messages).block(TIMEOUT);
 
         // cause one of the message to abandon because of exception.
         receiver.receive()
-            .limitRequest(1)
+            .take(1)
             .map(receivedMessage -> {
                 throw new RuntimeException("Fake: Fail to process message.Trigger abandon.");
             })
@@ -848,11 +840,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         // Assert & Act
         StepVerifier.create(receiver.receive(), firstBatch)
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
@@ -860,11 +852,11 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         StepVerifier.create(receiver2.receive(), secondBatch)
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .assertNext(message -> {
-                assertNotNull(message);
+                assertMessageEquals(message, messageId, isSessionEnabled);
                 messagesPending.decrementAndGet();
             })
             .thenCancel()
@@ -884,11 +876,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(entityType, true);
 
         final String messageId = UUID.randomUUID().toString();
-        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(firstBatchsize, CONTENTS_BYTES, messageId, true,
-            sessionId);
+        final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(firstBatchsize, CONTENTS_BYTES,
+            messageId, sessionId);
 
-        messages.addAll(TestUtils.getServiceBusMessages(secondBatchSize, CONTENTS_BYTES, messageId, true,
-            sessionId2));
+        messages.addAll(TestUtils.getServiceBusMessages(firstBatchsize, CONTENTS_BYTES, messageId, sessionId2));
 
 
         final ReceiveAsyncOptions options = new ReceiveAsyncOptions()

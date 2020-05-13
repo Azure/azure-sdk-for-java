@@ -86,7 +86,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos stored
      * procedures
      * properties or an error.
      */
@@ -110,7 +110,7 @@ public class CosmosAsyncScripts {
      *
      * @param query the the query.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored
      * procedures or
      * an error.
      */
@@ -129,7 +129,7 @@ public class CosmosAsyncScripts {
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained stored
      * procedures or
      * an error.
      */
@@ -189,7 +189,7 @@ public class CosmosAsyncScripts {
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read user defined
      * functions or an
      * error.
      */
@@ -208,13 +208,13 @@ public class CosmosAsyncScripts {
      * Query for user defined functions in the container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined 
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined
      * functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param query the query.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
      */
@@ -228,13 +228,13 @@ public class CosmosAsyncScripts {
      * Query for user defined functions in the container.
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined 
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the obtained user defined
      * functions.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param querySpec the SQL query specification.
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the obtained user defined
      * functions
      * or an error.
      */
@@ -274,7 +274,8 @@ public class CosmosAsyncScripts {
      * @return an {@link Mono} containing the single resource response with the created trigger or an error.
      */
     public Mono<CosmosAsyncTriggerResponse> createTrigger(CosmosTriggerProperties properties) {
-        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(properties));
+        Trigger trigger = new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
+            ModelBridgeInternal.getResourceFromResourceWrapper(properties)));
 
         return database.getDocClientWrapper()
                    .createTrigger(container.getLink(), trigger, null)
@@ -286,12 +287,12 @@ public class CosmosAsyncScripts {
      * Reads all triggers in a container
      * <p>
      * After subscription the operation will be performed.
-     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger 
+     * The {@link CosmosPagedFlux} will contain one or several feed response pages of the read cosmos trigger
      * properties.
      * In case of failure the {@link CosmosPagedFlux} will error.
      *
      * @param options the feed options.
-     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger 
+     * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the read cosmos rigger
      * properties or
      * an error.
      */

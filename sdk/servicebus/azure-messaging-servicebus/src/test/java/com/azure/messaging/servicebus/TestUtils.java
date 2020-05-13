@@ -23,6 +23,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -134,17 +135,16 @@ public class TestUtils {
      * @param numberOfEvents Number of events to create.
      * @param body Messages body to emit.
      * @param messageId An identifier for the set of messages.
-     * @param sessionEnabled if we need to set session id.
      * @param sessionId A session identifier for the set of messages.
      * @return A list of messages.
      */
     public static List<ServiceBusMessage> getServiceBusMessages(int numberOfEvents, byte[] body, String messageId,
-        boolean sessionEnabled, String sessionId) {
+                                                                String sessionId) {
         return IntStream.range(0, numberOfEvents)
             .mapToObj(number -> {
                 final ServiceBusMessage message = getServiceBusMessage(body, messageId);
                 message.getProperties().put(MESSAGE_POSITION_ID, number);
-                if (sessionEnabled) {
+                if (!Objects.isNull(sessionId)) {
                     message.setSessionId(sessionId);
                 }
                 return message;

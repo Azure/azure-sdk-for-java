@@ -183,7 +183,7 @@ public final class ManageZonalVirtualMachineScaleSet {
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .create();
 
-            System.out.println("Created zone aware virtual machine scale set");
+            System.out.println("Created zone aware virtual machine scale set: " + virtualMachineScaleSet1.id());
 
             //=============================================================
             // Create a zone aware virtual machine scale set
@@ -208,7 +208,7 @@ public final class ManageZonalVirtualMachineScaleSet {
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                     .create();
 
-            System.out.println("Created zone aware virtual machine scale set");
+            System.out.println("Created zone aware virtual machine scale set: " + virtualMachineScaleSet2.id());
 
             return true;
         } catch (Exception f) {

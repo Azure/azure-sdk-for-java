@@ -68,7 +68,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
     protected static final byte[] CONTENTS_BYTES = "Some-contents".getBytes(StandardCharsets.UTF_8);
     protected String sessionId;
-    protected String sessionId2;
 
     protected IntegrationTestBase(ClientLogger logger) {
         this.logger = logger;

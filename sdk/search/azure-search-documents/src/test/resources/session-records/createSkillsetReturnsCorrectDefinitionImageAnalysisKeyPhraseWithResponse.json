@@ -1,31 +1,50 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://azsjava9927470079633bc2d46a9a9fefdc6.search.windows.net/skillsets?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "838c0811-70e2-4c17-8b7e-9d859a0d36e6",
+      "x-ms-client-request-id" : "816f7fab-198f-4d54-8fc2-8f4797fbd336",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "838c0811-70e2-4c17-8b7e-9d859a0d36e6",
+      "request-id" : "816f7fab-198f-4d54-8fc2-8f4797fbd336",
       "StatusCode" : "201",
-      "Date" : "Tue, 21 Apr 2020 19:11:05 GMT",
+      "Date" : "Mon, 11 May 2020 18:10:03 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "838c0811-70e2-4c17-8b7e-9d859a0d36e6",
-      "ETag" : "W/\"0x8D7E627BD8C5640\"",
-      "elapsed-time" : "77",
+      "client-request-id" : "816f7fab-198f-4d54-8fc2-8f4797fbd336",
+      "ETag" : "W/\"0x8D7F5D6879FCB69\"",
+      "elapsed-time" : "100",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "1192",
-      "Body" : "{\"@odata.context\":\"https://azsjava9927470079633bc2d46a9a9fefdc6.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7E627BD8C5640\\\"\",\"name\":\"image-analysis-key-phrase-skillset\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"visualFeatures\":[\"adult\",\"brands\",\"categories\",\"description\",\"faces\",\"objects\",\"tags\"],\"details\":[\"celebrities\",\"landmarks\"],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
+      "Content-Length" : "1180",
+      "Body" : "{\"@odata.context\":\"https://alzimmer-search.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8D7F5D6879FCB69\\\"\",\"name\":\"image-analysis-key-phrase-skillset661382723\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.ImageAnalysisSkill\",\"name\":\"myimage\",\"description\":\"Tested image analysis skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"visualFeatures\":[\"adult\",\"brands\",\"categories\",\"description\",\"faces\",\"objects\",\"tags\"],\"details\":[\"celebrities\",\"landmarks\"],\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"description\",\"targetName\":\"mydescription\"}]},{\"@odata.type\":\"#Microsoft.Skills.Text.KeyPhraseExtractionSkill\",\"name\":\"mykeyphrases\",\"description\":\"Tested Key Phrase skill\",\"context\":\"/document\",\"defaultLanguageCode\":\"en\",\"maxKeyPhraseCount\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/mydescription/*/Tags/*\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"keyPhrases\",\"targetName\":\"myKeyPhrases\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=minimal",
-      "Location" : "https://azsjava9927470079633bc2d46a9a9fefdc6.search.windows.net/skillsets('image-analysis-key-phrase-skillset')?api-version=2019-05-06-Preview"
+      "Location" : "https://alzimmer-search.search.windows.net/skillsets('image-analysis-key-phrase-skillset661382723')?api-version=2019-05-06-Preview"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.search.windows.net/skillsets('image-analysis-key-phrase-skillset661382723')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "ec9fb6b2-1361-45aa-af97-2c8fc8156df1"
+    },
+    "Response" : {
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "ec9fb6b2-1361-45aa-af97-2c8fc8156df1",
+      "elapsed-time" : "80",
+      "Expires" : "-1",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "ec9fb6b2-1361-45aa-af97-2c8fc8156df1",
+      "StatusCode" : "204",
+      "Date" : "Mon, 11 May 2020 18:10:03 GMT"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjava9927470079633bc2d46a9a9fefdc6" ]
+  "variables" : [ "image-analysis-key-phrase-skillset661382723" ]
 }

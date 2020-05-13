@@ -3,7 +3,7 @@
 package com.azure.cosmos.examples.ChangeFeed;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.models.CosmosAsyncContainerResponse;
@@ -119,8 +119,9 @@ public class SampleChangeFeedProcessor {
         return new CosmosClientBuilder()
                 .endpoint(SampleConfigurations.HOST)
                 .key(SampleConfigurations.MASTER_KEY)
-                .connectionPolicy(ConnectionPolicy.getDefaultPolicy())
+                .directMode(DirectConnectionConfig.getDefaultConfig())
                 .consistencyLevel(ConsistencyLevel.EVENTUAL)
+                .contentResponseOnWriteEnabled(true)
                 .buildAsyncClient();
     }
 

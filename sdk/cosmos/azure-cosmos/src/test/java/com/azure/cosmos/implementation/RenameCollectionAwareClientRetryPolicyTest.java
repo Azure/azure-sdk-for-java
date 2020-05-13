@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.models.ModelBridgeInternal;
