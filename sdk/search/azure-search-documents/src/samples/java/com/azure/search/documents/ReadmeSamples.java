@@ -12,14 +12,14 @@ import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
-import com.azure.search.documents.indexes.SearchSynonymMapClient;
-import com.azure.search.documents.indexes.models.SearchOptions;
-import com.azure.search.documents.indexes.models.SearchResult;
+import com.azure.search.documents.indexes.SynonymMapClient;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,10 +40,10 @@ public class ReadmeSamples {
     private String indexName = "index name";
     private SearchServiceClient searchServiceClient = new SearchServiceClientBuilder().buildClient();
     private SearchIndexClient searchIndexClient = searchServiceClient.getSearchIndexClient();
-    private SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getDataSourceClient();
+    private SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getSearchIndexerDataSourceClient();
     private SearchIndexerClient searchIndexerClient = searchServiceClient.getSearchIndexerClient();
-    private SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
-    private SearchSynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
+    private SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
+    private SynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
     private SearchClient searchClient = new SearchClientBuilder().buildClient();
 
     public void createSearchServiceClient() {
@@ -89,7 +89,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
-        SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getDataSourceClient();
+        SearchIndexerDataSourceClient dataSourceClient = searchServiceClient.getSearchIndexerDataSourceClient();
     }
 
     public void createIndexerClient() {
@@ -105,7 +105,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
-        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
     }
 
     public void createSynonymMapClient() {
@@ -113,7 +113,7 @@ public class ReadmeSamples {
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(apiKey))
             .buildClient();
-        SearchSynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
+        SynonymMapClient synonymMapClient = searchServiceClient.getSynonymMapClient();
     }
 
     public void customHeaders() {

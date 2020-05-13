@@ -7,10 +7,12 @@ import com.azure.core.util.Context;
 import com.azure.search.documents.SearchClient;
 import com.azure.search.documents.SearchIndexClientTestBase;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.indexes.models.IndexDocumentsResult;
-import com.azure.search.documents.indexes.models.SearchOptions;
-import com.azure.search.documents.indexes.util.SearchPagedIterable;
-import com.azure.search.documents.indexes.util.SearchPagedResponse;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SearchPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 

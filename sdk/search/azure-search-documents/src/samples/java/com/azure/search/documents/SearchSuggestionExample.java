@@ -7,9 +7,9 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.models.SuggestResult;
-import com.azure.search.documents.indexes.util.SuggestPagedResponse;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.models.SuggestResult;
+import com.azure.search.documents.util.SuggestPagedResponse;
 import com.azure.search.documents.models.SuggestOptions;
 
 import java.util.Iterator;

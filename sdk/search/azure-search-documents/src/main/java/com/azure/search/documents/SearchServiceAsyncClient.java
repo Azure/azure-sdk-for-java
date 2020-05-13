@@ -7,16 +7,16 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerDataSourceAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetAsyncClient;
 import com.azure.search.documents.indexes.SearchServiceResourceClientBuilder;
-import com.azure.search.documents.indexes.SearchSynonymMapAsyncClient;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ServiceStatistics;
+import com.azure.search.documents.indexes.SynonymMapAsyncClient;
+import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
 import reactor.core.publisher.Mono;
 
 import java.util.function.Function;
@@ -112,8 +112,8 @@ public final class SearchServiceAsyncClient {
      *
      * @return a {@link SearchIndexerDataSourceAsyncClient} created from the service client configuration.
      */
-    public SearchIndexerDataSourceAsyncClient getDataSourceAsyncClient() {
-        return prepareBuilder().buildDataSourceAsyncClient();
+    public SearchIndexerDataSourceAsyncClient getSearchIndexerDataSourceAsyncClient() {
+        return getResourceBuilder().buildDataSourceAsyncClient();
     }
 
     /**
@@ -122,7 +122,7 @@ public final class SearchServiceAsyncClient {
      * @return a {@link SearchIndexAsyncClient} created from the service client configuration.
      */
     public SearchIndexAsyncClient getSearchIndexAsyncClient() {
-        return prepareBuilder().buildSearchIndexAsyncClient();
+        return getResourceBuilder().buildSearchIndexAsyncClient();
     }
 
     /**
@@ -131,7 +131,7 @@ public final class SearchServiceAsyncClient {
      * @return a {@link SearchIndexerAsyncClient} created from the service client configuration.
      */
     public SearchIndexerAsyncClient getSearchIndexerAsyncClient() {
-        return prepareBuilder().buildSearchIndexerAsyncClient();
+        return getResourceBuilder().buildSearchIndexerAsyncClient();
     }
 
     /**
@@ -140,22 +140,22 @@ public final class SearchServiceAsyncClient {
      *
      * @return a {@link SearchIndexerSkillsetAsyncClient} created from the service client configuration.
      */
-    public SearchIndexerSkillsetAsyncClient getSkillsetAsyncClient() {
-        return prepareBuilder().buildSkillsetAsyncClient();
+    public SearchIndexerSkillsetAsyncClient getSearchIndexerSkillsetAsyncClient() {
+        return getResourceBuilder().buildSkillsetAsyncClient();
     }
 
     /**
-     * Initializes a new {@link SearchSynonymMapAsyncClient} using the same configuration as the
+     * Initializes a new {@link SynonymMapAsyncClient} using the same configuration as the
      * SearchServiceAsyncClient.
      *
-     * @return a {@link SearchSynonymMapAsyncClient} created from the service client configuration.
+     * @return a {@link SynonymMapAsyncClient} created from the service client configuration.
      */
-    public SearchSynonymMapAsyncClient getSynonymMapAsyncClient() {
-        return prepareBuilder().buildSynonymMapAsyncClient();
+    public SynonymMapAsyncClient getSynonymMapAsyncClient() {
+        return getResourceBuilder().buildSynonymMapAsyncClient();
     }
 
 
-    SearchServiceResourceClientBuilder prepareBuilder() {
+    SearchServiceResourceClientBuilder getResourceBuilder() {
         return new SearchServiceResourceClientBuilder()
             .endpoint(getEndpoint())
             .pipeline(getHttpPipeline())

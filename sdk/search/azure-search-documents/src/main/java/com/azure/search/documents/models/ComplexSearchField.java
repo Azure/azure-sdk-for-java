@@ -3,6 +3,9 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+
 import java.util.List;
 
 /**
@@ -19,8 +22,7 @@ public class ComplexSearchField extends SearchFieldBase {
      * @param collection Whether the field is a collection of strings.
      */
     public ComplexSearchField(String name, boolean collection) {
-        super(name, collection ? SearchFieldDataType.collection(SearchFieldDataType.COMPLEX)
-            : SearchFieldDataType.COMPLEX);
+        super(name, collection ? SearchFieldDataType.collection(SearchFieldDataType.COMPLEX) : SearchFieldDataType.COMPLEX);
     }
 
     /**

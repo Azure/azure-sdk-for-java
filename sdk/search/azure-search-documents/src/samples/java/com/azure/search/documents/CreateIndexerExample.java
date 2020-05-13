@@ -7,11 +7,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
-import com.azure.search.documents.models.FieldMapping;
-import com.azure.search.documents.models.IndexingParameters;
-import com.azure.search.documents.models.IndexingSchedule;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.FieldMapping;
+import com.azure.search.documents.indexes.models.IndexingParameters;
+import com.azure.search.documents.indexes.models.IndexingSchedule;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchIndexer;
 
 import java.time.Duration;
 import java.util.Collections;

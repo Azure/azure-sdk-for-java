@@ -3,6 +3,10 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+
 import java.util.List;
 
 /**

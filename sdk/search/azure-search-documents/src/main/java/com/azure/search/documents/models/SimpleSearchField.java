@@ -3,6 +3,10 @@
 
 package com.azure.search.documents.models;
 
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+
 /**
  * A helper Field model to build a simple {@link SearchField}.
  */

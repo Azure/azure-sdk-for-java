@@ -11,25 +11,25 @@ import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
-import com.azure.search.documents.models.FieldMapping;
-import com.azure.search.documents.models.IndexerExecutionResult;
-import com.azure.search.documents.models.IndexerExecutionStatus;
-import com.azure.search.documents.models.IndexerStatus;
-import com.azure.search.documents.models.IndexingParameters;
-import com.azure.search.documents.models.IndexingSchedule;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OcrSkill;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerLimits;
-import com.azure.search.documents.models.SearchIndexerSkill;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.models.FieldMapping;
+import com.azure.search.documents.indexes.models.IndexerExecutionResult;
+import com.azure.search.documents.indexes.models.IndexerExecutionStatus;
+import com.azure.search.documents.indexes.models.IndexerStatus;
+import com.azure.search.documents.indexes.models.IndexingParameters;
+import com.azure.search.documents.indexes.models.IndexingSchedule;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OcrSkill;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerLimits;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import com.azure.search.documents.test.CustomQueryPipelinePolicy;
@@ -177,10 +177,10 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
     protected void beforeTest() {
         super.beforeTest();
         serviceClient = getSearchServiceClientBuilder().buildClient();
-        dataSourceClient = serviceClient.getDataSourceClient();
+        dataSourceClient = serviceClient.getSearchIndexerDataSourceClient();
         searchIndexClient = serviceClient.getSearchIndexClient();
         searchIndexerClient = serviceClient.getSearchIndexerClient();
-        searchSkillsetClient = serviceClient.getSkillsetClient();
+        searchSkillsetClient = serviceClient.getSearchIndexerSkillsetClient();
     }
 
     @Test
@@ -309,7 +309,7 @@ public class IndexersManagementSyncTests extends SearchServiceTestBase {
             Collections.singletonList(MOCK_STATUS_PIPELINE_POLICY))
             .buildClient();
         searchIndexClient = serviceClient.getSearchIndexClient();
-        dataSourceClient = serviceClient.getDataSourceClient();
+        dataSourceClient = serviceClient.getSearchIndexerDataSourceClient();
         searchIndexerClient = serviceClient.getSearchIndexerClient();
 
         createDataSourceAndIndex();

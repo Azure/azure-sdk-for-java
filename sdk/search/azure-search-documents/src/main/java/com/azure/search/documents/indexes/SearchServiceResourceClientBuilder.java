@@ -41,7 +41,7 @@ import java.util.Objects;
  * {@link SearchIndexClient}, {@link SearchIndexAsyncClient}.
  * {@link SearchIndexerClient}, {@link SearchIndexerAsyncClient}.
  * {@link SearchIndexerSkillsetClient}, {@link SearchIndexerSkillsetAsyncClient}.
- * {@link SearchSynonymMapClient}, {@link SearchSynonymMapAsyncClient}.
+ * {@link SynonymMapClient}, {@link SynonymMapAsyncClient}.
  * These clients are used to perform operations that are specific to search resource type.
  *
  * @see SearchIndexerDataSourceClient
@@ -52,15 +52,15 @@ import java.util.Objects;
  * @see SearchIndexerAsyncClient
  * @see SearchIndexerSkillsetClient
  * @see SearchIndexerSkillsetAsyncClient
- * @see SearchSynonymMapClient
- * @see SearchSynonymMapAsyncClient
+ * @see SynonymMapClient
+ * @see SynonymMapAsyncClient
  */
 @ServiceClientBuilder(serviceClients = {
     SearchIndexerDataSourceClient.class, SearchIndexerDataSourceAsyncClient.class,
     SearchIndexClient.class, SearchIndexAsyncClient.class,
     SearchIndexerClient.class, SearchIndexerAsyncClient.class,
     SearchIndexerSkillsetClient.class, SearchIndexerSkillsetAsyncClient.class,
-    SearchSynonymMapClient.class, SearchSynonymMapAsyncClient.class
+    SynonymMapClient.class, SynonymMapAsyncClient.class
 })
 public class SearchServiceResourceClientBuilder {
     private final ClientLogger logger = new ClientLogger(SearchServiceResourceClientBuilder.class);
@@ -247,39 +247,39 @@ public class SearchServiceResourceClientBuilder {
     }
 
     /**
-     * Creates a {@link SearchSynonymMapClient} based on options set in the Builder. Every time
-     * {@code buildSynonymMapClient()} is called a new instance of {@link SearchSynonymMapClient} is created.
+     * Creates a {@link SynonymMapClient} based on options set in the Builder. Every time
+     * {@code buildSynonymMapClient()} is called a new instance of {@link SynonymMapClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline},
      * {@link #serviceVersion(SearchServiceVersion)} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link SearchSynonymMapClient client}. All other builder settings are ignored.
+     * are used to create the {@link SynonymMapClient client}. All other builder settings are ignored.
      * </p>
      * @return A SearchSynonymMapClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchSynonymMapClient buildSynonymMapClient() {
-        return new SearchSynonymMapClient(buildSynonymMapAsyncClient());
+    public SynonymMapClient buildSynonymMapClient() {
+        return new SynonymMapClient(buildSynonymMapAsyncClient());
     }
 
     /**
-     * Creates a {@link SearchSynonymMapAsyncClient} based on options set in the Builder. Every time {@code
-     * buildSynonymMapAsyncClient()} is called a new instance of {@link SearchSynonymMapAsyncClient} is created.
+     * Creates a {@link SynonymMapAsyncClient} based on options set in the Builder. Every time {@code
+     * buildSynonymMapAsyncClient()} is called a new instance of {@link SynonymMapAsyncClient} is created.
      * <p>
      * If {@link #pipeline(HttpPipeline) pipeline} is set, then only the {@code pipeline},
      * {@link #serviceVersion(SearchServiceVersion)} and {@link #endpoint(String) endpoint}
-     * are used to create the {@link SearchSynonymMapAsyncClient client}. All other builder settings are ignored.
+     * are used to create the {@link SynonymMapAsyncClient client}. All other builder settings are ignored.
      * </p>
      * @return A SearchSynonymMapAsyncClient with the options set from the builder.
      * @throws NullPointerException If {@code endpoint} are {@code null}.
      */
-    public SearchSynonymMapAsyncClient buildSynonymMapAsyncClient() {
+    public SynonymMapAsyncClient buildSynonymMapAsyncClient() {
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
 
         SearchServiceVersion buildVersion = (serviceVersion == null)
             ? SearchServiceVersion.getLatest()
             : serviceVersion;
 
-        return new SearchSynonymMapAsyncClient(endpoint, buildVersion, getHttpPipeline());
+        return new SynonymMapAsyncClient(endpoint, buildVersion, getHttpPipeline());
     }
 
     private HttpPipeline getHttpPipeline() {

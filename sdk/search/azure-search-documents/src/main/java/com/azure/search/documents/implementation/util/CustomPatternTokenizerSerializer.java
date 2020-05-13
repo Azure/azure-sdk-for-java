@@ -3,8 +3,8 @@
 
 package com.azure.search.documents.implementation.util;
 
-import com.azure.search.documents.models.PatternTokenizer;
-import com.azure.search.documents.models.RegexFlags;
+import com.azure.search.documents.indexes.models.PatternTokenizer;
+import com.azure.search.documents.indexes.models.RegexFlags;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;

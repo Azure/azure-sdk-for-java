@@ -3,7 +3,7 @@
 
 package com.azure.search.documents.test;
 
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.RequestOptions;
 
 /**
  * Contains common options for the Search service.

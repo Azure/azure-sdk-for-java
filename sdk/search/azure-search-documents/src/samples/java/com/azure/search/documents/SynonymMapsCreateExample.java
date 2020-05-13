@@ -5,11 +5,11 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.indexes.SearchSynonymMapClient;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.indexes.SynonymMapClient;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class SynonymMapsCreateExample {
             .credential(new AzureKeyCredential(API_ADMIN_KEY))
             .buildClient();
 
-        SearchSynonymMapClient synonymMapClient = serviceClient.getSynonymMapClient();
+        SynonymMapClient synonymMapClient = serviceClient.getSynonymMapClient();
         String synonymMapName = "desc-synonymmap";
 
         System.out.println("Create synonym map...\n");
@@ -48,7 +48,7 @@ public class SynonymMapsCreateExample {
         synonymMapClient.delete(synonymMapName);
     }
 
-    private static void createSynonymMap(SearchSynonymMapClient synonymMapClient, String synonymMapName) {
+    private static void createSynonymMap(SynonymMapClient synonymMapClient, String synonymMapName) {
         SynonymMap synonymMap = new SynonymMap()
             .setName(synonymMapName)
             .setSynonyms("hotel, motel\ninternet,wifi\nfive star=>luxury\neconomy,inexpensive=>budget");

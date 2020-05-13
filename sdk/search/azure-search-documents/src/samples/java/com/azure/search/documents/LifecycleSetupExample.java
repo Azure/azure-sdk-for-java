@@ -9,23 +9,23 @@ import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.EntityRecognitionSkill;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.IndexingSchedule;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.LexicalAnalyzerName;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerDataContainer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerDataSourceType;
-import com.azure.search.documents.models.SearchIndexerSkill;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.Suggester;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.EntityRecognitionSkill;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.IndexingSchedule;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.Suggester;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -59,7 +59,7 @@ public class LifecycleSetupExample {
     public static void main(String[] args) {
         SearchServiceClient client = createServiceClient();
         // Create a data source for a Cosmos DB database
-        SearchIndexerDataSource dataSource = createCosmosDataSource(client.getDataSourceClient());
+        SearchIndexerDataSource dataSource = createCosmosDataSource(client.getSearchIndexerDataSourceClient());
         System.out.println("Created DataSource " + dataSource.getName());
 
         // Create an index
@@ -67,7 +67,7 @@ public class LifecycleSetupExample {
         System.out.println("Created Index " + index.getName());
 
         // Create a skillset for Cognitive Services
-        SearchIndexerSkillset skillset = createSkillset(client.getSkillsetClient());
+        SearchIndexerSkillset skillset = createSkillset(client.getSearchIndexerSkillsetClient());
         System.out.println("Created Skillset " + skillset.getName());
 
         // Create an indexer that uses the skillset and data source and loads the index

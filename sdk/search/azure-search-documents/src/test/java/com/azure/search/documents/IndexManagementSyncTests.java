@@ -6,22 +6,22 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.SearchSynonymMapClient;
-import com.azure.search.documents.models.CorsOptions;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.LexicalAnalyzerName;
-import com.azure.search.documents.models.MagnitudeScoringFunction;
-import com.azure.search.documents.models.MagnitudeScoringParameters;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ScoringFunctionAggregation;
-import com.azure.search.documents.models.ScoringFunctionInterpolation;
-import com.azure.search.documents.models.ScoringProfile;
+import com.azure.search.documents.indexes.SynonymMapClient;
+import com.azure.search.documents.indexes.models.CorsOptions;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.MagnitudeScoringFunction;
+import com.azure.search.documents.indexes.models.MagnitudeScoringParameters;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.ScoringFunctionAggregation;
+import com.azure.search.documents.indexes.models.ScoringFunctionInterpolation;
+import com.azure.search.documents.indexes.models.ScoringProfile;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.Suggester;
+import com.azure.search.documents.indexes.models.SynonymMap;
 import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.Suggester;
-import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class IndexManagementSyncTests extends SearchServiceTestBase {
     private SearchIndexClient searchIndexClient;
-    private SearchSynonymMapClient synonymMapClient;
+    private SynonymMapClient synonymMapClient;
 
     // commonly used lambda definitions
     private BiFunction<SearchIndex, AccessOptions, SearchIndex> createOrUpdateIndexFunc = (SearchIndex index,

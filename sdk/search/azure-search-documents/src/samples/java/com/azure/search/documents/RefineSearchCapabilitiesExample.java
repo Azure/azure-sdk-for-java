@@ -6,20 +6,20 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
-import com.azure.search.documents.indexes.models.IndexDocumentsResult;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.ServiceCounters;
+import com.azure.search.documents.indexes.models.ServiceLimits;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
+import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.indexes.models.WebApiSkill;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerSkill;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.ServiceCounters;
-import com.azure.search.documents.models.ServiceLimits;
-import com.azure.search.documents.models.ServiceStatistics;
-import com.azure.search.documents.models.SynonymMap;
-import com.azure.search.documents.models.WebApiSkill;
+import com.azure.search.documents.models.IndexDocumentsResult;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -45,7 +45,7 @@ public class RefineSearchCapabilitiesExample {
 
     public static void main(String[] args) {
         SearchServiceClient serviceClient = createServiceClient();
-        SearchIndexerSkillsetClient skillsetClient = serviceClient.getSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = serviceClient.getSearchIndexerSkillsetClient();
         SearchClient indexClient = createIndexClient();
 
         // Add a synonym map to an index field
@@ -92,7 +92,7 @@ public class RefineSearchCapabilitiesExample {
             .setDescription("Skillset for testing custom skillsets")
             .setSkills(Collections.singletonList(webApiSkill));
 
-        client.getSkillsetClient().createOrUpdate(skillset);
+        client.getSearchIndexerSkillsetClient().createOrUpdate(skillset);
         System.out.printf("Created Skillset %s%n", skillsetName);
 
         SearchIndexer indexer = client.getSearchIndexerClient()

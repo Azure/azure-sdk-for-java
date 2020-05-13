@@ -6,12 +6,12 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
-import com.azure.search.documents.models.InputFieldMappingEntry;
-import com.azure.search.documents.models.OcrSkill;
-import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.SearchIndexerSkill;
-import com.azure.search.documents.models.SearchIndexerSkillset;
-import com.azure.search.documents.models.WebApiSkill;
+import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.OcrSkill;
+import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
+import com.azure.search.documents.indexes.models.SearchIndexerSkill;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.WebApiSkill;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,7 +34,7 @@ public class CreateSkillsetExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSkillsetClient();
+        SearchIndexerSkillsetClient skillsetClient = searchServiceClient.getSearchIndexerSkillsetClient();
         createOcrSkillset(skillsetClient);
         createCustomSkillset(skillsetClient);
         cleanupSkillset(skillsetClient);

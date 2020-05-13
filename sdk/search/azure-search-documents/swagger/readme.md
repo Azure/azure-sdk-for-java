@@ -49,10 +49,10 @@ These settings apply only when `--tag=package-2019-05-searchservice-preview` is 
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchservice.json
 java: true
-namespace: com.azure.search.documents
+namespace: com.azure.search.documents.indexes
 title: SearchServiceRestClient
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult
+custom-types: SearchErrorException,SearchError,AnalyzeResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult
 ```
 
 ### Tag: package-2019-05-searchindex-preview
@@ -63,10 +63,10 @@ These settings apply only when `--tag=package-2019-05-searchindex-preview` is sp
 input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 java: true
-namespace: com.azure.search.documents.indexes
+namespace: com.azure.search.documents
 title: SearchIndexRestClient
 models-subpackage: implementation.models
-custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchResult,SearchOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult
+custom-types: SearchErrorException,SearchError,QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchResult,SearchOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult
 custom-types-subpackage: models
 ```
 
@@ -174,7 +174,7 @@ directive:
           .replace(/(@param client the instance of the service client containing this operation class.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
           .replace(/(public DocumentsImpl\(SearchIndexRestClientImpl client\) {)/g, "public DocumentsImpl(SearchIndexRestClientImpl client, SerializerAdapter serializer) {")
           .replace(/(this.service = RestProxy.create\(DocumentsService.class, client.getHttpPipeline\(\)\);)/g, "this.service = RestProxy.create(DocumentsService.class, client.getHttpPipeline(), serializer);")
-          .replace(/import com\.azure\.search\.documents\.indexes\.implementation\.models\.SearchErrorException\;/g, "import com.azure.search.documents.models.SearchErrorException;")
+          .replace(/(import com\.azure\.search\.documents\.implementation\.models\.SearchErrorException\;)/g, "import com.azure.search.documents.models.SearchErrorException;")
 
     # Enable configuration of RestProxy serializer
     - from: SearchIndexRestClientImpl.java
@@ -185,7 +185,7 @@ directive:
           .replace(/(void setIndexName)/g, "public void setIndexName")
           .replace(/(void setSearchDnsSuffix)/g, "public void setSearchDnsSuffix")
           .replace(/(void setSearchServiceName)/g, "public void setSearchServiceName")
-          .replace(/(package com.azure.search.documents.indexes.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
+          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.JacksonAdapter;\nimport com.azure.core.util.serializer.SerializerAdapter;")
           .replace(/(this\(RestProxy.createDefaultPipeline\(\)\);)/g, "this(RestProxy.createDefaultPipeline(), JacksonAdapter.createDefaultSerializerAdapter());")
           .replace(/(@param httpPipeline The HTTP pipeline to send requests through.)/g, "$1\n     \* @param serializer the serializer to be used for service client requests.")
           .replace(/(this\(new HttpPipelineBuilder\(\)\.policies\(new UserAgentPolicy\(\)\, new RetryPolicy\(\)\, new CookiePolicy\(\)\)\.build\(\)\)\;)/g, "this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(), new JacksonAdapter());")
@@ -215,7 +215,7 @@ directive:
       where: $
       transform: >-
           return $
-          .replace(/(package com.azure.search.documents.indexes.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
+          .replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.util.serializer.SerializerAdapter;")
           .replace(/(\* The HTTP pipeline to send requests through)/g, "\* The serializer to use for requests\n     \*\/\n    private SerializerAdapter serializer;\n\n    \/\*\*\n     \* Sets The serializer to use for requests.\n     \*\n     \* @param serializer the serializer value.\n     \* @return the SearchIndexRestClientBuilder.\n     \*\/\n    public SearchIndexRestClientBuilder serializer\(SerializerAdapter serializer\) {\n        this.serializer = serializer;\n        return this;\n    }\n\n    \/\*\n     $1")
           .replace(/(new SearchIndexRestClientImpl\(pipeline)/g, "$1, serializer")
           .replace(/(this.pipeline = RestProxy.createDefaultPipeline\(\);\s+})/g, "$1\n        if \(serializer == null\) {\n            this.serializer = JacksonAdapter.createDefaultSerializerAdapter\(\);\n        }")
@@ -238,7 +238,7 @@ directive:
           .replace(/(Mono<IndexDocumentsResult> indexAsync)/g, "<T> $1")
           .replace(/(Mono<SimpleResponse<IndexDocumentsResult>> index)/g, "<T> $1")
           .replace(/(IndexBatchBase)/g, "IndexBatchBase<T>")
-          .replace(/(com\.azure\.search\.documents\.indexes\.models\.IndexBatchBase\<T\>)/g, "com.azure.search.documents.indexes.models.IndexBatchBase")
+          .replace(/(com\.azure\.search\.documents\.models\.IndexBatchBase\<T\>)/g, "com.azure.search.documents.models.IndexBatchBase")
 
     # Change get to is
     - from: DocumentsImpl.java
@@ -294,6 +294,7 @@ directive:
         .replace(/(this.getSearchServiceName)/g, "this.client.getSearchServiceName")
         .replace(/(this.getEndpoint)/g, "this.client.getEndpoint")
         .replace(/(this.getSearchDnsSuffix)/g, "this.client.getSearchDnsSuffix")
+        .replace(/(import com\.azure\.search\.documents\.indexes\.implementation\.models\.SearchErrorException\;)/g, "import com.azure.search.documents.models.SearchErrorException;")
 
     # Add RestProxy import
     - from:
@@ -390,7 +391,7 @@ directive:
       where: $
       transform: >-
         return $
-        .replace(/(import com\.azure\.search\.documents\.indexes\.implementation\.models\.RequestOptions\;)/g, "import com.azure.search.documents.models.RequestOptions;\nimport com.azure.search.documents.indexes.models.ScoringParameter;")
+        .replace(/(import com\.azure\.search\.documents\.implementation\.models\.RequestOptions\;)/g, "import com.azure.search.documents.indexes.models.RequestOptions;\nimport com.azure.search.documents.models.ScoringParameter;")
         .replace(/(List\<String\> scoringParameters \= null\;)/g, "List<ScoringParameter> scoringParameters = null;")
         .replace()
 
@@ -400,7 +401,7 @@ directive:
       where: $
       transform: >-
         return $
-         .replace(/(import com\.azure\.search\.documents\.indexes\.models\.QueryType\;)/g, "$1\nimport com.azure.search.documents.indexes.models.ScoringParameter;")
+         .replace(/(import com\.azure\.search\.documents\.models\.QueryType\;)/g, "$1\nimport com.azure.search.documents.models.ScoringParameter;")
          .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
          .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
          .replace(/(public SearchRequest setScoringParameters\(List\<String\> scoringParameters\) \{)/g, "public SearchRequest setScoringParameters(List<ScoringParameter> scoringParameters) {")
@@ -423,6 +424,13 @@ directive:
         return $
         .replace(/public Boolean isUseFuzzyMatching\(\) \{/g, "public Boolean useFuzzyMatching() {")
  
+    - from:
+      - AutocompleteRequest.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.azure.search.documents.models.AutocompleteMode;")
+
     - from:
       - WordDelimiterTokenFilter.java
       where: $

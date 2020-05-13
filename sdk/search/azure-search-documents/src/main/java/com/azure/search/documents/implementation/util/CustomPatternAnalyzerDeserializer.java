@@ -3,9 +3,8 @@
 
 package com.azure.search.documents.implementation.util;
 
-import com.azure.search.documents.models.PatternAnalyzer;
-import com.azure.search.documents.models.PatternTokenizer;
-import com.azure.search.documents.models.RegexFlags;
+import com.azure.search.documents.indexes.models.PatternAnalyzer;
+import com.azure.search.documents.indexes.models.RegexFlags;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -25,7 +24,6 @@ import java.util.stream.Collectors;
  */
 public class CustomPatternAnalyzerDeserializer extends JsonDeserializer<PatternAnalyzer> {
     private static final String DELIMITER = "\\|";
-
     /**
      * {@inheritDoc}
      */

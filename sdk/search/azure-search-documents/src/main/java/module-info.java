@@ -20,5 +20,5 @@ module com.azure.search.documents {
     exports com.azure.search.documents.models;
     exports com.azure.search.documents.indexes;
     exports com.azure.search.documents.indexes.models;
-    exports com.azure.search.documents.indexes.util;
+    exports com.azure.search.documents.util;
 }

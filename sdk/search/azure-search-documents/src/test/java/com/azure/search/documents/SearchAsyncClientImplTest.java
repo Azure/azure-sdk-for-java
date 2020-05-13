@@ -3,9 +3,9 @@
 package com.azure.search.documents;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.search.documents.indexes.models.SearchOptions;
-import com.azure.search.documents.indexes.util.SearchPagedFlux;
 import com.azure.search.documents.models.GeoPoint;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.util.SearchPagedFlux;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;

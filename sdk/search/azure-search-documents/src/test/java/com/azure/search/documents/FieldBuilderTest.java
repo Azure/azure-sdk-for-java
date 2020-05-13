@@ -3,10 +3,10 @@
 
 package com.azure.search.documents;
 
+import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.models.ComplexSearchField;
-import com.azure.search.documents.models.LexicalAnalyzerName;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
 import com.azure.search.documents.models.SearchableSearchField;
 import com.azure.search.documents.models.SimpleSearchField;
 import com.azure.search.documents.test.environment.models.Hotel;

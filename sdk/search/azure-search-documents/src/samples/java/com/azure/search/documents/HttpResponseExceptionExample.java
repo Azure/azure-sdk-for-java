@@ -8,10 +8,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.models.SearchOptions;
-import com.azure.search.documents.indexes.models.SearchResult;
-import com.azure.search.documents.indexes.util.SearchPagedFlux;
 import com.azure.search.documents.models.SearchErrorException;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.util.SearchPagedFlux;
 
 /**
  * This example shows how to handle errors when the Azure Cognitive Search service

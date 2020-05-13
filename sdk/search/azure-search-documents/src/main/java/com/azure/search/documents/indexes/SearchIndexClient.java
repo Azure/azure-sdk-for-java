@@ -6,11 +6,11 @@ package com.azure.search.documents.indexes;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.AnalyzeRequest;
-import com.azure.search.documents.models.AnalyzedTokenInfo;
-import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.indexes.models.AnalyzeRequest;
+import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
+import com.azure.search.documents.indexes.models.GetIndexStatisticsResult;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchIndex;
 
 /**
  * Synchronous Client to manage and query search index, as well as manage other resources,

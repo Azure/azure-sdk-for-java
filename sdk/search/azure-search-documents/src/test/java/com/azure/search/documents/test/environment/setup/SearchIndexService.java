@@ -8,7 +8,7 @@ import com.azure.search.documents.SearchServiceClient;
 import com.azure.search.documents.SearchServiceClientBuilder;
 import com.azure.search.documents.TestHelpers;
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SearchIndex;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;

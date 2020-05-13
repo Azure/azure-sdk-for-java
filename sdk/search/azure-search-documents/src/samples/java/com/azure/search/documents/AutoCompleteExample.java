@@ -7,11 +7,11 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.models.AutocompleteItem;
-import com.azure.search.documents.indexes.models.AutocompleteMode;
-import com.azure.search.documents.indexes.models.AutocompleteOptions;
-import com.azure.search.documents.indexes.util.AutocompletePagedResponse;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.models.AutocompleteItem;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.util.AutocompletePagedResponse;
 
 import java.util.UUID;
 

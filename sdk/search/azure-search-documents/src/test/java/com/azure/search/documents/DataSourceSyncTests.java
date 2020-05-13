@@ -8,15 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.search.documents.indexes.SearchIndexerDataSources;
 import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
-import com.azure.search.documents.models.DataDeletionDetectionPolicy;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndexerDataContainer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerDataSourceType;
-import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
-import com.azure.search.documents.models.SqlIntegratedChangeTrackingPolicy;
+import com.azure.search.documents.indexes.models.DataDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.SoftDeleteColumnDeletionDetectionPolicy;
+import com.azure.search.documents.indexes.models.SqlIntegratedChangeTrackingPolicy;
 import com.azure.search.documents.test.AccessConditionTests;
 import com.azure.search.documents.test.AccessOptions;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -60,7 +60,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        client = getSearchServiceClientBuilder().buildClient().getDataSourceClient();
+        client = getSearchServiceClientBuilder().buildClient().getSearchIndexerDataSourceClient();
     }
 
     private SearchIndexerDataSource createOrUpdateDataSource(SearchIndexerDataSource datasource, Boolean onlyIfUnchanged,
@@ -214,8 +214,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
         // AzureSql
         createAndValidateSearchIndexerDataSource(createTestSqlDataSourceObject(null, null));
         createAndValidateSearchIndexerDataSource(createTestSqlDataSourceObject(deletionDetectionPolicy, null));
-        createAndValidateSearchIndexerDataSource(createTestSqlDataSourceObject(null, new
-            SqlIntegratedChangeTrackingPolicy()));
+        createAndValidateSearchIndexerDataSource(createTestSqlDataSourceObject(null, new SqlIntegratedChangeTrackingPolicy()));
         createAndValidateSearchIndexerDataSource(createTestSqlDataSourceObject(deletionDetectionPolicy,
             changeDetectionPolicy));
 

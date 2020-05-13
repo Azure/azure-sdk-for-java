@@ -4,16 +4,16 @@
 package com.azure.search.documents;
 
 import com.azure.search.documents.indexes.SearchIndexClient;
-import com.azure.search.documents.indexes.models.FacetResult;
-import com.azure.search.documents.indexes.models.QueryType;
-import com.azure.search.documents.indexes.models.SearchOptions;
-import com.azure.search.documents.indexes.models.SearchResult;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchField;
+import com.azure.search.documents.indexes.models.SearchFieldDataType;
+import com.azure.search.documents.indexes.models.SearchIndex;
+import com.azure.search.documents.indexes.models.SynonymMap;
+import com.azure.search.documents.models.FacetResult;
+import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchField;
-import com.azure.search.documents.models.SearchFieldDataType;
-import com.azure.search.documents.models.SearchIndex;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.ValueFacetResult;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;

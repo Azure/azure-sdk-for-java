@@ -10,9 +10,9 @@ import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerSkillsetClient;
-import com.azure.search.documents.indexes.SearchSynonymMapClient;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ServiceStatistics;
+import com.azure.search.documents.indexes.SynonymMapClient;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.ServiceStatistics;
 
 /**
  * Synchronous Client to manage and query indexes, as well as manage other resources, on a Cognitive Search service
@@ -50,8 +50,8 @@ public final class SearchServiceClient {
      *
      * @return a {@link SearchIndexerDataSourceClient} created from the service client configuration.
      */
-    public SearchIndexerDataSourceClient getDataSourceClient() {
-        return asyncClient.prepareBuilder().buildDataSourceClient();
+    public SearchIndexerDataSourceClient getSearchIndexerDataSourceClient() {
+        return asyncClient.getResourceBuilder().buildDataSourceClient();
     }
 
     /**
@@ -60,7 +60,7 @@ public final class SearchServiceClient {
      * @return a {@link SearchIndexClient} created from the service client configuration.
      */
     public SearchIndexClient getSearchIndexClient() {
-        return asyncClient.prepareBuilder().buildSearchIndexClient();
+        return asyncClient.getResourceBuilder().buildSearchIndexClient();
     }
 
     /**
@@ -69,7 +69,7 @@ public final class SearchServiceClient {
      * @return a {@link SearchIndexerClient} created from the service client configuration.
      */
     public SearchIndexerClient getSearchIndexerClient() {
-        return asyncClient.prepareBuilder().buildSearchIndexerClient();
+        return asyncClient.getResourceBuilder().buildSearchIndexerClient();
     }
 
     /**
@@ -77,17 +77,17 @@ public final class SearchServiceClient {
      *
      * @return a {@link SearchIndexerSkillsetClient} created from the service client configuration.
      */
-    public SearchIndexerSkillsetClient getSkillsetClient() {
-        return asyncClient.prepareBuilder().buildSkillsetClient();
+    public SearchIndexerSkillsetClient getSearchIndexerSkillsetClient() {
+        return asyncClient.getResourceBuilder().buildSkillsetClient();
     }
 
     /**
-     * Initializes a new {@link SearchSynonymMapClient} using the same configuration as the SearchServiceClient.
+     * Initializes a new {@link SynonymMapClient} using the same configuration as the SearchServiceClient.
      *
-     * @return a {@link SearchSynonymMapClient} created from the service client configuration.
+     * @return a {@link SynonymMapClient} created from the service client configuration.
      */
-    public SearchSynonymMapClient getSynonymMapClient() {
-        return asyncClient.prepareBuilder().buildSynonymMapClient();
+    public SynonymMapClient getSynonymMapClient() {
+        return asyncClient.getResourceBuilder().buildSynonymMapClient();
     }
 
     /**

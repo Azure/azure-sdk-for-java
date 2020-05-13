@@ -6,11 +6,11 @@ package com.azure.search.documents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.models.SearchOptions;
-import com.azure.search.documents.indexes.models.SearchResult;
-import com.azure.search.documents.indexes.util.SearchPagedIterable;
-import com.azure.search.documents.indexes.util.SearchPagedResponse;
-import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.models.SearchOptions;
+import com.azure.search.documents.models.SearchResult;
+import com.azure.search.documents.util.SearchPagedIterable;
+import com.azure.search.documents.util.SearchPagedResponse;
 
 import java.util.stream.Stream;
 

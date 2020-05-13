@@ -4,10 +4,10 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.Context;
-import com.azure.search.documents.indexes.models.AutocompleteItem;
-import com.azure.search.documents.indexes.models.AutocompleteMode;
-import com.azure.search.documents.indexes.models.AutocompleteOptions;
-import com.azure.search.documents.indexes.util.AutocompletePagedResponse;
+import com.azure.search.documents.models.AutocompleteItem;
+import com.azure.search.documents.models.AutocompleteMode;
+import com.azure.search.documents.models.AutocompleteOptions;
+import com.azure.search.documents.util.AutocompletePagedResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 

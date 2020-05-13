@@ -4,12 +4,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.search.documents.SearchDocument;
-import com.azure.search.documents.indexes.models.IndexAction;
-import com.azure.search.documents.indexes.models.IndexBatchBase;
-import com.azure.search.documents.indexes.models.IndexBatchException;
-import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
-import com.azure.search.documents.indexes.models.IndexDocumentsResult;
-import com.azure.search.documents.indexes.models.IndexingResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

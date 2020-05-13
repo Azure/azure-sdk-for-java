@@ -7,12 +7,12 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.SearchIndexerDataSourceClient;
-import com.azure.search.documents.models.DataChangeDetectionPolicy;
-import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.SearchIndexerDataContainer;
-import com.azure.search.documents.models.SearchIndexerDataSource;
-import com.azure.search.documents.models.SearchIndexerDataSourceType;
+import com.azure.search.documents.indexes.models.DataChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.DataSourceCredentials;
+import com.azure.search.documents.indexes.models.HighWaterMarkChangeDetectionPolicy;
+import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSource;
+import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -40,7 +40,7 @@ public class DataSourceExample {
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(ADMIN_KEY))
             .buildClient();
-        SearchIndexerDataSourceClient dataSourceClient = client.getDataSourceClient();
+        SearchIndexerDataSourceClient dataSourceClient = client.getSearchIndexerDataSourceClient();
         /*
          * Store the names of the created data sources so that we can delete them later
          * without affecting other resources.

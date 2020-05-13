@@ -12,11 +12,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.SearchServiceVersion;
-import com.azure.search.documents.implementation.SearchServiceRestClientBuilder;
-import com.azure.search.documents.implementation.SearchServiceRestClientImpl;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndexer;
-import com.azure.search.documents.models.SearchIndexerStatus;
+import com.azure.search.documents.indexes.implementation.SearchServiceRestClientBuilder;
+import com.azure.search.documents.indexes.implementation.SearchServiceRestClientImpl;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchIndexer;
+import com.azure.search.documents.indexes.models.SearchIndexerStatus;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;

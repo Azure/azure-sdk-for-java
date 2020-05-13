@@ -6,8 +6,8 @@ package com.azure.search.documents.indexes;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchIndexerSkillset;
+import com.azure.search.documents.indexes.models.RequestOptions;
+import com.azure.search.documents.indexes.models.SearchIndexerSkillset;
 
 /**
  * Synchronous Client to manage and query skillset, as well as manage other resources,
