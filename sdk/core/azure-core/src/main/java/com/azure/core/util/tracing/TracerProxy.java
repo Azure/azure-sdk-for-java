@@ -4,9 +4,7 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
@@ -21,7 +19,8 @@ public final class TracerProxy {
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
-        if (serviceLoader != null) {
+        Iterator<?> iterator = serviceLoader.iterator();
+        if (iterator.hasNext()) {
             TRACER = serviceLoader.iterator().next();
         }
     }
@@ -50,7 +49,7 @@ public final class TracerProxy {
     }
 
     /**
-     * For each {@link Tracer tracer} plugged into the SDK, the key-value pair metadata is added to its current span. If
+     * For the plugged in {@link Tracer tracer}, the key-value pair metadata is added to its current span. If
      * the {@code context} does not contain a span, then no metadata is added.
      *
      * @param key Name of the metadata.
@@ -65,7 +64,7 @@ public final class TracerProxy {
     }
 
     /**
-     * For each {@link Tracer tracer} plugged into the SDK, its current tracing span is marked as completed.
+     * For the plugged in {@link Tracer tracer}, its current tracing span is marked as completed.
      *
      * @param responseCode Response status code if the span is in a HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
