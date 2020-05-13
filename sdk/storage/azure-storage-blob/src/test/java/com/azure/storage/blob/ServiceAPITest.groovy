@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob
 
-import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
@@ -19,7 +18,7 @@ import com.azure.storage.blob.models.ParallelTransferOptions
 import com.azure.storage.blob.models.StaticWebsite
 
 import com.azure.storage.blob.models.BlobStorageException
-
+import com.azure.storage.blob.models.UndeleteBlobContainerOptions
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RequestRetryPolicy
 import com.azure.storage.common.sas.AccountSasPermission
@@ -623,8 +622,11 @@ class ServiceAPITest extends APISpec {
         }
 
         when:
-        def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainer(
-            blobContainerItem.getName(), blobContainerItem.getVersion(), generateContainerName())
+        def restoredContainerClient = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
+            blobContainerItem.getName(), blobContainerItem.getVersion(),
+            new UndeleteBlobContainerOptions().setDestinationContainerName(generateContainerName()),
+            null, Context.NONE)
+            .getValue()
 
         then:
         restoredContainerClient.listBlobs().size() == 1
@@ -650,7 +652,7 @@ class ServiceAPITest extends APISpec {
 
         when:
         def response = primaryBlobServiceClient.undeleteBlobContainerWithResponse(
-            blobContainerItem.getName(), blobContainerItem.getVersion(),
+            blobContainerItem.getName(), blobContainerItem.getVersion(), null,
             Duration.ofMinutes(1), Context.NONE)
         def restoredContainerClient = response.getValue()
 
@@ -709,7 +711,8 @@ class ServiceAPITest extends APISpec {
 
         when:
         def responseMono = blobContainerItemMono.flatMap {
-            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion())
+            blobContainerItem -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                blobContainerItem.getName(), blobContainerItem.getVersion(), null)
         }
 
         then:
@@ -750,7 +753,9 @@ class ServiceAPITest extends APISpec {
 
         when:
         def cc2 = primaryBlobServiceClient.createBlobContainer(generateContainerName())
-        primaryBlobServiceClient.undeleteBlobContainer(blobContainerItem.getName(), blobContainerItem.getVersion(), cc2.getBlobContainerName())
+        primaryBlobServiceClient.undeleteBlobContainerWithResponse(blobContainerItem.getName(), blobContainerItem.getVersion(),
+            new UndeleteBlobContainerOptions().setDestinationContainerName(cc2.getBlobContainerName()),
+            null, Context.NONE)
 
         then:
         thrown(BlobStorageException.class)

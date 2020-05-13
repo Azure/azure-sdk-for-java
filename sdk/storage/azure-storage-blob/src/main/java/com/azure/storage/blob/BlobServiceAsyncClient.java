@@ -33,6 +33,7 @@ import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -761,68 +762,14 @@ public final class BlobServiceAsyncClient {
      */
     public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
         String deletedContainerName, String deletedContainerVersion) {
-        return this.undeleteBlobContainer(deletedContainerName,
-            deletedContainerVersion, deletedContainerName);
-    }
-
-    /**
-     * Restores a previously deleted container.  The restored container
-     * will be renamed to the <code>destinationContainerName</code>.
-     * If the container associated with provided <code>destinationContainerName</code>
-     * already exists, this call will result in a 409 (conflict).
-     * This API is only functional if Container Soft Delete is enabled
-     * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String-String}
-     *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
-     * @param destinationContainerName The name of the destination container.
-     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
-     * to interact with the restored container.
-     */
-    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
-        String deletedContainerName, String deletedContainerVersion, String destinationContainerName) {
         return this.undeleteBlobContainerWithResponse(deletedContainerName,
-            deletedContainerVersion, destinationContainerName).flatMap(FluxUtil::toMono);
+            deletedContainerVersion, null).flatMap(FluxUtil::toMono);
     }
 
     /**
-     * Restores a previously deleted container.
-     * If the container associated with provided <code>deletedContainerName</code>
-     * already exists, this call will result in a 409 (conflict).
-     * This API is only functional if Container Soft Delete is enabled
-     * for the storage account associated with the container.
-     * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
-     *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#String-String}
-     *
-     * @param deletedContainerName The name of the previously deleted container.
-     * @param deletedContainerVersion The version of the previously deleted container.
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
-     * BlobContainerAsyncClient} used to interact with the restored container.
-     */
-    public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion) {
-        try {
-            return withContext(context ->
-                undeleteBlobContainerWithResponse(deletedContainerName, deletedContainerVersion, deletedContainerName,
-                    context));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Restores a previously deleted container.  The restored container
-     * will be renamed to the <code>destinationContainerName</code>.
+     * Restores a previously deleted container. The restored container
+     * will be renamed to the <code>destinationContainerName</code> if provided in <code>options</code>.
+     * Otherwise <code>deletedContainerName</code> is used as destination container name.
      * If the container associated with provided <code>destinationContainerName</code>
      * already exists, this call will result in a 409 (conflict).
      * This API is only functional if Container Soft Delete is enabled
@@ -832,31 +779,35 @@ public final class BlobServiceAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#String-String-String}
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#String-String-UndeleteBlobContainerOptions}
      *
      * @param deletedContainerName The name of the previously deleted container.
      * @param deletedContainerVersion The version of the previously deleted container.
-     * @param destinationContainerName The name of the destination container.
+     * @param options {@link UndeleteBlobContainerOptions}.
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * BlobContainerAsyncClient} used to interact with the restored container.
      */
     public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, String destinationContainerName) {
+        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options) {
         try {
             return withContext(context ->
                 undeleteBlobContainerWithResponse(
-                    deletedContainerName, deletedContainerVersion, destinationContainerName, context));
+                    deletedContainerName, deletedContainerVersion, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
-        String deletedContainerName, String deletedContainerVersion, String destinationContainerName,
+        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options,
         Context context) {
+        boolean hasOptionalDestinationContainerName = options != null && options.getDestinationContainerName() != null;
+        String destinationContainerName =
+            hasOptionalDestinationContainerName ? options.getDestinationContainerName() : deletedContainerName;
         return this.azureBlobStorage.containers().restoreWithRestResponseAsync(destinationContainerName, null,
             null, deletedContainerName, deletedContainerVersion,
             context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, getBlobContainerAsyncClient(destinationContainerName)));
+            .map(response -> new SimpleResponse<>(response,
+                getBlobContainerAsyncClient(destinationContainerName)));
     }
 }
