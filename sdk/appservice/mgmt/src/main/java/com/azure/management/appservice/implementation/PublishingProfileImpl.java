@@ -5,13 +5,10 @@ package com.azure.management.appservice.implementation;
 import com.azure.management.appservice.DeploymentSlot;
 import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.appservice.WebAppBase;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * A credential for publishing to a web app.
- */
+/** A credential for publishing to a web app. */
 class PublishingProfileImpl implements PublishingProfile {
 
     private String ftpUrl;
@@ -23,8 +20,15 @@ class PublishingProfileImpl implements PublishingProfile {
 
     private final WebAppBase parent;
 
-    private static final Pattern GIT_REGEX = Pattern.compile("publishMethod=\"MSDeploy\" publishUrl=\"([^\"]+)\".+userName=\"(\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
-    private static final Pattern FTP_REGEX = Pattern.compile("publishMethod=\"FTP\" publishUrl=\"ftp://([^\"]+).+userName=\"([^\"]+\\\\\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
+    private static final Pattern GIT_REGEX =
+        Pattern
+            .compile(
+                "publishMethod=\"MSDeploy\" publishUrl=\"([^\"]+)\".+userName=\"(\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
+    private static final Pattern FTP_REGEX =
+        Pattern
+            .compile(
+                "publishMethod=\"FTP\""
+                    + " publishUrl=\"ftp://([^\"]+).+userName=\"([^\"]+\\\\\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
 
     PublishingProfileImpl(String publishingProfileXml, WebAppBase parent) {
         Matcher matcher = GIT_REGEX.matcher(publishingProfileXml);

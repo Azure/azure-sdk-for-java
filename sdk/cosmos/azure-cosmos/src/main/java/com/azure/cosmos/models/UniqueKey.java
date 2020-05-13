@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +19,18 @@ import java.util.List;
  *
  * @see UniqueKeyPolicy
  */
-public final class UniqueKey extends JsonSerializable {
+public final class UniqueKey extends JsonSerializableWrapper{
     private List<String> paths;
 
     /**
      * Instantiates a new Unique key.
      */
     public UniqueKey() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     UniqueKey(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
     /**
@@ -42,7 +43,7 @@ public final class UniqueKey extends JsonSerializable {
      */
     public List<String> getPaths() {
         if (this.paths == null) {
-            this.paths = super.getList(Constants.Properties.PATHS, String.class);
+            this.paths = this.jsonSerializable.getList(Constants.Properties.PATHS, String.class);
 
             if (this.paths == null) {
                 this.paths = new ArrayList<String>();
@@ -69,9 +70,9 @@ public final class UniqueKey extends JsonSerializable {
 
     @Override
     protected void populatePropertyBag() {
-        super.populatePropertyBag();
+        this.jsonSerializable.populatePropertyBag();
         if (paths != null) {
-            super.set(Constants.Properties.PATHS, paths);
+            this.jsonSerializable.set(Constants.Properties.PATHS, paths);
         }
     }
 }

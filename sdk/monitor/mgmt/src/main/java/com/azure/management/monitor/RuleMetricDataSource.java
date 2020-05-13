@@ -5,18 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
-/**
- * The RuleMetricDataSource model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+/** The RuleMetricDataSource model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public final class RuleMetricDataSource extends RuleDataSource {
     /*
      * the name of the metric that defines what the rule monitors.
@@ -25,9 +22,8 @@ public final class RuleMetricDataSource extends RuleDataSource {
     private String metricName;
 
     /**
-     * Get the metricName property: the name of the metric that defines what
-     * the rule monitors.
-     * 
+     * Get the metricName property: the name of the metric that defines what the rule monitors.
+     *
      * @return the metricName value.
      */
     public String metricName() {
@@ -35,9 +31,8 @@ public final class RuleMetricDataSource extends RuleDataSource {
     }
 
     /**
-     * Set the metricName property: the name of the metric that defines what
-     * the rule monitors.
-     * 
+     * Set the metricName property: the name of the metric that defines what the rule monitors.
+     *
      * @param metricName the metricName value to set.
      * @return the RuleMetricDataSource object itself.
      */

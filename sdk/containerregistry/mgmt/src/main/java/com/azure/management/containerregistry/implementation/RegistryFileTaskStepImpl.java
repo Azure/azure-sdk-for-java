@@ -9,6 +9,7 @@ import com.azure.management.containerregistry.OverridingValue;
 import com.azure.management.containerregistry.RegistryFileTaskStep;
 import com.azure.management.containerregistry.RegistryTask;
 import com.azure.management.containerregistry.SetValue;
+import com.azure.management.containerregistry.TaskStepProperties;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,23 +39,32 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
 
     @Override
     public String taskFilePath() {
-        FileTaskStep fileTaskStep = (FileTaskStep) this.taskImpl.inner().step();
+        FileTaskStep fileTaskStep = fileTaskStep();
         return fileTaskStep.taskFilePath();
     }
 
     @Override
     public String valuesFilePath() {
-        FileTaskStep fileTaskStep = (FileTaskStep) this.taskImpl.inner().step();
+        FileTaskStep fileTaskStep = fileTaskStep();
         return fileTaskStep.valuesFilePath();
     }
 
     @Override
     public List<SetValue> values() {
-        FileTaskStep fileTaskStep = (FileTaskStep) this.taskImpl.inner().step();
+        FileTaskStep fileTaskStep = fileTaskStep();
         if (fileTaskStep.values() == null) {
             return Collections.unmodifiableList(new ArrayList<SetValue>());
         }
         return Collections.unmodifiableList(fileTaskStep.values());
+    }
+
+    private FileTaskStep fileTaskStep() {
+        TaskStepProperties step = this.taskImpl.inner().step();
+        if (step instanceof FileTaskStep) {
+            return (FileTaskStep) step;
+        } else {
+            return new FileTaskStep();
+        }
     }
 
     @Override
@@ -133,7 +143,7 @@ class RegistryFileTaskStepImpl extends RegistryTaskStepImpl
     }
 
     private boolean isInCreateMode() {
-        if (this.taskImpl.inner().getId() == null) {
+        if (this.taskImpl.inner().id() == null) {
             return true;
         }
         return false;

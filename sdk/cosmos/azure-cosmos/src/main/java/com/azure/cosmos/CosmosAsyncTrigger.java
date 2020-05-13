@@ -73,7 +73,8 @@ public class CosmosAsyncTrigger {
     public Mono<CosmosAsyncTriggerResponse> replace(CosmosTriggerProperties triggerSettings) {
         return container.getDatabase()
                    .getDocClientWrapper()
-                   .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(triggerSettings)), null)
+                   .replaceTrigger(new Trigger(ModelBridgeInternal.toJsonFromJsonSerializable(
+                       ModelBridgeInternal.getResourceFromResourceWrapper(triggerSettings))), null)
                    .map(response -> ModelBridgeInternal.createCosmosAsyncTriggerResponse(response, container))
                    .single();
     }

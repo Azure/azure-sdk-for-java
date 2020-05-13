@@ -13,22 +13,19 @@ import com.azure.management.network.models.VirtualNetworkGatewayConnectionInner;
 import com.azure.management.network.models.VirtualNetworkGatewayConnectionsInner;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.Iterator;
 import java.util.function.Function;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation of VirtualNetworkGatewayConnections.
- */
+/** The implementation of VirtualNetworkGatewayConnections. */
 class VirtualNetworkGatewayConnectionsImpl
-        extends GroupableResourcesImpl<
+    extends GroupableResourcesImpl<
         VirtualNetworkGatewayConnection,
         VirtualNetworkGatewayConnectionImpl,
         VirtualNetworkGatewayConnectionInner,
         VirtualNetworkGatewayConnectionsInner,
         NetworkManager>
-        implements VirtualNetworkGatewayConnections {
+    implements VirtualNetworkGatewayConnections {
 
     private final VirtualNetworkGatewayImpl parent;
 
@@ -37,12 +34,11 @@ class VirtualNetworkGatewayConnectionsImpl
         this.parent = parent;
     }
 
-
     @Override
     protected VirtualNetworkGatewayConnectionImpl wrapModel(String name) {
         return new VirtualNetworkGatewayConnectionImpl(name, parent, new VirtualNetworkGatewayConnectionInner())
-                .withRegion(parent.regionName())
-                .withExistingResourceGroup(parent.resourceGroupName());
+            .withRegion(parent.regionName())
+            .withExistingResourceGroup(parent.resourceGroupName());
     }
 
     @Override
@@ -50,7 +46,7 @@ class VirtualNetworkGatewayConnectionsImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualNetworkGatewayConnectionImpl(inner.getName(), parent, inner);
+        return new VirtualNetworkGatewayConnectionImpl(inner.name(), parent, inner);
     }
 
     @Override
@@ -75,7 +71,11 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public VirtualNetworkGatewayConnection getByName(String name) {
-        VirtualNetworkGatewayConnectionInner inner = this.manager().inner().virtualNetworkGatewayConnections()
+        VirtualNetworkGatewayConnectionInner inner =
+            this
+                .manager()
+                .inner()
+                .virtualNetworkGatewayConnections()
                 .getByResourceGroup(this.parent().resourceGroupName(), name);
         return new VirtualNetworkGatewayConnectionImpl(name, parent, inner);
     }
@@ -87,22 +87,25 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public PagedFlux<VirtualNetworkGatewayConnection> listAsync() {
-        PagedIterable<ResourceGroup> resources = new PagedIterable<>(this.manager().getResourceManager().resourceGroups().listAsync());
+        PagedIterable<ResourceGroup> resources =
+            new PagedIterable<>(this.manager().resourceManager().resourceGroups().listAsync());
         Iterator<ResourceGroup> iterator = resources.iterator();
 
-        Function<String, Mono<PagedResponse<VirtualNetworkGatewayConnectionInner>>> fetcher = (continuation) -> {
-            if (continuation == null) {
-                if (iterator.hasNext()) {
-                    return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
+        Function<String, Mono<PagedResponse<VirtualNetworkGatewayConnectionInner>>> fetcher =
+            (continuation) -> {
+                if (continuation == null) {
+                    if (iterator.hasNext()) {
+                        return inner().listByResourceGroupSinglePageAsync(iterator.next().name());
+                    } else {
+                        return Mono.empty();
+                    }
                 } else {
-                    return Mono.empty();
+                    return inner().listByResourceGroupSinglePageAsync(continuation);
                 }
-            } else {
-                return inner().listByResourceGroupSinglePageAsync(continuation);
-            }
-        };
+            };
 
-        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation)).mapPage(inner -> wrapModel(inner));
+        return new PagedFlux<>(() -> fetcher.apply(null), (continuation) -> fetcher.apply(continuation))
+            .mapPage(inner -> wrapModel(inner));
     }
 
     @Override
@@ -117,7 +120,6 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public Mono<VirtualNetworkGatewayConnection> getByNameAsync(String name) {
-        return inner().getByResourceGroupAsync(parent.resourceGroupName(), name)
-                .map(inner -> wrapModel(inner));
+        return inner().getByResourceGroupAsync(parent.resourceGroupName(), name).map(inner -> wrapModel(inner));
     }
 }

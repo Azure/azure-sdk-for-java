@@ -4,88 +4,64 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.management.appservice.implementation.AppServiceManager;
+import com.azure.management.appservice.models.AppServicePlanInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.HasName;
 import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import com.azure.management.appservice.implementation.AppServiceManager;
-import com.azure.management.appservice.models.AppServicePlanInner;
 
-/**
- * An immutable client-side representation of an Azure App service plan.
- */
+/** An immutable client-side representation of an Azure App service plan. */
 @Fluent
-public interface AppServicePlan extends
-        GroupableResource<AppServiceManager, AppServicePlanInner>,
+public interface AppServicePlan
+    extends GroupableResource<AppServiceManager, AppServicePlanInner>,
         HasName,
         Refreshable<AppServicePlan>,
         Updatable<AppServicePlan.Update> {
-    /**
-     * @return maximum number of instances that can be assigned
-     */
+    /** @return maximum number of instances that can be assigned */
     int maxInstances();
 
-    /**
-     * @return maximum number of instances that can be assigned
-     */
+    /** @return maximum number of instances that can be assigned */
     int capacity();
 
-    /**
-     * @return if apps assigned to this App Service Plan can be scaled independently
-     */
+    /** @return if apps assigned to this App Service Plan can be scaled independently */
     boolean perSiteScaling();
 
-    /**
-     * @return number of web apps assigned to this App Service Plan
-     */
+    /** @return number of web apps assigned to this App Service Plan */
     int numberOfWebApps();
 
-    /**
-     * @return the pricing tier information of the App Service Plan
-     */
+    /** @return the pricing tier information of the App Service Plan */
     PricingTier pricingTier();
 
-    /**
-     * @return the operating system the web app is running on
-     */
+    /** @return the operating system the web app is running on */
     OperatingSystem operatingSystem();
 
     /**************************************************************
      * Fluent interfaces to provision a App service plan
      **************************************************************/
 
-    /**
-     * Container interface for all the definitions that need to be implemented.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** Container interface for all the definitions that need to be implemented. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithPricingTier,
             DefinitionStages.WithOperatingSystem,
             DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of all the site definition stages.
-     */
+    /** Grouping of all the site definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the app service plan definition.
-         */
+        /** The first stage of the app service plan definition. */
         interface Blank extends DefinitionWithRegion<WithGroup> {
         }
 
-        /**
-         * An app service plan definition allowing resource group to be set.
-         */
+        /** An app service plan definition allowing resource group to be set. */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithPricingTier> {
         }
 
-        /**
-         * An app service plan definition allowing pricing tier to be set.
-         */
+        /** An app service plan definition allowing pricing tier to be set. */
         interface WithPricingTier {
             /**
              * Specifies free pricing tier for the app service plan.
@@ -110,9 +86,7 @@ public interface AppServicePlan extends
             WithOperatingSystem withPricingTier(PricingTier pricingTier);
         }
 
-        /**
-         * An app service plan definition allowing the operating system to be set.
-         */
+        /** An app service plan definition allowing the operating system to be set. */
         interface WithOperatingSystem {
             /**
              * Specifies the operating system of the app service plan.
@@ -123,9 +97,7 @@ public interface AppServicePlan extends
             WithCreate withOperatingSystem(OperatingSystem operatingSystem);
         }
 
-        /**
-         * An app service plan definition allowing per site scaling configuration to be set.
-         */
+        /** An app service plan definition allowing per site scaling configuration to be set. */
         interface WithPerSiteScaling {
             /**
              * Specifies whether per-site scaling will be turned on.
@@ -136,9 +108,7 @@ public interface AppServicePlan extends
             WithCreate withPerSiteScaling(boolean perSiteScaling);
         }
 
-        /**
-         * An app service plan definition allowing instance capacity to be set.
-         */
+        /** An app service plan definition allowing instance capacity to be set. */
         interface WithCapacity {
             /**
              * Specifies the maximum number of instances running for this app service plan.
@@ -150,25 +120,20 @@ public interface AppServicePlan extends
         }
 
         /**
-         * An app service plan definition with sufficient inputs to create a new
-         * website in the cloud, but exposing additional optional inputs to
-         * specify.
+         * An app service plan definition with sufficient inputs to create a new website in the cloud, but exposing
+         * additional optional inputs to specify.
          */
-        interface WithCreate extends
-                WithPerSiteScaling,
+        interface WithCreate
+            extends WithPerSiteScaling,
                 WithCapacity,
                 Creatable<AppServicePlan>,
                 GroupableResource.DefinitionWithTags<WithCreate> {
         }
     }
 
-    /**
-     * Grouping of all the site update stages.
-     */
+    /** Grouping of all the site update stages. */
     interface UpdateStages {
-        /**
-         * An app service plan definition allowing pricing tier to be set.
-         */
+        /** An app service plan definition allowing pricing tier to be set. */
         interface WithPricingTier {
             /**
              * Specifies the pricing tier for the app service plan.
@@ -179,9 +144,7 @@ public interface AppServicePlan extends
             Update withPricingTier(PricingTier pricingTier);
         }
 
-        /**
-         * An app service plan update allowing per site scaling configuration to be set.
-         */
+        /** An app service plan update allowing per site scaling configuration to be set. */
         interface WithPerSiteScaling {
             /**
              * Specifies whether per-site scaling will be turned on.
@@ -192,9 +155,7 @@ public interface AppServicePlan extends
             Update withPerSiteScaling(boolean perSiteScaling);
         }
 
-        /**
-         * An app service plan definition allowing instance capacity to be set.
-         */
+        /** An app service plan definition allowing instance capacity to be set. */
         interface WithCapacity {
             /**
              * Specifies the maximum number of instances running for this app service plan.
@@ -206,11 +167,9 @@ public interface AppServicePlan extends
         }
     }
 
-    /**
-     * The template for a site update operation, containing all the settings that can be modified.
-     */
-    interface Update extends
-            Appliable<AppServicePlan>,
+    /** The template for a site update operation, containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<AppServicePlan>,
             UpdateStages.WithCapacity,
             UpdateStages.WithPerSiteScaling,
             UpdateStages.WithPricingTier,

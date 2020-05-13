@@ -24,7 +24,7 @@ and includes six main functions:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-textanalytics</artifactId>
-    <version>1.0.0-beta.4</version>
+    <version>1.0.0-beta.5</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -68,32 +68,32 @@ Text Analytics resource. See the full details regarding [authentication][authent
 The authentication credential may be provided as the API key to your resource or as a token from Azure Active Directory.
 
 
-##### **Option 1**: Create TextAnalyticsClient with API Key Credential
-To use an [API key][api_key], provide the key as a string. This can be found in the [Azure Portal][azure_portal] 
+##### **Option 1**: Create TextAnalyticsClient with AzureKeyCredential
+To use AzureKeyCredential authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential]. This can be found in the [Azure Portal][azure_portal] 
    under the "Quickstart" section or by running the following Azure CLI command:
 
 ```bash
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
-Use the API key as the credential parameter to authenticate the client:
+Use the key as the credential parameter to authenticate the client:
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ```java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-The Azure Text Analytics client library provides a way to **rotate the existing API key**.
+The Azure Text Analytics client library provides a way to **rotate the existing key**.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L73-L79 -->
 ```java
-AzureKeyCredential credential = new AzureKeyCredential("{api_key}");
+AzureKeyCredential credential = new AzureKeyCredential("{key}");
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(credential)
+    .credential(credential)
     .endpoint("{endpoint}")
     .buildClient();
 
-credential.update("{new_api_key}");
+credential.update("{new_key}");
 ```
 ##### **Option 2**: Create TextAnalyticsClient with Azure Active Directory Credential
 To use an [Azure Active Directory (AAD) token credential][aad_credential],
@@ -137,18 +137,18 @@ and supported text encoding.
 
 ### Return value
 An operation result, such as `AnalyzeSentimentResult`, is the result of a Text Analytics operation, containing a 
-prediction or predictions about a single document. An operation's result type also may optionally include information
-about the input document and how it was processed. An operation result contains a `isError` property that allows to
-identify if an operation executed was successful or unsuccessful for the given document. When the operation results
-an error, you can simply call `getError()` to get `TextAnalyticsError` which contains the reason why it is unsuccessful. 
-If you are interested in how many characters are in your document, or the number of operation transactions that have gone
-through, simply call `getStatistics()` to get the `TextDocumentStatistics` which contains both information.
+prediction or predictions about a single document and a list of warnings inside of it. An operation's result type also 
+may optionally include information about the input document and how it was processed. An operation result contains a 
+`isError` property that allows to identify if an operation executed was successful or unsuccessful for the given
+document. When the operation results an error, you can simply call `getError()` to get `TextAnalyticsError` which 
+contains the reason why it is unsuccessful. If you are interested in how many characters are in your document, 
+or the number of operation transactions that have gone through, simply call `getStatistics()` to get the
+`TextDocumentStatistics` which contains both information. 
 
 ### Return value collection
-An operation result collection, such as `DocumentResultCollection<AnalyzeSentimentResult>`, which is the collection of 
-the result of a Text Analytics analyzing sentiment operation. `DocumentResultCollection` includes the model version of
-the operation and statistics of the batch documents. Since `DocumentResultCollection<T>` extends `IterableStream<T>`,
-the list of item can be retrieved by streaming or iterating the list.
+An operation result collection, such as `TextAnalyticsPagedResponse<AnalyzeSentimentResult>`, which is the collection of 
+the result of a Text Analytics analyzing sentiment operation. For `TextAnalyticsPagedResponse` includes the model
+version of the operation and statistics of the batch documents. 
 
 ### Operation on multiple documents
 For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
@@ -202,14 +202,14 @@ Text analytics support both synchronous and asynchronous client creation by usin
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L43-L46 -->
 ``` java
 TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L53-L56 -->
 ``` java
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
-    .apiKey(new AzureKeyCredential("{api_key}"))
+    .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildAsyncClient();
 ```
@@ -229,8 +229,8 @@ documentSentiment.getSentences().forEach(sentenceSentiment ->
 ```java
 String document = "Bonjour tout le monde";
 DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
-System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
-    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getScore());
+System.out.printf("Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n",
+    detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
 ```
 
 ### Recognize entity
@@ -238,8 +238,8 @@ System.out.printf("Detected language name: %s, ISO 6391 name: %s, score: %f.%n",
 ```java
 String document = "Satya Nadella is the CEO of Microsoft";
 textAnalyticsClient.recognizeEntities(document).forEach(entity ->
-    System.out.printf("Recognized entity: %s, category: %s, subCategory: %s, score: %f.%n",
-        entity.getText(), entity.getCategory(), entity.getSubCategory(), entity.getConfidenceScore()));
+    System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, confidence score: %f.%n",
+        entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
 ```
 
 ### Recognize linked entity
@@ -251,8 +251,8 @@ textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
     System.out.println("Linked Entities:");
     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
         linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-    linkedEntity.getLinkedEntityMatches().forEach(linkedEntityMatch ->
-        System.out.printf("Text: %s, score: %f.%n", linkedEntityMatch.getText(), linkedEntityMatch.getConfidenceScore()));
+    linkedEntity.getMatches().forEach(match ->
+        System.out.printf("Text: %s, confidence score: %f.%n", match.getText(), match.getConfidenceScore()));
 });
 ```
 ### Extract key phrases
@@ -315,11 +315,11 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 <!-- LINKS -->
 [aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[api_key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#credentials
+[azure_key_credential]: https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/core/azure-core/src/main/java/com/azure/core/credential/AzureKeyCredential.java
 [azure_portal]: https://ms.portal.azure.com
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
@@ -332,6 +332,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [default_azure_credential]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#defaultazurecredential
 [grant_access]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
 [install_azure_identity]: https://github.com/Azure/azure-sdk-for-python/tree/master/sdk/identity/azure-identity#install-the-package
+[key]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows#get-the-keys-for-your-resource
 [key_phrase_extraction]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-keyword-extraction
 [language_detection]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/how-tos/text-analytics-how-to-language-detection
 [language_regional_support]: https://docs.microsoft.com/azure/cognitive-services/text-analytics/language-support

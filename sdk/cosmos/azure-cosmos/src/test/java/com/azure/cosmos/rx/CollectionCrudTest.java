@@ -3,6 +3,7 @@
 package com.azure.cosmos.rx;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -229,7 +230,10 @@ public class CollectionCrudTest extends TestSuiteBase {
         Mono<CosmosAsyncContainerResponse> readObservable = database
                 .getContainer("I don't exist").read();
 
-        FailureValidator validator = new FailureValidator.Builder().resourceNotFound().build();
+        FailureValidator validator = new FailureValidator.Builder()
+            .resourceNotFound()
+            .documentClientExceptionToStringExcludesHeader(HttpConstants.HttpHeaders.AUTHORIZATION)
+            .build();
         validateFailure(readObservable, validator);
     }
 
@@ -366,6 +370,26 @@ public class CollectionCrudTest extends TestSuiteBase {
             safeClose(client2);
         }
     }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void replaceProvisionedThroughput(){
+        final String databaseName = CosmosDatabaseForTest.generateId();
+        CosmosAsyncDatabase database = client.createDatabase(databaseName)
+                                           .block()
+                                           .getDatabase();
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
+        CosmosAsyncContainer container = database.createContainer(containerProperties, 1000,
+                                                                  new CosmosContainerRequestOptions())
+                                             .block()
+                                             .getContainer();
+        Integer throughput = container.readProvisionedThroughput().block();
+
+        assertThat(throughput).isEqualTo(1000);
+
+        throughput = container.replaceProvisionedThroughput(2000).block();
+        assertThat(throughput).isEqualTo(2000);
+    }
+
 
     @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {

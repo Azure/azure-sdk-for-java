@@ -9,36 +9,25 @@ import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
 import com.azure.management.network.models.NetworkInterfaceInner;
 import com.azure.management.network.models.NetworkSecurityGroupInner;
 import com.azure.management.network.models.SecurityRuleInner;
-import reactor.core.publisher.Mono;
-
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for NetworkSecurityGroup and its create and update interfaces.
- */
+/** Implementation for NetworkSecurityGroup and its create and update interfaces. */
 class NetworkSecurityGroupImpl
-        extends GroupableParentResourceWithTagsImpl<
-        NetworkSecurityGroup,
-        NetworkSecurityGroupInner,
-        NetworkSecurityGroupImpl,
-        NetworkManager>
-        implements
-        NetworkSecurityGroup,
-        NetworkSecurityGroup.Definition,
-        NetworkSecurityGroup.Update {
+    extends GroupableParentResourceWithTagsImpl<
+        NetworkSecurityGroup, NetworkSecurityGroupInner, NetworkSecurityGroupImpl, NetworkManager>
+    implements NetworkSecurityGroup, NetworkSecurityGroup.Definition, NetworkSecurityGroup.Update {
 
     private Map<String, NetworkSecurityRule> rules;
     private Map<String, NetworkSecurityRule> defaultRules;
 
     NetworkSecurityGroupImpl(
-            final String name,
-            final NetworkSecurityGroupInner innerModel,
-            final NetworkManager networkManager) {
+        final String name, final NetworkSecurityGroupInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -78,23 +67,33 @@ class NetworkSecurityGroupImpl
 
     @Override
     public Mono<NetworkSecurityGroup> refreshAsync() {
-        return super.refreshAsync().map(networkSecurityGroup -> {
-            NetworkSecurityGroupImpl impl = (NetworkSecurityGroupImpl) networkSecurityGroup;
+        return super
+            .refreshAsync()
+            .map(
+                networkSecurityGroup -> {
+                    NetworkSecurityGroupImpl impl = (NetworkSecurityGroupImpl) networkSecurityGroup;
 
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<NetworkSecurityGroupInner> getInnerAsync() {
-        // FIXME: parameter
-        return this.manager().inner().networkSecurityGroups().getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .networkSecurityGroups()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<NetworkSecurityGroupInner> applyTagsToInnerAsync() {
-        return this.manager().inner().networkSecurityGroups().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this
+            .manager()
+            .inner()
+            .networkSecurityGroups()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
@@ -132,7 +131,7 @@ class NetworkSecurityGroupImpl
         Set<String> ids = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
         if (this.inner().networkInterfaces() != null) {
             for (NetworkInterfaceInner inner : this.inner().networkInterfaces()) {
-                ids.add(inner.getId());
+                ids.add(inner.id());
             }
         }
         return Collections.unmodifiableSet(ids);
@@ -146,6 +145,10 @@ class NetworkSecurityGroupImpl
 
     @Override
     protected Mono<NetworkSecurityGroupInner> createInner() {
-        return this.manager().inner().networkSecurityGroups().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+        return this
+            .manager()
+            .inner()
+            .networkSecurityGroups()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 }

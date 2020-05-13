@@ -2,12 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.VirtualMachineExtensionInner;
-import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceViewInner;
-import com.azure.management.compute.models.VirtualMachineScaleSetVMsInner;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CachingTypes;
 import com.azure.management.compute.DataDisk;
 import com.azure.management.compute.DiagnosticsProfile;
@@ -34,6 +31,11 @@ import com.azure.management.compute.VirtualMachineScaleSetVMNetworkProfileConfig
 import com.azure.management.compute.VirtualMachineScaleSetVMProtectionPolicy;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.VirtualMachineUnmanagedDataDisk;
+import com.azure.management.compute.models.VirtualMachineExtensionInner;
+import com.azure.management.compute.models.VirtualMachineInstanceViewInner;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMInner;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMInstanceViewInner;
+import com.azure.management.compute.models.VirtualMachineScaleSetVMsInner;
 import com.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -48,41 +50,40 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Implementation of {@link VirtualMachineScaleSetVM}.
- */
+/** Implementation of {@link VirtualMachineScaleSetVM}. */
 class VirtualMachineScaleSetVMImpl
-        extends ChildResourceImpl<VirtualMachineScaleSetVMInner,
-            VirtualMachineScaleSetImpl,
-            VirtualMachineScaleSet>
-        implements VirtualMachineScaleSetVM,
-            VirtualMachineScaleSetVM.Update {
+    extends ChildResourceImpl<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetImpl, VirtualMachineScaleSet>
+    implements VirtualMachineScaleSetVM, VirtualMachineScaleSetVM.Update {
 
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private final VirtualMachineScaleSetVMsInner client;
     private final ComputeManager computeManager;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMImpl.class);
 
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks = new ManagedDataDiskCollection();
 
-    VirtualMachineScaleSetVMImpl(VirtualMachineScaleSetVMInner inner,
-                                 final VirtualMachineScaleSetImpl parent,
-                                 final VirtualMachineScaleSetVMsInner client,
-                                 final ComputeManager computeManager) {
+    VirtualMachineScaleSetVMImpl(
+        VirtualMachineScaleSetVMInner inner,
+        final VirtualMachineScaleSetImpl parent,
+        final VirtualMachineScaleSetVMsInner client,
+        final ComputeManager computeManager) {
         super(inner, parent);
         this.client = client;
         this.computeManager = computeManager;
         VirtualMachineScaleSetVMInstanceViewInner instanceViewInner = this.inner().instanceView();
         if (instanceViewInner != null) {
-            this.virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(new VirtualMachineInstanceViewInner()
-                    .withBootDiagnostics(instanceViewInner.bootDiagnostics())
-                    .withDisks(instanceViewInner.disks())
-                    .withExtensions(instanceViewInner.extensions())
-                    .withPlatformFaultDomain(instanceViewInner.platformFaultDomain())
-                    .withPlatformUpdateDomain(instanceViewInner.platformUpdateDomain())
-                    .withRdpThumbPrint(instanceViewInner.rdpThumbPrint())
-                    .withStatuses(instanceViewInner.statuses())
-                    .withVmAgent(instanceViewInner.vmAgent()));
+            this.virtualMachineInstanceView =
+                new VirtualMachineInstanceViewImpl(
+                    new VirtualMachineInstanceViewInner()
+                        .withBootDiagnostics(instanceViewInner.bootDiagnostics())
+                        .withDisks(instanceViewInner.disks())
+                        .withExtensions(instanceViewInner.extensions())
+                        .withPlatformFaultDomain(instanceViewInner.platformFaultDomain())
+                        .withPlatformUpdateDomain(instanceViewInner.platformUpdateDomain())
+                        .withRdpThumbPrint(instanceViewInner.rdpThumbPrint())
+                        .withStatuses(instanceViewInner.statuses())
+                        .withVmAgent(instanceViewInner.vmAgent()));
         } else {
             this.virtualMachineInstanceView = null;
         }
@@ -90,17 +91,17 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -110,15 +111,15 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
     public Map<String, String> tags() {
-        if (this.inner().getTags() == null) {
+        if (this.inner().tags() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<>());
         }
-        return Collections.unmodifiableMap(this.inner().getTags());
+        return Collections.unmodifiableMap(this.inner().tags());
     }
 
     @Override
@@ -151,20 +152,19 @@ class VirtualMachineScaleSetVMImpl
     public boolean isOSBasedOnPlatformImage() {
         ImageReference imageReference = this.inner().storageProfile().imageReference();
         if (imageReference != null
-                && imageReference.publisher() != null
-                && imageReference.sku() != null
-                && imageReference.offer() != null
-                && imageReference.version() != null) {
+            && imageReference.publisher() != null
+            && imageReference.sku() != null
+            && imageReference.offer() != null
+            && imageReference.version() != null) {
             return true;
         }
         return false;
     }
 
     @Override
-    public  boolean isOSBasedOnCustomImage() {
+    public boolean isOSBasedOnCustomImage() {
         ImageReference imageReference = this.inner().storageProfile().imageReference();
-        if (imageReference != null
-                && imageReference.getId() != null) {
+        if (imageReference != null && imageReference.id() != null) {
             return true;
         }
         return false;
@@ -172,8 +172,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean isOSBasedOnStoredImage() {
-        if (this.inner().storageProfile().osDisk() != null
-                && this.inner().storageProfile().osDisk().image() != null) {
+        if (this.inner().storageProfile().osDisk() != null && this.inner().storageProfile().osDisk().image() != null) {
             return this.inner().storageProfile().osDisk().image().uri() != null;
         }
         return false;
@@ -186,12 +185,16 @@ class VirtualMachineScaleSetVMImpl
         }
         return null;
     }
-    
+
     @Override
     public VirtualMachineImage getOSPlatformImage() {
         if (this.isOSBasedOnPlatformImage()) {
             ImageReference imageReference = this.platformImageReference();
-            return this.computeManager.virtualMachineImages().getImage(this.region(),
+            return this
+                .computeManager
+                .virtualMachineImages()
+                .getImage(
+                    this.region(),
                     imageReference.publisher(),
                     imageReference.offer(),
                     imageReference.sku(),
@@ -204,7 +207,7 @@ class VirtualMachineScaleSetVMImpl
     public VirtualMachineCustomImage getOSCustomImage() {
         if (this.isOSBasedOnCustomImage()) {
             ImageReference imageReference = this.inner().storageProfile().imageReference();
-            return this.computeManager.virtualMachineCustomImages().getById(imageReference.getId());
+            return this.computeManager.virtualMachineCustomImages().getById(imageReference.id());
         }
         return null;
     }
@@ -233,7 +236,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String osDiskId() {
         if (this.storageProfile().osDisk().managedDisk() != null) {
-            return this.storageProfile().osDisk().managedDisk().getId();
+            return this.storageProfile().osDisk().managedDisk().id();
         }
         return null;
     }
@@ -294,7 +297,8 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public boolean isLinuxPasswordAuthenticationEnabled() {
         if (this.inner().osProfile().linuxConfiguration() != null) {
-            return !Utils.toPrimitiveBoolean(this.inner().osProfile().linuxConfiguration().disablePasswordAuthentication());
+            return !Utils
+                .toPrimitiveBoolean(this.inner().osProfile().linuxConfiguration().disablePasswordAuthentication());
         }
         return false;
     }
@@ -325,8 +329,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public boolean bootDiagnosticEnabled() {
-        if (this.inner().diagnosticsProfile() != null
-                && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
+        if (this.inner().diagnosticsProfile() != null && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
             return Utils.toPrimitiveBoolean(this.inner().diagnosticsProfile().bootDiagnostics().enabled());
         }
         return false;
@@ -334,8 +337,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public String bootDiagnosticStorageAccountUri() {
-        if (this.inner().diagnosticsProfile() != null
-                && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
+        if (this.inner().diagnosticsProfile() != null && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
             return this.inner().diagnosticsProfile().bootDiagnostics().storageUri();
         }
         return null;
@@ -344,7 +346,7 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public String availabilitySetId() {
         if (this.inner().availabilitySet() != null) {
-            return this.inner().availabilitySet().getId();
+            return this.inner().availabilitySet().id();
         }
         return null;
     }
@@ -353,7 +355,7 @@ class VirtualMachineScaleSetVMImpl
     public List<String> networkInterfaceIds() {
         List<String> resourceIds = new ArrayList<>();
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
-            resourceIds.add(reference.getId());
+            resourceIds.add(reference.id());
         }
         return Collections.unmodifiableList(resourceIds);
     }
@@ -362,7 +364,7 @@ class VirtualMachineScaleSetVMImpl
     public String primaryNetworkInterfaceId() {
         for (NetworkInterfaceReference reference : this.inner().networkProfile().networkInterfaces()) {
             if (reference.primary() != null && reference.primary()) {
-                return reference.getId();
+                return reference.id();
             }
         }
         return null;
@@ -373,7 +375,10 @@ class VirtualMachineScaleSetVMImpl
         Map<String, VirtualMachineScaleSetVMInstanceExtension> extensions = new LinkedHashMap<>();
         if (this.inner().resources() != null) {
             for (VirtualMachineExtensionInner extensionInner : this.inner().resources()) {
-                extensions.put(extensionInner.getName(), new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
+                extensions
+                    .put(
+                        extensionInner.name(),
+                        new VirtualMachineScaleSetVMInstanceExtensionImpl(extensionInner, this));
             }
         }
         return Collections.unmodifiableMap(extensions);
@@ -408,20 +413,25 @@ class VirtualMachineScaleSetVMImpl
     }
 
     public Mono<VirtualMachineInstanceView> refreshInstanceViewAsync() {
-        return this.client.getInstanceViewAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId())
-                .map(instanceViewInner -> {
-                    virtualMachineInstanceView = new VirtualMachineInstanceViewImpl(new VirtualMachineInstanceViewInner()
-                            .withBootDiagnostics(instanceViewInner.bootDiagnostics())
-                            .withDisks(instanceViewInner.disks())
-                            .withExtensions(instanceViewInner.extensions())
-                            .withPlatformFaultDomain(instanceViewInner.platformFaultDomain())
-                            .withPlatformUpdateDomain(instanceViewInner.platformUpdateDomain())
-                            .withRdpThumbPrint(instanceViewInner.rdpThumbPrint())
-                            .withStatuses(instanceViewInner.statuses())
-                            .withVmAgent(instanceViewInner.vmAgent()));
+        return this
+            .client
+            .getInstanceViewAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId())
+            .map(
+                instanceViewInner -> {
+                    virtualMachineInstanceView =
+                        new VirtualMachineInstanceViewImpl(
+                            new VirtualMachineInstanceViewInner()
+                                .withBootDiagnostics(instanceViewInner.bootDiagnostics())
+                                .withDisks(instanceViewInner.disks())
+                                .withExtensions(instanceViewInner.extensions())
+                                .withPlatformFaultDomain(instanceViewInner.platformFaultDomain())
+                                .withPlatformUpdateDomain(instanceViewInner.platformUpdateDomain())
+                                .withRdpThumbPrint(instanceViewInner.rdpThumbPrint())
+                                .withStatuses(instanceViewInner.statuses())
+                                .withVmAgent(instanceViewInner.vmAgent()));
                     return virtualMachineInstanceView;
                 })
-                .switchIfEmpty(Mono.defer(() -> Mono.empty()));
+            .switchIfEmpty(Mono.defer(() -> Mono.empty()));
     }
 
     @Override
@@ -436,7 +446,9 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Mono<Void> reimageAsync() {
-        return this.client.reimageAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), null);
+        return this
+            .client
+            .reimageAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), null);
     }
 
     @Override
@@ -446,9 +458,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Mono<Void> deallocateAsync() {
-        return this.client.deallocateAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.instanceId());
+        return this.client.deallocateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId());
     }
 
     @Override
@@ -458,7 +468,9 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.client.powerOffAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), null);
+        return this
+            .client
+            .powerOffAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), null);
     }
 
     @Override
@@ -468,9 +480,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this.client.startAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.instanceId());
+        return this.client.startAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId());
     }
 
     @Override
@@ -501,8 +511,11 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public Mono<VirtualMachineScaleSetVM> refreshAsync() {
         final VirtualMachineScaleSetVMImpl self = this;
-        return this.client.getAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId())
-                .map(vmInner -> {
+        return this
+            .client
+            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId())
+            .map(
+                vmInner -> {
                     self.setInner(vmInner);
                     self.clearCachedRelatedResources();
                     self.initializeDataDisks();
@@ -518,6 +531,11 @@ class VirtualMachineScaleSetVMImpl
     @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this.parent().listNetworkInterfacesByInstanceId(this.instanceId());
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesAsync() {
+        return this.parent().listNetworkInterfacesByInstanceIdAsync(this.instanceId());
     }
 
     @Override
@@ -558,33 +576,42 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public Update withExistingDataDisk(Disk dataDisk, int lun, CachingTypes cachingTypes) {
-        return this.withExistingDataDisk(dataDisk, lun, cachingTypes, StorageAccountTypes.fromString(dataDisk.sku().accountType().toString()));
+        return this
+            .withExistingDataDisk(
+                dataDisk, lun, cachingTypes, StorageAccountTypes.fromString(dataDisk.sku().accountType().toString()));
     }
 
     @Override
-    public Update withExistingDataDisk(Disk dataDisk, int lun, CachingTypes cachingTypes, StorageAccountTypes storageAccountTypes) {
+    public Update withExistingDataDisk(
+        Disk dataDisk, int lun, CachingTypes cachingTypes, StorageAccountTypes storageAccountTypes) {
         if (!this.isManagedDiskEnabled()) {
-            throw new IllegalStateException(ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
+            throw logger.logExceptionAsError(new IllegalStateException(
+                ManagedUnmanagedDiskErrors.VM_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED));
         }
         if (dataDisk.inner().diskState() != DiskState.UNATTACHED) {
-            throw new IllegalStateException("Disk need to be in unattached state");
+            throw logger.logExceptionAsError(new IllegalStateException("Disk need to be in unattached state"));
         }
 
-        DataDisk attachDataDisk = new DataDisk()
+        ManagedDiskParameters managedDiskParameters =
+            new ManagedDiskParameters().withStorageAccountType(storageAccountTypes);
+        managedDiskParameters.withId(dataDisk.id());
+
+        DataDisk attachDataDisk =
+            new DataDisk()
                 .withCreateOption(DiskCreateOptionTypes.ATTACH)
                 .withLun(lun)
                 .withCaching(cachingTypes)
-                .withManagedDisk((ManagedDiskParameters) new ManagedDiskParameters()
-                        .withStorageAccountType(storageAccountTypes)
-                        .setId(dataDisk.id()));
+                .withManagedDisk(managedDiskParameters);
         return this.withExistingDataDisk(attachDataDisk, lun);
     }
 
     private Update withExistingDataDisk(DataDisk dataDisk, int lun) {
         if (this.tryFindDataDisk(lun, this.inner().storageProfile().dataDisks()) != null) {
-            throw new IllegalStateException(String.format("A data disk with lun '%d' already attached", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("A data disk with lun '%d' already attached", lun)));
         } else if (this.tryFindDataDisk(lun, this.managedDataDisks.existingDisksToAttach) != null) {
-            throw new IllegalStateException(String.format("A data disk with lun '%d' already scheduled to be attached", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("A data disk with lun '%d' already scheduled to be attached", lun)));
         }
         this.managedDataDisks.existingDisksToAttach.add(dataDisk);
         return this;
@@ -594,10 +621,16 @@ class VirtualMachineScaleSetVMImpl
     public Update withoutDataDisk(int lun) {
         DataDisk dataDisk = this.tryFindDataDisk(lun, this.inner().storageProfile().dataDisks());
         if (dataDisk == null) {
-            throw new IllegalStateException(String.format("A data disk with lun '%d' not found", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String.format("A data disk with lun '%d' not found", lun)));
         }
         if (dataDisk.createOption() != DiskCreateOptionTypes.ATTACH) {
-            throw new IllegalStateException(String.format("A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set model", lun));
+            throw logger.logExceptionAsError(new IllegalStateException(
+                String
+                    .format(
+                        "A data disk with lun '%d' cannot be detached, as it is part of Virtual Machine Scale Set"
+                            + " model",
+                        lun)));
         }
         this.managedDataDisks.diskLunsToRemove.add(lun);
         return this;
@@ -612,8 +645,13 @@ class VirtualMachineScaleSetVMImpl
     public Mono<VirtualMachineScaleSetVM> applyAsync() {
         final VirtualMachineScaleSetVMImpl self = this;
         this.managedDataDisks.syncToVMDataDisks(this.inner().storageProfile());
-        return this.parent().virtualMachines().inner().updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
-                .map(vmInner -> {
+        return this
+            .parent()
+            .virtualMachines()
+            .inner()
+            .updateAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), this.inner())
+            .map(
+                vmInner -> {
                     self.setInner(vmInner);
                     self.clearCachedRelatedResources();
                     self.initializeDataDisks();
@@ -644,10 +682,8 @@ class VirtualMachineScaleSetVMImpl
         return disk;
     }
 
-    /**
-     * Class to manage data disk collection.
-     */
-    private class ManagedDataDiskCollection {
+    /** Class to manage data disk collection. */
+    private static class ManagedDataDiskCollection {
         private final List<DataDisk> existingDisksToAttach = new ArrayList<>();
         private final List<Integer> diskLunsToRemove = new ArrayList<>();
 

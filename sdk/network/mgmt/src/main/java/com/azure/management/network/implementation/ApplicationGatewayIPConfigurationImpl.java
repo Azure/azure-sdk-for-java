@@ -11,13 +11,10 @@ import com.azure.management.network.models.ApplicationGatewayIPConfigurationInne
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
-/**
- * Implementation for ApplicationGatewayIPConfiguration.
- */
+/** Implementation for ApplicationGatewayIPConfiguration. */
 class ApplicationGatewayIPConfigurationImpl
-        extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayIPConfiguration,
+    extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayIPConfiguration,
         ApplicationGatewayIPConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayIPConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayIPConfiguration.Update {
@@ -46,7 +43,7 @@ class ApplicationGatewayIPConfigurationImpl
 
     @Override
     public ApplicationGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
-        SubResource subnetRef = new SubResource().setId(networkId + "/subnets/" + subnetName);
+        SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;
     }
@@ -62,7 +59,7 @@ class ApplicationGatewayIPConfigurationImpl
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -72,7 +69,7 @@ class ApplicationGatewayIPConfigurationImpl
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.getId());
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
             return null;
         }

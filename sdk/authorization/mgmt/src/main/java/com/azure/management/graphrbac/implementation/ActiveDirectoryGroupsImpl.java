@@ -13,12 +13,10 @@ import com.azure.management.graphrbac.models.GroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation of Users and its parent interfaces.
- */
+/** The implementation of Users and its parent interfaces. */
 class ActiveDirectoryGroupsImpl
-        extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, ADGroupInner>
-        implements ActiveDirectoryGroups {
+    extends CreatableWrappersImpl<ActiveDirectoryGroup, ActiveDirectoryGroupImpl, ADGroupInner>
+    implements ActiveDirectoryGroups {
     private final GraphRbacManager manager;
 
     ActiveDirectoryGroupsImpl(final GraphRbacManager manager) {
@@ -45,9 +43,12 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<ActiveDirectoryGroup> getByIdAsync(String id) {
-        return manager.inner().groups().getAsync(id)
-                .onErrorResume(GraphErrorException.class, e -> Mono.empty())
-                .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
+        return manager
+            .inner()
+            .groups()
+            .getAsync(id)
+            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
+            .map(groupInner -> new ActiveDirectoryGroupImpl(groupInner, manager()));
     }
 
     @Override
@@ -57,9 +58,12 @@ class ActiveDirectoryGroupsImpl
 
     @Override
     public Mono<ActiveDirectoryGroup> getByNameAsync(String name) {
-        return manager().inner().groups().listAsync(String.format("displayName eq '%s'", name))
-                .singleOrEmpty()
-                .map(adGroupInner -> new ActiveDirectoryGroupImpl(adGroupInner, manager()));
+        return manager()
+            .inner()
+            .groups()
+            .listAsync(String.format("displayName eq '%s'", name))
+            .singleOrEmpty()
+            .map(adGroupInner -> new ActiveDirectoryGroupImpl(adGroupInner, manager()));
     }
 
     @Override

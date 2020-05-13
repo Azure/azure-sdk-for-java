@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ScaleCapacity model.
- */
+/** The ScaleCapacity model. */
 @Fluent
 public final class ScaleCapacity {
     /*
@@ -35,9 +33,8 @@ public final class ScaleCapacity {
     private String defaultProperty;
 
     /**
-     * Get the minimum property: the minimum number of instances for the
-     * resource.
-     * 
+     * Get the minimum property: the minimum number of instances for the resource.
+     *
      * @return the minimum value.
      */
     public String minimum() {
@@ -45,9 +42,8 @@ public final class ScaleCapacity {
     }
 
     /**
-     * Set the minimum property: the minimum number of instances for the
-     * resource.
-     * 
+     * Set the minimum property: the minimum number of instances for the resource.
+     *
      * @param minimum the minimum value to set.
      * @return the ScaleCapacity object itself.
      */
@@ -57,10 +53,9 @@ public final class ScaleCapacity {
     }
 
     /**
-     * Get the maximum property: the maximum number of instances for the
-     * resource. The actual maximum number of instances is limited by the cores
-     * that are available in the subscription.
-     * 
+     * Get the maximum property: the maximum number of instances for the resource. The actual maximum number of
+     * instances is limited by the cores that are available in the subscription.
+     *
      * @return the maximum value.
      */
     public String maximum() {
@@ -68,10 +63,9 @@ public final class ScaleCapacity {
     }
 
     /**
-     * Set the maximum property: the maximum number of instances for the
-     * resource. The actual maximum number of instances is limited by the cores
-     * that are available in the subscription.
-     * 
+     * Set the maximum property: the maximum number of instances for the resource. The actual maximum number of
+     * instances is limited by the cores that are available in the subscription.
+     *
      * @param maximum the maximum value to set.
      * @return the ScaleCapacity object itself.
      */
@@ -81,10 +75,9 @@ public final class ScaleCapacity {
     }
 
     /**
-     * Get the defaultProperty property: the number of instances that will be
-     * set if metrics are not available for evaluation. The default is only
-     * used if the current instance count is lower than the default.
-     * 
+     * Get the defaultProperty property: the number of instances that will be set if metrics are not available for
+     * evaluation. The default is only used if the current instance count is lower than the default.
+     *
      * @return the defaultProperty value.
      */
     public String defaultProperty() {
@@ -92,10 +85,9 @@ public final class ScaleCapacity {
     }
 
     /**
-     * Set the defaultProperty property: the number of instances that will be
-     * set if metrics are not available for evaluation. The default is only
-     * used if the current instance count is lower than the default.
-     * 
+     * Set the defaultProperty property: the number of instances that will be set if metrics are not available for
+     * evaluation. The default is only used if the current instance count is lower than the default.
+     *
      * @param defaultProperty the defaultProperty value to set.
      * @return the ScaleCapacity object itself.
      */

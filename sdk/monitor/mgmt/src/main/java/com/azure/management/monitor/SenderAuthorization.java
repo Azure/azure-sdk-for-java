@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The SenderAuthorization model.
- */
+/** The SenderAuthorization model. */
 @Fluent
 public final class SenderAuthorization {
     /*
@@ -32,9 +30,8 @@ public final class SenderAuthorization {
     private String scope;
 
     /**
-     * Get the action property: the permissible actions. For instance:
-     * microsoft.support/supporttickets/write.
-     * 
+     * Get the action property: the permissible actions. For instance: microsoft.support/supporttickets/write.
+     *
      * @return the action value.
      */
     public String action() {
@@ -42,9 +39,8 @@ public final class SenderAuthorization {
     }
 
     /**
-     * Set the action property: the permissible actions. For instance:
-     * microsoft.support/supporttickets/write.
-     * 
+     * Set the action property: the permissible actions. For instance: microsoft.support/supporttickets/write.
+     *
      * @param action the action value to set.
      * @return the SenderAuthorization object itself.
      */
@@ -54,9 +50,8 @@ public final class SenderAuthorization {
     }
 
     /**
-     * Get the role property: the role of the user. For instance: Subscription
-     * Admin.
-     * 
+     * Get the role property: the role of the user. For instance: Subscription Admin.
+     *
      * @return the role value.
      */
     public String role() {
@@ -64,9 +59,8 @@ public final class SenderAuthorization {
     }
 
     /**
-     * Set the role property: the role of the user. For instance: Subscription
-     * Admin.
-     * 
+     * Set the role property: the role of the user. For instance: Subscription Admin.
+     *
      * @param role the role value to set.
      * @return the SenderAuthorization object itself.
      */
@@ -77,7 +71,7 @@ public final class SenderAuthorization {
 
     /**
      * Get the scope property: the scope.
-     * 
+     *
      * @return the scope value.
      */
     public String scope() {
@@ -86,7 +80,7 @@ public final class SenderAuthorization {
 
     /**
      * Set the scope property: the scope.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the SenderAuthorization object itself.
      */

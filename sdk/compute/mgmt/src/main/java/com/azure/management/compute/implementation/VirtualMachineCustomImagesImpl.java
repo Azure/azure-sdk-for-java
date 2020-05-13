@@ -9,16 +9,11 @@ import com.azure.management.compute.models.ImageInner;
 import com.azure.management.compute.models.ImagesInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * The implementation for VirtualMachineCustomImages.
- */
-class VirtualMachineCustomImagesImpl extends TopLevelModifiableResourcesImpl<
-        VirtualMachineCustomImage,
-        VirtualMachineCustomImageImpl,
-        ImageInner,
-        ImagesInner,
-        ComputeManager>
-        implements VirtualMachineCustomImages {
+/** The implementation for VirtualMachineCustomImages. */
+class VirtualMachineCustomImagesImpl
+    extends TopLevelModifiableResourcesImpl<
+        VirtualMachineCustomImage, VirtualMachineCustomImageImpl, ImageInner, ImagesInner, ComputeManager>
+    implements VirtualMachineCustomImages {
 
     VirtualMachineCustomImagesImpl(final ComputeManager computeManager) {
         super(computeManager.inner().images(), computeManager);
@@ -34,7 +29,7 @@ class VirtualMachineCustomImagesImpl extends TopLevelModifiableResourcesImpl<
         if (inner == null) {
             return null;
         }
-        return new VirtualMachineCustomImageImpl(inner.getName(), inner, this.manager());
+        return new VirtualMachineCustomImageImpl(inner.name(), inner, this.manager());
     }
 
     @Override

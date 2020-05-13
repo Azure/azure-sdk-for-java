@@ -8,31 +8,23 @@ import com.azure.management.network.LocalNetworkGateway;
 import com.azure.management.network.models.AppliableWithTags;
 import com.azure.management.network.models.LocalNetworkGatewayInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for LocalNetworkGateway and its create and update interfaces.
- */
+/** Implementation for LocalNetworkGateway and its create and update interfaces. */
 class LocalNetworkGatewayImpl
-        extends GroupableResourceImpl<
-        LocalNetworkGateway,
-        LocalNetworkGatewayInner,
-        LocalNetworkGatewayImpl,
-        NetworkManager>
-        implements
-        LocalNetworkGateway,
+    extends GroupableResourceImpl<
+        LocalNetworkGateway, LocalNetworkGatewayInner, LocalNetworkGatewayImpl, NetworkManager>
+    implements LocalNetworkGateway,
         LocalNetworkGateway.Definition,
         LocalNetworkGateway.Update,
         AppliableWithTags<LocalNetworkGateway> {
 
-    LocalNetworkGatewayImpl(String name,
-                            final LocalNetworkGatewayInner innerModel,
-                            final NetworkManager networkManager) {
+    LocalNetworkGatewayImpl(
+        String name, final LocalNetworkGatewayInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -49,7 +41,8 @@ class LocalNetworkGatewayImpl
     @Override
     public Set<String> addressSpaces() {
         Set<String> addressSpaces = new HashSet<>();
-        if (this.inner().localNetworkAddressSpace() != null && this.inner().localNetworkAddressSpace().addressPrefixes() != null) {
+        if (this.inner().localNetworkAddressSpace() != null
+            && this.inner().localNetworkAddressSpace().addressPrefixes() != null) {
             addressSpaces.addAll(this.inner().localNetworkAddressSpace().addressPrefixes());
         }
         return Collections.unmodifiableSet(addressSpaces);
@@ -81,7 +74,8 @@ class LocalNetworkGatewayImpl
 
     @Override
     public LocalNetworkGatewayImpl withoutAddressSpace(String cidr) {
-        if (this.inner().localNetworkAddressSpace() == null || this.inner().localNetworkAddressSpace().addressPrefixes() == null) {
+        if (this.inner().localNetworkAddressSpace() == null
+            || this.inner().localNetworkAddressSpace().addressPrefixes() == null) {
             return this;
         }
         this.inner().localNetworkAddressSpace().addressPrefixes().remove(cidr);
@@ -102,13 +96,21 @@ class LocalNetworkGatewayImpl
 
     @Override
     protected Mono<LocalNetworkGatewayInner> getInnerAsync() {
-        return this.manager().inner().localNetworkGateways().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .localNetworkGateways()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<LocalNetworkGateway> createResourceAsync() {
-        return this.manager().inner().localNetworkGateways().createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .localNetworkGateways()
+            .createOrUpdateAsync(resourceGroupName(), name(), inner())
+            .map(innerToFluentMap(this));
     }
 
     private BgpSettings ensureBgpSettings() {
@@ -130,11 +132,15 @@ class LocalNetworkGatewayImpl
 
     @Override
     public Mono<LocalNetworkGateway> applyTagsAsync() {
-        return this.manager().inner().localNetworkGateways().updateTagsAsync(resourceGroupName(), name(), inner().getTags())
-                .flatMap(inner -> {
+        return this
+            .manager()
+            .inner()
+            .localNetworkGateways()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags())
+            .flatMap(
+                inner -> {
                     setInner(inner);
                     return Mono.just((LocalNetworkGateway) LocalNetworkGatewayImpl.this);
                 });
     }
-
 }

@@ -2,47 +2,36 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-/**
- * Express route circuit sku type.
- */
+/** Express route circuit sku type. */
 public class ExpressRouteCircuitSkuType {
     private static final Map<String, ExpressRouteCircuitSkuType> VALUES_BY_NAME = new HashMap<>();
 
-    /**
-     * Static value for Standard sku tier and MeteredData sku family.
-     */
-    public static final ExpressRouteCircuitSkuType STANDARD_METEREDDATA = new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.METERED_DATA);
-    /**
-     * Static value for Standard sku tier and UnlimitedData sku family.
-     */
-    public static final ExpressRouteCircuitSkuType STANDARD_UNLIMITEDDATA = new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
-    /**
-     * Static value for Premium sku tier and MeteredData sku family.
-     */
-    public static final ExpressRouteCircuitSkuType PREMIUM_METEREDDATA = new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.METERED_DATA);
-    /**
-     * Static value for Premium sku tier and UnlimitedData sku family.
-     */
-    public static final ExpressRouteCircuitSkuType PREMIUM_UNLIMITEDDATA = new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
+    /** Static value for Standard sku tier and MeteredData sku family. */
+    public static final ExpressRouteCircuitSkuType STANDARD_METEREDDATA =
+        new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.METERED_DATA);
+    /** Static value for Standard sku tier and UnlimitedData sku family. */
+    public static final ExpressRouteCircuitSkuType STANDARD_UNLIMITEDDATA =
+        new ExpressRouteCircuitSkuType(
+            ExpressRouteCircuitSkuTier.STANDARD, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
+    /** Static value for Premium sku tier and MeteredData sku family. */
+    public static final ExpressRouteCircuitSkuType PREMIUM_METEREDDATA =
+        new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.METERED_DATA);
+    /** Static value for Premium sku tier and UnlimitedData sku family. */
+    public static final ExpressRouteCircuitSkuType PREMIUM_UNLIMITEDDATA =
+        new ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier.PREMIUM, ExpressRouteCircuitSkuFamily.UNLIMITED_DATA);
 
-    /**
-     * the SKU corresponding to this type.
-     */
+    /** the SKU corresponding to this type. */
     private final ExpressRouteCircuitSku sku;
 
-    /**
-     * The string value of the SKU.
-     */
+    /** The string value of the SKU. */
     private final String value;
 
-    /**
-     * @return predefined Express Route circuit SKU types
-     */
+    /** @return predefined Express Route circuit SKU types */
     public static ExpressRouteCircuitSkuType[] values() {
         Collection<ExpressRouteCircuitSkuType> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new ExpressRouteCircuitSkuType[valuesCollection.size()]);
@@ -55,8 +44,10 @@ public class ExpressRouteCircuitSkuType {
      * @param skuFamily an SKU family
      */
     public ExpressRouteCircuitSkuType(ExpressRouteCircuitSkuTier skuTier, ExpressRouteCircuitSkuFamily skuFamily) {
-        this(new ExpressRouteCircuitSku()
-                .withName((skuTier == null ? "" : skuTier.toString()) + "_" + (skuFamily == null ? "" : skuFamily.toString()))
+        this(
+            new ExpressRouteCircuitSku()
+                .withName(
+                    (skuTier == null ? "" : skuTier.toString()) + "_" + (skuFamily == null ? "" : skuFamily.toString()))
                 .withTier(skuTier)
                 .withFamily(skuFamily));
     }
@@ -73,11 +64,12 @@ public class ExpressRouteCircuitSkuType {
         this.sku = createCopy(sku);
 
         this.value = this.sku.name();
-        VALUES_BY_NAME.put(this.value.toLowerCase(), this);
+        VALUES_BY_NAME.put(this.value.toLowerCase(Locale.ROOT), this);
     }
 
     /**
-     * Searches for an SKU type and creates a new Express Route circuit SKU type instance if not found among the existing ones.
+     * Searches for an SKU type and creates a new Express Route circuit SKU type instance if not found among the
+     * existing ones.
      *
      * @param sku an Express Route circuit SKU
      * @return the parsed or created Express Route circuit SKU type
@@ -89,7 +81,7 @@ public class ExpressRouteCircuitSkuType {
 
         String nameToLookFor = sku.name();
 
-        ExpressRouteCircuitSkuType result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase());
+        ExpressRouteCircuitSkuType result = VALUES_BY_NAME.get(nameToLookFor.toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {
@@ -97,9 +89,7 @@ public class ExpressRouteCircuitSkuType {
         }
     }
 
-    /**
-     * @return the SKU
-     */
+    /** @return the SKU */
     public ExpressRouteCircuitSku sku() {
         // Return copy of sku to guard ExpressRouteCircuitSkuType from ending up with invalid
         // sku in case consumer changes the returned Sku instance.
@@ -119,7 +109,6 @@ public class ExpressRouteCircuitSkuType {
 
     @Override
     public boolean equals(Object obj) {
-        String value = this.toString();
         if (!(obj instanceof ExpressRouteCircuitSkuType)) {
             return false;
         } else if (obj == this) {
@@ -127,7 +116,7 @@ public class ExpressRouteCircuitSkuType {
         } else if (value == null) {
             return ((ExpressRouteCircuitSkuType) obj).value == null;
         } else {
-            return value.equalsIgnoreCase(((ExpressRouteCircuitSkuType) obj).value.toLowerCase());
+            return value.equalsIgnoreCase(((ExpressRouteCircuitSkuType) obj).value.toLowerCase(Locale.ROOT));
         }
     }
 
@@ -138,9 +127,6 @@ public class ExpressRouteCircuitSkuType {
      * @return the copy
      */
     private static ExpressRouteCircuitSku createCopy(ExpressRouteCircuitSku sku) {
-        return new ExpressRouteCircuitSku()
-                .withName(sku.name())
-                .withTier(sku.tier())
-                .withFamily(sku.family());
+        return new ExpressRouteCircuitSku().withName(sku.name()).withTier(sku.tier()).withFamily(sku.family());
     }
 }

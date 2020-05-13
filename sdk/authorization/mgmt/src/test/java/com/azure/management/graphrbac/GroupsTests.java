@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 public class GroupsTests extends GraphRbacManagementTest {
 
@@ -23,18 +23,21 @@ public class GroupsTests extends GraphRbacManagementTest {
         ActiveDirectoryGroup group1 = null;
         ActiveDirectoryGroup group2 = null;
         try {
-            user = graphRbacManager.users().define(userName)
+            user =
+                graphRbacManager
+                    .users()
+                    .define(userName)
                     .withEmailAlias(userName)
                     .withPassword("StrongPass!123")
                     .create();
-            servicePrincipal = graphRbacManager.servicePrincipals().define(spName)
-                    .withNewApplication("https://" + spName)
-                    .create();
-            group1 = graphRbacManager.groups().define(group1Name)
-                    .withEmailAlias(group1Name)
-                    .create();
+            servicePrincipal =
+                graphRbacManager.servicePrincipals().define(spName).withNewApplication("https://" + spName).create();
+            group1 = graphRbacManager.groups().define(group1Name).withEmailAlias(group1Name).create();
             SdkContext.sleep(15000);
-            group2 = graphRbacManager.groups().define(group2Name)
+            group2 =
+                graphRbacManager
+                    .groups()
+                    .define(group2Name)
                     .withEmailAlias(group2Name)
                     .withMember(user.id())
                     .withMember(servicePrincipal.id())
@@ -43,7 +46,7 @@ public class GroupsTests extends GraphRbacManagementTest {
 
             Assertions.assertNotNull(group2);
             Assertions.assertNotNull(group2.id());
-            Set<ActiveDirectoryObject> members = group2.listMembers();
+            List<ActiveDirectoryObject> members = group2.listMembers();
             Assertions.assertEquals(3, members.size());
             Iterator<ActiveDirectoryObject> iterator = members.iterator();
             Assertions.assertNotNull(iterator.next().id());
@@ -54,12 +57,12 @@ public class GroupsTests extends GraphRbacManagementTest {
                 graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
             }
             // cannot delete users or groups from service principal
-//            if (user != null) {
-//                graphRbacManager.users().deleteById(user.id());
-//            }
-//            if (group != null) {
-//                graphRbacManager.groups().deleteById(group.id());
-//            }
+            //            if (user != null) {
+            //                graphRbacManager.users().deleteById(user.id());
+            //            }
+            //            if (group != null) {
+            //                graphRbacManager.groups().deleteById(group.id());
+            //            }
         }
     }
 }

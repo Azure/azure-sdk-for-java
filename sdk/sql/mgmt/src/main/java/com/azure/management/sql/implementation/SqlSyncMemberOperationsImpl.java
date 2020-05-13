@@ -20,10 +20,6 @@ public class SqlSyncMemberOperationsImpl
     implements SqlSyncMemberOperations, SqlSyncMemberOperations.SqlSyncMemberActionsDefinition {
 
     protected SqlServerManager sqlServerManager;
-    protected String resourceGroupName;
-    protected String sqlServerName;
-    protected String sqlDatabaseName;
-    protected String sqlSyncGroupName;
     protected SqlSyncGroupImpl sqlSyncGroup;
 
     SqlSyncMemberOperationsImpl(SqlSyncGroupImpl parent, SqlServerManager sqlServerManager) {
@@ -31,10 +27,6 @@ public class SqlSyncMemberOperationsImpl
         Objects.requireNonNull(sqlServerManager);
         this.sqlSyncGroup = parent;
         this.sqlServerManager = sqlServerManager;
-        this.resourceGroupName = parent.resourceGroupName();
-        this.sqlServerName = parent.sqlServerName();
-        this.sqlDatabaseName = parent.sqlDatabaseName();
-        this.sqlSyncGroupName = parent.name();
     }
 
     SqlSyncMemberOperationsImpl(SqlServerManager sqlServerManager) {
@@ -234,13 +226,11 @@ public class SqlSyncMemberOperationsImpl
                         this.sqlSyncGroup.sqlServerName(),
                         this.sqlSyncGroup.sqlDatabaseName(),
                         this.sqlSyncGroup.name());
-            if (syncMemberInners != null) {
-                for (SyncMemberInner syncMemberInner : syncMemberInners) {
-                    sqlSyncMembers
-                        .add(
-                            new SqlSyncMemberImpl(
-                                syncMemberInner.getName(), this.sqlSyncGroup, syncMemberInner, this.sqlServerManager));
-                }
+            for (SyncMemberInner syncMemberInner : syncMemberInners) {
+                sqlSyncMembers
+                    .add(
+                        new SqlSyncMemberImpl(
+                            syncMemberInner.name(), this.sqlSyncGroup, syncMemberInner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(sqlSyncMembers);
@@ -261,7 +251,7 @@ public class SqlSyncMemberOperationsImpl
             .mapPage(
                 syncMemberInner ->
                     new SqlSyncMemberImpl(
-                        syncMemberInner.getName(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));
+                        syncMemberInner.name(), self.sqlSyncGroup, syncMemberInner, self.sqlServerManager));
     }
 
     @Override

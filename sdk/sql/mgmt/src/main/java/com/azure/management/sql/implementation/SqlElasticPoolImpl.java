@@ -131,7 +131,7 @@ public class SqlElasticPoolImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -203,10 +203,8 @@ public class SqlElasticPoolImpl
                 .inner()
                 .elasticPoolActivities()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
-        if (elasticPoolActivityInners != null) {
-            for (ElasticPoolActivityInner inner : elasticPoolActivityInners) {
-                elasticPoolActivities.add(new ElasticPoolActivityImpl(inner));
-            }
+        for (ElasticPoolActivityInner inner : elasticPoolActivityInners) {
+            elasticPoolActivities.add(new ElasticPoolActivityImpl(inner));
         }
         return Collections.unmodifiableList(elasticPoolActivities);
     }
@@ -218,7 +216,7 @@ public class SqlElasticPoolImpl
             .inner()
             .elasticPoolActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(elasticPoolActivityInner -> new ElasticPoolActivityImpl(elasticPoolActivityInner));
+            .mapPage(ElasticPoolActivityImpl::new);
     }
 
     @Override
@@ -230,10 +228,8 @@ public class SqlElasticPoolImpl
                 .inner()
                 .elasticPoolDatabaseActivities()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
-        if (elasticPoolDatabaseActivityInners != null) {
-            for (ElasticPoolDatabaseActivityInner inner : elasticPoolDatabaseActivityInners) {
-                elasticPoolDatabaseActivities.add(new ElasticPoolDatabaseActivityImpl(inner));
-            }
+        for (ElasticPoolDatabaseActivityInner inner : elasticPoolDatabaseActivityInners) {
+            elasticPoolDatabaseActivities.add(new ElasticPoolDatabaseActivityImpl(inner));
         }
         return Collections.unmodifiableList(elasticPoolDatabaseActivities);
     }
@@ -246,8 +242,7 @@ public class SqlElasticPoolImpl
             .elasticPoolDatabaseActivities()
             .listByElasticPoolAsync(this.resourceGroupName, this.sqlServerName, this.name())
             .mapPage(
-                elasticPoolDatabaseActivityInner ->
-                    new ElasticPoolDatabaseActivityImpl(elasticPoolDatabaseActivityInner));
+                ElasticPoolDatabaseActivityImpl::new);
     }
 
     @Override
@@ -259,10 +254,8 @@ public class SqlElasticPoolImpl
                 .inner()
                 .elasticPools()
                 .listMetrics(this.resourceGroupName, this.sqlServerName, this.name(), filter);
-        if (inners != null) {
-            for (MetricInner inner : inners) {
-                databaseMetrics.add(new SqlDatabaseMetricImpl(inner));
-            }
+        for (MetricInner inner : inners) {
+            databaseMetrics.add(new SqlDatabaseMetricImpl(inner));
         }
 
         return Collections.unmodifiableList(databaseMetrics);
@@ -275,7 +268,7 @@ public class SqlElasticPoolImpl
             .inner()
             .elasticPools()
             .listMetricsAsync(this.resourceGroupName, this.sqlServerName, this.name(), filter)
-            .mapPage(metricInner -> new SqlDatabaseMetricImpl(metricInner));
+            .mapPage(SqlDatabaseMetricImpl::new);
     }
 
     @Override
@@ -287,10 +280,8 @@ public class SqlElasticPoolImpl
                 .inner()
                 .elasticPools()
                 .listMetricDefinitions(this.resourceGroupName, this.sqlServerName, this.name());
-        if (inners != null) {
-            for (MetricDefinitionInner inner : inners) {
-                databaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(inner));
-            }
+        for (MetricDefinitionInner inner : inners) {
+            databaseMetricDefinitions.add(new SqlDatabaseMetricDefinitionImpl(inner));
         }
 
         return Collections.unmodifiableList(databaseMetricDefinitions);
@@ -303,7 +294,7 @@ public class SqlElasticPoolImpl
             .inner()
             .elasticPools()
             .listMetricDefinitionsAsync(this.resourceGroupName, this.sqlServerName, this.name())
-            .mapPage(metricDefinitionInner -> new SqlDatabaseMetricDefinitionImpl(metricDefinitionInner));
+            .mapPage(SqlDatabaseMetricDefinitionImpl::new);
     }
 
     @Override
@@ -315,18 +306,16 @@ public class SqlElasticPoolImpl
                 .inner()
                 .databases()
                 .listByElasticPool(this.resourceGroupName, this.sqlServerName, this.name());
-        if (databaseInners != null) {
-            for (DatabaseInner inner : databaseInners) {
-                databases
-                    .add(
-                        new SqlDatabaseImpl(
-                            this.resourceGroupName,
-                            this.sqlServerName,
-                            this.sqlServerLocation,
-                            inner.getName(),
-                            inner,
-                            this.sqlServerManager));
-            }
+        for (DatabaseInner inner : databaseInners) {
+            databases
+                .add(
+                    new SqlDatabaseImpl(
+                        this.resourceGroupName,
+                        this.sqlServerName,
+                        this.sqlServerLocation,
+                        inner.name(),
+                        inner,
+                        this.sqlServerManager));
         }
         return Collections.unmodifiableList(databases);
     }
@@ -345,7 +334,7 @@ public class SqlElasticPoolImpl
                         self.resourceGroupName,
                         self.sqlServerName,
                         self.sqlServerLocation,
-                        databaseInner.getName(),
+                        databaseInner.name(),
                         databaseInner,
                         self.sqlServerManager));
     }
@@ -420,7 +409,7 @@ public class SqlElasticPoolImpl
     @Override
     public Mono<SqlElasticPool> createResourceAsync() {
         final SqlElasticPoolImpl self = this;
-        this.inner().setLocation(this.sqlServerLocation);
+        this.inner().withLocation(this.sqlServerLocation);
         return this
             .sqlServerManager
             .inner()
@@ -684,23 +673,23 @@ public class SqlElasticPoolImpl
 
     @Override
     public SqlElasticPoolImpl withTags(Map<String, String> tags) {
-        this.inner().setTags(new HashMap<>(tags));
+        this.inner().withTags(new HashMap<>(tags));
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withTag(String key, String value) {
-        if (this.inner().getTags() == null) {
-            this.inner().setTags(new HashMap<String, String>());
+        if (this.inner().tags() == null) {
+            this.inner().withTags(new HashMap<String, String>());
         }
-        this.inner().getTags().put(key, value);
+        this.inner().tags().put(key, value);
         return this;
     }
 
     @Override
     public SqlElasticPoolImpl withoutTag(String key) {
-        if (this.inner().getTags() != null) {
-            this.inner().getTags().remove(key);
+        if (this.inner().tags() != null) {
+            this.inner().tags().remove(key);
         }
         return this;
     }

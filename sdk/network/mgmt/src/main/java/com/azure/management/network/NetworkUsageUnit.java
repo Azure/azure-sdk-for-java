@@ -3,12 +3,9 @@
 package com.azure.management.network;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
-/**
- * Netowork usage units.
- */
+/** Network usage units. */
 public class NetworkUsageUnit extends ExpandableStringEnum<NetworkUsageUnit> {
     /** Static value Count for NetworkUsageUnit. */
     public static final NetworkUsageUnit COUNT = fromString("Count");
@@ -30,6 +27,7 @@ public class NetworkUsageUnit extends ExpandableStringEnum<NetworkUsageUnit> {
 
     /**
      * Finds or creates a network usage unit based on the specified name.
+     *
      * @param name a name
      * @return an instance of NetworkUsageUnit
      */
@@ -37,9 +35,7 @@ public class NetworkUsageUnit extends ExpandableStringEnum<NetworkUsageUnit> {
         return fromString(name, NetworkUsageUnit.class);
     }
 
-    /**
-     * @return known network usage units
-     */
+    /** @return known network usage units */
     public static Collection<NetworkUsageUnit> values() {
         return values(NetworkUsageUnit.class);
     }

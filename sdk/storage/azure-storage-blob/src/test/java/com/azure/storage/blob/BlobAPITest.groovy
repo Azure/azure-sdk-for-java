@@ -932,6 +932,41 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    /*
+    This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
+    relationship programmatically, so we have recorded a successful interaction and only test recordings.
+     */
+    @Requires( {playbackMode()})
+    def "Get properties ORS"() {
+        setup:
+        def sourceBlob = primaryBlobServiceClient.getBlobContainerClient("test1")
+            .getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b")
+        def destBlob = alternateBlobServiceClient.getBlobContainerClient("test2")
+            .getBlobClient("javablobgetpropertiesors2blobapitestgetpropertiesors57d93407b")
+
+        when:
+        def sourceProperties = sourceBlob.getProperties()
+        def sourceDownloadHeaders = sourceBlob.downloadWithResponse(new ByteArrayOutputStream(), null, null, null,
+            false, null, null)
+        def destProperties = destBlob.getProperties()
+        def destDownloadHeaders = destBlob.downloadWithResponse(new ByteArrayOutputStream(), null, null, null,
+            false, null, null)
+
+        then:
+        sourceProperties.getObjectReplicationSourcePolicies().get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
+            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+        sourceDownloadHeaders.getDeserializedHeaders().getObjectReplicationSourcePolicies()
+            .get("fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80")
+            .getRules().get("105f9aad-f39b-4064-8e47-ccd7937295ca") == "complete"
+        // There is a sas token attached at the end. Only check that the path is the same.
+        destProperties.getCopySource().contains(new URL(sourceBlob.getBlobUrl()).getPath())
+        destProperties.getObjectReplicationDestinationPolicyId() == "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
+        destDownloadHeaders.getDeserializedHeaders().getObjectReplicationDestinationPolicyId() ==
+            "fd2da1b9-56f5-45ff-9eb6-310e6dfc2c80"
+    }
+
+    // Test getting the properties from a listing
+
     def "Get properties error"() {
         setup:
         bc = cc.getBlobClient(generateBlobName())

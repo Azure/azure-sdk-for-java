@@ -9,7 +9,7 @@ import java.util.List;
 
 class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, Object, ChickenImpl, Object> {
     PulletsImpl(ChickenImpl parent) {
-        super(parent,  null,"Pullet");
+        super(parent, null, "Pullet");
         cacheCollection();
     }
 

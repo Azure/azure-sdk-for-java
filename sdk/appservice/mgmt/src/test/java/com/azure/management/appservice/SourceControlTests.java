@@ -3,37 +3,41 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class SourceControlTests extends AppServiceTest {
-    private String WEBAPP_NAME = "";
+    private String webappName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME = generateRandomResourceName("java-webapp-", 20);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        webappName = generateRandomResourceName("java-webapp-", 20);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Test
     public void canDeploySourceControl() throws Exception {
         // Create web app
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(webappName)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME)
+                .withNewResourceGroup(rgName)
                 .withNewWindowsPlan(PricingTier.STANDARD_S1)
                 .defineSourceControl()
-                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                    .withBranch("master")
-                    .attach()
+                .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+                .withBranch("master")
+                .attach()
                 .create();
         Assertions.assertNotNull(webApp);
         if (!isPlaybackMode()) {
-            Response<String> response = curl("http://" + WEBAPP_NAME + "." + "azurewebsites.net");
+            Response<String> response = curl("http://" + webappName + "." + "azurewebsites.net");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

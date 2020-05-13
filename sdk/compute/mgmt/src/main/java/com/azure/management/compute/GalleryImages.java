@@ -11,12 +11,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * Entry point to gallery images management API in Azure.
- */
+/** Entry point to gallery images management API in Azure. */
 @Fluent
-public interface GalleryImages extends SupportsCreating<GalleryImage.DefinitionStages.Blank>,
-        HasInner<GalleryImagesInner> {
+public interface GalleryImages
+    extends SupportsCreating<GalleryImage.DefinitionStages.Blank>, HasInner<GalleryImagesInner> {
     /**
      * Retrieves information about an image in a gallery.
      *

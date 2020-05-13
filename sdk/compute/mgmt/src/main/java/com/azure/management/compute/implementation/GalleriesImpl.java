@@ -5,24 +5,22 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.GalleriesInner;
-import com.azure.management.compute.models.GalleryInner;
 import com.azure.management.compute.Galleries;
 import com.azure.management.compute.Gallery;
+import com.azure.management.compute.models.GalleriesInner;
+import com.azure.management.compute.models.GalleryInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.ReactorMapper;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for Galleries.
- */
-class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesInner, ComputeManager> implements Galleries {
+/** The implementation for Galleries. */
+class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, GalleryInner, GalleriesInner, ComputeManager>
+    implements Galleries {
     protected GalleriesImpl(ComputeManager manager) {
         super(manager.inner().galleries(), manager);
     }
@@ -56,7 +54,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
     }
 
     @Override
-    public Flux<String> deleteByIdsAsync(String...ids) {
+    public Flux<String> deleteByIdsAsync(String... ids) {
         return this.deleteByIdsAsync(new ArrayList<>(Arrays.asList(ids)));
     }
 
@@ -68,7 +66,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
     }
 
     @Override
-    public void deleteByIds(String...ids) {
+    public void deleteByIds(String... ids) {
         this.deleteByIds(new ArrayList<>(Arrays.asList(ids)));
     }
 
@@ -79,8 +77,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
 
     @Override
     public PagedFlux<Gallery> listByResourceGroupAsync(String resourceGroupName) {
-        return inner().listByResourceGroupAsync(resourceGroupName)
-                .mapPage(this::wrapModel);
+        return inner().listByResourceGroupAsync(resourceGroupName).mapPage(this::wrapModel);
     }
 
     @Override
@@ -90,8 +87,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
 
     @Override
     public PagedFlux<Gallery> listAsync() {
-        return inner().listAsync()
-                .mapPage(this::wrapModel);
+        return inner().listAsync().mapPage(this::wrapModel);
     }
 
     @Override
@@ -101,7 +97,7 @@ class GalleriesImpl extends GroupableResourcesImpl<Gallery, GalleryImpl, Gallery
 
     @Override
     protected GalleryImpl wrapModel(GalleryInner inner) {
-        return new GalleryImpl(inner.getName(), inner, manager());
+        return new GalleryImpl(inner.name(), inner, manager());
     }
 
     @Override

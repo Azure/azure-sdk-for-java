@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricDimension model.
- */
+/** The MetricDimension model. */
 @Fluent
 public final class MetricDimension {
     /*
@@ -33,7 +31,7 @@ public final class MetricDimension {
 
     /**
      * Get the name property: Name of the dimension.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,7 +40,7 @@ public final class MetricDimension {
 
     /**
      * Set the name property: Name of the dimension.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetricDimension object itself.
      */
@@ -52,9 +50,8 @@ public final class MetricDimension {
     }
 
     /**
-     * Get the operator property: the dimension operator. Only 'Include' and
-     * 'Exclude' are supported.
-     * 
+     * Get the operator property: the dimension operator. Only 'Include' and 'Exclude' are supported.
+     *
      * @return the operator value.
      */
     public String operator() {
@@ -62,9 +59,8 @@ public final class MetricDimension {
     }
 
     /**
-     * Set the operator property: the dimension operator. Only 'Include' and
-     * 'Exclude' are supported.
-     * 
+     * Set the operator property: the dimension operator. Only 'Include' and 'Exclude' are supported.
+     *
      * @param operator the operator value to set.
      * @return the MetricDimension object itself.
      */
@@ -75,7 +71,7 @@ public final class MetricDimension {
 
     /**
      * Get the values property: list of dimension values.
-     * 
+     *
      * @return the values value.
      */
     public List<String> values() {
@@ -84,7 +80,7 @@ public final class MetricDimension {
 
     /**
      * Set the values property: list of dimension values.
-     * 
+     *
      * @param values the values value to set.
      * @return the MetricDimension object itself.
      */

@@ -11,79 +11,50 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-
 import java.util.Map;
 
-/**
- * Route filter.
- */
+/** Route filter. */
 @Fluent
-public interface RouteFilter extends
-        GroupableResource<NetworkManager, RouteFilterInner>,
+public interface RouteFilter
+    extends GroupableResource<NetworkManager, RouteFilterInner>,
         Refreshable<RouteFilter>,
         Updatable<RouteFilter.Update> {
-    /**
-     * @return rules associated with this route filter, indexed by their names
-     */
+    /** @return rules associated with this route filter, indexed by their names */
     Map<String, RouteFilterRule> rules();
 
-    /**
-     * @return express route circuit peerings associated with this route filter, indexed by their names
-     */
+    /** @return express route circuit peerings associated with this route filter, indexed by their names */
     Map<String, ExpressRouteCircuitPeering> peerings();
 
-    /**
-     * @return the provisioning state of the route filter resource
-     */
+    /** @return the provisioning state of the route filter resource */
     String provisioningState();
 
     // Fluent interfaces for creating Route Filter
 
-    /**
-     * The entirety of the aroute filter definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithCreate {
+    /** The entirety of the aroute filter definition. */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of route filter definition stages.
-     */
+    /** Grouping of route filter definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of the definition.
-         */
-        interface Blank
-                extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        /** The first stage of the definition. */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        }
+
+        /** The stage allowing to specify the resource group. */
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**
-         * The stage allowing to specify the resource group.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created
+         * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithGroup
-                extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
-         * for any other optional settings to be specified.
-         */
-        interface WithCreate extends
-                Creatable<RouteFilter>,
-                Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<RouteFilter>, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
-    /**
-     * Grouping of route filter update stages.
-     */
+    /** Grouping of route filter update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the resource update allowing to add or remove route filter rules.
-         */
+        /** The stage of the resource update allowing to add or remove route filter rules. */
         interface WithRule {
             /**
              * Removes an route filter rule.
@@ -112,14 +83,10 @@ public interface RouteFilter extends
     }
 
     /**
-     * The template for an update operation, containing all the settings that
-     * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     * The template for an update operation, containing all the settings that can be modified.
+     *
+     * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends
-            Appliable<RouteFilter>,
-            UpdateStages.WithRule,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<RouteFilter>, UpdateStages.WithRule, Resource.UpdateWithTags<Update> {
     }
 }

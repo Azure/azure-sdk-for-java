@@ -7,15 +7,11 @@ import com.azure.management.network.PcError;
 import com.azure.management.network.PcStatus;
 import com.azure.management.network.models.PacketCaptureQueryStatusResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Implementation for {@link PacketCaptureStatus}.
- */
-class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatusResultInner>
-        implements PacketCaptureStatus {
+/** Implementation for {@link PacketCaptureStatus}. */
+class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatusResultInner> implements PacketCaptureStatus {
     PacketCaptureStatusImpl(PacketCaptureQueryStatusResultInner innerObject) {
         super(innerObject);
     }
@@ -27,7 +23,7 @@ class PacketCaptureStatusImpl extends WrapperImpl<PacketCaptureQueryStatusResult
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

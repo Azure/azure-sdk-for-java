@@ -7,9 +7,7 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetadataValue model.
- */
+/** The MetadataValue model. */
 @Fluent
 public final class MetadataValueInner {
     /*
@@ -26,7 +24,7 @@ public final class MetadataValueInner {
 
     /**
      * Get the name property: the name of the metadata.
-     * 
+     *
      * @return the name value.
      */
     public LocalizableStringInner name() {
@@ -35,7 +33,7 @@ public final class MetadataValueInner {
 
     /**
      * Set the name property: the name of the metadata.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetadataValueInner object itself.
      */
@@ -46,7 +44,7 @@ public final class MetadataValueInner {
 
     /**
      * Get the value property: the value of the metadata.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -55,7 +53,7 @@ public final class MetadataValueInner {
 
     /**
      * Set the value property: the value of the metadata.
-     * 
+     *
      * @param value the value value to set.
      * @return the MetadataValueInner object itself.
      */

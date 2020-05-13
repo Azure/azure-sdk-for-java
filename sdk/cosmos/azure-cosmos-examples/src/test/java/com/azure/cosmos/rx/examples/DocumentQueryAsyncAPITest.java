@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
@@ -12,9 +13,10 @@ import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.implementation.RequestOptions;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -78,13 +80,14 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_DocumentQueryAsyncAPITest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 
@@ -130,7 +133,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -175,7 +178,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_Async_withoutLambda() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -223,7 +226,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_findTotalRequestCharge() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Double> totalChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
@@ -247,7 +250,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_unsubscribeAfterFirstPage() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> requestChargeObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -283,7 +286,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void queryDocuments_filterFetchedResults() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Predicate<Document> isPrimeNumber = new Predicate<Document>() {
 
@@ -344,7 +347,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for documents
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
@@ -393,7 +396,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
         // Query for the documents order by the prop field
         SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new ArrayList<>());
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(5);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 5);
 
         // Max degree of parallelism determines the number of partitions that
         // the SDK establishes simultaneous connections to.
@@ -429,7 +432,7 @@ public class DocumentQueryAsyncAPITest extends DocumentClientTest {
     public void transformObservableToCompletableFuture() throws Exception {
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<FeedResponse<Document>> documentQueryObservable = client
                 .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);

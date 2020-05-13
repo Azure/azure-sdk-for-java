@@ -8,17 +8,11 @@ import com.azure.management.network.models.DdosProtectionPlanInner;
 import com.azure.management.network.models.DdosProtectionPlansInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for DdosProtectionPlans.
- */
+/** Implementation for DdosProtectionPlans. */
 class DdosProtectionPlansImpl
-        extends TopLevelModifiableResourcesImpl<
-        DdosProtectionPlan,
-        DdosProtectionPlanImpl,
-        DdosProtectionPlanInner,
-        DdosProtectionPlansInner,
-        NetworkManager>
-        implements DdosProtectionPlans {
+    extends TopLevelModifiableResourcesImpl<
+        DdosProtectionPlan, DdosProtectionPlanImpl, DdosProtectionPlanInner, DdosProtectionPlansInner, NetworkManager>
+    implements DdosProtectionPlans {
 
     DdosProtectionPlansImpl(final NetworkManager networkManager) {
         super(networkManager.inner().ddosProtectionPlans(), networkManager);
@@ -40,7 +34,6 @@ class DdosProtectionPlansImpl
         if (inner == null) {
             return null;
         }
-        return new DdosProtectionPlanImpl(inner.getName(), inner, this.manager());
+        return new DdosProtectionPlanImpl(inner.name(), inner, this.manager());
     }
 }
-

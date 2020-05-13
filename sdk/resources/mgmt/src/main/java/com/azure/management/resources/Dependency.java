@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Dependency model. */
 @Fluent
 public final class Dependency {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dependency.class);
+
     /*
      * The list of dependencies.
      */
@@ -60,7 +64,7 @@ public final class Dependency {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -113,5 +117,16 @@ public final class Dependency {
     public Dependency withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
     }
 }

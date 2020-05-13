@@ -4,18 +4,16 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.ComputeManagementClientImpl;
-import com.azure.management.compute.models.UsageInner;
 import com.azure.management.compute.ComputeUsage;
 import com.azure.management.compute.ComputeUsages;
+import com.azure.management.compute.models.ComputeManagementClientImpl;
+import com.azure.management.compute.models.UsageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
-/**
- * The implementation of {@link ComputeUsages}.
- */
+/** The implementation of {@link ComputeUsages}. */
 class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageImpl, UsageInner>
-        implements ComputeUsages {
+    implements ComputeUsages {
     private final ComputeManagementClientImpl client;
 
     ComputeUsagesImpl(ComputeManagementClientImpl client) {

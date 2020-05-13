@@ -10,35 +10,28 @@ import com.azure.management.monitor.MetricAlertRuleCondition;
 import com.azure.management.monitor.MetricAlertRuleTimeAggregation;
 import com.azure.management.monitor.MetricCriteria;
 import com.azure.management.monitor.Operator;
-
 import java.util.ArrayList;
 
-/**
- * Implementation for MetricAlertCondition.
- */
-class MetricAlertConditionImpl
-        extends MetricAlertConditionBaseImpl<MetricCriteria, MetricAlertConditionImpl>
-        implements
-        MetricAlertCondition,
-
-            MetricAlertCondition.DefinitionStages,
-            MetricAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
-            MetricAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
-            MetricAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
-
-            MetricAlertCondition.UpdateDefinitionStages,
-            MetricAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
-            MetricAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
-            MetricAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
-
-            MetricAlertCondition.UpdateStages {
+/** Implementation for MetricAlertCondition. */
+class MetricAlertConditionImpl extends MetricAlertConditionBaseImpl<MetricCriteria, MetricAlertConditionImpl>
+    implements MetricAlertCondition,
+        MetricAlertCondition.DefinitionStages,
+        MetricAlertCondition.DefinitionStages.Blank.MetricName<MetricAlert.DefinitionStages.WithCreate>,
+        MetricAlertCondition.DefinitionStages.WithCriteriaOperator<MetricAlert.DefinitionStages.WithCreate>,
+        MetricAlertCondition.DefinitionStages.WithConditionAttach<MetricAlert.DefinitionStages.WithCreate>,
+        MetricAlertCondition.UpdateDefinitionStages,
+        MetricAlertCondition.UpdateDefinitionStages.Blank.MetricName<MetricAlert.Update>,
+        MetricAlertCondition.UpdateDefinitionStages.WithCriteriaOperator<MetricAlert.Update>,
+        MetricAlertCondition.UpdateDefinitionStages.WithConditionAttach<MetricAlert.Update>,
+        MetricAlertCondition.UpdateStages {
 
     MetricAlertConditionImpl(String name, MetricCriteria innerObject, MetricAlertImpl parent) {
         super(name, innerObject, parent);
     }
 
     @Override
-    public MetricAlertConditionImpl withCondition(MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold) {
+    public MetricAlertConditionImpl withCondition(
+        MetricAlertRuleTimeAggregation timeAggregation, MetricAlertRuleCondition condition, double threshold) {
         this.inner().withOperator(Operator.fromString(condition.toString()));
         this.inner().withTimeAggregation(AggregationType.fromString(timeAggregation.toString()));
         this.inner().withThreshold(threshold);
@@ -61,4 +54,3 @@ class MetricAlertConditionImpl
         return this.inner().threshold();
     }
 }
-

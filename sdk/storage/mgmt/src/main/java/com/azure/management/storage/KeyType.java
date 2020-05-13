@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for KeyType.
- */
+/** Defines values for KeyType. */
 public final class KeyType extends ExpandableStringEnum<KeyType> {
-    /**
-     * Static value Service for KeyType.
-     */
+    /** Static value Service for KeyType. */
     public static final KeyType SERVICE = fromString("Service");
 
-    /**
-     * Static value Account for KeyType.
-     */
+    /** Static value Account for KeyType. */
     public static final KeyType ACCOUNT = fromString("Account");
 
     /**
      * Creates or finds a KeyType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding KeyType.
      */
@@ -33,9 +27,7 @@ public final class KeyType extends ExpandableStringEnum<KeyType> {
         return fromString(name, KeyType.class);
     }
 
-    /**
-     * @return known KeyType values.
-     */
+    /** @return known KeyType values. */
     public static Collection<KeyType> values() {
         return values(KeyType.class);
     }

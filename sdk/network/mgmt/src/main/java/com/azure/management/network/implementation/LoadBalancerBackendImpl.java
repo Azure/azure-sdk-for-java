@@ -13,7 +13,6 @@ import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,13 +21,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Implementation for LoadBalancerBackend.
- */
-class LoadBalancerBackendImpl
-        extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerBackend,
+/** Implementation for LoadBalancerBackend. */
+class LoadBalancerBackendImpl extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerBackend,
         LoadBalancerBackend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerBackend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerBackend.Update {
@@ -46,8 +41,8 @@ class LoadBalancerBackendImpl
         final Map<String, String> ipConfigNames = new TreeMap<>();
         if (this.inner().backendIPConfigurations() != null) {
             for (NetworkInterfaceIPConfigurationInner inner : this.inner().backendIPConfigurations()) {
-                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.getId());
-                String ipConfigName = ResourceUtils.nameFromResourceId(inner.getId());
+                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
+                String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
                 ipConfigNames.put(nicId, ipConfigName);
             }
         }
@@ -60,7 +55,7 @@ class LoadBalancerBackendImpl
         final Map<String, LoadBalancingRule> rules = new TreeMap<>();
         if (this.inner().loadBalancingRules() != null) {
             for (SubResource inner : this.inner().loadBalancingRules()) {
-                String name = ResourceUtils.nameFromResourceId(inner.getId());
+                String name = ResourceUtils.nameFromResourceId(inner.id());
                 LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
@@ -80,18 +75,16 @@ class LoadBalancerBackendImpl
     public Set<String> getVirtualMachineIds() {
         Set<String> vmIds = new HashSet<>();
         Map<String, String> nicConfigs = this.backendNicIPConfigurationNames();
-        if (nicConfigs != null) {
-            for (String nicId : nicConfigs.keySet()) {
-                try {
-                    NetworkInterface nic = this.parent().manager().networkInterfaces().getById(nicId);
-                    if (nic == null || nic.virtualMachineId() == null) {
-                        continue;
-                    } else {
-                        vmIds.add(nic.virtualMachineId());
-                    }
-                } catch (CloudException | IllegalArgumentException e) {
+        for (String nicId : nicConfigs.keySet()) {
+            try {
+                NetworkInterface nic = this.parent().manager().networkInterfaces().getById(nicId);
+                if (nic == null || nic.virtualMachineId() == null) {
                     continue;
+                } else {
+                    vmIds.add(nic.virtualMachineId());
                 }
+            } catch (CloudException | IllegalArgumentException e) {
+                continue;
             }
         }
 

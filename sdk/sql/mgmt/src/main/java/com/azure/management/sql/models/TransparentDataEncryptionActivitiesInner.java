@@ -58,9 +58,9 @@ public final class TransparentDataEncryptionActivitiesInner {
     private interface TransparentDataEncryptionActivitiesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/transparentDataEncryption/{transparentDataEncryptionName}"
-                + "/operationResults")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/transparentDataEncryption"
+                + "/{transparentDataEncryptionName}/operationResults")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<TransparentDataEncryptionActivityListResultInner>> listByConfiguration(

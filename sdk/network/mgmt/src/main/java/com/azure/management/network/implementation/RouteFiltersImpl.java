@@ -8,17 +8,11 @@ import com.azure.management.network.models.RouteFilterInner;
 import com.azure.management.network.models.RouteFiltersInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for RouteFilters.
- */
+/** Implementation for RouteFilters. */
 class RouteFiltersImpl
-        extends TopLevelModifiableResourcesImpl<
-        RouteFilter,
-        RouteFilterImpl,
-        RouteFilterInner,
-        RouteFiltersInner,
-        NetworkManager>
-        implements RouteFilters {
+    extends TopLevelModifiableResourcesImpl<
+        RouteFilter, RouteFilterImpl, RouteFilterInner, RouteFiltersInner, NetworkManager>
+    implements RouteFilters {
 
     RouteFiltersImpl(final NetworkManager networkManager) {
         super(networkManager.inner().routeFilters(), networkManager);
@@ -40,7 +34,6 @@ class RouteFiltersImpl
         if (inner == null) {
             return null;
         }
-        return new RouteFilterImpl(inner.getName(), inner, this.manager());
+        return new RouteFilterImpl(inner.name(), inner, this.manager());
     }
 }
-

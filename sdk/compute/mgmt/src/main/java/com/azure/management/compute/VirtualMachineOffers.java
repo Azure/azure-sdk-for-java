@@ -5,10 +5,7 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 
-/**
- * Entry point to virtual machine image offers.
- */
+/** Entry point to virtual machine image offers. */
 @Fluent
 public interface VirtualMachineOffers extends SupportsListing<VirtualMachineOffer> {
 }
-

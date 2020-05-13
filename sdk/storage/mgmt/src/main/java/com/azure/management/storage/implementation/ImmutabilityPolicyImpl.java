@@ -12,8 +12,8 @@ import com.azure.management.storage.models.ImmutabilityPolicyInner;
 import reactor.core.publisher.Mono;
 
 class ImmutabilityPolicyImpl
-        extends CreatableUpdatableImpl<ImmutabilityPolicy, ImmutabilityPolicyInner, ImmutabilityPolicyImpl>
-        implements ImmutabilityPolicy, ImmutabilityPolicy.Definition, ImmutabilityPolicy.Update {
+    extends CreatableUpdatableImpl<ImmutabilityPolicy, ImmutabilityPolicyInner, ImmutabilityPolicyImpl>
+    implements ImmutabilityPolicy, ImmutabilityPolicy.Definition, ImmutabilityPolicy.Update {
     private final StorageManager manager;
     private String resourceGroupName;
     private String accountName;
@@ -31,14 +31,14 @@ class ImmutabilityPolicyImpl
     }
 
     ImmutabilityPolicyImpl(ImmutabilityPolicyInner inner, StorageManager manager) {
-        super(inner.getName(), inner);
+        super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
-        this.containerName = inner.getName();
+        this.containerName = inner.name();
         // set resource ancestor and positional variables
-        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.getId(), "resourceGroups");
-        this.accountName = IdParsingUtils.getValueFromIdByName(inner.getId(), "storageAccounts");
-        this.containerName = IdParsingUtils.getValueFromIdByName(inner.getId(), "containers");
+        this.resourceGroupName = IdParsingUtils.getValueFromIdByName(inner.id(), "resourceGroups");
+        this.accountName = IdParsingUtils.getValueFromIdByName(inner.id(), "storageAccounts");
+        this.containerName = IdParsingUtils.getValueFromIdByName(inner.id(), "containers");
         //
     }
 
@@ -50,16 +50,31 @@ class ImmutabilityPolicyImpl
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null, this.cImmutabilityPeriodSinceCreationInDays, null)
-                .map(innerToFluentMap(this));
+        return client
+            .createOrUpdateImmutabilityPolicyAsync(
+                this.resourceGroupName,
+                this.accountName,
+                this.containerName,
+                null,
+                this.cImmutabilityPeriodSinceCreationInDays,
+                null)
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersInner client = this.manager().inner().blobContainers();
-        return client.createOrUpdateImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.eTagState.ifMatchValueOnUpdate(this.inner().etag()), this.uImmutabilityPeriodSinceCreationInDays, null)
-                .map(innerToFluentMap(this))
-                .map(self -> {
+        return client
+            .createOrUpdateImmutabilityPolicyAsync(
+                this.resourceGroupName,
+                this.accountName,
+                this.containerName,
+                this.eTagState.ifMatchValueOnUpdate(this.inner().etag()),
+                this.uImmutabilityPeriodSinceCreationInDays,
+                null)
+            .map(innerToFluentMap(this))
+            .map(
+                self -> {
                     eTagState.clear();
                     return self;
                 });
@@ -73,9 +88,8 @@ class ImmutabilityPolicyImpl
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
-
 
     @Override
     public String etag() {
@@ -84,7 +98,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -94,7 +108,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
@@ -104,11 +118,12 @@ class ImmutabilityPolicyImpl
 
     @Override
     public String type() {
-        return this.inner().getType();
+        return this.inner().type();
     }
 
     @Override
-    public ImmutabilityPolicyImpl withExistingContainer(String resourceGroupName, String accountName, String containerName) {
+    public ImmutabilityPolicyImpl withExistingContainer(
+        String resourceGroupName, String accountName, String containerName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.containerName = containerName;
@@ -136,5 +151,4 @@ class ImmutabilityPolicyImpl
         }
         return this;
     }
-
 }

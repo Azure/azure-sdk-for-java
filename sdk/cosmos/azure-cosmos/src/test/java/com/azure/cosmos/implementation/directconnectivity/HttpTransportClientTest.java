@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -102,21 +103,21 @@ public class HttpTransportClientTest {
         assertThat(res.toString()).isEqualTo(physicalAddress.toString() + "dbs");
     }
 
-    public static HttpTransportClient getHttpTransportClientUnderTest(Duration requestTimeout,
+    public static HttpTransportClient getHttpTransportClientUnderTest(ConnectionPolicy connectionPolicy,
                                                                       UserAgentContainer userAgent,
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
-            public HttpTransportClientUnderTest(Duration requestTimeout, UserAgentContainer userAgent) {
-                super(configs, requestTimeout, userAgent);
+            public HttpTransportClientUnderTest(ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
+                super(configs, connectionPolicy, userAgent);
             }
 
             @Override
-            HttpClient createHttpClient(Duration requestTimeout) {
+            HttpClient createHttpClient(ConnectionPolicy connectionPolicy) {
                 return httpClient;
             }
         }
 
-        return new HttpTransportClientUnderTest(requestTimeout, userAgent);
+        return new HttpTransportClientUnderTest(connectionPolicy, userAgent);
     }
 
     @Test(groups = "unit")
@@ -130,7 +131,9 @@ public class HttpTransportClientTest {
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         userAgentContainer.setSuffix("i am suffix");
 
-        HttpTransportClient transportClient = getHttpTransportClientUnderTest(Duration.ofSeconds(100),
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
+        HttpTransportClient transportClient = getHttpTransportClientUnderTest(connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
@@ -447,8 +450,10 @@ public class HttpTransportClientTest {
                                             FailureValidator.Builder failureValidatorBuilder) {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                Duration.ofSeconds(100),
+                connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
         RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(
@@ -558,8 +563,10 @@ public class HttpTransportClientTest {
                                 FailureValidator.Builder failureValidatorBuilder) {
         HttpClientMockWrapper httpClientMockWrapper = new HttpClientMockWrapper(mockedResponseBuilder);
         UserAgentContainer userAgentContainer = new UserAgentContainer();
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofSeconds(100));
         HttpTransportClient transportClient = getHttpTransportClientUnderTest(
-                Duration.ofSeconds(100),
+                connectionPolicy,
                 userAgentContainer,
                 httpClientMockWrapper.getClient());
 
