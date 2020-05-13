@@ -344,11 +344,11 @@ public final class BlobServiceAsyncClient {
             && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
-            if (blobContainerListDetails.getRetrieveMetadata()) {
-                flags.add(ListBlobContainersIncludeType.METADATA);
-            }
             if (blobContainerListDetails.getRetrieveDeleted()) {
                 flags.add(ListBlobContainersIncludeType.DELETED);
+            }
+            if (blobContainerListDetails.getRetrieveMetadata()) {
+                flags.add(ListBlobContainersIncludeType.METADATA);
             }
             return flags;
         } else {
