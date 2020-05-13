@@ -38,6 +38,7 @@ public class CosmosTracerTest extends TestSuiteBase {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
+            .directMode(DirectConnectionConfig.getDefaultConfig())
             .buildAsyncClient();
         cosmosAsyncDatabase = getSharedCosmosDatabase(client);
         cosmosAsyncContainer = getSharedMultiPartitionCosmosContainer(client);

@@ -25,7 +25,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public class TracerProvider {
     private final List<Tracer> tracers = new ArrayList<>();
     private final boolean isEnabled;
-    public final static String DB_TYPE_VALUE = "cosmos";
+    public final static String DB_TYPE_VALUE = "Cosmos";
     public final static String DB_TYPE = "db.type";
     public final static String DB_INSTANCE = "db.instance";
     public final static String DB_URL = "db.url";
