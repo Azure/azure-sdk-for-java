@@ -18,8 +18,7 @@ public class SuggestOptionsHandlerTests {
 
     @Test
     public void ensureSelectConvertsEmptyToSelectStar() {
-
-        List<String> emptySelect =  Collections.emptyList();
+        List<String> emptySelect = Collections.emptyList();
 
         SuggestOptions suggestOptions = createTestOptions();
         assertEquals(suggestOptions.getSelect(), emptySelect);
