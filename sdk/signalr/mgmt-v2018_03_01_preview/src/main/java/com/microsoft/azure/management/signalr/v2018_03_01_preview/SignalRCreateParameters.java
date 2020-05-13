@@ -26,7 +26,8 @@ public class SignalRCreateParameters extends SignalRUpdateParameters {
     private String location;
 
     /**
-     * Get the location value.
+     * Get azure GEO region: e.g. West US | East US | North Central US | South Central US | West Europe | North Europe | East Asia | Southeast Asia | etc.
+     The geo region of a resource never changes after it is created.
      *
      * @return the location value
      */
@@ -35,7 +36,8 @@ public class SignalRCreateParameters extends SignalRUpdateParameters {
     }
 
     /**
-     * Set the location value.
+     * Set azure GEO region: e.g. West US | East US | North Central US | South Central US | West Europe | North Europe | East Asia | Southeast Asia | etc.
+     The geo region of a resource never changes after it is created.
      *
      * @param location the location value to set
      * @return the SignalRCreateParameters object itself.

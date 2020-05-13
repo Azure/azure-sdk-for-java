@@ -27,7 +27,7 @@ public class NameAvailabilityParameters {
     private String name;
 
     /**
-     * Get the type value.
+     * Get the resource type. Should be always "Microsoft.SignalRService/SignalR".
      *
      * @return the type value
      */
@@ -36,7 +36,7 @@ public class NameAvailabilityParameters {
     }
 
     /**
-     * Set the type value.
+     * Set the resource type. Should be always "Microsoft.SignalRService/SignalR".
      *
      * @param type the type value to set
      * @return the NameAvailabilityParameters object itself.
@@ -47,7 +47,7 @@ public class NameAvailabilityParameters {
     }
 
     /**
-     * Get the name value.
+     * Get the SignalR service name to validate. e.g."my-signalR-name-here".
      *
      * @return the name value
      */
@@ -56,7 +56,7 @@ public class NameAvailabilityParameters {
     }
 
     /**
-     * Set the name value.
+     * Set the SignalR service name to validate. e.g."my-signalR-name-here".
      *
      * @param name the name value to set
      * @return the NameAvailabilityParameters object itself.

@@ -34,7 +34,7 @@ public class SignalRUpdateParameters {
     private SignalRCreateOrUpdateProperties properties;
 
     /**
-     * Get the tags value.
+     * Get a list of key value pairs that describe the resource.
      *
      * @return the tags value
      */
@@ -43,7 +43,7 @@ public class SignalRUpdateParameters {
     }
 
     /**
-     * Set the tags value.
+     * Set a list of key value pairs that describe the resource.
      *
      * @param tags the tags value to set
      * @return the SignalRUpdateParameters object itself.
@@ -54,7 +54,7 @@ public class SignalRUpdateParameters {
     }
 
     /**
-     * Get the sku value.
+     * Get the billing information of the resource.(e.g. basic vs. standard).
      *
      * @return the sku value
      */
@@ -63,7 +63,7 @@ public class SignalRUpdateParameters {
     }
 
     /**
-     * Set the sku value.
+     * Set the billing information of the resource.(e.g. basic vs. standard).
      *
      * @param sku the sku value to set
      * @return the SignalRUpdateParameters object itself.
@@ -74,7 +74,7 @@ public class SignalRUpdateParameters {
     }
 
     /**
-     * Get the properties value.
+     * Get settings used to provision or configure the resource.
      *
      * @return the properties value
      */
@@ -83,7 +83,7 @@ public class SignalRUpdateParameters {
     }
 
     /**
-     * Set the properties value.
+     * Set settings used to provision or configure the resource.
      *
      * @param properties the properties value to set
      * @return the SignalRUpdateParameters object itself.

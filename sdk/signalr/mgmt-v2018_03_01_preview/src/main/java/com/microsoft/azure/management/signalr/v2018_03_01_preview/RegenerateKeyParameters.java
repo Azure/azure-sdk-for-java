@@ -23,7 +23,7 @@ public class RegenerateKeyParameters {
     private KeyType keyType;
 
     /**
-     * Get the keyType value.
+     * Get the keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'.
      *
      * @return the keyType value
      */
@@ -32,7 +32,7 @@ public class RegenerateKeyParameters {
     }
 
     /**
-     * Set the keyType value.
+     * Set the keyType to regenerate. Must be either 'primary' or 'secondary'(case-insensitive). Possible values include: 'Primary', 'Secondary'.
      *
      * @param keyType the keyType value to set
      * @return the RegenerateKeyParameters object itself.

@@ -22,6 +22,9 @@ public final class SignalRSkuTier extends ExpandableStringEnum<SignalRSkuTier> {
     /** Static value Basic for SignalRSkuTier. */
     public static final SignalRSkuTier BASIC = fromString("Basic");
 
+    /** Static value Standard for SignalRSkuTier. */
+    public static final SignalRSkuTier STANDARD = fromString("Standard");
+
     /** Static value Premium for SignalRSkuTier. */
     public static final SignalRSkuTier PREMIUM = fromString("Premium");
 
