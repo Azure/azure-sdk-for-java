@@ -11,12 +11,12 @@ package com.microsoft.azure.management.signalr.v2018_10_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRUsageInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRManager;
+import com.microsoft.azure.management.signalr.v2018_10_01.implementation.SignalRServiceManager;
 
 /**
  * Type representing SignalRUsage.
  */
-public interface SignalRUsage extends HasInner<SignalRUsageInner>, HasManager<SignalRManager> {
+public interface SignalRUsage extends HasInner<SignalRUsageInner>, HasManager<SignalRServiceManager> {
     /**
      * @return the currentValue value.
      */
