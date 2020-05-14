@@ -545,11 +545,11 @@ public class BlobAsyncClientBase {
             return null;
         }
         StringBuilder sb = new StringBuilder();
-        for (String key : tags.keySet()) {
+        for (Map.Entry<String, String> entry : tags.entrySet()) {
             try {
-                sb.append(URLEncoder.encode(key, Charset.defaultCharset().toString()));
+                sb.append(URLEncoder.encode(entry.getKey(), Charset.defaultCharset().toString()));
                 sb.append("=");
-                sb.append(URLEncoder.encode(tags.get(key), Charset.defaultCharset().toString()));
+                sb.append(URLEncoder.encode(entry.getValue(), Charset.defaultCharset().toString()));
                 sb.append("&");
             } catch (UnsupportedEncodingException e) {
                 throw logger.logExceptionAsError(new IllegalStateException(e));
@@ -1523,8 +1523,8 @@ public class BlobAsyncClientBase {
         List<BlobTag> tagList = null;
         if (tags != null) {
             tagList = new ArrayList<>();
-            for (String tag : tags.keySet()) {
-                tagList.add(new BlobTag().setKey(tag).setValue(tags.get(tag)));
+            for (Map.Entry<String, String> entry : tags.entrySet()) {
+                tagList.add(new BlobTag().setKey(entry.getKey()).setValue(entry.getValue()));
             }
         }
         BlobTags t = new BlobTags().setBlobTagSet(tagList);

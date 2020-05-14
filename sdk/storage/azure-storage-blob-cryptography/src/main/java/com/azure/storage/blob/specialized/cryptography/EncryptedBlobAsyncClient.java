@@ -285,7 +285,7 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
         try {
             BlobParallelUploadOptions finalOptions = options == null ? new BlobParallelUploadOptions() : options;
             final Map<String, String> metadataFinal = finalOptions.getMetadata() == null
-                ? Collections.emptyMap() : finalOptions.getMetadata();
+                ? new HashMap<>() : finalOptions.getMetadata();
             finalOptions.setMetadata(metadataFinal);
             Mono<Flux<ByteBuffer>> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return dataFinal.flatMap(df -> super.uploadWithResponse(df, finalOptions));

@@ -3,6 +3,8 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.util.CoreUtils;
+
 import java.util.Map;
 
 /**
@@ -87,7 +89,7 @@ public class BlockBlobSimpleUploadOptions {
      * operation will fail.
      */
     public byte[] getContentMd5() {
-        return contentMd5;
+        return CoreUtils.clone(contentMd5);
     }
 
     /**
@@ -98,7 +100,7 @@ public class BlockBlobSimpleUploadOptions {
      * @return The updated options
      */
     public BlockBlobSimpleUploadOptions setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = contentMd5;
+        this.contentMd5 = CoreUtils.clone(contentMd5);
         return this;
     }
 
