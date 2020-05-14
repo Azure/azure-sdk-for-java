@@ -166,8 +166,11 @@ public final class TrafficAnalyticsConfigurationProperties {
                         "Missing required property workspaceRegion in model TrafficAnalyticsConfigurationProperties"));
         }
         if (workspaceResourceId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property workspaceResourceId in model TrafficAnalyticsConfigurationProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workspaceResourceId in model"
+                            + " TrafficAnalyticsConfigurationProperties"));
         }
     }
 }

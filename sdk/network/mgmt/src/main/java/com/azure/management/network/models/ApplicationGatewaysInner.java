@@ -216,9 +216,7 @@ public final class ApplicationGatewaysInner
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network"
-                + "/applicationGatewayAvailableServerVariables")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableServerVariables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<List<String>>> listAvailableServerVariables(
@@ -228,9 +226,7 @@ public final class ApplicationGatewaysInner
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network"
-                + "/applicationGatewayAvailableRequestHeaders")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableRequestHeaders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<List<String>>> listAvailableRequestHeaders(
@@ -240,9 +236,7 @@ public final class ApplicationGatewaysInner
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network"
-                + "/applicationGatewayAvailableResponseHeaders")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableResponseHeaders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<List<String>>> listAvailableResponseHeaders(
@@ -263,8 +257,7 @@ public final class ApplicationGatewaysInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions"
-                + "/default")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ApplicationGatewayAvailableSslOptionsInner>> listAvailableSslOptions(
@@ -275,8 +268,8 @@ public final class ApplicationGatewaysInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions"
-                + "/default/predefinedPolicies")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default"
+                + "/predefinedPolicies")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ApplicationGatewayAvailableSslPredefinedPoliciesInner>> listAvailableSslPredefinedPolicies(
@@ -287,8 +280,8 @@ public final class ApplicationGatewaysInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions"
-                + "/default/predefinedPolicies/{predefinedPolicyName}")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/applicationGatewayAvailableSslOptions/default"
+                + "/predefinedPolicies/{predefinedPolicyName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ApplicationGatewaySslPredefinedPolicyInner>> getSslPredefinedPolicy(

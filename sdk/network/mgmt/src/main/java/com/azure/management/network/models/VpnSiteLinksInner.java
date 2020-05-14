@@ -57,8 +57,8 @@ public final class VpnSiteLinksInner {
     private interface VpnSiteLinksService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/vpnSites/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
+                + "/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<VpnSiteLinkInner>> get(
@@ -72,8 +72,8 @@ public final class VpnSiteLinksInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/vpnSites/{vpnSiteName}/vpnSiteLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
+                + "/{vpnSiteName}/vpnSiteLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<ListVpnSiteLinksResultInner>> listByVpnSite(

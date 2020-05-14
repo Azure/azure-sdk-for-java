@@ -319,8 +319,8 @@ public final class VirtualNetworkGatewaysInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}/vpndeviceconfigurationscript")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}/vpndeviceconfigurationscript")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<String>> vpnDeviceConfigurationScript(

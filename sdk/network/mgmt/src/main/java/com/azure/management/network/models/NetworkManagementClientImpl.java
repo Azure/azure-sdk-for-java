@@ -1205,8 +1205,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     private interface NetworkManagementClientService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
-                + "/CheckDnsNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailability(
@@ -1219,8 +1218,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualWans/{virtualWANName}/supportedSecurityProviders")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWANName}/supportedSecurityProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProviders(

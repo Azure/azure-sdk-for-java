@@ -57,9 +57,7 @@ public final class AvailableDelegationsInner {
     @ServiceInterface(name = "NetworkManagementCli")
     private interface AvailableDelegationsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
-                + "/availableDelegations")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/availableDelegations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AvailableDelegationsResultInner>> list(

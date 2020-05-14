@@ -75,8 +75,8 @@ public final class VirtualNetworkGatewayConnectionsInner
     private interface VirtualNetworkGatewayConnectionsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
@@ -90,8 +90,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<VirtualNetworkGatewayConnectionInner>> getByResourceGroup(
@@ -104,8 +104,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
@@ -118,8 +118,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> updateTags(
@@ -133,8 +133,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}/sharedkey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}/sharedkey")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> setSharedKey(
@@ -148,8 +148,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}/sharedkey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}/sharedkey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ConnectionSharedKeyInner>> getSharedKey(
@@ -175,8 +175,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> resetSharedKey(
@@ -190,8 +190,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<VirtualNetworkGatewayConnectionInner>> beginCreateOrUpdate(
@@ -205,8 +205,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
@@ -219,8 +219,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<VirtualNetworkGatewayConnectionInner>> beginUpdateTags(
@@ -234,8 +234,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}/sharedkey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}/sharedkey")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ConnectionSharedKeyInner>> beginSetSharedKey(
@@ -249,8 +249,8 @@ public final class VirtualNetworkGatewayConnectionsInner
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/connections/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/connections"
+                + "/{virtualNetworkGatewayConnectionName}/sharedkey/reset")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ConnectionResetSharedKeyInner>> beginResetSharedKey(

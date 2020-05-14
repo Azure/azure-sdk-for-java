@@ -74,8 +74,8 @@ public final class AvailablePrivateEndpointTypesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/locations/{location}/availablePrivateEndpointTypes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations"
+                + "/{location}/availablePrivateEndpointTypes")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AvailablePrivateEndpointTypesResultInner>> listByResourceGroup(

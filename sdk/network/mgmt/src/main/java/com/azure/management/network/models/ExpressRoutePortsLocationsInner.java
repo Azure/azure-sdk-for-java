@@ -68,9 +68,7 @@ public final class ExpressRoutePortsLocationsInner {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations"
-                + "/{locationName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/ExpressRoutePortsLocations/{locationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ExpressRoutePortsLocationInner>> get(

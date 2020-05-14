@@ -531,8 +531,11 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public void validate() {
         if (virtualNetworkGateway1() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property virtualNetworkGateway1 in model VirtualNetworkGatewayConnectionInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualNetworkGateway1 in model"
+                            + " VirtualNetworkGatewayConnectionInner"));
         } else {
             virtualNetworkGateway1().validate();
         }
@@ -543,8 +546,10 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
             localNetworkGateway2().validate();
         }
         if (connectionType() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property connectionType in model VirtualNetworkGatewayConnectionInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property connectionType in model VirtualNetworkGatewayConnectionInner"));
         }
         if (tunnelConnectionStatus() != null) {
             tunnelConnectionStatus().forEach(e -> e.validate());

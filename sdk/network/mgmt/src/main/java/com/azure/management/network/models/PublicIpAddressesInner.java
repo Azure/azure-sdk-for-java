@@ -189,8 +189,8 @@ public final class PublicIpAddressesInner
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
                 + "/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}"
-                + "/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}"
-                + "/publicipaddresses/{publicIpAddressName}")
+                + "/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses"
+                + "/{publicIpAddressName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddress(

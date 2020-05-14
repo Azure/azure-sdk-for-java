@@ -53,8 +53,8 @@ public final class TrafficAnalyticsProperties {
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property networkWatcherFlowAnalyticsConfiguration"
-                            + " in model TrafficAnalyticsProperties"));
+                        "Missing required property networkWatcherFlowAnalyticsConfiguration in model"
+                            + " TrafficAnalyticsProperties"));
         } else {
             networkWatcherFlowAnalyticsConfiguration().validate();
         }
