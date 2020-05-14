@@ -1,12 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer;
+package com.azure.ai.formrecognizer.training;
 
+import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
+import com.azure.ai.formrecognizer.FormRecognizerClient;
+import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.CustomFormModelInfo;
 import com.azure.ai.formrecognizer.models.OperationResult;
+import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,11 +24,11 @@ import java.time.Duration;
 /**
  * This class provides a synchronous client that contains model management the operations that apply
  * to Azure Form Recognizer.
- * Operations allowed by the client are, to creating, training of custom models, delete models, list models and get
+ * Operations allowed by the client are creating, training of custom models, deleting models, listing models and getting
  * subscription account information.
  *
  * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
- * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.initialization}
+ * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.initialization}
  *
  * @see FormRecognizerClientBuilder
  * @see FormRecognizerClient
@@ -40,17 +44,9 @@ public class FormTrainingClient {
      *
      * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
      */
-    FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
+    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
+    public FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
         this.client = formTrainingAsyncClient;
-    }
-
-    /**
-     * Gets the service version the client is using.
-     *
-     * @return the service version the client is using.
-     */
-    public FormRecognizerServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
     }
 
     /**
@@ -63,18 +59,19 @@ public class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.beginTraining#string-boolean}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean}
      *
-     * @param fileSourceUrl source URL parameter that is either an externally accessible
-     * Azure storage blob container Uri (preferably a Shared Access Signature Uri).
-     * @param useLabelFile Boolean to specify the use of labeled files for training the model.
+     * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a Shared Access
+     * Signature Uri).
+     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
      *
      * @return A {@link SyncPoller} that polls the training model operation until it has completed, has failed, or has
      * been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile) {
-        return beginTraining(fileSourceUrl, useLabelFile, false, null, null);
+    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels) {
+        return beginTraining(trainingFilesUrl, useTrainingLabels, null, null);
     }
 
     /**
@@ -86,16 +83,12 @@ public class FormTrainingClient {
      * error message indicating absence of cancellation support.</p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.beginTraining#string-boolean-boolean-string-Duration}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration}
      *
-     * @param fileSourceUrl source URL parameter that is either an externally accessible Azure storage
-     * blob container Uri (preferably a Shared Access Signature Uri).
-     * @param useLabelFile Boolean to specify the use of labeled files for training the model.
-     * @param includeSubFolders to indicate if sub folders within the set of prefix folders will
-     * also need to be included when searching for content to be preprocessed.
-     * @param filePrefix A case-sensitive prefix string to filter documents in the source path
-     * for training. For example, when using a Azure storage blob Uri, use the prefix to restrict
-     * sub folders for training.
+     * @param trainingFilesUrl an externally accessible Azure storage blob container Uri (preferably a
+     * Shared Access Signature Uri).
+     * @param useTrainingLabels Boolean to specify the use of labeled files for training the model.
+     * @param trainModelOptions Filter to apply to the documents in the source path for training.
      * @param pollInterval Duration between each poll for the operation status. If none is specified, a default of
      * 5 seconds is used.
      *
@@ -103,17 +96,17 @@ public class FormTrainingClient {
      * has completed, has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String fileSourceUrl, boolean useLabelFile,
-        boolean includeSubFolders, String filePrefix, Duration pollInterval) {
-        return client.beginTraining(fileSourceUrl, useLabelFile, includeSubFolders,
-            filePrefix, pollInterval).getSyncPoller();
+    public SyncPoller<OperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
+        boolean useTrainingLabels, TrainModelOptions trainModelOptions, Duration pollInterval) {
+        return client.beginTraining(trainingFilesUrl, useTrainingLabels, trainModelOptions, pollInterval)
+            .getSyncPoller();
     }
 
     /**
      * Get detailed information for a specified custom model id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getCustomModel#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModel#string}
      *
      * @param modelId The UUID string format model identifier.
      *
@@ -128,7 +121,7 @@ public class FormTrainingClient {
      * Get detailed information for a specified custom model id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getCustomModelWithResponse#string-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModelWithResponse#string-Context}
      *
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -144,7 +137,7 @@ public class FormTrainingClient {
      * Get account information for all custom models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getAccountProperties}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountProperties}
      *
      * @return The account information.
      */
@@ -157,7 +150,7 @@ public class FormTrainingClient {
      * Get account information for all custom models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getAccountPropertiesWithResponse#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getAccountPropertiesWithResponse#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
@@ -172,7 +165,7 @@ public class FormTrainingClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.deleteModel#string}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModel#string}
      *
      * @param modelId The UUID string format model identifier.
      */
@@ -185,7 +178,7 @@ public class FormTrainingClient {
      * Deletes the specified custom model.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.deleteModelWithResponse#string-Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.deleteModelWithResponse#string-Context}
      *
      * @param modelId The UUID string format model identifier.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -201,7 +194,7 @@ public class FormTrainingClient {
      * List information for all models.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos}
      *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
@@ -214,9 +207,10 @@ public class FormTrainingClient {
      * List information for all models with taking {@link Context}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.formrecognizer.FormTrainingClient.getModelInfos#Context}
+     * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.getModelInfos#Context}
      *
      * @param context Additional context that is passed through the Http pipeline during the service call.
+     *
      * @return {@link PagedIterable} of {@link CustomFormModelInfo} custom form model information.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

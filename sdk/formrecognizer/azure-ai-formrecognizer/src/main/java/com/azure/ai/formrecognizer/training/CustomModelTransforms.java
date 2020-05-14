@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.formrecognizer;
+package com.azure.ai.formrecognizer.training;
 
 import com.azure.ai.formrecognizer.implementation.models.Model;
 import com.azure.ai.formrecognizer.implementation.models.ModelInfo;
@@ -19,6 +19,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,13 +27,14 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.Transforms.forEachWithIndex;
+import static com.azure.ai.formrecognizer.implementation.Utility.forEachWithIndex;
 
 /**
  * Helper class to convert service level custom form related models to SDK exposed models.
  */
 final class CustomModelTransforms {
     private static final ClientLogger LOGGER = new ClientLogger(CustomModelTransforms.class);
+    static final Duration DEFAULT_DURATION = Duration.ofSeconds(5);
 
     private CustomModelTransforms() {
     }
