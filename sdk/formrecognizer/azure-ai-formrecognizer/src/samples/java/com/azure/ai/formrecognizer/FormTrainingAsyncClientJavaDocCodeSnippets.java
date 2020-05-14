@@ -56,8 +56,7 @@ public class FormTrainingAsyncClientJavaDocCodeSnippets {
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.beginTraining#string-boolean-trainModelOptions-Duration
         String trainingFilesUrl = "{training-set-SAS-URL}";
-        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix(
-            "Invoice");
+        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix("Invoice");
 
         formTrainingAsyncClient.beginTraining(trainingFilesUrl, true, trainModelOptions,
             Duration.ofSeconds(5)).subscribe(recognizePollingOperation -> {

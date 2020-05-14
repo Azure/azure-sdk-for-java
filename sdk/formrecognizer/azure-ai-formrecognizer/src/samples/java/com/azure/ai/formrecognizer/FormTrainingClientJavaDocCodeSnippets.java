@@ -54,12 +54,11 @@ public class FormTrainingClientJavaDocCodeSnippets {
     public void beginTrainingWithOptions() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingClient.beginTraining#string-boolean-trainModelOptions-Duration
         String trainingFilesUrl = "{training-set-SAS-URL}";
-        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false)
-            .setPrefix("Invoice");
+        TrainModelOptions trainModelOptions = new TrainModelOptions().setIncludeSubFolders(false).setPrefix("Invoice");
         boolean useTrainingLabels = true;
 
-        CustomFormModel customFormModel = formTrainingClient.beginTraining(
-            trainingFilesUrl, useTrainingLabels, trainModelOptions, Duration.ofSeconds(5)).getFinalResult();
+        CustomFormModel customFormModel = formTrainingClient.beginTraining(trainingFilesUrl, useTrainingLabels,
+            trainModelOptions, Duration.ofSeconds(5)).getFinalResult();
 
         System.out.printf("Model Id: %s%n", customFormModel.getModelId());
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
@@ -99,7 +98,7 @@ public class FormTrainingClientJavaDocCodeSnippets {
         System.out.printf("Model Status: %s%n", customFormModel.getModelStatus());
         customFormModel.getSubModels().forEach(customFormSubModel ->
             customFormSubModel.getFieldMap().forEach((key, customFormModelField) ->
-                System.out.printf("Form Type: %s Field Text: %s Field Accuracy: %s%n",
+                System.out.printf("Field: %s Field Text: %s Field Accuracy: %s%n",
                     key, customFormModelField.getName(), customFormModelField.getAccuracy())));
         // END: com.azure.ai.formrecognizer.training.FormTrainingClient.getCustomModelWithResponse#string-Context
     }

@@ -3,7 +3,7 @@
 ## 1.0.0-beta.3 (Unreleased)
 
 FormTraining Client updates:
-- Adopt to `training` namespace for Form Recognizer Training Clients
+- Adopt the `training` namespace for Form Recognizer Training Clients
 - Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
 - Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
 - Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model 
