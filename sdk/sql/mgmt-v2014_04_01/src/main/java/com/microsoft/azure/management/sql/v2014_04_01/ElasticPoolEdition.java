@@ -25,6 +25,12 @@ public final class ElasticPoolEdition extends ExpandableStringEnum<ElasticPoolEd
     /** Static value Premium for ElasticPoolEdition. */
     public static final ElasticPoolEdition PREMIUM = fromString("Premium");
 
+    /** Static value GeneralPurpose for ElasticPoolEdition. */
+    public static final ElasticPoolEdition GENERAL_PURPOSE = fromString("GeneralPurpose");
+
+    /** Static value BusinessCritical for ElasticPoolEdition. */
+    public static final ElasticPoolEdition BUSINESS_CRITICAL = fromString("BusinessCritical");
+
     /**
      * Creates or finds a ElasticPoolEdition from its string representation.
      * @param name a name to look for
