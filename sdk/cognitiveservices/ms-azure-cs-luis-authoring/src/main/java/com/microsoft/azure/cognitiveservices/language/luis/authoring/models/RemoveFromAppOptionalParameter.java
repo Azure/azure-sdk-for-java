@@ -10,13 +10,13 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The UpdateEntityOptionalParameter model.
+ * The RemoveFromAppOptionalParameter model.
  */
-public class UpdateEntityOptionalParameter {
+public class RemoveFromAppOptionalParameter {
     /**
-     * The entity's new name.
+     * The Azure account information object.
      */
-    private String name;
+    private AzureAccountInfoObject azureAccountInfoObject;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -24,22 +24,22 @@ public class UpdateEntityOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the name value.
+     * Get the azureAccountInfoObject value.
      *
-     * @return the name value
+     * @return the azureAccountInfoObject value
      */
-    public String name() {
-        return this.name;
+    public AzureAccountInfoObject azureAccountInfoObject() {
+        return this.azureAccountInfoObject;
     }
 
     /**
-     * Set the name value.
+     * Set the azureAccountInfoObject value.
      *
-     * @param name the name value to set
-     * @return the UpdateEntityOptionalParameter object itself.
+     * @param azureAccountInfoObject the azureAccountInfoObject value to set
+     * @return the RemoveFromAppOptionalParameter object itself.
      */
-    public UpdateEntityOptionalParameter withName(String name) {
-        this.name = name;
+    public RemoveFromAppOptionalParameter withAzureAccountInfoObject(AzureAccountInfoObject azureAccountInfoObject) {
+        this.azureAccountInfoObject = azureAccountInfoObject;
         return this;
     }
 
@@ -56,9 +56,9 @@ public class UpdateEntityOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the UpdateEntityOptionalParameter object itself.
+     * @return the RemoveFromAppOptionalParameter object itself.
      */
-    public UpdateEntityOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public RemoveFromAppOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

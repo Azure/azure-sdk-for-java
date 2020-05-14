@@ -10,14 +10,13 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The GetEntitySuggestionsOptionalParameter model.
+ * The AssignToAppOptionalParameter model.
  */
-public class GetEntitySuggestionsOptionalParameter {
+public class AssignToAppOptionalParameter {
     /**
-     * The number of entries to return. Maximum page size is 500. Default is
-     * 100.
+     * The Azure account information object.
      */
-    private Integer take;
+    private AzureAccountInfoObject azureAccountInfoObject;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -25,22 +24,22 @@ public class GetEntitySuggestionsOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the take value.
+     * Get the azureAccountInfoObject value.
      *
-     * @return the take value
+     * @return the azureAccountInfoObject value
      */
-    public Integer take() {
-        return this.take;
+    public AzureAccountInfoObject azureAccountInfoObject() {
+        return this.azureAccountInfoObject;
     }
 
     /**
-     * Set the take value.
+     * Set the azureAccountInfoObject value.
      *
-     * @param take the take value to set
-     * @return the GetEntitySuggestionsOptionalParameter object itself.
+     * @param azureAccountInfoObject the azureAccountInfoObject value to set
+     * @return the AssignToAppOptionalParameter object itself.
      */
-    public GetEntitySuggestionsOptionalParameter withTake(Integer take) {
-        this.take = take;
+    public AssignToAppOptionalParameter withAzureAccountInfoObject(AzureAccountInfoObject azureAccountInfoObject) {
+        this.azureAccountInfoObject = azureAccountInfoObject;
         return this;
     }
 
@@ -57,9 +56,9 @@ public class GetEntitySuggestionsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the GetEntitySuggestionsOptionalParameter object itself.
+     * @return the AssignToAppOptionalParameter object itself.
      */
-    public GetEntitySuggestionsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public AssignToAppOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

@@ -13,9 +13,9 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A Custom Prebuilt model.
+ * N-Depth Entity Extractor.
  */
-public class CustomPrebuiltModel {
+public class NDepthEntityExtractor {
     /**
      * The ID of the Entity Model.
      */
@@ -45,6 +45,12 @@ public class CustomPrebuiltModel {
     private String readableType;
 
     /**
+     * The roles property.
+     */
+    @JsonProperty(value = "roles")
+    private List<EntityRole> roles;
+
+    /**
      * The domain name.
      */
     @JsonProperty(value = "customPrebuiltDomainName")
@@ -57,10 +63,10 @@ public class CustomPrebuiltModel {
     private String customPrebuiltModelName;
 
     /**
-     * The roles property.
+     * The children property.
      */
-    @JsonProperty(value = "roles")
-    private List<EntityRole> roles;
+    @JsonProperty(value = "children")
+    private List<ChildEntity> children;
 
     /**
      * Get the id value.
@@ -75,9 +81,9 @@ public class CustomPrebuiltModel {
      * Set the id value.
      *
      * @param id the id value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withId(UUID id) {
+    public NDepthEntityExtractor withId(UUID id) {
         this.id = id;
         return this;
     }
@@ -95,9 +101,9 @@ public class CustomPrebuiltModel {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withName(String name) {
+    public NDepthEntityExtractor withName(String name) {
         this.name = name;
         return this;
     }
@@ -115,9 +121,9 @@ public class CustomPrebuiltModel {
      * Set the typeId value.
      *
      * @param typeId the typeId value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withTypeId(Integer typeId) {
+    public NDepthEntityExtractor withTypeId(Integer typeId) {
         this.typeId = typeId;
         return this;
     }
@@ -135,10 +141,30 @@ public class CustomPrebuiltModel {
      * Set the readableType value.
      *
      * @param readableType the readableType value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withReadableType(String readableType) {
+    public NDepthEntityExtractor withReadableType(String readableType) {
         this.readableType = readableType;
+        return this;
+    }
+
+    /**
+     * Get the roles value.
+     *
+     * @return the roles value
+     */
+    public List<EntityRole> roles() {
+        return this.roles;
+    }
+
+    /**
+     * Set the roles value.
+     *
+     * @param roles the roles value to set
+     * @return the NDepthEntityExtractor object itself.
+     */
+    public NDepthEntityExtractor withRoles(List<EntityRole> roles) {
+        this.roles = roles;
         return this;
     }
 
@@ -155,9 +181,9 @@ public class CustomPrebuiltModel {
      * Set the customPrebuiltDomainName value.
      *
      * @param customPrebuiltDomainName the customPrebuiltDomainName value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withCustomPrebuiltDomainName(String customPrebuiltDomainName) {
+    public NDepthEntityExtractor withCustomPrebuiltDomainName(String customPrebuiltDomainName) {
         this.customPrebuiltDomainName = customPrebuiltDomainName;
         return this;
     }
@@ -175,30 +201,30 @@ public class CustomPrebuiltModel {
      * Set the customPrebuiltModelName value.
      *
      * @param customPrebuiltModelName the customPrebuiltModelName value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withCustomPrebuiltModelName(String customPrebuiltModelName) {
+    public NDepthEntityExtractor withCustomPrebuiltModelName(String customPrebuiltModelName) {
         this.customPrebuiltModelName = customPrebuiltModelName;
         return this;
     }
 
     /**
-     * Get the roles value.
+     * Get the children value.
      *
-     * @return the roles value
+     * @return the children value
      */
-    public List<EntityRole> roles() {
-        return this.roles;
+    public List<ChildEntity> children() {
+        return this.children;
     }
 
     /**
-     * Set the roles value.
+     * Set the children value.
      *
-     * @param roles the roles value to set
-     * @return the CustomPrebuiltModel object itself.
+     * @param children the children value to set
+     * @return the NDepthEntityExtractor object itself.
      */
-    public CustomPrebuiltModel withRoles(List<EntityRole> roles) {
-        this.roles = roles;
+    public NDepthEntityExtractor withChildren(List<ChildEntity> children) {
+        this.children = children;
         return this;
     }
 

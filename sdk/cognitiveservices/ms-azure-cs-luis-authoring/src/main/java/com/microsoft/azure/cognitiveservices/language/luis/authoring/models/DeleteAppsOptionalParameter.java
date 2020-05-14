@@ -10,13 +10,13 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The AddHierarchicalEntityChildOptionalParameter model.
+ * The DeleteAppsOptionalParameter model.
  */
-public class AddHierarchicalEntityChildOptionalParameter {
+public class DeleteAppsOptionalParameter {
     /**
-     * The name property.
+     * A flag to indicate whether to force an operation.
      */
-    private String name;
+    private Boolean force;
 
     /**
      * Gets or sets the preferred language for the response.
@@ -24,22 +24,22 @@ public class AddHierarchicalEntityChildOptionalParameter {
     private String thisclientacceptLanguage;
 
     /**
-     * Get the name value.
+     * Get the force value.
      *
-     * @return the name value
+     * @return the force value
      */
-    public String name() {
-        return this.name;
+    public Boolean force() {
+        return this.force;
     }
 
     /**
-     * Set the name value.
+     * Set the force value.
      *
-     * @param name the name value to set
-     * @return the AddHierarchicalEntityChildOptionalParameter object itself.
+     * @param force the force value to set
+     * @return the DeleteAppsOptionalParameter object itself.
      */
-    public AddHierarchicalEntityChildOptionalParameter withName(String name) {
-        this.name = name;
+    public DeleteAppsOptionalParameter withForce(Boolean force) {
+        this.force = force;
         return this;
     }
 
@@ -56,9 +56,9 @@ public class AddHierarchicalEntityChildOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the AddHierarchicalEntityChildOptionalParameter object itself.
+     * @return the DeleteAppsOptionalParameter object itself.
      */
-    public AddHierarchicalEntityChildOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public DeleteAppsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

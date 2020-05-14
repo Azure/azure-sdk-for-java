@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Sublist of items for a Closed list.
+ * Sublist of items for a list entity.
  */
 public class WordListObject {
     /**

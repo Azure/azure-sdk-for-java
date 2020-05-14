@@ -10,9 +10,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The GetPatternAnyEntityInfosOptionalParameter model.
+ * The ListRegexEntityInfosOptionalParameter model.
  */
-public class GetPatternAnyEntityInfosOptionalParameter {
+public class ListRegexEntityInfosOptionalParameter {
     /**
      * The number of entries to skip. Default value is 0.
      */
@@ -42,9 +42,9 @@ public class GetPatternAnyEntityInfosOptionalParameter {
      * Set the skip value.
      *
      * @param skip the skip value to set
-     * @return the GetPatternAnyEntityInfosOptionalParameter object itself.
+     * @return the ListRegexEntityInfosOptionalParameter object itself.
      */
-    public GetPatternAnyEntityInfosOptionalParameter withSkip(Integer skip) {
+    public ListRegexEntityInfosOptionalParameter withSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
@@ -62,9 +62,9 @@ public class GetPatternAnyEntityInfosOptionalParameter {
      * Set the take value.
      *
      * @param take the take value to set
-     * @return the GetPatternAnyEntityInfosOptionalParameter object itself.
+     * @return the ListRegexEntityInfosOptionalParameter object itself.
      */
-    public GetPatternAnyEntityInfosOptionalParameter withTake(Integer take) {
+    public ListRegexEntityInfosOptionalParameter withTake(Integer take) {
         this.take = take;
         return this;
     }
@@ -82,9 +82,9 @@ public class GetPatternAnyEntityInfosOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the GetPatternAnyEntityInfosOptionalParameter object itself.
+     * @return the ListRegexEntityInfosOptionalParameter object itself.
      */
-    public GetPatternAnyEntityInfosOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ListRegexEntityInfosOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

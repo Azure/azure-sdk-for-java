@@ -10,9 +10,9 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
 
 /**
- * The GetIntentPatternsOptionalParameter model.
+ * The ListIntentPatternsOptionalParameter model.
  */
-public class GetIntentPatternsOptionalParameter {
+public class ListIntentPatternsOptionalParameter {
     /**
      * The number of entries to skip. Default value is 0.
      */
@@ -42,9 +42,9 @@ public class GetIntentPatternsOptionalParameter {
      * Set the skip value.
      *
      * @param skip the skip value to set
-     * @return the GetIntentPatternsOptionalParameter object itself.
+     * @return the ListIntentPatternsOptionalParameter object itself.
      */
-    public GetIntentPatternsOptionalParameter withSkip(Integer skip) {
+    public ListIntentPatternsOptionalParameter withSkip(Integer skip) {
         this.skip = skip;
         return this;
     }
@@ -62,9 +62,9 @@ public class GetIntentPatternsOptionalParameter {
      * Set the take value.
      *
      * @param take the take value to set
-     * @return the GetIntentPatternsOptionalParameter object itself.
+     * @return the ListIntentPatternsOptionalParameter object itself.
      */
-    public GetIntentPatternsOptionalParameter withTake(Integer take) {
+    public ListIntentPatternsOptionalParameter withTake(Integer take) {
         this.take = take;
         return this;
     }
@@ -82,9 +82,9 @@ public class GetIntentPatternsOptionalParameter {
      * Set the thisclientacceptLanguage value.
      *
      * @param thisclientacceptLanguage the thisclientacceptLanguage value to set
-     * @return the GetIntentPatternsOptionalParameter object itself.
+     * @return the ListIntentPatternsOptionalParameter object itself.
      */
-    public GetIntentPatternsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
+    public ListIntentPatternsOptionalParameter withThisclientacceptLanguage(String thisclientacceptLanguage) {
         this.thisclientacceptLanguage = thisclientacceptLanguage;
         return this;
     }

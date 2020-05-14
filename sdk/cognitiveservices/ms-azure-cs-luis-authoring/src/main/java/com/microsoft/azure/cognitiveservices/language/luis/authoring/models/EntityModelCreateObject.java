@@ -12,14 +12,14 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A Hierarchical Entity Extractor.
+ * An entity extractor create object.
  */
-public class HierarchicalEntityModel {
+public class EntityModelCreateObject {
     /**
      * Child entities.
      */
     @JsonProperty(value = "children")
-    private List<String> children;
+    private List<ChildEntityModelCreateObject> children;
 
     /**
      * Entity name.
@@ -32,7 +32,7 @@ public class HierarchicalEntityModel {
      *
      * @return the children value
      */
-    public List<String> children() {
+    public List<ChildEntityModelCreateObject> children() {
         return this.children;
     }
 
@@ -40,9 +40,9 @@ public class HierarchicalEntityModel {
      * Set the children value.
      *
      * @param children the children value to set
-     * @return the HierarchicalEntityModel object itself.
+     * @return the EntityModelCreateObject object itself.
      */
-    public HierarchicalEntityModel withChildren(List<String> children) {
+    public EntityModelCreateObject withChildren(List<ChildEntityModelCreateObject> children) {
         this.children = children;
         return this;
     }
@@ -60,9 +60,9 @@ public class HierarchicalEntityModel {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the HierarchicalEntityModel object itself.
+     * @return the EntityModelCreateObject object itself.
      */
-    public HierarchicalEntityModel withName(String name) {
+    public EntityModelCreateObject withName(String name) {
         this.name = name;
         return this;
     }
