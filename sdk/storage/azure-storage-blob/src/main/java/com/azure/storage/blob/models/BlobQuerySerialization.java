@@ -20,5 +20,10 @@ public abstract class BlobQuerySerialization {
         return recordSeparator;
     }
 
+    /**
+     * Sets the record separator.
+     * @param recordSeparator the record separator.
+     * @return the updated BlobQuerySerialization object.
+     */
     public abstract BlobQuerySerialization setRecordSeparator(char recordSeparator);
 }

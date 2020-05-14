@@ -87,11 +87,6 @@ public class FileQueryDelimitedSerialization extends
         return this;
     }
 
-    /**
-     * Sets the record separator.
-     * @param recordSeparator the record separator.
-     * @return the updated FileQueryDelimitedSerialization object.
-     */
     @Override
     public FileQueryDelimitedSerialization setRecordSeparator(char recordSeparator) {
         this.recordSeparator = recordSeparator;

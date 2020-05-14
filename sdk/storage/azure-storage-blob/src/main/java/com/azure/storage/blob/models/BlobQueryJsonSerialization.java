@@ -8,11 +8,6 @@ package com.azure.storage.blob.models;
  */
 public class BlobQueryJsonSerialization extends BlobQuerySerialization {
 
-    /**
-     * Sets the record separator.
-     * @param recordSeparator the record separator.
-     * @return the updated BlobQuickQueryJsonSerialization object.
-     */
     @Override
     public BlobQueryJsonSerialization setRecordSeparator(char recordSeparator) {
         this.recordSeparator = recordSeparator;

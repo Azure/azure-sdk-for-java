@@ -20,5 +20,10 @@ public abstract class FileQuerySerialization {
         return recordSeparator;
     }
 
+    /**
+     * Sets the record separator.
+     * @param recordSeparator the record separator.
+     * @return the updated FileQuerySerialization object.
+     */
     public abstract FileQuerySerialization setRecordSeparator(char recordSeparator);
 }

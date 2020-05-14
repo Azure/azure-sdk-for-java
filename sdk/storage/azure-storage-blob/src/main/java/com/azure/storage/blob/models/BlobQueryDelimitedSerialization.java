@@ -87,11 +87,6 @@ public class BlobQueryDelimitedSerialization extends
         return this;
     }
 
-    /**
-     * Sets the record separator.
-     * @param recordSeparator the record separator.
-     * @return the updated BlobQuickQueryDelimitedSerialization object.
-     */
     @Override
     public BlobQueryDelimitedSerialization setRecordSeparator(char recordSeparator) {
         this.recordSeparator = recordSeparator;
