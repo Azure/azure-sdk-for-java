@@ -17,25 +17,10 @@ public final class Error extends ManagementError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(Error.class);
 
     /*
-     * Error details.
-     */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ManagementError> details;
-
-    /*
      * Inner error message.
      */
     @JsonProperty(value = "innerError", access = JsonProperty.Access.WRITE_ONLY)
     private String innerError;
-
-    /**
-     * Get the details property: Error details.
-     *
-     * @return the details value.
-     */
-    public List<ManagementError> getDetails() {
-        return this.details;
-    }
 
     /**
      * Get the innerError property: Inner error message.

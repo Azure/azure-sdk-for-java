@@ -17,25 +17,10 @@ public final class ApiError extends ManagementError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiError.class);
 
     /*
-     * The Api error details
-     */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ManagementError> details;
-
-    /*
      * The Api inner error
      */
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innererror;
-
-    /**
-     * Get the details property: The Api error details.
-     *
-     * @return the details value.
-     */
-    public List<ManagementError> getDetails() {
-        return this.details;
-    }
 
     /**
      * Get the innererror property: The Api inner error.
@@ -52,8 +37,5 @@ public final class ApiError extends ManagementError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getInnererror() != null) {
-            getInnererror().validate();
-        }
     }
 }

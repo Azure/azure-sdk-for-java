@@ -17,25 +17,10 @@ public final class DefaultErrorResponseError extends ManagementError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DefaultErrorResponseError.class);
 
     /*
-     * The details property.
-     */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ManagementError> details;
-
-    /*
      * More information to debug error.
      */
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
     private String innererror;
-
-    /**
-     * Get the details property: The details property.
-     *
-     * @return the details value.
-     */
-    public List<ManagementError> getDetails() {
-        return this.details;
-    }
 
     /**
      * Get the innererror property: More information to debug error.
