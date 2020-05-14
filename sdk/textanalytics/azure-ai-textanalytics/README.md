@@ -146,13 +146,13 @@ asynchronous operations to access a specific use of Text Analytics, such as lang
 
 ### Input
 A **text input**, also called a **document**, is a single unit of document to be analyzed by the predictive models
-in the Text Analytics service. Operations on `TextAnalyticsClient` may take a single document or a collection
+in the Text Analytics service. Operations on a Text Analytics client may take a single document or a collection
 of documents to be analyzed as a batch. 
 See [service limitations][service_input_limitation] for the document, including document length limits, maximum batch size,
 and supported text encoding.
 
 ### Operation on multiple documents
-For each supported operation, the `TextAnalyticsClient` provides method overloads to take a single document, a batch 
+For each supported operation, the Text Analytics client provides method overloads to take a single document, a batch 
 of documents as strings, or a batch of either `TextDocumentInput` or `DetectLanguageInput` objects. The overload 
 taking the `TextDocumentInput` or `DetectLanguageInput` batch allows callers to give each document a unique ID, 
 indicate that the documents in the batch are written in different languages, or provide a country hint about the 
