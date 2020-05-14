@@ -2999,7 +2999,7 @@ class FileAPITest extends APISpec {
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
-        thrown(UncheckedIOException)
+        thrown(Exceptions.ReactiveException)
     }
 
     def "Query progress receiver"() {
