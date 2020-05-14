@@ -55,6 +55,11 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
     String name();
 
     /**
+     * @return the queueDelayMs value.
+     */
+    Integer queueDelayMs();
+
+    /**
      * @return the retentionDays value.
      */
     Integer retentionDays();
@@ -189,7 +194,7 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
             /**
              * Specifies isAzureMonitorTargetEnabled.
              * @param isAzureMonitorTargetEnabled Specifies whether audit events are sent to Azure Monitor.
- In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+ In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
  When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
  Note that for server level audit you should use the 'master' database as {databaseName}.
  Diagnostic Settings URI format:
@@ -214,6 +219,19 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
         }
 
         /**
+         * The stage of the databaseblobauditingpolicy definition allowing to specify QueueDelayMs.
+         */
+        interface WithQueueDelayMs {
+            /**
+             * Specifies queueDelayMs.
+             * @param queueDelayMs Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+ The default minimum value is 1000 (1 second). The maximum is 2,147,483,647
+             * @return the next definition stage
+             */
+            WithCreate withQueueDelayMs(Integer queueDelayMs);
+        }
+
+        /**
          * The stage of the databaseblobauditingpolicy definition allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
@@ -231,7 +249,12 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
         interface WithStorageAccountAccessKey {
             /**
              * Specifies storageAccountAccessKey.
-             * @param storageAccountAccessKey Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, storageAccountAccessKey is required
+             * @param storageAccountAccessKey Specifies the identifier key of the auditing storage account.
+ If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned managed identity to access the storage.
+ Prerequisites for using managed identity authentication:
+ 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+ 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server identity.
+ For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
              * @return the next definition stage
              */
             WithCreate withStorageAccountAccessKey(String storageAccountAccessKey);
@@ -255,7 +278,7 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
-             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required
              * @return the next definition stage
              */
             WithCreate withStorageEndpoint(String storageEndpoint);
@@ -266,13 +289,13 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<DatabaseBlobAuditingPolicy>, DefinitionStages.WithAuditActionsAndGroups, DefinitionStages.WithIsAzureMonitorTargetEnabled, DefinitionStages.WithIsStorageSecondaryKeyInUse, DefinitionStages.WithRetentionDays, DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithStorageAccountSubscriptionId, DefinitionStages.WithStorageEndpoint {
+        interface WithCreate extends Creatable<DatabaseBlobAuditingPolicy>, DefinitionStages.WithAuditActionsAndGroups, DefinitionStages.WithIsAzureMonitorTargetEnabled, DefinitionStages.WithIsStorageSecondaryKeyInUse, DefinitionStages.WithQueueDelayMs, DefinitionStages.WithRetentionDays, DefinitionStages.WithStorageAccountAccessKey, DefinitionStages.WithStorageAccountSubscriptionId, DefinitionStages.WithStorageEndpoint {
         }
     }
     /**
      * The template for a DatabaseBlobAuditingPolicy update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<DatabaseBlobAuditingPolicy>, UpdateStages.WithAuditActionsAndGroups, UpdateStages.WithIsAzureMonitorTargetEnabled, UpdateStages.WithIsStorageSecondaryKeyInUse, UpdateStages.WithRetentionDays, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithStorageAccountSubscriptionId, UpdateStages.WithStorageEndpoint {
+    interface Update extends Appliable<DatabaseBlobAuditingPolicy>, UpdateStages.WithAuditActionsAndGroups, UpdateStages.WithIsAzureMonitorTargetEnabled, UpdateStages.WithIsStorageSecondaryKeyInUse, UpdateStages.WithQueueDelayMs, UpdateStages.WithRetentionDays, UpdateStages.WithStorageAccountAccessKey, UpdateStages.WithStorageAccountSubscriptionId, UpdateStages.WithStorageEndpoint {
     }
 
     /**
@@ -342,7 +365,7 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
             /**
              * Specifies isAzureMonitorTargetEnabled.
              * @param isAzureMonitorTargetEnabled Specifies whether audit events are sent to Azure Monitor.
- In order to send the events to Azure Monitor, specify 'State' as 'Enabled' and 'IsAzureMonitorTargetEnabled' as true.
+ In order to send the events to Azure Monitor, specify 'state' as 'Enabled' and 'isAzureMonitorTargetEnabled' as true.
  When using REST API to configure auditing, Diagnostic Settings with 'SQLSecurityAuditEvents' diagnostic logs category on the database should be also created.
  Note that for server level audit you should use the 'master' database as {databaseName}.
  Diagnostic Settings URI format:
@@ -367,6 +390,19 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
         }
 
         /**
+         * The stage of the databaseblobauditingpolicy update allowing to specify QueueDelayMs.
+         */
+        interface WithQueueDelayMs {
+            /**
+             * Specifies queueDelayMs.
+             * @param queueDelayMs Specifies the amount of time in milliseconds that can elapse before audit actions are forced to be processed.
+ The default minimum value is 1000 (1 second). The maximum is 2,147,483,647
+             * @return the next update stage
+             */
+            Update withQueueDelayMs(Integer queueDelayMs);
+        }
+
+        /**
          * The stage of the databaseblobauditingpolicy update allowing to specify RetentionDays.
          */
         interface WithRetentionDays {
@@ -384,7 +420,12 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
         interface WithStorageAccountAccessKey {
             /**
              * Specifies storageAccountAccessKey.
-             * @param storageAccountAccessKey Specifies the identifier key of the auditing storage account. If state is Enabled and storageEndpoint is specified, storageAccountAccessKey is required
+             * @param storageAccountAccessKey Specifies the identifier key of the auditing storage account.
+ If state is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server system-assigned managed identity to access the storage.
+ Prerequisites for using managed identity authentication:
+ 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD).
+ 2. Grant SQL Server identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server identity.
+ For more information, see [Auditing to storage using Managed Identity authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
              * @return the next update stage
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
@@ -408,7 +449,7 @@ public interface DatabaseBlobAuditingPolicy extends HasInner<DatabaseBlobAuditin
         interface WithStorageEndpoint {
             /**
              * Specifies storageEndpoint.
-             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint is required
+             * @param storageEndpoint Specifies the blob storage endpoint (e.g. https://MyAccount.blob.core.windows.net). If state is Enabled, storageEndpoint or isAzureMonitorTargetEnabled is required
              * @return the next update stage
              */
             Update withStorageEndpoint(String storageEndpoint);
