@@ -312,7 +312,7 @@ class BlobBaseAPITest extends APISpec {
         readFromInputStream(qqStream, Constants.KB)
 
         then:
-        thrown(IOException)
+        thrown(Throwable)
 
         /* Output Stream. */
         when:
