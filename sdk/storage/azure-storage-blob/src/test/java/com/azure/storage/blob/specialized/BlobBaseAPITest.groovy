@@ -494,9 +494,7 @@ class BlobBaseAPITest extends APISpec {
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
-        BlobQuerySerialization ser = Spy() {
-            return '\n'
-        }
+        BlobQuerySerialization ser = Mock(BlobQuerySerialization.class)
         def inSer = input ? ser : null
         def outSer = output ? ser : null
         def expression = "SELECT * from BlobStorage"

@@ -92,7 +92,8 @@ public class FluxInputStream extends InputStream {
             if (this.fluxComplete) {
                 return -1;
             }
-            this.buffer = new ByteArrayInputStream(new byte[0]);
+            throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
+                + "read from the stream but the stream did not indicate completion."));
         }
 
         /* Now we are guaranteed that buffer is SOMETHING. */
@@ -170,9 +171,9 @@ public class FluxInputStream extends InputStream {
             .subscribe(
                 // ByteBuffer consumer
                 byteBuffer -> {
+                    this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                     lock.lock();
                     try {
-                        this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                         this.waitingForData = false;
                         // Signal the consumer when data is available.
                         dataAvailable.signal();
@@ -188,7 +189,7 @@ public class FluxInputStream extends InputStream {
                     } else if (throwable instanceof IllegalArgumentException) {
                         this.lastError = new IOException(throwable);
                     } else if (throwable instanceof IOException) {
-                        this.lastError = new IOException(throwable);
+                        this.lastError = (IOException) throwable;
                     }
                     signalOnCompleteOrError();
                 },
@@ -208,9 +209,9 @@ public class FluxInputStream extends InputStream {
      * Signals to the subscriber when the flux completes without data (onCompletion or onError)
      */
     private void signalOnCompleteOrError() {
+        this.fluxComplete = true;
         lock.lock();
         try {
-            this.fluxComplete = true;
             this.waitingForData = false;
             dataAvailable.signal();
         } finally {
