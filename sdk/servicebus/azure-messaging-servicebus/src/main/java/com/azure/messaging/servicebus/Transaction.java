@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 
 public class Transaction {
     private ByteBuffer txnId;
-    private Consumer<Boolean> onCompleteNotify;
+    //private Consumer<Boolean> onCompleteNotify;
 
     Transaction(ByteBuffer txnId){
         this.txnId = txnId;
@@ -18,7 +18,7 @@ public class Transaction {
         return this.txnId;
     }
 
-    public Transaction onCompletionNotify(Consumer<Boolean> onCompleteNotify) {
+    /*public Transaction onCompletionNotify(Consumer<Boolean> onCompleteNotify) {
         this.onCompleteNotify = onCompleteNotify;
         return null;
     }
@@ -27,5 +27,5 @@ public class Transaction {
         if (onCompleteNotify != null) {
             onCompleteNotify.accept(commit);
         }
-    }
+    }*/
 }

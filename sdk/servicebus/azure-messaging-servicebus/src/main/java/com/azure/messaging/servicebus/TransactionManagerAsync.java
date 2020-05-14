@@ -26,7 +26,7 @@ public class TransactionManagerAsync {
      * needs to be in this transaction.
      * @return a new transaction
      */
-    public Mono<Transaction> startTransaction() {
+    public Mono<Transaction> beginTransaction() {
         new Transaction(null);
         return null;
     }
@@ -40,7 +40,7 @@ public class TransactionManagerAsync {
      */
     public Mono<Void> endTransaction(Transaction transaction, boolean commit) {
         // call onCompleteNotify
-        transaction.notifyCompletion(commit);
+        //transaction.notifyCompletion(commit);
         return null;
     }
 }

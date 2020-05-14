@@ -22,8 +22,8 @@ public class TransactionManager {
      * needs to be in this transaction.
      * @return a new transaction
      */
-    public Transaction startTransaction() {
-        return asynClient.startTransaction().block(timeout);
+    public Transaction beginTransaction() {
+        return asynClient.beginTransaction().block(timeout);
     }
 
     /**
