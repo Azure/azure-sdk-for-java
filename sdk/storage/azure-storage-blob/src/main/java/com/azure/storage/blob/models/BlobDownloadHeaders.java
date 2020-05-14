@@ -72,6 +72,7 @@ public final class BlobDownloadHeaders {
         this.blobContentMD5 = headers.getBlobContentMD5();
         this.contentCrc64 = headers.getContentCrc64();
         this.errorCode = headers.getErrorCode();
+        this.tagCount = headers.getTagCount();
 
         this.objectReplicationSourcePolicies = new HashMap<>();
         this.objectReplicationRuleStatus = headers.getObjectReplicationRules() == null ? new HashMap<>()

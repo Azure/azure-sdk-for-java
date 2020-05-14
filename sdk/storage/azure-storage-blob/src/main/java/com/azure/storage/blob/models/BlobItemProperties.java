@@ -63,6 +63,7 @@ public final class BlobItemProperties {
         this.customerProvidedKeySha256 = blobItemPropertiesInternal.getCustomerProvidedKeySha256();
         this.encryptionScope = blobItemPropertiesInternal.getEncryptionScope();
         this.accessTierChangeTime = blobItemPropertiesInternal.getAccessTierChangeTime();
+        this.tagCount = blobItemPropertiesInternal.getTagCount();
 
         // TODO: (rickle-msft) Uncomment when these properties are returned on lists.
         /*this.objectReplicationSourcePolicies = new HashMap<>();
