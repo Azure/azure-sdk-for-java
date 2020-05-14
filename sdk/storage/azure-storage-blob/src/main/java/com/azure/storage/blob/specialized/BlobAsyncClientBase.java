@@ -1733,7 +1733,7 @@ public class BlobAsyncClientBase {
                 return parseError(record, errorReceiver);
             default:
                 return Mono.error(new IllegalStateException(String.format("Unknown record type %s "
-                    + "while parsing query response. ", recordSchema.toString())))
+                    + "while parsing query response. ", recordSchema.toString())));
         }
     }
 
