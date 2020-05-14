@@ -172,4 +172,31 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(completion -> System.out.println("Upload from file succeeded"));
         // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-ParallelTransferOptions-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions
     }
+
+    /**
+     * Code snippet for {@link EncryptedBlobAsyncClient#uploadFromFile(String, BlobUploadFromFileOptions)}
+     */
+    public void uploadFromFile3() {
+        // BEGIN: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+
+        Map<String, String> metadata = new HashMap<>(Collections.singletonMap("metadata", "value"));
+        Map<String, String> tags = new HashMap<>(Collections.singletonMap("tag", "value"));
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+            .setBlockSizeLong(blockSize);
+
+        client.uploadFromFile(filePath, new BlobUploadFromFileOptions()
+            .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata).setTags(tags)
+            .setTier(AccessTier.HOT).setRequestConditions(requestConditions))
+            .doOnError(throwable -> System.err.printf("Failed to upload from file %s%n", throwable.getMessage()))
+            .subscribe(completion -> System.out.println("Upload from file succeeded"));
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadFromFile#String-BlobUploadFromFileOptions
+    }
 }
