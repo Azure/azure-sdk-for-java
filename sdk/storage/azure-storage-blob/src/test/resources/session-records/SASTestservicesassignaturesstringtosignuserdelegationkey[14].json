@@ -1,65 +1,65 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcservicesassignaturesstringtosignuserdelegationkey018570b9?restype=container",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net/jtcservicesassignaturesstringtosignuserdelegationkey09693169?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "66e4f7c3-76ff-4c8c-883e-ea278aa3aca8"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "f68832b6-34e3-4e85-a8e2-d19c0aba77c2"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
-      "ETag" : "0x8D7E109F1C869BA",
-      "Last-Modified" : "Wed, 15 Apr 2020 06:55:12 GMT",
+      "ETag" : "0x8D7F2B4CD3FA645",
+      "Last-Modified" : "Thu, 07 May 2020 18:31:04 GMT",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "201",
-      "x-ms-request-id" : "9b38440b-201e-012e-4cf2-12f6e4000000",
-      "Date" : "Wed, 15 Apr 2020 06:55:11 GMT",
-      "x-ms-client-request-id" : "66e4f7c3-76ff-4c8c-883e-ea278aa3aca8"
+      "x-ms-request-id" : "0fb83d03-e01e-00a7-599d-241ee3000000",
+      "Date" : "Thu, 07 May 2020 18:31:03 GMT",
+      "x-ms-client-request-id" : "f68832b6-34e3-4e85-a8e2-d19c0aba77c2"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.blob.core.windows.net?prefix=jtcservicesassignaturesstringtosignuserdelegationkey&comp=list",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net?prefix=jtcservicesassignaturesstringtosignuserdelegationkey&comp=list",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "b1cd4c55-18fb-4ff8-9e87-62aa86f17473"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "78628c4d-13e9-4672-91ec-5722abde7be2"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "x-ms-request-id" : "9b384426-201e-012e-64f2-12f6e4000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://azstoragesdkaccount.blob.core.windows.net/\"><Prefix>jtcservicesassignaturesstringtosignuserdelegationkey</Prefix><Containers><Container><Name>jtcservicesassignaturesstringtosignuserdelegationkey018570b9</Name><Properties><Last-Modified>Wed, 15 Apr 2020 06:55:12 GMT</Last-Modified><Etag>\"0x8D7E109F1C869BA\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
-      "Date" : "Wed, 15 Apr 2020 06:55:11 GMT",
-      "x-ms-client-request-id" : "b1cd4c55-18fb-4ff8-9e87-62aa86f17473",
+      "x-ms-request-id" : "aef73af9-d01e-0058-579d-242e7e000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><EnumerationResults ServiceEndpoint=\"https://kasobolcanarytest.blob.core.windows.net/\"><Prefix>jtcservicesassignaturesstringtosignuserdelegationkey</Prefix><Containers><Container><Name>jtcservicesassignaturesstringtosignuserdelegationkey09693169</Name><Properties><Last-Modified>Thu, 07 May 2020 18:31:04 GMT</Last-Modified><Etag>\"0x8D7F2B4CD3FA645\"</Etag><LeaseStatus>unlocked</LeaseStatus><LeaseState>available</LeaseState><DefaultEncryptionScope>$account-encryption-key</DefaultEncryptionScope><DenyEncryptionScopeOverride>false</DenyEncryptionScopeOverride><HasImmutabilityPolicy>false</HasImmutabilityPolicy><HasLegalHold>false</HasLegalHold></Properties></Container></Containers><NextMarker /></EnumerationResults>",
+      "Date" : "Thu, 07 May 2020 18:31:04 GMT",
+      "x-ms-client-request-id" : "78628c4d-13e9-4672-91ec-5722abde7be2",
       "Content-Type" : "application/xml"
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.blob.core.windows.net/jtcservicesassignaturesstringtosignuserdelegationkey018570b9?restype=container",
+    "Uri" : "https://kasobolcanarytest.blob.core.windows.net/jtcservicesassignaturesstringtosignuserdelegationkey09693169?restype=container",
     "Headers" : {
-      "x-ms-version" : "2019-10-10",
-      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.4; Windows 10 10.0)",
-      "x-ms-client-request-id" : "a7a7434d-7e17-4706-8fa8-50bb34889565"
+      "x-ms-version" : "2019-12-12",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.7.0-beta.1 (11.0.6; Windows 10 10.0)",
+      "x-ms-client-request-id" : "7e13e362-5769-4bed-998f-c4544c6446c7"
     },
     "Response" : {
-      "x-ms-version" : "2019-10-10",
+      "x-ms-version" : "2019-12-12",
       "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
       "retry-after" : "0",
       "Content-Length" : "0",
       "StatusCode" : "202",
-      "x-ms-request-id" : "9b384442-201e-012e-7ff2-12f6e4000000",
-      "Date" : "Wed, 15 Apr 2020 06:55:11 GMT",
-      "x-ms-client-request-id" : "a7a7434d-7e17-4706-8fa8-50bb34889565"
+      "x-ms-request-id" : "0fb83d1b-e01e-00a7-6b9d-241ee3000000",
+      "Date" : "Thu, 07 May 2020 18:31:04 GMT",
+      "x-ms-client-request-id" : "7e13e362-5769-4bed-998f-c4544c6446c7"
     },
     "Exception" : null
   } ],
-  "variables" : [ "jtcservicesassignaturesstringtosignuserdelegationkey018570b9" ]
+  "variables" : [ "jtcservicesassignaturesstringtosignuserdelegationkey09693169" ]
 }

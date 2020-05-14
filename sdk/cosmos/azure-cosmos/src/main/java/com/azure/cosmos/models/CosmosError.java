@@ -4,18 +4,20 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
-import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Encapsulates error related details in the Azure Cosmos DB database service.
  */
-public final class CosmosError extends Resource {
+public final class CosmosError {
+    private JsonSerializable jsonSerializable;
+
     /**
      * Initialize a new instance of the Error object.
      */
     public CosmosError() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -24,7 +26,7 @@ public final class CosmosError extends Resource {
      * @param objectNode the {@link ObjectNode} that represents the error.
      */
     CosmosError(ObjectNode objectNode) {
-        super(objectNode);
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -33,7 +35,7 @@ public final class CosmosError extends Resource {
      * @param jsonString the jsonString that represents the error.
      */
     CosmosError(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
     /**
@@ -54,7 +56,7 @@ public final class CosmosError extends Resource {
      * @param additionalErrorInfo additional error info.
      */
     public CosmosError(String errorCode, String message, String additionalErrorInfo) {
-        super();
+        this.jsonSerializable = new JsonSerializable();
         this.setCode(errorCode);
         this.setMessage(message);
         this.setAdditionalErrorInfo(additionalErrorInfo);
@@ -66,7 +68,7 @@ public final class CosmosError extends Resource {
      * @return the error code.
      */
     public String getCode() {
-        return super.getString(Constants.Properties.CODE);
+        return this.jsonSerializable.getString(Constants.Properties.CODE);
     }
 
     /**
@@ -75,7 +77,7 @@ public final class CosmosError extends Resource {
      * @param code the error code.
      */
     private void setCode(String code) {
-        super.set(Constants.Properties.CODE, code);
+        this.jsonSerializable.set(Constants.Properties.CODE, code);
     }
 
     /**
@@ -84,7 +86,7 @@ public final class CosmosError extends Resource {
      * @return the error message.
      */
     public String getMessage() {
-        return super.getString(Constants.Properties.MESSAGE);
+        return this.jsonSerializable.getString(Constants.Properties.MESSAGE);
     }
 
     /**
@@ -93,7 +95,7 @@ public final class CosmosError extends Resource {
      * @param message the error message.
      */
     private void setMessage(String message) {
-        super.set(Constants.Properties.MESSAGE, message);
+        this.jsonSerializable.set(Constants.Properties.MESSAGE, message);
     }
 
     /**
@@ -102,7 +104,7 @@ public final class CosmosError extends Resource {
      * @return the error details.
      */
     public String getErrorDetails() {
-        return super.getString(Constants.Properties.ERROR_DETAILS);
+        return this.jsonSerializable.getString(Constants.Properties.ERROR_DETAILS);
     }
 
     /**
@@ -111,7 +113,7 @@ public final class CosmosError extends Resource {
      * @param additionalErrorInfo the partitioned query execution info.
      */
     private void setAdditionalErrorInfo(String additionalErrorInfo) {
-        super.set(Constants.Properties.ADDITIONAL_ERROR_INFO, additionalErrorInfo);
+        this.jsonSerializable.set(Constants.Properties.ADDITIONAL_ERROR_INFO, additionalErrorInfo);
     }
 
     /**
@@ -120,6 +122,12 @@ public final class CosmosError extends Resource {
      * @return the partitioned query execution info.
      */
     public String getPartitionedQueryExecutionInfo() {
-        return super.getString(Constants.Properties.ADDITIONAL_ERROR_INFO);
+        return this.jsonSerializable.getString(Constants.Properties.ADDITIONAL_ERROR_INFO);
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

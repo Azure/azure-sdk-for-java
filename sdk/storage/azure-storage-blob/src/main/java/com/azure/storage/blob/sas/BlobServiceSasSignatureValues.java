@@ -5,7 +5,6 @@ package com.azure.storage.blob.sas;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
@@ -493,8 +492,8 @@ public final class BlobServiceSasSignatureValues {
      *
      * <p><strong>Notes on SAS generation</strong></p>
      * <ul>
-     * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
-     * version} is used.</li>
+     * <li>If {@link #setVersion(String) version} is not set,
+     * the {@link BlobSasServiceVersion#getLatest() latest service version} is used.</li>
      * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
      * permissions should not be set. These values are inherited from the stored access policy.</li>
      * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
@@ -542,8 +541,8 @@ public final class BlobServiceSasSignatureValues {
      *
      * <p><strong>Notes on SAS generation</strong></p>
      * <ul>
-     * <li>If {@link #setVersion(String) version} is not set, the {@link BlobServiceVersion#getLatest() latest service
-     * version} is used.</li>
+     * <li>If {@link #setVersion(String) version} is not set,
+     * the {@link BlobSasServiceVersion#getLatest() latest service version} is used.</li>
      * <li>If {@link #setIdentifier(String) identifier} is set, {@link #setExpiryTime(OffsetDateTime) expiryTime} and
      * permissions should not be set. These values are inherited from the stored access policy.</li>
      * <li>Otherwise, {@link #setExpiryTime(OffsetDateTime) expiryTime} and {@link #getPermissions() permissions} must
@@ -609,7 +608,7 @@ public final class BlobServiceSasSignatureValues {
      */
     private void ensureState() {
         if (version == null) {
-            version = BlobServiceVersion.getLatest().getVersion();
+            version = BlobSasServiceVersion.getLatest().getVersion();
         }
 
         if (CoreUtils.isNullOrEmpty(blobName)) {

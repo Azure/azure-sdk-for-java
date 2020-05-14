@@ -15,12 +15,13 @@ import java.time.Duration;
 /**
  * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
  */
-public final class ConsistencyPolicy extends JsonSerializableWrapper{
+public final class ConsistencyPolicy {
     private static final ConsistencyLevel DEFAULT_DEFAULT_CONSISTENCY_LEVEL =
         ConsistencyLevel.SESSION;
 
     private static final int DEFAULT_MAX_STALENESS_INTERVAL = 5;
     private static final int DEFAULT_MAX_STALENESS_PREFIX = 100;
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -132,4 +133,10 @@ public final class ConsistencyPolicy extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }
