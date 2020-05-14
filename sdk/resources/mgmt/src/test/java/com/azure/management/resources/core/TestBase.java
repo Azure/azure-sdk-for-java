@@ -39,6 +39,7 @@ import java.net.ProxySelector;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -215,7 +216,7 @@ public abstract class TestBase {
             policies.add(new CookiePolicy());
             httpPipeline = HttpPipelineProvider.buildHttpPipeline(
                 null, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
-                null, new RetryPolicy(), policies, null);
+                null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, null);
 
             interceptorManager.addTextReplacementRule(PLAYBACK_URI_BASE + "1234", playbackUri);
             System.out.println(playbackUri);
@@ -253,7 +254,7 @@ public abstract class TestBase {
             }
             httpPipeline = HttpPipelineProvider.buildHttpPipeline(
                 credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS),
-                null, new RetryPolicy(), policies, generateHttpClientWithProxy(null));
+                null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, generateHttpClientWithProxy(null));
 
             interceptorManager.addTextReplacementRule(profile.subscriptionId(), ZERO_SUBSCRIPTION);
             interceptorManager.addTextReplacementRule(profile.tenantId(), ZERO_TENANT);

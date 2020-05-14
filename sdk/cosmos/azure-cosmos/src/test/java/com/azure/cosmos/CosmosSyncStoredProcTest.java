@@ -90,7 +90,7 @@ public class CosmosSyncStoredProcTest extends TestSuiteBase {
         CosmosStoredProcedureResponse response = container.getScripts().createStoredProcedure(storedProcedureDef);
         validateResponse(storedProcedureDef, response);
 
-        CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(ModelBridgeInternal.getResourceFromResourceWrapper(storedProcedureDef).getId());
+        CosmosStoredProcedure storedProcedure = container.getScripts().getStoredProcedure(storedProcedureDef.getId());
         CosmosStoredProcedureResponse readResponse = storedProcedure.read();
         validateResponse(storedProcedureDef, readResponse);
 
