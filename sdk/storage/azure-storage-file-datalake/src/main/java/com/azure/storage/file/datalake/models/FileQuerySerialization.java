@@ -20,5 +20,5 @@ public abstract class FileQuerySerialization {
         return recordSeparator;
     }
 
-    abstract FileQuerySerialization setRecordSeparator(char recordSeparator);
+    public abstract FileQuerySerialization setRecordSeparator(char recordSeparator);
 }

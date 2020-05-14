@@ -3127,11 +3127,19 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class RandomOtherSerialization extends FileQuerySerialization {
+        @Override
+        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
+            this.recordSeparator = recordSeparator;
+            return this;
+        }
+    }
+
     @Unroll
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
-        FileQuerySerialization ser = Mock(FileQuerySerialization.class)
+        FileQuerySerialization ser = new RandomOtherSerialization()
 
         def inSer = input ? ser : null
         def outSer = output ? ser : null

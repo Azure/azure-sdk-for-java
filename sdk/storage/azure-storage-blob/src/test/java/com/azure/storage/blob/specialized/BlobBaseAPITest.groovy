@@ -490,11 +490,19 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
+    class RandomOtherSerialization extends BlobQuerySerialization {
+        @Override
+        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
+            this.recordSeparator = recordSeparator;
+            return this;
+        }
+    }
+
     @Unroll
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
-        BlobQuerySerialization ser = Mock(BlobQuerySerialization.class)
+        BlobQuerySerialization ser = new RandomOtherSerialization()
         def inSer = input ? ser : null
         def outSer = output ? ser : null
         def expression = "SELECT * from BlobStorage"

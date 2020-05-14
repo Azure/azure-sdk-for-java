@@ -20,5 +20,5 @@ public abstract class BlobQuerySerialization {
         return recordSeparator;
     }
 
-    abstract BlobQuerySerialization setRecordSeparator(char recordSeparator);
+    public abstract BlobQuerySerialization setRecordSeparator(char recordSeparator);
 }
