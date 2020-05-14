@@ -1758,16 +1758,16 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Append data illegal arguments"() {
         when:
-        fc.append(data == null ? null : data.get(), 0, dataSize)
+        fc.append(is == null ? null : is.get(), 0, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        data               | dataSize            | exceptionType
-        null               | defaultDataSize     | NullPointerException
-        defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
-        defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
+        is                 | dataSize            || exceptionType
+        null               | defaultDataSize     || NullPointerException
+        defaultInputStream | defaultDataSize + 1 || UnexpectedLengthException
+        defaultInputStream | defaultDataSize - 1 || UnexpectedLengthException
     }
 
     def "Append data empty body"() {
