@@ -10,6 +10,6 @@
   <version>1.0.0</version><!-- Need not change for every release-->
   <modules>
     <module>azure-sdk-bom</module>
-    <module>azure-external-dependencies-bom</module>
+    <module>azure-core-dependencies</module>
   </modules>
 </project>
