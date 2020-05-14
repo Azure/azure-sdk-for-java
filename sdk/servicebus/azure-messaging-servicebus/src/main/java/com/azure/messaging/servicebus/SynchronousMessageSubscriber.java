@@ -9,6 +9,7 @@ import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,7 +47,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     protected void hookOnSubscribe(Subscription subscription) {
         this.subscription = subscription;
 
-        logger.info("[{}] onSubscribe Pending: {}, Scheduling receive timeout task '{}'.", initialWork.getId(),
+        logger.verbose("[{}] onSubscribe Pending: {}, Scheduling receive timeout task '{}'.", initialWork.getId(),
             initialWork.getNumberOfEvents(), initialWork.getTimeout());
 
         // This will trigger subscription.request(N) and queue up the work
@@ -54,40 +55,64 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     /**
+     *
+     * @return next work to process from queue.
+     */
+    private SynchronousReceiveWork getNextWorkAndRequest() {
+        // Now see if there is more queued up work
+        SynchronousReceiveWork nextWork = workQueue.poll();
+
+        if (nextWork != null) {
+
+            logger.verbose("[{}] Picking up next receive request.", nextWork.getId());
+
+            // timer to complete the current in case of timeout trigger
+            timeoutOperation = getTimeoutOperation(nextWork.getTimeout());
+
+            requestCredits(nextWork.getNumberOfEvents());
+        }
+        return nextWork;
+    }
+    /**
      * Publishes the event to the current {@link SynchronousReceiveWork}. If that work item is complete, will dispose of
      * the subscriber.
      * @param message Event to publish.
      */
     @Override
     protected void hookOnNext(ServiceBusReceivedMessageContext message) {
+        boolean delivered = false;
+
+        // Boundary condition(timeout case): if timeout has happened, get next available work.
         if (currentWork == null) {
-            //Boundary condition(timeout cases), buffer the received message for future requests.
-            bufferMessages.add(message);
-            return;
-        }
-        currentWork.next(message);
-        remaining.decrementAndGet();
-
-        if (currentWork.isTerminal()) {
-            currentWork.complete();
-            if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
-                timeoutOperation.dispose();
-            }
-
             // Now see if there is more queued up work
-            currentWork = workQueue.poll();
-            if (currentWork != null) {
+            currentWork = getNextWorkAndRequest();
+            logger.verbose("No current work, Picked up next receive request.");
+        }
 
-                logger.verbose("[{}] Picking up next receive request.", currentWork.getId());
-
-                // timer to complete the current in case of timeout trigger
-                timeoutOperation = getTimeoutOperation();
-
-                requestCredits(currentWork.getNumberOfEvents());
-            } else {
-                if (wip.decrementAndGet() != 0) {
-                    logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
+        if (currentWork != null) {
+            currentWork.next(message);
+            delivered = true;
+            remaining.decrementAndGet();
+            // Check if we have delivered all the messages to current work.
+            if (currentWork.isTerminal()) {
+                currentWork.complete();
+                if (timeoutOperation != null && !timeoutOperation.isDisposed()) {
+                    timeoutOperation.dispose();
                 }
+
+                // Now see if there is more queued up work
+                currentWork = getNextWorkAndRequest();
+                logger.verbose("Current work is terminal, Picked up next receive request.");
+            }
+        }
+
+        if (currentWork == null) {
+            if (wip.decrementAndGet() != 0) {
+                logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
+            }
+            // If message is not delivered to downstream, we will buffer it.
+            if (!delivered) {
+                bufferMessages.add(message);
             }
         }
     }
@@ -101,10 +126,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         if (creditToAdd > 0) {
             remaining.addAndGet(creditToAdd);
             subscription.request(creditToAdd);
-        } else {
-            logger.verbose("[{}] No need to request credit. ", currentWork.getId());
         }
-
     }
 
     void queueWork(SynchronousReceiveWork work) {
@@ -155,23 +177,18 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
         }
         // timer to complete the current in case of timeout trigger
-        timeoutOperation = getTimeoutOperation();
+        timeoutOperation = getTimeoutOperation(currentWork.getTimeout());
 
         requestCredits(currentWork.getNumberOfEvents() - sentFromBuffer);
     }
 
-    private Disposable getTimeoutOperation() {
-        return Mono.delay(currentWork.getTimeout())
+    private Disposable getTimeoutOperation(Duration timeout) {
+        return Mono.delay(timeout)
             .subscribe(l -> {
                 if (currentWork != null && !currentWork.isTerminal()) {
-                    logger.verbose("[{}] Timeout triggered.", currentWork.getId());
                     currentWork.complete();
                 }
-                if (wip.decrementAndGet() != 0) {
-                    logger.warning("There is another worker in drainLoop. But there should only be 1 worker.");
-                }
-                //any work which needs to be processed.
-                drain();
+                currentWork = workQueue.poll();
             });
     }
     /**

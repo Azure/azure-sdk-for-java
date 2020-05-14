@@ -624,7 +624,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-        FluxSink<ServiceBusReceivedMessageContext> emitter) {
+                           FluxSink<ServiceBusReceivedMessageContext> emitter) {
         synchronized (lock) {
             final long id = idGenerator.getAndIncrement();
             final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
@@ -632,12 +632,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
             SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
             if (messageSubscriber == null) {
-                SynchronousMessageSubscriber newMessageSubscriber = asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
-                    .subscribeWith(new SynchronousMessageSubscriber(asyncClient.getReceiverOptions()
-                        .getPrefetchCount(), work));
+                long prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
+                SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(prefetch, work);
 
-                if (!synchronousMessageSubscriber.compareAndSet(null, newMessageSubscriber)) {
-                    newMessageSubscriber.dispose();
+                if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
+                    newSubscriber.dispose();
+                    SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
+                    existing.queueWork(work);
+                } else {
+                    asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(newSubscriber);
                 }
             } else {
                 messageSubscriber.queueWork(work);
