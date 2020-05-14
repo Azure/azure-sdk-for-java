@@ -5,13 +5,20 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.resources.ManagedByTenant;
 import com.azure.management.resources.SubscriptionPolicies;
 import com.azure.management.resources.SubscriptionState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+import java.util.Map;
 
 /** The Subscription model. */
 @Fluent
 public final class SubscriptionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionInner.class);
+
     /*
      * The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
@@ -30,6 +37,12 @@ public final class SubscriptionInner {
      */
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
+
+    /*
+     * The subscription tenant ID.
+     */
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantId;
 
     /*
      * The subscription state. Possible values are Enabled, Warned, PastDue,
@@ -52,13 +65,25 @@ public final class SubscriptionInner {
     @JsonProperty(value = "authorizationSource")
     private String authorizationSource;
 
+    /*
+     * An array containing the tenants managing the subscription.
+     */
+    @JsonProperty(value = "managedByTenants")
+    private List<ManagedByTenant> managedByTenants;
+
+    /*
+     * The tags attached to the subscription.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
     /**
      * Get the id property: The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -78,6 +103,15 @@ public final class SubscriptionInner {
      */
     public String displayName() {
         return this.displayName;
+    }
+
+    /**
+     * Get the tenantId property: The subscription tenant ID.
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
     }
 
     /**
@@ -130,5 +164,59 @@ public final class SubscriptionInner {
     public SubscriptionInner withAuthorizationSource(String authorizationSource) {
         this.authorizationSource = authorizationSource;
         return this;
+    }
+
+    /**
+     * Get the managedByTenants property: An array containing the tenants managing the subscription.
+     *
+     * @return the managedByTenants value.
+     */
+    public List<ManagedByTenant> managedByTenants() {
+        return this.managedByTenants;
+    }
+
+    /**
+     * Set the managedByTenants property: An array containing the tenants managing the subscription.
+     *
+     * @param managedByTenants the managedByTenants value to set.
+     * @return the SubscriptionInner object itself.
+     */
+    public SubscriptionInner withManagedByTenants(List<ManagedByTenant> managedByTenants) {
+        this.managedByTenants = managedByTenants;
+        return this;
+    }
+
+    /**
+     * Get the tags property: The tags attached to the subscription.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: The tags attached to the subscription.
+     *
+     * @param tags the tags value to set.
+     * @return the SubscriptionInner object itself.
+     */
+    public SubscriptionInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subscriptionPolicies() != null) {
+            subscriptionPolicies().validate();
+        }
+        if (managedByTenants() != null) {
+            managedByTenants().forEach(e -> e.validate());
+        }
     }
 }

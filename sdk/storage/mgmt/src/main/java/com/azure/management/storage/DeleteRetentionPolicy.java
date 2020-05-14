@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The DeleteRetentionPolicy model.
- */
+/** The DeleteRetentionPolicy model. */
 @Fluent
 public final class DeleteRetentionPolicy {
     /*
@@ -26,9 +24,8 @@ public final class DeleteRetentionPolicy {
     private Integer days;
 
     /**
-     * Get the enabled property: Indicates whether DeleteRetentionPolicy is
-     * enabled.
-     * 
+     * Get the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -36,9 +33,8 @@ public final class DeleteRetentionPolicy {
     }
 
     /**
-     * Set the enabled property: Indicates whether DeleteRetentionPolicy is
-     * enabled.
-     * 
+     * Set the enabled property: Indicates whether DeleteRetentionPolicy is enabled.
+     *
      * @param enabled the enabled value to set.
      * @return the DeleteRetentionPolicy object itself.
      */
@@ -48,10 +44,9 @@ public final class DeleteRetentionPolicy {
     }
 
     /**
-     * Get the days property: Indicates the number of days that the deleted
-     * item should be retained. The minimum specified value can be 1 and the
-     * maximum value can be 365.
-     * 
+     * Get the days property: Indicates the number of days that the deleted item should be retained. The minimum
+     * specified value can be 1 and the maximum value can be 365.
+     *
      * @return the days value.
      */
     public Integer days() {
@@ -59,10 +54,9 @@ public final class DeleteRetentionPolicy {
     }
 
     /**
-     * Set the days property: Indicates the number of days that the deleted
-     * item should be retained. The minimum specified value can be 1 and the
-     * maximum value can be 365.
-     * 
+     * Set the days property: Indicates the number of days that the deleted item should be retained. The minimum
+     * specified value can be 1 and the maximum value can be 365.
+     *
      * @param days the days value to set.
      * @return the DeleteRetentionPolicy object itself.
      */

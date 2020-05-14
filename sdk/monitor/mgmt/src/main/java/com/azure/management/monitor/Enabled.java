@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for Enabled.
- */
+/** Defines values for Enabled. */
 public final class Enabled extends ExpandableStringEnum<Enabled> {
-    /**
-     * Static value true for Enabled.
-     */
+    /** Static value true for Enabled. */
     public static final Enabled TRUE = fromString("true");
 
-    /**
-     * Static value false for Enabled.
-     */
+    /** Static value false for Enabled. */
     public static final Enabled FALSE = fromString("false");
 
     /**
      * Creates or finds a Enabled from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding Enabled.
      */
@@ -33,9 +27,7 @@ public final class Enabled extends ExpandableStringEnum<Enabled> {
         return fromString(name, Enabled.class);
     }
 
-    /**
-     * @return known Enabled values.
-     */
+    /** @return known Enabled values. */
     public static Collection<Enabled> values() {
         return values(Enabled.class);
     }

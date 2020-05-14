@@ -9,9 +9,7 @@ import com.azure.management.storage.StorageAccountKey;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The StorageAccountListKeysResult model.
- */
+/** The StorageAccountListKeysResult model. */
 @Immutable
 public final class StorageAccountListKeysResultInner {
     /*
@@ -22,9 +20,9 @@ public final class StorageAccountListKeysResultInner {
     private List<StorageAccountKey> keys;
 
     /**
-     * Get the keys property: Gets the list of storage account keys and their
-     * properties for the specified storage account.
-     * 
+     * Get the keys property: Gets the list of storage account keys and their properties for the specified storage
+     * account.
+     *
      * @return the keys value.
      */
     public List<StorageAccountKey> keys() {

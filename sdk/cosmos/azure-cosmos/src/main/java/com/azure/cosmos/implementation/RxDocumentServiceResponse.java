@@ -5,12 +5,10 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Permission;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
-import com.azure.cosmos.models.Resource;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;

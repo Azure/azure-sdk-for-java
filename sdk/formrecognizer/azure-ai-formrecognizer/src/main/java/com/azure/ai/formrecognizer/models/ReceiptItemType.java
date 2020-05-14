@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for ReceiptItemType.
+ * Defines enum values for ReceiptItemType.
  */
 public final class ReceiptItemType extends ExpandableStringEnum<ReceiptItemType> {
 

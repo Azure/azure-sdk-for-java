@@ -3,32 +3,15 @@
 
 package com.azure.management.appservice.samples;
 
-import com.azure.management.ApplicationTokenCredential;
-import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.core.command.BuildImageResultCallback;
-import com.github.dockerjava.core.command.PushImageResultCallback;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.appservice.PricingTier;
-import com.azure.management.appservice.WebApp;
 //import com.azure.management.containerregistry.AccessKeyType;
 //import com.azure.management.containerregistry.Registry;
 //import com.azure.management.containerregistry.RegistryCredentials;
-import com.azure.management.cosmosdb.CosmosDBAccount;
-import com.azure.management.cosmosdb.DatabaseAccountKind;
-import com.azure.management.graphrbac.ServicePrincipal;
-import com.azure.management.keyvault.SecretPermissions;
-import com.azure.management.keyvault.Vault;
-import com.azure.management.resources.fluentcore.arm.Region;
-import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.samples.DockerUtils;
-import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Date;
-
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
 /**
  * Azure App Service basic sample for managing web apps.
@@ -47,6 +30,7 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
      * @return true if sample runs successfully
      */
     public static boolean runSample(Azure azure) {
+        System.out.println("removed later");
         return true;
 //        // New resources
 //        final Region region         = Region.US_WEST;
@@ -210,13 +194,16 @@ public final class ManageLinuxWebAppCosmosDbByMsi {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

@@ -3,9 +3,7 @@
 
 package com.azure.management.appservice;
 
-/**
- * The type of a repository.
- */
+/** The type of a repository. */
 public enum RepositoryType {
     /** Git repository. */
     GIT,

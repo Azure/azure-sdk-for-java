@@ -18,7 +18,9 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
         final String sqlServerName = resources.manager().getSdkContext().randomResourceName("sql", 10);
         final SqlServer[] sqlServers = new SqlServer[1];
         final SettableFuture<SqlServer> future = SettableFuture.create();
-        Flux<Indexable> resourceStream = resources.define(sqlServerName)
+        Flux<Indexable> resourceStream =
+            resources
+                .define(sqlServerName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withAdministratorLogin("admin32")
@@ -46,7 +48,9 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
 
     @Override
     public SqlServer updateResource(SqlServer sqlServer) throws Exception {
-        sqlServer = sqlServer.update()
+        sqlServer =
+            sqlServer
+                .update()
                 .withoutDatabase("database1")
                 .withoutDatabase("databaseInEP")
                 .withoutElasticPool("elasticPool1")
@@ -63,8 +67,28 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers> {
 
     @Override
     public void print(SqlServer sqlServer) {
-        System.out.println(new StringBuilder().append("SqlServer : ").append(sqlServer.id()).append(", Name: ").append(sqlServer.name()).toString());
-        System.out.println(new StringBuilder().append("Number of databases : ").append(sqlServer.databases().list().size()).toString());
-        System.out.println(new StringBuilder().append("Number of elastic pools : ").append(sqlServer.elasticPools().list().size()).toString());
+        System
+            .out
+            .println(
+                new StringBuilder()
+                    .append("SqlServer : ")
+                    .append(sqlServer.id())
+                    .append(", Name: ")
+                    .append(sqlServer.name())
+                    .toString());
+        System
+            .out
+            .println(
+                new StringBuilder()
+                    .append("Number of databases : ")
+                    .append(sqlServer.databases().list().size())
+                    .toString());
+        System
+            .out
+            .println(
+                new StringBuilder()
+                    .append("Number of elastic pools : ")
+                    .append(sqlServer.elasticPools().list().size())
+                    .toString());
     }
 }

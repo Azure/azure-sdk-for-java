@@ -3,13 +3,16 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import org.eclipse.jgit.api.Git;
@@ -62,7 +65,7 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rgName + "...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .create();
@@ -96,8 +99,8 @@ public final class ManageFunctionAppSourceControl {
             // Create a second function app with local git source control
 
             System.out.println("Creating another function app " + app2Name + " in resource group " + rgName + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
                     .withExistingStorageAccount(app1.storageAccount())
@@ -140,7 +143,7 @@ public final class ManageFunctionAppSourceControl {
             // Create a 3rd function app with a public GitHub repo in Azure-Samples
 
             System.out.println("Creating another function app " + app3Name + "...");
-            FunctionApp app3 = azure.appServices().functionApps().define(app3Name)
+            FunctionApp app3 = azure.functionApps().define(app3Name)
                     .withExistingAppServicePlan(plan)
                     .withNewResourceGroup(rgName)
                     .withExistingStorageAccount(app2.storageAccount())
@@ -164,7 +167,7 @@ public final class ManageFunctionAppSourceControl {
             // Create a 4th function app with a personal GitHub repo and turn on continuous integration
 
             System.out.println("Creating another function app " + app4Name + "...");
-            FunctionApp app4 = azure.appServices().functionApps()
+            FunctionApp app4 = azure.functionApps()
                     .define(app4Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -191,7 +194,7 @@ public final class ManageFunctionAppSourceControl {
             // Create a 5th function app with web deploy
 
             System.out.println("Creating another function app " + app5Name + "...");
-            FunctionApp app5 = azure.appServices().functionApps()
+            FunctionApp app5 = azure.functionApps()
                     .define(app5Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -202,7 +205,7 @@ public final class ManageFunctionAppSourceControl {
 
             System.out.println("Deploy to " + app5Name + " through web deploy...");
             app5.deploy()
-                    .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-mgmt-appservice/src/test/resources/webapps.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/webapps.zip")
                     .withExistingDeploymentsDeleted(true)
                     .execute();
 
@@ -217,7 +220,7 @@ public final class ManageFunctionAppSourceControl {
             // Create a 6th function app with zip deploy
 
             System.out.println("Creating another function app " + app6Name + "...");
-            FunctionApp app6 = azure.appServices().functionApps()
+            FunctionApp app6 = azure.functionApps()
                     .define(app6Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -266,13 +269,16 @@ public final class ManageFunctionAppSourceControl {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

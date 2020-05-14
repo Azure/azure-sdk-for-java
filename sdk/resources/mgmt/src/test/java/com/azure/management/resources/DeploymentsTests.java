@@ -3,10 +3,11 @@
 
 package com.azure.management.resources;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.RestClient;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -25,8 +26,8 @@ public class DeploymentsTests extends ResourceManagerTestBase {
     private static String contentVersion = "1.0.0.0";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        super.initializeClients(restClient, defaultSubscription, domain);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        super.initializeClients(httpPipeline, profile);
         testId = sdkContext.randomResourceName("", 9);
         resourceGroups = resourceClient.resourceGroups();
         rgName = "rg" + testId;
@@ -116,8 +117,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .whatIf();
 
         Assertions.assertEquals("Succeeded", result.status());
-        // FIXME: regression?
-        // Assertions.assertEquals(3, result.changes().size());
+        Assertions.assertEquals(3, result.changes().size());
 
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
     }
@@ -157,8 +157,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
                 .whatIfAtSubscriptionScope();
 
         Assertions.assertEquals("Succeeded", result.status());
-        // FIXME: Regression?
-        // Assertions.assertEquals(0, result.changes().size());
+        Assertions.assertEquals(0, result.changes().size());
 
         resourceClient.genericResources().delete(rgName, "Microsoft.Network", "", "virtualnetworks", "VNet1", "2015-06-15");
     }

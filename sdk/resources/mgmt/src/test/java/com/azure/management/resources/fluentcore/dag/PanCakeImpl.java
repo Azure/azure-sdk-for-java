@@ -24,11 +24,11 @@ class PancakeImpl
     final Throwable errorToThrow;
     boolean prepareCalled = false;
 
-    public PancakeImpl(String name, long eventDelayInMilliseconds) {
+    PancakeImpl(String name, long eventDelayInMilliseconds) {
         this(name, eventDelayInMilliseconds, false);
     }
 
-    public PancakeImpl(String name, long eventDelayInMilliseconds, boolean fault) {
+    PancakeImpl(String name, long eventDelayInMilliseconds, boolean fault) {
         super(name, name, new PancakeInner());
         this.eventDelayInMilliseconds = eventDelayInMilliseconds;
         if (fault) {

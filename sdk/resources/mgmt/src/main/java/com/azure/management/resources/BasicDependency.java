@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BasicDependency model. */
 @Fluent
 public final class BasicDependency {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BasicDependency.class);
+
     /*
      * The ID of the dependency.
      */
@@ -33,7 +37,7 @@ public final class BasicDependency {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -86,5 +90,13 @@ public final class BasicDependency {
     public BasicDependency withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

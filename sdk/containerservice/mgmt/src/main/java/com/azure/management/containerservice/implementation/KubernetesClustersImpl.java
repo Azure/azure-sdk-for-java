@@ -4,20 +4,22 @@ package com.azure.management.containerservice.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.containerservice.CredentialResult;
 import com.azure.management.containerservice.KubernetesCluster;
-import com.azure.management.containerservice.KubernetesClusterAccessProfileRole;
 import com.azure.management.containerservice.KubernetesClusters;
 import com.azure.management.containerservice.OrchestratorVersionProfile;
-import com.azure.management.containerservice.models.ManagedClusterAccessProfileInner;
+import com.azure.management.containerservice.models.CredentialResultsInner;
 import com.azure.management.containerservice.models.ManagedClusterInner;
 import com.azure.management.containerservice.models.ManagedClustersInner;
 import com.azure.management.containerservice.models.OrchestratorVersionProfileListResultInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import reactor.core.publisher.Mono;
+
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import reactor.core.publisher.Mono;
 
 /** The implementation for KubernetesClusters. */
 public class KubernetesClustersImpl
@@ -36,7 +38,7 @@ public class KubernetesClustersImpl
 
     @Override
     public PagedFlux<KubernetesCluster> listAsync() {
-        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.getName(), inner, manager()));
+        return this.inner().listAsync().mapPage(inner -> new KubernetesClusterImpl(inner.name(), inner, manager()));
     }
 
     @Override
@@ -74,7 +76,7 @@ public class KubernetesClustersImpl
             return null;
         }
 
-        return new KubernetesClusterImpl(inner.getName(), inner, this.manager());
+        return new KubernetesClusterImpl(inner.name(), inner, this.manager());
     }
 
     @Override
@@ -121,70 +123,34 @@ public class KubernetesClustersImpl
     }
 
     @Override
-    public byte[] getAdminKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
-        ManagedClusterAccessProfileInner profileInner =
-            this
-                .manager()
-                .inner()
-                .managedClusters()
-                .getAccessProfile(
-                    resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.ADMIN.toString());
-        if (profileInner == null) {
-            return new byte[0];
-        } else {
-            return profileInner.kubeConfig();
-        }
+    public List<CredentialResult> listAdminKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
+        return listAdminKubeConfigContentAsync(resourceGroupName, kubernetesClusterName).block();
     }
 
     @Override
-    public Mono<byte[]> getAdminKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName) {
+    public Mono<List<CredentialResult>> listAdminKubeConfigContentAsync(
+            String resourceGroupName, String kubernetesClusterName) {
         return this
             .manager()
             .inner()
             .managedClusters()
-            .getAccessProfileAsync(
-                resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.ADMIN.toString())
-            .map(
-                profileInner -> {
-                    if (profileInner == null) {
-                        return new byte[0];
-                    } else {
-                        return profileInner.kubeConfig();
-                    }
-                });
+            .listClusterAdminCredentialsAsync(resourceGroupName, kubernetesClusterName)
+            .map(CredentialResultsInner::kubeconfigs);
     }
 
     @Override
-    public byte[] getUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
-        ManagedClusterAccessProfileInner profileInner =
-            this
-                .manager()
-                .inner()
-                .managedClusters()
-                .getAccessProfile(
-                    resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.USER.toString());
-        if (profileInner == null) {
-            return new byte[0];
-        } else {
-            return profileInner.kubeConfig();
-        }
+    public List<CredentialResult> listUserKubeConfigContent(String resourceGroupName, String kubernetesClusterName) {
+        return listUserKubeConfigContentAsync(resourceGroupName, kubernetesClusterName).block();
     }
 
     @Override
-    public Mono<byte[]> getUserKubeConfigContentAsync(String resourceGroupName, String kubernetesClusterName) {
+    public Mono<List<CredentialResult>> listUserKubeConfigContentAsync(
+            String resourceGroupName, String kubernetesClusterName) {
         return this
             .manager()
             .inner()
             .managedClusters()
-            .getAccessProfileAsync(
-                resourceGroupName, kubernetesClusterName, KubernetesClusterAccessProfileRole.USER.toString())
-            .map(
-                profileInner -> {
-                    if (profileInner == null) {
-                        return new byte[0];
-                    } else {
-                        return profileInner.kubeConfig();
-                    }
-                });
+            .listClusterUserCredentialsAsync(resourceGroupName, kubernetesClusterName)
+            .map(CredentialResultsInner::kubeconfigs);
     }
 }

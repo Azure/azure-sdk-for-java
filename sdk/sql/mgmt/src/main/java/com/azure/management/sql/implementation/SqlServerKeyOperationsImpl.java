@@ -90,13 +90,11 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
         List<SqlServerKey> serverKeys = new ArrayList<>();
         PagedIterable<ServerKeyInner> serverKeyInners =
             this.sqlServerManager.inner().serverKeys().listByServer(resourceGroupName, sqlServerName);
-        if (serverKeyInners != null) {
-            for (ServerKeyInner inner : serverKeyInners) {
-                serverKeys
-                    .add(
-                        new SqlServerKeyImpl(
-                            resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
-            }
+        for (ServerKeyInner inner : serverKeyInners) {
+            serverKeys
+                .add(
+                    new SqlServerKeyImpl(
+                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverKeys);
     }
@@ -114,7 +112,7 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
                     new SqlServerKeyImpl(
                         resourceGroupName,
                         sqlServerName,
-                        serverKeyInner.getName(),
+                        serverKeyInner.name(),
                         serverKeyInner,
                         self.sqlServerManager));
     }
@@ -125,11 +123,9 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
         List<SqlServerKey> serverKeys = new ArrayList<>();
         PagedIterable<ServerKeyInner> serverKeyInners =
             sqlServer.manager().inner().serverKeys().listByServer(sqlServer.resourceGroupName(), sqlServer.name());
-        if (serverKeyInners != null) {
-            for (ServerKeyInner inner : serverKeyInners) {
-                serverKeys
-                    .add(new SqlServerKeyImpl(inner.getName(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
-            }
+        for (ServerKeyInner inner : serverKeyInners) {
+            serverKeys
+                .add(new SqlServerKeyImpl(inner.name(), (SqlServerImpl) sqlServer, inner, sqlServer.manager()));
         }
         return Collections.unmodifiableList(serverKeys);
     }
@@ -145,7 +141,7 @@ public class SqlServerKeyOperationsImpl extends SqlChildrenOperationsImpl<SqlSer
             .mapPage(
                 serverKeyInner ->
                     new SqlServerKeyImpl(
-                        serverKeyInner.getName(), (SqlServerImpl) sqlServer, serverKeyInner, sqlServer.manager()));
+                        serverKeyInner.name(), (SqlServerImpl) sqlServer, serverKeyInner, sqlServer.manager()));
     }
 
     @Override

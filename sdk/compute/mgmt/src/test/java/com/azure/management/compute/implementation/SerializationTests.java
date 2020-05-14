@@ -7,11 +7,10 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.management.compute.VirtualMachineIdentity;
 import com.azure.management.compute.VirtualMachineIdentityUserAssignedIdentities;
 import com.azure.management.compute.models.VirtualMachineInner;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 public class SerializationTests {
     @Test

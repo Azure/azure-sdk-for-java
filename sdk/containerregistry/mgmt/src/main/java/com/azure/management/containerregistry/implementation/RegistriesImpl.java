@@ -45,7 +45,7 @@ public class RegistriesImpl
         return this
             .inner()
             .listAsync()
-            .mapPage(inner -> new RegistryImpl(inner.getName(), inner, this.manager(), this.storageManager));
+            .mapPage(inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
     }
 
     @Override
@@ -89,7 +89,7 @@ public class RegistriesImpl
         }
 
         return new RegistryImpl(
-            containerServiceInner.getName(), containerServiceInner, this.manager(), this.storageManager);
+            containerServiceInner.name(), containerServiceInner, this.manager(), this.storageManager);
     }
 
     @Override

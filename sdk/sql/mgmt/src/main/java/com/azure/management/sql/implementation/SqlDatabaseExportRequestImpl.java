@@ -57,7 +57,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                 this.sqlDatabase.sqlServerName,
                 this.sqlDatabase.name(),
                 this.inner())
-            .map(importExportResponseInner -> new SqlDatabaseImportExportResponseImpl(importExportResponseInner));
+            .map(SqlDatabaseImportExportResponseImpl::new);
     }
 
     @Override
@@ -93,6 +93,7 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
                             new BlobServiceClientBuilder()
                                 .endpoint(storageAccount.endPoints().primary().blob())
                                 .sasToken(storageAccountKey.value())
+                                .httpClient(sqlServerManager.httpPipeline().getHttpClient())
                                 .buildClient();
                         blobServiceClient.createBlobContainer(containerName);
                     } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
@@ -113,7 +114,6 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
         if (this.inner == null) {
             this.inner = new ExportRequest();
         }
-        final SqlDatabaseExportRequestImpl self = this;
         this
             .addDependency(
                 context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));

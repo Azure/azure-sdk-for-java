@@ -5,20 +5,17 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
 import java.util.Map;
 
-/**
- * The RuleWebhookAction model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+/** The RuleWebhookAction model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction")
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public final class RuleWebhookAction extends RuleAction {
     /*
      * the service uri to Post the notification when the alert activates or
@@ -35,9 +32,8 @@ public final class RuleWebhookAction extends RuleAction {
     private Map<String, String> properties;
 
     /**
-     * Get the serviceUri property: the service uri to Post the notification
-     * when the alert activates or resolves.
-     * 
+     * Get the serviceUri property: the service uri to Post the notification when the alert activates or resolves.
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -45,9 +41,8 @@ public final class RuleWebhookAction extends RuleAction {
     }
 
     /**
-     * Set the serviceUri property: the service uri to Post the notification
-     * when the alert activates or resolves.
-     * 
+     * Set the serviceUri property: the service uri to Post the notification when the alert activates or resolves.
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the RuleWebhookAction object itself.
      */
@@ -57,10 +52,9 @@ public final class RuleWebhookAction extends RuleAction {
     }
 
     /**
-     * Get the properties property: the dictionary of custom properties to
-     * include with the post operation. These data are appended to the webhook
-     * payload.
-     * 
+     * Get the properties property: the dictionary of custom properties to include with the post operation. These data
+     * are appended to the webhook payload.
+     *
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -68,10 +62,9 @@ public final class RuleWebhookAction extends RuleAction {
     }
 
     /**
-     * Set the properties property: the dictionary of custom properties to
-     * include with the post operation. These data are appended to the webhook
-     * payload.
-     * 
+     * Set the properties property: the dictionary of custom properties to include with the post operation. These data
+     * are appended to the webhook payload.
+     *
      * @param properties the properties value to set.
      * @return the RuleWebhookAction object itself.
      */

@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
-import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.dns.ARecord;
 import com.azure.management.dns.AaaaRecord;
 import com.azure.management.dns.CaaRecord;
@@ -16,26 +14,22 @@ import com.azure.management.dns.PtrRecord;
 import com.azure.management.dns.RecordType;
 import com.azure.management.dns.SrvRecord;
 import com.azure.management.dns.TxtRecord;
+import com.azure.management.dns.models.RecordSetInner;
+import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.ETagState;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation of DnsRecordSet.
- */
-class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
-        RecordSetInner,
-            DnsZoneImpl,
-            DnsZone>
-        implements DnsRecordSet,
-            DnsRecordSet.Definition<DnsZone.DefinitionStages.WithCreate>,
-            DnsRecordSet.UpdateDefinition<DnsZone.Update>,
-            DnsRecordSet.UpdateCombined {
+/** Implementation of DnsRecordSet. */
+class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSetInner, DnsZoneImpl, DnsZone>
+    implements DnsRecordSet,
+        DnsRecordSet.Definition<DnsZone.DefinitionStages.WithCreate>,
+        DnsRecordSet.UpdateDefinition<DnsZone.Update>,
+        DnsRecordSet.UpdateCombined {
     protected final RecordSetInner recordSetRemoveInfo;
     protected final String type;
     private final ETagState eTagState = new ETagState();
@@ -43,22 +37,23 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     protected DnsRecordSetImpl(String name, String type, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, parent, innerModel);
         this.type = type;
-        this.recordSetRemoveInfo = new RecordSetInner()
-            .withARecords(new ArrayList<>())
-            .withAaaaRecords(new ArrayList<>())
-            .withCaaRecords(new ArrayList<>())
-            .withCnameRecord(new CnameRecord())
-            .withMxRecords(new ArrayList<>())
-            .withNsRecords(new ArrayList<>())
-            .withPtrRecords(new ArrayList<>())
-            .withSrvRecords(new ArrayList<>())
-            .withTxtRecords(new ArrayList<>())
-            .withMetadata(new LinkedHashMap<>());
+        this.recordSetRemoveInfo =
+            new RecordSetInner()
+                .withARecords(new ArrayList<>())
+                .withAaaaRecords(new ArrayList<>())
+                .withCaaRecords(new ArrayList<>())
+                .withCnameRecord(new CnameRecord())
+                .withMxRecords(new ArrayList<>())
+                .withNsRecords(new ArrayList<>())
+                .withPtrRecords(new ArrayList<>())
+                .withSrvRecords(new ArrayList<>())
+                .withTxtRecords(new ArrayList<>())
+                .withMetadata(new LinkedHashMap<>());
     }
 
     @Override
     public String id() {
-      return inner().getId();
+        return inner().id();
     }
 
     @Override
@@ -95,129 +90,100 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withIPv4Address(String ipv4Address) {
-        this.inner()
-                .aRecords()
-                .add(new ARecord().withIpv4Address(ipv4Address));
+        this.inner().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutIPv4Address(String ipv4Address) {
-        this.recordSetRemoveInfo
-                .aRecords()
-                .add(new ARecord().withIpv4Address(ipv4Address));
+        this.recordSetRemoveInfo.aRecords().add(new ARecord().withIpv4Address(ipv4Address));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withIPv6Address(String ipv6Address) {
-        this.inner()
-                .aaaaRecords()
-                .add(new AaaaRecord().withIpv6Address(ipv6Address));
+        this.inner().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutIPv6Address(String ipv6Address) {
-        this.recordSetRemoveInfo
-                .aaaaRecords()
-                .add(new AaaaRecord().withIpv6Address(ipv6Address));
+        this.recordSetRemoveInfo.aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withAlias(String alias) {
-        this.inner()
-                .cnameRecord()
-                .withCname(alias);
+        this.inner().cnameRecord().withCname(alias);
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withMailExchange(String mailExchangeHostName, int priority) {
-        this.inner()
-                .mxRecords()
-                .add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
+        this.inner().mxRecords().add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutMailExchange(String mailExchangeHostName, int priority) {
-        this.recordSetRemoveInfo
-                .mxRecords()
-                .add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
+        this
+            .recordSetRemoveInfo
+            .mxRecords()
+            .add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withNameServer(String nameServerHostName) {
-        this.inner()
-                .nsRecords()
-                .add(new NsRecord().withNsdname(nameServerHostName));
+        this.inner().nsRecords().add(new NsRecord().withNsdname(nameServerHostName));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutNameServer(String nameServerHostName) {
-        this.recordSetRemoveInfo
-                .nsRecords()
-                .add(new NsRecord().withNsdname(nameServerHostName));
+        this.recordSetRemoveInfo.nsRecords().add(new NsRecord().withNsdname(nameServerHostName));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withTargetDomainName(String targetDomainName) {
-        this.inner()
-                .ptrRecords()
-                .add(new PtrRecord().withPtrdname(targetDomainName));
+        this.inner().ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutTargetDomainName(String targetDomainName) {
-        this.recordSetRemoveInfo
-                .ptrRecords()
-                .add(new PtrRecord().withPtrdname(targetDomainName));
+        this.recordSetRemoveInfo.ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withRecord(int flags, String tag, String value) {
-        this.inner().caaRecords().add(new CaaRecord()
-                .withFlags(flags)
-                .withTag(tag)
-                .withValue(value));
+        this.inner().caaRecords().add(new CaaRecord().withFlags(flags).withTag(tag).withValue(value));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutRecord(int flags, String tag, String value) {
-        this.recordSetRemoveInfo.
-                caaRecords().add(new CaaRecord()
-                .withFlags(flags)
-                .withTag(tag)
-                .withValue(value));
+        this.recordSetRemoveInfo.caaRecords().add(new CaaRecord().withFlags(flags).withTag(tag).withValue(value));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withRecord(String target, int port, int priority, int weight) {
-        this.inner().srvRecords().add(new SrvRecord()
-                .withTarget(target)
-                .withPort(port)
-                .withPriority(priority)
-                .withWeight(weight));
+        this
+            .inner()
+            .srvRecords()
+            .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
     }
 
     @Override
     public DnsRecordSetImpl withoutRecord(String target, int port, int priority, int weight) {
-        this.recordSetRemoveInfo.
-                srvRecords().add(new SrvRecord()
-                    .withTarget(target)
-                    .withPort(port)
-                    .withPriority(priority)
-                    .withWeight(weight));
+        this
+            .recordSetRemoveInfo
+            .srvRecords()
+            .add(new SrvRecord().withTarget(target).withPort(port).withPriority(priority).withWeight(weight));
         return this;
     }
 
@@ -246,8 +212,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withoutText(List<String> textChunks) {
-        this.recordSetRemoveInfo
-                .txtRecords().add(new TxtRecord().withValue(textChunks));
+        this.recordSetRemoveInfo.txtRecords().add(new TxtRecord().withValue(textChunks));
         return this;
     }
 
@@ -304,8 +269,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withoutMetadata(String key) {
-        this.recordSetRemoveInfo
-                .metadata().put(key, null);
+        this.recordSetRemoveInfo.metadata().put(key, null);
         return this;
     }
 
@@ -330,16 +294,29 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public Mono<DnsRecordSet> updateResourceAsync() {
-        return this.parent().manager().inner().recordSets().getAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), this.recordType())
-                .map(recordSetInner -> prepare(recordSetInner))
-                .flatMap(recordSetInner -> createOrUpdateAsync(recordSetInner));
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .recordSets()
+            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.recordType())
+            .map(recordSetInner -> prepare(recordSetInner))
+            .flatMap(recordSetInner -> createOrUpdateAsync(recordSetInner));
     }
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this.parent().manager().inner().recordSets().deleteAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), this.recordType(), this.eTagState.ifMatchValueOnDelete());
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .recordSets()
+            .deleteAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                this.recordType(),
+                this.eTagState.ifMatchValueOnDelete());
     }
 
     @Override
@@ -354,20 +331,34 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     protected Mono<RecordSetInner> getInnerAsync() {
-        return this.parent().manager().inner().recordSets().getAsync(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.name(),
-                this.recordType());
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .recordSets()
+            .getAsync(this.parent().resourceGroupName(), this.parent().name(), this.name(), this.recordType());
     }
 
     private Mono<DnsRecordSet> createOrUpdateAsync(RecordSetInner resource) {
         final DnsRecordSetImpl self = this;
-        return this.parent().manager().inner().recordSets().createOrUpdateAsync(this.parent().resourceGroupName(),
-                this.parent().name(), this.name(), this.recordType(), resource, eTagState.ifMatchValueOnUpdate(resource.etag()), eTagState.ifNonMatchValueOnCreate())
-                .map(recordSetInner -> {
-                   setInner(recordSetInner);
-                   self.eTagState.clear();
-                   return self;
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .recordSets()
+            .createOrUpdateAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                this.recordType(),
+                resource,
+                eTagState.ifMatchValueOnUpdate(resource.etag()),
+                eTagState.ifNonMatchValueOnCreate())
+            .map(
+                recordSetInner -> {
+                    setInner(recordSetInner);
+                    self.eTagState.clear();
+                    return self;
                 });
     }
 
@@ -408,6 +399,6 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     private boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 }

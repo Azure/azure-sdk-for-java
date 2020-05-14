@@ -3,6 +3,11 @@
 ## 1.6.0-beta.1 (Unreleased)
 
 
+## 1.5.1 (2020-05-04)
+
+- Updated default retrieval of response body as a `String` to use `CoreUtils.bomAwareToString`.
+- Updated Reactor Netty and Netty dependencies.
+
 ## 1.5.0 (2020-04-03)
 
 - Generalized configuration for `NioEventLoopGroup` to `EventLoopGroup`. Deprecated `NioEventLoopGroup` setter.
@@ -24,7 +29,7 @@
 
 ## 1.2.0 (2020-01-07)
 
-- Upgrade netty dependencies to latest version 
+- Upgrade netty dependencies to latest version
 
 ## Version 1.1.0 (2019-11-26)
 

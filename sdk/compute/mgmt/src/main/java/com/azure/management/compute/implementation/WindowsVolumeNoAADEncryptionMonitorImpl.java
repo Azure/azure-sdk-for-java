@@ -14,11 +14,12 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Map;
 
 /**
- * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine.
- * This implementation monitor status of encrypt-decrypt through new NoAAD encryption extension.
+ * The implementation for DiskVolumeEncryptionStatus for Windows virtual machine. This implementation monitor status of
+ * encrypt-decrypt through new NoAAD encryption extension.
  */
 class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMonitor {
     private final String rgName;
@@ -136,35 +137,41 @@ class WindowsVolumeNoAADEncryptionMonitorImpl implements DiskVolumeEncryptionMon
         final WindowsVolumeNoAADEncryptionMonitorImpl self = this;
         // Refreshes the cached virtual machine and installed encryption extension
         return retrieveVirtualMachineAsync()
-                .map(virtualMachine -> {
+            .map(
+                virtualMachine -> {
                     self.virtualMachine = virtualMachine;
                     return self;
                 });
     }
 
     /**
-     * Retrieve the virtual machine.
-     * If the virtual machine does not exists then an error observable will be returned.
+     * Retrieve the virtual machine. If the virtual machine does not exists then an error observable will be returned.
      *
      * @return the retrieved virtual machine
      */
     private Mono<VirtualMachineInner> retrieveVirtualMachineAsync() {
-        return this.computeManager
-                .inner()
-                .virtualMachines()
-                .getByResourceGroupAsync(rgName, vmName)
-                .onErrorResume(e -> Mono.error(new Exception(String.format("VM with name '%s' not found (resource group '%s')",
-                        vmName, rgName))));
+        return this
+            .computeManager
+            .inner()
+            .virtualMachines()
+            .getByResourceGroupAsync(rgName, vmName)
+            .onErrorResume(
+                e ->
+                    Mono
+                        .error(
+                            new Exception(
+                                String.format("VM with name '%s' not found (resource group '%s')", vmName, rgName))));
     }
 
     /**
-     * Given disk instance view status code, check whether it is encryption status code if yes map it to EncryptionStatus.
+     * Given disk instance view status code, check whether it is encryption status code if yes map it to
+     * EncryptionStatus.
      *
      * @param code the encryption status code
      * @return mapped EncryptionStatus if given code is encryption status code, null otherwise.
      */
     private static EncryptionStatus encryptionStatusFromCode(String code) {
-        if (code != null && code.toLowerCase().startsWith("encryptionstate")) {
+        if (code != null && code.toLowerCase(Locale.ROOT).startsWith("encryptionstate")) {
             // e.g. "code": "EncryptionState/encrypted"
             //      "code": "EncryptionState/notEncrypted"
             String[] parts = code.split("/", 2);

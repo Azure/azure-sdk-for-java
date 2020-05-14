@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 
@@ -14,7 +15,7 @@ import java.time.Duration;
 /**
  * Encapsulates the properties for consistency policy in the Azure Cosmos DB database service.
  */
-public final class ConsistencyPolicy extends JsonSerializable {
+public final class ConsistencyPolicy extends JsonSerializableWrapper{
     private static final ConsistencyLevel DEFAULT_DEFAULT_CONSISTENCY_LEVEL =
         ConsistencyLevel.SESSION;
 
@@ -25,6 +26,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * Constructor.
      */
     public ConsistencyPolicy() {
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -34,7 +36,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * {@link JsonSerializable}
      */
     ConsistencyPolicy(ObjectNode objectNode) {
-        super(objectNode);
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -43,7 +45,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @param jsonString the json string that represents the consistency policy.
      */
     ConsistencyPolicy(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
     /**
@@ -54,13 +56,13 @@ public final class ConsistencyPolicy extends JsonSerializable {
     public ConsistencyLevel getDefaultConsistencyLevel() {
 
         ConsistencyLevel result = ConsistencyPolicy.DEFAULT_DEFAULT_CONSISTENCY_LEVEL;
-        String consistencyLevelString = super.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
+        String consistencyLevelString = this.jsonSerializable.getString(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL);
         try {
             result = ConsistencyLevel
                          .valueOf(CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistencyLevelString));
         } catch (IllegalArgumentException e) {
             // ignore the exception and return the default
-            this.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
+            this.jsonSerializable.getLogger().warn("Unknown consistency level {}, value ignored.", consistencyLevelString);
         }
         return result;
     }
@@ -72,7 +74,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setDefaultConsistencyLevel(ConsistencyLevel level) {
-        super.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
+        this.jsonSerializable.set(Constants.Properties.DEFAULT_CONSISTENCY_LEVEL, level.toString());
         return this;
     }
 
@@ -83,7 +85,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the max staleness prefix.
      */
     public int getMaxStalenessPrefix() {
-        Integer value = super.getInt(Constants.Properties.MAX_STALENESS_PREFIX);
+        Integer value = this.jsonSerializable.getInt(Constants.Properties.MAX_STALENESS_PREFIX);
         if (value == null) {
             return ConsistencyPolicy.DEFAULT_MAX_STALENESS_PREFIX;
         }
@@ -98,7 +100,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the ConsistencyPolicy.
      */
     public ConsistencyPolicy setMaxStalenessPrefix(int maxStalenessPrefix) {
-        super.set(Constants.Properties.MAX_STALENESS_PREFIX, maxStalenessPrefix);
+        this.jsonSerializable.set(Constants.Properties.MAX_STALENESS_PREFIX, maxStalenessPrefix);
         return this;
     }
 
@@ -109,7 +111,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      * @return the max staleness prefix.
      */
     public Duration getMaxStalenessInterval() {
-        Integer value = super.getInt(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS);
+        Integer value = this.jsonSerializable.getInt(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS);
         if (value == null) {
             return Duration.ofSeconds(ConsistencyPolicy.DEFAULT_MAX_STALENESS_INTERVAL);
         }
@@ -127,7 +129,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
         if (maxStalenessInterval == null) {
             throw new IllegalArgumentException("maxStalenessInterval should not be null");
         }
-        super.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
+        this.jsonSerializable.set(Constants.Properties.MAX_STALENESS_INTERVAL_IN_SECONDS, maxStalenessInterval.getSeconds());
         return this;
     }
 }

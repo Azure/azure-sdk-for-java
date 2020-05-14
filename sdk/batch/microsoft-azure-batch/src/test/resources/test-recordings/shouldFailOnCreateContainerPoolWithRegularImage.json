@@ -1,39 +1,40 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2019-08-01.10.0",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools?api-version=2020-03-01.11.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-08-01.10.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:1.8.0_212-1-ojdkbuild (BatchServiceClient, 2020-03-01.11.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 06 Aug 2019 17:03:51 GMT",
+      "date" : "Tue, 21 Apr 2020 16:05:45 GMT",
       "content-length" : "641",
       "server" : "Microsoft-HTTPAPI/2.0",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "fac494ac-b44e-49fb-8cdb-3046d1cbcb36",
+      "client-request-id" : "b53b45dd-67af-455e-ad68-e9ff6cfa44c3",
       "content-type" : "application/json;odata=minimalmetadata",
       "retry-after" : "0",
-      "request-id" : "c1139c92-6209-4f31-9e56-71ae89e0736a",
+      "request-id" : "8ff5cfca-11b9-486e-adb8-cd6e815e0cc2",
       "StatusCode" : "400",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:c1139c92-6209-4f31-9e56-71ae89e0736a\\nTime:2019-08-06T17:03:51.4745400Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"containerConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.\"\r\n    }\r\n  ]\r\n}",
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest2.westcentralus.batch.azure.com/$metadata#Microsoft.Azure.Batch.Protocol.Entities.Container.errors/@Element\",\"code\":\"InvalidPropertyValue\",\"message\":{\r\n    \"lang\":\"en-US\",\"value\":\"The value provided for one of the properties in the request body is invalid.\\nRequestId:8ff5cfca-11b9-486e-adb8-cd6e815e0cc2\\nTime:2020-04-21T16:05:45.2652468Z\"\r\n  },\"values\":[\r\n    {\r\n      \"key\":\"PropertyName\",\"value\":\"containerConfiguration\"\r\n    },{\r\n      \"key\":\"Reason\",\"value\":\"The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.\"\r\n    }\r\n  ]\r\n}",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-createContainerRegImage?api-version=2019-08-01.10.0",
+    "Uri" : "https://sdktest2.westcentralus.batch.azure.com/pools/BatchUser-createContainerRegImage?api-version=2020-03-01.11.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:12.0.1 (BatchServiceClient, 2019-08-01.10.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:6af0687e9696ddb898873c0cf08ca2cbde35f03414152ca2b00c9aee10e6c335 Java:1.8.0_212-1-ojdkbuild (BatchServiceClient, 2020-03-01.11.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 06 Aug 2019 17:03:51 GMT",
+      "date" : "Tue, 21 Apr 2020 16:05:45 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
+      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "ca6571d5-564b-4417-bb6a-2be48ba792ef",
+      "client-request-id" : "218b9c24-2c0b-4cc1-98ae-cffef323efb2",
       "retry-after" : "0",
-      "request-id" : "1372ea0d-17f4-46c1-bfb1-d44f0b42b010",
+      "request-id" : "9da43681-8d78-4785-8526-79704d225fb3",
       "StatusCode" : "404",
       "dataserviceversion" : "3.0",
       "Body" : "",

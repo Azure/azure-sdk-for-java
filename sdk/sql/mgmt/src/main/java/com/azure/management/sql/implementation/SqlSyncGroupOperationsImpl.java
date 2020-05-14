@@ -9,6 +9,7 @@ import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.sql.SqlSyncGroup;
 import com.azure.management.sql.SqlSyncGroupOperations;
+import com.azure.management.sql.models.SyncDatabaseIdPropertiesInner;
 import com.azure.management.sql.models.SyncGroupInner;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +22,6 @@ public class SqlSyncGroupOperationsImpl
     implements SqlSyncGroupOperations, SqlSyncGroupOperations.SqlSyncGroupActionsDefinition {
 
     protected SqlServerManager sqlServerManager;
-    protected String resourceGroupName;
-    protected String sqlServerName;
-    protected String sqlDatabaseName;
     protected SqlDatabaseImpl sqlDatabase;
 
     SqlSyncGroupOperationsImpl(SqlDatabaseImpl parent, SqlServerManager sqlServerManager) {
@@ -31,9 +29,6 @@ public class SqlSyncGroupOperationsImpl
         Objects.requireNonNull(sqlServerManager);
         this.sqlDatabase = parent;
         this.sqlServerManager = sqlServerManager;
-        this.resourceGroupName = parent.resourceGroupName;
-        this.sqlServerName = parent.sqlServerName;
-        this.sqlDatabaseName = parent.name();
     }
 
     SqlSyncGroupOperationsImpl(SqlServerManager sqlServerManager) {
@@ -73,7 +68,7 @@ public class SqlSyncGroupOperationsImpl
             .inner()
             .syncGroups()
             .listSyncDatabaseIds(locationName)
-            .mapPage(inner -> inner.getId());
+            .mapPage(SyncDatabaseIdPropertiesInner::id);
     }
 
     @Override
@@ -83,7 +78,7 @@ public class SqlSyncGroupOperationsImpl
             .inner()
             .syncGroups()
             .listSyncDatabaseIdsAsync(locationName)
-            .mapPage(syncDatabaseIdPropertiesInner -> syncDatabaseIdPropertiesInner.getId());
+            .mapPage(SyncDatabaseIdPropertiesInner::id);
     }
 
     @Override
@@ -230,13 +225,11 @@ public class SqlSyncGroupOperationsImpl
                         this.sqlDatabase.resourceGroupName(),
                         this.sqlDatabase.sqlServerName(),
                         this.sqlDatabase.name());
-            if (syncGroupInners != null) {
-                for (SyncGroupInner groupInner : syncGroupInners) {
-                    sqlSyncGroups
-                        .add(
-                            new SqlSyncGroupImpl(
-                                groupInner.getName(), this.sqlDatabase, groupInner, this.sqlServerManager));
-                }
+            for (SyncGroupInner groupInner : syncGroupInners) {
+                sqlSyncGroups
+                    .add(
+                        new SqlSyncGroupImpl(
+                            groupInner.name(), this.sqlDatabase, groupInner, this.sqlServerManager));
             }
         }
         return Collections.unmodifiableList(sqlSyncGroups);
@@ -254,6 +247,6 @@ public class SqlSyncGroupOperationsImpl
             .mapPage(
                 syncGroupInner ->
                     new SqlSyncGroupImpl(
-                        syncGroupInner.getName(), self.sqlDatabase, syncGroupInner, self.sqlServerManager));
+                        syncGroupInner.name(), self.sqlDatabase, syncGroupInner, self.sqlServerManager));
     }
 }

@@ -162,6 +162,19 @@ directive:
     }
 ```
 
+### /{containerName}?restype=container&comp=undelete
+``` yaml
+directive:
+- from: swagger-document
+  where: $["x-ms-paths"]["/{containerName}?restype=container&comp=undelete"]
+  transform: >
+    let param = $.put.parameters[0];
+    if (!param["$ref"].endsWith("ContainerName")) {
+        const path = param["$ref"].replace(/[#].*$/, "#/parameters/ContainerName");
+        $.put.parameters.splice(0, 0, { "$ref": path });
+    }
+```
+
 ### /{containerName}?restype=account&comp=properties
 ``` yaml
 directive:

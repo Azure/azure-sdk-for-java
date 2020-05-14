@@ -12,14 +12,10 @@ import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Represents Connection Monitors collection associated with Network Watcher.
- */
-class ConnectionMonitorsImpl extends
-        CreatableResourcesImpl<ConnectionMonitor,
-                ConnectionMonitorImpl,
-                ConnectionMonitorResultInner>
-        implements ConnectionMonitors {
+/** Represents Connection Monitors collection associated with Network Watcher. */
+class ConnectionMonitorsImpl
+    extends CreatableResourcesImpl<ConnectionMonitor, ConnectionMonitorImpl, ConnectionMonitorResultInner>
+    implements ConnectionMonitors {
     private final NetworkWatcherImpl parent;
     private final ConnectionMonitorsInner innerCollection;
 
@@ -38,9 +34,7 @@ class ConnectionMonitorsImpl extends
         return wrapList(inner().list(parent.resourceGroupName(), parent.name()));
     }
 
-    /**
-     * @return an observable emits connection monitors in this collection
-     */
+    /** @return an observable emits connection monitors in this collection */
     @Override
     public PagedFlux<ConnectionMonitor> listAsync() {
         return wrapPageAsync(inner().listAsync(parent.resourceGroupName(), parent.name()));
@@ -52,7 +46,7 @@ class ConnectionMonitorsImpl extends
     }
 
     protected ConnectionMonitorImpl wrapModel(ConnectionMonitorResultInner inner) {
-        return (inner == null) ? null : new ConnectionMonitorImpl(inner.getName(), parent, inner, inner());
+        return (inner == null) ? null : new ConnectionMonitorImpl(inner.name(), parent, inner, inner());
     }
 
     @Override
@@ -62,8 +56,7 @@ class ConnectionMonitorsImpl extends
 
     @Override
     public Mono<ConnectionMonitor> getByNameAsync(String name) {
-        return inner().getAsync(parent.resourceGroupName(), parent.name(), name)
-                .map(inner -> wrapModel(inner));
+        return inner().getAsync(parent.resourceGroupName(), parent.name(), name).map(inner -> wrapModel(inner));
     }
 
     @Override
@@ -76,12 +69,9 @@ class ConnectionMonitorsImpl extends
         deleteByNameAsync(name).block();
     }
 
-
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(parent.resourceGroupName(),
-                parent.name(),
-                name);
+        return this.inner().deleteAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
     @Override

@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Sku model.
- */
+/** The Sku model. */
 @Fluent
 public final class Sku {
     /*
@@ -26,10 +24,9 @@ public final class Sku {
     private SkuTier tier;
 
     /**
-     * Get the name property: The SKU name. Required for account creation;
-     * optional for update. Note that in older versions, SKU name was called
-     * accountType.
-     * 
+     * Get the name property: The SKU name. Required for account creation; optional for update. Note that in older
+     * versions, SKU name was called accountType.
+     *
      * @return the name value.
      */
     public SkuName name() {
@@ -37,10 +34,9 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The SKU name. Required for account creation;
-     * optional for update. Note that in older versions, SKU name was called
-     * accountType.
-     * 
+     * Set the name property: The SKU name. Required for account creation; optional for update. Note that in older
+     * versions, SKU name was called accountType.
+     *
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -51,7 +47,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The SKU tier. This is based on the SKU name.
-     * 
+     *
      * @return the tier value.
      */
     public SkuTier tier() {

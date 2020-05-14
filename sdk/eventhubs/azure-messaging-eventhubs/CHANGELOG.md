@@ -1,7 +1,15 @@
 # Release History
 
-## 5.1.0-beta.1 (Unreleased)
+## 5.2.0-beta.1 (Unreleased)
 
+
+## 5.1.0 (2020-05-07)
+- Add support for sending a collection of events as a single batch from `EventHubProducerClient` and `EventHubProducerAsyncClient`.
+- Updated dependency version of `azure-core-amqp` to `1.1.2`.
+
+## 5.1.0-beta.1 (2020-04-08)
+- Add support for heartbeat for single process event function in Event Processor Client.
+- Add support for receiving events in batches in Event Processor Client.
 
 ## 5.0.3 (2020-04-08)
 - Fix bug where producers and consumers would be unable to get partition information after a reconnect.
@@ -108,3 +116,5 @@ For release notes and more information please visit https://aka.ms/azure-sdk-pre
   by calling `EventHubPublisher.close()` or `EventHubConsumer.close()`.
 - Creating more than two concurrent `EventHubClients` or `EventHubConsumers` does not work. Limit usage of concurrent
   clients and consumers to two to avoid failures.
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs%2FCHANGELOG.png)

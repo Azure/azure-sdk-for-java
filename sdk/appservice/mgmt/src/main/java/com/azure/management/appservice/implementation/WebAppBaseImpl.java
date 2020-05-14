@@ -5,18 +5,7 @@ package com.azure.management.appservice.implementation;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.management.appservice.models.ConnectionStringDictionaryInner;
-import com.azure.management.appservice.models.HostNameBindingInner;
-import com.azure.management.appservice.models.MSDeployStatusInner;
-import com.azure.management.appservice.models.SiteAuthSettingsInner;
-import com.azure.management.appservice.models.SiteConfigInner;
-import com.azure.management.appservice.models.SiteConfigResourceInner;
-import com.azure.management.appservice.models.SiteInner;
-import com.azure.management.appservice.models.SiteLogsConfigInner;
-import com.azure.management.appservice.models.SitePatchResourceInner;
-import com.azure.management.appservice.models.SiteSourceControlInner;
-import com.azure.management.appservice.models.SlotConfigNamesResourceInner;
-import com.azure.management.appservice.models.StringDictionaryInner;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificate;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AppSetting;
@@ -48,6 +37,18 @@ import com.azure.management.appservice.VirtualApplication;
 import com.azure.management.appservice.WebAppAuthentication;
 import com.azure.management.appservice.WebAppBase;
 import com.azure.management.appservice.WebContainer;
+import com.azure.management.appservice.models.ConnectionStringDictionaryInner;
+import com.azure.management.appservice.models.HostNameBindingInner;
+import com.azure.management.appservice.models.MSDeployStatusInner;
+import com.azure.management.appservice.models.SiteAuthSettingsInner;
+import com.azure.management.appservice.models.SiteConfigInner;
+import com.azure.management.appservice.models.SiteConfigResourceInner;
+import com.azure.management.appservice.models.SiteInner;
+import com.azure.management.appservice.models.SiteLogsConfigInner;
+import com.azure.management.appservice.models.SitePatchResourceInner;
+import com.azure.management.appservice.models.SiteSourceControlInner;
+import com.azure.management.appservice.models.SlotConfigNamesResourceInner;
+import com.azure.management.appservice.models.StringDictionaryInner;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.graphrbac.implementation.RoleAssignmentHelper;
 import com.azure.management.msi.Identity;
@@ -58,15 +59,11 @@ import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -75,36 +72,40 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 /**
  * The implementation for WebAppBase.
+ *
  * @param <FluentT> the fluent interface of the web app or deployment slot or function app
  * @param <FluentImplT> the fluent implementation of the web app or deployment slot or function app
  */
-abstract class WebAppBaseImpl<
-        FluentT extends WebAppBase,
-        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
-        extends GroupableResourceImpl<
-            FluentT,
-            SiteInner,
-            FluentImplT,
-            AppServiceManager>
-        implements
-            WebAppBase,
-            WebAppBase.Definition<FluentT>,
-            WebAppBase.Update<FluentT>,
-            WebAppBase.UpdateStages.WithWebContainer<FluentT> {
+abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+    extends GroupableResourceImpl<FluentT, SiteInner, FluentImplT, AppServiceManager>
+    implements WebAppBase,
+        WebAppBase.Definition<FluentT>,
+        WebAppBase.Update<FluentT>,
+        WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
-    private static final Map<AzureEnvironment, String> DNS_MAP = new HashMap<AzureEnvironment, String>() {{
-        put(AzureEnvironment.AZURE, "azurewebsites.net");
-        put(AzureEnvironment.AZURE_CHINA, "chinacloudsites.cn");
-        put(AzureEnvironment.AZURE_GERMANY, "azurewebsites.de");
-        put(AzureEnvironment.AZURE_US_GOVERNMENT, "azurewebsites.us");
-    }};
+    private final ClientLogger logger = new ClientLogger(getClass());
+
+    private static final Map<AzureEnvironment, String> DNS_MAP =
+        new HashMap<AzureEnvironment, String>() {
+            {
+                put(AzureEnvironment.AZURE, "azurewebsites.net");
+                put(AzureEnvironment.AZURE_CHINA, "chinacloudsites.cn");
+                put(AzureEnvironment.AZURE_GERMANY, "azurewebsites.de");
+                put(AzureEnvironment.AZURE_US_GOVERNMENT, "azurewebsites.us");
+            }
+        };
 
     SiteConfigResourceInner siteConfig;
     KuduClient kuduClient;
@@ -126,7 +127,6 @@ abstract class WebAppBaseImpl<
     private Map<String, Boolean> connectionStringStickiness;
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
-    private MSDeploy msDeploy;
     private WebAppAuthenticationImpl<FluentT, FluentImplT> authentication;
     private boolean authenticationToUpdate;
     private WebAppDiagnosticLogsImpl<FluentT, FluentImplT> diagnosticLogs;
@@ -135,7 +135,12 @@ abstract class WebAppBaseImpl<
     private boolean isInCreateMode;
     private WebAppMsiHandler webAppMsiHandler;
 
-    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigResourceInner siteConfig, SiteLogsConfigInner logConfig, AppServiceManager manager) {
+    WebAppBaseImpl(
+        String name,
+        SiteInner innerObject,
+        SiteConfigResourceInner siteConfig,
+        SiteLogsConfigInner logConfig,
+        AppServiceManager manager) {
         super(name, innerObject, manager);
         if (innerObject != null && innerObject.kind() != null) {
             innerObject.withKind(innerObject.kind().replace(";", ","));
@@ -147,7 +152,7 @@ abstract class WebAppBaseImpl<
 
         webAppMsiHandler = new WebAppMsiHandler(manager.rbacManager(), this);
         normalizeProperties();
-        isInCreateMode = inner() == null || inner().getId() == null;
+        isInCreateMode = inner() == null || inner().id() == null;
         if (!isInCreateMode) {
             initializeKuduClient();
         }
@@ -185,7 +190,7 @@ abstract class WebAppBaseImpl<
             @Override
             public String resourceId() {
                 if (inner() != null) {
-                    return inner().getId();
+                    return inner().id();
                 } else {
                     return null;
                 }
@@ -343,7 +348,7 @@ abstract class WebAppBaseImpl<
         if (inner().defaultHostName() != null) {
             return inner().defaultHostName();
         } else {
-            AzureEnvironment environment = Utils.extractAzureEnvironment(manager().restClient());
+            AzureEnvironment environment = manager().environment();
             String dns = DNS_MAP.get(environment);
             String leaf = name();
             if (this instanceof DeploymentSlotBaseImpl<?, ?, ?, ?, ?>) {
@@ -545,7 +550,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public OperatingSystem operatingSystem() {
-        if (inner().kind() != null && inner().kind().toLowerCase().contains("linux")) {
+        if (inner().kind() != null && inner().kind().toLowerCase(Locale.ROOT).contains("linux")) {
             return OperatingSystem.LINUX;
         } else {
             return OperatingSystem.WINDOWS;
@@ -637,28 +642,32 @@ abstract class WebAppBaseImpl<
         try {
             in.connect(out);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw logger.logExceptionAsError(new RuntimeException(e));
         }
-        final Disposable subscription = observable
+        final Disposable subscription =
+            observable
                 // Do not block current thread
                 .subscribeOn(Schedulers.elastic())
-                .subscribe(s -> {
+                .subscribe(
+                    s -> {
+                        try {
+                            out.write(s.getBytes(StandardCharsets.UTF_8));
+                            out.write('\n');
+                            out.flush();
+                        } catch (IOException e) {
+                            throw logger.logExceptionAsError(new RuntimeException(e));
+                        }
+                    });
+        in
+            .addCallback(
+                () -> {
+                    subscription.dispose();
                     try {
-                        out.write(s.getBytes());
-                        out.write('\n');
-                        out.flush();
+                        out.close();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        e.printStackTrace();
                     }
                 });
-        in.addCallback(() -> {
-            subscription.dispose();
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
         return in;
     }
 
@@ -669,11 +678,25 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Mono<Map<String, AppSetting>> getAppSettingsAsync() {
-        return Mono.zip(listAppSettings(), listSlotConfigurations(),
-                (appSettingsInner, slotConfigs) -> appSettingsInner.properties().entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                entry -> new AppSettingImpl(entry.getKey(), entry.getValue(),
-                                        slotConfigs.appSettingNames() != null && slotConfigs.appSettingNames().contains(entry.getKey())))));
+        return Mono
+            .zip(
+                listAppSettings(),
+                listSlotConfigurations(),
+                (appSettingsInner, slotConfigs) ->
+                    appSettingsInner
+                        .properties()
+                        .entrySet()
+                        .stream()
+                        .collect(
+                            Collectors
+                                .toMap(
+                                    Map.Entry::getKey,
+                                    entry ->
+                                        new AppSettingImpl(
+                                            entry.getKey(),
+                                            entry.getValue(),
+                                            slotConfigs.appSettingNames() != null
+                                                && slotConfigs.appSettingNames().contains(entry.getKey())))));
     }
 
     @Override
@@ -683,11 +706,25 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Mono<Map<String, ConnectionString>> getConnectionStringsAsync() {
-        return Mono.zip(listConnectionStrings(), listSlotConfigurations(),
-                (connectionStringsInner, slotConfigs) -> connectionStringsInner.properties().entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                entry -> new ConnectionStringImpl(entry.getKey(), entry.getValue(),
-                                        slotConfigs.connectionStringNames() != null && slotConfigs.connectionStringNames().contains(entry.getKey())))));
+        return Mono
+            .zip(
+                listConnectionStrings(),
+                listSlotConfigurations(),
+                (connectionStringsInner, slotConfigs) ->
+                    connectionStringsInner
+                        .properties()
+                        .entrySet()
+                        .stream()
+                        .collect(
+                            Collectors
+                                .toMap(
+                                    Map.Entry::getKey,
+                                    entry ->
+                                        new ConnectionStringImpl(
+                                            entry.getKey(),
+                                            entry.getValue(),
+                                            slotConfigs.connectionStringNames() != null
+                                                && slotConfigs.connectionStringNames().contains(entry.getKey())))));
     }
 
     @Override
@@ -697,7 +734,8 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Mono<WebAppAuthentication> getAuthenticationConfigAsync() {
-        return getAuthentication().map(siteAuthSettingsInner -> new WebAppAuthenticationImpl<>(siteAuthSettingsInner, WebAppBaseImpl.this));
+        return getAuthentication()
+            .map(siteAuthSettingsInner -> new WebAppAuthenticationImpl<>(siteAuthSettingsInner, WebAppBaseImpl.this));
     }
 
     abstract Mono<SiteInner> createOrUpdateInner(SiteInner site);
@@ -742,29 +780,37 @@ abstract class WebAppBaseImpl<
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
         // Hostname and SSL bindings
-        IndexableTaskItem rootTaskItem = wrapTask(context -> {
-            // Submit hostname bindings
-            return submitHostNameBindings()
-                    // Submit SSL bindings
-                    .flatMap(fluentT -> submitSslBindings(fluentT.inner()));
-        });
+        IndexableTaskItem rootTaskItem =
+            wrapTask(
+                context -> {
+                    // Submit hostname bindings
+                    return submitHostNameBindings()
+                        // Submit SSL bindings
+                        .flatMap(fluentT -> submitSslBindings(fluentT.inner()));
+                });
         IndexableTaskItem lastTaskItem = rootTaskItem;
         // Site config
         lastTaskItem = sequentialTask(lastTaskItem, context -> submitSiteConfig());
         // Metadata, app settings, and connection strings
-        lastTaskItem = sequentialTask(lastTaskItem, context -> submitMetadata()
-                .flatMap(ignored -> submitAppSettings().mergeWith(submitConnectionStrings())
-                .last())
-                .flatMap(ignored -> submitStickiness()));
+        lastTaskItem =
+            sequentialTask(
+                lastTaskItem,
+                context ->
+                    submitMetadata()
+                        .flatMap(ignored -> submitAppSettings().mergeWith(submitConnectionStrings()).last())
+                        .flatMap(ignored -> submitStickiness()));
         // Source control
-        lastTaskItem = sequentialTask(lastTaskItem, context -> submitSourceControlToDelete().flatMap(ignored -> submitSourceControlToCreate()));
+        lastTaskItem =
+            sequentialTask(
+                lastTaskItem,
+                context -> submitSourceControlToDelete().flatMap(ignored -> submitSourceControlToCreate()));
         // Authentication
         lastTaskItem = sequentialTask(lastTaskItem, context -> submitAuthentication());
         // Log configuration
         lastTaskItem = sequentialTask(lastTaskItem, context -> submitLogConfiguration());
         // MSI roles
         if (msiHandler != null) {
-            lastTaskItem = sequentialTask(lastTaskItem, msiHandler);
+            sequentialTask(lastTaskItem, msiHandler);
         }
 
         addPostRunDependent(rootTaskItem);
@@ -785,10 +831,12 @@ abstract class WebAppBaseImpl<
     public Mono<FluentT> createResourceAsync() {
         this.webAppMsiHandler.processCreatedExternalIdentities();
         this.webAppMsiHandler.handleExternalIdentities();
-        return submitSite(inner()).map(siteInner -> {
-            setInner(siteInner);
-            return (FluentT) WebAppBaseImpl.this;
-        });
+        return submitSite(inner())
+            .map(
+                siteInner -> {
+                    setInner(siteInner);
+                    return (FluentT) WebAppBaseImpl.this;
+                });
     }
 
     @Override
@@ -816,11 +864,13 @@ abstract class WebAppBaseImpl<
         siteUpdate.withRedundancyMode(siteInner.redundancyMode());
 
         this.webAppMsiHandler.handleExternalIdentities(siteUpdate);
-        return submitSite(siteUpdate).map(siteInner1 -> {
-            setInner(siteInner1);
-            webAppMsiHandler.clear();
-            return (FluentT) WebAppBaseImpl.this;
-        });
+        return submitSite(siteUpdate)
+            .map(
+                siteInner1 -> {
+                    setInner(siteInner1);
+                    webAppMsiHandler.clear();
+                    return (FluentT) WebAppBaseImpl.this;
+                });
     }
 
     @Override
@@ -829,17 +879,20 @@ abstract class WebAppBaseImpl<
             isInCreateMode = false;
             initializeKuduClient();
         }
-        return Mono.fromCallable(() -> {
-            normalizeProperties();
-            return null;
-        });
+        return Mono
+            .fromCallable(
+                () -> {
+                    normalizeProperties();
+                    return null;
+                });
     }
 
     Mono<SiteInner> submitSite(final SiteInner site) {
         site.withSiteConfig(new SiteConfigInner());
         // Construct web app observable
         return createOrUpdateInner(site)
-                .map(siteInner -> {
+            .map(
+                siteInner -> {
                     site.withSiteConfig(null);
                     return siteInner;
                 });
@@ -848,7 +901,8 @@ abstract class WebAppBaseImpl<
     Mono<SiteInner> submitSite(final SitePatchResourceInner siteUpdate) {
         // Construct web app observable
         return updateInner(siteUpdate)
-                .map(siteInner -> {
+            .map(
+                siteInner -> {
                     siteInner.withSiteConfig(null);
                     return siteInner;
                 });
@@ -866,14 +920,21 @@ abstract class WebAppBaseImpl<
         if (bindingObservables.isEmpty()) {
             return Mono.just((FluentT) this);
         } else {
-            return Flux.zip(bindingObservables, ignored -> WebAppBaseImpl.this).last()
-                    .onErrorResume(throwable -> {
-                        if (throwable instanceof HttpResponseException && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400) {
-                            return submitSite(inner()).flatMap(ignored -> Flux.zip(bindingObservables, ignored1 -> WebAppBaseImpl.this).last());
+            return Flux
+                .zip(bindingObservables, ignored -> WebAppBaseImpl.this)
+                .last()
+                .onErrorResume(
+                    throwable -> {
+                        if (throwable instanceof HttpResponseException
+                            && ((HttpResponseException) throwable).getResponse().getStatusCode() == 400) {
+                            return submitSite(inner())
+                                .flatMap(
+                                    ignored -> Flux.zip(bindingObservables, ignored1 -> WebAppBaseImpl.this).last());
                         } else {
                             return Mono.error(throwable);
                         }
-                    }).flatMap(WebAppBaseImpl::refreshAsync);
+                    })
+                .flatMap(WebAppBaseImpl::refreshAsync);
         }
     }
 
@@ -887,10 +948,15 @@ abstract class WebAppBaseImpl<
             return Mono.just((Indexable) this);
         } else {
             site.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
-            return Flux.zip(certs, ignored -> site).last().flatMap(this::createOrUpdateInner).map(siteInner -> {
-                setInner(siteInner);
-                return WebAppBaseImpl.this;
-            });
+            return Flux
+                .zip(certs, ignored -> site)
+                .last()
+                .flatMap(this::createOrUpdateInner)
+                .map(
+                    siteInner -> {
+                        setInner(siteInner);
+                        return WebAppBaseImpl.this;
+                    });
         }
     }
 
@@ -899,7 +965,8 @@ abstract class WebAppBaseImpl<
             return Mono.just((Indexable) this);
         }
         return createOrUpdateSiteConfig(siteConfig)
-                .flatMap(returnedSiteConfig -> {
+            .flatMap(
+                returnedSiteConfig -> {
                     siteConfig = returnedSiteConfig;
                     return Mono.just((Indexable) WebAppBaseImpl.this);
                 });
@@ -908,18 +975,21 @@ abstract class WebAppBaseImpl<
     Mono<Indexable> submitAppSettings() {
         Mono<Indexable> observable = Mono.just((Indexable) this);
         if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
-            observable = listAppSettings()
+            observable =
+                listAppSettings()
                     .switchIfEmpty(Mono.just(new StringDictionaryInner()))
-                    .flatMap(stringDictionaryInner -> {
-                        if (stringDictionaryInner.properties() == null) {
-                            stringDictionaryInner.withProperties(new HashMap<String, String>());
-                        }
-                        for (String appSettingKey : appSettingsToRemove) {
-                            stringDictionaryInner.properties().remove(appSettingKey);
-                        }
-                        stringDictionaryInner.properties().putAll(appSettingsToAdd);
-                        return updateAppSettings(stringDictionaryInner);
-                    }).map(ignored -> WebAppBaseImpl.this);
+                    .flatMap(
+                        stringDictionaryInner -> {
+                            if (stringDictionaryInner.properties() == null) {
+                                stringDictionaryInner.withProperties(new HashMap<String, String>());
+                            }
+                            for (String appSettingKey : appSettingsToRemove) {
+                                stringDictionaryInner.properties().remove(appSettingKey);
+                            }
+                            stringDictionaryInner.properties().putAll(appSettingsToAdd);
+                            return updateAppSettings(stringDictionaryInner);
+                        })
+                    .map(ignored -> WebAppBaseImpl.this);
         }
         return observable;
     }
@@ -932,18 +1002,21 @@ abstract class WebAppBaseImpl<
     Mono<Indexable> submitConnectionStrings() {
         Mono<Indexable> observable = Mono.just((Indexable) this);
         if (!connectionStringsToAdd.isEmpty() || !connectionStringsToRemove.isEmpty()) {
-            observable = listConnectionStrings()
+            observable =
+                listConnectionStrings()
                     .switchIfEmpty(Mono.just(new ConnectionStringDictionaryInner()))
-                    .flatMap(dictionaryInner -> {
-                        if (dictionaryInner.properties() == null) {
-                            dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
-                        }
-                        for (String connectionString : connectionStringsToRemove) {
-                            dictionaryInner.properties().remove(connectionString);
-                        }
-                        dictionaryInner.properties().putAll(connectionStringsToAdd);
-                        return updateConnectionStrings(dictionaryInner);
-                    }).map(ignored -> WebAppBaseImpl.this);
+                    .flatMap(
+                        dictionaryInner -> {
+                            if (dictionaryInner.properties() == null) {
+                                dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
+                            }
+                            for (String connectionString : connectionStringsToRemove) {
+                                dictionaryInner.properties().remove(connectionString);
+                            }
+                            dictionaryInner.properties().putAll(connectionStringsToAdd);
+                            return updateConnectionStrings(dictionaryInner);
+                        })
+                    .map(ignored -> WebAppBaseImpl.this);
         }
         return observable;
     }
@@ -951,35 +1024,41 @@ abstract class WebAppBaseImpl<
     Mono<Indexable> submitStickiness() {
         Mono<Indexable> observable = Mono.just((Indexable) this);
         if (!appSettingStickiness.isEmpty() || !connectionStringStickiness.isEmpty()) {
-            observable = listSlotConfigurations()
+            observable =
+                listSlotConfigurations()
                     .switchIfEmpty(Mono.just(new SlotConfigNamesResourceInner()))
-                    .flatMap(slotConfigNamesResourceInner -> {
-                        if (slotConfigNamesResourceInner.appSettingNames() == null) {
-                            slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>());
-                        }
-                        if (slotConfigNamesResourceInner.connectionStringNames() == null) {
-                            slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>());
-                        }
-                        Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
-                        Set<String> stickyConnectionStringNames = new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
-                        for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
-                            if (stickiness.getValue()) {
-                                stickyAppSettingKeys.add(stickiness.getKey());
-                            } else {
-                                stickyAppSettingKeys.remove(stickiness.getKey());
+                    .flatMap(
+                        slotConfigNamesResourceInner -> {
+                            if (slotConfigNamesResourceInner.appSettingNames() == null) {
+                                slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>());
                             }
-                        }
-                        for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
-                            if (stickiness.getValue()) {
-                                stickyConnectionStringNames.add(stickiness.getKey());
-                            } else {
-                                stickyConnectionStringNames.remove(stickiness.getKey());
+                            if (slotConfigNamesResourceInner.connectionStringNames() == null) {
+                                slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>());
                             }
-                        }
-                        slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
-                        slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
-                        return updateSlotConfigurations(slotConfigNamesResourceInner);
-                    }).map(ignored -> WebAppBaseImpl.this);
+                            Set<String> stickyAppSettingKeys =
+                                new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
+                            Set<String> stickyConnectionStringNames =
+                                new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
+                            for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
+                                if (stickiness.getValue()) {
+                                    stickyAppSettingKeys.add(stickiness.getKey());
+                                } else {
+                                    stickyAppSettingKeys.remove(stickiness.getKey());
+                                }
+                            }
+                            for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
+                                if (stickiness.getValue()) {
+                                    stickyConnectionStringNames.add(stickiness.getKey());
+                                } else {
+                                    stickyConnectionStringNames.remove(stickiness.getKey());
+                                }
+                            }
+                            slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
+                            slotConfigNamesResourceInner
+                                .withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
+                            return updateSlotConfigurations(slotConfigNamesResourceInner);
+                        })
+                    .map(ignored -> WebAppBaseImpl.this);
         }
         return observable;
     }
@@ -988,10 +1067,11 @@ abstract class WebAppBaseImpl<
         if (sourceControl == null || sourceControlToDelete) {
             return Mono.just((Indexable) this);
         }
-        return sourceControl.registerGithubAccessToken()
-                .then(createOrUpdateSourceControl(sourceControl.inner()))
-                .delayElement(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
-                .map(ignored -> WebAppBaseImpl.this);
+        return sourceControl
+            .registerGithubAccessToken()
+            .then(createOrUpdateSourceControl(sourceControl.inner()))
+            .delayElement(SdkContext.getDelayDuration(Duration.ofSeconds(30)))
+            .map(ignored -> WebAppBaseImpl.this);
     }
 
     Mono<Indexable> submitSourceControlToDelete() {
@@ -1005,20 +1085,26 @@ abstract class WebAppBaseImpl<
         if (!authenticationToUpdate) {
             return Mono.just((Indexable) this);
         }
-        return updateAuthentication(authentication.inner()).map(siteAuthSettingsInner -> {
-            WebAppBaseImpl.this.authentication = new WebAppAuthenticationImpl<>(siteAuthSettingsInner, WebAppBaseImpl.this);
-            return WebAppBaseImpl.this;
-        });
+        return updateAuthentication(authentication.inner())
+            .map(
+                siteAuthSettingsInner -> {
+                    WebAppBaseImpl.this.authentication =
+                        new WebAppAuthenticationImpl<>(siteAuthSettingsInner, WebAppBaseImpl.this);
+                    return WebAppBaseImpl.this;
+                });
     }
 
     Mono<Indexable> submitLogConfiguration() {
         if (!diagnosticLogsToUpdate) {
             return Mono.just((Indexable) this);
         }
-        return updateDiagnosticLogsConfig(diagnosticLogs.inner()).map(siteLogsConfigInner -> {
-            WebAppBaseImpl.this.diagnosticLogs = new WebAppDiagnosticLogsImpl<>(siteLogsConfigInner, WebAppBaseImpl.this);
-            return WebAppBaseImpl.this;
-        });
+        return updateDiagnosticLogsConfig(diagnosticLogs.inner())
+            .map(
+                siteLogsConfigInner -> {
+                    WebAppBaseImpl.this.diagnosticLogs =
+                        new WebAppDiagnosticLogsImpl<>(siteLogsConfigInner, WebAppBaseImpl.this);
+                    return WebAppBaseImpl.this;
+                });
     }
 
     @Override
@@ -1026,10 +1112,9 @@ abstract class WebAppBaseImpl<
         return new WebDeploymentImpl<>(this);
     }
 
-    WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
-        if (hostNameSslBinding.newCertificate() != null) {
-            sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
-        }
+    WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(
+        final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
+        sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         return this;
     }
 
@@ -1038,16 +1123,16 @@ abstract class WebAppBaseImpl<
         for (String hostname : hostnames) {
             if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
                 defineHostnameBinding()
-                        .withAzureManagedDomain(domain)
-                        .withSubDomain(hostname)
-                        .withDnsRecordType(CustomHostNameDnsRecordType.A)
-                        .attach();
+                    .withAzureManagedDomain(domain)
+                    .withSubDomain(hostname)
+                    .withDnsRecordType(CustomHostNameDnsRecordType.A)
+                    .attach();
             } else {
                 defineHostnameBinding()
-                        .withAzureManagedDomain(domain)
-                        .withSubDomain(hostname)
-                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                        .attach();
+                    .withAzureManagedDomain(domain)
+                    .withSubDomain(hostname)
+                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                    .attach();
             }
         }
         return (FluentImplT) this;
@@ -1067,10 +1152,10 @@ abstract class WebAppBaseImpl<
     public FluentImplT withThirdPartyHostnameBinding(String domain, String... hostnames) {
         for (String hostname : hostnames) {
             defineHostnameBinding()
-                    .withThirdPartyDomain(domain)
-                    .withSubDomain(hostname)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                    .attach();
+                .withThirdPartyDomain(domain)
+                .withSubDomain(hostname)
+                .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                .attach();
         }
         return (FluentImplT) this;
     }
@@ -1091,9 +1176,7 @@ abstract class WebAppBaseImpl<
 
     @SuppressWarnings("unchecked")
     FluentImplT withHostNameBinding(final HostNameBindingImpl<FluentT, FluentImplT> hostNameBinding) {
-        this.hostNameBindingsToCreate.put(
-                hostNameBinding.name(),
-                hostNameBinding);
+        this.hostNameBindingsToCreate.put(hostNameBinding.name(), hostNameBinding);
         return (FluentImplT) this;
     }
 
@@ -1439,10 +1522,16 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public Mono<FluentT> refreshAsync() {
-        return super.refreshAsync().flatMap(fluentT -> getConfigInner().map(returnedSiteConfig -> {
-            siteConfig = returnedSiteConfig;
-            return fluentT;
-        }));
+        return super
+            .refreshAsync()
+            .flatMap(
+                fluentT ->
+                    getConfigInner()
+                        .map(
+                            returnedSiteConfig -> {
+                                siteConfig = returnedSiteConfig;
+                                return fluentT;
+                            }));
     }
 
     @Override
@@ -1467,11 +1556,11 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     public FluentImplT withContainerLoggingEnabled(int quotaInMB, int retentionDays) {
         return updateDiagnosticLogsConfiguration()
-                .withWebServerLogging()
-                .withWebServerLogsStoredOnFileSystem()
-                .withWebServerFileSystemQuotaInMB(quotaInMB)
-                .withLogRetentionDays(retentionDays)
-                .attach();
+            .withWebServerLogging()
+            .withWebServerLogsStoredOnFileSystem()
+            .withWebServerFileSystemQuotaInMB(quotaInMB)
+            .withLogRetentionDays(retentionDays)
+            .attach();
     }
 
     @Override
@@ -1482,9 +1571,7 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withContainerLoggingDisabled() {
-        return updateDiagnosticLogsConfiguration()
-                .withoutWebServerLogging()
-                .attach();
+        return updateDiagnosticLogsConfiguration().withoutWebServerLogging().attach();
     }
 
     @Override

@@ -3,6 +3,7 @@
 
 package com.azure.core.test.policy;
 
+import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -82,6 +83,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
 
         // Remove sensitive information such as SAS token signatures from the recording.
         UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+        redactedAccountName(urlBuilder);
         if (urlBuilder.getQuery().containsKey(SIG)) {
             urlBuilder.setQueryParameter(SIG, "REDACTED");
         }
@@ -110,6 +112,13 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                     return bufferedResponse;
                 });
             });
+    }
+
+    private void redactedAccountName(UrlBuilder urlBuilder) {
+        String[] hostParts = urlBuilder.getHost().split("\\.");
+        hostParts[0] = "REDACTED";
+
+        urlBuilder.setHost(String.join(".", hostParts));
     }
 
     private void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
@@ -156,7 +165,8 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 responseData.put(BODY, content);
                 return responseData;
             });
-        } else if (contentType.equalsIgnoreCase("application/octet-stream")) {
+        } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
+            || contentType.equalsIgnoreCase("avro/binary")) {
             return response.getBodyAsByteArray().switchIfEmpty(Mono.just(new byte[0])).map(bytes -> {
                 if (bytes.length == 0) {
                     return responseData;

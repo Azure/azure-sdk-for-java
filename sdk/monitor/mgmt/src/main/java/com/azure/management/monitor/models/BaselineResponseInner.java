@@ -12,9 +12,7 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The BaselineResponse model.
- */
+/** The BaselineResponse model. */
 @JsonFlatten
 @Fluent
 public class BaselineResponseInner {
@@ -46,7 +44,7 @@ public class BaselineResponseInner {
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in. 
+     * The interval (window size) for which the metric data was returned in.
      * This may be adjusted in the future and returned back from what was
      * originally requested.  This is not present if a metadata request was
      * made.
@@ -80,16 +78,16 @@ public class BaselineResponseInner {
 
     /**
      * Get the id property: the metric baseline Id.
-     * 
+     *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
     /**
      * Get the type property: the resource type of the baseline resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -97,9 +95,8 @@ public class BaselineResponseInner {
     }
 
     /**
-     * Get the name property: the name and the display name of the metric, i.e.
-     * it is localizable string.
-     * 
+     * Get the name property: the name and the display name of the metric, i.e. it is localizable string.
+     *
      * @return the name value.
      */
     public LocalizableStringInner name() {
@@ -107,11 +104,10 @@ public class BaselineResponseInner {
     }
 
     /**
-     * Get the timespan property: The timespan for which the data was
-     * retrieved. Its value consists of two datetimes concatenated, separated
-     * by '/'.  This may be adjusted in the future and returned back from what
-     * was originally requested.
-     * 
+     * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
+     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * requested.
+     *
      * @return the timespan value.
      */
     public String timespan() {
@@ -119,11 +115,10 @@ public class BaselineResponseInner {
     }
 
     /**
-     * Set the timespan property: The timespan for which the data was
-     * retrieved. Its value consists of two datetimes concatenated, separated
-     * by '/'.  This may be adjusted in the future and returned back from what
-     * was originally requested.
-     * 
+     * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
+     * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
+     * requested.
+     *
      * @param timespan the timespan value to set.
      * @return the BaselineResponseInner object itself.
      */
@@ -133,11 +128,10 @@ public class BaselineResponseInner {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the
-     * metric data was returned in.  This may be adjusted in the future and
-     * returned back from what was originally requested.  This is not present
-     * if a metadata request was made.
-     * 
+     * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
+     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * request was made.
+     *
      * @return the interval value.
      */
     public Duration interval() {
@@ -145,11 +139,10 @@ public class BaselineResponseInner {
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the
-     * metric data was returned in.  This may be adjusted in the future and
-     * returned back from what was originally requested.  This is not present
-     * if a metadata request was made.
-     * 
+     * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
+     * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
+     * request was made.
+     *
      * @param interval the interval value to set.
      * @return the BaselineResponseInner object itself.
      */
@@ -160,7 +153,7 @@ public class BaselineResponseInner {
 
     /**
      * Get the aggregation property: The aggregation type of the metric.
-     * 
+     *
      * @return the aggregation value.
      */
     public String aggregation() {
@@ -169,7 +162,7 @@ public class BaselineResponseInner {
 
     /**
      * Set the aggregation property: The aggregation type of the metric.
-     * 
+     *
      * @param aggregation the aggregation value to set.
      * @return the BaselineResponseInner object itself.
      */
@@ -180,7 +173,7 @@ public class BaselineResponseInner {
 
     /**
      * Get the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @return the timestamps value.
      */
     public List<OffsetDateTime> timestamps() {
@@ -189,7 +182,7 @@ public class BaselineResponseInner {
 
     /**
      * Set the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @param timestamps the timestamps value to set.
      * @return the BaselineResponseInner object itself.
      */
@@ -200,7 +193,7 @@ public class BaselineResponseInner {
 
     /**
      * Get the baseline property: the baseline values for each sensitivity.
-     * 
+     *
      * @return the baseline value.
      */
     public List<Baseline> baseline() {
@@ -209,7 +202,7 @@ public class BaselineResponseInner {
 
     /**
      * Set the baseline property: the baseline values for each sensitivity.
-     * 
+     *
      * @param baseline the baseline value to set.
      * @return the BaselineResponseInner object itself.
      */
@@ -220,7 +213,7 @@ public class BaselineResponseInner {
 
     /**
      * Get the metadata property: the baseline metadata values.
-     * 
+     *
      * @return the metadata value.
      */
     public List<BaselineMetadataValueInner> metadata() {
@@ -229,7 +222,7 @@ public class BaselineResponseInner {
 
     /**
      * Set the metadata property: the baseline metadata values.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the BaselineResponseInner object itself.
      */

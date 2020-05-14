@@ -7,7 +7,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 
 /**
  * The type Cosmos async database response.
@@ -22,9 +26,18 @@ public class CosmosAsyncDatabaseResponse extends CosmosResponse<CosmosDatabasePr
             super.setProperties(null);
             database = null;
         } else {
-            CosmosDatabaseProperties props = new CosmosDatabaseProperties(bodyAsString, null);
+            SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
+            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            CosmosDatabaseProperties props =  new CosmosDatabaseProperties(bodyAsString, null);
+            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.DATABASE_DESERIALIZATION
+            );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
             super.setProperties(props);
-            database = BridgeInternal.createCosmosAsyncDatabase(props.getId(), client);
+            database = BridgeInternal.createCosmosAsyncDatabase(ModelBridgeInternal.getResourceFromResourceWrapper(props).getId(), client);
         }
     }
 
