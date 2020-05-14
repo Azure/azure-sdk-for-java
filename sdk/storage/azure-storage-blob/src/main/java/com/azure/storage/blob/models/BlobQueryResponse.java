@@ -6,7 +6,7 @@ package com.azure.storage.blob.models;
 import com.azure.core.http.rest.ResponseBase;
 
 /**
- * This class contains the response information return from the server when quick querying a blob.
+ * This class contains the response information return from the server when querying a blob.
  */
 public final class BlobQueryResponse extends ResponseBase<BlobQuickQueryHeaders, Void> {
     /**

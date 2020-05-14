@@ -1686,6 +1686,7 @@ public class BlobAsyncClientBase {
             requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
+                /* Parse the avro reactive stream. */
                 parse(response.getValue(), o -> this.parseRecord(o, finalQueryOptions.getErrorReceiver(),
                     finalQueryOptions.getProgressReceiver())),
                 response.getDeserializedHeaders()));
@@ -1718,7 +1719,6 @@ public class BlobAsyncClientBase {
         if (!(quickQueryRecord instanceof Map)) {
             return Mono.error(new IllegalArgumentException("Expected object to be of type Map"));
         }
-        AvroSchema.checkType("record", quickQueryRecord, Map.class);
         Map<?, ?> record = (Map<?, ?>) quickQueryRecord;
         Object recordSchema = record.get(AvroConstants.RECORD);
 

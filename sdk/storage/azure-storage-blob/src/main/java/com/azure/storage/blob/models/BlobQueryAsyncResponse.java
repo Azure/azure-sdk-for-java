@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 import java.nio.ByteBuffer;
 
 /**
- * This class contains the response information returned from the server when running a quick query a blob.
+ * This class contains the response information returned from the server when querying a blob.
  */
 public final class BlobQueryAsyncResponse extends ResponseBase<BlobQuickQueryHeaders, Flux<ByteBuffer>> {
     /**
