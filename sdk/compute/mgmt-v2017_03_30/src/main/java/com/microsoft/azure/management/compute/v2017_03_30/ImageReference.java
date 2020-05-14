@@ -16,7 +16,8 @@ import com.microsoft.azure.SubResource;
  * about platform images, marketplace images, or virtual machine images. This
  * element is required when you want to use a platform image, marketplace
  * image, or virtual machine image, but is not used in other creation
- * operations.
+ * operations. NOTE: Image reference publisher and offer can only be set when
+ * you create the scale set.
  */
 public class ImageReference extends SubResource {
     /**
@@ -50,7 +51,7 @@ public class ImageReference extends SubResource {
     private String version;
 
     /**
-     * Get the publisher value.
+     * Get the image publisher.
      *
      * @return the publisher value
      */
@@ -59,7 +60,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Set the publisher value.
+     * Set the image publisher.
      *
      * @param publisher the publisher value to set
      * @return the ImageReference object itself.
@@ -70,7 +71,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Get the offer value.
+     * Get specifies the offer of the platform image or marketplace image used to create the virtual machine.
      *
      * @return the offer value
      */
@@ -79,7 +80,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Set the offer value.
+     * Set specifies the offer of the platform image or marketplace image used to create the virtual machine.
      *
      * @param offer the offer value to set
      * @return the ImageReference object itself.
@@ -90,7 +91,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Get the sku value.
+     * Get the image SKU.
      *
      * @return the sku value
      */
@@ -99,7 +100,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Set the sku value.
+     * Set the image SKU.
      *
      * @param sku the sku value to set
      * @return the ImageReference object itself.
@@ -110,7 +111,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Get the version value.
+     * Get specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
      *
      * @return the version value
      */
@@ -119,7 +120,7 @@ public class ImageReference extends SubResource {
     }
 
     /**
-     * Set the version value.
+     * Set specifies the version of the platform image or marketplace image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
      *
      * @param version the version value to set
      * @return the ImageReference object itself.
