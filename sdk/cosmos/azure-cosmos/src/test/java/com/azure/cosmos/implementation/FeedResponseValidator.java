@@ -2,9 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.models.CosmosConflictProperties;
+import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosDatabaseProperties;
+import com.azure.cosmos.models.CosmosPermissionProperties;
+import com.azure.cosmos.models.CosmosStoredProcedureProperties;
+import com.azure.cosmos.models.CosmosTriggerProperties;
+import com.azure.cosmos.models.CosmosUserDefinedFunctionProperties;
+import com.azure.cosmos.models.CosmosUserProperties;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.ResourceWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -124,11 +131,17 @@ public interface FeedResponseValidator<T> {
         }
 
         private <T> Resource getResource(T response) {
-            if (response instanceof Resource) {
-                return (Resource) response;
-            }
-            if (response instanceof ResourceWrapper) {
-                return ModelBridgeInternal.getResourceFromResourceWrapper((ResourceWrapper) response);
+            if (response instanceof Resource
+                || response instanceof CosmosConflictProperties
+                || response instanceof CosmosContainerProperties
+                || response instanceof CosmosDatabaseProperties
+                || response instanceof CosmosPermissionProperties
+                || response instanceof CosmosStoredProcedureProperties
+                || response instanceof CosmosTriggerProperties
+                || response instanceof CosmosUserDefinedFunctionProperties
+                || response instanceof CosmosUserProperties) {
+
+                return ModelBridgeInternal.getResource(response);
             }
 
             return null;
