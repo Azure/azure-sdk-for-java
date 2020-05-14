@@ -50,10 +50,10 @@ az group create --name my-resource-group --location westus2
 ```bash
 # Create Form Recognizer
 az cognitiveservices account create \
-    --name text-analytics-resource \
+    --name form-recognizer-resource \
     --resource-group my-resource-group \
-    --kind TextAnalytics \
-    --sku F0 \
+    --kind FormRecognizer \
+    --sku S0 \
     --location westus2 \
     --yes
 ```
