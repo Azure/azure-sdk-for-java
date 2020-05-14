@@ -1,8 +1,8 @@
 parameters:
   Artifacts: []
   ArtifactName: 'not-specified'
-  TargetDocRepoOwner: 'MicrosoftDocs'
-  TargetDocRepoName: 'azure-docs-sdk-python'
+  TargetDocRepoOwner: ''
+  TargetDocRepoName: ''
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
