@@ -1,29 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azsjavagetsynonymmapthrowsonnotfoundwithresponse64f803111d.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06-Preview",
     "Headers" : {
-      "x-ms-client-request-id" : "fb027e75-67af-4cd9-a34a-207ee17f8e0f"
+      "x-ms-client-request-id" : "f3610e1a-5f1f-4dd5-a2c7-cec3c1ea40b8"
     },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "fb027e75-67af-4cd9-a34a-207ee17f8e0f",
+      "request-id" : "f3610e1a-5f1f-4dd5-a2c7-cec3c1ea40b8",
       "StatusCode" : "404",
-      "Date" : "Tue, 21 Apr 2020 19:14:48 GMT",
+      "Date" : "Mon, 11 May 2020 18:11:43 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "fb027e75-67af-4cd9-a34a-207ee17f8e0f",
-      "elapsed-time" : "54",
+      "client-request-id" : "f3610e1a-5f1f-4dd5-a2c7-cec3c1ea40b8",
+      "elapsed-time" : "14",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "174",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azsjavagetsynonymmapthrowsonnotfoundwithresponse64f803111d'.\"}}",
+      "Content-Length" : "131",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azsjavagetsynonymmapthrowsonnotfoundwithresponse64f803111d" ]
+  "variables" : [ ]
 }

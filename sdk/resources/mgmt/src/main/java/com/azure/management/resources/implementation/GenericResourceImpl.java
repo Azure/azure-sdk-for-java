@@ -36,9 +36,9 @@ final class GenericResourceImpl
                         GenericResourceInner innerModel,
                         final ResourceManager resourceManager) {
         super(key, innerModel, resourceManager);
-        resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.getId());
-        resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.getId());
-        parentResourcePath = ResourceUtils.parentRelativePathFromResourceId(innerModel.getId());
+        resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.id());
+        resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.id());
+        parentResourcePath = ResourceUtils.parentRelativePathFromResourceId(innerModel.id());
     }
 
     @Override
@@ -152,7 +152,7 @@ final class GenericResourceImpl
                     .flatMap(provider -> {
                         String id;
                         if (!isInCreateMode()) {
-                            id = inner().getId();
+                            id = inner().id();
                         } else {
                             id = ResourceUtils.constructResourceId(
                                     serviceClient.getSubscriptionId(),
@@ -171,7 +171,7 @@ final class GenericResourceImpl
                 .flatMap(api -> {
                     String name = this.name();
                     if (!isInCreateMode()) {
-                        name = ResourceUtils.nameFromResourceId(inner().getId());
+                        name = ResourceUtils.nameFromResourceId(inner().id());
                     }
                     return resourceClient.createOrUpdateAsync(
                             resourceGroupName(),

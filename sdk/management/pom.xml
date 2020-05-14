@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.azure</groupId>
     <version>2.0.0-SNAPSHOT</version>
-    <artifactId>azure-parent</artifactId>
+    <artifactId>azure-management-parent</artifactId>
     <packaging>pom</packaging>
 
     <name>Microsoft Azure SDK Parent</name>
@@ -59,7 +59,7 @@
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-core</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.0</version>
             </dependency>
             <dependency>
                 <groupId>com.azure</groupId>
@@ -288,18 +288,49 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>3.1.1</version>
                 <configuration>
-                    <doctitle>Microsoft Azure Management Libraries for Java ${project.version}</doctitle>
-                    <windowtitle>Microsoft Azure Management Libraries for Java ${project.version}</windowtitle>
+                    <source>1.8</source>
+                    <doctitle>Azure SDK for Java Reference Documentation</doctitle>
+                    <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
+                    <footer>Visit the &lt;a href="https://docs.microsoft.com/java/azure/"&gt;Azure for Java Developers&lt;/a&gt;site
+                      for more Java documentation, including quick starts, tutorials, and code samples.
+                    </footer>
+                    <linksource>false</linksource>
                     <excludePackageNames>
-                        *.samples;*.implementation.*;*.utils.*;com.microsoft.azure.utility;*.management.billing;*.management.cognitiveservices;*.management.consumption;*.management.customerinsights;*.management.devices;*.management.devtestlab;*.management.insights;*.management.logic;*.management.machinelearning;*.management.notificationhubs;*.management.powerbi;*.management.recoveryservices;*.management.relay;*.management.scheduler;*.management.servicefabric;*.management.streamanalytics
+                      *.impl*:
+                      *.implementation*:
+                      *.utils:
+                      *.samples
                     </excludePackageNames>
-                    <bottom><![CDATA[<code>/**
-<br />* Copyright (c) Microsoft Corporation. All rights reserved.
-<br />* Licensed under the MIT License. See License.txt in the project root for
-<br />* license information.
-<br />*/</code>]]></bottom>
+                    <groups>
+                        <group>
+                            <title>Azure Management</title>
+                            <packages>com.azure.management*</packages>
+                        </group>
+                    </groups>
+                    <links>
+                        <link>https://docs.oracle.com/javase/8/docs/api/</link>
+                        <link>https://projectreactor.io/docs/core/release/api/</link>
+                        <link>https://netty.io/4.1/api/</link>
+                        <link>http://reactivex.io/RxJava/javadoc/</link>
+                    </links>
+                    <isOffline>false</isOffline>
+                    <doclet>org.apidesign.javadoc.codesnippet.Doclet</doclet>
+                    <docletArtifact>
+                        <groupId>org.apidesign.javadoc</groupId>
+                        <artifactId>codesnippet-doclet</artifactId>
+                        <version>0.53</version> <!-- {x-version-update;org.apidesign.javadoc:codesnippet-doclet;external_dependency} -->
+                    </docletArtifact>
+                    <additionalOptions>
+                        <additionalOption>-maxLineLength 120</additionalOption>
+                        <additionalOption>-snippetpath ${project.basedir}/src/samples/java</additionalOption>
+                        <additionalOption>-suppressMissingLinkWarnings</additionalOption>
+                    </additionalOptions>
+                    <failOnError>true</failOnError>
+                    <failOnWarnings>true</failOnWarnings>
+                    <doclint>all</doclint>
+                    <quiet>true</quiet>
                 </configuration>
             </plugin>
 

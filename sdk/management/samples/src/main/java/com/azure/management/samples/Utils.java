@@ -16,6 +16,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.RetryPolicy;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
@@ -45,6 +46,20 @@ import com.azure.management.containerservice.KubernetesCluster;
 import com.azure.management.cosmosdb.CosmosDBAccount;
 import com.azure.management.cosmosdb.DatabaseAccountListKeysResult;
 import com.azure.management.cosmosdb.DatabaseAccountListReadOnlyKeysResult;
+import com.azure.management.dns.ARecordSet;
+import com.azure.management.dns.AaaaRecordSet;
+import com.azure.management.dns.CNameRecordSet;
+import com.azure.management.dns.DnsZone;
+import com.azure.management.dns.MXRecordSet;
+import com.azure.management.dns.MxRecord;
+import com.azure.management.dns.NSRecordSet;
+import com.azure.management.dns.PtrRecordSet;
+import com.azure.management.dns.SoaRecord;
+import com.azure.management.dns.SoaRecordSet;
+import com.azure.management.dns.SrvRecord;
+import com.azure.management.dns.SrvRecordSet;
+import com.azure.management.dns.TxtRecord;
+import com.azure.management.dns.TxtRecordSet;
 import com.azure.management.graphrbac.ActiveDirectoryApplication;
 import com.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.azure.management.graphrbac.ActiveDirectoryObject;
@@ -157,6 +172,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -256,7 +272,7 @@ public final class Utils {
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
-                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().getId());
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
                     }
                 } else {
                     if (disk.vhd().uri() != null) {
@@ -1076,140 +1092,140 @@ public final class Utils {
 //        }
 //        System.out.println(info.toString());
 //    }
-//
-//    /**
-//     * Print a dns zone.
-//     *
-//     * @param dnsZone a dns zone
-//     */
-//    public static void print(DnsZone dnsZone) {
-//        StringBuilder info = new StringBuilder();
-//        info.append("DNS Zone: ").append(dnsZone.id())
-//                .append("\n\tName (Top level domain): ").append(dnsZone.name())
-//                .append("\n\tResource group: ").append(dnsZone.resourceGroupName())
-//                .append("\n\tRegion: ").append(dnsZone.regionName())
-//                .append("\n\tTags: ").append(dnsZone.tags())
-//                .append("\n\tName servers:");
-//        for (String nameServer : dnsZone.nameServers()) {
-//            info.append("\n\t\t").append(nameServer);
-//        }
-//        SoaRecordSet soaRecordSet = dnsZone.getSoaRecordSet();
-//        SoaRecord soaRecord = soaRecordSet.record();
-//        info.append("\n\tSOA Record:")
-//                .append("\n\t\tHost:").append(soaRecord.host())
-//                .append("\n\t\tEmail:").append(soaRecord.email())
-//                .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
-//                .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
-//                .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
-//                .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
-//                .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
-//
-//        PagedList<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
-//        info.append("\n\tA Record sets:");
-//        for (ARecordSet aRecordSet : aRecordSets) {
-//            info.append("\n\t\tId: ").append(aRecordSet.id())
-//                    .append("\n\t\tName: ").append(aRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
-//                    .append("\n\t\tIP v4 addresses: ");
-//            for (String ipAddress : aRecordSet.ipv4Addresses()) {
-//                info.append("\n\t\t\t").append(ipAddress);
-//            }
-//        }
-//
-//        PagedList<AaaaRecordSet> aaaaRecordSets = dnsZone.aaaaRecordSets().list();
-//        info.append("\n\tAAAA Record sets:");
-//        for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
-//            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
-//                    .append("\n\t\tName: ").append(aaaaRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
-//                    .append("\n\t\tIP v6 addresses: ");
-//            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
-//                info.append("\n\t\t\t").append(ipAddress);
-//            }
-//        }
-//
-//        PagedList<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
-//        info.append("\n\tCNAME Record sets:");
-//        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
-//            info.append("\n\t\tId: ").append(cnameRecordSet.id())
-//                    .append("\n\t\tName: ").append(cnameRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
-//                    .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
-//        }
-//
-//        PagedList<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
-//        info.append("\n\tMX Record sets:");
-//        for (MXRecordSet mxRecordSet : mxRecordSets) {
-//            info.append("\n\t\tId: ").append(mxRecordSet.id())
-//                    .append("\n\t\tName: ").append(mxRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
-//                    .append("\n\t\tRecords: ");
-//            for (MxRecord mxRecord : mxRecordSet.records()) {
-//                info.append("\n\t\t\tExchange server, Preference: ")
-//                        .append(mxRecord.exchange())
-//                        .append(" ")
-//                        .append(mxRecord.preference());
-//            }
-//        }
-//
-//        PagedList<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
-//        info.append("\n\tNS Record sets:");
-//        for (NSRecordSet nsRecordSet : nsRecordSets) {
-//            info.append("\n\t\tId: ").append(nsRecordSet.id())
-//                    .append("\n\t\tName: ").append(nsRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
-//                    .append("\n\t\tName servers: ");
-//            for (String nameServer : nsRecordSet.nameServers()) {
-//                info.append("\n\t\t\t").append(nameServer);
-//            }
-//        }
-//
-//        PagedList<PtrRecordSet> ptrRecordSets = dnsZone.ptrRecordSets().list();
-//        info.append("\n\tPTR Record sets:");
-//        for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
-//            info.append("\n\t\tId: ").append(ptrRecordSet.id())
-//                    .append("\n\t\tName: ").append(ptrRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
-//                    .append("\n\t\tTarget domain names: ");
-//            for (String domainNames : ptrRecordSet.targetDomainNames()) {
-//                info.append("\n\t\t\t").append(domainNames);
-//            }
-//        }
-//
-//        PagedList<SrvRecordSet> srvRecordSets = dnsZone.srvRecordSets().list();
-//        info.append("\n\tSRV Record sets:");
-//        for (SrvRecordSet srvRecordSet : srvRecordSets) {
-//            info.append("\n\t\tId: ").append(srvRecordSet.id())
-//                    .append("\n\t\tName: ").append(srvRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
-//                    .append("\n\t\tRecords: ");
-//            for (SrvRecord srvRecord : srvRecordSet.records()) {
-//                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
-//                        .append(srvRecord.target())
-//                        .append(", ")
-//                        .append(srvRecord.port())
-//                        .append(", ")
-//                        .append(srvRecord.priority())
-//                        .append(", ")
-//                        .append(srvRecord.weight());
-//            }
-//        }
-//
-//        PagedList<TxtRecordSet> txtRecordSets = dnsZone.txtRecordSets().list();
-//        info.append("\n\tTXT Record sets:");
-//        for (TxtRecordSet txtRecordSet : txtRecordSets) {
-//            info.append("\n\t\tId: ").append(txtRecordSet.id())
-//                    .append("\n\t\tName: ").append(txtRecordSet.name())
-//                    .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
-//                    .append("\n\t\tRecords: ");
-//            for (TxtRecord txtRecord : txtRecordSet.records()) {
-//                if (txtRecord.value().size() > 0) {
-//                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
-//                }
-//            }
-//        }
-//        System.out.println(info.toString());
-//    }
+
+    /**
+     * Print a dns zone.
+     *
+     * @param dnsZone a dns zone
+     */
+    public static void print(DnsZone dnsZone) {
+        StringBuilder info = new StringBuilder();
+        info.append("DNS Zone: ").append(dnsZone.id())
+                .append("\n\tName (Top level domain): ").append(dnsZone.name())
+                .append("\n\tResource group: ").append(dnsZone.resourceGroupName())
+                .append("\n\tRegion: ").append(dnsZone.regionName())
+                .append("\n\tTags: ").append(dnsZone.tags())
+                .append("\n\tName servers:");
+        for (String nameServer : dnsZone.nameServers()) {
+            info.append("\n\t\t").append(nameServer);
+        }
+        SoaRecordSet soaRecordSet = dnsZone.getSoaRecordSet();
+        SoaRecord soaRecord = soaRecordSet.record();
+        info.append("\n\tSOA Record:")
+                .append("\n\t\tHost:").append(soaRecord.host())
+                .append("\n\t\tEmail:").append(soaRecord.email())
+                .append("\n\t\tExpire time (seconds):").append(soaRecord.expireTime())
+                .append("\n\t\tRefresh time (seconds):").append(soaRecord.refreshTime())
+                .append("\n\t\tRetry time (seconds):").append(soaRecord.retryTime())
+                .append("\n\t\tNegative response cache ttl (seconds):").append(soaRecord.minimumTtl())
+                .append("\n\t\tTTL (seconds):").append(soaRecordSet.timeToLive());
+
+        PagedIterable<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
+        info.append("\n\tA Record sets:");
+        for (ARecordSet aRecordSet : aRecordSets) {
+            info.append("\n\t\tId: ").append(aRecordSet.id())
+                    .append("\n\t\tName: ").append(aRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(aRecordSet.timeToLive())
+                    .append("\n\t\tIP v4 addresses: ");
+            for (String ipAddress : aRecordSet.ipv4Addresses()) {
+                info.append("\n\t\t\t").append(ipAddress);
+            }
+        }
+
+        PagedIterable<AaaaRecordSet> aaaaRecordSets = dnsZone.aaaaRecordSets().list();
+        info.append("\n\tAAAA Record sets:");
+        for (AaaaRecordSet aaaaRecordSet : aaaaRecordSets) {
+            info.append("\n\t\tId: ").append(aaaaRecordSet.id())
+                    .append("\n\t\tName: ").append(aaaaRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(aaaaRecordSet.timeToLive())
+                    .append("\n\t\tIP v6 addresses: ");
+            for (String ipAddress : aaaaRecordSet.ipv6Addresses()) {
+                info.append("\n\t\t\t").append(ipAddress);
+            }
+        }
+
+        PagedIterable<CNameRecordSet> cnameRecordSets = dnsZone.cNameRecordSets().list();
+        info.append("\n\tCNAME Record sets:");
+        for (CNameRecordSet cnameRecordSet : cnameRecordSets) {
+            info.append("\n\t\tId: ").append(cnameRecordSet.id())
+                    .append("\n\t\tName: ").append(cnameRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(cnameRecordSet.timeToLive())
+                    .append("\n\t\tCanonical name: ").append(cnameRecordSet.canonicalName());
+        }
+
+        PagedIterable<MXRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        info.append("\n\tMX Record sets:");
+        for (MXRecordSet mxRecordSet : mxRecordSets) {
+            info.append("\n\t\tId: ").append(mxRecordSet.id())
+                    .append("\n\t\tName: ").append(mxRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(mxRecordSet.timeToLive())
+                    .append("\n\t\tRecords: ");
+            for (MxRecord mxRecord : mxRecordSet.records()) {
+                info.append("\n\t\t\tExchange server, Preference: ")
+                        .append(mxRecord.exchange())
+                        .append(" ")
+                        .append(mxRecord.preference());
+            }
+        }
+
+        PagedIterable<NSRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        info.append("\n\tNS Record sets:");
+        for (NSRecordSet nsRecordSet : nsRecordSets) {
+            info.append("\n\t\tId: ").append(nsRecordSet.id())
+                    .append("\n\t\tName: ").append(nsRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(nsRecordSet.timeToLive())
+                    .append("\n\t\tName servers: ");
+            for (String nameServer : nsRecordSet.nameServers()) {
+                info.append("\n\t\t\t").append(nameServer);
+            }
+        }
+
+        PagedIterable<PtrRecordSet> ptrRecordSets = dnsZone.ptrRecordSets().list();
+        info.append("\n\tPTR Record sets:");
+        for (PtrRecordSet ptrRecordSet : ptrRecordSets) {
+            info.append("\n\t\tId: ").append(ptrRecordSet.id())
+                    .append("\n\t\tName: ").append(ptrRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(ptrRecordSet.timeToLive())
+                    .append("\n\t\tTarget domain names: ");
+            for (String domainNames : ptrRecordSet.targetDomainNames()) {
+                info.append("\n\t\t\t").append(domainNames);
+            }
+        }
+
+        PagedIterable<SrvRecordSet> srvRecordSets = dnsZone.srvRecordSets().list();
+        info.append("\n\tSRV Record sets:");
+        for (SrvRecordSet srvRecordSet : srvRecordSets) {
+            info.append("\n\t\tId: ").append(srvRecordSet.id())
+                    .append("\n\t\tName: ").append(srvRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(srvRecordSet.timeToLive())
+                    .append("\n\t\tRecords: ");
+            for (SrvRecord srvRecord : srvRecordSet.records()) {
+                info.append("\n\t\t\tTarget, Port, Priority, Weight: ")
+                        .append(srvRecord.target())
+                        .append(", ")
+                        .append(srvRecord.port())
+                        .append(", ")
+                        .append(srvRecord.priority())
+                        .append(", ")
+                        .append(srvRecord.weight());
+            }
+        }
+
+        PagedIterable<TxtRecordSet> txtRecordSets = dnsZone.txtRecordSets().list();
+        info.append("\n\tTXT Record sets:");
+        for (TxtRecordSet txtRecordSet : txtRecordSets) {
+            info.append("\n\t\tId: ").append(txtRecordSet.id())
+                    .append("\n\t\tName: ").append(txtRecordSet.name())
+                    .append("\n\t\tTTL (seconds): ").append(txtRecordSet.timeToLive())
+                    .append("\n\t\tRecords: ");
+            for (TxtRecord txtRecord : txtRecordSet.records()) {
+                if (txtRecord.value().size() > 0) {
+                    info.append("\n\t\t\tValue: ").append(txtRecord.value().get(0));
+                }
+            }
+        }
+        System.out.println(info.toString());
+    }
 
     /**
      * Print an Azure Container Registry.
@@ -1576,7 +1592,7 @@ public final class Utils {
         builder.append("\n\tPartner Servers: ");
         for (PartnerInfo item : failoverGroup.partnerServers()) {
             builder
-                    .append("\n\t\tId: ").append(item.getId())
+                    .append("\n\t\tId: ").append(item.id())
                     .append("\n\t\tLocation: ").append(item.location())
                     .append("\n\t\tReplication role: ").append(item.replicationRole());
         }
@@ -1899,10 +1915,10 @@ public final class Utils {
             builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
         }
         if (image.osDiskImage().managedDisk() != null) {
-            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().getId());
+            builder.append("\n\t\tSource managed disk: ").append(image.osDiskImage().managedDisk().id());
         }
         if (image.osDiskImage().snapshot() != null) {
-            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().getId());
+            builder.append("\n\t\tSource snapshot: ").append(image.osDiskImage().snapshot().id());
         }
         if (image.osDiskImage().blobUri() != null) {
             builder.append("\n\t\tSource un-managed vhd: ").append(image.osDiskImage().blobUri());
@@ -1916,10 +1932,10 @@ public final class Utils {
                     builder.append("\n\t\tSource virtual machine: ").append(image.sourceVirtualMachineId());
                 }
                 if (diskImage.managedDisk() != null) {
-                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().getId());
+                    builder.append("\n\t\tSource managed disk: ").append(diskImage.managedDisk().id());
                 }
                 if (diskImage.snapshot() != null) {
-                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().getId());
+                    builder.append("\n\t\tSource snapshot: ").append(diskImage.snapshot().id());
                 }
                 if (diskImage.blobUri() != null) {
                     builder.append("\n\t\tSource un-managed vhd: ").append(diskImage.blobUri());
@@ -2469,12 +2485,12 @@ public final class Utils {
         StringBuilder sb = new StringBuilder().append("Topology: ").append(resource.id())
                 .append("\n\tTopology parameters: ")
                 .append("\n\t\tResource group: ").append(resource.topologyParameters().targetResourceGroupName())
-                .append("\n\t\tVirtual network: ").append(resource.topologyParameters().targetVirtualNetwork() == null ? "" : resource.topologyParameters().targetVirtualNetwork().getId())
-                .append("\n\t\tSubnet id: ").append(resource.topologyParameters().targetSubnet() == null ? "" : resource.topologyParameters().targetSubnet().getId())
+                .append("\n\t\tVirtual network: ").append(resource.topologyParameters().targetVirtualNetwork() == null ? "" : resource.topologyParameters().targetVirtualNetwork().id())
+                .append("\n\t\tSubnet id: ").append(resource.topologyParameters().targetSubnet() == null ? "" : resource.topologyParameters().targetSubnet().id())
                 .append("\n\tCreated time: ").append(resource.createdTime())
                 .append("\n\tLast modified time: ").append(resource.lastModifiedTime());
         for (TopologyResource tr : resource.resources().values()) {
-            sb.append("\n\tTopology resource: ").append(tr.getId())
+            sb.append("\n\tTopology resource: ").append(tr.id())
                     .append("\n\t\tName: ").append(tr.name())
                     .append("\n\t\tLocation: ").append(tr.location())
                     .append("\n\t\tAssociations:");
@@ -2511,7 +2527,7 @@ public final class Utils {
         StringBuilder sb = new StringBuilder().append("Security group view: ")
                 .append("\n\tVirtual machine id: ").append(resource.vmId());
         for (SecurityGroupNetworkInterface sgni : resource.networkInterfaces().values()) {
-            sb.append("\n\tSecurity group network interface:").append(sgni.getId())
+            sb.append("\n\tSecurity group network interface:").append(sgni.id())
                     .append("\n\t\tSecurity group network interface:")
                     .append("\n\t\tEffective security rules:");
             for (EffectiveNetworkSecurityRule rule : sgni.securityRuleAssociations().effectiveSecurityRules()) {
@@ -2525,10 +2541,10 @@ public final class Utils {
                         .append("\n\t\t\tDestination port range: ").append(rule.destinationPortRange())
                         .append("\n\t\t\tProtocol: ").append(rule.protocol());
             }
-            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().getId());
+            sb.append("\n\t\tSubnet:").append(sgni.securityRuleAssociations().subnetAssociation().id());
             printSecurityRule(sb, sgni.securityRuleAssociations().subnetAssociation().securityRules());
             if (sgni.securityRuleAssociations().networkInterfaceAssociation() != null) {
-                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().getId());
+                sb.append("\n\t\tNetwork interface:").append(sgni.securityRuleAssociations().networkInterfaceAssociation().id());
                 printSecurityRule(sb, sgni.securityRuleAssociations().networkInterfaceAssociation().securityRules());
             }
             sb.append("\n\t\tDefault security rules:");
@@ -3067,5 +3083,15 @@ public final class Utils {
         @Post("{path}")
         @ExpectedResponses({200, 400, 404})
         Mono<SimpleResponse<Flux<ByteBuffer>>> postString(@HostParam("$host") String host, @PathParam(value = "path", encoded = true) String path, @BodyParam("text/plain") String body);
+    }
+
+    public static synchronized <T> int getSize(Iterable<T> iterable) {
+        int res = 0;
+        Iterator<T> iterator = iterable.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            ++res;
+        }
+        return res;
     }
 }

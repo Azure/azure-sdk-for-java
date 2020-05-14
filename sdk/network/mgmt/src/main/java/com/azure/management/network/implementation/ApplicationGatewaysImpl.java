@@ -41,7 +41,7 @@ class ApplicationGatewaysImpl
 
     @Override
     protected ApplicationGatewayImpl wrapModel(ApplicationGatewayInner inner) {
-        return (inner == null) ? null : new ApplicationGatewayImpl(inner.getName(), inner, this.manager());
+        return (inner == null) ? null : new ApplicationGatewayImpl(inner.name(), inner, this.manager());
     }
 
     @Override

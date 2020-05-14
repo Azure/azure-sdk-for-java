@@ -1,7 +1,13 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
+
+## 1.1.0 (2020-05-07)
+- Updated version of `azure-messaging-eventhubs` to `5.1.0`.
+
+## 1.1.0-beta.1 (2020-04-08)
+- Updated version of `azure-messaging-eventhubs` to `5.1.0-beta.1` that supports receiving events in batches.
 
 ## 1.0.3 (2020-04-08)
 - Fix bug where processor would hang after a reconnect due to being unable to load balance partitions.

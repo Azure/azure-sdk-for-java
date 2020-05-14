@@ -25,7 +25,7 @@ public class DetectLanguageBatchStringDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -47,8 +47,8 @@ public class DetectLanguageBatchStringDocumentsAsync {
                 } else {
                     // Valid document
                     DetectedLanguage language = detectLanguageResult.getPrimaryLanguage();
-                    System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-                        language.getName(), language.getIso6391Name(), language.getScore());
+                    System.out.printf("Detected primary language: %s, ISO 6391 name: %s, confidence score: %f.%n",
+                        language.getName(), language.getIso6391Name(), language.getConfidenceScore());
                 }
             },
             error -> System.err.println("There was an error detecting language of the documents." + error),

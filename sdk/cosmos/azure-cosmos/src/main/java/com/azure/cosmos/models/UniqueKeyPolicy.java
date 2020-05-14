@@ -3,6 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,14 +12,14 @@ import java.util.List;
  * Represents the unique key policy configuration for specifying uniqueness constraints on documents in the
  * collection in the Azure Cosmos DB service.
  */
-public final class UniqueKeyPolicy extends JsonSerializable {
+public final class UniqueKeyPolicy extends JsonSerializableWrapper{
     private List<UniqueKey> uniqueKeys;
 
     /**
      * Instantiates a new Unique key policy.
      */
     public UniqueKeyPolicy() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
     /**
@@ -27,7 +28,7 @@ public final class UniqueKeyPolicy extends JsonSerializable {
      * @param jsonString the json string that represents the Unique Key policy.
      */
     UniqueKeyPolicy(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
     /**
@@ -38,7 +39,7 @@ public final class UniqueKeyPolicy extends JsonSerializable {
      */
     public List<UniqueKey> getUniqueKeys() {
         if (this.uniqueKeys == null) {
-            this.uniqueKeys = super.getList(Constants.Properties.UNIQUE_KEYS, UniqueKey.class);
+            this.uniqueKeys = this.jsonSerializable.getList(Constants.Properties.UNIQUE_KEYS, UniqueKey.class);
             if (this.uniqueKeys == null) {
                 this.uniqueKeys = new ArrayList<>();
             }
@@ -63,12 +64,12 @@ public final class UniqueKeyPolicy extends JsonSerializable {
 
     @Override
     protected void populatePropertyBag() {
-        super.populatePropertyBag();
+        this.jsonSerializable.populatePropertyBag();
         if (this.uniqueKeys != null) {
             for (UniqueKey uniqueKey : uniqueKeys) {
                 uniqueKey.populatePropertyBag();
             }
-            super.set(Constants.Properties.UNIQUE_KEYS, uniqueKeys);
+            this.jsonSerializable.set(Constants.Properties.UNIQUE_KEYS, uniqueKeys);
         }
     }
 }

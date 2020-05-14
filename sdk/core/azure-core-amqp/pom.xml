@@ -14,7 +14,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-core-amqp</artifactId>
-  <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
+  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-amqp;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure Java Core AMQP Library</name>
@@ -58,42 +58,42 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.5.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.6.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>qpid-proton-j-extensions</artifactId>
-      <version>1.2.2</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+      <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.apache.qpid</groupId>
       <artifactId>proton-j</artifactId>
-      <version>0.33.2</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
+      <version>0.33.4</version> <!-- {x-version-update;org.apache.qpid:proton-j;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.3.3.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
-      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+      <version>5.6.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -115,8 +115,8 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.2]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
-                <include>org.apache.qpid:proton-j:[0.33.2]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
+                <include>com.microsoft.azure:qpid-proton-j-extensions:[1.2.3]</include> <!-- {x-include-update;com.microsoft.azure:qpid-proton-j-extensions;external_dependency} -->
+                <include>org.apache.qpid:proton-j:[0.33.4]</include> <!-- {x-include-update;org.apache.qpid:proton-j;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -124,4 +124,30 @@
       </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>parallel-test-playback</id>
+      <activation>
+        <property>
+          <name>parallel-test-playback</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <!-- Parallel runs disabled due to concurrency issues causing failures in mocked tests. -->
+                <junit.jupiter.execution.parallel.enabled>false</junit.jupiter.execution.parallel.enabled>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.models.RequestVerb;
+import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ISessionContainer;

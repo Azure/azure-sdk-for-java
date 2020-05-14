@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
@@ -71,8 +72,8 @@ public final class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
     }
 
-    RntbdTransportClient(final Configs configs, final Duration requestTimeout, final UserAgentContainer userAgent) {
-        this(new Options.Builder(requestTimeout).userAgent(userAgent).build(), configs.getSslContext());
+    RntbdTransportClient(final Configs configs, final ConnectionPolicy connectionPolicy, final UserAgentContainer userAgent) {
+        this(new Options.Builder(connectionPolicy).userAgent(userAgent).build(), configs.getSslContext());
     }
 
     // endregion
@@ -199,6 +200,7 @@ public final class RntbdTransportClient extends TransportClient {
         private final Duration requestExpiryInterval;
 
         @JsonProperty()
+        //  TODO: (DANOBLE) - should we expose it through com.azure.cosmos.DirectConnectionConfig ?
         private final Duration requestTimeout;
 
         @JsonProperty()
@@ -471,9 +473,12 @@ public final class RntbdTransportClient extends TransportClient {
 
             // region Constructors
 
-            public Builder(Duration requestTimeout) {
+            public Builder(ConnectionPolicy connectionPolicy) {
 
-                this.requestTimeout(requestTimeout);
+                this.requestTimeout(connectionPolicy.getRequestTimeout());
+
+                //  TODO: (DANOBLE) - Figure out how to get values from connection policy
+                //  At the same time respect the DEFAULT_OPTIONS values - in case user passes some of them.
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
                 this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
@@ -490,10 +495,6 @@ public final class RntbdTransportClient extends TransportClient {
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
                 this.threadCount = DEFAULT_OPTIONS.threadCount;
                 this.userAgent = DEFAULT_OPTIONS.userAgent;
-            }
-
-            public Builder(int requestTimeoutInSeconds) {
-                this(Duration.ofSeconds(requestTimeoutInSeconds));
             }
 
             // endregion

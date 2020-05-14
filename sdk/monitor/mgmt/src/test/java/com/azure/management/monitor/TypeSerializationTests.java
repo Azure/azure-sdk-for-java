@@ -17,8 +17,7 @@ public class TypeSerializationTests {
 
     @Test
     public void testDiscriminatorSerialization() throws Exception {
-        // Currently the issue is solved by OdataTypeDiscriminatorTypeResolver, without which JsonFlatten would flatten
-        // "odata.type".
+        // Currently solved by @JsonFlatten annotation and escape on "odata.type" (as "odata\\.type")
 
         SerializerAdapter adapter = new AzureJacksonAdapter();
 
