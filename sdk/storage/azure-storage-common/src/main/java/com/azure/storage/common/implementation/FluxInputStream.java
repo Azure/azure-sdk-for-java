@@ -183,7 +183,6 @@ public class FluxInputStream extends InputStream {
                 // Error consumer
                 throwable -> {
                     // Signal the consumer in case an error occurs (indicates we completed without data).
-                    signalOnCompleteOrError();
                     if (throwable instanceof HttpResponseException) {
                         this.lastError = new IOException(throwable);
                     } else if (throwable instanceof IllegalArgumentException) {
@@ -191,6 +190,7 @@ public class FluxInputStream extends InputStream {
                     } else if (throwable instanceof IOException) {
                         this.lastError = new IOException(throwable);
                     }
+                    signalOnCompleteOrError();
                 },
                 // Complete consumer
                 // Signal the consumer in case we completed without data.
