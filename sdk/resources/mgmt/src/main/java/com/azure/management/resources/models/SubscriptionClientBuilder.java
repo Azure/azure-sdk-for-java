@@ -89,7 +89,7 @@ public final class SubscriptionClientBuilder {
             this.host = "https://management.azure.com";
         }
         if (apiVersion == null) {
-            this.apiVersion = "2016-06-01";
+            this.apiVersion = "2020-01-01";
         }
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;

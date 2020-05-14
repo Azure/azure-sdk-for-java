@@ -44,12 +44,12 @@ final class PolicyAssignmentImpl extends
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override

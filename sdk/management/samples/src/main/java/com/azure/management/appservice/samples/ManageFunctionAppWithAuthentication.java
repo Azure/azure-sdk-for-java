@@ -3,15 +3,18 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.appservice.NameValuePair;
 import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PushCommand;
@@ -59,7 +62,7 @@ public final class ManageFunctionAppWithAuthentication {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rgName + " with admin level auth...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withLocalGitSourceControl()
@@ -72,8 +75,8 @@ public final class ManageFunctionAppWithAuthentication {
             // Create a second function app with function level auth
 
             System.out.println("Creating another function app " + app2Name + " in resource group " + rgName + " with function level auth...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
                     .withExistingStorageAccount(app1.storageAccount())
@@ -87,7 +90,7 @@ public final class ManageFunctionAppWithAuthentication {
             // Create a thrid function app with function level auth
 
             System.out.println("Creating another function app " + app3Name + " in resource group " + rgName + " with function level auth...");
-            FunctionApp app3 = azure.appServices().functionApps().define(app3Name)
+            FunctionApp app3 = azure.functionApps().define(app3Name)
                     .withExistingAppServicePlan(plan)
                     .withExistingResourceGroup(rgName)
                     .withExistingStorageAccount(app1.storageAccount())
@@ -171,7 +174,7 @@ public final class ManageFunctionAppWithAuthentication {
             System.out.println("Deploying a local function app to " + app3Name + " through web deploy...");
 
             app3.deploy()
-                    .withPackageUri("https://github.com/Azure/azure-libraries-for-java/raw/master/azure-samples/src/main/resources/square-function-app-function-auth.zip")
+                    .withPackageUri("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/management/samples/src/main/resources/square-function-app-function-auth.zip")
                     .withExistingDeploymentsDeleted(false)
                     .execute();
 
@@ -216,13 +219,16 @@ public final class ManageFunctionAppWithAuthentication {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

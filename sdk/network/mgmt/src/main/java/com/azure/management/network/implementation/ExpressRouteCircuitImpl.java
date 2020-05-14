@@ -13,22 +13,16 @@ import com.azure.management.network.models.ExpressRouteCircuitInner;
 import com.azure.management.network.models.ExpressRouteCircuitPeeringInner;
 import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import reactor.core.publisher.Mono;
 
-class ExpressRouteCircuitImpl extends GroupableParentResourceWithTagsImpl<
-        ExpressRouteCircuit,
-        ExpressRouteCircuitInner,
-        ExpressRouteCircuitImpl,
-        NetworkManager>
-        implements
-        ExpressRouteCircuit,
-        ExpressRouteCircuit.Definition,
-        ExpressRouteCircuit.Update {
+class ExpressRouteCircuitImpl
+    extends GroupableParentResourceWithTagsImpl<
+        ExpressRouteCircuit, ExpressRouteCircuitInner, ExpressRouteCircuitImpl, NetworkManager>
+    implements ExpressRouteCircuit, ExpressRouteCircuit.Definition, ExpressRouteCircuit.Update {
     private ExpressRouteCircuitPeeringsImpl peerings;
     private Map<String, ExpressRouteCircuitPeering> expressRouteCircuitPeerings;
 
@@ -60,7 +54,6 @@ class ExpressRouteCircuitImpl extends GroupableParentResourceWithTagsImpl<
         inner().withSku(sku.sku());
         return this;
     }
-
 
     @Override
     public ExpressRouteCircuitImpl withClassicOperations() {
@@ -96,8 +89,11 @@ class ExpressRouteCircuitImpl extends GroupableParentResourceWithTagsImpl<
 
     @Override
     protected Mono<ExpressRouteCircuitInner> createInner() {
-        return this.manager().inner().expressRouteCircuits().createOrUpdateAsync(
-                this.resourceGroupName(), this.name(), this.inner());
+        return this
+            .manager()
+            .inner()
+            .expressRouteCircuits()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
     }
 
     @Override
@@ -105,29 +101,43 @@ class ExpressRouteCircuitImpl extends GroupableParentResourceWithTagsImpl<
         expressRouteCircuitPeerings = new HashMap<>();
         if (inner().peerings() != null) {
             for (ExpressRouteCircuitPeeringInner peering : inner().peerings()) {
-                expressRouteCircuitPeerings.put(peering.name(),
-                        new ExpressRouteCircuitPeeringImpl(this, peering, manager().inner().expressRouteCircuitPeerings(), peering.peeringType()));
+                expressRouteCircuitPeerings
+                    .put(
+                        peering.name(),
+                        new ExpressRouteCircuitPeeringImpl(
+                            this, peering, manager().inner().expressRouteCircuitPeerings(), peering.peeringType()));
             }
         }
     }
 
     @Override
     protected Mono<ExpressRouteCircuitInner> getInnerAsync() {
-        return this.manager().inner().expressRouteCircuits().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .expressRouteCircuits()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     public Mono<ExpressRouteCircuit> refreshAsync() {
-        return super.refreshAsync().map(expressRouteCircuit -> {
-            ExpressRouteCircuitImpl impl = (ExpressRouteCircuitImpl) expressRouteCircuit;
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                expressRouteCircuit -> {
+                    ExpressRouteCircuitImpl impl = (ExpressRouteCircuitImpl) expressRouteCircuit;
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<ExpressRouteCircuitInner> applyTagsToInnerAsync() {
-        return this.manager().inner().expressRouteCircuits().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this
+            .manager()
+            .inner()
+            .expressRouteCircuits()
+            .updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     // Getters

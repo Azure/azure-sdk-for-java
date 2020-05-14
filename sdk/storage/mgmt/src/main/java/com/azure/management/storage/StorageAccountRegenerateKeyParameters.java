@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The StorageAccountRegenerateKeyParameters model.
- */
+/** The StorageAccountRegenerateKeyParameters model. */
 @Fluent
 public final class StorageAccountRegenerateKeyParameters {
     /*
@@ -20,9 +18,9 @@ public final class StorageAccountRegenerateKeyParameters {
     private String keyName;
 
     /**
-     * Get the keyName property: The name of storage keys that want to be
-     * regenerated, possible values are key1, key2, kerb1, kerb2.
-     * 
+     * Get the keyName property: The name of storage keys that want to be regenerated, possible values are key1, key2,
+     * kerb1, kerb2.
+     *
      * @return the keyName value.
      */
     public String keyName() {
@@ -30,9 +28,9 @@ public final class StorageAccountRegenerateKeyParameters {
     }
 
     /**
-     * Set the keyName property: The name of storage keys that want to be
-     * regenerated, possible values are key1, key2, kerb1, kerb2.
-     * 
+     * Set the keyName property: The name of storage keys that want to be regenerated, possible values are key1, key2,
+     * kerb1, kerb2.
+     *
      * @param keyName the keyName value to set.
      * @return the StorageAccountRegenerateKeyParameters object itself.
      */

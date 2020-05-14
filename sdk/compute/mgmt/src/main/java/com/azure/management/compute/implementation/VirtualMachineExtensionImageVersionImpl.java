@@ -10,18 +10,16 @@ import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for VirtualMachineExtensionImageVersion.
- */
-class VirtualMachineExtensionImageVersionImpl
-        extends WrapperImpl<VirtualMachineExtensionImageInner>
-        implements VirtualMachineExtensionImageVersion {
+/** The implementation for VirtualMachineExtensionImageVersion. */
+class VirtualMachineExtensionImageVersionImpl extends WrapperImpl<VirtualMachineExtensionImageInner>
+    implements VirtualMachineExtensionImageVersion {
     private final VirtualMachineExtensionImagesInner client;
     private final VirtualMachineExtensionImageType type;
 
-    VirtualMachineExtensionImageVersionImpl(VirtualMachineExtensionImagesInner client,
-                                            VirtualMachineExtensionImageType extensionImageType,
-                                            VirtualMachineExtensionImageInner inner) {
+    VirtualMachineExtensionImageVersionImpl(
+        VirtualMachineExtensionImagesInner client,
+        VirtualMachineExtensionImageType extensionImageType,
+        VirtualMachineExtensionImageInner inner) {
         super(inner);
         this.client = client;
         this.type = extensionImageType;
@@ -29,17 +27,17 @@ class VirtualMachineExtensionImageVersionImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String regionName() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -49,10 +47,8 @@ class VirtualMachineExtensionImageVersionImpl
 
     @Override
     public VirtualMachineExtensionImage getImage() {
-        VirtualMachineExtensionImageInner inner = this.client.get(this.regionName(),
-                this.type().publisher().name(),
-                this.type().name(),
-                this.name());
+        VirtualMachineExtensionImageInner inner =
+            this.client.get(this.regionName(), this.type().publisher().name(), this.type().name(), this.name());
         if (inner == null) {
             return null;
         }
@@ -62,8 +58,9 @@ class VirtualMachineExtensionImageVersionImpl
     @Override
     public Mono<VirtualMachineExtensionImage> getImageAsync() {
         final VirtualMachineExtensionImageVersionImpl self = this;
-        return client.getAsync(regionName(), type().publisher().name(), type().name(), name())
-                .onErrorResume(e -> Mono.empty())
-                .map(inner -> new VirtualMachineExtensionImageImpl(self, inner));
+        return client
+            .getAsync(regionName(), type().publisher().name(), type().name(), name())
+            .onErrorResume(e -> Mono.empty())
+            .map(inner -> new VirtualMachineExtensionImageImpl(self, inner));
     }
 }

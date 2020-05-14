@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricDefinitionCollection model.
- */
+/** The MetricDefinitionCollection model. */
 @Fluent
 public final class MetricDefinitionCollectionInner {
     /*
@@ -21,7 +19,7 @@ public final class MetricDefinitionCollectionInner {
 
     /**
      * Get the value property: the values for the metric definitions.
-     * 
+     *
      * @return the value value.
      */
     public List<MetricDefinitionInner> value() {
@@ -30,7 +28,7 @@ public final class MetricDefinitionCollectionInner {
 
     /**
      * Set the value property: the values for the metric definitions.
-     * 
+     *
      * @param value the value value to set.
      * @return the MetricDefinitionCollectionInner object itself.
      */

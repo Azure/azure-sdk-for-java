@@ -5,13 +5,17 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.ProviderResourceType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Provider model. */
 @Fluent
 public final class ProviderInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderInner.class);
+
     /*
      * The provider ID.
      */
@@ -47,7 +51,7 @@ public final class ProviderInner {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
@@ -96,5 +100,16 @@ public final class ProviderInner {
      */
     public List<ProviderResourceType> resourceTypes() {
         return this.resourceTypes;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resourceTypes() != null) {
+            resourceTypes().forEach(e -> e.validate());
+        }
     }
 }

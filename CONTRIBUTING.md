@@ -44,7 +44,7 @@ Merging Pull Requests (for project contributors with write access)
 
 ### Pre-requisites
 
-- Install Java Development Kit 8
+- Install Java Development Kit 8 or 11
   - add `JAVA_HOME` to environment variables
 - Install [Maven](http://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
@@ -54,29 +54,12 @@ Merging Pull Requests (for project contributors with write access)
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
 
-### Building and Testing
+### Building and Unit Testing
 
-The easiest way to build is by running the following command from the root folder:
-```
-mvn -f pom.client.xml -Dgpg.skip -DskipTests -Dinclude-non-shipping-modules clean install
-```
-- `-f pom.client.xml`: tells maven to target latest Azure SDK for Java project.
-- `-Dgpg.skip`: disables [gpg](https://mran.microsoft.com/snapshot/2016-12-19/web/packages/gpg/vignettes/intro.html) signing.
-- `-DskipTests:` Building without running unit tests would speed operation up, however, make sure all tests pass before creating a new PR.
-- `-Dinclude-non-shipping-modules:` Installing and Runing sdk build tools.
-- `clean:` will remove any previous generated output.
-- `install:`  compiles project and installs it in the local Maven cache.
+Refer to the [build wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning how to build Java SDKs
+and the [unit testing wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit 
+testing.
 
->**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11 
->and [this wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit testing
-
-### Compiling one project only
-
-```
-mvn -f sdk/{projectForlderDir}/pom.xml -Dgpg.skip clean install
-
-//example: mvn -f sdk/keyvault/azure-security-keyvault-keys/pom.xml clean install
-```
 ### Live testing
 
 Live tests assume a live resource has been created and appropriate environment
@@ -97,7 +80,7 @@ running live tests.
 To run live tests against a service after deploying live resources:
 
 ```
-mvn -f sdk/keyvault/pom.service.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
+mvn -f sdk/keyvault/pom.xml -Dmaven.wagon.http.pool=false --batch-mode --fail-at-end --settings eng/settings.xml test
 ```
 
 Some live tests may have additional steps for setting up live testing resources.
@@ -112,7 +95,7 @@ Tooling has been introduced to centralize versioning and help ease the pain of u
 
 The dependency-version should be set to the most recent released version and the current-version is set to the next version to be released. For example:
 
-`com.azure:azure-identity;1.0.0-preview.4;1.0.0-preview.5`
+`com.azure:azure-identity;1.0.0-beta.4;1.0.0-beta.5`
 
 Note: In the case of a new artifact both versions will be the same. In the case of a released artifact, the dependecny version should be the latest released version.
 
@@ -148,7 +131,7 @@ In POM files this is done by inserting a specifically formatted comment on the s
 ```xml
   <groupId>MyGroup</groupId>
   <artifactId>MyArtifact</artifactId>
-  <version>1.0.0-preview.1</version> <!-- {x-version-update;MyGroup:MyArtifact;[current|dependency]} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;MyGroup:MyArtifact;[current|dependency]} -->
 ```
 
 The last element of the tag would be current or dependency depending on the criteria previously explained.
@@ -159,7 +142,7 @@ In README files this ends up being slightly different. Because the version tag i
     ```xml
       <groupId>MyGroup</groupId>
       <artifactId>MyArtifact</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-beta.1</version>
     ```
     [//]: # ({x-version-update-end})
 

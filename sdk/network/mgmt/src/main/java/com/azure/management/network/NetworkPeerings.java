@@ -5,7 +5,6 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.implementation.NetworkManager;
-
 import com.azure.management.network.models.VirtualNetworkPeeringsInner;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -17,12 +16,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- *  Entry point to network peering management API.
- */
+/** Entry point to network peering management API. */
 @Fluent
-public interface NetworkPeerings extends
-        SupportsCreating<NetworkPeering.DefinitionStages.Blank>,
+public interface NetworkPeerings
+    extends SupportsCreating<NetworkPeering.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsGettingById<NetworkPeering>,
         SupportsBatchCreation<NetworkPeering>,
@@ -33,8 +30,9 @@ public interface NetworkPeerings extends
 
     /**
      * Finds the peering, if any, that is associated with the specified network.
-     * <p>
-     * (Note that this makes a separate call to Azure.)
+     *
+     * <p>(Note that this makes a separate call to Azure.)
+     *
      * @param network an existing network
      * @return a network peering, or null if none exists
      */
@@ -42,8 +40,9 @@ public interface NetworkPeerings extends
 
     /**
      * Finds the peering, if any, that is associated with the specified network.
-     * <p>
-     * (Note that this makes a separate call to Azure.)
+     *
+     * <p>(Note that this makes a separate call to Azure.)
+     *
      * @param remoteNetworkResourceId the resource ID of an existing network
      * @return a network peering, or null if none exists
      */
@@ -51,8 +50,9 @@ public interface NetworkPeerings extends
 
     /**
      * Asynchronously finds the peering, if any, that is associated with the specified network.
-     * <p>
-     * (Note that this makes a separate call to Azure.)
+     *
+     * <p>(Note that this makes a separate call to Azure.)
+     *
      * @param network an existing network
      * @return a representation of the future computation of this call, evaluating to null if no such peering is found
      */
@@ -60,8 +60,9 @@ public interface NetworkPeerings extends
 
     /**
      * Asynchronously finds the peering, if any, that is associated with the specified network.
-     * <p>
-     * (Note that this makes a separate call to Azure.)
+     *
+     * <p>(Note that this makes a separate call to Azure.)
+     *
      * @param remoteNetworkResourceId the resource ID of an existing network
      * @return a representation of the future computation of this call, evaluating to null if no such peering is found
      */

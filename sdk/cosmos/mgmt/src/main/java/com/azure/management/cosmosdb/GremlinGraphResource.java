@@ -55,7 +55,7 @@ public class GremlinGraphResource {
      *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 

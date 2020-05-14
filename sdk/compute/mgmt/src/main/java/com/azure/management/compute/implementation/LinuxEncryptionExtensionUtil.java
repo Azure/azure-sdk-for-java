@@ -3,13 +3,12 @@
 
 package com.azure.management.compute.implementation;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.MissingNode;
 import com.azure.management.compute.EncryptionStatus;
 import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.VirtualMachineExtensionInstanceView;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.MissingNode;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,23 +71,20 @@ class LinuxEncryptionExtensionUtil {
      * @return status collection
      */
     static List<InstanceViewStatus> instanceViewStatuses(VirtualMachineExtensionInstanceView instanceView) {
-        if (instanceView == null
-                || instanceView.statuses() == null) {
+        if (instanceView == null || instanceView.statuses() == null) {
             return new ArrayList<>();
         }
         return instanceView.statuses();
     }
 
     /**
-     * the first sub-status from instance view sub-status collection associated with the provided
-     * encryption extension.
+     * the first sub-status from instance view sub-status collection associated with the provided encryption extension.
      *
      * @param instanceView the extension instance view
      * @return the first sub-status
      */
     static JsonNode instanceViewFirstSubStatus(VirtualMachineExtensionInstanceView instanceView) {
-        if (instanceView == null
-                || instanceView.substatuses() == null) {
+        if (instanceView == null || instanceView.substatuses() == null) {
             return null;
         }
         List<InstanceViewStatus> instanceViewSubStatuses = instanceView.substatuses();

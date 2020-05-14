@@ -4,20 +4,17 @@
 package com.azure.management.sql.samples;
 
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.ApplicationTokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
 import com.azure.management.sql.SqlFirewallRule;
 import com.azure.management.sql.SqlServer;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -87,7 +84,7 @@ public final class ManageSqlFirewallRules {
             // Add new firewall rules.
             System.out.println("Creating a firewall rule in existing SQL Server");
             SqlFirewallRule firewallRule = sqlServer.firewallRules().define(myFirewallName)
-                    .withIPAddress(myFirewallRuleIPAddress)
+                    .withIpAddress(myFirewallRuleIPAddress)
                     .create();
 
             Utils.print(firewallRule);
@@ -120,8 +117,7 @@ public final class ManageSqlFirewallRules {
                 System.out.println("Deleting Resource Group: " + rgName);
                 azure.resourceGroups().deleteByName(rgName);
                 System.out.println("Deleted Resource Group: " + rgName);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             }
         }
@@ -134,16 +130,16 @@ public final class ManageSqlFirewallRules {
      */
     public static void main(String[] args) {
         try {
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            ApplicationTokenCredential credentials = ApplicationTokenCredential.fromFile(credFile);
-            RestClient restClient = new RestClientBuilder()
-                    .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                    .withSerializerAdapter(new AzureJacksonAdapter())
-//                .withReadTimeout(150, TimeUnit.SECONDS)
-                    .withHttpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY))
-                    .withCredential(credentials).buildClient();
-            Azure azure = Azure.authenticate(restClient, credentials.getDomain(), credentials.getDefaultSubscriptionId()).withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

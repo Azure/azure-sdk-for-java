@@ -8,11 +8,9 @@ import com.azure.management.monitor.DiagnosticSettingsCategory;
 import com.azure.management.monitor.models.DiagnosticSettingsCategoryResourceInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * The Azure {@link DiagnosticSettingsCategory} wrapper class implementation.
- */
-class DiagnosticSettingsCategoryImpl
-        extends WrapperImpl<DiagnosticSettingsCategoryResourceInner> implements DiagnosticSettingsCategory {
+/** The Azure {@link DiagnosticSettingsCategory} wrapper class implementation. */
+class DiagnosticSettingsCategoryImpl extends WrapperImpl<DiagnosticSettingsCategoryResourceInner>
+    implements DiagnosticSettingsCategory {
 
     DiagnosticSettingsCategoryImpl(DiagnosticSettingsCategoryResourceInner innerObject) {
         super(innerObject);
@@ -20,7 +18,7 @@ class DiagnosticSettingsCategoryImpl
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override

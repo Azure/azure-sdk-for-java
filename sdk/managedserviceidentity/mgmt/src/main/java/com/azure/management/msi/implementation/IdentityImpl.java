@@ -25,7 +25,9 @@ final class IdentityImpl
 
     protected IdentityImpl(String name, IdentityInner innerObject, MSIManager manager) {
         super(name, innerObject, manager);
-        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.graphRbacManager(), this.taskGroup(), this.idProvider());
+        this.roleAssignmentHelper = new RoleAssignmentHelper(manager.graphRbacManager(),
+            this.taskGroup(),
+            this.idProvider());
     }
 
     @Override
@@ -134,8 +136,8 @@ final class IdentityImpl
             @Override
             public String resourceId() {
                 Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().getId());
-                return inner().getId();
+                Objects.requireNonNull(inner().id());
+                return inner().id();
             }
         };
     }

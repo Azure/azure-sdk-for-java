@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -176,6 +177,8 @@ public class EventHubProducerClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable}
+     *
      * <p>
      * For more information regarding the maximum event size allowed, see
      * <a href="https://docs.microsoft.com/azure/event-hubs/event-hubs-quotas">Azure Event Hubs Quotas and
@@ -183,8 +186,9 @@ public class EventHubProducerClient implements Closeable {
      * </p>
      *
      * @param events Events to send to the service.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
-    void send(Iterable<EventData> events) {
+    public void send(Iterable<EventData> events) {
         producer.send(events).block();
     }
 
@@ -192,6 +196,8 @@ public class EventHubProducerClient implements Closeable {
      * Sends a set of events to the associated Event Hub using a batched approach. If the size of events exceed the
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
+     *
+     * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions}
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
@@ -201,8 +207,9 @@ public class EventHubProducerClient implements Closeable {
      *
      * @param events Events to send to the service.
      * @param options The set of options to consider when sending this batch.
+     * @throws AmqpException if the size of {@code events} exceed the maximum size of a single batch.
      */
-    void send(Iterable<EventData> events, SendOptions options) {
+    public void send(Iterable<EventData> events, SendOptions options) {
         producer.send(events, options).block();
     }
 

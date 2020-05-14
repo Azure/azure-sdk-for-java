@@ -12,23 +12,20 @@ import com.azure.management.network.models.ApplicationGatewayRedirectConfigurati
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-
 import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Implementation for ApplicationGatewayRedirectConfiguration.
- */
+/** Implementation for ApplicationGatewayRedirectConfiguration. */
 class ApplicationGatewayRedirectConfigurationImpl
-        extends ChildResourceImpl<ApplicationGatewayRedirectConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
-        implements
-        ApplicationGatewayRedirectConfiguration,
+    extends ChildResourceImpl<ApplicationGatewayRedirectConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
+    implements ApplicationGatewayRedirectConfiguration,
         ApplicationGatewayRedirectConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayRedirectConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayRedirectConfiguration.Update {
 
-    ApplicationGatewayRedirectConfigurationImpl(ApplicationGatewayRedirectConfigurationInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayRedirectConfigurationImpl(
+        ApplicationGatewayRedirectConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -50,7 +47,7 @@ class ApplicationGatewayRedirectConfigurationImpl
             return null;
         }
 
-        String name = ResourceUtils.nameFromResourceId(ref.getId());
+        String name = ResourceUtils.nameFromResourceId(ref.id());
         return this.parent().listeners().get(name);
     }
 
@@ -64,7 +61,7 @@ class ApplicationGatewayRedirectConfigurationImpl
         Map<String, ApplicationGatewayRequestRoutingRule> rules = new TreeMap<>();
         if (null != this.inner().requestRoutingRules()) {
             for (SubResource ruleRef : this.inner().requestRoutingRules()) {
-                String ruleName = ResourceUtils.nameFromResourceId(ruleRef.getId());
+                String ruleName = ResourceUtils.nameFromResourceId(ruleRef.id());
                 ApplicationGatewayRequestRoutingRule rule = this.parent().requestRoutingRules().get(ruleName);
                 if (null != rule) {
                     rules.put(ruleName, rule);
@@ -98,10 +95,7 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public ApplicationGatewayRedirectConfigurationImpl withTargetUrl(String url) {
-        this.inner()
-                .withTargetUrl(url)
-                .withTargetListener(null)
-                .withIncludePath(null);
+        this.inner().withTargetUrl(url).withTargetListener(null).withIncludePath(null);
         return this;
     }
 
@@ -110,10 +104,8 @@ class ApplicationGatewayRedirectConfigurationImpl
         if (name == null) {
             this.inner().withTargetListener(null);
         } else {
-            SubResource ref = new SubResource().setId(this.parent().futureResourceId() + "/httpListeners/" + name);
-            this.inner()
-                    .withTargetListener(ref)
-                    .withTargetUrl(null);
+            SubResource ref = new SubResource().withId(this.parent().futureResourceId() + "/httpListeners/" + name);
+            this.inner().withTargetListener(ref).withTargetUrl(null);
         }
 
         return this;

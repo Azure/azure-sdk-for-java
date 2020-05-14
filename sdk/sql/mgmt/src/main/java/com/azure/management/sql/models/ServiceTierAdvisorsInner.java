@@ -54,8 +54,8 @@ public final class ServiceTierAdvisorsInner {
     private interface ServiceTierAdvisorsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/serviceTierAdvisors/{serviceTierAdvisorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/serviceTierAdvisors/{serviceTierAdvisorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ServiceTierAdvisorInner>> get(
@@ -70,8 +70,8 @@ public final class ServiceTierAdvisorsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/serviceTierAdvisors")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/serviceTierAdvisors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<ServiceTierAdvisorListResultInner>> listByDatabase(

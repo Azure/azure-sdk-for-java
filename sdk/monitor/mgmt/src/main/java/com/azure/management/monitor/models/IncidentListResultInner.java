@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The IncidentListResult model.
- */
+/** The IncidentListResult model. */
 @Fluent
 public final class IncidentListResultInner {
     /*
@@ -21,7 +19,7 @@ public final class IncidentListResultInner {
 
     /**
      * Get the value property: the incident collection.
-     * 
+     *
      * @return the value value.
      */
     public List<IncidentInner> value() {
@@ -30,7 +28,7 @@ public final class IncidentListResultInner {
 
     /**
      * Set the value property: the incident collection.
-     * 
+     *
      * @param value the value value to set.
      * @return the IncidentListResultInner object itself.
      */

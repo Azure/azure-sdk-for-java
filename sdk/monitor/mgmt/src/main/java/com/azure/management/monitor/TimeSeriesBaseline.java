@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The TimeSeriesBaseline model.
- */
+/** The TimeSeriesBaseline model. */
 @Fluent
 public final class TimeSeriesBaseline {
     /*
@@ -46,7 +44,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Get the aggregation property: The aggregation type of the metric.
-     * 
+     *
      * @return the aggregation value.
      */
     public String aggregation() {
@@ -55,7 +53,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Set the aggregation property: The aggregation type of the metric.
-     * 
+     *
      * @param aggregation the aggregation value to set.
      * @return the TimeSeriesBaseline object itself.
      */
@@ -66,7 +64,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Get the dimensions property: The dimensions of this time series.
-     * 
+     *
      * @return the dimensions value.
      */
     public List<MetricSingleDimension> dimensions() {
@@ -75,7 +73,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Set the dimensions property: The dimensions of this time series.
-     * 
+     *
      * @param dimensions the dimensions value to set.
      * @return the TimeSeriesBaseline object itself.
      */
@@ -86,7 +84,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Get the timestamps property: The list of timestamps of the baselines.
-     * 
+     *
      * @return the timestamps value.
      */
     public List<OffsetDateTime> timestamps() {
@@ -95,7 +93,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Set the timestamps property: The list of timestamps of the baselines.
-     * 
+     *
      * @param timestamps the timestamps value to set.
      * @return the TimeSeriesBaseline object itself.
      */
@@ -106,7 +104,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Get the data property: The baseline values for each sensitivity.
-     * 
+     *
      * @return the data value.
      */
     public List<SingleBaseline> data() {
@@ -115,7 +113,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Set the data property: The baseline values for each sensitivity.
-     * 
+     *
      * @param data the data value to set.
      * @return the TimeSeriesBaseline object itself.
      */
@@ -126,7 +124,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Get the metadata property: The baseline metadata values.
-     * 
+     *
      * @return the metadata value.
      */
     public List<BaselineMetadata> metadata() {
@@ -135,7 +133,7 @@ public final class TimeSeriesBaseline {
 
     /**
      * Set the metadata property: The baseline metadata values.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the TimeSeriesBaseline object itself.
      */

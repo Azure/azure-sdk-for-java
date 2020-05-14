@@ -6,9 +6,7 @@ package com.azure.management.appservice;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for AppServiceOperatingSystem.
- */
+/** Defines values for AppServiceOperatingSystem. */
 public enum OperatingSystem {
     /** Enum value Windows. */
     WINDOWS("windows"),

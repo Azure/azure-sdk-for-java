@@ -62,8 +62,8 @@ public final class RestorePointsInner {
     private interface RestorePointsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/restorePoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RestorePointListResultInner>> listByDatabase(
@@ -77,8 +77,8 @@ public final class RestorePointsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/restorePoints")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> create(
@@ -93,8 +93,8 @@ public final class RestorePointsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RestorePointInner>> get(
@@ -109,8 +109,8 @@ public final class RestorePointsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/restorePoints/{restorePointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<Response<Void>> delete(
@@ -125,8 +125,8 @@ public final class RestorePointsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/databases/{databaseName}/restorePoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
+                + "/servers/{serverName}/databases/{databaseName}/restorePoints")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<RestorePointInner>> beginCreate(

@@ -17,12 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-/**
- * Entry point for Network Watcher API in Azure.
- */
+/** Entry point for Network Watcher API in Azure. */
 @Fluent
-public interface NetworkWatchers extends
-        SupportsListing<NetworkWatcher>,
+public interface NetworkWatchers
+    extends SupportsListing<NetworkWatcher>,
         SupportsCreating<NetworkWatcher.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByResourceGroup<NetworkWatcher>,

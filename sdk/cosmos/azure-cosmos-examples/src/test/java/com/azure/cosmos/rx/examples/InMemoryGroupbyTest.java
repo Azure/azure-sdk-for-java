@@ -2,15 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -39,13 +41,14 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = 2 * TIMEOUT)
     public void before_InMemoryGroupbyTest() throws Exception {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
             .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
             .withConnectionPolicy(connectionPolicy)
-            .withConsistencyLevel(ConsistencyLevel.SESSION);
+            .withConsistencyLevel(ConsistencyLevel.SESSION)
+            .withContentResponseOnWriteEnabled(true);
 
         this.client = this.clientBuilder().build();
 
@@ -106,7 +109,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
         // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),
@@ -137,7 +140,7 @@ public class InMemoryGroupbyTest extends DocumentClientTest {
 
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
-        options.setMaxItemCount(requestPageSize);
+        ModelBridgeInternal.setFeedOptionsMaxItemCount(options, requestPageSize);
 
         Flux<Document> documentsObservable = client
                 .<Document>queryDocuments(getCollectionLink(),

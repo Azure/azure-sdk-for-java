@@ -17,13 +17,10 @@ import com.azure.management.resources.fluentcore.collection.SupportsDeletingById
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 
-
-/**
- * Entry point to route table management.
- */
+/** Entry point to route table management. */
 @Fluent()
-public interface RouteTables extends
-        SupportsCreating<RouteTable.DefinitionStages.Blank>,
+public interface RouteTables
+    extends SupportsCreating<RouteTable.DefinitionStages.Blank>,
         SupportsListing<RouteTable>,
         SupportsListingByResourceGroup<RouteTable>,
         SupportsGettingByResourceGroup<RouteTable>,

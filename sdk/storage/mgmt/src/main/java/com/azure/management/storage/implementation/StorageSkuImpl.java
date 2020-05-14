@@ -13,13 +13,10 @@ import com.azure.management.storage.StorageAccountSkuType;
 import com.azure.management.storage.StorageResourceType;
 import com.azure.management.storage.StorageSku;
 import com.azure.management.storage.models.SkuInformationInner;
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The implementation for {@link StorageSku}.
- */
+/** The implementation for {@link StorageSku}. */
 class StorageSkuImpl implements StorageSku {
     private final SkuInformationInner inner;
 

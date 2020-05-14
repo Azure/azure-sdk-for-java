@@ -33,7 +33,7 @@ public class EventProcessorBlobCheckpointStoreSample {
     };
 
     public static final Consumer<ErrorContext> ERROR_HANDLER = errorContext -> {
-        System.out.printf("Error occurred in partition processor for partition {}, {}",
+        System.out.printf("Error occurred in partition processor for partition %s, %s.%n",
             errorContext.getPartitionContext().getPartitionId(),
             errorContext.getThrowable());
     };

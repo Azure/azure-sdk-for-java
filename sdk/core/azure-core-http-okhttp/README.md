@@ -15,7 +15,7 @@ Azure Core OkHttp HTTP client is a plugin for the `azure-core` HTTP client API.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-okhttp</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -69,5 +69,8 @@ Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
 1. Commit your changes (`git commit -am 'Add some feature'`)
 1. Push to the branch (`git push origin my-new-feature`)
 1. Create new Pull Request
+
+<!-- Links -->
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-http-okhttp%2FREADME.png)

@@ -3,7 +3,8 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
+import com.azure.core.util.ExpandableStringEnum;
+
 import java.util.Collection;
 
 /** The name of the configured Service Level Objective of a "Standard" Azure SQL Database. */

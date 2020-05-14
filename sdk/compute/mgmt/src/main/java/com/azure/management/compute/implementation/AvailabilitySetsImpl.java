@@ -4,24 +4,18 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.AvailabilitySetInner;
-import com.azure.management.compute.models.AvailabilitySetsInner;
 import com.azure.management.compute.AvailabilitySet;
 import com.azure.management.compute.AvailabilitySetSkuTypes;
 import com.azure.management.compute.AvailabilitySets;
+import com.azure.management.compute.models.AvailabilitySetInner;
+import com.azure.management.compute.models.AvailabilitySetsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AvailabilitySets.
- */
+/** The implementation for AvailabilitySets. */
 class AvailabilitySetsImpl
     extends GroupableResourcesImpl<
-        AvailabilitySet,
-        AvailabilitySetImpl,
-        AvailabilitySetInner,
-        AvailabilitySetsInner,
-        ComputeManager>
+        AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner, ComputeManager>
     implements AvailabilitySets {
 
     AvailabilitySetsImpl(final ComputeManager computeManager) {
@@ -30,16 +24,12 @@ class AvailabilitySetsImpl
 
     @Override
     public PagedIterable<AvailabilitySet> list() {
-        //TODO validate in tests
-        return manager().inner().availabilitySets().list()
-                .mapPage(this::wrapModel);
+        return manager().inner().availabilitySets().list().mapPage(this::wrapModel);
     }
 
     @Override
     public PagedFlux<AvailabilitySet> listAsync() {
-        //TODO validate in tests
-        return this.manager().inner().availabilitySets().listAsync()
-                .mapPage(this::wrapModel);
+        return this.manager().inner().availabilitySets().listAsync().mapPage(this::wrapModel);
     }
 
     @Override
@@ -73,9 +63,7 @@ class AvailabilitySetsImpl
 
     @Override
     protected AvailabilitySetImpl wrapModel(String name) {
-        return new AvailabilitySetImpl(name,
-                new AvailabilitySetInner(),
-                this.manager());
+        return new AvailabilitySetImpl(name, new AvailabilitySetInner(), this.manager());
     }
 
     @Override
@@ -83,8 +71,6 @@ class AvailabilitySetsImpl
         if (availabilitySetInner == null) {
             return null;
         }
-        return new AvailabilitySetImpl(availabilitySetInner.getName(),
-                availabilitySetInner,
-                this.manager());
+        return new AvailabilitySetImpl(availabilitySetInner.name(), availabilitySetInner, this.manager());
     }
 }

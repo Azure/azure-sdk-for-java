@@ -7,6 +7,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -224,6 +225,17 @@ public final class Field {
     @JsonProperty(value = "fields")
     private List<Field> fields;
 
+    /*
+     * A value indicating whether the field will be returned in a search
+     * result. This property must be false for key fields, and must be null for
+     * complex fields. You can hide a field from search results if you want to
+     * use it only as a filter, for sorting, or for scoring. This property can
+     * also be changed on existing fields and enabling it does not cause an
+     * increase in index storage requirements.
+     */
+    @JsonIgnore
+    private Boolean hidden;
+
     /**
      * Get the name property: The name of the field, which must be unique
      * within the fields collection of the index or parent field.
@@ -314,7 +326,7 @@ public final class Field {
      *
      * @return the retrievable value.
      */
-    public Boolean isRetrievable() {
+    private Boolean isRetrievable() {
         return this.retrievable;
     }
 
@@ -331,7 +343,7 @@ public final class Field {
      * @param retrievable the retrievable value to set.
      * @return the Field object itself.
      */
-    public Field setRetrievable(Boolean retrievable) {
+    private Field setRetrievable(Boolean retrievable) {
         this.retrievable = retrievable;
         return this;
     }
@@ -757,6 +769,37 @@ public final class Field {
      */
     public Field setFields(List<Field> fields) {
         this.fields = fields;
+        return this;
+    }
+
+    /**
+     * Get the hidden property: A value indicating whether the field will be
+     * returned in a search result. This property must be false for key fields,
+     * and must be null for complex fields. You can hide a field from search
+     * results if you want to use it only as a filter, for sorting, or for
+     * scoring. This property can also be changed on existing fields and
+     * enabling it does not cause an increase in index storage requirements.
+     *
+     * @return the hidden value.
+     */
+    public Boolean isHidden() {
+        return retrievable == null ? null : !retrievable;
+    }
+
+    /**
+     * Set the hidden property: A value indicating whether the field will be
+     * returned in a search result. This property must be false for key fields,
+     * and must be null for complex fields. You can hide a field from search
+     * results if you want to use it only as a filter, for sorting, or for
+     * scoring. This property can also be changed on existing fields and
+     * enabling it does not cause an increase in index storage requirements.
+     *
+     * @param hidden the hidden value to set.
+     * @return the Field object itself.
+     */
+    public Field setHidden(Boolean hidden) {
+        this.hidden = hidden;
+        retrievable = this.hidden == null ? null : !this.hidden;
         return this;
     }
 }

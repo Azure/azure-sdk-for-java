@@ -64,7 +64,7 @@ public final class SubscriptionUsagesInner {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages/{usageName}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/usages" + "/{usageName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
         Mono<SimpleResponse<SubscriptionUsageInner>> get(

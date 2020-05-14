@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.management;
 
-
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.CloudException;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
@@ -21,20 +21,22 @@ import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class ApplicationGatewayTests extends TestBase {
     private Azure azure;
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        Azure.Authenticated azureAuthed = Azure.authenticate(restClient, defaultSubscription, domain).withSdkContext(sdkContext);
-        azure = azureAuthed.withSubscription(defaultSubscription);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        Azure.Authenticated azureAuthed =
+            Azure.authenticate(httpPipeline, profile).withSdkContext(sdkContext);
+        azure = azureAuthed.withDefaultSubscription();
     }
 
     @Override
@@ -49,7 +51,7 @@ public class ApplicationGatewayTests extends TestBase {
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
         new TestApplicationGateway().new PrivateComplex(azure.sdkContext())
-                .runTest(azure.applicationGateways(), azure.resourceGroups());
+            .runTest(azure.applicationGateways(), azure.resourceGroups());
     }
 
     /**
@@ -60,7 +62,7 @@ public class ApplicationGatewayTests extends TestBase {
     @Test
     public void testAppGatewaysPublicUrlPathBased() throws Exception {
         new TestApplicationGateway().new UrlPathBased(azure.sdkContext())
-                .runTest(azure.applicationGateways(), azure.resourceGroups());
+            .runTest(azure.applicationGateways(), azure.resourceGroups());
     }
 
     @Test
@@ -74,7 +76,10 @@ public class ApplicationGatewayTests extends TestBase {
 
         try {
             // Create a vnet
-            Network network = azure.networks().define(vnetName)
+            Network network =
+                azure
+                    .networks()
+                    .define(vnetName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
                     .withAddressSpace("10.0.0.0/28")
@@ -85,16 +90,20 @@ public class ApplicationGatewayTests extends TestBase {
             // Create VMs for the backend in the network to connect to
             List<Creatable<VirtualMachine>> vmsDefinitions = new ArrayList<>();
             for (int i = 0; i < 2; i++) {
-                vmsDefinitions.add(azure.virtualMachines().define("vm" + i + testId)
-                        .withRegion(region)
-                        .withExistingResourceGroup(rgName)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("subnet2")
-                        .withPrimaryPrivateIPAddressDynamic()
-                        .withoutPrimaryPublicIPAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUsername("tester")
-                        .withRootPassword(password));
+                vmsDefinitions
+                    .add(
+                        azure
+                            .virtualMachines()
+                            .define("vm" + i + testId)
+                            .withRegion(region)
+                            .withExistingResourceGroup(rgName)
+                            .withExistingPrimaryNetwork(network)
+                            .withSubnet("subnet2")
+                            .withPrimaryPrivateIPAddressDynamic()
+                            .withoutPrimaryPublicIPAddress()
+                            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                            .withRootUsername("tester")
+                            .withRootPassword(password));
             }
 
             CreatedResources<VirtualMachine> createdVms = azure.virtualMachines().create(vmsDefinitions);
@@ -109,7 +118,10 @@ public class ApplicationGatewayTests extends TestBase {
             }
 
             // Create the app gateway in the other subnet of the same vnet and point the backend at the VMs
-            ApplicationGateway appGateway = azure.applicationGateways().define(name)
+            ApplicationGateway appGateway =
+                azure
+                    .applicationGateways()
+                    .define(name)
                     .withRegion(region)
                     .withExistingResourceGroup(rgName)
                     .defineRequestRoutingRule("rule1")
@@ -132,10 +144,12 @@ public class ApplicationGatewayTests extends TestBase {
             Assertions.assertNotNull(nic);
             ApplicationGatewayBackend appGatewayBackend = appGateway.backends().get("nicBackend");
             Assertions.assertNotNull(appGatewayBackend);
-            nic.update().updateIPConfiguration(nic.primaryIPConfiguration().name())
-                    .withExistingApplicationGatewayBackend(appGateway, appGatewayBackend.name())
-                    .parent()
-                    .apply();
+            nic
+                .update()
+                .updateIPConfiguration(nic.primaryIPConfiguration().name())
+                .withExistingApplicationGatewayBackend(appGateway, appGatewayBackend.name())
+                .parent()
+                .apply();
 
             // Get the health of the VMs
             appGateway.refresh();
@@ -144,18 +158,29 @@ public class ApplicationGatewayTests extends TestBase {
             StringBuilder info = new StringBuilder();
             info.append("\nApplication gateway backend healths: ").append(backendHealths.size());
             for (ApplicationGatewayBackendHealth backendHealth : backendHealths.values()) {
-                info.append("\n\tApplication gateway backend name: ").append(backendHealth.name())
-                        .append("\n\t\tHTTP configuration healths: ").append(backendHealth.httpConfigurationHealths().size());
+                info
+                    .append("\n\tApplication gateway backend name: ")
+                    .append(backendHealth.name())
+                    .append("\n\t\tHTTP configuration healths: ")
+                    .append(backendHealth.httpConfigurationHealths().size());
                 Assertions.assertNotNull(backendHealth.backend());
-                for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth : backendHealth.httpConfigurationHealths().values()) {
-                    info.append("\n\t\t\tHTTP configuration name: ").append(backendConfigHealth.name())
-                            .append("\n\t\t\tServers: ").append(backendConfigHealth.inner().servers().size());
+                for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth
+                    : backendHealth.httpConfigurationHealths().values()) {
+                    info
+                        .append("\n\t\t\tHTTP configuration name: ")
+                        .append(backendConfigHealth.name())
+                        .append("\n\t\t\tServers: ")
+                        .append(backendConfigHealth.inner().servers().size());
                     Assertions.assertNotNull(backendConfigHealth.backendHttpConfiguration());
-                    for (ApplicationGatewayBackendServerHealth serverHealth : backendConfigHealth.serverHealths().values()) {
+                    for (ApplicationGatewayBackendServerHealth serverHealth
+                        : backendConfigHealth.serverHealths().values()) {
                         NicIPConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
                         if (ipConfig != null) {
-                            info.append("\n\t\t\t\tServer NIC ID: ").append(ipConfig.parent().id())
-                                    .append("\n\t\t\t\tIP Config name: ").append(ipConfig.name());
+                            info
+                                .append("\n\t\t\t\tServer NIC ID: ")
+                                .append(ipConfig.parent().id())
+                                .append("\n\t\t\t\tIP Config name: ")
+                                .append(ipConfig.name());
                         } else {
                             info.append("\n\t\t\t\tServer IP: " + serverHealth.ipAddress());
                         }
@@ -192,10 +217,12 @@ public class ApplicationGatewayTests extends TestBase {
             Assertions.assertNotNull(backendHealth2.backend());
             Assertions.assertEquals(backend2.name(), backendHealth2.name());
             Assertions.assertEquals(1, backendHealth2.httpConfigurationHealths().size());
-            ApplicationGatewayBackendHttpConfigurationHealth httpConfigHealth2 = backendHealth2.httpConfigurationHealths().values().iterator().next();
+            ApplicationGatewayBackendHttpConfigurationHealth httpConfigHealth2 =
+                backendHealth2.httpConfigurationHealths().values().iterator().next();
             Assertions.assertNotNull(httpConfigHealth2.backendHttpConfiguration());
             Assertions.assertEquals(1, httpConfigHealth2.serverHealths().size());
-            ApplicationGatewayBackendServerHealth serverHealth = httpConfigHealth2.serverHealths().values().iterator().next();
+            ApplicationGatewayBackendServerHealth serverHealth =
+                httpConfigHealth2.serverHealths().values().iterator().next();
             NicIPConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
             Assertions.assertEquals(nic.primaryIPConfiguration().name(), ipConfig2.name());
         } catch (Exception e) {
@@ -215,7 +242,7 @@ public class ApplicationGatewayTests extends TestBase {
     @Test
     public void testAppGatewaysInternalMinimal() throws Exception {
         new TestApplicationGateway().new PrivateMinimal(azure.sdkContext())
-                .runTest(azure.applicationGateways(), azure.resourceGroups());
+            .runTest(azure.applicationGateways(), azure.resourceGroups());
     }
 
     @Test
@@ -223,7 +250,10 @@ public class ApplicationGatewayTests extends TestBase {
         String rgName = azure.sdkContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
         String name = azure.sdkContext().randomResourceName("ag", 15);
-        ApplicationGateway appGateway = azure.applicationGateways().define(name)
+        ApplicationGateway appGateway =
+            azure
+                .applicationGateways()
+                .define(name)
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
 
@@ -250,31 +280,38 @@ public class ApplicationGatewayTests extends TestBase {
     public void testApplicationGatewaysInParallel() throws Exception {
         String rgName = azure.applicationGateways().manager().getSdkContext().randomResourceName("rg", 13);
         Region region = Region.US_EAST;
-        Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName)
-                .withRegion(region);
+        Creatable<ResourceGroup> resourceGroup = azure.resourceGroups().define(rgName).withRegion(region);
         List<Creatable<ApplicationGateway>> agCreatables = new ArrayList<>();
 
-        agCreatables.add(azure.applicationGateways().define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroup)
-                .defineRequestRoutingRule("rule1")
-                .fromPrivateFrontend()
-                .fromFrontendHttpPort(80)
-                .toBackendHttpPort(8080)
-                .toBackendIPAddress("10.0.0.1")
-                .toBackendIPAddress("10.0.0.2")
-                .attach());
+        agCreatables
+            .add(
+                azure
+                    .applicationGateways()
+                    .define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(resourceGroup)
+                    .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("10.0.0.1")
+                    .toBackendIPAddress("10.0.0.2")
+                    .attach());
 
-        agCreatables.add(azure.applicationGateways().define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup(resourceGroup)
-                .defineRequestRoutingRule("rule1")
-                .fromPrivateFrontend()
-                .fromFrontendHttpPort(80)
-                .toBackendHttpPort(8080)
-                .toBackendIPAddress("10.0.0.3")
-                .toBackendIPAddress("10.0.0.4")
-                .attach());
+        agCreatables
+            .add(
+                azure
+                    .applicationGateways()
+                    .define(azure.applicationGateways().manager().getSdkContext().randomResourceName("ag", 13))
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(resourceGroup)
+                    .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress("10.0.0.3")
+                    .toBackendIPAddress("10.0.0.4")
+                    .attach());
 
         CreatedResources<ApplicationGateway> created = azure.applicationGateways().create(agCreatables);
         List<ApplicationGateway> ags = new ArrayList<>();
@@ -319,7 +356,7 @@ public class ApplicationGatewayTests extends TestBase {
     @Test
     public void testAppGatewaysInternetFacingMinimal() throws Exception {
         new TestApplicationGateway().new PublicMinimal(azure.sdkContext())
-                .runTest(azure.applicationGateways(), azure.resourceGroups());
+            .runTest(azure.applicationGateways(), azure.resourceGroups());
     }
 
     /**
@@ -330,6 +367,6 @@ public class ApplicationGatewayTests extends TestBase {
     @Test
     public void testAppGatewaysInternetFacingComplex() throws Exception {
         new TestApplicationGateway().new PublicComplex(azure.sdkContext())
-                .runTest(azure.applicationGateways(), azure.resourceGroups());
+            .runTest(azure.applicationGateways(), azure.resourceGroups());
     }
 }

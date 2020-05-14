@@ -5,24 +5,19 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.compute.models.ResourceSkuInner;
-import com.azure.management.compute.models.ResourceSkusInner;
 import com.azure.management.compute.ComputeResourceType;
 import com.azure.management.compute.ComputeSku;
 import com.azure.management.compute.ComputeSkus;
+import com.azure.management.compute.models.ResourceSkuInner;
+import com.azure.management.compute.models.ResourceSkusInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for {@link ComputeSkus}.
- */
-final class ComputeSkusImpl
-        extends
-        ReadableWrappersImpl<ComputeSku, ComputeSkuImpl, ResourceSkuInner>
-        implements
-        ComputeSkus {
+/** The implementation for {@link ComputeSkus}. */
+final class ComputeSkusImpl extends ReadableWrappersImpl<ComputeSku, ComputeSkuImpl, ResourceSkuInner>
+    implements ComputeSkus {
     private final ComputeManager manager;
 
     ComputeSkusImpl(ComputeManager computeManager) {
@@ -61,8 +56,7 @@ final class ComputeSkusImpl
 
     @Override
     public PagedFlux<ComputeSku> listByRegionAsync(final Region region) {
-        return inner().listAsync(String.format("location eq '%s'", region.name()))
-                .mapPage(this::wrapModel);
+        return inner().listAsync(String.format("location eq '%s'", region.name())).mapPage(this::wrapModel);
     }
 
     @Override
@@ -82,13 +76,16 @@ final class ComputeSkusImpl
 
     @Override
     public PagedFlux<ComputeSku> listByResourceTypeAsync(final ComputeResourceType resourceType) {
-        return PagedConverter.flatMapPage(wrapPageAsync(inner().listAsync()), computeSku -> {
-            if (computeSku.resourceType() != null && computeSku.resourceType().equals(resourceType)) {
-                return Mono.just(computeSku);
-            } else {
-                return Mono.empty();
-            }
-        });
+        return PagedConverter
+            .flatMapPage(
+                wrapPageAsync(inner().listAsync()),
+                computeSku -> {
+                    if (computeSku.resourceType() != null && computeSku.resourceType().equals(resourceType)) {
+                        return Mono.just(computeSku);
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     @Override
@@ -97,13 +94,17 @@ final class ComputeSkusImpl
     }
 
     @Override
-    public PagedFlux<ComputeSku> listByRegionAndResourceTypeAsync(final Region region, final ComputeResourceType resourceType) {
-        return PagedConverter.flatMapPage(wrapPageAsync(inner().listAsync(String.format("location eq '%s'", region.name()))), computeSku -> {
-            if (computeSku.resourceType() != null && computeSku.resourceType().equals(resourceType)) {
-                return Mono.just(computeSku);
-            } else {
-                return Mono.empty();
-            }
-        });
+    public PagedFlux<ComputeSku> listByRegionAndResourceTypeAsync(
+        final Region region, final ComputeResourceType resourceType) {
+        return PagedConverter
+            .flatMapPage(
+                wrapPageAsync(inner().listAsync(String.format("location eq '%s'", region.name()))),
+                computeSku -> {
+                    if (computeSku.resourceType() != null && computeSku.resourceType().equals(resourceType)) {
+                        return Mono.just(computeSku);
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 }

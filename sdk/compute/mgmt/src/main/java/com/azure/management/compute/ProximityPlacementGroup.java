@@ -6,16 +6,14 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.util.List;
 
-/**
- * Type representing Proximity Placement Group for an Azure compute resource.
- */
+/** Type representing Proximity Placement Group for an Azure compute resource. */
 @Fluent
 public interface ProximityPlacementGroup extends HasInner<ProximityPlacementGroupInner> {
     /**
-     * Get specifies the type of the proximity placement group. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** &lt;br&gt;&lt;br&gt; **Ultra**. Possible values include: 'Standard', 'Ultra'.
+     * Get specifies the type of the proximity placement group. &lt;br&gt;&lt;br&gt; Possible values are:
+     * &lt;br&gt;&lt;br&gt; **Standard** &lt;br&gt;&lt;br&gt; **Ultra**. Possible values include: 'Standard', 'Ultra'.
      *
      * @return the proximityPlacementGroupType value
      */
