@@ -445,6 +445,9 @@ public final class ShareServiceClient {
      *
      * @param deletedShareName The name of the previously deleted share.
      * @param deletedShareVersion The version of the previously deleted share.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareClient} used
      * to interact with the restored share.
      */

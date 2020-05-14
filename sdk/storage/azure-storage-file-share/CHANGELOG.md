@@ -1,7 +1,7 @@
 # Release History
 
 ## 12.5.0-beta.1 (Unreleased)
-
+- Added support for restoring file share.
 
 ## 12.4.0 (2020-04-06)
 - Fixed an issue where whitespace would cause NtfsFileAttributes.toAttributes/fromAttributes to result in an error parsing the attributes.
