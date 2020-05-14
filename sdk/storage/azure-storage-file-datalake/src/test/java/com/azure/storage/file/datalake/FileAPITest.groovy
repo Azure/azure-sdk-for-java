@@ -2787,9 +2787,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -2799,9 +2797,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
 
         // To calculate the size of data being tested = numCopies * 32 bytes
         where:
@@ -2834,9 +2830,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -2846,9 +2840,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(DataLakeStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
 
         where:
         numCopies | recordSeparator || _

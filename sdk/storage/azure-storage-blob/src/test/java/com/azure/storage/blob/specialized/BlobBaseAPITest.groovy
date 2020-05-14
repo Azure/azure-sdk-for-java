@@ -107,9 +107,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -119,9 +117,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
 
         // To calculate the size of data being tested = numCopies * 32 bytes
         where:
@@ -133,12 +129,80 @@ class BlobBaseAPITest extends APISpec {
         4000      | _ // 125 KB
     }
 
+    @Unroll
+    def "Query csv serialization"() {
+        setup:
+        BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
+            .setRecordSeparator(recordSeparator as char)
+            .setColumnSeparator(columnSeparator as char)
+            .setEscapeChar(escapeChar as char)
+            .setFieldQuote(fieldQuote as char)
+            .setHeadersPresent(headersPresent)
+        uploadCsv(ser, 32)
+        def expression = "SELECT * from BlobStorage"
+
+        ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
+        bc.download(downloadData)
+        byte[] downloadedData = downloadData.toByteArray()
+
+        /* Input Stream. */
+        when:
+        InputStream qqStream = bc.openQueryInputStream(expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser))
+        byte[] queryData = readFromInputStream(qqStream, downloadedData.length)
+
+        then:
+        notThrown(IOException)
+        if (headersPresent) {
+            /* Account for 16 bytes of header. */
+            for (int j = 16; j < downloadedData.length; j++) {
+                assert queryData[j - 16] == downloadedData[j]
+            }
+            for (int k = downloadedData.length - 16; k < downloadedData.length; k++) {
+                assert queryData[k] == 0
+            }
+        } else {
+            queryData == downloadedData
+        }
+
+        /* Output Stream. */
+        when:
+        OutputStream os = new ByteArrayOutputStream()
+        bc.queryWithResponse(os, expression, new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser), null, null)
+        byte[] osData = os.toByteArray()
+
+        then:
+        notThrown(BlobStorageException)
+        if (headersPresent) {
+            assert osData.length == downloadedData.length - 16
+            /* Account for 16 bytes of header. */
+            for (int j = 16; j < downloadedData.length; j++) {
+                assert osData[j - 16] == downloadedData[j]
+            }
+        } else {
+            osData == downloadedData
+        }
+
+        // To calculate the size of data being tested = numCopies * 32 bytes
+        where:
+        recordSeparator | columnSeparator | escapeChar | fieldQuote | headersPresent || _
+        '\n'            | ','             | '\0'       | '\0'       | false          || _ /* Default. */
+        '\n'            | ','             | '\0'       | '\0'       | true           || _ /* Headers. */
+        '\t'            | ','             | '\0'       | '\0'       | false          || _ /* Record Separators. */
+        '\r'            | ','             | '\0'       | '\0'       | false          || _
+        '<'             | ','             | '\0'       | '\0'       | false          || _
+        '>'             | ','             | '\0'       | '\0'       | false          || _
+        '&'             | ','             | '\0'       | '\0'       | false          || _
+        '"'             | ','             | '\0'       | '\\'       | false          || _
+        '\\'            | ','             | '\0'       | '\0'       | false          || _
+
+    }
+
     /* Note: Input delimited tested everywhere else. */
     @Unroll
     def "Query Input json"() {
         setup:
         BlobQueryJsonSerialization ser = new BlobQueryJsonSerialization()
-            .setRecordSeparator(recordSeparator as char)
+            .setRecordSeparator('\n' as char)
         uploadSmallJson(numCopies)
         def expression = "SELECT * from BlobStorage"
 
@@ -154,9 +218,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -166,16 +228,14 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
 
         where:
-        numCopies | recordSeparator || _
-        0         | '\n'            || _
-        10        | '\n'            || _
-        100       | '\n'            || _
-        1000      | '\n'            || _
+        numCopies || _
+        0         || _
+        10        || _
+        100       || _
+        1000      || _
     }
 
     def "Query Input csv Output json"() {
@@ -473,9 +533,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -485,9 +543,7 @@ class BlobBaseAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
     }
 
     class RandomOtherSerialization extends BlobQuerySerialization {
