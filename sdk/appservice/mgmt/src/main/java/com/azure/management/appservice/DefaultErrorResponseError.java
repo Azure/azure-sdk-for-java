@@ -9,7 +9,6 @@ import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The DefaultErrorResponseError model. */
 @Immutable
