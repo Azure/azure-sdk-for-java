@@ -198,10 +198,11 @@ public final class BlobServiceClient {
         return new PagedIterable<>(blobServiceAsyncClient.listBlobContainersWithOptionalTimeout(options, timeout));
     }
 
+    // TODO: (rickle-msft) doc links
     /**
      * Returns a lazy loaded list of blobs in this account whose tags match the query expression. The returned
      * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
-     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -217,7 +218,7 @@ public final class BlobServiceClient {
     /**
      * Returns a lazy loaded list of blobs in this account whose tags match the query expression. The returned
      * {@link PagedIterable} can be consumed while new items are automatically retrieved as needed. For more
-     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *

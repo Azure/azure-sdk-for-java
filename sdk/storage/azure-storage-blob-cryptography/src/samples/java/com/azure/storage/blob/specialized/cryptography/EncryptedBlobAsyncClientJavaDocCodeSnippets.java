@@ -123,7 +123,7 @@ public class EncryptedBlobAsyncClientJavaDocCodeSnippets {
             .setTags(tags).setTier(AccessTier.HOT).setRequestConditions(requestConditions))
             .subscribe(response -> System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getValue().getContentMd5())));
-        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-ParallelTransferOptions-BlobParallelUploadOptions
+        // END: com.azure.storage.blob.specialized.cryptography.EncryptedBlobAsyncClient.uploadWithResponse#Flux-BlobParallelUploadOptions
     }
 
     /**

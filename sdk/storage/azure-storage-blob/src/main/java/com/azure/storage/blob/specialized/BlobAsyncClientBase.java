@@ -1431,6 +1431,7 @@ public class BlobAsyncClientBase {
             .map(response -> new SimpleResponse<>(response, null));
     }
 
+    // TODO: (rickle-msft) docs link
     /**
      * Returns the blob's tags.
      *
@@ -1439,7 +1440,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTags}
      *
      * <p>For more information, see the
-     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @return A reactive response containing the blob's tags.
      */
@@ -1455,7 +1456,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.getTagsWithResponse}
      *
      * <p>For more information, see the
-     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @return A reactive response containing the blob's tags.
      */
@@ -1488,7 +1489,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTags#Map}
      *
      * <p>For more information, see the
-     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      * @return A reactive response signaling completion.
@@ -1506,7 +1507,7 @@ public class BlobAsyncClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobAsyncClientBase.setTagsWithResponse#Map}
      *
      * <p>For more information, see the
-     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      * @return A reactive response signaling completion.

@@ -784,6 +784,7 @@ public class BlobClientBase {
         return blockWithOptionalTimeout(response, timeout);
     }
 
+    // TODO: (rickle-msft) docs link
     /**
      * Returns the blob's tags.
      *
@@ -792,7 +793,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTags}
      *
      * <p>For more information, see the
-     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @return The blob's tags.
      */
@@ -808,7 +809,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.getTagsWithResponse#Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="GET DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -829,7 +830,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTags#Map}
      *
      * <p>For more information, see the
-     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      */
@@ -846,7 +847,7 @@ public class BlobClientBase {
      * {@codesnippet com.azure.storage.blob.specialized.BlobClientBase.setTagsWithResponse#Map-Duration-Context}
      *
      * <p>For more information, see the
-     * <a href="ADD DOCS LINK">Azure Docs</a></p>
+     * <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a></p>
      *
      * @param tags Tags to associate with the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.

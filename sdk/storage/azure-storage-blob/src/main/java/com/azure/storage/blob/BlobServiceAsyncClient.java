@@ -338,9 +338,10 @@ public final class BlobServiceAsyncClient {
     }
 
 
+    // TODO: (rickle-msft) doc links
     /**
      * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
-     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -355,7 +356,7 @@ public final class BlobServiceAsyncClient {
 
     /**
      * Returns a reactive Publisher emitting the blobs in this account whose tags match the query expression. For more
-     * information, including information on the query syntax, see the <a href="DOC LINK NEEDED">Azure Docs</a>.
+     * information, including information on the query syntax, see the <a href="https://docs.microsoft.com/en-us/rest/api">Azure Docs</a>.
      *
      * <p><strong>Code Samples</strong></p>
      *
