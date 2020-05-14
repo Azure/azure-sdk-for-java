@@ -31,6 +31,9 @@ public final class ManagedDatabaseStatus extends ExpandableStringEnum<ManagedDat
     /** Static value Inaccessible for ManagedDatabaseStatus. */
     public static final ManagedDatabaseStatus INACCESSIBLE = fromString("Inaccessible");
 
+    /** Static value Restoring for ManagedDatabaseStatus. */
+    public static final ManagedDatabaseStatus RESTORING = fromString("Restoring");
+
     /** Static value Updating for ManagedDatabaseStatus. */
     public static final ManagedDatabaseStatus UPDATING = fromString("Updating");
 
