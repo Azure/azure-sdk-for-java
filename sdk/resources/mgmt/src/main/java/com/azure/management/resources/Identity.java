@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The Identity model. */
 @Fluent
 public final class Identity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
+
     /*
      * The principal ID of resource identity.
      */
@@ -97,5 +101,16 @@ public final class Identity {
     public Identity withUserAssignedIdentities(Map<String, IdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> e.validate());
+        }
     }
 }

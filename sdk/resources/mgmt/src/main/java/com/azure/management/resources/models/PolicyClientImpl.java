@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the PolicyClientImpl type. */
 public final class PolicyClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(PolicyClientImpl.class);
+
     /** The ID of the target subscription. */
     private String subscriptionId;
 
@@ -60,6 +63,29 @@ public final class PolicyClientImpl extends AzureServiceClient {
         return this;
     }
 
+    /** Api Version. */
+    private String apiVersion;
+
+    /**
+     * Gets Api Version.
+     *
+     * @return the apiVersion value.
+     */
+    public String getApiVersion() {
+        return this.apiVersion;
+    }
+
+    /**
+     * Sets Api Version.
+     *
+     * @param apiVersion the apiVersion value.
+     * @return the service client itself.
+     */
+    public PolicyClientImpl setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+        return this;
+    }
+
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
@@ -84,18 +110,6 @@ public final class PolicyClientImpl extends AzureServiceClient {
         return this.policyAssignments;
     }
 
-    /** The PolicySetDefinitionsInner object to access its operations. */
-    private final PolicySetDefinitionsInner policySetDefinitions;
-
-    /**
-     * Gets the PolicySetDefinitionsInner object to access its operations.
-     *
-     * @return the PolicySetDefinitionsInner object.
-     */
-    public PolicySetDefinitionsInner policySetDefinitions() {
-        return this.policySetDefinitions;
-    }
-
     /** The PolicyDefinitionsInner object to access its operations. */
     private final PolicyDefinitionsInner policyDefinitions;
 
@@ -106,6 +120,18 @@ public final class PolicyClientImpl extends AzureServiceClient {
      */
     public PolicyDefinitionsInner policyDefinitions() {
         return this.policyDefinitions;
+    }
+
+    /** The PolicySetDefinitionsInner object to access its operations. */
+    private final PolicySetDefinitionsInner policySetDefinitions;
+
+    /**
+     * Gets the PolicySetDefinitionsInner object to access its operations.
+     *
+     * @return the PolicySetDefinitionsInner object.
+     */
+    public PolicySetDefinitionsInner policySetDefinitions() {
+        return this.policySetDefinitions;
     }
 
     /** Initializes an instance of PolicyClient client. */
@@ -134,7 +160,7 @@ public final class PolicyClientImpl extends AzureServiceClient {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
         this.policyAssignments = new PolicyAssignmentsInner(this);
-        this.policySetDefinitions = new PolicySetDefinitionsInner(this);
         this.policyDefinitions = new PolicyDefinitionsInner(this);
+        this.policySetDefinitions = new PolicySetDefinitionsInner(this);
     }
 }

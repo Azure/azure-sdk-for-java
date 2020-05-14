@@ -380,8 +380,8 @@
               </rules>
             </configuration>
           </execution>
-      </executions>
-    </plugin>
+        </executions>
+      </plugin>
 
       <!-- Allows the sample sources to be built during test-compile phase. -->
       <plugin>
@@ -720,11 +720,11 @@
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
-            <properties>
-              <configurationParameters>
-                junit.jupiter.extensions.autodetection.enabled = true
-              </configurationParameters>
-            </properties>
+            <systemPropertyVariables combine.children="append">
+              <junit.jupiter.extensions.autodetection.enabled>true</junit.jupiter.extensions.autodetection.enabled>
+            </systemPropertyVariables>
+            <forkCount>1</forkCount>
+            <testFailureIgnore>false</testFailureIgnore>
           </configuration>
         </plugin>
       </plugins>
@@ -1118,9 +1118,6 @@
                 --add-opens com.azure.core/com.azure.core.implementation.entities=com.fasterxml.jackson.databind
                 --add-opens com.azure.core/com.azure.core.implementation.entities=ALL-UNNAMED
               </argLine>
-              <useSystemClassLoader>false</useSystemClassLoader>
-              <forkCount>1</forkCount>
-              <testFailureIgnore>false</testFailureIgnore>
               <systemPropertyVariables>
                 <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
               </systemPropertyVariables>
@@ -1471,6 +1468,31 @@
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>parallel-test-playback</id>
+      <activation>
+        <property>
+          <name>parallel-test-playback</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+              <systemPropertyVariables>
+                <junit.jupiter.execution.parallel.enabled>true</junit.jupiter.execution.parallel.enabled>
+                <junit.jupiter.execution.parallel.mode.default>concurrent</junit.jupiter.execution.parallel.mode.default>
+                <junit.jupiter.execution.parallel.mode.classes.default>concurrent</junit.jupiter.execution.parallel.mode.classes.default>
+              </systemPropertyVariables>
+            </configuration>
           </plugin>
         </plugins>
       </build>
