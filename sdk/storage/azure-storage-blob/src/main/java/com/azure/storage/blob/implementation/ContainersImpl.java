@@ -113,7 +113,7 @@ public final class ContainersImpl {
         @Put("{containerName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<ContainersRestoreResponse> restore(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-container-name") String deletedContainerName, @HeaderParam("x-ms-deleted-container-version") String deletedContainerVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
+        Mono<ContainersRestoreResponse> restore(@PathParam("containerName") String containerName, @HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @HeaderParam("x-ms-deleted-container-name") String deletedContainerName, @HeaderParam("x-ms-deleted-container-version") String deletedContainerVersion, @QueryParam("restype") String restype, @QueryParam("comp") String comp, Context context);
 
         @Put("{containerName}")
         @ExpectedResponses({201})
@@ -404,24 +404,26 @@ public final class ContainersImpl {
     /**
      * Restores a previously-deleted container.
      *
+     * @param containerName The container name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersRestoreResponse> restoreWithRestResponseAsync(Context context) {
+    public Mono<ContainersRestoreResponse> restoreWithRestResponseAsync(String containerName, Context context) {
         final Integer timeout = null;
         final String requestId = null;
         final String deletedContainerName = null;
         final String deletedContainerVersion = null;
         final String restype = "container";
         final String comp = "undelete";
-        return service.restore(this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
+        return service.restore(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
     }
 
     /**
      * Restores a previously-deleted container.
      *
+     * @param containerName The container name.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @param deletedContainerName Optional.  Version 2019-12-12 and laster.  Specifies the name of the deleted container to restore.
@@ -431,10 +433,10 @@ public final class ContainersImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ContainersRestoreResponse> restoreWithRestResponseAsync(Integer timeout, String requestId, String deletedContainerName, String deletedContainerVersion, Context context) {
+    public Mono<ContainersRestoreResponse> restoreWithRestResponseAsync(String containerName, Integer timeout, String requestId, String deletedContainerName, String deletedContainerVersion, Context context) {
         final String restype = "container";
         final String comp = "undelete";
-        return service.restore(this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
+        return service.restore(containerName, this.client.getUrl(), timeout, this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, restype, comp, context);
     }
 
     /**
