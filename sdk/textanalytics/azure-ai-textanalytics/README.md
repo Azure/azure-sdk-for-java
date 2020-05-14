@@ -117,7 +117,7 @@ Authentication with AAD requires some initial setup:
 </dependency>
 ```
 [//]: # ({x-version-update-end})
-* [Register a new AAD application][register_AAD_application]
+* [Register a new Azure Active Directory application][register_AAD_application]
 * [Grant access][grant_access] to Text Analytics by assigning the `"Cognitive Services User"` role to your service principal.
 
 After setup, you can choose which type of [credential][azure_identity_credential_type] from azure.identity to use. 
@@ -131,7 +131,7 @@ refer to [the associated documentation][aad_authorization].
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L64-L68 -->
 ```java
-DefaultAzureCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
     .endpoint("{endpoint}")
     .credential(defaultCredential)
@@ -252,7 +252,7 @@ For samples on using the production recommended option `AnalyzeSentimentBatch` s
 Please refer to the service documentation for a conceptual discussion of [sentiment analysis][sentiment_analysis].
 
 ### Detect language
-Run a Text Analytics predictive model to determine the language that the passed-in document or batch of documents are written in.
+Run a Text Analytics predictive model to determine the language that the provided document or batch of documents are written in.
 
 <!-- embedme ./src/samples/java/com/azure/ai/textanalytics/ReadmeSamples.java#L115-L118 -->
 ```java
