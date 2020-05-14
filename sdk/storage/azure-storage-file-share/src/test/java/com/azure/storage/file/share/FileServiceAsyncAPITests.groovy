@@ -277,20 +277,17 @@ class FileServiceAsyncAPITests extends APISpec {
         given:
         def shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName())
         def fileName = generatePathName()
-        def delay = TestMode.PLAYBACK == getTestMode() ? 0L : 30000L
-        def shareItemMono = shareClient.create()
+        def shareItem = shareClient.create()
             .then(shareClient.getFileClient(fileName).create(2))
             .then(shareClient.delete())
-            .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryFileServiceAsyncClient.listShares(
                 new ListSharesOptions()
                     .setPrefix(shareClient.getShareName())
-                    .setIncludeDeleted(true)).next())
+                    .setIncludeDeleted(true)).next()).block()
+        sleepIfLive(30000)
 
         when:
-        def restoredShareClientMono = shareItemMono.flatMap {
-            shareItem -> primaryFileServiceAsyncClient.undeleteShare(shareItem.getName(), shareItem.getVersion())
-        }
+        def restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShare(shareItem.getName(), shareItem.getVersion())
 
         then:
         StepVerifier.create(restoredShareClientMono.flatMap { it.getFileClient(fileName).exists() })
@@ -304,21 +301,18 @@ class FileServiceAsyncAPITests extends APISpec {
         given:
         def shareClient = primaryFileServiceAsyncClient.getShareAsyncClient(generateShareName())
         def fileName = generatePathName()
-        def delay = TestMode.PLAYBACK == getTestMode() ? 0L : 30000L
-        def shareItemMono = shareClient.create()
+        def shareItem = shareClient.create()
             .then(shareClient.getFileClient(fileName).create(2))
             .then(shareClient.delete())
-            .then(Mono.delay(Duration.ofMillis(delay)))
             .then(primaryFileServiceAsyncClient.listShares(
                 new ListSharesOptions()
                     .setPrefix(shareClient.getShareName())
-                    .setIncludeDeleted(true)).next())
+                    .setIncludeDeleted(true)).next()).block()
+        sleepIfLive(30000)
 
         when:
-        def restoredShareClientMono = shareItemMono.flatMap {
-            shareItem -> primaryFileServiceAsyncClient.undeleteShareWithResponse(
+        def restoredShareClientMono = primaryFileServiceAsyncClient.undeleteShareWithResponse(
                 shareItem.getName(), shareItem.getVersion()).map { it.getValue() }
-        }
 
         then:
         StepVerifier.create(restoredShareClientMono.flatMap { it.getFileClient(fileName).exists() })

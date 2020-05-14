@@ -260,9 +260,7 @@ class FileServiceAPITests extends APISpec {
         def fileName = generatePathName()
         shareClient.getFileClient(fileName).create(2)
         shareClient.delete()
-        if (TestMode.PLAYBACK != getTestMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfLive(30000)
         def shareItem = primaryFileServiceClient.listShares(
             new ListSharesOptions()
                 .setPrefix(shareClient.getShareName())
@@ -283,9 +281,7 @@ class FileServiceAPITests extends APISpec {
         def fileName = generatePathName()
         shareClient.getFileClient(fileName).create(2)
         shareClient.delete()
-        if (TestMode.PLAYBACK != getTestMode()) {
-            Thread.sleep(30000)
-        }
+        sleepIfLive(30000)
         def shareItem = primaryFileServiceClient.listShares(
             new ListSharesOptions()
                 .setPrefix(shareClient.getShareName())

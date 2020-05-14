@@ -541,12 +541,16 @@ public final class ShareServiceAsyncClient {
 
     /**
      * Restores a previously deleted share.
+     * <p>
      * If the share associated with provided <code>deletedShareName</code>
      * already exists, this call will result in a 409 (conflict).
+     * </p>
+     * <p>
      * This API is only functional if Share Soft Delete is enabled
      * for the storage account associated with the share.
      * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
+     * <a href="TBD">Azure Docs</a>.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -557,6 +561,7 @@ public final class ShareServiceAsyncClient {
      * @return A {@link Mono} containing a {@link ShareAsyncClient} used
      * to interact with the restored share.
      */
+    // TODO (kasobol-msft) add link to REST API docs
     public Mono<ShareAsyncClient> undeleteShare(
         String deletedShareName, String deletedShareVersion) {
         return this.undeleteShareWithResponse(deletedShareName, deletedShareVersion).flatMap(FluxUtil::toMono);
@@ -564,12 +569,16 @@ public final class ShareServiceAsyncClient {
 
     /**
      * Restores a previously deleted share.
+     * <p>
      * If the share associated with provided <code>deletedShareName</code>
      * already exists, this call will result in a 409 (conflict).
+     * </p>
+     * <p>
      * This API is only functional if Share Soft Delete is enabled
      * for the storage account associated with the share.
      * For more information, see the
-     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
+     * <a href="TBD">Azure Docs</a>.
+     * </p>
      *
      * <p><strong>Code Samples</strong></p>
      *
@@ -580,6 +589,7 @@ public final class ShareServiceAsyncClient {
      * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
      * ShareAsyncClient} used to interact with the restored share.
      */
+    // TODO (kasobol-msft) add link to REST API docs
     public Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
         String deletedShareName, String deletedShareVersion) {
         try {

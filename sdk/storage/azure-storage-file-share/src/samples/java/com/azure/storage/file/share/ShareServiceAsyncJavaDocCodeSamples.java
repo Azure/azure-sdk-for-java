@@ -303,7 +303,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
                     deletedShare.getName(), deletedShare.getVersion());
                 return shareAsyncClient;
             }
-        ).then().block();
+        ).blockFirst();
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShare#String-String
     }
 
@@ -322,7 +322,7 @@ public class ShareServiceAsyncJavaDocCodeSamples {
                     deletedShare.getName(), deletedShare.getVersion()).map(Response::getValue);
                 return shareAsyncClient;
             }
-        ).then().block();
+        ).blockFirst();
         // END: com.azure.storage.file.share.ShareServiceAsyncClient.undeleteShareWithResponse#String-String
     }
 }
