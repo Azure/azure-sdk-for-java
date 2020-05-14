@@ -54,10 +54,14 @@ class WorkflowRunActionRepetitionsRequestHistoriesImpl extends WrapperImpl<Workf
     public Observable<RepetitionActionRunWorkflowRequestHistory> getAsync(String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName, String requestHistoryName) {
         WorkflowRunActionRepetitionsRequestHistoriesInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, runName, actionName, repetitionName, requestHistoryName)
-        .map(new Func1<RequestHistoryInner, RepetitionActionRunWorkflowRequestHistory>() {
+        .flatMap(new Func1<RequestHistoryInner, Observable<RepetitionActionRunWorkflowRequestHistory>>() {
             @Override
-            public RepetitionActionRunWorkflowRequestHistory call(RequestHistoryInner inner) {
-                return wrapModel(inner);
+            public Observable<RepetitionActionRunWorkflowRequestHistory> call(RequestHistoryInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((RepetitionActionRunWorkflowRequestHistory)wrapModel(inner));
+                }
             }
        });
     }
