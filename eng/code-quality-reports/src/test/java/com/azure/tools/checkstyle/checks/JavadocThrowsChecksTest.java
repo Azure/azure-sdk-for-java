@@ -9,7 +9,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class JavadocThrowsChecksTests extends AbstractModuleTestSupport {
+public class JavadocThrowsChecksTest extends AbstractModuleTestSupport {
     private static final String MISSING_DESCRIPTION_MESSAGE = "@throws tag requires a description explaining when the error is thrown.";
     private static final String MISSING_THROWS_TAG_MESSAGE = "Javadoc @throws tag required for unchecked throw.";
 
