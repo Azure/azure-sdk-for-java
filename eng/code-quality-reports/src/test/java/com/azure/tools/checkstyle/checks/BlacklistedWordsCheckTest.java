@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class BlacklistedWordsCheckTests extends AbstractModuleTestSupport {
+public class BlacklistedWordsCheckTest extends AbstractModuleTestSupport {
     private static final String BLACKLISTED_WORD_ERROR_MESSAGE = "%s, All Public API Classes, Fields and Methods should follow" +
         " Camelcase standards for the following words: XML, HTTP, URL.";
 

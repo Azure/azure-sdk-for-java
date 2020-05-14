@@ -12,7 +12,7 @@ import org.junit.Test;
 /**
  * Tests for good logging practices, GoodLoggerCheck.
  */
-public class GoodLoggerCheckTests extends AbstractModuleTestSupport {
+public class GoodLoggerCheckTest extends AbstractModuleTestSupport {
     private static final String INCONSISTENCY_NAMING_MESSAGE = "ClientLogger instance naming: use 'logger'"
         + " instead of 'wrongLoggerName' for consistency.";
     private static final String EXTERNAL_LOGGER_USED_MESSAGE = "Do not use external logger class. "
