@@ -25,8 +25,6 @@ class SourceControlConfigurationImpl extends CreatableUpdatableImpl<SourceContro
     private String clusterResourceName;
     private String clusterName;
     private String sourceControlConfigurationName;
-    private String capiVersion;
-    private String uapiVersion;
 
     SourceControlConfigurationImpl(String name, KubernetesConfigurationManager manager) {
         super(name, new SourceControlConfigurationInner());
@@ -58,14 +56,14 @@ class SourceControlConfigurationImpl extends CreatableUpdatableImpl<SourceContro
     @Override
     public Observable<SourceControlConfiguration> createResourceAsync() {
         SourceControlConfigurationsInner client = this.manager().inner().sourceControlConfigurations();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.clusterRp, this.clusterResourceName, this.clusterName, this.sourceControlConfigurationName, this.capiVersion, this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.clusterRp, this.clusterResourceName, this.clusterName, this.sourceControlConfigurationName, this.inner())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<SourceControlConfiguration> updateResourceAsync() {
         SourceControlConfigurationsInner client = this.manager().inner().sourceControlConfigurations();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.clusterRp, this.clusterResourceName, this.clusterName, this.sourceControlConfigurationName, this.uapiVersion, this.inner())
+        return client.createOrUpdateAsync(this.resourceGroupName, this.clusterRp, this.clusterResourceName, this.clusterName, this.sourceControlConfigurationName, this.inner())
             .map(innerToFluentMap(this));
     }
 
@@ -167,16 +165,6 @@ class SourceControlConfigurationImpl extends CreatableUpdatableImpl<SourceContro
     @Override
     public SourceControlConfigurationImpl withClusterName(String clusterName) {
         this.clusterName = clusterName;
-        return this;
-    }
-
-    @Override
-    public SourceControlConfigurationImpl withApiVersion(String apiVersion) {
-        if (isInCreateMode()) {
-            this.capiVersion = apiVersion;
-        } else {
-            this.uapiVersion = apiVersion;
-        }
         return this;
     }
 

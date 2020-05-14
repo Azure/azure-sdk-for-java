@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.FeedResponse;

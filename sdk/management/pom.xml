@@ -8,7 +8,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.azure</groupId>
     <version>2.0.0-SNAPSHOT</version>
-    <artifactId>azure-parent</artifactId>
+    <artifactId>azure-management-parent</artifactId>
     <packaging>pom</packaging>
 
     <name>Microsoft Azure SDK Parent</name>
@@ -59,7 +59,7 @@
             <dependency>
                 <groupId>com.azure</groupId>
                 <artifactId>azure-core</artifactId>
-                <version>1.4.0</version>
+                <version>1.5.0</version>
             </dependency>
             <dependency>
                 <groupId>com.azure</groupId>

@@ -27,8 +27,8 @@ public class CosmosAsyncUserDefinedFunctionResponse extends CosmosResponse<Cosmo
         } else {
             cosmosUserDefinedFunctionProperties = new CosmosUserDefinedFunctionProperties(bodyAsString);
             super.setProperties(cosmosUserDefinedFunctionProperties);
-            cosmosUserDefinedFunction = BridgeInternal.createCosmosAsyncUserDefinedFunction(cosmosUserDefinedFunctionProperties.getId(),
-                                                                           container);
+            cosmosUserDefinedFunction = BridgeInternal.createCosmosAsyncUserDefinedFunction(
+                cosmosUserDefinedFunctionProperties.getId(), container);
         }
     }
 
