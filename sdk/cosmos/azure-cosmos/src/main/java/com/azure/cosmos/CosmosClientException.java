@@ -14,7 +14,9 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class defines a custom exception type for all operations on
@@ -73,7 +75,7 @@ public class CosmosClientException extends AzureException {
     protected CosmosClientException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(cosmosError), Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**
@@ -259,7 +261,7 @@ public class CosmosClientException extends AzureException {
         return getClass().getSimpleName() + "{" + "error=" + cosmosError + ", resourceAddress='"
                    + resourceAddress + '\'' + ", statusCode=" + statusCode + ", message=" + getMessage()
                    + ", causeInfo=" + causeInfo() + ", responseHeaders=" + responseHeaders + ", requestHeaders="
-                   + requestHeaders + '}';
+                   + filterSensitiveData(requestHeaders) + '}';
     }
 
     String innerErrorMessage() {
@@ -267,7 +269,8 @@ public class CosmosClientException extends AzureException {
         if (cosmosError != null) {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
+                innerErrorMessage = String.valueOf(
+                    ModelBridgeInternal.getObjectFromJsonSerializable(ModelBridgeInternal.getJsonSerializable(cosmosError), "Errors"));
             }
         }
         return innerErrorMessage;
@@ -279,6 +282,14 @@ public class CosmosClientException extends AzureException {
             return String.format("[class: %s, message: %s]", cause.getClass(), cause.getMessage());
         }
         return null;
+    }
+
+    private List<Map.Entry<String, String>> filterSensitiveData(Map<String, String> requestHeaders) {
+        if (requestHeaders == null) {
+            return null;
+        }
+        return requestHeaders.entrySet().stream().filter(entry -> !HttpConstants.HttpHeaders.AUTHORIZATION.equalsIgnoreCase(entry.getKey()))
+                             .collect(Collectors.toList());
     }
 
     void setResourceAddress(String resourceAddress) {

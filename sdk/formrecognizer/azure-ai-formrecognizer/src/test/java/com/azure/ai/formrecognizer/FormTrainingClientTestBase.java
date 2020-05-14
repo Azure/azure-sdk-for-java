@@ -80,8 +80,8 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     static void validateAccountProperties(AccountProperties expectedAccountProperties,
         AccountProperties actualAccountProperties) {
-        assertEquals(expectedAccountProperties.getLimit(), actualAccountProperties.getLimit());
-        assertNotNull(actualAccountProperties.getCount());
+        assertEquals(expectedAccountProperties.getCustomModelLimit(), actualAccountProperties.getCustomModelLimit());
+        assertNotNull(actualAccountProperties.getCustomModelCount());
     }
 
     /**
@@ -175,9 +175,6 @@ public abstract class FormTrainingClientTestBase extends TestBase {
 
     @Test
     abstract void getModelInfos(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void getModelInfosWithContext(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void beginTrainingNullInput(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);

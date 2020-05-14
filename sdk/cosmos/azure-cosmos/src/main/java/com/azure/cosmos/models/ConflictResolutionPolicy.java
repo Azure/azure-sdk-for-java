@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Strings;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 
 /**
@@ -61,7 +62,9 @@ import com.azure.cosmos.implementation.Strings;
  * }
  * </pre>
  */
-public final class ConflictResolutionPolicy extends JsonSerializableWrapper{
+public final class ConflictResolutionPolicy {
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Creates a LAST_WRITER_WINS {@link ConflictResolutionPolicy} with "/_ts" as the resolution path.
@@ -151,6 +154,15 @@ public final class ConflictResolutionPolicy extends JsonSerializableWrapper{
      */
     public ConflictResolutionPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Instantiates a new Conflict resolution policy.
+     *
+     * @param objectNode the object node.
+     */
+    ConflictResolutionPolicy(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -246,4 +258,10 @@ public final class ConflictResolutionPolicy extends JsonSerializableWrapper{
         this.jsonSerializable.set(Constants.Properties.CONFLICT_RESOLUTION_PROCEDURE, value);
         return this;
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

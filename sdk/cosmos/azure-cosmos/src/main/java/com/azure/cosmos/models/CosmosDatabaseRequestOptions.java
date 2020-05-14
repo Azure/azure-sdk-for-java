@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.RequestOptions;
 
 /**

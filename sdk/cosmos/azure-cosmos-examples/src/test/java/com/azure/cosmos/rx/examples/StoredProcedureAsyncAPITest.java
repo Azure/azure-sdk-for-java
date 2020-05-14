@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.rx.examples;
 
+import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.implementation.Database;
@@ -51,7 +52,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
     @BeforeClass(groups = "samples", timeOut = TIMEOUT)
     public void before_StoredProcedureAsyncAPITest() {
 
-        ConnectionPolicy connectionPolicy = new ConnectionPolicy().setConnectionMode(ConnectionMode.DIRECT);
+        ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
         this.clientBuilder()
             .withServiceEndpoint(TestConfigurations.HOST)
@@ -233,11 +234,11 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         includedPath.setPath("/*");
         List<Index> indexes = new ArrayList<Index>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "precision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "precision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(numberIndex), "precision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
