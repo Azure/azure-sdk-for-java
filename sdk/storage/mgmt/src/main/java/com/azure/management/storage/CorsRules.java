@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The CorsRules model.
- */
+/** The CorsRules model. */
 @Fluent
 public final class CorsRules {
     /*
@@ -21,9 +19,8 @@ public final class CorsRules {
     private List<CorsRule> corsRules;
 
     /**
-     * Get the corsRules property: The List of CORS rules. You can include up
-     * to five CorsRule elements in the request.
-     * 
+     * Get the corsRules property: The List of CORS rules. You can include up to five CorsRule elements in the request.
+     *
      * @return the corsRules value.
      */
     public List<CorsRule> corsRules() {
@@ -31,9 +28,8 @@ public final class CorsRules {
     }
 
     /**
-     * Set the corsRules property: The List of CORS rules. You can include up
-     * to five CorsRule elements in the request.
-     * 
+     * Set the corsRules property: The List of CORS rules. You can include up to five CorsRule elements in the request.
+     *
      * @param corsRules the corsRules value to set.
      * @return the CorsRules object itself.
      */

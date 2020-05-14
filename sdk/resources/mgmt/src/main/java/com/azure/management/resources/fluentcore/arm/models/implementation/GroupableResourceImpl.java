@@ -46,7 +46,7 @@ public abstract class GroupableResourceImpl<
 
     protected String resourceIdBase() {
         return new StringBuilder()
-                .append("/subscriptions/").append(this.myManager.getSubscriptionId())
+                .append("/subscriptions/").append(this.myManager.subscriptionId())
                 .append("/resourceGroups/").append(this.resourceGroupName())
                 .toString();
     }
@@ -69,6 +69,10 @@ public abstract class GroupableResourceImpl<
         }
     }
 
+    protected Creatable<ResourceGroup> creatableGroup() {
+        return this.creatableGroup;
+    }
+
     /****************************************
      * withGroup implementations.
      ****************************************/
@@ -83,7 +87,7 @@ public abstract class GroupableResourceImpl<
      */
     public final FluentModelImplT withNewResourceGroup(String groupName) {
         return this.withNewResourceGroup(
-                this.myManager.getResourceManager().resourceGroups().define(groupName).withRegion(this.regionName()));
+                this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(this.regionName()));
     }
 
     /**
@@ -97,7 +101,7 @@ public abstract class GroupableResourceImpl<
      */
     public final FluentModelImplT withNewResourceGroup(String groupName, Region region) {
         return this.withNewResourceGroup(
-                this.myManager.getResourceManager().resourceGroups().define(groupName).withRegion(region));
+                this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(region));
     }
 
     /**

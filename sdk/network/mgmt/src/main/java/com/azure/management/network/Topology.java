@@ -2,65 +2,42 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.TopologyInner;
 import com.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.azure.management.resources.fluentcore.model.Executable;
 import com.azure.management.resources.fluentcore.model.HasInner;
-
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of an Azure Topology info object, associated with network watcher.
- */
+/** An immutable client-side representation of an Azure Topology info object, associated with network watcher. */
 @Fluent
-public interface Topology extends Executable<Topology>,
-        HasInner<TopologyInner>,
-        HasParent<NetworkWatcher> {
-    /**
-     * @return GUID representing the id
-     */
+public interface Topology extends Executable<Topology>, HasInner<TopologyInner>, HasParent<NetworkWatcher> {
+    /** @return GUID representing the id */
     String id();
 
-    /**
-     * @return parameters used to query this topology
-     */
+    /** @return parameters used to query this topology */
     TopologyParameters topologyParameters();
 
-    /**
-     * @return the datetime when the topology was initially created for the resource
-     * group.
-     */
+    /** @return the datetime when the topology was initially created for the resource group. */
     OffsetDateTime createdTime();
 
-    /**
-     * @return the datetime when the topology was last modified
-     */
+    /** @return the datetime when the topology was last modified */
     OffsetDateTime lastModifiedTime();
 
-    /**
-     * @return The resources in this topology
-     */
+    /** @return The resources in this topology */
     Map<String, TopologyResource> resources();
 
-    /**
-     * The entirety of topology parameters definition.
-     */
-    interface Definition extends
-            DefinitionStages.WithTargetResourceGroup,
+    /** The entirety of topology parameters definition. */
+    interface Definition
+        extends DefinitionStages.WithTargetResourceGroup,
             DefinitionStages.WithExecute,
             DefinitionStages.WithExecuteAndSubnet {
     }
 
-    /**
-     * Grouping of topology definition stages.
-     */
+    /** Grouping of topology definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of topology parameters definition.
-         */
+        /** The first stage of topology parameters definition. */
         interface WithTargetResourceGroup {
             /**
              * Set the targetResourceId value.
@@ -71,9 +48,7 @@ public interface Topology extends Executable<Topology>,
             DefinitionStages.WithExecute withTargetResourceGroup(String resourceGroupName);
         }
 
-        /**
-         * Sets the target virtual network.
-         */
+        /** Sets the target virtual network. */
         interface WithTargetNetwork {
             /**
              * Set the target virtual network.
@@ -84,9 +59,7 @@ public interface Topology extends Executable<Topology>,
             DefinitionStages.WithExecuteAndSubnet withTargetNetwork(String networkId);
         }
 
-        /**
-         * Sets the target subnet.
-         */
+        /** Sets the target subnet. */
         interface WithTargetSubnet {
             /**
              * Set the subnetName value.
@@ -98,17 +71,13 @@ public interface Topology extends Executable<Topology>,
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for execution, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for execution, but also allows for
+         * any other optional settings to be specified.
          */
-        interface WithExecute extends
-                Executable<Topology>,
-                DefinitionStages.WithTargetNetwork {
+        interface WithExecute extends Executable<Topology>, DefinitionStages.WithTargetNetwork {
         }
 
-        interface WithExecuteAndSubnet extends
-                Executable<Topology>,
-                DefinitionStages.WithTargetSubnet {
+        interface WithExecuteAndSubnet extends Executable<Topology>, DefinitionStages.WithTargetSubnet {
         }
     }
 }

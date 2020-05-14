@@ -55,7 +55,7 @@ public class TextAnalyticsException extends AzureException {
      *
      * @return The {@link TextAnalyticsErrorCode} for this exception.
      */
-    public TextAnalyticsErrorCode getCode() {
+    public TextAnalyticsErrorCode getErrorCode() {
         return TextAnalyticsErrorCode.fromString(code);
     }
 }

@@ -24,6 +24,7 @@ import com.azure.storage.blob.implementation.models.ServicesFilterBlobsResponse;
 import com.azure.storage.blob.implementation.models.ServicesListBlobContainersSegmentResponse;
 import com.azure.storage.blob.models.BlobContainerEncryptionScope;
 import com.azure.storage.blob.models.BlobContainerItem;
+import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
@@ -35,6 +36,7 @@ import com.azure.storage.blob.models.ListBlobContainersIncludeType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.StorageAccountInfo;
+import com.azure.storage.blob.models.UndeleteBlobContainerOptions;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.AccountSasImplUtil;
@@ -47,7 +49,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -328,11 +329,10 @@ public final class BlobServiceAsyncClient {
         ListBlobContainersOptions options, Duration timeout) {
         options = options == null ? new ListBlobContainersOptions() : options;
 
-        ListBlobContainersIncludeType includeType = options.getDetails().toIncludeType();
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().listBlobContainersSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResultsPerPage(),
-                includeType == null ? null : Collections.singletonList(includeType),
+                toIncludeTypes(options.getDetails()),
                 null, null, Context.NONE), timeout);
     }
 
@@ -400,6 +400,30 @@ public final class BlobServiceAsyncClient {
         return StorageImplUtils.applyOptionalTimeout(
             this.azureBlobStorage.services().filterBlobsWithRestResponseAsync(null, null, query, marker, maxResults,
                 Context.NONE), timeout);
+    }
+
+    /**
+     * Converts {@link BlobContainerListDetails} into list of {@link ListBlobContainersIncludeType}
+     * that contains only options selected. If no option is selected then null is returned.
+     *
+     * @return a list of selected options converted into {@link ListBlobContainersIncludeType}, null if none
+     * of options has been selected.
+     */
+    private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
+        boolean hasDetails = blobContainerListDetails != null
+            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
+        if (hasDetails) {
+            List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
+            if (blobContainerListDetails.getRetrieveDeleted()) {
+                flags.add(ListBlobContainersIncludeType.DELETED);
+            }
+            if (blobContainerListDetails.getRetrieveMetadata()) {
+                flags.add(ListBlobContainersIncludeType.METADATA);
+            }
+            return flags;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -785,5 +809,74 @@ public final class BlobServiceAsyncClient {
             throw logger.logExceptionAsError(new IllegalStateException("Service client cannot be accessed without "
                 + "credentials"));
         }
+    }
+
+    /**
+     * Restores a previously deleted container.
+     * If the container associated with provided <code>deletedContainerName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainer#String-String}
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     * @return A {@link Mono} containing a {@link BlobContainerAsyncClient} used
+     * to interact with the restored container.
+     */
+    public Mono<BlobContainerAsyncClient> undeleteBlobContainer(
+        String deletedContainerName, String deletedContainerVersion) {
+        return this.undeleteBlobContainerWithResponse(deletedContainerName,
+            deletedContainerVersion, null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Restores a previously deleted container. The restored container
+     * will be renamed to the <code>destinationContainerName</code> if provided in <code>options</code>.
+     * Otherwise <code>deletedContainerName</code> is used as destination container name.
+     * If the container associated with provided <code>destinationContainerName</code>
+     * already exists, this call will result in a 409 (conflict).
+     * This API is only functional if Container Soft Delete is enabled
+     * for the storage account associated with the container.
+     * For more information, see the
+     * <a href="TBD">Azure Docs</a>. TODO (kasobol-msft) add link to REST API docs
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * {@codesnippet com.azure.storage.blob.BlobServiceAsyncClient.undeleteBlobContainerWithResponse#String-String-UndeleteBlobContainerOptions}
+     *
+     * @param deletedContainerName The name of the previously deleted container.
+     * @param deletedContainerVersion The version of the previously deleted container.
+     * @param options {@link UndeleteBlobContainerOptions}.
+     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains a {@link
+     * BlobContainerAsyncClient} used to interact with the restored container.
+     */
+    public Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
+        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options) {
+        try {
+            return withContext(context ->
+                undeleteBlobContainerWithResponse(
+                    deletedContainerName, deletedContainerVersion, options, context));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    Mono<Response<BlobContainerAsyncClient>> undeleteBlobContainerWithResponse(
+        String deletedContainerName, String deletedContainerVersion, UndeleteBlobContainerOptions options,
+        Context context) {
+        boolean hasOptionalDestinationContainerName = options != null && options.getDestinationContainerName() != null;
+        String destinationContainerName =
+            hasOptionalDestinationContainerName ? options.getDestinationContainerName() : deletedContainerName;
+        return this.azureBlobStorage.containers().restoreWithRestResponseAsync(destinationContainerName, null,
+            null, deletedContainerName, deletedContainerVersion,
+            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            .map(response -> new SimpleResponse<>(response,
+                getBlobContainerAsyncClient(destinationContainerName)));
     }
 }

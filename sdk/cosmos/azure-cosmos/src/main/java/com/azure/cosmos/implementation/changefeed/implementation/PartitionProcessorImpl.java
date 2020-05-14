@@ -125,7 +125,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                     CosmosClientException clientException = (CosmosClientException) throwable;
                     logger.warn("CosmosClientException: partition {} from thread {}",
-                        BridgeInternal.getPartitionKeyInternal(this.options.getPartitionKey()), Thread.currentThread().getId(), clientException);
+                        this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId(), clientException);
                     StatusCodeErrorType docDbError = ExceptionClassifier.classifyClientException(clientException);
 
                     switch (docDbError) {
@@ -174,7 +174,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     }
                 } else if (throwable instanceof LeaseLostException) {
                         logger.info("LeaseLoseException with partition {} from thread {}",
-                            BridgeInternal.getPartitionKeyInternal(this.options.getPartitionKey()), Thread.currentThread().getId());
+                            this.settings.getPartitionKeyRangeId(), Thread.currentThread().getId());
                         this.resultException = (LeaseLostException) throwable;
                 } else if (throwable instanceof TaskCancelledException) {
                     logger.debug("Task cancelled exception: partition {} from {}",

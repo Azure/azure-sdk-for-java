@@ -105,6 +105,7 @@
   "servicefabric": "Service Fabric",
   "servicefabricmesh": "Service Fabric Mesh",
   "signalr": "SignalR",
+  "spring": "Spring Boot",
   "sql": "SQL",
   "sqlvirtualmachine": "SQL Virtual Machine",
   "storage": "Storage",

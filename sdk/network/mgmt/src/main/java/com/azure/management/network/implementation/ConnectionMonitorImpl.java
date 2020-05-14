@@ -14,28 +14,26 @@ import com.azure.management.network.models.ConnectionMonitorsInner;
 import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Connection Monitor and its create and update interfaces.
- */
-public class ConnectionMonitorImpl extends
-        CreatableUpdatableImpl<ConnectionMonitor, ConnectionMonitorResultInner, ConnectionMonitorImpl>
-        implements
-        ConnectionMonitor,
-        ConnectionMonitor.Definition {
+/** Implementation for Connection Monitor and its create and update interfaces. */
+public class ConnectionMonitorImpl
+    extends CreatableUpdatableImpl<ConnectionMonitor, ConnectionMonitorResultInner, ConnectionMonitorImpl>
+    implements ConnectionMonitor, ConnectionMonitor.Definition {
     private final ConnectionMonitorsInner client;
     private final ConnectionMonitorInner createParameters;
     private final NetworkWatcher parent;
 
-    ConnectionMonitorImpl(String name, NetworkWatcherImpl parent, ConnectionMonitorResultInner innerObject,
-                          ConnectionMonitorsInner client) {
+    ConnectionMonitorImpl(
+        String name,
+        NetworkWatcherImpl parent,
+        ConnectionMonitorResultInner innerObject,
+        ConnectionMonitorsInner client) {
         super(name, innerObject);
         this.client = client;
         this.parent = parent;
@@ -49,12 +47,12 @@ public class ConnectionMonitorImpl extends
 
     @Override
     public String location() {
-        return inner().getLocation();
+        return inner().location();
     }
 
     @Override
     public Map<String, String> tags() {
-        Map<String, String> tags = this.inner().getTags();
+        Map<String, String> tags = this.inner().tags();
         if (tags == null) {
             tags = new TreeMap<>();
         }
@@ -103,9 +101,11 @@ public class ConnectionMonitorImpl extends
 
     @Override
     public Mono<Void> stopAsync() {
-        return this.client.stopAsync(parent.resourceGroupName(), parent.name(), name())
-                .flatMap(aVoid -> refreshAsync())
-                .then();
+        return this
+            .client
+            .stopAsync(parent.resourceGroupName(), parent.name(), name())
+            .flatMap(aVoid -> refreshAsync())
+            .then();
     }
 
     @Override
@@ -115,9 +115,11 @@ public class ConnectionMonitorImpl extends
 
     @Override
     public Mono<Void> startAsync() {
-        return this.client.startAsync(parent.resourceGroupName(), parent.name(), name())
-                .flatMap(aVoid -> refreshAsync())
-                .then();
+        return this
+            .client
+            .startAsync(parent.resourceGroupName(), parent.name(), name())
+            .flatMap(aVoid -> refreshAsync())
+            .then();
     }
 
     @Override
@@ -127,24 +129,28 @@ public class ConnectionMonitorImpl extends
 
     @Override
     public Mono<ConnectionMonitorQueryResult> queryAsync() {
-        return this.client.queryAsync(parent.resourceGroupName(), parent.name(), name())
-                .map(inner -> new ConnectionMonitorQueryResultImpl(inner));
+        return this
+            .client
+            .queryAsync(parent.resourceGroupName(), parent.name(), name())
+            .map(inner -> new ConnectionMonitorQueryResultImpl(inner));
     }
 
     @Override
     public boolean isInCreateMode() {
-        return this.inner().getId() == null;
+        return this.inner().id() == null;
     }
 
     @Override
     public Mono<ConnectionMonitor> createResourceAsync() {
-        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
-                .map(innerToFluentMap(this));
+        return this
+            .client
+            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
+            .map(innerToFluentMap(this));
     }
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override

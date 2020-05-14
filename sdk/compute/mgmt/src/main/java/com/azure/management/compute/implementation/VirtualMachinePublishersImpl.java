@@ -4,26 +4,25 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.compute.VirtualMachinePublisher;
+import com.azure.management.compute.VirtualMachinePublishers;
 import com.azure.management.compute.models.VirtualMachineExtensionImagesInner;
 import com.azure.management.compute.models.VirtualMachineImageResourceInner;
 import com.azure.management.compute.models.VirtualMachineImagesInner;
-import com.azure.management.compute.VirtualMachinePublisher;
-import com.azure.management.compute.VirtualMachinePublishers;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 
-/**
- * The implementation for {@link VirtualMachinePublishers}.
- */
+/** The implementation for {@link VirtualMachinePublishers}. */
 class VirtualMachinePublishersImpl
-        extends ReadableWrappersImpl<VirtualMachinePublisher, VirtualMachinePublisherImpl, VirtualMachineImageResourceInner>
-        implements VirtualMachinePublishers {
+    extends ReadableWrappersImpl<VirtualMachinePublisher, VirtualMachinePublisherImpl, VirtualMachineImageResourceInner>
+    implements VirtualMachinePublishers {
 
     private final VirtualMachineImagesInner imagesInnerCollection;
     private final VirtualMachineExtensionImagesInner extensionsInnerCollection;
 
-    VirtualMachinePublishersImpl(VirtualMachineImagesInner imagesInnerCollection, VirtualMachineExtensionImagesInner extensionsInnerCollection) {
+    VirtualMachinePublishersImpl(
+        VirtualMachineImagesInner imagesInnerCollection, VirtualMachineExtensionImagesInner extensionsInnerCollection) {
         this.imagesInnerCollection = imagesInnerCollection;
         this.extensionsInnerCollection = extensionsInnerCollection;
     }
@@ -38,10 +37,11 @@ class VirtualMachinePublishersImpl
         if (inner == null) {
             return null;
         }
-        return new VirtualMachinePublisherImpl(Region.fromName(inner.location()),
-                inner.name(),
-                this.imagesInnerCollection,
-                this.extensionsInnerCollection);
+        return new VirtualMachinePublisherImpl(
+            Region.fromName(inner.location()),
+            inner.name(),
+            this.imagesInnerCollection,
+            this.extensionsInnerCollection);
     }
 
     @Override
@@ -56,7 +56,8 @@ class VirtualMachinePublishersImpl
 
     @Override
     public PagedFlux<VirtualMachinePublisher> listByRegionAsync(String regionName) {
-        return PagedConverter.convertListToPagedFlux(imagesInnerCollection.listPublishersAsync(regionName))
-                .mapPage(this::wrapModel);
+        return PagedConverter
+            .convertListToPagedFlux(imagesInnerCollection.listPublishersAsync(regionName))
+            .mapPage(this::wrapModel);
     }
 }

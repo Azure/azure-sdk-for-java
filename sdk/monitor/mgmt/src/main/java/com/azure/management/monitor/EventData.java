@@ -6,14 +6,10 @@ package com.azure.management.monitor;
 import com.azure.management.monitor.models.EventDataInner;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import java.time.OffsetDateTime;
-
 import java.util.Map;
 
-/**
- * The Azure event log entries are of type EventData.
- */
-public interface EventData
-        extends HasInner<EventDataInner> {
+/** The Azure event log entries are of type EventData. */
+public interface EventData extends HasInner<EventDataInner> {
 
     /**
      * Get the authorization value.

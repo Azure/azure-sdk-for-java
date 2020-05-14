@@ -3,36 +3,26 @@
 
 package com.azure.management.network;
 
-
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
-/**
- * Defines values for LoadBalancerSkuType.
- */
+/** Defines values for LoadBalancerSkuType. */
 public final class LoadBalancerSkuType {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, LoadBalancerSkuType> VALUES_BY_NAME = new HashMap<>();
 
-    /**
-     * Static value Basic for LoadBalancerSkuType.
-     */
+    /** Static value Basic for LoadBalancerSkuType. */
     public static final LoadBalancerSkuType BASIC = new LoadBalancerSkuType(LoadBalancerSkuName.BASIC);
 
-    /**
-     * Static value Standard for LoadBalancerSkuType.
-     */
+    /** Static value Standard for LoadBalancerSkuType. */
     public static final LoadBalancerSkuType STANDARD = new LoadBalancerSkuType(LoadBalancerSkuName.STANDARD);
 
-    /**
-     * The actual serialized value for a LoadBalancerSkuType instance.
-     */
-    private LoadBalancerSkuName skuName;
+    /** The actual serialized value for a LoadBalancerSkuType instance. */
+    private final LoadBalancerSkuName skuName;
 
-    /**
-     * @return predefined LoadBalancer SKU types
-     */
+    /** @return predefined LoadBalancer SKU types */
     public static LoadBalancerSkuType[] values() {
         Collection<LoadBalancerSkuType> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new LoadBalancerSkuType[valuesCollection.size()]);
@@ -46,13 +36,13 @@ public final class LoadBalancerSkuType {
     private LoadBalancerSkuType(LoadBalancerSkuName skuName) {
         this.skuName = skuName;
         if (skuName != null) {
-            VALUES_BY_NAME.put(skuName.toString().toLowerCase(), this);
+            VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
         }
     }
 
     /**
-     * Parses a value into a SKU type and creates a new LoadBalancerSkuType instance if not
-     * found among the existing ones.
+     * Parses a value into a SKU type and creates a new LoadBalancerSkuType instance if not found among the existing
+     * ones.
      *
      * @param lbSku a sku
      * @return the LoadBalancerSkuType
@@ -64,7 +54,7 @@ public final class LoadBalancerSkuType {
         if (lbSku.name() == null) {
             return null;
         }
-        LoadBalancerSkuType result = VALUES_BY_NAME.get(lbSku.name().toString().toLowerCase());
+        LoadBalancerSkuType result = VALUES_BY_NAME.get(lbSku.name().toString().toLowerCase(Locale.ROOT));
         if (result != null) {
             return result;
         } else {
@@ -72,9 +62,7 @@ public final class LoadBalancerSkuType {
         }
     }
 
-    /**
-     * @return the LoadBalancerSku associated with the LoadBalancerSkuType.
-     */
+    /** @return the LoadBalancerSku associated with the LoadBalancerSkuType. */
     public LoadBalancerSku sku() {
         return (new LoadBalancerSku()).withName(this.skuName);
     }

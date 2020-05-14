@@ -3,6 +3,7 @@
 
 package com.azure.management.appservice.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AzureResourceType;
 import com.azure.management.appservice.CustomHostNameDnsRecordType;
@@ -15,29 +16,28 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.Map;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /**
- *  Implementation for {@link HostNameBinding} and its create and update interfaces.
- *  @param <FluentT> the fluent interface of the parent web app
- *  @param <FluentImplT> the fluent implementation of the parent web app
+ * Implementation for {@link HostNameBinding} and its create and update interfaces.
+ *
+ * @param <FluentT> the fluent interface of the parent web app
+ * @param <FluentImplT> the fluent implementation of the parent web app
  */
-class HostNameBindingImpl<
-            FluentT extends WebAppBase,
-            FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
-        extends
-            IndexableWrapperImpl<HostNameBindingInner>
-        implements
-            Creatable<HostNameBinding>,
-            HostNameBinding,
-            HostNameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
-            HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+class HostNameBindingImpl<FluentT extends WebAppBase, FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+    extends IndexableWrapperImpl<HostNameBindingInner>
+    implements Creatable<HostNameBinding>,
+        HostNameBinding,
+        HostNameBinding.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
+        HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
+
+    private final ClientLogger logger = new ClientLogger(getClass());
+
     private final FluentImplT parent;
     private String domainName;
     private String name;
@@ -45,7 +45,7 @@ class HostNameBindingImpl<
     HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent) {
         super(innerObject);
         this.parent = parent;
-        this.name = innerObject.getName();
+        this.name = innerObject.name();
         if (name != null && name.contains("/")) {
             this.name = name.replace(parent.name() + "/", "");
         }
@@ -53,12 +53,12 @@ class HostNameBindingImpl<
 
     @Override
     public String id() {
-        return inner().getId();
+        return inner().id();
     }
 
     @Override
     public String type() {
-        return inner().getType();
+        return inner().type();
     }
 
     @Override
@@ -113,11 +113,13 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
+    public HostNameBindingImpl<FluentT, FluentImplT> withDnsRecordType(
+        CustomHostNameDnsRecordType hostNameDnsRecordType) {
         Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
         Matcher matcher = pattern.matcher(name);
         if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
-            throw new IllegalArgumentException("root hostname cannot be assigned with a CName record");
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("root hostname cannot be assigned with a CName record"));
         }
         inner().withCustomHostNameDnsRecordType(hostNameDnsRecordType);
         return this;
@@ -135,17 +137,33 @@ class HostNameBindingImpl<
         Mono<HostNameBindingInner> observable = null;
 
         if (parent instanceof DeploymentSlot) {
-            observable = this.parent().manager().inner().webApps().getHostNameBindingSlotAsync(
-                    parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name());
+            observable =
+                this
+                    .parent()
+                    .manager()
+                    .inner()
+                    .webApps()
+                    .getHostNameBindingSlotAsync(
+                        parent().resourceGroupName(),
+                        ((DeploymentSlot) parent).parent().name(),
+                        parent().name(),
+                        name());
         } else {
-            observable = this.parent().manager().inner().webApps().getHostNameBindingAsync(parent().resourceGroupName(),
-                    parent().name(), name());
+            observable =
+                this
+                    .parent()
+                    .manager()
+                    .inner()
+                    .webApps()
+                    .getHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name());
         }
 
-        return observable.map(hostNameBindingInner -> {
-            self.setInner(hostNameBindingInner);
-            return self;
-        });
+        return observable
+            .map(
+                hostNameBindingInner -> {
+                    self.setInner(hostNameBindingInner);
+                    return self;
+                });
     }
 
     @Override
@@ -157,21 +175,36 @@ class HostNameBindingImpl<
     @Override
     public Flux<Indexable> createAsync() {
         final HostNameBinding self = this;
-        Function<HostNameBindingInner, HostNameBinding> mapper = hostNameBindingInner -> {
-            setInner(hostNameBindingInner);
-            return self;
-        };
+        Function<HostNameBindingInner, HostNameBinding> mapper =
+            hostNameBindingInner -> {
+                setInner(hostNameBindingInner);
+                return self;
+            };
 
         Mono<Indexable> hostNameBindingObservable;
         if (parent instanceof DeploymentSlot) {
-            hostNameBindingObservable = this.parent().manager().inner().webApps().createOrUpdateHostNameBindingSlotAsync(
-                    parent().resourceGroupName(),
-                    ((DeploymentSlot) parent).parent().name(),
-                    name,
-                    parent().name(), inner()).map(mapper);
+            hostNameBindingObservable =
+                this
+                    .parent()
+                    .manager()
+                    .inner()
+                    .webApps()
+                    .createOrUpdateHostNameBindingSlotAsync(
+                        parent().resourceGroupName(),
+                        ((DeploymentSlot) parent).parent().name(),
+                        name,
+                        parent().name(),
+                        inner())
+                    .map(mapper);
         } else {
-            hostNameBindingObservable = this.parent().manager().inner().webApps().createOrUpdateHostNameBindingAsync(
-                    parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
+            hostNameBindingObservable =
+                this
+                    .parent()
+                    .manager()
+                    .inner()
+                    .webApps()
+                    .createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner())
+                    .map(mapper);
         }
 
         return hostNameBindingObservable.flux();

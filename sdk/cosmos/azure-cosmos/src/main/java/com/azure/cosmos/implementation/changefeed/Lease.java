@@ -119,4 +119,12 @@ public interface Lease {
      * @param properties the custom lease item.
      */
     void setProperties(Map<String,String> properties);
+
+    /**
+     * Sets the lease properties.
+     *
+     *
+     * @param lease the input representation of a lease document.
+     */
+    void setServiceItemLease(Lease lease);
 }

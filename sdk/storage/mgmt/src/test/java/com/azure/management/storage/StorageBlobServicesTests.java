@@ -1,7 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.management.storage;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,10 +13,10 @@ public class StorageBlobServicesTests extends StorageManagementTest {
     private String rgName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
         rgName = generateRandomResourceName("javacsmrg", 15);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
@@ -20,49 +24,52 @@ public class StorageBlobServicesTests extends StorageManagementTest {
         resourceManager.resourceGroups().deleteByName(rgName);
     }
 
-
     @Test
     public void canCreateBlobServices() {
-        String SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
-                .define(SA_NAME)
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
-        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+        BlobServiceProperties blobService =
+            blobServices
+                .define("blobServicesTest")
                 .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
                 .withDeleteRetentionPolicyEnabled(5)
                 .create();
 
         Assertions.assertTrue(blobService.deleteRetentionPolicy().enabled());
         Assertions.assertEquals(5, blobService.deleteRetentionPolicy().days().intValue());
-
     }
 
     @Test
     public void canUpdateBlobServices() {
-        String SA_NAME = generateRandomResourceName("javacsmsa", 15);
+        String saName = generateRandomResourceName("javacsmsa", 15);
 
-        StorageAccount storageAccount = storageManager.storageAccounts()
-                .define(SA_NAME)
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgName)
                 .create();
 
         BlobServices blobServices = this.storageManager.blobServices();
-        BlobServiceProperties blobService = blobServices.define("blobServicesTest")
+        BlobServiceProperties blobService =
+            blobServices
+                .define("blobServicesTest")
                 .withExistingStorageAccount(storageAccount.resourceGroupName(), storageAccount.name())
                 .withDeleteRetentionPolicyEnabled(5)
                 .create();
 
-        blobService.update()
-                .withDeleteRetentionPolicyDisabled()
-                .apply();
+        blobService.update().withDeleteRetentionPolicyDisabled().apply();
 
         Assertions.assertFalse(blobService.deleteRetentionPolicy().enabled());
-
     }
 }

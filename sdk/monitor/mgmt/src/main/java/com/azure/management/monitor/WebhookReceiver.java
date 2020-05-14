@@ -7,9 +7,7 @@ package com.azure.management.monitor;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The WebhookReceiver model.
- */
+/** The WebhookReceiver model. */
 @Fluent
 public final class WebhookReceiver {
     /*
@@ -56,9 +54,9 @@ public final class WebhookReceiver {
     private String tenantId;
 
     /**
-     * Get the name property: The name of the webhook receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Get the name property: The name of the webhook receiver. Names must be unique across all receivers within an
+     * action group.
+     *
      * @return the name value.
      */
     public String name() {
@@ -66,9 +64,9 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Set the name property: The name of the webhook receiver. Names must be
-     * unique across all receivers within an action group.
-     * 
+     * Set the name property: The name of the webhook receiver. Names must be unique across all receivers within an
+     * action group.
+     *
      * @param name the name value to set.
      * @return the WebhookReceiver object itself.
      */
@@ -79,7 +77,7 @@ public final class WebhookReceiver {
 
     /**
      * Get the serviceUri property: The URI where webhooks should be sent.
-     * 
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -88,7 +86,7 @@ public final class WebhookReceiver {
 
     /**
      * Set the serviceUri property: The URI where webhooks should be sent.
-     * 
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookReceiver object itself.
      */
@@ -98,9 +96,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Get the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @return the useCommonAlertSchema value.
      */
     public boolean useCommonAlertSchema() {
@@ -108,9 +105,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Set the useCommonAlertSchema property: Indicates whether to use common
-     * alert schema.
-     * 
+     * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
+     *
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the WebhookReceiver object itself.
      */
@@ -120,9 +116,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Get the useAadAuth property: Indicates whether or not use AAD
-     * authentication.
-     * 
+     * Get the useAadAuth property: Indicates whether or not use AAD authentication.
+     *
      * @return the useAadAuth value.
      */
     public Boolean useAadAuth() {
@@ -130,9 +125,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Set the useAadAuth property: Indicates whether or not use AAD
-     * authentication.
-     * 
+     * Set the useAadAuth property: Indicates whether or not use AAD authentication.
+     *
      * @param useAadAuth the useAadAuth value to set.
      * @return the WebhookReceiver object itself.
      */
@@ -142,9 +136,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Get the objectId property: Indicates the webhook app object Id for aad
-     * auth.
-     * 
+     * Get the objectId property: Indicates the webhook app object Id for aad auth.
+     *
      * @return the objectId value.
      */
     public String objectId() {
@@ -152,9 +145,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Set the objectId property: Indicates the webhook app object Id for aad
-     * auth.
-     * 
+     * Set the objectId property: Indicates the webhook app object Id for aad auth.
+     *
      * @param objectId the objectId value to set.
      * @return the WebhookReceiver object itself.
      */
@@ -164,9 +156,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Get the identifierUri property: Indicates the identifier uri for aad
-     * auth.
-     * 
+     * Get the identifierUri property: Indicates the identifier uri for aad auth.
+     *
      * @return the identifierUri value.
      */
     public String identifierUri() {
@@ -174,9 +165,8 @@ public final class WebhookReceiver {
     }
 
     /**
-     * Set the identifierUri property: Indicates the identifier uri for aad
-     * auth.
-     * 
+     * Set the identifierUri property: Indicates the identifier uri for aad auth.
+     *
      * @param identifierUri the identifierUri value to set.
      * @return the WebhookReceiver object itself.
      */
@@ -187,7 +177,7 @@ public final class WebhookReceiver {
 
     /**
      * Get the tenantId property: Indicates the tenant id for aad auth.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -196,7 +186,7 @@ public final class WebhookReceiver {
 
     /**
      * Set the tenantId property: Indicates the tenant id for aad auth.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the WebhookReceiver object itself.
      */

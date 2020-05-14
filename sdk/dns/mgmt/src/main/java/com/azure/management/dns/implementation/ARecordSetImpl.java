@@ -2,29 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.ARecord;
 import com.azure.management.dns.ARecordSet;
 import com.azure.management.dns.RecordType;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of ARecordSet.
- */
-class ARecordSetImpl
-        extends DnsRecordSetImpl
-        implements ARecordSet {
+/** Implementation of ARecordSet. */
+class ARecordSetImpl extends DnsRecordSetImpl implements ARecordSet {
     ARecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.A.toString(), parent, innerModel);
     }
 
     static ARecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new ARecordSetImpl(name, parent,
-                new RecordSetInner()
-                    .withARecords(new ArrayList<>()));
+        return new ARecordSetImpl(name, parent, new RecordSetInner().withARecords(new ArrayList<>()));
     }
 
     @Override

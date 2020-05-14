@@ -4,9 +4,7 @@ package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
 
-/**
- * Entry point to NS record sets in an Azure DNS zone.
- */
+/** Entry point to NS record sets in an Azure DNS zone. */
 @Fluent
 public interface NSRecordSets extends DnsRecordSets<NSRecordSet> {
 }

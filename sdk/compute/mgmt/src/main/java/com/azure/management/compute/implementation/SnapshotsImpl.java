@@ -12,16 +12,9 @@ import com.azure.management.compute.models.SnapshotsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation for Snapshots.
- */
+/** The implementation for Snapshots. */
 class SnapshotsImpl
-    extends TopLevelModifiableResourcesImpl<
-        Snapshot,
-        SnapshotImpl,
-        SnapshotInner,
-        SnapshotsInner,
-        ComputeManager>
+    extends TopLevelModifiableResourcesImpl<Snapshot, SnapshotImpl, SnapshotInner, SnapshotsInner, ComputeManager>
     implements Snapshots {
 
     SnapshotsImpl(ComputeManager computeManager) {
@@ -29,22 +22,20 @@ class SnapshotsImpl
     }
 
     @Override
-    public Mono<String> grantAccessAsync(String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration) {
+    public Mono<String> grantAccessAsync(
+        String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration) {
         GrantAccessData grantAccessDataInner = new GrantAccessData();
-        grantAccessDataInner.withAccess(accessLevel)
-                .withDurationInSeconds(accessDuration);
-        return inner().grantAccessAsync(resourceGroupName, snapshotName, grantAccessDataInner)
-                .onErrorResume(e -> Mono.empty())
-                .map(accessUriInner -> accessUriInner.accessSAS());
+        grantAccessDataInner.withAccess(accessLevel).withDurationInSeconds(accessDuration);
+        return inner()
+            .grantAccessAsync(resourceGroupName, snapshotName, grantAccessDataInner)
+            .onErrorResume(e -> Mono.empty())
+            .map(accessUriInner -> accessUriInner.accessSas());
     }
 
     @Override
-    public String grantAccess(String resourceGroupName,
-                              String snapshotName,
-                              AccessLevel accessLevel,
-                              int accessDuration) {
-        return this.grantAccessAsync(resourceGroupName, snapshotName, accessLevel, accessDuration)
-                .block();
+    public String grantAccess(
+        String resourceGroupName, String snapshotName, AccessLevel accessLevel, int accessDuration) {
+        return this.grantAccessAsync(resourceGroupName, snapshotName, accessLevel, accessDuration).block();
     }
 
     @Override
@@ -67,7 +58,7 @@ class SnapshotsImpl
         if (inner == null) {
             return null;
         }
-        return new SnapshotImpl(inner.getName(), inner, this.manager());
+        return new SnapshotImpl(inner.name(), inner, this.manager());
     }
 
     @Override

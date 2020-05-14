@@ -10,24 +10,17 @@ import com.azure.management.network.models.ApplicationGatewaysInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.management.resources.fluentcore.utils.ReactorMapper;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for ApplicationGateways.
- */
+/** Implementation for ApplicationGateways. */
 class ApplicationGatewaysImpl
-        extends TopLevelModifiableResourcesImpl<
-        ApplicationGateway,
-        ApplicationGatewayImpl,
-        ApplicationGatewayInner,
-        ApplicationGatewaysInner,
-        NetworkManager>
-        implements ApplicationGateways {
+    extends TopLevelModifiableResourcesImpl<
+        ApplicationGateway, ApplicationGatewayImpl, ApplicationGatewayInner, ApplicationGatewaysInner, NetworkManager>
+    implements ApplicationGateways {
 
     ApplicationGatewaysImpl(final NetworkManager networkManager) {
         super(networkManager.inner().applicationGateways(), networkManager);
@@ -48,7 +41,7 @@ class ApplicationGatewaysImpl
 
     @Override
     protected ApplicationGatewayImpl wrapModel(ApplicationGatewayInner inner) {
-        return (inner == null) ? null : new ApplicationGatewayImpl(inner.getName(), inner, this.manager());
+        return (inner == null) ? null : new ApplicationGatewayImpl(inner.name(), inner, this.manager());
     }
 
     @Override

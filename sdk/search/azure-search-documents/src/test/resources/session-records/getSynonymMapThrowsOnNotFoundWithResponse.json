@@ -1,26 +1,29 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://azs-sdk82342f0cf7d.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06",
-    "Headers" : { },
+    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('thisSynonymMapDoesNotExist')?api-version=2019-05-06-Preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "f3610e1a-5f1f-4dd5-a2c7-cec3c1ea40b8"
+    },
     "Response" : {
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "434ceb9d-8f47-4ff8-99ec-703654a758eb",
+      "request-id" : "f3610e1a-5f1f-4dd5-a2c7-cec3c1ea40b8",
       "StatusCode" : "404",
-      "Date" : "Mon, 24 Feb 2020 20:02:50 GMT",
+      "Date" : "Mon, 11 May 2020 18:11:43 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "elapsed-time" : "26",
+      "client-request-id" : "f3610e1a-5f1f-4dd5-a2c7-cec3c1ea40b8",
+      "elapsed-time" : "14",
       "OData-Version" : "4.0",
       "Expires" : "-1",
-      "Content-Length" : "134",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'azs-sdk82342f0cf7d'.\"}}",
+      "Content-Length" : "131",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"No synonym map with the name 'thisSynonymMapDoesNotExist' was found in service 'alzimmer-search'.\"}}",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Language" : "en",
       "Content-Type" : "application/json; odata.metadata=minimal"
     },
     "Exception" : null
   } ],
-  "variables" : [ "azs-sdk82342f0cf7d" ]
+  "variables" : [ ]
 }

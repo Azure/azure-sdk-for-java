@@ -3,20 +3,17 @@
 
 package com.azure.management.graphrbac;
 
-import com.azure.management.ApplicationTokenCredential;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.resources.implementation.ResourceManager;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
-
-import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 public class ServicePrincipalsTests extends GraphRbacManagementTest {
 
@@ -26,13 +23,18 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         ServicePrincipal servicePrincipal = null;
         try {
             // Create
-            servicePrincipal = graphRbacManager.servicePrincipals().define(name)
+            servicePrincipal =
+                graphRbacManager
+                    .servicePrincipals()
+                    .define(name)
                     .withNewApplication("http://easycreate.azure.com/" + name)
                     .definePasswordCredential("sppass")
-                        .withPasswordValue("StrongPass!12")
-                        .attach()
+                    .withPasswordValue("StrongPass!12")
+                    .attach()
                     .create();
-            System.out.println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
+            System
+                .out
+                .println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
             Assertions.assertNotNull(servicePrincipal.id());
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
@@ -48,14 +50,15 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
             Assertions.assertEquals(0, servicePrincipal.certificateCredentials().size());
 
             // Update
-            servicePrincipal.update()
-                    .withoutCredential("sppass")
-                    .defineCertificateCredential("spcert")
-                        .withAsymmetricX509Certificate()
-                        .withPublicKey(readAllBytes(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer")))
-                        .withDuration(Duration.ofDays(1))
-                        .attach()
-                    .apply();
+            servicePrincipal
+                .update()
+                .withoutCredential("sppass")
+                .defineCertificateCredential("spcert")
+                .withAsymmetricX509Certificate()
+                .withPublicKey(readAllBytes(ServicePrincipalsTests.class.getResourceAsStream("/myTest.cer")))
+                .withDuration(Duration.ofDays(1))
+                .attach()
+                .apply();
             Assertions.assertNotNull(servicePrincipal);
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
@@ -64,7 +67,9 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         } finally {
             if (servicePrincipal != null) {
                 graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
-                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
+                graphRbacManager
+                    .applications()
+                    .deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
             }
         }
     }
@@ -79,44 +84,50 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         String subscription = "0b1f6471-1bf0-4dda-aec3-cb9272f09590";
         try {
             // Create
-            servicePrincipal = graphRbacManager.servicePrincipals().define(name)
+            servicePrincipal =
+                graphRbacManager
+                    .servicePrincipals()
+                    .define(name)
                     .withNewApplication("http://easycreate.azure.com/ansp/" + name)
                     .definePasswordCredential("sppass")
-                        .withPasswordValue("StrongPass!12")
-                        .attach()
+                    .withPasswordValue("StrongPass!12")
+                    .attach()
                     .defineCertificateCredential("spcert")
-                        .withAsymmetricX509Certificate()
-                        .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
-                        .withDuration(Duration.ofDays(7))
-                        .withAuthFileToExport(new FileOutputStream(authFile))
-                        .withPrivateKeyFile("/Users/jianghlu/Documents/code/certs/myserver.pfx")
-                        .withPrivateKeyPassword("StrongPass!123")
-                        .attach()
+                    .withAsymmetricX509Certificate()
+                    .withPublicKey(Files.readAllBytes(Paths.get("/Users/jianghlu/Documents/code/certs/myserver.crt")))
+                    .withDuration(Duration.ofDays(7))
+                    .withAuthFileToExport(new FileOutputStream(authFile))
+                    .withPrivateKeyFile("/Users/jianghlu/Documents/code/certs/myserver.pfx")
+                    .withPrivateKeyPassword("StrongPass!123")
+                    .attach()
                     .withNewRoleInSubscription(BuiltInRole.CONTRIBUTOR, subscription)
                     .create();
-            System.out.println(servicePrincipal.id() + " - " + String.join(",",servicePrincipal.servicePrincipalNames()));
+            System
+                .out
+                .println(servicePrincipal.id() + " - " + String.join(",", servicePrincipal.servicePrincipalNames()));
             Assertions.assertNotNull(servicePrincipal.id());
             Assertions.assertNotNull(servicePrincipal.applicationId());
             Assertions.assertEquals(2, servicePrincipal.servicePrincipalNames().size());
 
             SdkContext.sleep(10000);
-            ResourceManager resourceManager = ResourceManager.authenticate(
-                    ApplicationTokenCredential.fromFile(new File(authFile))).withSubscription(subscription);
-            ResourceGroup group = resourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_WEST).create();
+            ResourceManager resourceManager =
+                ResourceManager
+                    .authenticate(credentialFromFile(), profile())
+                    .withSubscription(subscription);
+            ResourceGroup group = resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             // Update
             RoleAssignment ra = servicePrincipal.roleAssignments().iterator().next();
-            servicePrincipal.update()
-                    .withoutRole(ra)
-                    .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
-                    .apply();
+            servicePrincipal
+                .update()
+                .withoutRole(ra)
+                .withNewRoleInResourceGroup(BuiltInRole.CONTRIBUTOR, group)
+                .apply();
 
             SdkContext.sleep(120000);
             Assertions.assertNotNull(resourceManager.resourceGroups().getByName(group.name()));
             try {
-                resourceManager.resourceGroups().define(rgName + "2")
-                        .withRegion(Region.US_WEST).create();
+                resourceManager.resourceGroups().define(rgName + "2").withRegion(Region.US_WEST).create();
                 Assertions.fail();
             } catch (Exception e) {
                 // expected
@@ -124,11 +135,14 @@ public class ServicePrincipalsTests extends GraphRbacManagementTest {
         } finally {
             try {
                 graphRbacManager.servicePrincipals().deleteById(servicePrincipal.id());
-            } catch (Exception e) { }
+            } catch (Exception e) {
+            }
             try {
-                graphRbacManager.applications().deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
-            } catch (Exception e) { }
+                graphRbacManager
+                    .applications()
+                    .deleteById(graphRbacManager.applications().getByName(servicePrincipal.applicationId()).id());
+            } catch (Exception e) {
+            }
         }
     }
-
 }

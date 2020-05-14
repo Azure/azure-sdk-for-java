@@ -24,7 +24,7 @@ public class TestUtilities {
         }
     }
 
-    public synchronized static <T> int getSize(Iterable<T> iterable) {
+    public static synchronized <T> int getSize(Iterable<T> iterable) {
         int res = 0;
 
         for (T t : iterable) {
@@ -33,7 +33,7 @@ public class TestUtilities {
         return res;
     }
 
-    public synchronized static <T> boolean isEmpty(PagedIterable<T> iterable) {
+    public static synchronized <T> boolean isEmpty(PagedIterable<T> iterable) {
         return !iterable.iterator().hasNext();
     }
 }

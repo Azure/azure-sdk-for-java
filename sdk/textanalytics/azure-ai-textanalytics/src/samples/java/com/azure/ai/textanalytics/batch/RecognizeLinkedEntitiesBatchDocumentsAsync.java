@@ -28,14 +28,14 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park.", "en"),
-            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.", "en")
+            new TextDocumentInput("A", "Old Faithful is a geyser at Yellowstone Park.").setLanguage("en"),
+            new TextDocumentInput("B", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
         // Request options: show statistics and model version
@@ -64,8 +64,9 @@ public class RecognizeLinkedEntitiesBatchDocumentsAsync {
                             System.out.println("Linked Entities:");
                             System.out.printf("\tName: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
                                 linkedEntity.getName(), linkedEntity.getDataSourceEntityId(), linkedEntity.getUrl(), linkedEntity.getDataSource());
-                            linkedEntity.getLinkedEntityMatches().forEach(entityMatch -> System.out.printf(
-                                "\tMatched entity: %s, score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
+                            linkedEntity.getMatches().forEach(entityMatch -> System.out.printf(
+                                "\tMatched entity: %s, confidence score: %f.%n",
+                                entityMatch.getText(), entityMatch.getConfidenceScore()));
                         });
                     }
                 }

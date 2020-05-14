@@ -2,29 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
-import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.dns.CaaRecord;
 import com.azure.management.dns.CaaRecordSet;
 import com.azure.management.dns.RecordType;
-
+import com.azure.management.dns.models.RecordSetInner;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Implementation of CaaRecordSet.
- */
-class CaaRecordSetImpl
-        extends DnsRecordSetImpl
-        implements CaaRecordSet {
+/** Implementation of CaaRecordSet. */
+class CaaRecordSetImpl extends DnsRecordSetImpl implements CaaRecordSet {
     CaaRecordSetImpl(final String name, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, RecordType.CAA.toString(), parent, innerModel);
     }
 
     static CaaRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent) {
-        return new CaaRecordSetImpl(name, parent,
-                new RecordSetInner()
-                        .withCaaRecords(new ArrayList<>()));
+        return new CaaRecordSetImpl(name, parent, new RecordSetInner().withCaaRecords(new ArrayList<>()));
     }
 
     @Override
@@ -51,8 +44,8 @@ class CaaRecordSetImpl
                 for (CaaRecord recordToRemove : this.recordSetRemoveInfo.caaRecords()) {
                     for (CaaRecord record : resource.caaRecords()) {
                         if (record.value().equalsIgnoreCase(recordToRemove.value())
-                                && (record.flags().intValue() == recordToRemove.flags().intValue())
-                                && (record.tag().equalsIgnoreCase(recordToRemove.tag()))) {
+                            && (record.flags().intValue() == recordToRemove.flags().intValue())
+                            && (record.tag().equalsIgnoreCase(recordToRemove.tag()))) {
                             resource.caaRecords().remove(record);
                             break;
                         }

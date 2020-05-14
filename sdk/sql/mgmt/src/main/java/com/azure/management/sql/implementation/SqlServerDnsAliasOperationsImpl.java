@@ -95,13 +95,11 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
         List<SqlServerDnsAlias> serverDnsAliases = new ArrayList<>();
         PagedIterable<ServerDnsAliasInner> serverDnsAliasInners =
             this.sqlServerManager.inner().serverDnsAliases().listByServer(resourceGroupName, sqlServerName);
-        if (serverDnsAliasInners != null) {
-            for (ServerDnsAliasInner inner : serverDnsAliasInners) {
-                serverDnsAliases
-                    .add(
-                        new SqlServerDnsAliasImpl(
-                            resourceGroupName, sqlServerName, inner.getName(), inner, this.sqlServerManager));
-            }
+        for (ServerDnsAliasInner inner : serverDnsAliasInners) {
+            serverDnsAliases
+                .add(
+                    new SqlServerDnsAliasImpl(
+                        resourceGroupName, sqlServerName, inner.name(), inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverDnsAliases);
     }
@@ -120,7 +118,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                     new SqlServerDnsAliasImpl(
                         resourceGroupName,
                         sqlServerName,
-                        serverDnsAliasInner.getName(),
+                        serverDnsAliasInner.name(),
                         serverDnsAliasInner,
                         self.sqlServerManager));
     }
@@ -134,13 +132,11 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
                 .inner()
                 .serverDnsAliases()
                 .listByServer(sqlServer.resourceGroupName(), sqlServer.name());
-        if (serverDnsAliasInners != null) {
-            for (ServerDnsAliasInner inner : serverDnsAliasInners) {
-                serverDnsAliases
-                    .add(
-                        new SqlServerDnsAliasImpl(
-                            inner.getName(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
-            }
+        for (ServerDnsAliasInner inner : serverDnsAliasInners) {
+            serverDnsAliases
+                .add(
+                    new SqlServerDnsAliasImpl(
+                        inner.name(), (SqlServerImpl) sqlServer, inner, this.sqlServerManager));
         }
         return Collections.unmodifiableList(serverDnsAliases);
     }
@@ -155,7 +151,7 @@ public class SqlServerDnsAliasOperationsImpl extends SqlChildrenOperationsImpl<S
             .mapPage(
                 serverDnsAliasInner ->
                     new SqlServerDnsAliasImpl(
-                        serverDnsAliasInner.getName(),
+                        serverDnsAliasInner.name(),
                         (SqlServerImpl) sqlServer,
                         serverDnsAliasInner,
                         sqlServer.manager()));

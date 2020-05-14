@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RequestOptions;
 public final class CosmosDatabaseRequestOptions {
     private Integer offerThroughput;
     private AccessCondition accessCondition;
+    private ThroughputProperties throughputProperties;
 
     /**
      * Gets the conditions associated with the request.
@@ -51,10 +52,16 @@ public final class CosmosDatabaseRequestOptions {
         return this;
     }
 
+    CosmosDatabaseRequestOptions setThroughputProperties(ThroughputProperties throughputProperties) {
+        this.throughputProperties = throughputProperties;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
         options.setAccessCondition(accessCondition);
         options.setOfferThroughput(offerThroughput);
+        options.setThroughputProperties(this.throughputProperties);
         return options;
     }
 }

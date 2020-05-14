@@ -97,7 +97,7 @@ public class SqlFirewallRuleImpl
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -111,12 +111,12 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public String startIPAddress() {
+    public String startIpAddress() {
         return this.inner().startIpAddress();
     }
 
     @Override
-    public String endIPAddress() {
+    public String endIpAddress() {
         return this.inner().endIpAddress();
     }
 
@@ -185,14 +185,14 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public SqlFirewallRuleImpl withStartIPAddress(String startIPAddress) {
-        this.inner().withStartIpAddress(startIPAddress);
+    public SqlFirewallRuleImpl withStartIpAddress(String startIpAddress) {
+        this.inner().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRuleImpl withEndIPAddress(String endIPAddress) {
-        this.inner().withEndIpAddress(endIPAddress);
+    public SqlFirewallRuleImpl withEndIpAddress(String endIpAddress) {
+        this.inner().withEndIpAddress(endIpAddress);
         return this;
     }
 
@@ -220,14 +220,14 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public SqlFirewallRuleImpl withIPAddressRange(String startIPAddress, String endIPAddress) {
-        this.inner().withStartIpAddress(startIPAddress);
-        this.inner().withEndIpAddress(endIPAddress);
+    public SqlFirewallRuleImpl withIpAddressRange(String startIpAddress, String endIpAddress) {
+        this.inner().withStartIpAddress(startIpAddress);
+        this.inner().withEndIpAddress(endIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRuleImpl withIPAddress(String ipAddress) {
+    public SqlFirewallRuleImpl withIpAddress(String ipAddress) {
         this.inner().withStartIpAddress(ipAddress);
         this.inner().withEndIpAddress(ipAddress);
         return this;

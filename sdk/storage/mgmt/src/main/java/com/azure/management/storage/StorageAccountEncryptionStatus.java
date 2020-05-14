@@ -3,27 +3,18 @@
 
 package com.azure.management.storage;
 
-
 import com.azure.core.annotation.Fluent;
-
 import java.time.OffsetDateTime;
 
-/**
- * Type representing the encryption status of a storage service.
- */
+/** Type representing the encryption status of a storage service. */
 @Fluent
 public interface StorageAccountEncryptionStatus {
-    /**
-     * @return the storage service type
-     */
+    /** @return the storage service type */
     StorageService storageService();
-    /**
-     * @return true if the encryption is enabled for the service false otherwise
-     */
+    /** @return true if the encryption is enabled for the service false otherwise */
     boolean isEnabled();
     /**
-     * @return rough estimate of the date/time when the encryption was last enabled, null if
-     * the encryption is disabled
+     * @return rough estimate of the date/time when the encryption was last enabled, null if the encryption is disabled
      */
     OffsetDateTime lastEnabledTime();
 }

@@ -12,14 +12,9 @@ import com.azure.management.resources.fluentcore.arm.ResourceId;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Represents Packet Captures collection associated with Network Watcher.
- */
-class PacketCapturesImpl extends
-        CreatableResourcesImpl<PacketCapture,
-                PacketCaptureImpl,
-                PacketCaptureResultInner>
-        implements PacketCaptures {
+/** Represents Packet Captures collection associated with Network Watcher. */
+class PacketCapturesImpl extends CreatableResourcesImpl<PacketCapture, PacketCaptureImpl, PacketCaptureResultInner>
+    implements PacketCaptures {
     private final NetworkWatcherImpl parent;
     protected final PacketCapturesInner innerCollection;
 
@@ -38,9 +33,7 @@ class PacketCapturesImpl extends
         return wrapList(inner().list(parent.resourceGroupName(), parent.name()));
     }
 
-    /**
-     * @return an observable emits packet captures in this collection
-     */
+    /** @return an observable emits packet captures in this collection */
     @Override
     public PagedFlux<PacketCapture> listAsync() {
         return wrapPageAsync(inner().listAsync(parent.resourceGroupName(), parent.name()));
@@ -62,8 +55,7 @@ class PacketCapturesImpl extends
 
     @Override
     public Mono<PacketCapture> getByNameAsync(String name) {
-        return inner().getAsync(parent.resourceGroupName(), parent.name(), name)
-                .map(inner -> wrapModel(inner));
+        return inner().getAsync(parent.resourceGroupName(), parent.name(), name).map(inner -> wrapModel(inner));
     }
 
     @Override
@@ -78,9 +70,7 @@ class PacketCapturesImpl extends
 
     @Override
     public Mono<Void> deleteByNameAsync(String name) {
-        return this.inner().deleteAsync(parent.resourceGroupName(),
-                parent.name(),
-                name);
+        return this.inner().deleteAsync(parent.resourceGroupName(), parent.name(), name);
     }
 
     @Override

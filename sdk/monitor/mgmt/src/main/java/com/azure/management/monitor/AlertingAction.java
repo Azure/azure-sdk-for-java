@@ -5,18 +5,17 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
-/**
- * The AlertingAction model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
-@JsonTypeName("Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources.ScheduledQueryRules.AlertingAction")
+/** The AlertingAction model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
+@JsonTypeName(
+    "Microsoft.WindowsAzure.Management.Monitoring.Alerts.Models.Microsoft.AppInsights.Nexus.DataContracts.Resources"
+        + ".ScheduledQueryRules.AlertingAction")
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public final class AlertingAction extends Action {
     /*
      * Severity of the alert
@@ -44,7 +43,7 @@ public final class AlertingAction extends Action {
 
     /**
      * Get the severity property: Severity of the alert.
-     * 
+     *
      * @return the severity value.
      */
     public AlertSeverity severity() {
@@ -53,7 +52,7 @@ public final class AlertingAction extends Action {
 
     /**
      * Set the severity property: Severity of the alert.
-     * 
+     *
      * @param severity the severity value to set.
      * @return the AlertingAction object itself.
      */
@@ -64,7 +63,7 @@ public final class AlertingAction extends Action {
 
     /**
      * Get the aznsAction property: Azure action group reference.
-     * 
+     *
      * @return the aznsAction value.
      */
     public AzNsActionGroup aznsAction() {
@@ -73,7 +72,7 @@ public final class AlertingAction extends Action {
 
     /**
      * Set the aznsAction property: Azure action group reference.
-     * 
+     *
      * @param aznsAction the aznsAction value to set.
      * @return the AlertingAction object itself.
      */
@@ -83,9 +82,8 @@ public final class AlertingAction extends Action {
     }
 
     /**
-     * Get the throttlingInMin property: time (in minutes) for which Alerts
-     * should be throttled or suppressed.
-     * 
+     * Get the throttlingInMin property: time (in minutes) for which Alerts should be throttled or suppressed.
+     *
      * @return the throttlingInMin value.
      */
     public Integer throttlingInMin() {
@@ -93,9 +91,8 @@ public final class AlertingAction extends Action {
     }
 
     /**
-     * Set the throttlingInMin property: time (in minutes) for which Alerts
-     * should be throttled or suppressed.
-     * 
+     * Set the throttlingInMin property: time (in minutes) for which Alerts should be throttled or suppressed.
+     *
      * @param throttlingInMin the throttlingInMin value to set.
      * @return the AlertingAction object itself.
      */
@@ -105,9 +102,8 @@ public final class AlertingAction extends Action {
     }
 
     /**
-     * Get the trigger property: The trigger condition that results in the
-     * alert rule being.
-     * 
+     * Get the trigger property: The trigger condition that results in the alert rule being.
+     *
      * @return the trigger value.
      */
     public TriggerCondition trigger() {
@@ -115,9 +111,8 @@ public final class AlertingAction extends Action {
     }
 
     /**
-     * Set the trigger property: The trigger condition that results in the
-     * alert rule being.
-     * 
+     * Set the trigger property: The trigger condition that results in the alert rule being.
+     *
      * @param trigger the trigger value to set.
      * @return the AlertingAction object itself.
      */

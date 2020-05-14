@@ -7,9 +7,7 @@ package com.azure.management.storage;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ActiveDirectoryProperties model.
- */
+/** The ActiveDirectoryProperties model. */
 @Fluent
 public final class ActiveDirectoryProperties {
     /*
@@ -50,9 +48,8 @@ public final class ActiveDirectoryProperties {
     private String azureStorageSid;
 
     /**
-     * Get the domainName property: Specifies the primary domain that the AD
-     * DNS server is authoritative for.
-     * 
+     * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
+     *
      * @return the domainName value.
      */
     public String domainName() {
@@ -60,9 +57,8 @@ public final class ActiveDirectoryProperties {
     }
 
     /**
-     * Set the domainName property: Specifies the primary domain that the AD
-     * DNS server is authoritative for.
-     * 
+     * Set the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
+     *
      * @param domainName the domainName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -73,7 +69,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the netBiosDomainName property: Specifies the NetBIOS domain name.
-     * 
+     *
      * @return the netBiosDomainName value.
      */
     public String netBiosDomainName() {
@@ -82,7 +78,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the netBiosDomainName property: Specifies the NetBIOS domain name.
-     * 
+     *
      * @param netBiosDomainName the netBiosDomainName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -92,9 +88,8 @@ public final class ActiveDirectoryProperties {
     }
 
     /**
-     * Get the forestName property: Specifies the Active Directory forest to
-     * get.
-     * 
+     * Get the forestName property: Specifies the Active Directory forest to get.
+     *
      * @return the forestName value.
      */
     public String forestName() {
@@ -102,9 +97,8 @@ public final class ActiveDirectoryProperties {
     }
 
     /**
-     * Set the forestName property: Specifies the Active Directory forest to
-     * get.
-     * 
+     * Set the forestName property: Specifies the Active Directory forest to get.
+     *
      * @param forestName the forestName value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -115,7 +109,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the domainGuid property: Specifies the domain GUID.
-     * 
+     *
      * @return the domainGuid value.
      */
     public String domainGuid() {
@@ -124,7 +118,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the domainGuid property: Specifies the domain GUID.
-     * 
+     *
      * @param domainGuid the domainGuid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -135,7 +129,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Get the domainSid property: Specifies the security identifier (SID).
-     * 
+     *
      * @return the domainSid value.
      */
     public String domainSid() {
@@ -144,7 +138,7 @@ public final class ActiveDirectoryProperties {
 
     /**
      * Set the domainSid property: Specifies the security identifier (SID).
-     * 
+     *
      * @param domainSid the domainSid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */
@@ -154,9 +148,8 @@ public final class ActiveDirectoryProperties {
     }
 
     /**
-     * Get the azureStorageSid property: Specifies the security identifier
-     * (SID) for Azure Storage.
-     * 
+     * Get the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage.
+     *
      * @return the azureStorageSid value.
      */
     public String azureStorageSid() {
@@ -164,9 +157,8 @@ public final class ActiveDirectoryProperties {
     }
 
     /**
-     * Set the azureStorageSid property: Specifies the security identifier
-     * (SID) for Azure Storage.
-     * 
+     * Set the azureStorageSid property: Specifies the security identifier (SID) for Azure Storage.
+     *
      * @param azureStorageSid the azureStorageSid value to set.
      * @return the ActiveDirectoryProperties object itself.
      */

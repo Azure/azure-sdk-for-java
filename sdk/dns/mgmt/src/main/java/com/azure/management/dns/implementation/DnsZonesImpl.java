@@ -2,24 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.management.dns.implementation;
 
+import com.azure.management.dns.DnsZone;
+import com.azure.management.dns.DnsZones;
 import com.azure.management.dns.models.ZoneInner;
 import com.azure.management.dns.models.ZonesInner;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.management.dns.DnsZone;
-import com.azure.management.dns.DnsZones;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of DnsZones.
- */
-class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
-        DnsZone,
-        DnsZoneImpl,
-        ZoneInner,
-        ZonesInner,
-        DnsZoneManager>
-        implements DnsZones {
+/** Implementation of DnsZones. */
+class DnsZonesImpl extends TopLevelModifiableResourcesImpl<DnsZone, DnsZoneImpl, ZoneInner, ZonesInner, DnsZoneManager>
+    implements DnsZones {
 
     DnsZonesImpl(final DnsZoneManager dnsZoneManager) {
         super(dnsZoneManager.inner().zones(), dnsZoneManager);
@@ -40,12 +33,12 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
         if (inner == null) {
             return null;
         }
-        return new DnsZoneImpl(inner.getName(), inner, this.manager());
+        return new DnsZoneImpl(inner.name(), inner, this.manager());
     }
 
     private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {
         // Zone location must be 'global' irrespective of region of the resource group it resides.
-        dnsZone.inner().setLocation("global");
+        dnsZone.inner().withLocation("global");
         return dnsZone;
     }
 
@@ -61,15 +54,14 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
 
     @Override
     public Mono<Void> deleteByIdAsync(String id) {
-        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
-            ResourceUtils.nameFromResourceId(id));
+        return deleteByResourceGroupNameAsync(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 
     @Override
     public Mono<Void> deleteByIdAsync(String id, String eTagValue) {
-        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
-            ResourceUtils.nameFromResourceId(id),
-            eTagValue);
+        return deleteByResourceGroupNameAsync(
+            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), eTagValue);
     }
 
     @Override

@@ -8,9 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AutoscaleSettingResourceCollection model.
- */
+/** The AutoscaleSettingResourceCollection model. */
 @Fluent
 public final class AutoscaleSettingResourceCollectionInner {
     /*
@@ -27,7 +25,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Get the value property: the values for the autoscale setting resources.
-     * 
+     *
      * @return the value value.
      */
     public List<AutoscaleSettingResourceInner> value() {
@@ -36,7 +34,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Set the value property: the values for the autoscale setting resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the AutoscaleSettingResourceCollectionInner object itself.
      */
@@ -47,7 +45,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,7 +54,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the AutoscaleSettingResourceCollectionInner object itself.
      */

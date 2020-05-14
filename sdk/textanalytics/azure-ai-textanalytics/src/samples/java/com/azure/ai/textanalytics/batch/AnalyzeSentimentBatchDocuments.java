@@ -31,15 +31,15 @@ public class AnalyzeSentimentBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
 
         // The texts that need be analyzed.
         List<TextDocumentInput> documents = Arrays.asList(
-            new TextDocumentInput("A", "The hotel was dark and unclean. I wouldn't recommend staying there.", "en"),
-            new TextDocumentInput("B", "The restaurant had amazing gnocchi! The waiters were excellent.", "en"),
-            new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!", "en")
+            new TextDocumentInput("A", "The hotel was dark and unclean. I wouldn't recommend staying there.").setLanguage("en"),
+            new TextDocumentInput("B", "The restaurant had amazing gnocchi! The waiters were excellent.").setLanguage("en"),
+            new TextDocumentInput("C", "The hotel was dark and unclean. The restaurant had amazing gnocchi!").setLanguage("en")
         );
 
         // Request options: show statistics and model version

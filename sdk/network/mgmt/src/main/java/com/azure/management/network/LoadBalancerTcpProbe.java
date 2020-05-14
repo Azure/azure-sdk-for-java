@@ -6,15 +6,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.Settable;
 
-/**
- * A client-side representation of a TCP load balancing probe.
- */
+/** A client-side representation of a TCP load balancing probe. */
 @Fluent()
 public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
 
-    /**
-     * Grouping of probe definition stages.
-     */
+    /** Grouping of probe definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of the probe definition.
@@ -55,7 +51,8 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
         }
 
         /**
-         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is
+         * determined.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -71,16 +68,14 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
 
         /**
          * The final stage of the probe definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the probe definition
-         * can be attached to the parent load balancer definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the probe definition can be attached
+         * to the parent load balancer definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
-                WithIntervalInSeconds<ParentT>,
-                WithNumberOfProbes<ParentT> {
+        interface WithAttach<ParentT>
+            extends Attachable.InDefinition<ParentT>, WithIntervalInSeconds<ParentT>, WithNumberOfProbes<ParentT> {
         }
     }
 
@@ -89,19 +84,15 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
             DefinitionStages.WithPort<ParentT> {
     }
 
-    /**
-     * Grouping of probe update stages.
-     */
+    /** Grouping of probe update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the TCP probe update allowing to modify the port number to monitor.
-         */
+        /** The stage of the TCP probe update allowing to modify the port number to monitor. */
         interface WithPort {
             /**
              * Specifies the port number to call for health monitoring.
@@ -112,9 +103,7 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
             Update withPort(int port);
         }
 
-        /**
-         * The stage of the TCP probe update allowing to modify the probe interval.
-         */
+        /** The stage of the TCP probe update allowing to modify the probe interval. */
         interface WithIntervalInSeconds {
             /**
              * Specifies the interval between probes, in seconds.
@@ -126,7 +115,8 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
         }
 
         /**
-         * The stage of the TCP probe update allowing to modify the number of unsuccessful probes before failure is determined.
+         * The stage of the TCP probe update allowing to modify the number of unsuccessful probes before failure is
+         * determined.
          */
         interface WithNumberOfProbes {
             /**
@@ -139,19 +129,15 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
         }
     }
 
-    /**
-     * The entirety of a probe update as part of a load balancer update.
-     */
-    interface Update extends
-            Settable<LoadBalancer.Update>,
+    /** The entirety of a probe update as part of a load balancer update. */
+    interface Update
+        extends Settable<LoadBalancer.Update>,
             UpdateStages.WithPort,
             UpdateStages.WithIntervalInSeconds,
             UpdateStages.WithNumberOfProbes {
     }
 
-    /**
-     * Grouping of probe definition stages applicable as part of a load balancer update.
-     */
+    /** Grouping of probe definition stages applicable as part of a load balancer update. */
     interface UpdateDefinitionStages {
         /**
          * The first stage of the probe definition.
@@ -192,7 +178,8 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
         }
 
         /**
-         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is
+         * determined.
          *
          * @param <ParentT> the parent resource type
          */
@@ -208,16 +195,14 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
 
         /**
          * The final stage of the probe definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the probe definition
-         * can be attached to the parent load balancer definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the probe definition can be attached
+         * to the parent load balancer definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
-                WithNumberOfProbes<ParentT>,
-                WithIntervalInSeconds<ParentT> {
+        interface WithAttach<ParentT>
+            extends Attachable.InUpdate<ParentT>, WithNumberOfProbes<ParentT>, WithIntervalInSeconds<ParentT> {
         }
     }
 
@@ -226,8 +211,8 @@ public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
             UpdateDefinitionStages.WithPort<ParentT> {
     }

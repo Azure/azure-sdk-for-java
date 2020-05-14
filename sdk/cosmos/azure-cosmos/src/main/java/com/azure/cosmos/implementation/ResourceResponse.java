@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.Resource;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -356,6 +355,17 @@ public final class ResourceResponse<T extends Resource> {
             return StringUtils.EMPTY;
         }
         return cosmosResponseRequestDiagnosticStatistics.toString();
+    }
+
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    public String getETag() {
+        return this.response.getResponseHeaders().get(HttpConstants.HttpHeaders.E_TAG);
     }
 
     long getCurrentQuotaHeader(String headerName) {

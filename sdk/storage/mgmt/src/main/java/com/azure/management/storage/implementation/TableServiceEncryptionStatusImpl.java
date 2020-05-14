@@ -7,9 +7,7 @@ import com.azure.management.storage.EncryptionService;
 import com.azure.management.storage.EncryptionServices;
 import com.azure.management.storage.StorageService;
 
-/**
- * Implementation of StorageAccountEncryptionStatus for Table service.
- */
+/** Implementation of StorageAccountEncryptionStatus for Table service. */
 class TableServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImpl {
     TableServiceEncryptionStatusImpl(EncryptionServices encryptionServices) {
         super(encryptionServices);
@@ -25,7 +23,7 @@ class TableServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImp
         if (super.encryptionServices == null) {
             return null;
         } else {
-            return  super.encryptionServices.table();
+            return super.encryptionServices.table();
         }
     }
 }

@@ -1,22 +1,19 @@
-///**
-// * Copyright (c) Microsoft Corporation. All rights reserved.
-// * Licensed under the MIT License. See License.txt in the project root for
-// * license information.
-// */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//package com.azure.management;
+// package com.azure.management;
 //
-//import com.google.common.util.concurrent.SettableFuture;
-//import com.microsoft.azure.management.redis.RedisCache;
-//import com.microsoft.azure.management.redis.RedisCaches;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-//import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-//import org.junit.Assert;
-//import rx.Observable;
-//import rx.functions.Action1;
+// import com.google.common.util.concurrent.SettableFuture;
+// import com.microsoft.azure.management.redis.RedisCache;
+// import com.microsoft.azure.management.redis.RedisCaches;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+// import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+// import org.junit.Assert;
+// import rx.Observable;
+// import rx.functions.Action1;
 //
-//public class TestRedis extends TestTemplate<RedisCache, RedisCaches>  {
+// public class TestRedis extends TestTemplate<RedisCache, RedisCaches>  {
 //    @Override
 //    public RedisCache createResource(RedisCaches resources) throws Exception {
 //        final String redisName = "redis" + this.testId;
@@ -58,6 +55,7 @@
 //
 //    @Override
 //    public void print(RedisCache resource) {
-//        System.out.println(new StringBuilder().append("Redis Cache: ").append(resource.id()).append(", Name: ").append(resource.name()).toString());
+//        System.out.println(new StringBuilder().append("Redis Cache: ").append(resource.id()).append(", Name:
+// ").append(resource.name()).toString());
 //    }
-//}
+// }

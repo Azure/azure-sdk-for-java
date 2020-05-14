@@ -11,11 +11,9 @@ import com.azure.management.network.models.UsageInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
-/**
- * The implementation of NetworkUsages.
- */
+/** The implementation of NetworkUsages. */
 class NetworkUsagesImpl extends ReadableWrappersImpl<NetworkUsage, NetworkUsageImpl, UsageInner>
-        implements NetworkUsages {
+    implements NetworkUsages {
     private final NetworkManagementClientImpl client;
 
     NetworkUsagesImpl(NetworkManagementClientImpl client) {

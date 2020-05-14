@@ -3,41 +3,41 @@
 
 package com.azure.management.appservice;
 
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.management.RestClient;
 import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.msi.Identity;
 import com.azure.management.msi.implementation.MSIManager;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.util.Set;
-
 public class WebAppsMsiTests extends AppServiceTest {
     private MSIManager msiManager;
-    private String RG_NAME_1 = "";
-    private String WEBAPP_NAME_1 = "";
-    private String VAULT_NAME = "";
+    private String rgName1 = "";
+    private String webappName1 = "";
+    private String vaultName = "";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        WEBAPP_NAME_1 = generateRandomResourceName("java-webapp-", 20);
-        RG_NAME_1 = generateRandomResourceName("javacsmrg", 20);
-        VAULT_NAME = generateRandomResourceName("java-vault-", 20);
-        this.msiManager = MSIManager.authenticate(restClient, defaultSubscription, sdkContext);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        webappName1 = generateRandomResourceName("java-webapp-", 20);
+        rgName1 = generateRandomResourceName("javacsmrg", 20);
+        vaultName = generateRandomResourceName("java-vault-", 20);
+        this.msiManager = MSIManager.authenticate(httpPipeline, profile, sdkContext);
 
-        super.initializeClients(restClient, defaultSubscription, domain);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(RG_NAME_1);
+        resourceManager.resourceGroups().beginDeleteByName(rgName1);
         try {
-            resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
+            resourceManager.resourceGroups().beginDeleteByName(rgName);
         } catch (Exception e) {
             // fine, RG_NAME is not created
         }
@@ -46,9 +46,12 @@ public class WebAppsMsiTests extends AppServiceTest {
     @Test
     public void canCRUDWebAppWithMsi() throws Exception {
         // Create with new app service plan
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
                 .withSystemAssignedManagedServiceIdentity()
@@ -67,11 +70,14 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         if (!isPlaybackMode()) {
             // Check availability of environment variables
-            uploadFileToWebApp(webApp.getPublishingProfile(), "appservicemsi.war", WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
+            uploadFileToWebApp(
+                webApp.getPublishingProfile(),
+                "appservicemsi.war",
+                WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
             SdkContext.sleep(30000);
 
-            Response<String> response = curl("http://" + WEBAPP_NAME_1 + "." + "azurewebsites.net/appservicemsi/");
+            Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
@@ -88,32 +94,40 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         // Prepare a definition for yet-to-be-created resource group
         //
-        Creatable<ResourceGroup> creatableRG = resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(Region.US_WEST);
+        Creatable<ResourceGroup> creatableRG =
+            resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST);
 
-        // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual network
+        // Create an "User Assigned (External) MSI" residing in the above RG and assign reader access to the virtual
+        // network
         //
-        final Identity createdIdentity = msiManager.identities()
+        final Identity createdIdentity =
+            msiManager
+                .identities()
                 .define(identityName1)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(creatableRG)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR)
                 .create();
 
-        // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the resource group
+        // Prepare a definition for yet-to-be-created "User Assigned (External) MSI" with contributor access to the
+        // resource group
         // it resides
         //
-        Creatable<Identity> creatableIdentity = msiManager.identities()
+        Creatable<Identity> creatableIdentity =
+            msiManager
+                .identities()
                 .define(identityName2)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(creatableRG)
                 .withAccessToCurrentResourceGroup(BuiltInRole.CONTRIBUTOR);
 
         // Create with new app service plan
-        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME_1)
+        WebApp webApp =
+            appServiceManager
+                .webApps()
+                .define(webappName1)
                 .withRegion(Region.US_WEST)
-                .withNewResourceGroup(RG_NAME_1)
+                .withNewResourceGroup(rgName1)
                 .withNewWindowsPlan(PricingTier.BASIC_B1)
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
                 .withSystemAssignedManagedServiceIdentity()
@@ -140,11 +154,14 @@ public class WebAppsMsiTests extends AppServiceTest {
 
         if (!isPlaybackMode()) {
             // Check availability of environment variables
-            uploadFileToWebApp(webApp.getPublishingProfile(), "appservicemsi.war", WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
+            uploadFileToWebApp(
+                webApp.getPublishingProfile(),
+                "appservicemsi.war",
+                WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
             SdkContext.sleep(30000);
 
-            Response<String> response = curl("http://" + WEBAPP_NAME_1 + "." + "azurewebsites.net/appservicemsi/");
+            Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

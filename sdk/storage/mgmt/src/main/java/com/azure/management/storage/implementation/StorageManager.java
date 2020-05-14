@@ -3,16 +3,13 @@
 
 package com.azure.management.storage.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.storage.BlobContainers;
 import com.azure.management.storage.BlobServices;
@@ -23,9 +20,7 @@ import com.azure.management.storage.Usages;
 import com.azure.management.storage.models.StorageManagementClientBuilder;
 import com.azure.management.storage.models.StorageManagementClientImpl;
 
-/**
- * Entry point to Azure storage resource management.
- */
+/** Entry point to Azure storage resource management. */
 public final class StorageManager extends Manager<StorageManager, StorageManagementClientImpl> {
     // Collections
     private StorageAccounts storageAccounts;
@@ -47,80 +42,69 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
-     * @param credential the credentials to use
-     * @param subscriptionId the subscription UUID
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the StorageManager
      */
-    public static StorageManager authenticate(AzureTokenCredential credential, String subscriptionId) {
-        return authenticate(new RestClientBuilder()
-                .withBaseUrl(credential.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credential)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                .withPolicy(new ProviderRegistrationPolicy(credential))
-                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(), subscriptionId);
+    public static StorageManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
+     * @param httpPipeline the RestClient to be used for API calls.
+     * @param profile the profile to use
      * @return the StorageManager
      */
-    public static StorageManager authenticate(RestClient restClient, String subscriptionId) {
-        return authenticate(restClient, subscriptionId, new SdkContext());
+    public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription UUID
-     * @param SdkContext the sdk context
+     * @param httpPipeline the RestClient to be used for API calls.
+     * @param profile the profile to use
+     * @param sdkContext the sdk context
      * @return the StorageManager
      */
-    public static StorageManager authenticate(RestClient restClient, String subscriptionId, SdkContext SdkContext) {
-        return new StorageManager(restClient, subscriptionId, SdkContext);
+    public static StorageManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new StorageManager(httpPipeline, profile, sdkContext);
     }
 
-    /**
-     * The interface allowing configurations to be set.
-     */
+    /** The interface allowing configurations to be set. */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
          * Creates an instance of StorageManager that exposes storage management API entry points.
          *
-         * @param credentials the credentials to use
-         * @param subscriptionId the subscription UUID
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the interface exposing storage management API entry points that work across subscriptions
          */
-        StorageManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        StorageManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
-    /**
-     * The implementation for Configurable interface.
-     */
+    /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public StorageManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-            return StorageManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public StorageManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return StorageManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private StorageManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
-        super(restClient,
-                subscriptionId,
-                new StorageManagementClientBuilder()
-                        .pipeline(restClient.getHttpPipeline())
-                        .host(restClient.getBaseUrl().toString())
-                        .subscriptionId(subscriptionId)
-                        .build(),
-                sdkContext);
+    private StorageManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        super(
+            httpPipeline,
+            profile,
+            new StorageManagementClientBuilder()
+                .pipeline(httpPipeline)
+                .host(profile.environment().getResourceManagerEndpoint())
+                .subscriptionId(profile.subscriptionId())
+                .buildClient(),
+            sdkContext);
     }
 
-    /**
-     * @return the storage account management API entry point
-     */
+    /** @return the storage account management API entry point */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
             storageAccounts = new StorageAccountsImpl(this);
@@ -128,9 +112,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return storageAccounts;
     }
 
-    /**
-     * @return the storage service usage management API entry point
-     */
+    /** @return the storage service usage management API entry point */
     public Usages usages() {
         if (storageUsages == null) {
             storageUsages = new UsagesImpl(this);
@@ -138,9 +120,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return storageUsages;
     }
 
-    /**
-     * @return the storage service SKU management API entry point
-     */
+    /** @return the storage service SKU management API entry point */
     public StorageSkus storageSkus() {
         if (storageSkus == null) {
             storageSkus = new StorageSkusImpl(this);
@@ -148,9 +128,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return storageSkus;
     }
 
-    /**
-     * @return the blob container management API entry point
-     */
+    /** @return the blob container management API entry point */
     public BlobContainers blobContainers() {
         if (blobContainers == null) {
             blobContainers = new BlobContainersImpl(this);
@@ -158,9 +136,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return blobContainers;
     }
 
-    /**
-     * @return the blob service management API entry point
-     */
+    /** @return the blob service management API entry point */
     public BlobServices blobServices() {
         if (blobServices == null) {
             blobServices = new BlobServicesImpl(this);
@@ -168,9 +144,7 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
         return blobServices;
     }
 
-    /**
-     * @return the management policy management API entry point
-     */
+    /** @return the management policy management API entry point */
     public ManagementPolicies managementPolicies() {
         if (managementPolicies == null) {
             managementPolicies = new ManagementPoliciesImpl(this);

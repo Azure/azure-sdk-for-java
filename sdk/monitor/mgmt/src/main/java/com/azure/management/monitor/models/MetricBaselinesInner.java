@@ -19,111 +19,166 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
 import com.azure.management.monitor.ErrorResponseException;
 import com.azure.management.monitor.ResultType;
 import com.azure.management.monitor.TimeSeriesInformation;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * MetricBaselines.
- */
+/** An instance of this class provides access to all the operations defined in MetricBaselines. */
 public final class MetricBaselinesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private MetricBaselinesService service;
+    /** The proxy service used to perform REST calls. */
+    private final MetricBaselinesService service;
 
-    /**
-     * The service client containing this operation class.
-     */
-    private MonitorClientImpl client;
+    /** The service client containing this operation class. */
+    private final MonitorClientImpl client;
 
     /**
      * Initializes an instance of MetricBaselinesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     MetricBaselinesInner(MonitorClientImpl client) {
-        this.service = RestProxy.create(MetricBaselinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(MetricBaselinesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MonitorClientMetricBaselines
-     * to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for MonitorClientMetricBaselines to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientMetricBaselines")
+    @ServiceInterface(name = "MonitorClientMetricB")
     private interface MetricBaselinesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceUri}/providers/microsoft.insights/baseline/{metricName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<BaselineResponseInner>> get(@HostParam("$host") String host, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @PathParam("metricName") String metricName, @QueryParam("timespan") String timespan, @QueryParam("interval") Duration interval, @QueryParam("aggregation") String aggregation, @QueryParam("sensitivities") String sensitivities, @QueryParam("resultType") ResultType resultType, @QueryParam("api-version") String apiVersion);
+        Mono<SimpleResponse<BaselineResponseInner>> get(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @PathParam("metricName") String metricName,
+            @QueryParam("timespan") String timespan,
+            @QueryParam("interval") Duration interval,
+            @QueryParam("aggregation") String aggregation,
+            @QueryParam("sensitivities") String sensitivities,
+            @QueryParam("resultType") ResultType resultType,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
 
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/{resourceUri}/providers/microsoft.insights/calculatebaseline")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaseline(@HostParam("$host") String host, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") TimeSeriesInformation timeSeriesInformation);
+        Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaseline(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") TimeSeriesInformation timeSeriesInformation,
+            Context context);
     }
 
     /**
      * **Gets the baseline values for a specific metric**.
-     * 
-     * @param resourceUri 
-     * @param metricName 
-     * @param timespan 
-     * @param interval 
-     * @param aggregation 
-     * @param sensitivities 
-     * @param resultType 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
+     * @param sensitivities The list of sensitivities (comma separated) to retrieve.
+     * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<BaselineResponseInner>> getWithResponseAsync(String resourceUri, String metricName, String timespan, Duration interval, String aggregation, String sensitivities, ResultType resultType) {
+    public Mono<SimpleResponse<BaselineResponseInner>> getWithResponseAsync(
+        String resourceUri,
+        String metricName,
+        String timespan,
+        Duration interval,
+        String aggregation,
+        String sensitivities,
+        ResultType resultType) {
         final String apiVersion = "2017-11-01-preview";
-        return service.get(this.client.getHost(), resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType, apiVersion);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getHost(),
+                            resourceUri,
+                            metricName,
+                            timespan,
+                            interval,
+                            aggregation,
+                            sensitivities,
+                            resultType,
+                            apiVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * **Gets the baseline values for a specific metric**.
-     * 
-     * @param resourceUri 
-     * @param metricName 
-     * @param timespan 
-     * @param interval 
-     * @param aggregation 
-     * @param sensitivities 
-     * @param resultType 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
+     * @param sensitivities The list of sensitivities (comma separated) to retrieve.
+     * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<BaselineResponseInner> getAsync(String resourceUri, String metricName, String timespan, Duration interval, String aggregation, String sensitivities, ResultType resultType) {
+    public Mono<BaselineResponseInner> getAsync(
+        String resourceUri,
+        String metricName,
+        String timespan,
+        Duration interval,
+        String aggregation,
+        String sensitivities,
+        ResultType resultType) {
         return getWithResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType)
-            .flatMap((SimpleResponse<BaselineResponseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<BaselineResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * **Gets the baseline values for a specific metric**.
-     * 
-     * @param resourceUri 
-     * @param metricName 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BaselineResponseInner> getAsync(String resourceUri, String metricName) {
@@ -132,43 +187,61 @@ public final class MetricBaselinesInner {
         final String aggregation = null;
         final String sensitivities = null;
         final ResultType resultType = null;
+        final Context context = null;
         return getWithResponseAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType)
-            .flatMap((SimpleResponse<BaselineResponseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<BaselineResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * **Gets the baseline values for a specific metric**.
-     * 
-     * @param resourceUri 
-     * @param metricName 
-     * @param timespan 
-     * @param interval 
-     * @param aggregation 
-     * @param sensitivities 
-     * @param resultType 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
+     * @param timespan The timespan of the query. It is a string with the following format
+     *     'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query.
+     * @param aggregation The aggregation type of the metric to retrieve the baseline for.
+     * @param sensitivities The list of sensitivities (comma separated) to retrieve.
+     * @param resultType Allows retrieving only metadata of the baseline. On data request all information is retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BaselineResponseInner get(String resourceUri, String metricName, String timespan, Duration interval, String aggregation, String sensitivities, ResultType resultType) {
+    public BaselineResponseInner get(
+        String resourceUri,
+        String metricName,
+        String timespan,
+        Duration interval,
+        String aggregation,
+        String sensitivities,
+        ResultType resultType) {
         return getAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType).block();
     }
 
     /**
      * **Gets the baseline values for a specific metric**.
-     * 
-     * @param resourceUri 
-     * @param metricName 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
+     * @param metricName The name of the metric to retrieve the baseline for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a baseline query.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BaselineResponseInner get(String resourceUri, String metricName) {
@@ -177,56 +250,79 @@ public final class MetricBaselinesInner {
         final String aggregation = null;
         final String sensitivities = null;
         final ResultType resultType = null;
+        final Context context = null;
         return getAsync(resourceUri, metricName, timespan, interval, aggregation, sensitivities, resultType).block();
     }
 
     /**
      * **Lists the baseline values for a resource**.
-     * 
-     * @param resourceUri 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
      * @param timeSeriesInformation The time series info needed for calculating the baseline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a calculate baseline call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaselineWithResponseAsync(String resourceUri, TimeSeriesInformation timeSeriesInformation) {
+    public Mono<SimpleResponse<CalculateBaselineResponseInner>> calculateBaselineWithResponseAsync(
+        String resourceUri, TimeSeriesInformation timeSeriesInformation) {
         final String apiVersion = "2017-11-01-preview";
-        return service.calculateBaseline(this.client.getHost(), resourceUri, apiVersion, timeSeriesInformation);
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .calculateBaseline(
+                            this.client.getHost(), resourceUri, apiVersion, timeSeriesInformation, context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * **Lists the baseline values for a resource**.
-     * 
-     * @param resourceUri 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
      * @param timeSeriesInformation The time series info needed for calculating the baseline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a calculate baseline call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CalculateBaselineResponseInner> calculateBaselineAsync(String resourceUri, TimeSeriesInformation timeSeriesInformation) {
+    public Mono<CalculateBaselineResponseInner> calculateBaselineAsync(
+        String resourceUri, TimeSeriesInformation timeSeriesInformation) {
         return calculateBaselineWithResponseAsync(resourceUri, timeSeriesInformation)
-            .flatMap((SimpleResponse<CalculateBaselineResponseInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (SimpleResponse<CalculateBaselineResponseInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * **Lists the baseline values for a resource**.
-     * 
-     * @param resourceUri 
+     *
+     * @param resourceUri The identifier of the resource. It has the following structure:
+     *     subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/{providerName}/{resourceName}.
+     *     For example:
+     *     subscriptions/b368ca2f-e298-46b7-b0ab-012281956afa/resourceGroups/vms/providers/Microsoft.Compute/virtualMachines/vm1.
      * @param timeSeriesInformation The time series info needed for calculating the baseline.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a calculate baseline call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CalculateBaselineResponseInner calculateBaseline(String resourceUri, TimeSeriesInformation timeSeriesInformation) {
+    public CalculateBaselineResponseInner calculateBaseline(
+        String resourceUri, TimeSeriesInformation timeSeriesInformation) {
         return calculateBaselineAsync(resourceUri, timeSeriesInformation).block();
     }
 }

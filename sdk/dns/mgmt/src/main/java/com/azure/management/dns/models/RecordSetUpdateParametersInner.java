@@ -7,9 +7,7 @@ package com.azure.management.dns.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RecordSetUpdateParameters model.
- */
+/** The RecordSetUpdateParameters model. */
 @Fluent
 public final class RecordSetUpdateParametersInner {
     /*
@@ -19,9 +17,8 @@ public final class RecordSetUpdateParametersInner {
     private RecordSetInner recordSet;
 
     /**
-     * Get the recordSet property: Specifies information about the record set
-     * being updated.
-     * 
+     * Get the recordSet property: Specifies information about the record set being updated.
+     *
      * @return the recordSet value.
      */
     public RecordSetInner recordSet() {
@@ -29,9 +26,8 @@ public final class RecordSetUpdateParametersInner {
     }
 
     /**
-     * Set the recordSet property: Specifies information about the record set
-     * being updated.
-     * 
+     * Set the recordSet property: Specifies information about the record set being updated.
+     *
      * @param recordSet the recordSet value to set.
      * @return the RecordSetUpdateParametersInner object itself.
      */

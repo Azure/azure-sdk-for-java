@@ -2,27 +2,20 @@
 // Licensed under the MIT License.
 package com.azure.management.network;
 
-import java.util.Collection;
-
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.models.HasBackendNics;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
+import java.util.Collection;
 
-/**
- * A client-side representation of an application gateway backend.
- */
+/** A client-side representation of an application gateway backend. */
 @Fluent()
-public interface ApplicationGatewayBackend extends
-        HasInner<ApplicationGatewayBackendAddressPool>,
-        ChildResource<ApplicationGateway>,
-        HasBackendNics {
+public interface ApplicationGatewayBackend
+    extends HasInner<ApplicationGatewayBackendAddressPool>, ChildResource<ApplicationGateway>, HasBackendNics {
 
-    /**
-     * @return addresses on the backend of the application gateway
-     */
+    /** @return addresses on the backend of the application gateway */
     Collection<ApplicationGatewayBackendAddress> addresses();
 
     /**
@@ -41,14 +34,13 @@ public interface ApplicationGatewayBackend extends
      */
     boolean containsFqdn(String fqdn);
 
-    /**
-     * Grouping of application gateway backend definition stages.
-     */
+    /** Grouping of application gateway backend definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of an application gateway backend definition.
          *
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
@@ -56,13 +48,14 @@ public interface ApplicationGatewayBackend extends
         /**
          * The stage of an application gateway backend definition allowing to add an address to the backend.
          *
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithAddress<ParentT> {
             /**
              * Adds the specified existing IP address to the backend.
-             * <p>
-             * This call can be made in a sequence to add multiple IP addresses.
+             *
+             * <p>This call can be made in a sequence to add multiple IP addresses.
              *
              * @param ipAddress an IP address
              * @return the next stage of the definition
@@ -71,8 +64,8 @@ public interface ApplicationGatewayBackend extends
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.
-             * <p>
-             * This call can be made in a sequence to add multiple FQDNs.
+             *
+             * <p>This call can be made in a sequence to add multiple FQDNs.
              *
              * @param fqdn a fully qualified domain name (FQDN)
              * @return the next stage of the definition
@@ -82,35 +75,29 @@ public interface ApplicationGatewayBackend extends
 
         /**
          * The final stage of an application gateway backend definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition.
          *
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * <p>At this stage, any remaining optional settings can be specified, or the definition can be attached to the
+         * parent application gateway definition.
+         *
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
-                WithAddress<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithAddress<ParentT> {
         }
     }
 
     /**
      * The entirety of an application gateway backend definition.
      *
-     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+     *     definition
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of application gateway backend update stages.
-     */
+    /** Grouping of application gateway backend update stages. */
     interface UpdateStages {
-        /**
-         * The stage of an application gateway backend update allowing to add an address to the backend.
-         */
+        /** The stage of an application gateway backend update allowing to add an address to the backend. */
         interface WithAddress {
             /**
              * Adds the specified existing IP address to the backend.
@@ -154,12 +141,8 @@ public interface ApplicationGatewayBackend extends
         }
     }
 
-    /**
-     * The entirety of an application gateway backend update as part of an application gateway update.
-     */
-    interface Update extends
-            Settable<ApplicationGateway.Update>,
-            UpdateStages.WithAddress {
+    /** The entirety of an application gateway backend update as part of an application gateway update. */
+    interface Update extends Settable<ApplicationGateway.Update>, UpdateStages.WithAddress {
     }
 
     /**
@@ -169,7 +152,8 @@ public interface ApplicationGatewayBackend extends
         /**
          * The first stage of an application gateway backend definition.
          *
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
@@ -177,7 +161,8 @@ public interface ApplicationGatewayBackend extends
         /**
          * The stage of an application gateway backed definition allowing to add an address to the backend.
          *
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
         interface WithAddress<ParentT> {
             /**
@@ -199,25 +184,24 @@ public interface ApplicationGatewayBackend extends
 
         /**
          * The final stage of an application gateway backend definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the definition
-         * can be attached to the parent application gateway definition.
          *
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * <p>At this stage, any remaining optional settings can be specified, or the definition can be attached to the
+         * parent application gateway definition.
+         *
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+         *     definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
-                WithAddress<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithAddress<ParentT> {
         }
     }
 
     /**
      * The entirety of an application gateway backend definition as part of an application gateway update.
      *
-     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
+     *     definition
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>, UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

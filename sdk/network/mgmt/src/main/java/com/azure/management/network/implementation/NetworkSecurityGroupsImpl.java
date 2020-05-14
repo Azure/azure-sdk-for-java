@@ -10,19 +10,15 @@ import com.azure.management.network.models.NetworkSecurityGroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import reactor.core.publisher.Mono;
 
-import java.util.Set;
-
-/**
- * Implementation for NetworkSecurityGroups.
- */
+/** Implementation for NetworkSecurityGroups. */
 class NetworkSecurityGroupsImpl
-        extends TopLevelModifiableResourcesImpl<
+    extends TopLevelModifiableResourcesImpl<
         NetworkSecurityGroup,
         NetworkSecurityGroupImpl,
         NetworkSecurityGroupInner,
         NetworkSecurityGroupsInner,
         NetworkManager>
-        implements NetworkSecurityGroups {
+    implements NetworkSecurityGroups {
 
     NetworkSecurityGroupsImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkSecurityGroups(), networkManager);
@@ -33,17 +29,14 @@ class NetworkSecurityGroupsImpl
         // Clear NIC references if any
         NetworkSecurityGroupImpl nsg = (NetworkSecurityGroupImpl) getByResourceGroup(groupName, name);
         if (nsg != null) {
-            Set<String> nicIds = nsg.networkInterfaceIds();
-            if (nicIds != null) {
-                for (String nicRef : nsg.networkInterfaceIds()) {
-                    NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
-                    if (nic == null) {
-                        continue;
-                    } else if (!nsg.id().equalsIgnoreCase(nic.networkSecurityGroupId())) {
-                        continue;
-                    } else {
-                        nic.update().withoutNetworkSecurityGroup().apply();
-                    }
+            for (String nicRef : nsg.networkInterfaceIds()) {
+                NetworkInterface nic = this.manager().networkInterfaces().getById(nicRef);
+                if (nic == null) {
+                    continue;
+                } else if (!nsg.id().equalsIgnoreCase(nic.networkSecurityGroupId())) {
+                    continue;
+                } else {
+                    nic.update().withoutNetworkSecurityGroup().apply();
                 }
             }
         }
@@ -69,6 +62,6 @@ class NetworkSecurityGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkSecurityGroupImpl(inner.getName(), inner, this.manager());
+        return new NetworkSecurityGroupImpl(inner.name(), inner, this.manager());
     }
 }

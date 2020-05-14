@@ -331,9 +331,7 @@ public class EventHubConsumerAsyncClient implements Closeable {
             .computeIfAbsent(linkName,
                 name -> createPartitionConsumer(name, partitionId, startingPosition, receiveOptions))
             .receive()
-            .doOnCancel(() -> removeLink(linkName, partitionId, SignalType.CANCEL))
-            .doOnComplete(() -> removeLink(linkName, partitionId, SignalType.ON_COMPLETE))
-            .doOnError(error -> removeLink(linkName, partitionId, SignalType.ON_ERROR));
+            .doFinally(signal -> removeLink(linkName, partitionId, signal));
     }
 
     private void removeLink(String linkName, String partitionId, SignalType signalType) {

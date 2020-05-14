@@ -4,19 +4,16 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.compute.ComputeSku;
 import com.azure.management.compute.ProximityPlacementGroup;
 import com.azure.management.compute.ProximityPlacementGroupType;
+import com.azure.management.compute.models.ProximityPlacementGroupInner;
 import com.azure.management.resources.fluentcore.arm.ResourceId;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * The implementation for {@link ComputeSku}.
- */
+/** The implementation for {@link ComputeSku}. */
 final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
     private final ProximityPlacementGroupInner inner;
 
@@ -46,7 +43,7 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
 
     @Override
     public String location() {
-        return this.inner().getLocation();
+        return this.inner().location();
     }
 
     @Override
@@ -56,14 +53,13 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
     public ProximityPlacementGroupInner inner() {
         return inner;
     }
-
 
     private List<String> getStringListFromSubResourceList(List<SubResource> subList) {
         List<String> stringList = null;
@@ -72,7 +68,7 @@ final class ProximityPlacementGroupImpl implements ProximityPlacementGroup {
             stringList = new ArrayList<>();
             Iterator<SubResource> iter = subList.iterator();
             while (iter.hasNext()) {
-                stringList.add(iter.next().getId());
+                stringList.add(iter.next().id());
             }
         }
 

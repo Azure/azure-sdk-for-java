@@ -3,16 +3,20 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.ConnectionStringType;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.appservice.RuntimeStack;
 import com.azure.management.appservice.WebApp;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccount;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -76,7 +80,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Uploading 2 blobs to container " + containerName + "...");
 
-            BlobContainerClient container = setUpStorageAccount(connectionString, containerName);
+            BlobContainerClient container = setUpStorageAccount(connectionString, containerName, storageAccount.manager().httpPipeline().getHttpClient());
             uploadFileToContainer(container, "helloworld.war", ManageLinuxWebAppStorageAccountConnection.class.getResource("/helloworld.war").getPath());
             uploadFileToContainer(container, "install_apache.sh", ManageLinuxWebAppStorageAccountConnection.class.getResource("/install_apache.sh").getPath());
 
@@ -87,7 +91,7 @@ public final class ManageLinuxWebAppStorageAccountConnection {
 
             System.out.println("Creating web app " + app1Name + "...");
 
-            // FIXME the env variable will not work in linux since dot is not allowed in env variable name
+            // note: the env variable will not work in linux since dot is not allowed in env variable name
             WebApp app1 = azure.webApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withExistingResourceGroup(rgName)
@@ -146,12 +150,16 @@ public final class ManageLinuxWebAppStorageAccountConnection {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
@@ -163,10 +171,11 @@ public final class ManageLinuxWebAppStorageAccountConnection {
         }
     }
 
-    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName) {
+    private static BlobContainerClient setUpStorageAccount(String connectionString, String containerName, HttpClient httpClient) {
         BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
                 .connectionString(connectionString)
                 .containerName(containerName)
+                .httpClient(httpClient)
                 .buildClient();
 
         blobContainerClient.create();

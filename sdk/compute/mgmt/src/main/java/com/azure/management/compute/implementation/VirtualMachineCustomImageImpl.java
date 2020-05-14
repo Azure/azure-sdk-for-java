@@ -4,7 +4,6 @@
 package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.compute.models.ImageInner;
 import com.azure.management.compute.CachingTypes;
 import com.azure.management.compute.Disk;
 import com.azure.management.compute.HyperVGenerationTypes;
@@ -16,6 +15,7 @@ import com.azure.management.compute.OperatingSystemTypes;
 import com.azure.management.compute.Snapshot;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineCustomImage;
+import com.azure.management.compute.models.ImageInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import reactor.core.publisher.Mono;
 
@@ -25,22 +25,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The implementation for VirtualMachineCustomImage.
- */
+/** The implementation for VirtualMachineCustomImage. */
 class VirtualMachineCustomImageImpl
-        extends GroupableResourceImpl<
-            VirtualMachineCustomImage,
-            ImageInner,
-            VirtualMachineCustomImageImpl,
-            ComputeManager>
-        implements
-            VirtualMachineCustomImage,
-            VirtualMachineCustomImage.Definition {
+    extends GroupableResourceImpl<VirtualMachineCustomImage, ImageInner, VirtualMachineCustomImageImpl, ComputeManager>
+    implements VirtualMachineCustomImage, VirtualMachineCustomImage.Definition {
 
     VirtualMachineCustomImageImpl(final String name, ImageInner innerModel, final ComputeManager computeManager) {
         super(name, innerModel, computeManager);
-        //set the default value for the hyper-v generation
+        // set the default value for the hyper-v generation
         this.inner().withHyperVGeneration(HyperVGenerationTypes.V1);
     }
 
@@ -59,7 +51,7 @@ class VirtualMachineCustomImageImpl
         if (this.inner().sourceVirtualMachine() == null) {
             return null;
         }
-        return this.inner().sourceVirtualMachine().getId();
+        return this.inner().sourceVirtualMachine().id();
     }
 
     @Override
@@ -84,7 +76,7 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public VirtualMachineCustomImageImpl fromVirtualMachine(String virtualMachineId) {
-        this.inner().withSourceVirtualMachine(new SubResource().setId(virtualMachineId));
+        this.inner().withSourceVirtualMachine(new SubResource().withId(virtualMachineId));
         return this;
     }
 
@@ -93,74 +85,82 @@ class VirtualMachineCustomImageImpl
         return this.fromVirtualMachine(virtualMachine.id());
     }
 
-
     @Override
     public VirtualMachineCustomImageImpl withWindowsFromVhd(String sourceVhdUrl, OperatingSystemStateTypes osState) {
-        this.ensureOsDiskImage()
-                .withOsState(osState)
-                .withOsType(OperatingSystemTypes.WINDOWS)
-                .withBlobUri(sourceVhdUrl);
+        this
+            .ensureOsDiskImage()
+            .withOsState(osState)
+            .withOsType(OperatingSystemTypes.WINDOWS)
+            .withBlobUri(sourceVhdUrl);
         return this;
     }
 
     @Override
     public VirtualMachineCustomImageImpl withLinuxFromVhd(String sourceVhdUrl, OperatingSystemStateTypes osState) {
-        this.ensureOsDiskImage()
-                .withOsState(osState)
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withBlobUri(sourceVhdUrl);
+        this.ensureOsDiskImage().withOsState(osState).withOsType(OperatingSystemTypes.LINUX).withBlobUri(sourceVhdUrl);
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withWindowsFromSnapshot(String sourceSnapshotId, OperatingSystemStateTypes osState) {
-        this.ensureOsDiskImage()
-                .withOsState(osState)
-                .withOsType(OperatingSystemTypes.WINDOWS)
-                .withSnapshot(new SubResource().setId(sourceSnapshotId));
+    public VirtualMachineCustomImageImpl withWindowsFromSnapshot(
+        String sourceSnapshotId, OperatingSystemStateTypes osState) {
+        this
+            .ensureOsDiskImage()
+            .withOsState(osState)
+            .withOsType(OperatingSystemTypes.WINDOWS)
+            .withSnapshot(new SubResource().withId(sourceSnapshotId));
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withLinuxFromSnapshot(String sourceSnapshotId, OperatingSystemStateTypes osState) {
-        this.ensureOsDiskImage()
-                .withOsState(osState)
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withSnapshot(new SubResource().setId(sourceSnapshotId));
+    public VirtualMachineCustomImageImpl withLinuxFromSnapshot(
+        String sourceSnapshotId, OperatingSystemStateTypes osState) {
+        this
+            .ensureOsDiskImage()
+            .withOsState(osState)
+            .withOsType(OperatingSystemTypes.LINUX)
+            .withSnapshot(new SubResource().withId(sourceSnapshotId));
 
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withWindowsFromSnapshot(Snapshot sourceSnapshot, OperatingSystemStateTypes osState) {
+    public VirtualMachineCustomImageImpl withWindowsFromSnapshot(
+        Snapshot sourceSnapshot, OperatingSystemStateTypes osState) {
         return this.withWindowsFromSnapshot(sourceSnapshot.id(), osState);
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withLinuxFromSnapshot(Snapshot sourceSnapshot, OperatingSystemStateTypes osState) {
+    public VirtualMachineCustomImageImpl withLinuxFromSnapshot(
+        Snapshot sourceSnapshot, OperatingSystemStateTypes osState) {
         return this.withLinuxFromSnapshot(sourceSnapshot.id(), osState);
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withWindowsFromDisk(String sourceManagedDiskId, OperatingSystemStateTypes osState) {
-        this.ensureOsDiskImage()
-                .withOsState(osState)
-                .withOsType(OperatingSystemTypes.WINDOWS)
-                .withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+    public VirtualMachineCustomImageImpl withWindowsFromDisk(
+        String sourceManagedDiskId, OperatingSystemStateTypes osState) {
+        this
+            .ensureOsDiskImage()
+            .withOsState(osState)
+            .withOsType(OperatingSystemTypes.WINDOWS)
+            .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withLinuxFromDisk(String sourceManagedDiskId, OperatingSystemStateTypes osState) {
-        this.ensureOsDiskImage()
-                .withOsState(osState)
-                .withOsType(OperatingSystemTypes.LINUX)
-                .withManagedDisk(new SubResource().setId(sourceManagedDiskId));
+    public VirtualMachineCustomImageImpl withLinuxFromDisk(
+        String sourceManagedDiskId, OperatingSystemStateTypes osState) {
+        this
+            .ensureOsDiskImage()
+            .withOsState(osState)
+            .withOsType(OperatingSystemTypes.LINUX)
+            .withManagedDisk(new SubResource().withId(sourceManagedDiskId));
         return this;
     }
 
     @Override
-    public VirtualMachineCustomImageImpl withWindowsFromDisk(Disk sourceManagedDisk, OperatingSystemStateTypes osState) {
+    public VirtualMachineCustomImageImpl withWindowsFromDisk(
+        Disk sourceManagedDisk, OperatingSystemStateTypes osState) {
         return withWindowsFromDisk(sourceManagedDisk.id(), osState);
     }
 
@@ -171,28 +171,19 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public VirtualMachineCustomImageImpl withDataDiskImageFromVhd(String sourceVhdUrl) {
-        this.defineDataDiskImage()
-                .withLun(-1)
-                .fromVhd(sourceVhdUrl)
-                .attach();
+        this.defineDataDiskImage().withLun(-1).fromVhd(sourceVhdUrl).attach();
         return this;
     }
 
     @Override
     public VirtualMachineCustomImageImpl withDataDiskImageFromSnapshot(String sourceSnapshotId) {
-        this.defineDataDiskImage()
-                .withLun(-1)
-                .fromSnapshot(sourceSnapshotId)
-                .attach();
+        this.defineDataDiskImage().withLun(-1).fromSnapshot(sourceSnapshotId).attach();
         return this;
     }
 
     @Override
     public VirtualMachineCustomImageImpl withDataDiskImageFromManagedDisk(String sourceManagedDiskId) {
-        this.defineDataDiskImage()
-                .withLun(-1)
-                .fromManagedDisk(sourceManagedDiskId)
-                .attach();
+        this.defineDataDiskImage().withLun(-1).fromManagedDisk(sourceManagedDiskId).attach();
         return this;
     }
 
@@ -203,30 +194,31 @@ class VirtualMachineCustomImageImpl
 
     @Override
     public VirtualMachineCustomImageImpl withOSDiskSizeInGB(int diskSizeGB) {
-        this.ensureOsDiskImage()
-                .withDiskSizeGB(diskSizeGB);
+        this.ensureOsDiskImage().withDiskSizeGB(diskSizeGB);
         return this;
     }
 
     @Override
     public VirtualMachineCustomImageImpl withOSDiskCaching(CachingTypes cachingType) {
-        this.ensureOsDiskImage()
-                .withCaching(cachingType);
+        this.ensureOsDiskImage().withCaching(cachingType);
         return this;
     }
 
     @Override
     public VirtualMachineCustomImageImpl withZoneResilient() {
-        this.ensureStorageProfile()
-                .withZoneResilient(true);
+        this.ensureStorageProfile().withZoneResilient(true);
         return this;
     }
 
     @Override
     public Mono<VirtualMachineCustomImage> createResourceAsync() {
         ensureDefaultLuns();
-        return this.manager().inner().images().createOrUpdateAsync(resourceGroupName(), name(), this.inner())
-                .map(innerToFluentMap(this));
+        return this
+            .manager()
+            .inner()
+            .images()
+            .createOrUpdateAsync(resourceGroupName(), name(), this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -237,9 +229,7 @@ class VirtualMachineCustomImageImpl
     private ImageOSDisk ensureOsDiskImage() {
         this.ensureStorageProfile();
         if (this.inner().storageProfile().osDisk() == null) {
-            this.inner()
-                    .storageProfile()
-                    .withOsDisk(new ImageOSDisk());
+            this.inner().storageProfile().withOsDisk(new ImageOSDisk());
         }
         return this.inner().storageProfile().osDisk();
     }
@@ -252,8 +242,7 @@ class VirtualMachineCustomImageImpl
     }
 
     private void ensureDefaultLuns() {
-        if (this.inner().storageProfile() != null
-                && this.inner().storageProfile().dataDisks() != null) {
+        if (this.inner().storageProfile() != null && this.inner().storageProfile().dataDisks() != null) {
             List<ImageDataDisk> imageDisks = this.inner().storageProfile().dataDisks();
             List<Integer> usedLuns = new ArrayList<>();
             for (ImageDataDisk imageDisk : imageDisks) {
@@ -270,7 +259,7 @@ class VirtualMachineCustomImageImpl
                 }
                 Integer i = 0;
                 while (usedLuns.contains(i)) {
-                    i++;
+                    i += 1;
                 }
                 imageDisk.withLun(i);
                 usedLuns.add(i);
@@ -290,7 +279,8 @@ class VirtualMachineCustomImageImpl
     }
 
     @Override
-    public VirtualMachineCustomImage.DefinitionStages.WithOSDiskImageSourceAltVirtualMachineSource withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
+    public VirtualMachineCustomImage.DefinitionStages.WithOSDiskImageSourceAltVirtualMachineSource withHyperVGeneration(
+        HyperVGenerationTypes hyperVGeneration) {
         this.inner().withHyperVGeneration(hyperVGeneration);
         return this;
     }
