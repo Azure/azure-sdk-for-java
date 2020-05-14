@@ -1732,8 +1732,8 @@ public class BlobAsyncClientBase {
             case "error":
                 return parseError(record, errorReceiver);
             default:
-                return Mono.error(new UncheckedIOException(new IOException(String.format("Unknown record type %s "
-                    + "while parsing query response. ", recordSchema.toString()))));
+                return Mono.error(new IllegalStateException(String.format("Unknown record type %s "
+                    + "while parsing query response. ", recordSchema.toString())))
         }
     }
 
