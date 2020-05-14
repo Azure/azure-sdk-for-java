@@ -1,6 +1,8 @@
 parameters:
   Artifacts: []
   ArtifactName: 'not-specified'
+  TargetDocRepoOwner: 'MicrosoftDocs'
+  TargetDocRepoName: 'azure-docs-sdk-python'
 
 stages:
   # The signing stage is responsible for submitting binaries to ESRP for our official signing
@@ -85,20 +87,57 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
-                    - pwsh: |
-                        Get-ChildItem $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                        New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                        Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        Get-ChildItem $(Pipeline.Workspace)/${{artifact.safeName}}
-                      workingDirectory: $(Pipeline.Workspace)
+                    - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
+                      parameters:
+                        SourceFolder: ${{parameters.ArtifactName}} 
+                        TargetFolder: ${{artifact.safeName}}
+                        PackageName: ${{artifact.name}}
                       displayName: Stage artifacts
-                      timeoutInMinutes: 5
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
                         PackageRepository: Maven
                         ReleaseSha: $(Build.SourceVersion)
                         RepoId: Azure/azure-sdk-for-java
+
+
+          - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
+            - deployment: PublicDocsMs
+              displayName: "Publish Updates for Docs.MS"
+              condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
+              environment: github
+              timeoutInMinutes: 5
+              dependsOn: VerifyReleaseVersion
+
+              pool:
+                vmImage: vs2017-win2016
+
+              strategy:
+                runOnce:
+                  deploy:
+                    steps:
+                      - checkout: self
+                      - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}} 
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
+                        displayName: Stage artifacts
+                        timeoutInMinutes: 5
+                      - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
+                        parameters:
+                          ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
+                          PackageRepository: Maven
+                          ReleaseSha: $(Build.SourceVersion)
+                          RepoId: Azure/azure-sdk-for-java
+                          WorkingDirectory: $(System.DefaultWorkingDirectory)
+                          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+                          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+                          PRBranchName: 'smoke-test-rdme'
+                          ArtifactName: ${{parameters.ArtifactName}}
+                          Language: 'java'
+                          DocRepoDestinationPath: 'docs-ref-services/' 
+
 
           - ${{if ne(artifact.options.skipPublishPackage, 'true')}}:
             - deployment: PublishPackage
@@ -146,7 +185,6 @@ stages:
               environment: githubio
               dependsOn: PublishPackage
 
-
               pool:
                 vmImage: windows-2019
 
@@ -155,11 +193,11 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - pwsh: |
-                          Get-ChildItem -Recurse $(Pipeline.Workspace)
-                          New-Item -Type Directory -Name ${{artifact.safeName}} -Path $(Pipeline.Workspace)
-                          Copy-Item $(Pipeline.Workspace)/${{parameters.ArtifactName}}/${{artifact.name}}-[0-9]*.[0-9]*.[0-9]* $(Pipeline.Workspace)/${{artifact.safeName}}
-                        workingDirectory: $(Pipeline.Workspace)
+                      - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
+                        parameters:
+                          SourceFolder: ${{parameters.ArtifactName}} 
+                          TargetFolder: ${{artifact.safeName}}
+                          PackageName: ${{artifact.name}}
                         displayName: Stage artifacts
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
