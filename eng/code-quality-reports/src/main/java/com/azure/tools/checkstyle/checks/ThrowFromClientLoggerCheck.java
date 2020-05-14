@@ -51,7 +51,7 @@ public class ThrowFromClientLoggerCheck extends AbstractCheck {
 
     @Override
     public int[] getRequiredTokens() {
-        return new int[]{
+        return new int[] {
             TokenTypes.CLASS_DEF,
             TokenTypes.CTOR_DEF,
             TokenTypes.LITERAL_THROW,
