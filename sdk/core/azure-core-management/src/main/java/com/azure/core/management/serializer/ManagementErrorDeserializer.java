@@ -3,30 +3,38 @@
 
 package com.azure.core.management.serializer;
 
-import com.azure.core.management.CloudError;
+import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.BeanDescription;
+import com.fasterxml.jackson.databind.DeserializationConfig;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 
 import java.io.IOException;
 
 /**
- * Custom serializer for serializing {@link CloudError} objects.
+ * Custom serializer for serializing {@link ManagementError} objects.
  */
-final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
-    /** Object mapper for default deserializations. */
+final class ManagementErrorDeserializer extends StdDeserializer<Object> {
+
+    private static final long serialVersionUID = 1L;
+
     private final ObjectMapper mapper;
 
     /**
-     * Creates an instance of CloudErrorDeserializer.
+     * Creates an instance of {@link ManagementErrorDeserializer}.
      *
+     * @param vc type of values this deserializer handles.
      * @param mapper the object mapper for default deserializations.
      */
-    private CloudErrorDeserializer(ObjectMapper mapper) {
+    private ManagementErrorDeserializer(Class<?> vc, ObjectMapper mapper) {
+        super(vc);
         this.mapper = mapper;
     }
 
@@ -39,12 +47,24 @@ final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
      */
     static SimpleModule getModule(ObjectMapper mapper) {
         SimpleModule module = new SimpleModule();
-        module.addDeserializer(CloudError.class, new CloudErrorDeserializer(mapper));
+        module.setDeserializerModifier(new BeanDeserializerModifier() {
+            @Override
+            public JsonDeserializer<?> modifyDeserializer(DeserializationConfig config,
+                                                          BeanDescription beanDesc,
+                                                          JsonDeserializer<?> deserializer) {
+                if (ManagementError.class.isAssignableFrom(beanDesc.getBeanClass())) {
+                    // Register 'ManagementErrorDeserializer' for class and subclass of 'ManagementError'
+                    return new ManagementErrorDeserializer(beanDesc.getBeanClass(), mapper);
+                } else {
+                    return deserializer;
+                }
+            }
+        });
         return module;
     }
 
     @Override
-    public CloudError deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonNode errorNode = p.readValueAsTree();
         if (errorNode == null) {
             return null;
@@ -59,6 +79,6 @@ final class CloudErrorDeserializer extends JsonDeserializer<CloudError> {
                 .replaceFirst("(?i)\"details\"", "\"details\"");
         JsonParser parser = new JsonFactory().createParser(nodeContent);
         parser.setCodec(mapper);
-        return parser.readValueAs(CloudError.class);
+        return parser.readValueAs(this.handledType());
     }
 }
