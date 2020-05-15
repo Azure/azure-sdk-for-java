@@ -192,9 +192,16 @@ class BlobBaseAPITest extends APISpec {
         '<'             | ','             | '\0'       | '\0'       | false          || _
         '>'             | ','             | '\0'       | '\0'       | false          || _
         '&'             | ','             | '\0'       | '\0'       | false          || _
-        '"'             | ','             | '\0'       | '\\'       | false          || _
         '\\'            | ','             | '\0'       | '\0'       | false          || _
-
+        ','             | '.'             | '\0'       | '\0'       | false          || _ /* Column separator. */
+//        '\n'            | '\t'            | '\0'       | '\0'       | false          || _
+//        '.'             | '\r'            | '\0'       | '\\'       | false          || _ /* \r and \n are bring written as nothing - probably a generator bug? */
+//        '\n'            | '<'             | '\0'       | '\0'       | false          || _
+//        '\n'            | '>'             | '\0'       | '\0'       | false          || _
+//        '\n'            | '&'             | '\0'       | '\0'       | false          || _
+//        '\n'            | '\\'            | '\0'       | '\0'       | false          || _
+//        '\n'            | ','             | '\0'       | '\0'       | false          || _
+//        '"'             | ','             | '\0'       | '\\'       | false          || _ /* Field quote. */
     }
 
     /* Note: Input delimited tested everywhere else. */

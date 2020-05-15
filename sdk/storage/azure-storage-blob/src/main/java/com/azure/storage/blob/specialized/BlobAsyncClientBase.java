@@ -1833,7 +1833,7 @@ public class BlobAsyncClientBase {
     }
 
     /**
-     * Validates that all parameters are non-null. Throws IOException if any of them are.
+     * Checks whether or not all parameters are non-null.
      */
     private boolean checkParametersNotNull(Object... data) {
         for (Object o : data) {
