@@ -135,11 +135,9 @@ jobs:
       vmImage: 'windows-2019'
 
     steps:
-      - pwsh: |
-          $java11Installs = Get-ChildItem -Path 'C:\Program Files\Java' -Filter '*azure-jdk_11*' | Sort-Object -Property Name -Descending | Select-Object -First 1
-          $latestJava11Install = $java11Installs.FullName;
-          Write-Host "##vso[task.setvariable variable=JAVA_HOME_11_X64]$latestJava11Install"
-        displayName: Resolve bad selection of Java11 instead of Java13
+      - template: ../steps/update-version-fix.yml
+        parameters:
+          VMAgent: 'windows-2019'
 
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
@@ -213,6 +211,10 @@ jobs:
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
+      - template: ../steps/update-version-fix.yml
+        parameters:
+          VMAgent: $(OSVmImage)
 
       - template: ../steps/cache-maven-repository.yml
 
