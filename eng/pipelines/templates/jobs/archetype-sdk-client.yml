@@ -137,7 +137,7 @@ jobs:
     steps:
       - template: ../steps/update-version-fix.yml
         parameters:
-          VMAgent: 'windows-2019'
+          VMAgent: "'windows-2019'"
 
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
