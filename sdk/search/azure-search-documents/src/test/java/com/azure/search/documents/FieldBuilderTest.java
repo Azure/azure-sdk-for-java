@@ -3,10 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.ComplexField;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.SearchableField;
 import com.azure.search.documents.models.SimpleField;
 import com.azure.search.documents.test.environment.models.Hotel;

@@ -4,7 +4,7 @@
 package com.azure.search.documents.models;
 
 /**
- * A helper Field model to build a simple {@link Field}.
+ * A helper Field model to build a simple {@link SearchField}.
  */
 public class SimpleField extends FieldBase {
     private boolean key;
@@ -17,12 +17,12 @@ public class SimpleField extends FieldBase {
      * Initializes a new instance of the {@link SimpleField} class.
      *
      * @param name The name of the field, which must be unique within the index or parent field.
-     * @param dataType The {@link DataType} of the {@link Field}.
+     * @param dataType The {@link SearchFieldDataType} of the {@link SearchField}.
      * @param collection boolean field to indicate whether the dataType is collection.
      * @throws NullPointerException when {@code name} is null.
      */
-    public SimpleField(String name, DataType dataType, boolean collection) {
-        super(name, collection ? DataType.collection(dataType) : dataType);
+    public SimpleField(String name, SearchFieldDataType dataType, boolean collection) {
+        super(name, collection ? SearchFieldDataType.collection(dataType) : dataType);
     }
 
     /**
@@ -135,12 +135,12 @@ public class SimpleField extends FieldBase {
     }
 
     /**
-     * Convert SimpleField to {@link Field}.
+     * Convert SimpleField to {@link SearchField}.
      *
-     * @return The {@link Field} object.
+     * @return The {@link SearchField} object.
      */
-    public Field build() {
-        return new Field().setName(super.getName())
+    public SearchField build() {
+        return new SearchField().setName(super.getName())
             .setType(super.getDataType())
             .setKey(key)
             .setSearchable(false)

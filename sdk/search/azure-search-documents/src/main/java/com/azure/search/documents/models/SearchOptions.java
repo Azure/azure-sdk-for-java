@@ -85,7 +85,7 @@ public final class SearchOptions {
     /*
      * A value that specifies the syntax of the search query. The default is
      * 'simple'. Use 'full' if your query uses the Lucene query syntax.
-     * Possible values include: 'simple', 'full'
+     * Possible values include: 'Simple', 'Full'
      */
     @JsonProperty(value = "")
     private QueryType queryType;
@@ -98,7 +98,7 @@ public final class SearchOptions {
      * "mylocation--122.2,44.8" (without the quotes).
      */
     @JsonProperty(value = "")
-    private List<ScoringParameter> scoringParameters;
+    private List<String> scoringParameters;
 
     /*
      * The name of a scoring profile to evaluate match scores for matching
@@ -119,7 +119,7 @@ public final class SearchOptions {
     /*
      * A value that specifies whether any or all of the search terms must be
      * matched in order to count the document as a match. Possible values
-     * include: 'any', 'all'
+     * include: 'Any', 'All'
      */
     @JsonProperty(value = "")
     private SearchMode searchMode;
@@ -357,7 +357,7 @@ public final class SearchOptions {
     /**
      * Get the queryType property: A value that specifies the syntax of the
      * search query. The default is 'simple'. Use 'full' if your query uses the
-     * Lucene query syntax. Possible values include: 'simple', 'full'.
+     * Lucene query syntax. Possible values include: 'Simple', 'Full'.
      *
      * @return the queryType value.
      */
@@ -368,7 +368,7 @@ public final class SearchOptions {
     /**
      * Set the queryType property: A value that specifies the syntax of the
      * search query. The default is 'simple'. Use 'full' if your query uses the
-     * Lucene query syntax. Possible values include: 'simple', 'full'.
+     * Lucene query syntax. Possible values include: 'Simple', 'Full'.
      *
      * @param queryType the queryType value to set.
      * @return the SearchOptions object itself.
@@ -387,7 +387,7 @@ public final class SearchOptions {
      *
      * @return the scoringParameters value.
      */
-    public List<ScoringParameter> getScoringParameters() {
+    public List<String> getScoringParameters() {
         return this.scoringParameters;
     }
 
@@ -401,7 +401,7 @@ public final class SearchOptions {
      * @param scoringParameters the scoringParameters value to set.
      * @return the SearchOptions object itself.
      */
-    public SearchOptions setScoringParameters(ScoringParameter... scoringParameters) {
+    public SearchOptions setScoringParameters(String... scoringParameters) {
         this.scoringParameters = Arrays.asList(scoringParameters);
         return this;
     }
@@ -461,7 +461,7 @@ public final class SearchOptions {
     /**
      * Get the searchMode property: A value that specifies whether any or all
      * of the search terms must be matched in order to count the document as a
-     * match. Possible values include: 'any', 'all'.
+     * match. Possible values include: 'Any', 'All'.
      *
      * @return the searchMode value.
      */
@@ -472,7 +472,7 @@ public final class SearchOptions {
     /**
      * Set the searchMode property: A value that specifies whether any or all
      * of the search terms must be matched in order to count the document as a
-     * match. Possible values include: 'any', 'all'.
+     * match. Possible values include: 'Any', 'All'.
      *
      * @param searchMode the searchMode value to set.
      * @return the SearchOptions object itself.

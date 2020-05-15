@@ -47,7 +47,7 @@ public final class SynonymMap {
      * paid services created on or after January 1, 2019.
      */
     @JsonProperty(value = "encryptionKey")
-    private EncryptionKey encryptionKey;
+    private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * The ETag of the synonym map.
@@ -79,6 +79,28 @@ public final class SynonymMap {
      */
     public SynonymMap setName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the format property: The format of the synonym map. Only the 'solr'
+     * format is currently supported.
+     *
+     * @return the format value.
+     */
+    public String getFormat() {
+        return this.format;
+    }
+
+    /**
+     * Set the format property: The format of the synonym map. Only the 'solr'
+     * format is currently supported.
+     *
+     * @param format the format value to set.
+     * @return the SynonymMap object itself.
+     */
+    public SynonymMap setFormat(String format) {
+        this.format = format;
         return this;
     }
 
@@ -119,7 +141,7 @@ public final class SynonymMap {
      *
      * @return the encryptionKey value.
      */
-    public EncryptionKey getEncryptionKey() {
+    public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
 
@@ -139,7 +161,7 @@ public final class SynonymMap {
      * @param encryptionKey the encryptionKey value to set.
      * @return the SynonymMap object itself.
      */
-    public SynonymMap setEncryptionKey(EncryptionKey encryptionKey) {
+    public SynonymMap setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
     }

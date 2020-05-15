@@ -101,7 +101,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the generateWordParts value.
      */
-    public Boolean generateWordParts() {
+    public Boolean isGenerateWordParts() {
         return this.generateWordParts;
     }
 
@@ -124,7 +124,7 @@ public final class WordDelimiterTokenFilter extends TokenFilter {
      *
      * @return the generateNumberParts value.
      */
-    public Boolean generateNumberParts() {
+    public Boolean isGenerateNumberParts() {
         return this.generateNumberParts;
     }
 

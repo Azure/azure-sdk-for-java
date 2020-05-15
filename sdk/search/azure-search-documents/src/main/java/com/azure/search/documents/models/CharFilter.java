@@ -22,7 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternReplaceCharFilter", value = PatternReplaceCharFilter.class)
 })
 @Fluent
-public abstract class CharFilter {
+public class CharFilter {
     /*
      * The name of the char filter. It must only contain letters, digits,
      * spaces, dashes or underscores, can only start and end with alphanumeric

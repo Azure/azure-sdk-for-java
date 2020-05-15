@@ -3,10 +3,7 @@
 
 package com.azure.search.documents;
 
-import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.Field;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;

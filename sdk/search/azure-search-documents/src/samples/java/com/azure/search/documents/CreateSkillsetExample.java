@@ -9,7 +9,6 @@ import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OcrSkill;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.WebApiSkill;
 
 import java.util.Arrays;

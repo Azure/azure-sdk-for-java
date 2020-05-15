@@ -7,7 +7,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.search.documents.SearchServiceClient;
 import com.azure.search.documents.SearchServiceClientBuilder;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.models.Index;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;

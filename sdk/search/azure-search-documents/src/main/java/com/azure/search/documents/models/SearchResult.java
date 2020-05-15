@@ -5,8 +5,6 @@
 // regenerated.
 
 package com.azure.search.documents.models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.azure.search.documents.SearchDocument;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -22,7 +20,7 @@ public final class SearchResult {
      * Unmatched properties from the message are deserialized this collection
      */
     @JsonProperty(value = "")
-    private SearchDocument additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /*
      * The relevance score of the document compared to other documents returned
@@ -45,8 +43,20 @@ public final class SearchResult {
      *
      * @return the additionalProperties value.
      */
-    public SearchDocument getDocument() {
+    public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: Unmatched properties from the
+     * message are deserialized this collection.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the SearchResult object itself.
+     */
+    public SearchResult setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+        return this;
     }
 
     /**

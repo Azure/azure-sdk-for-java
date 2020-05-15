@@ -62,6 +62,28 @@ public final class Suggester {
     }
 
     /**
+     * Get the searchMode property: A value indicating the capabilities of the
+     * suggester.
+     *
+     * @return the searchMode value.
+     */
+    public String getSearchMode() {
+        return this.searchMode;
+    }
+
+    /**
+     * Set the searchMode property: A value indicating the capabilities of the
+     * suggester.
+     *
+     * @param searchMode the searchMode value to set.
+     * @return the Suggester object itself.
+     */
+    public Suggester setSearchMode(String searchMode) {
+        this.searchMode = searchMode;
+        return this;
+    }
+
+    /**
      * Get the sourceFields property: The list of field names to which the
      * suggester applies. Each field must be searchable.
      *

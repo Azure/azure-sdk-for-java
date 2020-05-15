@@ -5,7 +5,6 @@
 // regenerated.
 
 package com.azure.search.documents.implementation;
-import com.azure.core.http.rest.RestProxy;
 
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
@@ -25,9 +24,9 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.ServiceStatistics;
+import com.azure.search.documents.implementation.models.RequestOptions;
+import com.azure.search.documents.implementation.models.SearchErrorException;
+import com.azure.search.documents.implementation.models.ServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

@@ -33,4 +33,12 @@
     <module>sdk/textanalytics</module>
     <module>sdk/spring</module>
   </modules>
+  <dependencies>
+    <dependency>
+      <groupId>com.squareup</groupId>
+      <artifactId>javapoet</artifactId>
+      <version>1.12.1</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>

@@ -15,4 +15,7 @@ module com.azure.search.documents {
     exports com.azure.search.documents;
     exports com.azure.search.documents.models;
     exports com.azure.search.documents.util;
+    exports com.azure.search.documents.implementation;
+    exports com.azure.search.documents.implementation.models;
+    exports com.azure.search.documents.implementation.converters;
 }

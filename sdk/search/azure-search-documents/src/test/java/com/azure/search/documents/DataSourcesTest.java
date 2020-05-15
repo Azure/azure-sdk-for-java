@@ -6,7 +6,6 @@ package com.azure.search.documents;
 import com.azure.search.documents.models.DataContainer;
 import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
 import org.junit.jupiter.api.Test;
 

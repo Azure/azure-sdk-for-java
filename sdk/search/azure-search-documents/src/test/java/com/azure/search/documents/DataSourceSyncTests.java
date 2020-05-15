@@ -10,7 +10,6 @@ import com.azure.search.documents.models.DataContainer;
 import com.azure.search.documents.models.DataDeletionDetectionPolicy;
 import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SoftDeleteColumnDeletionDetectionPolicy;
@@ -48,7 +47,7 @@ public class DataSourceSyncTests extends SearchServiceTestBase {
 
     private Supplier<DataSource> newDataSourceFunc = () -> createTestBlobDataSource(null);
 
-    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) -> 
+    private Function<DataSource, DataSource> mutateDataSourceFunc = (DataSource ds) ->
         ds.setDescription("somethingnew");
 
     private BiConsumer<DataSource, AccessOptions> deleteDataSourceFunc = (DataSource dataSource, AccessOptions ac) ->

@@ -7,10 +7,6 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.implementation.util.CustomPatternAnalyzerDeserializer;
-import com.azure.search.documents.implementation.util.CustomPatternAnalyzerSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,9 +19,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternAnalyzer")
 @Fluent
-@JsonSerialize(using = CustomPatternAnalyzerSerializer.class)
-@JsonDeserialize(using = CustomPatternAnalyzerDeserializer.class)
-public final class PatternAnalyzer extends Analyzer {
+public final class PatternAnalyzer extends LexicalAnalyzer {
     /*
      * A value indicating whether terms should be lower-cased. Default is true.
      */
@@ -34,16 +28,18 @@ public final class PatternAnalyzer extends Analyzer {
 
     /*
      * A regular expression pattern to match token separators. Default is an
-     * expression that matches one or more whitespace characters.
+     * expression that matches one or more non-word characters.
      */
     @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
-     * Regular expression flags.
+     * Regular expression flags. Possible values include: 'CanonEq',
+     * 'CaseInsensitive', 'Comments', 'DotAll', 'Literal', 'Multiline',
+     * 'UnicodeCase', 'UnixLines'
      */
     @JsonProperty(value = "flags")
-    private List<RegexFlags> flags;
+    private RegexFlags flags;
 
     /*
      * A list of stopwords.
@@ -75,7 +71,7 @@ public final class PatternAnalyzer extends Analyzer {
 
     /**
      * Get the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more whitespace
+     * separators. Default is an expression that matches one or more non-word
      * characters.
      *
      * @return the pattern value.
@@ -86,7 +82,7 @@ public final class PatternAnalyzer extends Analyzer {
 
     /**
      * Set the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more whitespace
+     * separators. Default is an expression that matches one or more non-word
      * characters.
      *
      * @param pattern the pattern value to set.
@@ -98,21 +94,25 @@ public final class PatternAnalyzer extends Analyzer {
     }
 
     /**
-     * Get the flags property: Regular expression flags.
+     * Get the flags property: Regular expression flags. Possible values
+     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
+     * 'Multiline', 'UnicodeCase', 'UnixLines'.
      *
      * @return the flags value.
      */
-    public List<RegexFlags> getFlags() {
+    public RegexFlags getFlags() {
         return this.flags;
     }
 
     /**
-     * Set the flags property: Regular expression flags.
+     * Set the flags property: Regular expression flags. Possible values
+     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
+     * 'Multiline', 'UnicodeCase', 'UnixLines'.
      *
      * @param flags the flags value to set.
      * @return the PatternAnalyzer object itself.
      */
-    public PatternAnalyzer setFlags(List<RegexFlags> flags) {
+    public PatternAnalyzer setFlags(RegexFlags flags) {
         this.flags = flags;
         return this;
     }

@@ -28,7 +28,8 @@ public final class SearchDocument extends HashMap<String, Object> {
      *
      * @param propertyMap the map whose mappings are to be placed in this map
      */
-    public SearchDocument(Map<? extends String, ?> propertyMap) {
-        super(propertyMap);
+    @SuppressWarnings("unchecked")
+    public SearchDocument(Object propertyMap) {
+        super((Map<? extends String, ?>) propertyMap);
     }
 }

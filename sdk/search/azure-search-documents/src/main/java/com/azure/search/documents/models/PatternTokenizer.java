@@ -7,14 +7,9 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.implementation.util.CustomPatternTokenizerDeserializer;
-import com.azure.search.documents.implementation.util.CustomPatternTokenizerSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
  * Tokenizer that uses regex pattern matching to construct distinct tokens.
@@ -23,21 +18,21 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.PatternTokenizer")
 @Fluent
-@JsonSerialize(using = CustomPatternTokenizerSerializer.class)
-@JsonDeserialize(using = CustomPatternTokenizerDeserializer.class)
-public final class PatternTokenizer extends Tokenizer {
+public final class PatternTokenizer extends LexicalTokenizer {
     /*
      * A regular expression pattern to match token separators. Default is an
-     * expression that matches one or more whitespace characters.
+     * expression that matches one or more non-word characters.
      */
     @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
-     * Regular expression flags.
+     * Regular expression flags. Possible values include: 'CanonEq',
+     * 'CaseInsensitive', 'Comments', 'DotAll', 'Literal', 'Multiline',
+     * 'UnicodeCase', 'UnixLines'
      */
     @JsonProperty(value = "flags")
-    private List<RegexFlags> flags;
+    private RegexFlags flags;
 
     /*
      * The zero-based ordinal of the matching group in the regular expression
@@ -50,7 +45,7 @@ public final class PatternTokenizer extends Tokenizer {
 
     /**
      * Get the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more whitespace
+     * separators. Default is an expression that matches one or more non-word
      * characters.
      *
      * @return the pattern value.
@@ -61,7 +56,7 @@ public final class PatternTokenizer extends Tokenizer {
 
     /**
      * Set the pattern property: A regular expression pattern to match token
-     * separators. Default is an expression that matches one or more whitespace
+     * separators. Default is an expression that matches one or more non-word
      * characters.
      *
      * @param pattern the pattern value to set.
@@ -73,21 +68,25 @@ public final class PatternTokenizer extends Tokenizer {
     }
 
     /**
-     * Get the flags property: Regular expression flags.
+     * Get the flags property: Regular expression flags. Possible values
+     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
+     * 'Multiline', 'UnicodeCase', 'UnixLines'.
      *
      * @return the flags value.
      */
-    public List<RegexFlags> getFlags() {
+    public RegexFlags getFlags() {
         return this.flags;
     }
 
     /**
-     * Set the flags property: Regular expression flags.
+     * Set the flags property: Regular expression flags. Possible values
+     * include: 'CanonEq', 'CaseInsensitive', 'Comments', 'DotAll', 'Literal',
+     * 'Multiline', 'UnicodeCase', 'UnixLines'.
      *
      * @param flags the flags value to set.
      * @return the PatternTokenizer object itself.
      */
-    public PatternTokenizer setFlags(List<RegexFlags> flags) {
+    public PatternTokenizer setFlags(RegexFlags flags) {
         this.flags = flags;
         return this;
     }

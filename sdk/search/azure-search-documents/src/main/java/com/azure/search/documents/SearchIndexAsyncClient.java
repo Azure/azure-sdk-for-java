@@ -11,25 +11,32 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+import com.azure.search.documents.implementation.SerializationUtil;
+import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
+import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
+import com.azure.search.documents.implementation.converters.QueryTypeConverter;
+import com.azure.search.documents.implementation.converters.RequestOptionsConverter;
+import com.azure.search.documents.implementation.converters.SearchModeConverter;
+import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
+import com.azure.search.documents.implementation.models.SearchRequest;
+import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
-import com.azure.search.documents.models.IndexBatchException;
-import com.azure.search.documents.models.SearchRequest;
-import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
-import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.AutocompleteRequest;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
+import com.azure.search.documents.models.IndexBatchBase;
+import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
-import com.azure.search.documents.models.SuggestRequest;
 import com.azure.search.documents.models.SuggestResult;
 import com.azure.search.documents.util.AutocompletePagedFlux;
 import com.azure.search.documents.util.AutocompletePagedResponse;
@@ -410,7 +417,7 @@ public final class SearchIndexAsyncClient {
         SearchRequest requestToUse = (continuationToken == null) ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
+        return restClient.documents().searchPostWithRestResponseAsync(requestToUse, RequestOptionsConverter.convert(requestOptions), context)
             .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
     }
     /**
@@ -450,7 +457,7 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.documents()
-                .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
+                .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.convert(requestOptions), context)
                 .map(res -> {
                     SearchDocument doc = new SearchDocument(res.getValue());
                     return new SimpleResponse<>(res, doc);
@@ -507,7 +514,7 @@ public final class SearchIndexAsyncClient {
 
     private Mono<SuggestPagedResponse> suggest(RequestOptions requestOptions, SuggestRequest suggestRequest,
         Context context) {
-        return restClient.documents().suggestPostWithRestResponseAsync(suggestRequest, requestOptions, context)
+        return restClient.documents().suggestPostWithRestResponseAsync(suggestRequest, RequestOptionsConverter.convert(requestOptions), context)
             .map(SuggestPagedResponse::new);
     }
 
@@ -548,13 +555,18 @@ public final class SearchIndexAsyncClient {
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
         try {
             return restClient.documents()
-                .indexWithRestResponseAsync(batch, context)
+                .indexWithRestResponseAsync(IndexBatchBaseConverter.convert(batch), context)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE)
-                    ? Mono.error(new IndexBatchException(response.getValue()))
-                    : Mono.just(response));
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.convert(response.getValue())))
+                    : Mono.just(map(response)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private static Response<IndexDocumentsResult> map(
+        Response<com.azure.search.documents.implementation.models.IndexDocumentsResult> response) {
+        return new SimpleResponse<>(response, IndexDocumentsResultConverter.convert(response.getValue()));
     }
 
     /**
@@ -594,8 +606,8 @@ public final class SearchIndexAsyncClient {
 
     private Mono<AutocompletePagedResponse> autocomplete(RequestOptions requestOptions, AutocompleteRequest request,
         Context context) {
-        return restClient.documents().autocompletePostWithRestResponseAsync(request, requestOptions, context)
-            .map(AutocompletePagedResponse::new);
+        return restClient.documents().autocompletePostWithRestResponseAsync(request, RequestOptionsConverter.convert(requestOptions), context)
+            .map(response -> map(response));
     }
 
     /**
@@ -609,14 +621,14 @@ public final class SearchIndexAsyncClient {
         SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
 
         if (searchOptions != null) {
-            searchRequest.setSearchMode(searchOptions.getSearchMode())
+            searchRequest.setSearchMode(SearchModeConverter.convert(searchOptions.getSearchMode()))
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())
                 .setHighlightPostTag(searchOptions.getHighlightPostTag())
                 .setHighlightPreTag(searchOptions.getHighlightPreTag())
                 .setIncludeTotalResultCount(searchOptions.isIncludeTotalResultCount())
                 .setMinimumCoverage(searchOptions.getMinimumCoverage())
-                .setQueryType(searchOptions.getQueryType())
+                .setQueryType(QueryTypeConverter.convert(searchOptions.getQueryType()))
                 .setScoringParameters(searchOptions.getScoringParameters())
                 .setScoringProfile(searchOptions.getScoringProfile())
                 .setSkip(searchOptions.getSkip())

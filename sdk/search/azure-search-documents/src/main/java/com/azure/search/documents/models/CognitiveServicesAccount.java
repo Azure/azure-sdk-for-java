@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CognitiveServicesByKey", value = CognitiveServicesAccountKey.class)
 })
 @Fluent
-public abstract class CognitiveServicesAccount {
+public class CognitiveServicesAccount {
     /*
      * Description of the cognitive service resource attached to a skillset.
      */

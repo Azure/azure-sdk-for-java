@@ -4,10 +4,7 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAddress;

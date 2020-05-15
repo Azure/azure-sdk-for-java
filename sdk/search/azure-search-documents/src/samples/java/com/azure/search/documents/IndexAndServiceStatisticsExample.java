@@ -4,16 +4,12 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.CorsOptions;
-import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.DistanceScoringFunction;
 import com.azure.search.documents.models.DistanceScoringParameters;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.FreshnessScoringFunction;
 import com.azure.search.documents.models.FreshnessScoringParameters;
 import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.MagnitudeScoringFunction;
 import com.azure.search.documents.models.MagnitudeScoringParameters;
 import com.azure.search.documents.models.ScoringFunctionAggregation;

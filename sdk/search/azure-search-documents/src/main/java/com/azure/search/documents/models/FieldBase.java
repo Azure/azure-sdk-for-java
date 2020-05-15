@@ -14,14 +14,14 @@ import java.util.Objects;
 public abstract class FieldBase {
     private final ClientLogger logger = new ClientLogger(FieldBase.class);
     private final String name;
-    private final DataType dataType;
+    private final SearchFieldDataType dataType;
 
     /**
      * Initializes a new instance of the {@link FieldBase} class.
      * @param name The name of the field, which must be unique within the index or parent field.
      * @param dataType The data type of the field.
      */
-    protected FieldBase(String name, DataType dataType) {
+    protected FieldBase(String name, SearchFieldDataType dataType) {
         if (CoreUtils.isNullOrEmpty(name)) {
             throw logger.logExceptionAsError(new IllegalArgumentException("The name of the field cannot be null"));
         }
@@ -39,11 +39,11 @@ public abstract class FieldBase {
     }
 
     /**
-     * Get the {@link DataType} of the field.
+     * Get the {@link SearchFieldDataType} of the field.
      *
      * @return The data type of the field.
      */
-    public DataType getDataType() {
+    public SearchFieldDataType getDataType() {
         return dataType;
     }
 }

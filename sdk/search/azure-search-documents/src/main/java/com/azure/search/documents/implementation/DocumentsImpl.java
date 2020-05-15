@@ -25,23 +25,22 @@ import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.implementation.models.AutocompleteMode;
+import com.azure.search.documents.implementation.models.AutocompleteOptions;
+import com.azure.search.documents.implementation.models.AutocompleteRequest;
+import com.azure.search.documents.implementation.models.AutocompleteResult;
+import com.azure.search.documents.implementation.models.IndexBatch;
+import com.azure.search.documents.implementation.models.IndexDocumentsResult;
+import com.azure.search.documents.implementation.models.QueryType;
+import com.azure.search.documents.implementation.models.RequestOptions;
 import com.azure.search.documents.implementation.models.SearchDocumentsResult;
+import com.azure.search.documents.implementation.models.SearchErrorException;
+import com.azure.search.documents.implementation.models.SearchMode;
+import com.azure.search.documents.implementation.models.SearchOptions;
+import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestDocumentsResult;
-import com.azure.search.documents.models.AutocompleteMode;
-import com.azure.search.documents.models.AutocompleteOptions;
-import com.azure.search.documents.models.AutocompleteRequest;
-import com.azure.search.documents.models.AutocompleteResult;
-import com.azure.search.documents.models.IndexBatchBase;
-import com.azure.search.documents.models.IndexDocumentsResult;
-import com.azure.search.documents.models.QueryType;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.ScoringParameter;
-import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SearchMode;
-import com.azure.search.documents.models.SearchOptions;
-import com.azure.search.documents.models.SearchRequest;
-import com.azure.search.documents.models.SuggestOptions;
-import com.azure.search.documents.models.SuggestRequest;
+import com.azure.search.documents.implementation.models.SuggestOptions;
+import com.azure.search.documents.implementation.models.SuggestRequest;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -84,47 +83,47 @@ public final class DocumentsImpl {
         @Get("docs/$count")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Long>> count(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Long>> count(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("docs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchDocumentsResult>> searchGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("search") String searchText, @QueryParam("api-version") String apiVersion, @QueryParam("$count") Boolean includeTotalResultCount, @QueryParam("facet") String facets, @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("queryType") QueryType queryType, @QueryParam("scoringParameter") String scoringParameters, @QueryParam("scoringProfile") String scoringProfile, @QueryParam("searchFields") String searchFields, @QueryParam("searchMode") SearchMode searchMode, @QueryParam("$select") String select, @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchDocumentsResult>> searchGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("search") String searchText, @QueryParam("api-version") String apiVersion, @QueryParam("$count") Boolean includeTotalResultCount, @QueryParam("facet") String facets, @QueryParam("$filter") String filter, @QueryParam("highlight") String highlightFields, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("queryType") QueryType queryType, @QueryParam("scoringParameter") String scoringParameters, @QueryParam("scoringProfile") String scoringProfile, @QueryParam("searchFields") String searchFields, @QueryParam("searchMode") SearchMode searchMode, @QueryParam("$select") String select, @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Post("docs/search.post.search")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @BodyParam("application/json; charset=utf-8") SearchRequest searchRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchDocumentsResult>> searchPost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") SearchRequest searchRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("docs('{key}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Map<? extends String, Object>>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<Map<? extends String, Object>>> get(@PathParam("key") String key, @HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("$select") String selectedFields, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("docs/search.suggest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SuggestDocumentsResult>> suggestGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select, @QueryParam("$top") Integer top, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SuggestDocumentsResult>> suggestGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("$orderby") String orderBy, @QueryParam("searchFields") String searchFields, @QueryParam("$select") String select, @QueryParam("$top") Integer top, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Post("docs/search.post.suggest")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<SuggestDocumentsResult>> suggestPost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @BodyParam("application/json; charset=utf-8") SuggestRequest suggestRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SuggestDocumentsResult>> suggestPost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") SuggestRequest suggestRequest, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Post("docs/search.index")
         @ExpectedResponses({200, 207})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        <T> Mono<SimpleResponse<IndexDocumentsResult>> index(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @BodyParam("application/json; charset=utf-8") IndexBatchBase<T> batch, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<IndexDocumentsResult>> index(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @BodyParam("application/json; charset=utf-8") IndexBatch batch, @QueryParam("api-version") String apiVersion, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("docs/search.autocomplete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<AutocompleteResult>> autocompleteGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("searchFields") String searchFields, @QueryParam("$top") Integer top, Context context);
+        Mono<SimpleResponse<AutocompleteResult>> autocompleteGet(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion, @QueryParam("search") String searchText, @QueryParam("suggesterName") String suggesterName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @QueryParam("autocompleteMode") AutocompleteMode autocompleteMode, @QueryParam("$filter") String filter, @QueryParam("fuzzy") Boolean useFuzzyMatching, @QueryParam("highlightPostTag") String highlightPostTag, @QueryParam("highlightPreTag") String highlightPreTag, @QueryParam("minimumCoverage") Double minimumCoverage, @QueryParam("searchFields") String searchFields, @QueryParam("$top") Integer top, Context context);
 
         @Post("docs/search.post.autocomplete")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<AutocompleteResult>> autocompletePost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @HeaderParam("accept") String accept, @QueryParam("api-version") String apiVersion, @BodyParam("application/json; charset=utf-8") AutocompleteRequest autocompleteRequest, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<AutocompleteResult>> autocompletePost(@HostParam("endpoint") String endpoint, @HostParam("indexName") String indexName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json; charset=utf-8") AutocompleteRequest autocompleteRequest, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
     }
 
     /**
@@ -136,10 +135,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Long>> countWithRestResponseAsync(Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final UUID xMsClientRequestId = null;
-        return service.count(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.count(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -152,13 +149,11 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Long>> countWithRestResponseAsync(RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.count(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.count(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -170,8 +165,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SearchDocumentsResult>> searchGetWithRestResponseAsync(Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final String searchText = null;
         final Boolean includeTotalResultCount = null;
         final String filter = null;
@@ -190,7 +183,7 @@ public final class DocumentsImpl {
         String scoringParametersConverted = null;
         String searchFieldsConverted = null;
         String selectConverted = null;
-        return service.searchGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, this.client.getApiVersion(), includeTotalResultCount, facetsConverted, filter, highlightFieldsConverted, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, queryType, scoringParametersConverted, scoringProfile, searchFieldsConverted, searchMode, selectConverted, skip, top, xMsClientRequestId, context);
+        return service.searchGet(this.client.getEndpoint(), this.client.getIndexName(), searchText, this.client.getApiVersion(), includeTotalResultCount, facetsConverted, filter, highlightFieldsConverted, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, queryType, scoringParametersConverted, scoringProfile, searchFieldsConverted, searchMode, selectConverted, skip, top, xMsClientRequestId, context);
     }
 
     /**
@@ -205,8 +198,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SearchDocumentsResult>> searchGetWithRestResponseAsync(String searchText, SearchOptions searchOptions, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         Boolean includeTotalResultCount = null;
         if (searchOptions != null) {
             includeTotalResultCount = searchOptions.isIncludeTotalResultCount();
@@ -243,7 +234,7 @@ public final class DocumentsImpl {
         if (searchOptions != null) {
             queryType = searchOptions.getQueryType();
         }
-        List<ScoringParameter> scoringParameters = null;
+        List<String> scoringParameters = null;
         if (searchOptions != null) {
             scoringParameters = searchOptions.getScoringParameters();
         }
@@ -281,7 +272,7 @@ public final class DocumentsImpl {
         String scoringParametersConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(scoringParameters, CollectionFormat.MULTI);
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         String selectConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        return service.searchGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, this.client.getApiVersion(), includeTotalResultCount, facetsConverted, filter, highlightFieldsConverted, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, queryType, scoringParametersConverted, scoringProfile, searchFieldsConverted, searchMode, selectConverted, skip, top, xMsClientRequestId, context);
+        return service.searchGet(this.client.getEndpoint(), this.client.getIndexName(), searchText, this.client.getApiVersion(), includeTotalResultCount, facetsConverted, filter, highlightFieldsConverted, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, queryType, scoringParametersConverted, scoringProfile, searchFieldsConverted, searchMode, selectConverted, skip, top, xMsClientRequestId, context);
     }
 
     /**
@@ -294,10 +285,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SearchDocumentsResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final UUID xMsClientRequestId = null;
-        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), accept, searchRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), searchRequest, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -311,13 +300,11 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SearchDocumentsResult>> searchPostWithRestResponseAsync(SearchRequest searchRequest, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), accept, searchRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.searchPost(this.client.getEndpoint(), this.client.getIndexName(), searchRequest, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -330,11 +317,9 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final UUID xMsClientRequestId = null;
         String selectedFieldsConverted = null;
-        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), accept, selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -349,14 +334,12 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Map<? extends String, Object>>> getWithRestResponseAsync(String key, List<String> selectedFields, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
         String selectedFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(selectedFields, CollectionFormat.CSV);
-        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), accept, selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.get(key, this.client.getEndpoint(), this.client.getIndexName(), selectedFieldsConverted, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -370,8 +353,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SuggestDocumentsResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final String filter = null;
         final Boolean useFuzzyMatching = null;
         final String highlightPostTag = null;
@@ -382,7 +363,7 @@ public final class DocumentsImpl {
         String orderByConverted = null;
         String searchFieldsConverted = null;
         String selectConverted = null;
-        return service.suggestGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, suggesterName, this.client.getApiVersion(), filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, searchFieldsConverted, selectConverted, top, xMsClientRequestId, context);
+        return service.suggestGet(this.client.getEndpoint(), this.client.getIndexName(), searchText, suggesterName, this.client.getApiVersion(), filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, searchFieldsConverted, selectConverted, top, xMsClientRequestId, context);
     }
 
     /**
@@ -398,15 +379,13 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SuggestDocumentsResult>> suggestGetWithRestResponseAsync(String searchText, String suggesterName, SuggestOptions suggestOptions, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         String filter = null;
         if (suggestOptions != null) {
             filter = suggestOptions.getFilter();
         }
         Boolean useFuzzyMatching = null;
         if (suggestOptions != null) {
-            useFuzzyMatching = suggestOptions.useFuzzyMatching();
+            useFuzzyMatching = suggestOptions.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
         if (suggestOptions != null) {
@@ -443,7 +422,7 @@ public final class DocumentsImpl {
         String orderByConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderBy, CollectionFormat.CSV);
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
         String selectConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        return service.suggestGet(this.client.getEndpoint(), this.client.getIndexName(), accept, searchText, suggesterName, this.client.getApiVersion(), filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, searchFieldsConverted, selectConverted, top, xMsClientRequestId, context);
+        return service.suggestGet(this.client.getEndpoint(), this.client.getIndexName(), searchText, suggesterName, this.client.getApiVersion(), filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, orderByConverted, searchFieldsConverted, selectConverted, top, xMsClientRequestId, context);
     }
 
     /**
@@ -456,10 +435,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SuggestDocumentsResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final UUID xMsClientRequestId = null;
-        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), accept, suggestRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), suggestRequest, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -473,13 +450,11 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SuggestDocumentsResult>> suggestPostWithRestResponseAsync(SuggestRequest suggestRequest, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), accept, suggestRequest, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.suggestPost(this.client.getEndpoint(), this.client.getIndexName(), suggestRequest, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -491,11 +466,9 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatchBase<T> batch, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
+    public Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch batch, Context context) {
         final UUID xMsClientRequestId = null;
-        return service.index(this.client.getEndpoint(), this.client.getIndexName(), accept, batch, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.index(this.client.getEndpoint(), this.client.getIndexName(), batch, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -508,14 +481,12 @@ public final class DocumentsImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public <T> Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatchBase<T> batch, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
+    public Mono<SimpleResponse<IndexDocumentsResult>> indexWithRestResponseAsync(IndexBatch batch, RequestOptions requestOptions, Context context) {
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.index(this.client.getEndpoint(), this.client.getIndexName(), accept, batch, this.client.getApiVersion(), xMsClientRequestId, context);
+        return service.index(this.client.getEndpoint(), this.client.getIndexName(), batch, this.client.getApiVersion(), xMsClientRequestId, context);
     }
 
     /**
@@ -529,8 +500,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final UUID xMsClientRequestId = null;
         final AutocompleteMode autocompleteMode = null;
         final String filter = null;
@@ -540,7 +509,7 @@ public final class DocumentsImpl {
         final Double minimumCoverage = null;
         final Integer top = null;
         String searchFieldsConverted = null;
-        return service.autocompleteGet(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), searchText, suggesterName, xMsClientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
+        return service.autocompleteGet(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(), searchText, suggesterName, xMsClientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
     }
 
     /**
@@ -556,8 +525,6 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutocompleteResult>> autocompleteGetWithRestResponseAsync(String searchText, String suggesterName, RequestOptions requestOptions, AutocompleteOptions autocompleteOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
@@ -572,7 +539,7 @@ public final class DocumentsImpl {
         }
         Boolean useFuzzyMatching = null;
         if (autocompleteOptions != null) {
-            useFuzzyMatching = autocompleteOptions.useFuzzyMatching();
+            useFuzzyMatching = autocompleteOptions.isUseFuzzyMatching();
         }
         String highlightPostTag = null;
         if (autocompleteOptions != null) {
@@ -595,7 +562,7 @@ public final class DocumentsImpl {
             top = autocompleteOptions.getTop();
         }
         String searchFieldsConverted = JacksonAdapter.createDefaultSerializerAdapter().serializeList(searchFields, CollectionFormat.CSV);
-        return service.autocompleteGet(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), searchText, suggesterName, xMsClientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
+        return service.autocompleteGet(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(), searchText, suggesterName, xMsClientRequestId, autocompleteMode, filter, useFuzzyMatching, highlightPostTag, highlightPreTag, minimumCoverage, searchFieldsConverted, top, context);
     }
 
     /**
@@ -608,10 +575,8 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         final UUID xMsClientRequestId = null;
-        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), autocompleteRequest, xMsClientRequestId, context);
+        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(), autocompleteRequest, xMsClientRequestId, context);
     }
 
     /**
@@ -625,12 +590,10 @@ public final class DocumentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AutocompleteResult>> autocompletePostWithRestResponseAsync(AutocompleteRequest autocompleteRequest, RequestOptions requestOptions, Context context) {
-		final String accept = "application/json;odata.metadata=none";
-
         UUID xMsClientRequestId = null;
         if (requestOptions != null) {
             xMsClientRequestId = requestOptions.getXMsClientRequestId();
         }
-        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), accept, this.client.getApiVersion(), autocompleteRequest, xMsClientRequestId, context);
+        return service.autocompletePost(this.client.getEndpoint(), this.client.getIndexName(), this.client.getApiVersion(), autocompleteRequest, xMsClientRequestId, context);
     }
 }

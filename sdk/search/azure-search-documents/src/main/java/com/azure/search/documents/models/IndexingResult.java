@@ -9,14 +9,11 @@ package com.azure.search.documents.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.Serializable;
-
 /**
  * Status of an indexing operation for a single document.
  */
 @Fluent
-public final class IndexingResult implements Serializable {
-    private static final long serialVersionUID = -8604424005271188140L;
+public final class IndexingResult {
     /*
      * The key of a document that was in the indexing request.
      */

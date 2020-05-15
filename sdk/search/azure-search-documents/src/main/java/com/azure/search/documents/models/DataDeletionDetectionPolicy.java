@@ -20,5 +20,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.SoftDeleteColumnDeletionDetectionPolicy", value = SoftDeleteColumnDeletionDetectionPolicy.class)
 })
 @Fluent
-public abstract class DataDeletionDetectionPolicy {
+public class DataDeletionDetectionPolicy {
 }

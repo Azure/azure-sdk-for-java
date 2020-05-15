@@ -10,7 +10,7 @@ import java.util.List;
  * {@code DataType.EDM_COMPLEX_TYPE}.
  */
 public class ComplexField extends FieldBase {
-    private List<Field> fields;
+    private List<SearchField> fields;
 
     /**
      * Initializes a new instance of the {@link ComplexField} class.
@@ -19,7 +19,8 @@ public class ComplexField extends FieldBase {
      * @param collection Whether the field is a collection of strings.
      */
     public ComplexField(String name, boolean collection) {
-        super(name, collection ? DataType.collection(DataType.EDM_COMPLEX_TYPE) : DataType.EDM_COMPLEX_TYPE);
+        super(name, collection ? SearchFieldDataType.collection(SearchFieldDataType.COMPLEX)
+            : SearchFieldDataType.COMPLEX);
     }
 
     /**
@@ -27,7 +28,7 @@ public class ComplexField extends FieldBase {
      *
      * @return The list of sub-fields.
      */
-    public List<Field> getFields() {
+    public List<SearchField> getFields() {
         return fields;
     }
 
@@ -37,18 +38,18 @@ public class ComplexField extends FieldBase {
      * @param fields The list of sub-fields.
      * @return The {@link ComplexField} object itself.
      */
-    public ComplexField setFields(List<Field> fields) {
+    public ComplexField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
     }
 
     /**
-     * Convert ComplexField to {@link Field}.
+     * Convert ComplexField to {@link SearchField}.
      *
-     * @return The {@link Field} object.
+     * @return The {@link SearchField} object.
      */
-    public Field build() {
-        return new Field().setName(super.getName())
+    public SearchField build() {
+        return new SearchField().setName(super.getName())
             .setType(super.getDataType())
             .setFields(fields)
             .setKey(false)

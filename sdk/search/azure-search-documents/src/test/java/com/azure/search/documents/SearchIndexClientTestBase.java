@@ -5,7 +5,6 @@ package com.azure.search.documents;
 
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.search.documents.implementation.SerializationUtil;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.test.environment.setup.SearchIndexService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;

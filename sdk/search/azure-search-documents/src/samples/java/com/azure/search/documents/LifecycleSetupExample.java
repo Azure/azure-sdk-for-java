@@ -5,22 +5,16 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.AnalyzerName;
 import com.azure.search.documents.models.DataContainer;
 import com.azure.search.documents.models.DataSource;
 import com.azure.search.documents.models.DataSourceCredentials;
-import com.azure.search.documents.models.DataSourceType;
-import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.EntityRecognitionSkill;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.IndexingSchedule;
 import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.Suggester;
 
 import java.time.Duration;

@@ -5,9 +5,7 @@ package com.azure.search.documents;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.Indexer;
 import com.azure.search.documents.models.InputFieldMappingEntry;
@@ -16,7 +14,6 @@ import com.azure.search.documents.models.ServiceCounters;
 import com.azure.search.documents.models.ServiceLimits;
 import com.azure.search.documents.models.ServiceStatistics;
 import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SynonymMap;
 import com.azure.search.documents.models.WebApiSkill;
 

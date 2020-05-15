@@ -27,7 +27,6 @@ import com.azure.search.documents.models.SentimentSkill;
 import com.azure.search.documents.models.SentimentSkillLanguage;
 import com.azure.search.documents.models.ShaperSkill;
 import com.azure.search.documents.models.Skill;
-import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.models.SplitSkill;
 import com.azure.search.documents.models.SplitSkillLanguage;
 import com.azure.search.documents.models.TextExtractionAlgorithm;

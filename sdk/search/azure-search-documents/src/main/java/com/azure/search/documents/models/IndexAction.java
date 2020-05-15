@@ -7,11 +7,7 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-
 import java.util.Map;
 
 /**
@@ -20,57 +16,45 @@ import java.util.Map;
 @Fluent
 public final class IndexAction<T> {
     /*
-     * The document on which the action will be performed.
+     * Unmatched properties from the message are deserialized this collection
      */
-    @JsonUnwrapped
-    private T document;
-
-    @JsonIgnore
-    private Map<String, Object> properties;
-
-    @JsonAnyGetter
-    public Map<String, Object> getParamMap() {
-        return properties;
-    }
+    @JsonProperty(value = "")
+    private Map<String, Object> additionalProperties;
 
     /*
      * The operation to perform on a document in an indexing batch. Possible
-     * values include: 'upload', 'merge', 'mergeOrUpload', 'delete'
+     * values include: 'Upload', 'Merge', 'MergeOrUpload', 'Delete'
      */
     @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
 
+    private T document;
     /**
-     * Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.
+     * Get the additionalProperties property: Unmatched properties from the
+     * message are deserialized this collection.
      *
-     * @return the document value.
+     * @return the additionalProperties value.
      */
-    public T getDocument() {
-        return this.document;
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 
     /**
-     * Get the document on which the action will be performed; Fields other than the key are ignored for delete actions.
+     * Set the additionalProperties property: Unmatched properties from the
+     * message are deserialized this collection.
      *
-     * @param document the document value to set.
+     * @param additionalProperties the additionalProperties value to set.
      * @return the IndexAction object itself.
      */
-    @SuppressWarnings("unchecked")
-    public IndexAction<T> setDocument(T document) {
-        if (document instanceof Map) {
-            this.properties = (Map<String, Object>) document;
-            this.document = null;
-        } else {
-            this.document = document;
-            this.properties = null;
-        }
+    public IndexAction setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
         return this;
     }
 
     /**
      * Get the actionType property: The operation to perform on a document in
-     * an indexing batch. Possible values include: 'upload', 'merge',
-     * 'mergeOrUpload', 'delete'.
+     * an indexing batch. Possible values include: 'Upload', 'Merge',
+     * 'MergeOrUpload', 'Delete'.
      *
      * @return the actionType value.
      */
@@ -80,8 +64,8 @@ public final class IndexAction<T> {
 
     /**
      * Set the actionType property: The operation to perform on a document in
-     * an indexing batch. Possible values include: 'upload', 'merge',
-     * 'mergeOrUpload', 'delete'.
+     * an indexing batch. Possible values include: 'Upload', 'Merge',
+     * 'MergeOrUpload', 'Delete'.
      *
      * @param actionType the actionType value to set.
      * @return the IndexAction object itself.
@@ -89,5 +73,14 @@ public final class IndexAction<T> {
     public IndexAction<T> setActionType(IndexActionType actionType) {
         this.actionType = actionType;
         return this;
+    }
+
+    public IndexAction<T> setDocument(T document) {
+        this.document = document;
+        return this;
+    }
+
+    public T getDocument() {
+        return this.document;
     }
 }
