@@ -1,5 +1,5 @@
 parameters:
-  VMAgent: ''
+  VMAgent: variables['OSVmImage']
 
 steps:
   - pwsh: |
@@ -7,4 +7,4 @@ steps:
       $latestJava11Install = $java11Installs.FullName;
       Write-Host "##vso[task.setvariable variable=JAVA_HOME_11_X64]$latestJava11Install"
     displayName: Resolve bad selection of Java11 instead of Java13
-    condition: and(succeeded(), eq('${{parameters.VMAgent}}','windows-2019'))
+    condition: and(succeeded(), eq(${{parameters.VMAgent}},'windows-2019'))

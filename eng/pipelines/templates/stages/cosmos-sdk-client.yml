@@ -89,8 +89,6 @@ stages:
 
         PreRunSteps:
         - template: ../steps/update-version-fix.yml
-          parameters:
-            VMAgent: $(OSVmImage)
 
         - powershell: |
             Write-Host "Downloading Cosmos Emulator - $(EmulatorMsiUrl)"

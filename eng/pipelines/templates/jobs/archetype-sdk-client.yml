@@ -213,8 +213,6 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
       - template: ../steps/update-version-fix.yml
-        parameters:
-          VMAgent: $(OSVmImage)
 
       - template: ../steps/cache-maven-repository.yml
 
