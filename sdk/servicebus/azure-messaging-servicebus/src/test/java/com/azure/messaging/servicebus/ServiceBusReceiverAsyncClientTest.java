@@ -195,12 +195,12 @@ class ServiceBusReceiverAsyncClientTest {
             .thenReturn(Mono.just(receivedMessage), Mono.just(receivedMessage2));
 
         // Act & Assert
-        StepVerifier.create(receiver.peek())
+        StepVerifier.create(receiver.browse())
             .expectNext(receivedMessage)
             .verifyComplete();
 
         // Act & Assert
-        StepVerifier.create(receiver.peek())
+        StepVerifier.create(receiver.browse())
             .expectNext(receivedMessage2)
             .verifyComplete();
 

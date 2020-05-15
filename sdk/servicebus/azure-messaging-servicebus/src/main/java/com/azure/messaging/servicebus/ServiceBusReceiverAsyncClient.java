@@ -438,8 +438,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peek() {
-        return peek(receiverOptions.getSessionId());
+    public Mono<ServiceBusReceivedMessage> browse() {
+        return browse(receiverOptions.getSessionId());
     }
 
     /**
@@ -452,7 +452,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public Mono<ServiceBusReceivedMessage> peek(String sessionId) {
+    public Mono<ServiceBusReceivedMessage> browse(String sessionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));

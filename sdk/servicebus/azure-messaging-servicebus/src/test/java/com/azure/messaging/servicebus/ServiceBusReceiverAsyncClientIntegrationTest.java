@@ -147,7 +147,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message).block(TIMEOUT);
 
         // Assert & Act
-        StepVerifier.create(receiver.peek())
+        StepVerifier.create(receiver.browse())
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
     }
@@ -279,7 +279,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .assertNext(message -> checkCorrectMessage.accept(message, 6))
             .verifyComplete();
 
-        StepVerifier.create(receiver.peek())
+        StepVerifier.create(receiver.browse())
             .assertNext(message -> checkCorrectMessage.accept(message, 7))
             .verifyComplete();
     }

@@ -212,10 +212,10 @@ class ServiceBusReceiverClientTest {
     void peekMessage() {
         // Arrange
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peek()).thenReturn(Mono.just(message));
+        when(asyncClient.browse()).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peek();
+        final ServiceBusReceivedMessage actual = client.browse();
 
         // Assert
         assertEquals(message, actual);
@@ -229,7 +229,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.peekAt(sequenceNumber)).thenReturn(Mono.just(message));
 
         // Act
-        final ServiceBusReceivedMessage actual = client.peekAt(sequenceNumber);
+        final ServiceBusReceivedMessage actual = client.browseAt(sequenceNumber);
 
         // Assert
         assertEquals(message, actual);
@@ -268,7 +268,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -312,7 +312,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatch(maxMessages);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
 
         // Assert
         assertNotNull(actual);
@@ -341,7 +341,7 @@ class ServiceBusReceiverClientTest {
         when(asyncClient.peekBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
 
         // Act
-        final IterableStream<ServiceBusReceivedMessage> actual = client.peekBatchAt(maxMessages, sequenceNumber);
+        final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatchAt(maxMessages, sequenceNumber);
 
         // Assert
         assertNotNull(actual);
