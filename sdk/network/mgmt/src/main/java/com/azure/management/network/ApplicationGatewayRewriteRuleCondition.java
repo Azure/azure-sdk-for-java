@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayRewriteRuleCondition model. */
 @Fluent
 public final class ApplicationGatewayRewriteRuleCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleCondition.class);
+
     /*
      * The condition parameter of the RewriteRuleCondition.
      */
@@ -121,5 +125,13 @@ public final class ApplicationGatewayRewriteRuleCondition {
     public ApplicationGatewayRewriteRuleCondition withNegate(Boolean negate) {
         this.negate = negate;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

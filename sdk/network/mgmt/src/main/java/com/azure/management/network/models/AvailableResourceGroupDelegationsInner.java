@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AvailableResourceGroupDelegations. */
 public final class AvailableResourceGroupDelegationsInner {
+    private final ClientLogger logger = new ClientLogger(AvailableResourceGroupDelegationsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final AvailableResourceGroupDelegationsService service;
 
@@ -58,10 +61,10 @@ public final class AvailableResourceGroupDelegationsInner {
     private interface AvailableResourceGroupDelegationsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/locations/{location}/availableDelegations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/locations"
+                + "/{location}/availableDelegations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AvailableDelegationsResultInner>> list(
             @HostParam("$host") String host,
             @PathParam("location") String location,
@@ -73,7 +76,7 @@ public final class AvailableResourceGroupDelegationsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AvailableDelegationsResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -84,13 +87,30 @@ public final class AvailableResourceGroupDelegationsInner {
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all of the available subnet delegations for this resource group in this region.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AvailableDelegationInner>> listSinglePageAsync(
         String location, String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -120,8 +140,59 @@ public final class AvailableResourceGroupDelegationsInner {
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all of the available subnet delegations for this resource group in this region.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AvailableDelegationInner>> listSinglePageAsync(
+        String location, String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .list(
+                this.client.getHost(),
+                location,
+                resourceGroupName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all of the available subnet delegations for this resource group in this region.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all of the available subnet delegations for this resource group in this region.
      */
@@ -136,8 +207,26 @@ public final class AvailableResourceGroupDelegationsInner {
      *
      * @param location The location of the domain name.
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all of the available subnet delegations for this resource group in this region.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AvailableDelegationInner> listAsync(String location, String resourceGroupName, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(location, resourceGroupName, context),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all of the available subnet delegations for this resource group in this region.
+     *
+     * @param location The location of the domain name.
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all of the available subnet delegations for this resource group in this region.
      */
@@ -151,12 +240,15 @@ public final class AvailableResourceGroupDelegationsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an array of available delegations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AvailableDelegationInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<AvailableDelegationInner>>map(
@@ -169,5 +261,33 @@ public final class AvailableResourceGroupDelegationsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an array of available delegations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AvailableDelegationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

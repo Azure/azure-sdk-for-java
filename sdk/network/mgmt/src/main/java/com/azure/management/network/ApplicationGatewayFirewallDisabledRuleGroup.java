@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationGatewayFirewallDisabledRuleGroup model. */
 @Fluent
 public final class ApplicationGatewayFirewallDisabledRuleGroup {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallDisabledRuleGroup.class);
+
     /*
      * The name of the rule group that will be disabled.
      */
@@ -64,5 +68,20 @@ public final class ApplicationGatewayFirewallDisabledRuleGroup {
     public ApplicationGatewayFirewallDisabledRuleGroup withRules(List<Integer> rules) {
         this.rules = rules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ruleGroupName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ruleGroupName in model"
+                            + " ApplicationGatewayFirewallDisabledRuleGroup"));
+        }
     }
 }

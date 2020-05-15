@@ -119,7 +119,7 @@ public final class QueryMetricsAndActivityLogs {
                             }
                             System.out.println("\t\tData: ");
                             for (MetricValue data : timeElement.data()) {
-                                System.out.println("\t\t\t" + data.timeStamp()
+                                System.out.println("\t\t\t" + data.timestamp()
                                         + " : (Min) " + data.minimum()
                                         + " : (Max) " + data.maximum()
                                         + " : (Avg) " + data.average()

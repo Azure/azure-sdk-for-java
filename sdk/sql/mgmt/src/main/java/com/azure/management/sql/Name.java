@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Name model. */
 @Fluent
 public final class Name {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Name.class);
+
     /*
      * Usage name value
      */
@@ -60,5 +64,13 @@ public final class Name {
     public Name withLocalizedValue(String localizedValue) {
         this.localizedValue = localizedValue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

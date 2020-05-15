@@ -7,11 +7,13 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.NetworkRuleSet;
 import com.azure.management.containerregistry.ProvisioningState;
 import com.azure.management.containerregistry.Sku;
 import com.azure.management.containerregistry.Status;
 import com.azure.management.containerregistry.StorageAccountProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -19,6 +21,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class RegistryInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryInner.class);
+
     /*
      * The SKU of the container registry.
      */
@@ -187,5 +191,29 @@ public class RegistryInner extends Resource {
     public RegistryInner withNetworkRuleSet(NetworkRuleSet networkRuleSet) {
         this.networkRuleSet = networkRuleSet;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sku in model RegistryInner"));
+        } else {
+            sku().validate();
+        }
+        if (status() != null) {
+            status().validate();
+        }
+        if (storageAccount() != null) {
+            storageAccount().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
     }
 }

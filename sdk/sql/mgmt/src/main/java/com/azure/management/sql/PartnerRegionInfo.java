@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PartnerRegionInfo model. */
 @Fluent
 public final class PartnerRegionInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartnerRegionInfo.class);
+
     /*
      * Geo location of the partner managed instances.
      */
@@ -49,5 +53,13 @@ public final class PartnerRegionInfo {
      */
     public InstanceFailoverGroupReplicationRole replicationRole() {
         return this.replicationRole;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

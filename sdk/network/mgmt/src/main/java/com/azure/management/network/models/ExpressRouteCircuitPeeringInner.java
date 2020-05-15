@@ -7,11 +7,13 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ExpressRouteCircuitPeeringConfig;
 import com.azure.management.network.ExpressRouteConnectionId;
 import com.azure.management.network.ExpressRoutePeeringState;
 import com.azure.management.network.ExpressRoutePeeringType;
 import com.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,6 +21,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ExpressRouteCircuitPeeringInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringInner.class);
+
     /*
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -54,13 +58,13 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * The Azure ASN.
      */
     @JsonProperty(value = "properties.azureASN")
-    private Integer azureASN;
+    private Integer azureAsn;
 
     /*
      * The peer ASN.
      */
     @JsonProperty(value = "properties.peerASN")
-    private Long peerASN;
+    private Long peerAsn;
 
     /*
      * The primary address prefix.
@@ -242,42 +246,42 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
     }
 
     /**
-     * Get the azureASN property: The Azure ASN.
+     * Get the azureAsn property: The Azure ASN.
      *
-     * @return the azureASN value.
+     * @return the azureAsn value.
      */
-    public Integer azureASN() {
-        return this.azureASN;
+    public Integer azureAsn() {
+        return this.azureAsn;
     }
 
     /**
-     * Set the azureASN property: The Azure ASN.
+     * Set the azureAsn property: The Azure ASN.
      *
-     * @param azureASN the azureASN value to set.
+     * @param azureAsn the azureAsn value to set.
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withAzureASN(Integer azureASN) {
-        this.azureASN = azureASN;
+    public ExpressRouteCircuitPeeringInner withAzureAsn(Integer azureAsn) {
+        this.azureAsn = azureAsn;
         return this;
     }
 
     /**
-     * Get the peerASN property: The peer ASN.
+     * Get the peerAsn property: The peer ASN.
      *
-     * @return the peerASN value.
+     * @return the peerAsn value.
      */
-    public Long peerASN() {
-        return this.peerASN;
+    public Long peerAsn() {
+        return this.peerAsn;
     }
 
     /**
-     * Set the peerASN property: The peer ASN.
+     * Set the peerAsn property: The peer ASN.
      *
-     * @param peerASN the peerASN value to set.
+     * @param peerAsn the peerAsn value to set.
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withPeerASN(Long peerASN) {
-        this.peerASN = peerASN;
+    public ExpressRouteCircuitPeeringInner withPeerAsn(Long peerAsn) {
+        this.peerAsn = peerAsn;
         return this;
     }
 
@@ -595,5 +599,31 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public List<PeerExpressRouteCircuitConnectionInner> peeredConnections() {
         return this.peeredConnections;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (microsoftPeeringConfig() != null) {
+            microsoftPeeringConfig().validate();
+        }
+        if (stats() != null) {
+            stats().validate();
+        }
+        if (ipv6PeeringConfig() != null) {
+            ipv6PeeringConfig().validate();
+        }
+        if (expressRouteConnection() != null) {
+            expressRouteConnection().validate();
+        }
+        if (connections() != null) {
+            connections().forEach(e -> e.validate());
+        }
+        if (peeredConnections() != null) {
+            peeredConnections().forEach(e -> e.validate());
+        }
     }
 }

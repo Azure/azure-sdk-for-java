@@ -7,13 +7,17 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.TransportProtocol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InboundNatRule model. */
 @JsonFlatten
 @Fluent
 public class InboundNatRuleInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRuleInner.class);
+
     /*
      * Gets name of the resource that is unique within the set of inbound NAT
      * rules used by the load balancer. This name can be used to access the
@@ -38,7 +42,7 @@ public class InboundNatRuleInner extends SubResource {
      * A reference to frontend IP addresses.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
-    private SubResource frontendIPConfiguration;
+    private SubResource frontendIpConfiguration;
 
     /*
      * A reference to a private IP address defined on a network interface of a
@@ -46,7 +50,7 @@ public class InboundNatRuleInner extends SubResource {
      * configurations is forwarded to the backend IP.
      */
     @JsonProperty(value = "properties.backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkInterfaceIPConfigurationInner backendIPConfiguration;
+    private NetworkInterfaceIpConfigurationInner backendIpConfiguration;
 
     /*
      * The reference to the transport protocol used by the load balancing rule.
@@ -84,7 +88,7 @@ public class InboundNatRuleInner extends SubResource {
      * This setting can't be changed after you create the endpoint.
      */
     @JsonProperty(value = "properties.enableFloatingIP")
-    private Boolean enableFloatingIP;
+    private Boolean enableFloatingIp;
 
     /*
      * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
@@ -153,33 +157,33 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the frontendIPConfiguration property: A reference to frontend IP addresses.
+     * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
      *
-     * @return the frontendIPConfiguration value.
+     * @return the frontendIpConfiguration value.
      */
-    public SubResource frontendIPConfiguration() {
-        return this.frontendIPConfiguration;
+    public SubResource frontendIpConfiguration() {
+        return this.frontendIpConfiguration;
     }
 
     /**
-     * Set the frontendIPConfiguration property: A reference to frontend IP addresses.
+     * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
      *
-     * @param frontendIPConfiguration the frontendIPConfiguration value to set.
+     * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatRuleInner object itself.
      */
-    public InboundNatRuleInner withFrontendIPConfiguration(SubResource frontendIPConfiguration) {
-        this.frontendIPConfiguration = frontendIPConfiguration;
+    public InboundNatRuleInner withFrontendIpConfiguration(SubResource frontendIpConfiguration) {
+        this.frontendIpConfiguration = frontendIpConfiguration;
         return this;
     }
 
     /**
-     * Get the backendIPConfiguration property: A reference to a private IP address defined on a network interface of a
+     * Get the backendIpConfiguration property: A reference to a private IP address defined on a network interface of a
      * VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
      *
-     * @return the backendIPConfiguration value.
+     * @return the backendIpConfiguration value.
      */
-    public NetworkInterfaceIPConfigurationInner backendIPConfiguration() {
-        return this.backendIPConfiguration;
+    public NetworkInterfaceIpConfigurationInner backendIpConfiguration() {
+        return this.backendIpConfiguration;
     }
 
     /**
@@ -267,26 +271,26 @@ public class InboundNatRuleInner extends SubResource {
     }
 
     /**
-     * Get the enableFloatingIP property: Configures a virtual machine's endpoint for the floating IP capability
+     * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
      *
-     * @return the enableFloatingIP value.
+     * @return the enableFloatingIp value.
      */
-    public Boolean enableFloatingIP() {
-        return this.enableFloatingIP;
+    public Boolean enableFloatingIp() {
+        return this.enableFloatingIp;
     }
 
     /**
-     * Set the enableFloatingIP property: Configures a virtual machine's endpoint for the floating IP capability
+     * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
      *
-     * @param enableFloatingIP the enableFloatingIP value to set.
+     * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatRuleInner object itself.
      */
-    public InboundNatRuleInner withEnableFloatingIP(Boolean enableFloatingIP) {
-        this.enableFloatingIP = enableFloatingIP;
+    public InboundNatRuleInner withEnableFloatingIp(Boolean enableFloatingIp) {
+        this.enableFloatingIp = enableFloatingIp;
         return this;
     }
 
@@ -332,5 +336,16 @@ public class InboundNatRuleInner extends SubResource {
     public InboundNatRuleInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backendIpConfiguration() != null) {
+            backendIpConfiguration().validate();
+        }
     }
 }

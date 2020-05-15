@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutomationRunbookReceiver model. */
 @Fluent
 public final class AutomationRunbookReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationRunbookReceiver.class);
+
     /*
      * The Azure automation account Id which holds this runbook and
      * authenticate to Azure resource.
@@ -193,5 +197,31 @@ public final class AutomationRunbookReceiver {
     public AutomationRunbookReceiver withUseCommonAlertSchema(boolean useCommonAlertSchema) {
         this.useCommonAlertSchema = useCommonAlertSchema;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (automationAccountId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property automationAccountId in model AutomationRunbookReceiver"));
+        }
+        if (runbookName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property runbookName in model AutomationRunbookReceiver"));
+        }
+        if (webhookResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property webhookResourceId in model AutomationRunbookReceiver"));
+        }
     }
 }

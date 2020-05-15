@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DataDiskImage model. */
 @Immutable
 public final class DataDiskImage {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDiskImage.class);
+
     /*
      * Specifies the logical unit number of the data disk. This value is used
      * to identify data disks within the VM and therefore must be unique for
@@ -26,5 +30,13 @@ public final class DataDiskImage {
      */
     public Integer lun() {
         return this.lun;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

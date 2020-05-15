@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.AdditionalCapabilities;
 import com.azure.management.compute.BillingProfile;
 import com.azure.management.compute.DiagnosticsProfile;
@@ -19,6 +20,7 @@ import com.azure.management.compute.StorageProfile;
 import com.azure.management.compute.VirtualMachineEvictionPolicyTypes;
 import com.azure.management.compute.VirtualMachineIdentity;
 import com.azure.management.compute.VirtualMachinePriorityTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -26,6 +28,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualMachineInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineInner.class);
+
     /*
      * Specifies information about the marketplace image used to create the
      * virtual machine. This element is only used for marketplace images.
@@ -632,5 +636,46 @@ public class VirtualMachineInner extends Resource {
      */
     public String vmId() {
         return this.vmId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (resources() != null) {
+            resources().forEach(e -> e.validate());
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (additionalCapabilities() != null) {
+            additionalCapabilities().validate();
+        }
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
+        if (diagnosticsProfile() != null) {
+            diagnosticsProfile().validate();
+        }
+        if (billingProfile() != null) {
+            billingProfile().validate();
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkSecurityGroupResult model. */
 @Fluent
 public final class NetworkSecurityGroupResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupResult.class);
+
     /*
      * The network traffic is allowed or denied.
      */
@@ -50,5 +54,16 @@ public final class NetworkSecurityGroupResult {
      */
     public List<EvaluatedNetworkSecurityGroup> evaluatedNetworkSecurityGroups() {
         return this.evaluatedNetworkSecurityGroups;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (evaluatedNetworkSecurityGroups() != null) {
+            evaluatedNetworkSecurityGroups().forEach(e -> e.validate());
+        }
     }
 }

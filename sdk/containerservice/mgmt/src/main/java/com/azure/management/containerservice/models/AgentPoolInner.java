@@ -7,11 +7,13 @@ package com.azure.management.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.AgentPoolType;
 import com.azure.management.containerservice.ContainerServiceVMSizeTypes;
 import com.azure.management.containerservice.OSType;
 import com.azure.management.containerservice.ScaleSetEvictionPolicy;
 import com.azure.management.containerservice.ScaleSetPriority;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -19,6 +21,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AgentPoolInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolInner.class);
+
     /*
      * Number of agents (VMs) to host docker containers. Allowed values must be
      * in the range of 1 to 100 (inclusive). The default value is 1.
@@ -44,7 +48,7 @@ public class AgentPoolInner extends SubResource {
      * VNet SubnetID specifies the VNet's subnet identifier.
      */
     @JsonProperty(value = "properties.vnetSubnetID")
-    private String vnetSubnetID;
+    private String vnetSubnetId;
 
     /*
      * Maximum number of pods that can run on a node.
@@ -107,7 +111,7 @@ public class AgentPoolInner extends SubResource {
      * Enable public IP for nodes
      */
     @JsonProperty(value = "properties.enableNodePublicIP")
-    private Boolean enableNodePublicIP;
+    private Boolean enableNodePublicIp;
 
     /*
      * ScaleSetPriority to be used to specify virtual machine scale set
@@ -208,22 +212,22 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @return the vnetSubnetID value.
+     * @return the vnetSubnetId value.
      */
-    public String vnetSubnetID() {
-        return this.vnetSubnetID;
+    public String vnetSubnetId() {
+        return this.vnetSubnetId;
     }
 
     /**
-     * Set the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @param vnetSubnetID the vnetSubnetID value to set.
+     * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withVnetSubnetID(String vnetSubnetID) {
-        this.vnetSubnetID = vnetSubnetID;
+    public AgentPoolInner withVnetSubnetId(String vnetSubnetId) {
+        this.vnetSubnetId = vnetSubnetId;
         return this;
     }
 
@@ -400,22 +404,22 @@ public class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the enableNodePublicIP property: Enable public IP for nodes.
+     * Get the enableNodePublicIp property: Enable public IP for nodes.
      *
-     * @return the enableNodePublicIP value.
+     * @return the enableNodePublicIp value.
      */
-    public Boolean enableNodePublicIP() {
-        return this.enableNodePublicIP;
+    public Boolean enableNodePublicIp() {
+        return this.enableNodePublicIp;
     }
 
     /**
-     * Set the enableNodePublicIP property: Enable public IP for nodes.
+     * Set the enableNodePublicIp property: Enable public IP for nodes.
      *
-     * @param enableNodePublicIP the enableNodePublicIP value to set.
+     * @param enableNodePublicIp the enableNodePublicIp value to set.
      * @return the AgentPoolInner object itself.
      */
-    public AgentPoolInner withEnableNodePublicIP(Boolean enableNodePublicIP) {
-        this.enableNodePublicIP = enableNodePublicIP;
+    public AgentPoolInner withEnableNodePublicIp(Boolean enableNodePublicIp) {
+        this.enableNodePublicIp = enableNodePublicIp;
         return this;
     }
 
@@ -502,5 +506,13 @@ public class AgentPoolInner extends SubResource {
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

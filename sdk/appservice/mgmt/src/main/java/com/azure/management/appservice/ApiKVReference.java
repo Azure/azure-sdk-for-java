@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApiKVReference model. */
 @Fluent
 public final class ApiKVReference {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKVReference.class);
+
     /*
      * The reference property.
      */
@@ -242,5 +246,13 @@ public final class ApiKVReference {
     public ApiKVReference withLocation(ConfigReferenceLocation location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

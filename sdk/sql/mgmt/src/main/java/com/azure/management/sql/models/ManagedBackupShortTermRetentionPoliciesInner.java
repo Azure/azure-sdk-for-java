@@ -24,9 +24,10 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -36,6 +37,8 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ManagedBackupShortTermRetentionPolicies.
  */
 public final class ManagedBackupShortTermRetentionPoliciesInner {
+    private final ClientLogger logger = new ClientLogger(ManagedBackupShortTermRetentionPoliciesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ManagedBackupShortTermRetentionPoliciesService service;
 
@@ -70,7 +73,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
                 + "/{policyName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -87,7 +90,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
                 + "/{policyName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -105,7 +108,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
                 + "/{policyName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> update(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -122,7 +125,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyListResultInner>> listByDatabase(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -138,7 +141,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
                 + "/{policyName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -156,7 +159,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/backupShortTermRetentionPolicies"
                 + "/{policyName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> beginUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -171,7 +174,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyListResultInner>> listByDatabaseNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -184,13 +187,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
@@ -216,8 +240,59 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String policyName = "default";
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                policyName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets a managed database's short term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's short term retention policy.
      */
@@ -243,7 +318,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's short term retention policy.
      */
@@ -263,13 +338,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, Integer retentionDays) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
@@ -301,7 +397,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -331,7 +427,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -351,13 +447,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, Integer retentionDays) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
@@ -389,7 +506,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -419,7 +536,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -437,13 +554,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's short term retention policy list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(
         String resourceGroupName, String managedInstanceName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -476,8 +614,66 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy list.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>> listByDatabaseSinglePageAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .listByDatabase(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a managed database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's short term retention policy list.
      */
@@ -496,8 +692,29 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed database's short term retention policy list.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ManagedBackupShortTermRetentionPolicyInner> listByDatabaseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
+        return new PagedFlux<>(
+            () -> listByDatabaseSinglePageAsync(resourceGroupName, managedInstanceName, databaseName, context),
+            nextLink -> listByDatabaseNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a managed database's short term retention policy list.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a managed database's short term retention policy list.
      */
@@ -517,13 +734,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, Integer retentionDays) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
@@ -554,8 +792,68 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param databaseName The name of the database.
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        Integer retentionDays,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String policyName = "default";
+        final String apiVersion = "2017-03-01-preview";
+        ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
+        parameters.withRetentionDays(retentionDays);
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                policyName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                parameters,
+                context);
+    }
+
+    /**
+     * Updates a managed database's short term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -583,7 +881,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -603,13 +901,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> beginUpdateWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName, Integer retentionDays) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String policyName = "default";
         final String apiVersion = "2017-03-01-preview";
         ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
@@ -640,8 +959,68 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param databaseName The name of the database.
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a short term retention policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ManagedBackupShortTermRetentionPolicyInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String managedInstanceName,
+        String databaseName,
+        Integer retentionDays,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String policyName = "default";
+        final String apiVersion = "2017-03-01-preview";
+        ManagedBackupShortTermRetentionPolicyInner parameters = new ManagedBackupShortTermRetentionPolicyInner();
+        parameters.withRetentionDays(retentionDays);
+        return service
+            .beginUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                policyName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                parameters,
+                context);
+    }
+
+    /**
+     * Updates a managed database's short term retention policy.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
+     *     supported.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -669,7 +1048,7 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      * @param retentionDays The backup retention period in days. This is how many days Point-in-Time Restore will be
      *     supported.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a short term retention policy.
      */
@@ -684,13 +1063,16 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of short term retention policies.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>> listByDatabaseNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByDatabaseNext(nextLink, context))
             .<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>>map(
@@ -703,5 +1085,34 @@ public final class ManagedBackupShortTermRetentionPoliciesInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of short term retention policies.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<ManagedBackupShortTermRetentionPolicyInner>> listByDatabaseNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByDatabaseNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

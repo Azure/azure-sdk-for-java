@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DatabaseAccountListReadOnlyKeysResult model. */
 @Immutable
 public class DatabaseAccountListReadOnlyKeysResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountListReadOnlyKeysResultInner.class);
+
     /*
      * Base 64 encoded value of the primary read-only key.
      */
@@ -38,5 +42,13 @@ public class DatabaseAccountListReadOnlyKeysResultInner {
      */
     public String secondaryReadonlyMasterKey() {
         return this.secondaryReadonlyMasterKey;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

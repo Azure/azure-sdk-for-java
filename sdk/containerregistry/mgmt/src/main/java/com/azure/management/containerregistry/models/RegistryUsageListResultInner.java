@@ -5,13 +5,17 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.RegistryUsage;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The RegistryUsageListResult model. */
 @Fluent
 public final class RegistryUsageListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryUsageListResultInner.class);
+
     /*
      * The list of container registry quota usages.
      */
@@ -36,5 +40,16 @@ public final class RegistryUsageListResultInner {
     public RegistryUsageListResultInner withValue(List<RegistryUsage> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ManagedServiceIdentity model. */
 @Fluent
 public class ManagedServiceIdentity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedServiceIdentity.class);
+
     /*
      * Type of managed service identity.
      */
@@ -99,5 +103,20 @@ public class ManagedServiceIdentity {
         Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
     }
 }

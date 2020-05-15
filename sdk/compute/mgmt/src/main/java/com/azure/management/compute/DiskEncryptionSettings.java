@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DiskEncryptionSettings model. */
 @Fluent
 public final class DiskEncryptionSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSettings.class);
+
     /*
      * Specifies the location of the disk encryption key, which is a Key Vault
      * Secret.
@@ -90,5 +94,19 @@ public final class DiskEncryptionSettings {
     public DiskEncryptionSettings withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (diskEncryptionKey() != null) {
+            diskEncryptionKey().validate();
+        }
+        if (keyEncryptionKey() != null) {
+            keyEncryptionKey().validate();
+        }
     }
 }

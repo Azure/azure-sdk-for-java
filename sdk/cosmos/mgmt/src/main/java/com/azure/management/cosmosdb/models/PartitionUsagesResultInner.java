@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PartitionUsagesResult model. */
 @Immutable
 public final class PartitionUsagesResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PartitionUsagesResultInner.class);
+
     /*
      * The list of partition-level usages for the database. A usage is a point
      * in time metric
@@ -25,5 +29,16 @@ public final class PartitionUsagesResultInner {
      */
     public List<PartitionUsageInner> value() {
         return this.value;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -6,6 +6,8 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class DiskUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskUpdate.class);
+
     /*
      * Resource tags
      */
@@ -214,5 +218,19 @@ public class DiskUpdate {
     public DiskUpdate withDiskMBpsReadWrite(Integer diskMBpsReadWrite) {
         this.diskMBpsReadWrite = diskMBpsReadWrite;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (encryptionSettingsCollection() != null) {
+            encryptionSettingsCollection().validate();
+        }
     }
 }

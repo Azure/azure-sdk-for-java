@@ -5,8 +5,21 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The ThrottledRequestsInput model. */
 @Immutable
 public final class ThrottledRequestsInput extends LogAnalyticsInputBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThrottledRequestsInput.class);
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+    }
 }

@@ -6,6 +6,8 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class AlertRuleResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleResourcePatch.class);
+
     /*
      * Resource tags
      */
@@ -188,5 +192,19 @@ public class AlertRuleResourcePatch {
      */
     public OffsetDateTime lastUpdatedTime() {
         return this.lastUpdatedTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (condition() != null) {
+            condition().validate();
+        }
+        if (actions() != null) {
+            actions().forEach(e -> e.validate());
+        }
     }
 }

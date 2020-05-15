@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.BackupSchedule;
 import com.azure.management.appservice.DatabaseBackupSetting;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class BackupRequestInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupRequestInner.class);
+
     /*
      * Name of the backup.
      */
@@ -147,5 +151,21 @@ public class BackupRequestInner extends ProxyOnlyResource {
     public BackupRequestInner withDatabases(List<DatabaseBackupSetting> databases) {
         this.databases = databases;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (backupSchedule() != null) {
+            backupSchedule().validate();
+        }
+        if (databases() != null) {
+            databases().forEach(e -> e.validate());
+        }
     }
 }

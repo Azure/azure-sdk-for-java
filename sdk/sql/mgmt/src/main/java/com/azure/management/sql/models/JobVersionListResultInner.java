@@ -5,17 +5,22 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JobVersionListResult model. */
 @Immutable
 public final class JobVersionListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobVersionListResultInner.class);
+
     /*
      * Array of results.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<JobVersionInner> value;
+    private List<Resource> value;
 
     /*
      * Link to retrieve next page of results.
@@ -28,7 +33,7 @@ public final class JobVersionListResultInner {
      *
      * @return the value value.
      */
-    public List<JobVersionInner> value() {
+    public List<Resource> value() {
         return this.value;
     }
 
@@ -39,5 +44,13 @@ public final class JobVersionListResultInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

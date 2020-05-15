@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ThroughputSettingsResource model. */
 @Fluent
 public class ThroughputSettingsResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsResource.class);
+
     /*
      * Value of the Cosmos DB resource throughput
      */
@@ -64,5 +68,13 @@ public class ThroughputSettingsResource {
      */
     public String offerReplacePending() {
         return this.offerReplacePending;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

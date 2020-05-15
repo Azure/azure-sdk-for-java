@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrivateAccessVirtualNetwork model. */
 @Fluent
 public final class PrivateAccessVirtualNetwork {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateAccessVirtualNetwork.class);
+
     /*
      * The name of the Virtual Network.
      */
@@ -117,5 +121,16 @@ public final class PrivateAccessVirtualNetwork {
     public PrivateAccessVirtualNetwork withSubnets(List<PrivateAccessSubnet> subnets) {
         this.subnets = subnets;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (subnets() != null) {
+            subnets().forEach(e -> e.validate());
+        }
     }
 }

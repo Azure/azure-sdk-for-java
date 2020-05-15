@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VpnClientConnectionHealth model. */
 @Fluent
 public final class VpnClientConnectionHealth {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealth.class);
+
     /*
      * Total of the Ingress Bytes Transferred in this P2S Vpn connection.
      */
@@ -94,5 +98,13 @@ public final class VpnClientConnectionHealth {
     public VpnClientConnectionHealth withAllocatedIpAddresses(List<String> allocatedIpAddresses) {
         this.allocatedIpAddresses = allocatedIpAddresses;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

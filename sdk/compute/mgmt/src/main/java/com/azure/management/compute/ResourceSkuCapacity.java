@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceSkuCapacity model. */
 @Immutable
 public final class ResourceSkuCapacity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapacity.class);
+
     /*
      * The minimum capacity.
      */
@@ -68,5 +72,13 @@ public final class ResourceSkuCapacity {
      */
     public ResourceSkuCapacityScaleType scaleType() {
         return this.scaleType;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

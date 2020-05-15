@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateLinkResource model. */
 @Fluent
 public final class PrivateLinkResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
+
     /*
      * The id property.
      */
@@ -112,5 +116,35 @@ public final class PrivateLinkResource {
     public PrivateLinkResource withProperties(PrivateLinkResourceProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model PrivateLinkResource"));
+        }
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model PrivateLinkResource"));
+        }
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model PrivateLinkResource"));
+        }
+        if (properties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property properties in model PrivateLinkResource"));
+        } else {
+            properties().validate();
+        }
     }
 }
