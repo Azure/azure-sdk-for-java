@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BgpPeerStatus model. */
 @Immutable
 public final class BgpPeerStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpPeerStatus.class);
+
     /*
      * The virtual network gateway's local address.
      */
@@ -128,5 +132,13 @@ public final class BgpPeerStatus {
      */
     public Long messagesReceived() {
         return this.messagesReceived;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

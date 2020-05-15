@@ -5,8 +5,8 @@ package com.azure.management.dns;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudError;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementError;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.core.TestUtilities;
@@ -185,8 +185,8 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assertions.assertEquals(5, compositeException.getSuppressed().length);
         for (int i = 0; i < 4; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
-            Assertions.assertTrue(exception instanceof CloudException);
-            CloudError cloudError = ((CloudException) exception).getValue();
+            Assertions.assertTrue(exception instanceof ManagementException);
+            ManagementError cloudError = ((ManagementException) exception).getValue();
             Assertions.assertNotNull(cloudError);
             Assertions.assertNotNull(cloudError.getCode());
             Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
@@ -250,8 +250,8 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assertions.assertEquals(3, compositeException.getSuppressed().length);
         for (int i = 0; i < 2; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
-            Assertions.assertTrue(exception instanceof CloudException);
-            CloudError cloudError = ((CloudException) exception).getValue();
+            Assertions.assertTrue(exception instanceof ManagementException);
+            ManagementError cloudError = ((ManagementException) exception).getValue();
             Assertions.assertNotNull(cloudError);
             Assertions.assertNotNull(cloudError.getCode());
             Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
@@ -333,8 +333,8 @@ public class DnsZoneRecordSetETagTests extends TestBase {
         Assertions.assertEquals(3, compositeException.getSuppressed().length);
         for (int i = 0; i < 2; ++i) {
             Throwable exception = compositeException.getSuppressed()[i];
-            Assertions.assertTrue(exception instanceof CloudException);
-            CloudError cloudError = ((CloudException) exception).getValue();
+            Assertions.assertTrue(exception instanceof ManagementException);
+            ManagementError cloudError = ((ManagementException) exception).getValue();
             Assertions.assertNotNull(cloudError);
             Assertions.assertNotNull(cloudError.getCode());
             Assertions.assertTrue(cloudError.getCode().contains("PreconditionFailed"));
@@ -356,27 +356,27 @@ public class DnsZoneRecordSetETagTests extends TestBase {
     }
 
     /**
-     * Runs the action and assert that action throws CloudException with CloudError.Code property set to
+     * Runs the action and assert that action throws ManagementException with CloudError.Code property set to
      * 'PreconditionFailed'.
      *
      * @param runnable runnable to run
      */
     private void ensureETagExceptionIsThrown(final Runnable runnable) {
-        boolean isCloudExceptionThrown = false;
+        boolean isManagementExceptionThrown = false;
         boolean isCloudErrorSet = false;
         boolean isPreconditionFailedCodeSet = false;
         try {
             runnable.run();
-        } catch (CloudException exception) {
-            isCloudExceptionThrown = true;
-            CloudError cloudError = exception.getValue();
+        } catch (ManagementException exception) {
+            isManagementExceptionThrown = true;
+            ManagementError cloudError = exception.getValue();
             if (cloudError != null) {
                 isCloudErrorSet = true;
                 isPreconditionFailedCodeSet = cloudError.getCode().contains("PreconditionFailed");
             }
         }
-        Assertions.assertTrue(isCloudExceptionThrown, "Expected CloudException is not thrown");
-        Assertions.assertTrue(isCloudErrorSet, "Expected CloudError property is not set in CloudException");
+        Assertions.assertTrue(isManagementExceptionThrown, "Expected ManagementException is not thrown");
+        Assertions.assertTrue(isCloudErrorSet, "Expected CloudError property is not set in ManagementException");
         Assertions
             .assertTrue(
                 isPreconditionFailedCodeSet,

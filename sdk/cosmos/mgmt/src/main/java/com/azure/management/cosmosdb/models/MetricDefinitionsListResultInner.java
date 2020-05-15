@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricDefinitionsListResult model. */
 @Immutable
 public final class MetricDefinitionsListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionsListResultInner.class);
+
     /*
      * The list of metric definitions for the account.
      */
@@ -24,5 +28,16 @@ public final class MetricDefinitionsListResultInner {
      */
     public List<MetricDefinitionInner> value() {
         return this.value;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

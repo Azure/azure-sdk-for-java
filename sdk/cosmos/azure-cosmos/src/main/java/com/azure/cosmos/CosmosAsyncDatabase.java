@@ -165,7 +165,6 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         ModelBridgeInternal.setOfferThroughput(options, throughput);
         return createContainer(containerProperties, options);
@@ -206,7 +205,6 @@ public class CosmosAsyncDatabase {
         if (containerProperties == null) {
             throw new IllegalArgumentException("containerProperties");
         }
-        ModelBridgeInternal.validateResource(ModelBridgeInternal.getResourceFromResourceWrapper(containerProperties));
         if (options == null) {
             options = new CosmosContainerRequestOptions();
         }
@@ -682,8 +680,7 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> replaceThroughput(ThroughputProperties throughputProperties) {
         return this.read()
                    .flatMap(response -> this.getDocClientWrapper()
-                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties()
-                                                                                             .getResourceId()),
+                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
                                                          new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {
@@ -715,8 +712,7 @@ public class CosmosAsyncDatabase {
     public Mono<ThroughputResponse> readThroughput() {
         return this.read()
                    .flatMap(response -> getDocClientWrapper()
-                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties()
-                                                                                            .getResourceId()),
+                                            .queryOffers(getOfferQuerySpecFromResourceId(response.getProperties().getResourceId()),
                                                          new FeedOptions())
                                             .single()
                                             .flatMap(offerFeedResponse -> {

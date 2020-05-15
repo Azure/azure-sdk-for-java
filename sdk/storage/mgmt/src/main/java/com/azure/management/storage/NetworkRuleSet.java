@@ -5,12 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkRuleSet model. */
 @Fluent
 public final class NetworkRuleSet {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
+
     /*
      * Specifies whether traffic is bypassed for Logging/Metrics/AzureServices.
      * Possible values are any combination of Logging|Metrics|AzureServices
@@ -30,7 +34,7 @@ public final class NetworkRuleSet {
      * Sets the IP ACL rules
      */
     @JsonProperty(value = "ipRules")
-    private List<IPRule> ipRules;
+    private List<IpRule> ipRules;
 
     /*
      * Specifies the default action of allow or deny when no other rules match.
@@ -87,7 +91,7 @@ public final class NetworkRuleSet {
      *
      * @return the ipRules value.
      */
-    public List<IPRule> ipRules() {
+    public List<IpRule> ipRules() {
         return this.ipRules;
     }
 
@@ -97,7 +101,7 @@ public final class NetworkRuleSet {
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet withIpRules(List<IPRule> ipRules) {
+    public NetworkRuleSet withIpRules(List<IpRule> ipRules) {
         this.ipRules = ipRules;
         return this;
     }
@@ -120,5 +124,24 @@ public final class NetworkRuleSet {
     public NetworkRuleSet withDefaultAction(DefaultAction defaultAction) {
         this.defaultAction = defaultAction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualNetworkRules() != null) {
+            virtualNetworkRules().forEach(e -> e.validate());
+        }
+        if (ipRules() != null) {
+            ipRules().forEach(e -> e.validate());
+        }
+        if (defaultAction() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
+        }
     }
 }

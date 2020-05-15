@@ -19,6 +19,7 @@ import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -88,6 +89,7 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest
     @MethodSource("redactQueryParametersSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void redactQueryParameters(String requestUrl, String expectedQueryString,
         Set<String> allowedQueryParameters) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -133,6 +135,7 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("validateLoggingDoesNotConsumeSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void validateLoggingDoesNotConsumeRequest(Flux<ByteBuffer> stream, byte[] data, int contentLength)
         throws MalformedURLException {
         URL requestUrl = new URL("https://test.com");
@@ -161,6 +164,7 @@ public class HttpLoggingPolicyTests {
      */
     @ParameterizedTest(name = "[{index}] {displayName}")
     @MethodSource("validateLoggingDoesNotConsumeSupplier")
+    @ResourceLock("SYSTEM_OUT")
     public void validateLoggingDoesNotConsumeResponse(Flux<ByteBuffer> stream, byte[] data, int contentLength) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, "https://test.com");
         HttpHeaders responseHeaders = new HttpHeaders()

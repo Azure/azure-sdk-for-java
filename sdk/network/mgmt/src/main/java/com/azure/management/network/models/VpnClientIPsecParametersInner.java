@@ -5,17 +5,21 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.DhGroup;
 import com.azure.management.network.IkeEncryption;
 import com.azure.management.network.IkeIntegrity;
 import com.azure.management.network.IpsecEncryption;
 import com.azure.management.network.IpsecIntegrity;
 import com.azure.management.network.PfsGroup;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnClientIPsecParameters model. */
 @Fluent
 public final class VpnClientIPsecParametersInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientIPsecParametersInner.class);
+
     /*
      * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
      * lifetime in seconds for P2S client.
@@ -228,5 +232,49 @@ public final class VpnClientIPsecParametersInner {
     public VpnClientIPsecParametersInner withPfsGroup(PfsGroup pfsGroup) {
         this.pfsGroup = pfsGroup;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipsecEncryption() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ipsecEncryption in model VpnClientIPsecParametersInner"));
+        }
+        if (ipsecIntegrity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ipsecIntegrity in model VpnClientIPsecParametersInner"));
+        }
+        if (ikeEncryption() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ikeEncryption in model VpnClientIPsecParametersInner"));
+        }
+        if (ikeIntegrity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ikeIntegrity in model VpnClientIPsecParametersInner"));
+        }
+        if (dhGroup() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dhGroup in model VpnClientIPsecParametersInner"));
+        }
+        if (pfsGroup() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property pfsGroup in model VpnClientIPsecParametersInner"));
+        }
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AzureFirewallNetworkRule model. */
 @Fluent
 public final class AzureFirewallNetworkRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNetworkRule.class);
+
     /*
      * Name of the network rule.
      */
@@ -165,5 +169,13 @@ public final class AzureFirewallNetworkRule {
     public AzureFirewallNetworkRule withDestinationPorts(List<String> destinationPorts) {
         this.destinationPorts = destinationPorts;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

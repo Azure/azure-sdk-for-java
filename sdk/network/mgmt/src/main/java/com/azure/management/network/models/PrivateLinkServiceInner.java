@@ -7,9 +7,10 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.management.network.PrivateLinkServicePropertiesAutoApproval;
-import com.azure.management.network.PrivateLinkServicePropertiesVisibility;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ProvisioningState;
+import com.azure.management.network.ResourceSet;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class PrivateLinkServiceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -27,7 +30,7 @@ public class PrivateLinkServiceInner extends Resource {
      * An array of references to the load balancer IP configurations.
      */
     @JsonProperty(value = "properties.loadBalancerFrontendIpConfigurations")
-    private List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations;
+    private List<FrontendIpConfigurationInner> loadBalancerFrontendIpConfigurations;
 
     /*
      * An array of references to the private link service IP configuration.
@@ -58,13 +61,13 @@ public class PrivateLinkServiceInner extends Resource {
      * The visibility list of the private link service.
      */
     @JsonProperty(value = "properties.visibility")
-    private PrivateLinkServicePropertiesVisibility visibility;
+    private ResourceSet visibility;
 
     /*
      * The auto-approval list of the private link service.
      */
     @JsonProperty(value = "properties.autoApproval")
-    private PrivateLinkServicePropertiesAutoApproval autoApproval;
+    private ResourceSet autoApproval;
 
     /*
      * The list of Fqdn.
@@ -110,7 +113,7 @@ public class PrivateLinkServiceInner extends Resource {
      *
      * @return the loadBalancerFrontendIpConfigurations value.
      */
-    public List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations() {
+    public List<FrontendIpConfigurationInner> loadBalancerFrontendIpConfigurations() {
         return this.loadBalancerFrontendIpConfigurations;
     }
 
@@ -122,7 +125,7 @@ public class PrivateLinkServiceInner extends Resource {
      * @return the PrivateLinkServiceInner object itself.
      */
     public PrivateLinkServiceInner withLoadBalancerFrontendIpConfigurations(
-        List<FrontendIPConfigurationInner> loadBalancerFrontendIpConfigurations) {
+        List<FrontendIpConfigurationInner> loadBalancerFrontendIpConfigurations) {
         this.loadBalancerFrontendIpConfigurations = loadBalancerFrontendIpConfigurations;
         return this;
     }
@@ -192,7 +195,7 @@ public class PrivateLinkServiceInner extends Resource {
      *
      * @return the visibility value.
      */
-    public PrivateLinkServicePropertiesVisibility visibility() {
+    public ResourceSet visibility() {
         return this.visibility;
     }
 
@@ -202,7 +205,7 @@ public class PrivateLinkServiceInner extends Resource {
      * @param visibility the visibility value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
-    public PrivateLinkServiceInner withVisibility(PrivateLinkServicePropertiesVisibility visibility) {
+    public PrivateLinkServiceInner withVisibility(ResourceSet visibility) {
         this.visibility = visibility;
         return this;
     }
@@ -212,7 +215,7 @@ public class PrivateLinkServiceInner extends Resource {
      *
      * @return the autoApproval value.
      */
-    public PrivateLinkServicePropertiesAutoApproval autoApproval() {
+    public ResourceSet autoApproval() {
         return this.autoApproval;
     }
 
@@ -222,7 +225,7 @@ public class PrivateLinkServiceInner extends Resource {
      * @param autoApproval the autoApproval value to set.
      * @return the PrivateLinkServiceInner object itself.
      */
-    public PrivateLinkServiceInner withAutoApproval(PrivateLinkServicePropertiesAutoApproval autoApproval) {
+    public PrivateLinkServiceInner withAutoApproval(ResourceSet autoApproval) {
         this.autoApproval = autoApproval;
         return this;
     }
@@ -274,5 +277,31 @@ public class PrivateLinkServiceInner extends Resource {
     public PrivateLinkServiceInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (loadBalancerFrontendIpConfigurations() != null) {
+            loadBalancerFrontendIpConfigurations().forEach(e -> e.validate());
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
+        if (networkInterfaces() != null) {
+            networkInterfaces().forEach(e -> e.validate());
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (visibility() != null) {
+            visibility().validate();
+        }
+        if (autoApproval() != null) {
+            autoApproval().validate();
+        }
     }
 }

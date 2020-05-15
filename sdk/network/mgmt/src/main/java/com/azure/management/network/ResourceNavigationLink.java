@@ -7,24 +7,22 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceNavigationLink model. */
 @JsonFlatten
 @Fluent
 public class ResourceNavigationLink extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNavigationLink.class);
+
     /*
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
-
-    /*
-     * Resource navigation link identifier.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -76,15 +74,6 @@ public class ResourceNavigationLink extends SubResource {
     public ResourceNavigationLink withName(String name) {
         this.name = name;
         return this;
-    }
-
-    /**
-     * Get the id property: Resource navigation link identifier.
-     *
-     * @return the id value.
-     */
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -152,5 +141,13 @@ public class ResourceNavigationLink extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

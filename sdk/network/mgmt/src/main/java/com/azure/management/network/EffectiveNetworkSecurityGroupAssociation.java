@@ -6,11 +6,15 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EffectiveNetworkSecurityGroupAssociation model. */
 @Fluent
 public final class EffectiveNetworkSecurityGroupAssociation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroupAssociation.class);
+
     /*
      * The ID of the subnet if assigned.
      */
@@ -61,5 +65,13 @@ public final class EffectiveNetworkSecurityGroupAssociation {
     public EffectiveNetworkSecurityGroupAssociation withNetworkInterface(SubResource networkInterface) {
         this.networkInterface = networkInterface;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

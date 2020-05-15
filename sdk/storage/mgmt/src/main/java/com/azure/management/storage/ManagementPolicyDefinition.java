@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagementPolicyDefinition model. */
 @Fluent
 public final class ManagementPolicyDefinition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyDefinition.class);
+
     /*
      * An object that defines the action set.
      */
@@ -60,5 +64,24 @@ public final class ManagementPolicyDefinition {
     public ManagementPolicyDefinition withFilters(ManagementPolicyFilter filters) {
         this.filters = filters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (actions() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property actions in model ManagementPolicyDefinition"));
+        } else {
+            actions().validate();
+        }
+        if (filters() != null) {
+            filters().validate();
+        }
     }
 }

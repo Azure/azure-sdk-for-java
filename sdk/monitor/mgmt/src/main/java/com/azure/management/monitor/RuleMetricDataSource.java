@@ -6,15 +6,20 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /** The RuleMetricDataSource model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
 @JsonFlatten
 @Fluent
-public final class RuleMetricDataSource extends RuleDataSource {
+public class RuleMetricDataSource extends RuleDataSource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleMetricDataSource.class);
+
     /*
      * the name of the metric that defines what the rule monitors.
      */
@@ -39,5 +44,15 @@ public final class RuleMetricDataSource extends RuleDataSource {
     public RuleMetricDataSource withMetricName(String metricName) {
         this.metricName = metricName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

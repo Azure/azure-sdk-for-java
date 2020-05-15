@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SloUsageMetric;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.UUID;
 @JsonFlatten
 @Immutable
 public class ServiceTierAdvisorInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTierAdvisorInner.class);
+
     /*
      * The observation period start (ISO8601 format).
      */
@@ -336,5 +340,16 @@ public class ServiceTierAdvisorInner extends ProxyResource {
      */
     public Double confidence() {
         return this.confidence;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (serviceLevelObjectiveUsageMetrics() != null) {
+            serviceLevelObjectiveUsageMetrics().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineCaptureParameters model. */
 @Fluent
 public final class VirtualMachineCaptureParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineCaptureParameters.class);
+
     /*
      * The captured virtual hard disk's name prefix.
      */
@@ -89,5 +93,25 @@ public final class VirtualMachineCaptureParameters {
     public VirtualMachineCaptureParameters withOverwriteVhds(boolean overwriteVhds) {
         this.overwriteVhds = overwriteVhds;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vhdPrefix() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property vhdPrefix in model VirtualMachineCaptureParameters"));
+        }
+        if (destinationContainerName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destinationContainerName in model VirtualMachineCaptureParameters"));
+        }
     }
 }

@@ -5,17 +5,21 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The AzureReachabilityReportLatencyInfo model. */
 @Fluent
 public final class AzureReachabilityReportLatencyInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportLatencyInfo.class);
+
     /*
      * The time stamp.
      */
     @JsonProperty(value = "timeStamp")
-    private OffsetDateTime timeStamp;
+    private OffsetDateTime timestamp;
 
     /*
      * The relative latency score between 1 and 100, higher values indicating a
@@ -25,22 +29,22 @@ public final class AzureReachabilityReportLatencyInfo {
     private Integer score;
 
     /**
-     * Get the timeStamp property: The time stamp.
+     * Get the timestamp property: The time stamp.
      *
-     * @return the timeStamp value.
+     * @return the timestamp value.
      */
-    public OffsetDateTime timeStamp() {
-        return this.timeStamp;
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
-     * Set the timeStamp property: The time stamp.
+     * Set the timestamp property: The time stamp.
      *
-     * @param timeStamp the timeStamp value to set.
+     * @param timestamp the timestamp value to set.
      * @return the AzureReachabilityReportLatencyInfo object itself.
      */
-    public AzureReachabilityReportLatencyInfo withTimeStamp(OffsetDateTime timeStamp) {
-        this.timeStamp = timeStamp;
+    public AzureReachabilityReportLatencyInfo withTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
         return this;
     }
 
@@ -64,5 +68,13 @@ public final class AzureReachabilityReportLatencyInfo {
     public AzureReachabilityReportLatencyInfo withScore(Integer score) {
         this.score = score;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

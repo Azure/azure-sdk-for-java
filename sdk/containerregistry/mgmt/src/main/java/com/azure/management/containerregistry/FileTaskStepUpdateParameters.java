@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonTypeName("FileTask")
 @Fluent
 public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileTaskStepUpdateParameters.class);
+
     /*
      * The task template/definition file path relative to the source context.
      */
@@ -92,5 +96,18 @@ public final class FileTaskStepUpdateParameters extends TaskStepUpdateParameters
     public FileTaskStepUpdateParameters withValues(List<SetValue> values) {
         this.values = values;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (values() != null) {
+            values().forEach(e -> e.validate());
+        }
     }
 }

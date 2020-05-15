@@ -7,15 +7,17 @@ package com.azure.management.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.ContainerServiceLinuxProfile;
 import com.azure.management.containerservice.ContainerServiceNetworkProfile;
-import com.azure.management.containerservice.ManagedClusterAADProfile;
+import com.azure.management.containerservice.ManagedClusterAadProfile;
 import com.azure.management.containerservice.ManagedClusterAddonProfile;
 import com.azure.management.containerservice.ManagedClusterAgentPoolProfile;
 import com.azure.management.containerservice.ManagedClusterApiServerAccessProfile;
 import com.azure.management.containerservice.ManagedClusterIdentity;
 import com.azure.management.containerservice.ManagedClusterServicePrincipalProfile;
 import com.azure.management.containerservice.ManagedClusterWindowsProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class ManagedClusterInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterInner.class);
+
     /*
      * The identity of the managed cluster, if configured.
      */
@@ -120,7 +124,7 @@ public class ManagedClusterInner extends Resource {
      * Profile of Azure Active Directory configuration.
      */
     @JsonProperty(value = "properties.aadProfile")
-    private ManagedClusterAADProfile aadProfile;
+    private ManagedClusterAadProfile aadProfile;
 
     /*
      * Access profile for managed cluster API server.
@@ -404,7 +408,7 @@ public class ManagedClusterInner extends Resource {
      *
      * @return the aadProfile value.
      */
-    public ManagedClusterAADProfile aadProfile() {
+    public ManagedClusterAadProfile aadProfile() {
         return this.aadProfile;
     }
 
@@ -414,7 +418,7 @@ public class ManagedClusterInner extends Resource {
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterInner object itself.
      */
-    public ManagedClusterInner withAadProfile(ManagedClusterAADProfile aadProfile) {
+    public ManagedClusterInner withAadProfile(ManagedClusterAadProfile aadProfile) {
         this.aadProfile = aadProfile;
         return this;
     }
@@ -437,5 +441,40 @@ public class ManagedClusterInner extends Resource {
     public ManagedClusterInner withApiServerAccessProfile(ManagedClusterApiServerAccessProfile apiServerAccessProfile) {
         this.apiServerAccessProfile = apiServerAccessProfile;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (agentPoolProfiles() != null) {
+            agentPoolProfiles().forEach(e -> e.validate());
+        }
+        if (linuxProfile() != null) {
+            linuxProfile().validate();
+        }
+        if (windowsProfile() != null) {
+            windowsProfile().validate();
+        }
+        if (servicePrincipalProfile() != null) {
+            servicePrincipalProfile().validate();
+        }
+        if (addonProfiles() != null) {
+            addonProfiles().values().forEach(e -> e.validate());
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
+        if (aadProfile() != null) {
+            aadProfile().validate();
+        }
+        if (apiServerAccessProfile() != null) {
+            apiServerAccessProfile().validate();
+        }
     }
 }

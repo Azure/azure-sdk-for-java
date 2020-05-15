@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CsmOperationDescriptionProperties model. */
 @Fluent
 public final class CsmOperationDescriptionProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmOperationDescriptionProperties.class);
+
     /*
      * Resource metrics service provided by Microsoft.Insights resource
      * provider.
@@ -35,5 +39,16 @@ public final class CsmOperationDescriptionProperties {
     public CsmOperationDescriptionProperties withServiceSpecification(ServiceSpecification serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (serviceSpecification() != null) {
+            serviceSpecification().validate();
+        }
     }
 }

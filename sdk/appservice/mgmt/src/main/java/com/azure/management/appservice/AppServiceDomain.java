@@ -70,7 +70,7 @@ public interface AppServiceDomain
     boolean readyForDnsRecordManagement();
 
     /** @return all hostnames derived from the domain and assigned to Azure resources */
-    Map<String, HostName> managedHostNames();
+    Map<String, Hostname> managedHostNames();
 
     /** @return legal agreement consent. */
     DomainPurchaseConsent consent();

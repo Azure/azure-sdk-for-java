@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The FirewallRuleListResult model. */
 @Fluent
 public final class FirewallRuleListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleListResultInner.class);
+
     /*
      * The list of server firewall rules.
      */
@@ -35,5 +39,16 @@ public final class FirewallRuleListResultInner {
     public FirewallRuleListResultInner withValue(List<FirewallRuleInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

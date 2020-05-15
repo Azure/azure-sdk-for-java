@@ -8,7 +8,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
-import com.azure.cosmos.models.ResourceWrapper;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
 
@@ -122,7 +121,7 @@ public class TracerProvider {
         }
     }
 
-    public <T extends CosmosResponse<? extends ResourceWrapper>> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
+    public <T extends CosmosResponse<?>> Mono<T> traceEnabledCosmosResponsePublisher(Mono<T> resultPublisher,
                                                                                                              Context context,
                                                                                                              String spanName,
                                                                                                              String databaseId,

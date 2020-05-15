@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.network.ErrorException;
 import com.azure.management.network.GetVpnSitesConfigurationRequest;
@@ -30,6 +31,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VpnSitesConfigurations. */
 public final class VpnSitesConfigurationsInner {
+    private final ClientLogger logger = new ClientLogger(VpnSitesConfigurationsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final VpnSitesConfigurationsService service;
 
@@ -57,30 +60,30 @@ public final class VpnSitesConfigurationsInner {
     private interface VpnSitesConfigurationsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualWans/{virtualWANName}/vpnConfiguration")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWANName}/vpnConfiguration")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> download(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWANName") String virtualWANName,
+            @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GetVpnSitesConfigurationRequest request,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualWans/{virtualWANName}/vpnConfiguration")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWANName}/vpnConfiguration")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<Void>> beginDownload(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWANName") String virtualWANName,
+            @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") GetVpnSitesConfigurationRequest request,
             Context context);
@@ -90,7 +93,7 @@ public final class VpnSitesConfigurationsInner {
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request List of Vpn-Sites.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -99,7 +102,29 @@ public final class VpnSitesConfigurationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> downloadWithResponseAsync(
-        String resourceGroupName, String virtualWANName, GetVpnSitesConfigurationRequest request) {
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -109,7 +134,7 @@ public final class VpnSitesConfigurationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWANName,
+                            virtualWanName,
                             apiVersion,
                             request,
                             context))
@@ -120,7 +145,7 @@ public final class VpnSitesConfigurationsInner {
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request List of Vpn-Sites.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -129,9 +154,9 @@ public final class VpnSitesConfigurationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> downloadAsync(
-        String resourceGroupName, String virtualWANName, GetVpnSitesConfigurationRequest request) {
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            downloadWithResponseAsync(resourceGroupName, virtualWANName, request);
+            downloadWithResponseAsync(resourceGroupName, virtualWanName, request);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -143,22 +168,22 @@ public final class VpnSitesConfigurationsInner {
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request List of Vpn-Sites.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void download(String resourceGroupName, String virtualWANName, GetVpnSitesConfigurationRequest request) {
-        downloadAsync(resourceGroupName, virtualWANName, request).block();
+    public void download(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+        downloadAsync(resourceGroupName, virtualWanName, request).block();
     }
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request List of Vpn-Sites.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -167,7 +192,29 @@ public final class VpnSitesConfigurationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDownloadWithResponseAsync(
-        String resourceGroupName, String virtualWANName, GetVpnSitesConfigurationRequest request) {
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -177,7 +224,7 @@ public final class VpnSitesConfigurationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWANName,
+                            virtualWanName,
                             apiVersion,
                             request,
                             context))
@@ -188,7 +235,56 @@ public final class VpnSitesConfigurationsInner {
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param request List of Vpn-Sites.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDownloadWithResponseAsync(
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        if (request == null) {
+            return Mono.error(new IllegalArgumentException("Parameter request is required and cannot be null."));
+        } else {
+            request.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginDownload(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                apiVersion,
+                request,
+                context);
+    }
+
+    /**
+     * Gives the sas-url to download the configurations for vpn-sites in a resource group.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request List of Vpn-Sites.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -197,8 +293,8 @@ public final class VpnSitesConfigurationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> beginDownloadAsync(
-        String resourceGroupName, String virtualWANName, GetVpnSitesConfigurationRequest request) {
-        return beginDownloadWithResponseAsync(resourceGroupName, virtualWANName, request)
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+        return beginDownloadWithResponseAsync(resourceGroupName, virtualWanName, request)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
@@ -206,7 +302,7 @@ public final class VpnSitesConfigurationsInner {
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
+     * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request List of Vpn-Sites.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -214,7 +310,7 @@ public final class VpnSitesConfigurationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void beginDownload(
-        String resourceGroupName, String virtualWANName, GetVpnSitesConfigurationRequest request) {
-        beginDownloadAsync(resourceGroupName, virtualWANName, request).block();
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request) {
+        beginDownloadAsync(resourceGroupName, virtualWanName, request).block();
     }
 }

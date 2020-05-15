@@ -286,7 +286,7 @@ public abstract class StorageInputStream extends InputStream {
         int chunks = (int) (Math.ceil((double) len / (double) this.chunkSize));
         int numOfBytesRead = 0;
         for (int i = 0; i < chunks; i++) {
-            int results = this.readInternal(b, off + numOfBytesRead, len);
+            int results = this.readInternal(b, off + numOfBytesRead, len - numOfBytesRead);
             if (results == -1) {
                 return -1;
             }
