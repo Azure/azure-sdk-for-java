@@ -4,7 +4,6 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
@@ -42,7 +41,6 @@ public class ReceiveMultipleSessionsAsyncSample {
             .connectionString(connectionString)
             .sessionReceiver()
             .maxConcurrentSessions(3)
-            .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
