@@ -10,6 +10,30 @@ and includes six main functions:
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
+## Table of contents
+- [Table of contents](#table-of-contents)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Including the package](#include-the-package)
+  - [Authenticate the client](#authenticate-the-client)
+    - [Looking up the endpoint](#looking-up-the-endpoint)
+    - [Create a Cognitive Services or Text Analytics resource](#create-a-cognitive-services-or-text-analytics-resource)
+    - [Create a Text Analytics client using Microsoft identity platform (formerly Azure Active Directory)](#create-a-text-analytics-client-using-microsoft-identity-platform-formerly-azure-active-directory)
+- [Key concepts](#key-concepts)
+    - [Client](#client)
+    - [Input](#input)
+    - [Operation on multiple documents](#operation-on-multiple-documents)
+    - [Return value](#return-value)
+    - [Return value collection](#return-value-collection)
+- [Examples](#examples)
+- [Troubleshooting](#troubleshooting)
+  - [General](#general)
+  - [Enable client logging](#enable-client-logging)
+  - [Default HTTP Client](#default-http-client)
+  - [Default SSL library](#default-ssl-library)
+- [Next steps](#next-steps)
+- [Contributing](#contributing)
+
 ## Getting started
 
 ### Prerequisites
