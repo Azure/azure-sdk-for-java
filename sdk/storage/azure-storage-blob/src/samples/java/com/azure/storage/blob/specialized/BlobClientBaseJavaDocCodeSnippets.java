@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -28,8 +29,6 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.ErrorReceiver;
-import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.common.implementation.Constants;
 
 import java.io.ByteArrayOutputStream;
@@ -45,6 +44,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Code snippets for {@link BlobClientBase}
@@ -464,15 +464,15 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setRecordSeparator('\n');
         BlobRequestConditions requestConditions = new BlobRequestConditions()
             .setLeaseId("leaseId");
-        ErrorReceiver<BlobQueryError> errorHandler = System.out::println;
-        ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total blob bytes read: "
-            + bytesTransferred);
+        Consumer<BlobQueryError> errorConsumer = System.out::println;
+        Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
+            + progress.getBytesScanned());
         BlobQueryOptions queryOptions = new BlobQueryOptions()
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
-            .setErrorReceiver(errorHandler)
-            .setProgressReceiver(progressReceiver);
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
 
         InputStream inputStream = client.openQueryInputStream(expression, queryOptions);
         // Now you can read from the input stream like you would normally.
@@ -507,15 +507,15 @@ public class BlobClientBaseJavaDocCodeSnippets {
             .setFieldQuote('\'')
             .setHeadersPresent(true);
         BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId(leaseId);
-        ErrorReceiver<BlobQueryError> errorHandler = System.out::println;
-        ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total blob bytes read: "
-            + bytesTransferred);
+        Consumer<BlobQueryError> errorConsumer = System.out::println;
+        Consumer<BlobQueryProgress> progressConsumer = progress -> System.out.println("total blob bytes read: "
+            + progress.getBytesScanned());
         BlobQueryOptions queryOptions = new BlobQueryOptions()
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
-            .setErrorReceiver(errorHandler)
-            .setProgressReceiver(progressReceiver);
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
         System.out.printf("Query completed with status %d%n",
             client.queryWithResponse(queryData, expression, queryOptions, timeout, new Context(key1, value1))
                 .getStatusCode());

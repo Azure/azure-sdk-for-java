@@ -3,12 +3,12 @@ package com.azure.storage.blob.specialized
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClient
 import com.azure.storage.blob.models.*
-import com.azure.storage.common.ErrorReceiver
-import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
 import reactor.core.Exceptions
 import spock.lang.Requires
 import spock.lang.Unroll
+
+import java.util.function.Consumer
 
 class BlobBaseAPITest extends APISpec {
 
@@ -325,12 +325,12 @@ class BlobBaseAPITest extends APISpec {
             .setFieldQuote('\0' as char)
             .setHeadersPresent(false)
         uploadCsv(base.setColumnSeparator('.' as char), 32)
-        MockErrorReceiver receiver = new MockErrorReceiver("InvalidColumnOrdinal")
+        MockErrorConsumer receiver = new MockErrorConsumer("InvalidColumnOrdinal")
         def expression = "SELECT _1 from BlobStorage WHERE _2 > 250"
         BlobQueryOptions options = new BlobQueryOptions()
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorReceiver(receiver)
+            .setErrorConsumer(receiver)
 
         /* Input Stream. */
         when:
@@ -343,11 +343,11 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        receiver = new MockErrorReceiver("InvalidColumnOrdinal")
+        receiver = new MockErrorConsumer("InvalidColumnOrdinal")
         options = new BlobQueryOptions()
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorReceiver(receiver)
+            .setErrorConsumer(receiver)
         bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -393,11 +393,11 @@ class BlobBaseAPITest extends APISpec {
 
         uploadCsv(base.setColumnSeparator('.' as char), 32)
 
-        def mockReceiver = new MockProgressReceiver()
+        def mockReceiver = new MockProgressConsumer()
         def sizeofBlobToRead = bc.getProperties().getBlobSize()
         def expression = "SELECT * from BlobStorage"
         BlobQueryOptions options = new BlobQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
@@ -416,9 +416,9 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        mockReceiver = new MockProgressReceiver()
+        mockReceiver = new MockProgressConsumer()
         options = new BlobQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
         bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -436,10 +436,10 @@ class BlobBaseAPITest extends APISpec {
             .setHeadersPresent(false)
         uploadCsv(ser, 512000)
 
-        def mockReceiver = new MockProgressReceiver()
+        def mockReceiver = new MockProgressConsumer()
         def expression = "SELECT * from BlobStorage"
         BlobQueryOptions options = new BlobQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
@@ -462,10 +462,10 @@ class BlobBaseAPITest extends APISpec {
 
         /* Output Stream. */
         when:
-        mockReceiver = new MockProgressReceiver()
+        mockReceiver = new MockProgressConsumer()
         temp = 0
         options = new BlobQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
         bc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -625,32 +625,32 @@ class BlobBaseAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    class MockProgressReceiver implements ProgressReceiver {
+    class MockProgressConsumer implements Consumer<BlobQueryProgress> {
 
         List<Long> progressList
 
-        MockProgressReceiver() {
+        MockProgressConsumer() {
             this.progressList = new ArrayList<>()
         }
 
         @Override
-        void reportProgress(long bytesRead) {
-            progressList.add(bytesRead)
+        void accept(BlobQueryProgress progress) {
+            progressList.add(progress.getBytesScanned())
         }
     }
 
-    class MockErrorReceiver implements ErrorReceiver<BlobQueryError> {
+    class MockErrorConsumer implements Consumer<BlobQueryError> {
 
         String expectedType
         int numErrors
 
-        MockErrorReceiver(String expectedType) {
+        MockErrorConsumer(String expectedType) {
             this.expectedType = expectedType
             this.numErrors = 0
         }
 
         @Override
-        void reportError(BlobQueryError nonFatalError) {
+        void accept(BlobQueryError nonFatalError) {
             assert !nonFatalError.isFatal()
             assert nonFatalError.getName() == expectedType
             numErrors++

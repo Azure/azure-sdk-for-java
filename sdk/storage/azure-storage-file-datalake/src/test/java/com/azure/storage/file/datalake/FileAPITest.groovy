@@ -7,7 +7,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.common.ErrorReceiver
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
@@ -27,6 +26,7 @@ import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
+import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
     DataLakeFileClient fc
@@ -2942,7 +2942,7 @@ class FileAPITest extends APISpec {
         FileQueryOptions options = new FileQueryOptions()
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorReceiver(receiver)
+            .setErrorConsumer(receiver)
 
         /* Input Stream. */
         when:
@@ -2959,7 +2959,7 @@ class FileAPITest extends APISpec {
         options = new FileQueryOptions()
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorReceiver(receiver)
+            .setErrorConsumer(receiver)
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -3009,7 +3009,7 @@ class FileAPITest extends APISpec {
         def sizeofBlobToRead = fc.getProperties().getFileSize()
         def expression = "SELECT * from BlobStorage"
         FileQueryOptions options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
@@ -3030,7 +3030,7 @@ class FileAPITest extends APISpec {
         when:
         mockReceiver = new MockProgressReceiver()
         options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -3051,7 +3051,7 @@ class FileAPITest extends APISpec {
         def mockReceiver = new MockProgressReceiver()
         def expression = "SELECT * from BlobStorage"
         FileQueryOptions options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
@@ -3077,7 +3077,7 @@ class FileAPITest extends APISpec {
         mockReceiver = new MockProgressReceiver()
         temp = 0
         options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -3198,7 +3198,7 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
-    class MockProgressReceiver implements ProgressReceiver {
+    class MockProgressReceiver implements Consumer<FileQueryProgress> {
 
         List<Long> progressList
 
@@ -3207,12 +3207,12 @@ class FileAPITest extends APISpec {
         }
 
         @Override
-        void reportProgress(long bytesRead) {
-            progressList.add(bytesRead)
+        void accept(FileQueryProgress progress) {
+            progressList.add(progress.getBytesScanned())
         }
     }
 
-    class MockErrorReceiver implements ErrorReceiver<FileQueryError> {
+    class MockErrorReceiver implements Consumer<FileQueryError> {
 
         String expectedType
         int numErrors
@@ -3223,7 +3223,7 @@ class FileAPITest extends APISpec {
         }
 
         @Override
-        void reportError(FileQueryError error) {
+        void accept(FileQueryError error) {
             assert !error.isFatal()
             assert error.getName() == expectedType
             numErrors++

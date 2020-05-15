@@ -9,9 +9,8 @@ import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQuerySerialization;
-import com.azure.storage.common.ErrorReceiver;
-import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.AvroParser;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * This class provides helper methods for blob query functions.
@@ -32,23 +32,23 @@ import java.util.Map;
 public class BlobQueryReader {
 
     private final Flux<ByteBuffer> avro;
-    private final ProgressReceiver progressReceiver;
-    private final ErrorReceiver<BlobQueryError> errorReceiver;
+    private final Consumer<BlobQueryProgress> progressConsumer;
+    private final Consumer<BlobQueryError> errorConsumer;
     private final AvroParser parser;
 
     /**
      * Creates a new BlobQueryReader.
      *
      * @param avro The reactive avro stream.
-     * @param progressReceiver The progress receiver.
-     * @param errorReceiver The error receiver.
+     * @param progressConsumer The progress consumer.
+     * @param errorConsumer The error consumer.
      */
-    public BlobQueryReader(Flux<ByteBuffer> avro, ProgressReceiver progressReceiver,
-        ErrorReceiver<BlobQueryError> errorReceiver) {
+    public BlobQueryReader(Flux<ByteBuffer> avro, Consumer<BlobQueryProgress> progressConsumer,
+        Consumer<BlobQueryError> errorConsumer) {
         this.parser = new AvroParser();
         this.avro = avro;
-        this.progressReceiver = progressReceiver;
-        this.errorReceiver = errorReceiver;
+        this.progressConsumer = progressConsumer;
+        this.errorConsumer = errorConsumer;
     }
 
     /**
@@ -117,12 +117,12 @@ public class BlobQueryReader {
      * @return Mono.empty or Mono.error
      */
     private Mono<ByteBuffer> parseEnd(Map<?, ?> endRecord) {
-        if (progressReceiver != null) {
-            Object total = endRecord.get("totalBytes");
+        if (progressConsumer != null) {
+            Object totalBytes = endRecord.get("totalBytes");
 
-            if (checkParametersNotNull(total)) {
-                AvroSchema.checkType("total", total, Long.class);
-                progressReceiver.reportProgress((Long) total);
+            if (checkParametersNotNull(totalBytes)) {
+                AvroSchema.checkType("totalBytes", totalBytes, Long.class);
+                progressConsumer.accept(new BlobQueryProgress((long) totalBytes, (long) totalBytes));
             } else {
                 return Mono.error(new IllegalArgumentException("Failed to parse end record from query "
                     + "response stream."));
@@ -137,12 +137,14 @@ public class BlobQueryReader {
      * @return Mono.empty or Mono.error
      */
     private Mono<ByteBuffer> parseProgress(Map<?, ?> progressRecord) {
-        if (progressReceiver != null) {
+        if (progressConsumer != null) {
             Object bytesScanned = progressRecord.get("bytesScanned");
+            Object totalBytes = progressRecord.get("totalBytes");
 
-            if (checkParametersNotNull(bytesScanned)) {
+            if (checkParametersNotNull(bytesScanned, totalBytes)) {
                 AvroSchema.checkType("bytesScanned", bytesScanned, Long.class);
-                progressReceiver.reportProgress((Long) bytesScanned);
+                AvroSchema.checkType("totalBytes", totalBytes, Long.class);
+                progressConsumer.accept(new BlobQueryProgress((long) bytesScanned, (long) totalBytes));
             } else {
                 return Mono.error(new IllegalArgumentException("Failed to parse progress record from "
                     + "query response stream."));
@@ -171,8 +173,8 @@ public class BlobQueryReader {
             BlobQueryError error = new BlobQueryError((Boolean) fatal, (String) name,
                 (String) description, (Long) position);
 
-            if (errorReceiver != null) {
-                errorReceiver.reportError(error);
+            if (errorConsumer != null) {
+                errorConsumer.accept(error);
             } else {
                 return Mono.error(new IOException("An error was reported during query response processing, "
                     + System.lineSeparator() + error.toString()));

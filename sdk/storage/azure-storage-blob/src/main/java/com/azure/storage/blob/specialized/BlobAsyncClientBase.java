@@ -1676,8 +1676,8 @@ public class BlobAsyncClientBase {
             .map(response -> new BlobQueryAsyncResponse(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(),
                 /* Parse the avro reactive stream. */
-                new BlobQueryReader(response.getValue(), finalQueryOptions.getProgressReceiver(),
-                    finalQueryOptions.getErrorReceiver())
+                new BlobQueryReader(response.getValue(), finalQueryOptions.getProgressConsumer(),
+                    finalQueryOptions.getErrorConsumer())
                     .read(),
                 response.getDeserializedHeaders()));
     }

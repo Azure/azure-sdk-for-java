@@ -4,15 +4,14 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.util.Context;
-import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
 import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import reactor.core.publisher.Flux;
@@ -30,6 +29,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Code snippets for {@link DataLakeFileAsyncClient}
@@ -330,15 +330,15 @@ public class DataLakeFileAsyncClientJavaDocSamples {
             .setFieldQuote('\'')
             .setHeadersPresent(true);
         DataLakeRequestConditions requestConditions = new DataLakeRequestConditions().setLeaseId(leaseId);
-        ErrorReceiver<FileQueryError> errorHandler = System.out::println;
-        ProgressReceiver progressReceiver = bytesTransferred -> System.out.println("total file bytes read: "
-            + bytesTransferred);
+        Consumer<FileQueryError> errorConsumer = System.out::println;
+        Consumer<FileQueryProgress> progressConsumer = progress -> System.out.println("total file bytes read: "
+            + progress.getBytesScanned());
         FileQueryOptions queryOptions = new FileQueryOptions()
             .setInputSerialization(input)
             .setOutputSerialization(output)
             .setRequestConditions(requestConditions)
-            .setErrorReceiver(errorHandler)
-            .setProgressReceiver(progressReceiver);
+            .setErrorConsumer(errorConsumer)
+            .setProgressConsumer(progressConsumer);
 
         client.queryWithResponse(expression, queryOptions)
             .subscribe(response -> {

@@ -4,7 +4,7 @@
 package com.azure.storage.blob.models;
 
 /**
- * Defines a blob quick query error that can be returned on parsing a blob quick query request.
+ * Defines a blob query error that can be returned on parsing a blob query request.
  */
 public class BlobQueryError {
 
@@ -14,7 +14,7 @@ public class BlobQueryError {
     private final long position;
 
     /**
-     * Creates a new BlobQuickQueryError object.
+     * Creates a new BlobQueryError object.
      * @param fatal Whether or not the error is fatal.
      * @param name The name of the error.
      * @param description A description of the error.
