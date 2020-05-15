@@ -38,6 +38,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.time.Duration;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -542,8 +543,21 @@ public final class ServiceBusClientBuilder {
         private String sessionId;
         private String subscriptionName;
         private String topicName;
+        private Duration maxAutoLockRenewalDuration;
 
         private ServiceBusSessionReceiverClientBuilder() {
+        }
+
+        /**
+         * Enables auto-lock renewal by renewing session lock renewal until the {@code maxAutoLockRenewalDuration} has
+         * elapsed.
+         *
+         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
+         */
+        public ServiceBusSessionReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
+            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
+            return this;
         }
 
         /**
@@ -551,7 +565,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param maxConcurrentSessions Maximum number of concurrent sessions to process at any given time.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          * @throws IllegalArgumentException if {@code maxConcurrentSessions} is less than 1.
          */
         public ServiceBusSessionReceiverClientBuilder maxConcurrentSessions(int maxConcurrentSessions) {
@@ -574,7 +588,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param prefetchCount The prefetch count.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder prefetchCount(int prefetchCount) {
             this.prefetchCount = prefetchCount;
@@ -586,7 +600,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param queueName Name of the queue.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder queueName(String queueName) {
             this.queueName = queueName;
@@ -598,7 +612,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param receiveMode Mode for receiving messages.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder receiveMode(ReceiveMode receiveMode) {
             this.receiveMode = receiveMode;
@@ -610,7 +624,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param sessionId session id.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          */
         public ServiceBusSessionReceiverClientBuilder sessionId(String sessionId) {
             this.sessionId = sessionId;
@@ -623,7 +637,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param subscriptionName Name of the subscription.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          * @see #topicName A topic name should be set as well.
          */
         public ServiceBusSessionReceiverClientBuilder subscriptionName(String subscriptionName) {
@@ -636,7 +650,7 @@ public final class ServiceBusClientBuilder {
          *
          * @param topicName Name of the topic.
          *
-         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         * @return The modified {@link ServiceBusSessionReceiverClientBuilder} object.
          * @see #subscriptionName A subscription name should be set as well.
          */
         public ServiceBusSessionReceiverClientBuilder topicName(String topicName) {
@@ -734,8 +748,21 @@ public final class ServiceBusClientBuilder {
         private ReceiveMode receiveMode = ReceiveMode.PEEK_LOCK;
         private String subscriptionName;
         private String topicName;
+        private Duration maxAutoLockRenewalDuration;
 
         private ServiceBusReceiverClientBuilder() {
+        }
+
+        /**
+         * Enables auto-lock renewal by renewing session lock renewal until the {@code maxAutoLockRenewalDuration} has
+         * elapsed.
+         *
+         * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
+         * @return The modified {@link ServiceBusReceiverClientBuilder} object.
+         */
+        public ServiceBusReceiverClientBuilder maxAutoLockRenewalDuration(Duration maxAutoLockRenewalDuration) {
+            this.maxAutoLockRenewalDuration = maxAutoLockRenewalDuration;
+            return this;
         }
 
         /**

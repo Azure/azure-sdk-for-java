@@ -22,7 +22,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
@@ -79,7 +78,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
-    private final ReceiveAsyncOptions defaultReceiveOptions;
     private final Runnable onClientClose;
     private final UnnamedSessionManager unnamedSessionManager;
 
@@ -114,9 +112,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
-        this.defaultReceiveOptions = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(true)
-            .setMaxAutoLockRenewalDuration(connectionProcessor.getRetryOptions().getTryTimeout());
         this.unnamedSessionManager = null;
     }
 
@@ -136,9 +131,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         this.unnamedSessionManager = Objects.requireNonNull(unnamedSessionManager, "'sessionManager' cannot be null.");
 
         this.managementNodeLocks = new MessageLockContainer(cleanupInterval);
-        this.defaultReceiveOptions = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(true)
-            .setMaxAutoLockRenewalDuration(connectionProcessor.getRetryOptions().getTryTimeout());
     }
 
     /**
@@ -631,43 +623,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     downstream consumers are still processing the message.
      */
     public Flux<ServiceBusReceivedMessageContext> receive() {
-        return receive(defaultReceiveOptions);
-    }
-
-    /**
-     * Receives a stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity with a set of
-     * options. To disable lock auto-renewal, set {@link ReceiveAsyncOptions#setMaxAutoLockRenewalDuration(Duration)
-     * setMaxAutoRenewDuration} to {@link Duration#ZERO} or {@code null}.
-     *
-     * @param options Set of options to set when receiving messages.
-     *
-     * @return A stream of messages from the Service Bus entity.
-     * @throws NullPointerException if {@code options} is null.
-     * @throws IllegalArgumentException if {@link ReceiveAsyncOptions#getMaxAutoLockRenewalDuration() max auto-renew
-     *     duration} is negative.
-     */
-    public Flux<ServiceBusReceivedMessageContext> receive(ReceiveAsyncOptions options) {
-        if (isDisposed.get()) {
-            return fluxError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receive")));
-        }
-
-        if (Objects.isNull(options)) {
-            return fluxError(logger, new NullPointerException("'options' cannot be null"));
-        } else if (options.getMaxAutoLockRenewalDuration() != null
-            && options.getMaxAutoLockRenewalDuration().isNegative()) {
-            return fluxError(logger, new IllegalArgumentException("'maxAutoRenewDuration' cannot be negative."));
-        }
-
-        if (receiverOptions.getReceiveMode() != ReceiveMode.PEEK_LOCK && options.isAutoCompleteEnabled()) {
-            return fluxError(logger, new UnsupportedOperationException(
-                "Auto-complete is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE."));
-        }
-
         if (unnamedSessionManager != null) {
-            return unnamedSessionManager.receive(options);
+            return unnamedSessionManager.receive();
         } else {
-            return getOrCreateConsumer(options).receive().map(message -> new ServiceBusReceivedMessageContext(message));
+            return getOrCreateConsumer().receive().map(message -> new ServiceBusReceivedMessageContext(message));
         }
     }
 
@@ -950,7 +909,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
     }
 
-    private ServiceBusAsyncConsumer getOrCreateConsumer(ReceiveAsyncOptions options) {
+    private ServiceBusAsyncConsumer getOrCreateConsumer() {
         final ServiceBusAsyncConsumer existing = consumer.get();
         if (existing != null) {
             return existing;
@@ -981,12 +940,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy, connectionProcessor,
                 context));
-        final boolean isAutoLockRenewal = options.getMaxAutoLockRenewalDuration() != null
-            && !options.getMaxAutoLockRenewalDuration().isZero();
-
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
-            messageSerializer, options.isAutoCompleteEnabled(), isAutoLockRenewal,
-            options.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
+            messageSerializer, false, receiverOptions.autoLockRenewalEnabled(),
+            receiverOptions.getMaxAutoLockRenewalDuration(), connectionProcessor.getRetryOptions(),
             (token, associatedLinkName) -> renewMessageLock(token, associatedLinkName));
 
         // There could have been multiple threads trying to create this async consumer when the result was null.
@@ -1023,8 +979,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * If the receiver has not connected via {@link #receive(ReceiveAsyncOptions)} or {@link #receive()}, all its
-     * current operations have been performed through the management node.
+     * If the receiver has not connected via {@link #receive()}, all its current operations have been performed through
+     * the management node.
      *
      * @return The name of the receive link, or null of it has not connected via a receive link.
      */

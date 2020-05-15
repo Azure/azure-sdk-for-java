@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -37,9 +36,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
     private final Object lock = new Object();
-    private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
-        .setIsAutoCompleteEnabled(false)
-        .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
     private final AtomicReference<EmitterProcessor<ServiceBusReceivedMessageContext>> messageProcessor =
         new AtomicReference<>();
@@ -635,7 +631,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             logger.info("[{}]: Started synchronous message subscriber.", id);
 
             if (emitterProcessor == null) {
-                emitterProcessor = this.asyncClient.receive(DEFAULT_RECEIVE_OPTIONS)
+                emitterProcessor = this.asyncClient.receive()
                     .subscribeWith(EmitterProcessor.create(asyncClient.getReceiverOptions().getPrefetchCount(), false));
                 messageProcessor.set(emitterProcessor);
             }

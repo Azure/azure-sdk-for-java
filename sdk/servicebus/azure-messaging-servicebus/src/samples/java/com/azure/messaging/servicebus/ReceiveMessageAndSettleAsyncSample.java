@@ -3,8 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 
 import java.time.Duration;
@@ -38,22 +36,15 @@ public class ReceiveMessageAndSettleAsyncSample {
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<queue-name>>" will be the name of the Service Bus queue instance you created
         // inside the Service Bus namespace.
+        // At most, the receiver will automatically renew the message lock until 120 seconds have elapsed.
         ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
             .connectionString(connectionString)
             .receiver()
-            .receiveMode(ReceiveMode.PEEK_LOCK)
+            .maxAutoLockRenewalDuration(Duration.ofSeconds(120))
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        // At most, the receiver will automatically renew the message lock until 120 seconds have elapsed.
-        // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
-        // enableAutoComplete to false, means the onus is on users to complete, abandon, defer, or dead-letter the
-        // message when they are finished with it.
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(false)
-            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
-
-        Disposable subscription = receiver.receive(options)
+        Disposable subscription = receiver.receive()
             .flatMap(context -> {
                 boolean messageProcessed = false;
                 // Process the context and its message here.
