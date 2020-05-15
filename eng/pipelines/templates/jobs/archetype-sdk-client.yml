@@ -130,14 +130,14 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      - name: OSVmImage
+        value: 'windows-2019'
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: $(OSVmImage)
 
     steps:
       - template: ../steps/update-version-fix.yml
-        parameters:
-          VMAgent: "'windows-2019'"
 
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
