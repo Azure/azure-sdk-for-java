@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +49,8 @@ class ServiceBusReceiverClientTest {
     private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(5);
 
     private final ClientLogger logger = new ClientLogger(ServiceBusReceiverClientTest.class);
+
+    private Duration maxAutoLockRenewalDuration;
     private ServiceBusReceiverClient client;
 
     @Mock
@@ -65,7 +66,8 @@ class ServiceBusReceiverClientTest {
 
         when(asyncClient.getEntityPath()).thenReturn(ENTITY_PATH);
         when(asyncClient.getFullyQualifiedNamespace()).thenReturn(NAMESPACE);
-        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1));
+        when(asyncClient.getReceiverOptions()).thenReturn(new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1,
+            maxAutoLockRenewalDuration));
 
         when(messageLockToken.getLockToken()).thenReturn(LOCK_TOKEN);
 
@@ -411,7 +413,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages, receiveTimeout);
@@ -457,7 +459,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);
@@ -503,7 +505,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.receive(any(ReceiveAsyncOptions.class))).thenReturn(messageSink);
+        when(asyncClient.receive()).thenReturn(messageSink);
 
         // Act
         final IterableStream<ServiceBusReceivedMessageContext> actual = client.receive(maxMessages);

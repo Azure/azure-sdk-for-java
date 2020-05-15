@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.CreateBatchOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -43,7 +42,7 @@ class ServiceBusSenderAsyncClientIntegrationTest extends IntegrationTestBase {
         }
 
         try {
-            receiver.receive(new ReceiveAsyncOptions().setIsAutoCompleteEnabled(false))
+            receiver.receive()
                 .take(numberOfMessages)
                 .map(message -> {
                     logger.info("Message received: {}", message.getMessage().getSequenceNumber());
