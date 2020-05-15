@@ -128,7 +128,7 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         String query,
         FeedOptions options) {
-        return queryStoredProceduresInternal(false, new SqlQuerySpec(query), options);
+        return queryStoredProceduresInternal(new SqlQuerySpec(query), options);
     }
 
     /**
@@ -147,7 +147,7 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProcedures(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return queryStoredProceduresInternal(true, querySpec, options);
+        return queryStoredProceduresInternal(querySpec, options);
     }
 
     /**
@@ -250,7 +250,7 @@ public class CosmosAsyncScripts {
     public CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctions(
         SqlQuerySpec querySpec,
         FeedOptions options) {
-        return queryUserDefinedFunctionsInternal(true, querySpec, options);
+        return queryUserDefinedFunctionsInternal(querySpec, options);
     }
 
     /**
@@ -357,17 +357,10 @@ public class CosmosAsyncScripts {
     }
 
     private CosmosPagedFlux<CosmosStoredProcedureProperties> queryStoredProceduresInternal(
-        boolean isParameterised,
         SqlQuerySpec querySpec,
         FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName;
-            if (isParameterised) {
-                spanName = "queryStoredProcedures." + this.container.getId() + "." + querySpec.getQueryText();
-            } else {
-                spanName = "queryStoredProcedures." + this.container.getId();
-            }
-
+            String spanName = "queryStoredProcedures." + this.container.getId();
             pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
                 spanName,
                 this.container.getDatabase().getClient().getServiceEndpoint(),
@@ -382,17 +375,10 @@ public class CosmosAsyncScripts {
     }
 
     private CosmosPagedFlux<CosmosUserDefinedFunctionProperties> queryUserDefinedFunctionsInternal(
-        boolean isParameterised,
         SqlQuerySpec querySpec,
         FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName;
-            if (isParameterised) {
-                spanName = "queryUserDefinedFunctions." + this.container.getId() + "." + querySpec.getQueryText();
-            } else {
-                spanName = "queryUserDefinedFunctions." + this.container.getId();
-            }
-
+            String spanName = "queryUserDefinedFunctions." + this.container.getId();
             pagedFluxOptions.setTracerInformation(this.container.getDatabase().getClient().getTracerProvider(),
                 spanName,
                 this.container.getDatabase().getClient().getServiceEndpoint(),

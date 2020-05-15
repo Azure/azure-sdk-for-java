@@ -433,7 +433,7 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query) {
-        return queryContainersInternal(false, new SqlQuerySpec(query), new FeedOptions());
+        return queryContainersInternal(new SqlQuerySpec(query), new FeedOptions());
     }
 
     /**
@@ -449,7 +449,7 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(String query, FeedOptions options) {
-        return queryContainersInternal(false, new SqlQuerySpec(query), options);
+        return queryContainersInternal(new SqlQuerySpec(query), options);
     }
 
     /**
@@ -464,7 +464,7 @@ public class CosmosAsyncDatabase {
      * obtained containers or an error.
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec) {
-        return queryContainersInternal(true, querySpec, new FeedOptions());
+        return queryContainersInternal(querySpec, new FeedOptions());
     }
 
     /**
@@ -481,7 +481,7 @@ public class CosmosAsyncDatabase {
      */
     public CosmosPagedFlux<CosmosContainerProperties> queryContainers(SqlQuerySpec querySpec
         , FeedOptions options) {
-        return queryContainersInternal(true, querySpec, options);
+        return queryContainersInternal(querySpec, options);
     }
 
     /**
@@ -599,7 +599,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(String query, FeedOptions options) {
-        return queryUsersInternal(false, new SqlQuerySpec(query), options);
+        return queryUsersInternal(new SqlQuerySpec(query), options);
     }
 
     /**
@@ -614,7 +614,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec) {
-        return queryUsersInternal(true, querySpec, new FeedOptions());
+        return queryUsersInternal(querySpec, new FeedOptions());
     }
 
     /**
@@ -630,7 +630,7 @@ public class CosmosAsyncDatabase {
      * obtained users or an error.
      */
     public CosmosPagedFlux<CosmosUserProperties> queryUsers(SqlQuerySpec querySpec, FeedOptions options) {
-        return queryUsersInternal(true, querySpec, options);
+        return queryUsersInternal(querySpec, options);
     }
 
     /**
@@ -765,16 +765,10 @@ public class CosmosAsyncDatabase {
         return this.link;
     }
 
-    public CosmosPagedFlux<CosmosContainerProperties> queryContainersInternal(boolean isParameterised, SqlQuerySpec querySpec
+    public CosmosPagedFlux<CosmosContainerProperties> queryContainersInternal(SqlQuerySpec querySpec
         , FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName;
-            if (isParameterised) {
-                spanName = "queryContainers." + this.getId() + "." + querySpec.getQueryText();
-            } else {
-                spanName = "queryContainers." + this.getId();
-            }
-
+            String spanName = "queryContainers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
                 this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
@@ -785,15 +779,9 @@ public class CosmosAsyncDatabase {
         });
     }
 
-    private CosmosPagedFlux<CosmosUserProperties> queryUsersInternal(boolean isParameterised, SqlQuerySpec querySpec, FeedOptions options) {
+    private CosmosPagedFlux<CosmosUserProperties> queryUsersInternal(SqlQuerySpec querySpec, FeedOptions options) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName;
-            if (isParameterised) {
-                spanName = "queryUsers." + this.getId() + "." + querySpec.getQueryText();
-            } else {
-                spanName = "queryUsers." + this.getId();
-            }
-
+            String spanName = "queryUsers." + this.getId();
             pagedFluxOptions.setTracerInformation(this.getClient().getTracerProvider(), spanName,
                 this.getClient().getServiceEndpoint(), getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);

@@ -381,7 +381,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, Class<T> classType) {
-        return queryItemsInternal(false, new SqlQuerySpec(query), new FeedOptions(), classType);
+        return queryItemsInternal(new SqlQuerySpec(query), new FeedOptions(), classType);
     }
 
     /**
@@ -399,7 +399,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(String query, FeedOptions options, Class<T> classType) {
-        return queryItemsInternal(false, new SqlQuerySpec(query), options, classType);
+        return queryItemsInternal(new SqlQuerySpec(query), options, classType);
     }
 
     /**
@@ -416,7 +416,7 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, Class<T> classType) {
-        return queryItemsInternal(true, querySpec, new FeedOptions(), classType);
+        return queryItemsInternal(querySpec, new FeedOptions(), classType);
     }
 
     /**
@@ -434,19 +434,13 @@ public class CosmosAsyncContainer {
      * error.
      */
     public <T> CosmosPagedFlux<T> queryItems(SqlQuerySpec querySpec, FeedOptions options, Class<T> classType) {
-        return queryItemsInternal(true, querySpec, options, classType);
+        return queryItemsInternal(querySpec, options, classType);
     }
 
     private <T> CosmosPagedFlux<T> queryItemsInternal(
-        boolean isParameterised, SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> classType) {
+       SqlQuerySpec sqlQuerySpec, FeedOptions feedOptions, Class<T> classType) {
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName;
-            if (isParameterised) {
-                spanName = this.queryItemsSpanName + "." + sqlQuerySpec.getQueryText();
-            } else {
-                spanName = this.queryItemsSpanName;
-            }
-
+            String spanName = this.queryItemsSpanName;
             pagedFluxOptions.setTracerInformation(this.getDatabase().getClient().getTracerProvider(), spanName,
                 this.getDatabase().getClient().getServiceEndpoint(), database.getId());
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, feedOptions);

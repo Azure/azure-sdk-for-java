@@ -413,7 +413,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(String query, FeedOptions options) {
-        return queryDatabasesInternal(false, new SqlQuerySpec(query), options);
+        return queryDatabasesInternal(new SqlQuerySpec(query), options);
     }
 
     /**
@@ -428,7 +428,7 @@ public final class CosmosAsyncClient implements Closeable {
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of read databases or an error.
      */
     public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec querySpec, FeedOptions options) {
-        return queryDatabasesInternal(true, querySpec, options);
+        return queryDatabasesInternal(querySpec, options);
     }
 
     /**
@@ -453,15 +453,9 @@ public final class CosmosAsyncClient implements Closeable {
         return this.tracerProvider;
     }
 
-    private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(boolean isParameterised, SqlQuerySpec querySpec, FeedOptions options){
+    private CosmosPagedFlux<CosmosDatabaseProperties> queryDatabasesInternal(SqlQuerySpec querySpec, FeedOptions options){
         return UtilBridgeInternal.createCosmosPagedFlux(pagedFluxOptions -> {
-            String spanName;
-            if (isParameterised) {
-                spanName = "queryDatabases." + querySpec.getQueryText();
-            } else {
-                spanName = "queryDatabases";
-            }
-
+            String   spanName = "queryDatabases";
             pagedFluxOptions.setTracerInformation(this.tracerProvider, spanName, this.serviceEndpoint, null);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)

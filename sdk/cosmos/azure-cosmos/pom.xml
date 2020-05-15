@@ -134,9 +134,9 @@ Licensed under the MIT License.
 
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-core-tracing-opentelemetry</artifactId> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <artifactId>azure-core-tracing-opentelemetry</artifactId>
       <scope>test</scope>
-      <version>1.0.0-beta.4</version>
+      <version>1.0.0-beta.4</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
