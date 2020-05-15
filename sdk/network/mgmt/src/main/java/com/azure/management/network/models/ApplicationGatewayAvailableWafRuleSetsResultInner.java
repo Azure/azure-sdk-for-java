@@ -5,13 +5,18 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ApplicationGatewayFirewallRuleSet;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationGatewayAvailableWafRuleSetsResult model. */
 @Fluent
 public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ApplicationGatewayAvailableWafRuleSetsResultInner.class);
+
     /*
      * The list of application gateway rule sets.
      */
@@ -36,5 +41,16 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
     public ApplicationGatewayAvailableWafRuleSetsResultInner withValue(List<ApplicationGatewayFirewallRuleSet> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

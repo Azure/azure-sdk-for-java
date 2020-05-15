@@ -5,11 +5,15 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AccessUri model. */
 @Immutable
 public final class AccessUriInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessUriInner.class);
+
     /*
      * A SAS uri for accessing a disk.
      */
@@ -23,5 +27,13 @@ public final class AccessUriInner {
      */
     public String accessSas() {
         return this.accessSas;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

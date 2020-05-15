@@ -5,12 +5,17 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetInstanceViewStatusesSummary model. */
 @Immutable
 public final class VirtualMachineScaleSetInstanceViewStatusesSummary {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetInstanceViewStatusesSummary.class);
+
     /*
      * The extensions information.
      */
@@ -24,5 +29,16 @@ public final class VirtualMachineScaleSetInstanceViewStatusesSummary {
      */
     public List<VirtualMachineStatusCodeCount> statusesSummary() {
         return this.statusesSummary;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (statusesSummary() != null) {
+            statusesSummary().forEach(e -> e.validate());
+        }
     }
 }

@@ -7,7 +7,9 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.RetentionPolicy;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class LogProfileResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogProfileResourceInner.class);
+
     /*
      * the resource id of the storage account to which you would like to send
      * the Activity Log.
@@ -161,5 +165,33 @@ public class LogProfileResourceInner extends Resource {
     public LogProfileResourceInner withRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (locations() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property locations in model LogProfileResourceInner"));
+        }
+        if (categories() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property categories in model LogProfileResourceInner"));
+        }
+        if (retentionPolicy() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property retentionPolicy in model LogProfileResourceInner"));
+        } else {
+            retentionPolicy().validate();
+        }
     }
 }

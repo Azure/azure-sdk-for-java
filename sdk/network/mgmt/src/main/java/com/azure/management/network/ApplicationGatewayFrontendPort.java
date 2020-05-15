@@ -7,12 +7,16 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayFrontendPort model. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayFrontendPort extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFrontendPort.class);
+
     /*
      * Name of the frontend port that is unique within an Application Gateway.
      */
@@ -144,5 +148,13 @@ public class ApplicationGatewayFrontendPort extends SubResource {
     public ApplicationGatewayFrontendPort withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

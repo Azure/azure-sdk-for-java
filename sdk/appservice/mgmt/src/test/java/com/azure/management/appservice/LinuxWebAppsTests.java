@@ -81,7 +81,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         // View logs
         if (!isPlaybackMode()) {
             // warm up
-            curl("http://" + webApp.defaultHostName());
+            curl("http://" + webApp.defaultHostname());
         }
         byte[] logs = webApp.getContainerLogs();
         Assertions.assertTrue(logs.length > 0);
@@ -114,7 +114,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
             SdkContext.sleep(120000);
-            Response<String> response = curl("http://" + webApp1.defaultHostName());
+            Response<String> response = curl("http://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
@@ -179,7 +179,7 @@ public class LinuxWebAppsTests extends AppServiceTest {
         if (!isPlaybackMode()) {
             // maybe 2 minutes is enough?
             SdkContext.sleep(120000);
-            Response<String> response = curl("https://" + webApp1.defaultHostName());
+            Response<String> response = curl("https://" + webApp1.defaultHostname());
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

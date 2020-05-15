@@ -5,11 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserUpdateParameters model. */
 @Fluent
 public final class UserUpdateParameters extends UserBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserUpdateParameters.class);
+
     /*
      * Whether the account is enabled.
      */
@@ -141,5 +145,18 @@ public final class UserUpdateParameters extends UserBase {
     public UserUpdateParameters withMailNickname(String mailNickname) {
         this.mailNickname = mailNickname;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (passwordProfile() != null) {
+            passwordProfile().validate();
+        }
     }
 }

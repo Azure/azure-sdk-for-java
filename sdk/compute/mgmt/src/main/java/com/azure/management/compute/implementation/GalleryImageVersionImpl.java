@@ -3,7 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
-import com.azure.management.compute.GalleryArtifactVersionSource;
+//import com.azure.management.compute.GalleryArtifactVersionSource;
 import com.azure.management.compute.GalleryImageVersion;
 import com.azure.management.compute.GalleryImageVersionPublishingProfile;
 import com.azure.management.compute.GalleryImageVersionStorageProfile;
@@ -201,13 +201,13 @@ class GalleryImageVersionImpl
 
     @Override
     public GalleryImageVersionImpl withSourceCustomImage(String customImageId) {
-        if (this.inner().storageProfile() == null) {
-            this.inner().withStorageProfile(new GalleryImageVersionStorageProfile());
-        }
-        if (this.inner().storageProfile().source() == null) {
-            this.inner().storageProfile().withSource(new GalleryArtifactVersionSource());
-        }
-        this.inner().storageProfile().source().withId(customImageId);
+//        if (this.inner().storageProfile() == null) {
+//            this.inner().withStorageProfile(new GalleryImageVersionStorageProfile());
+//        }
+//        if (this.inner().storageProfile().source() == null) {
+//            this.inner().storageProfile().withSource(new GalleryArtifactVersionSource());
+//        }
+//        this.inner().storageProfile().source().withId(customImageId);
         return this;
     }
 

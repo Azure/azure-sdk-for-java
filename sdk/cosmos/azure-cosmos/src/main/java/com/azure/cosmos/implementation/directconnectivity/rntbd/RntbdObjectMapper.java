@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ser.PropertyFilter;
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.key.OffsetDateTimeKeyDeserializer;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufInputStream;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -38,7 +40,8 @@ public final class RntbdObjectMapper {
     private static final ObjectMapper objectMapper = new ObjectMapper()
         .registerModule(new SimpleModule()
             .addSerializer(Duration.class, ToStringSerializer.instance)
-            .addDeserializer(Duration.class, DurationDeserializer.INSTANCE))
+            .addDeserializer(Duration.class, DurationDeserializer.INSTANCE)
+            .addSerializer(OffsetDateTime.class, ToStringSerializer.instance))
         .setFilterProvider(filterProvider)
         .registerModule(new AfterburnerModule());
 

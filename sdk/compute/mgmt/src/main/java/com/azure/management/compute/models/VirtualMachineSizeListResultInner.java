@@ -5,12 +5,16 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineSizeListResult model. */
 @Fluent
 public final class VirtualMachineSizeListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizeListResultInner.class);
+
     /*
      * The list of virtual machine sizes.
      */
@@ -35,5 +39,16 @@ public final class VirtualMachineSizeListResultInner {
     public VirtualMachineSizeListResultInner withValue(List<VirtualMachineSizeInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

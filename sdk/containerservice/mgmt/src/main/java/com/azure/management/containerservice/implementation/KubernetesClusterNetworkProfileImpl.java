@@ -44,7 +44,7 @@ public class KubernetesClusterNetworkProfileImpl
 
     @Override
     public KubernetesClusterNetworkProfileImpl withDnsServiceIP(String dnsServiceIP) {
-        ensureNetworkProfile().withDnsServiceIP(dnsServiceIP);
+        ensureNetworkProfile().withDnsServiceIp(dnsServiceIP);
         return this;
     }
 

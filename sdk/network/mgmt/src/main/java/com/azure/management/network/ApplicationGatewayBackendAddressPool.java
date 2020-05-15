@@ -7,7 +7,9 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.management.network.models.NetworkInterfaceIPConfigurationInner;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.models.NetworkInterfaceIpConfigurationInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayBackendAddressPool extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendAddressPool.class);
+
     /*
      * Name of the backend address pool that is unique within an Application
      * Gateway.
@@ -38,7 +42,7 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
      * Collection of references to IPs defined in network interfaces.
      */
     @JsonProperty(value = "properties.backendIPConfigurations")
-    private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
+    private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
      * Backend addresses.
@@ -114,23 +118,23 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     }
 
     /**
-     * Get the backendIPConfigurations property: Collection of references to IPs defined in network interfaces.
+     * Get the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
      *
-     * @return the backendIPConfigurations value.
+     * @return the backendIpConfigurations value.
      */
-    public List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations() {
-        return this.backendIPConfigurations;
+    public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
+        return this.backendIpConfigurations;
     }
 
     /**
-     * Set the backendIPConfigurations property: Collection of references to IPs defined in network interfaces.
+     * Set the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
      *
-     * @param backendIPConfigurations the backendIPConfigurations value to set.
+     * @param backendIpConfigurations the backendIpConfigurations value to set.
      * @return the ApplicationGatewayBackendAddressPool object itself.
      */
-    public ApplicationGatewayBackendAddressPool withBackendIPConfigurations(
-        List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations) {
-        this.backendIPConfigurations = backendIPConfigurations;
+    public ApplicationGatewayBackendAddressPool withBackendIpConfigurations(
+        List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations) {
+        this.backendIpConfigurations = backendIpConfigurations;
         return this;
     }
 
@@ -175,5 +179,19 @@ public class ApplicationGatewayBackendAddressPool extends SubResource {
     public ApplicationGatewayBackendAddressPool withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backendIpConfigurations() != null) {
+            backendIpConfigurations().forEach(e -> e.validate());
+        }
+        if (backendAddresses() != null) {
+            backendAddresses().forEach(e -> e.validate());
+        }
     }
 }

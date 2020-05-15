@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ItsmReceiver model. */
 @Fluent
 public final class ItsmReceiver {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ItsmReceiver.class);
+
     /*
      * The name of the Itsm receiver. Names must be unique across all receivers
      * within an action group.
@@ -150,5 +154,39 @@ public final class ItsmReceiver {
     public ItsmReceiver withRegion(String region) {
         this.region = region;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model ItsmReceiver"));
+        }
+        if (workspaceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property workspaceId in model ItsmReceiver"));
+        }
+        if (connectionId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property connectionId in model ItsmReceiver"));
+        }
+        if (ticketConfiguration() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ticketConfiguration in model ItsmReceiver"));
+        }
+        if (region() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property region in model ItsmReceiver"));
+        }
     }
 }

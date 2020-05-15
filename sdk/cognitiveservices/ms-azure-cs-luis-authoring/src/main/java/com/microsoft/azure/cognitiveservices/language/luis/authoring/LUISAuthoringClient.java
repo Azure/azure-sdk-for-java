@@ -143,4 +143,16 @@ public interface LUISAuthoringClient {
      */
     Patterns patterns();
 
+    /**
+     * Gets the Settings object to access its operations.
+     * @return the Settings object.
+     */
+    Settings settings();
+
+    /**
+     * Gets the AzureAccounts object to access its operations.
+     * @return the AzureAccounts object.
+     */
+    AzureAccounts azureAccounts();
+
 }

@@ -5,6 +5,8 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +14,8 @@ import java.util.UUID;
 /** The ServiceObjectiveCapability model. */
 @Fluent
 public final class ServiceObjectiveCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceObjectiveCapability.class);
+
     /*
      * The unique ID of the service objective.
      */
@@ -216,5 +220,34 @@ public final class ServiceObjectiveCapability {
     public ServiceObjectiveCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedMaxSizes() != null) {
+            supportedMaxSizes().forEach(e -> e.validate());
+        }
+        if (performanceLevel() != null) {
+            performanceLevel().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (supportedLicenseTypes() != null) {
+            supportedLicenseTypes().forEach(e -> e.validate());
+        }
+        if (includedMaxSize() != null) {
+            includedMaxSize().validate();
+        }
+        if (supportedAutoPauseDelay() != null) {
+            supportedAutoPauseDelay().validate();
+        }
+        if (supportedMinCapacities() != null) {
+            supportedMinCapacities().forEach(e -> e.validate());
+        }
     }
 }

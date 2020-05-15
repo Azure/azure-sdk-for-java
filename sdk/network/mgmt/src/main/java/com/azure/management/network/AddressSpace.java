@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AddressSpace model. */
 @Fluent
 public final class AddressSpace {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AddressSpace.class);
+
     /*
      * A list of address blocks reserved for this virtual network in CIDR
      * notation.
@@ -36,5 +40,13 @@ public final class AddressSpace {
     public AddressSpace withAddressPrefixes(List<String> addressPrefixes) {
         this.addressPrefixes = addressPrefixes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

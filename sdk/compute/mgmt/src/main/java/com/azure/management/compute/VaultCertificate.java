@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VaultCertificate model. */
 @Fluent
 public final class VaultCertificate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultCertificate.class);
+
     /*
      * This is the URL of a certificate that has been uploaded to Key Vault as
      * a secret. For adding a secret to the Key Vault, see [Add a key or secret
@@ -91,5 +95,13 @@ public final class VaultCertificate {
     public VaultCertificate withCertificateStore(String certificateStore) {
         this.certificateStore = certificateStore;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

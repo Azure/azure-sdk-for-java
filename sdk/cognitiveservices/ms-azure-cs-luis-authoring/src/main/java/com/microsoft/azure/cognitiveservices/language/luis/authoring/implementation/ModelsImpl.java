@@ -10,7 +10,6 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementa
 
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddIntentOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddEntityOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListEntitiesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListHierarchicalEntitiesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListCompositeEntitiesOptionalParameter;
@@ -20,16 +19,15 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.List
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExamplesMethodOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateIntentOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeleteIntentOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateEntityOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatchClosedListOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentSuggestionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetEntitySuggestionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentSuggestionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListEntitySuggestionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddCustomPrebuiltDomainModelsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddHierarchicalEntityChildOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddCompositeEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetRegexEntityInfosOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternAnyEntityInfosOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListRegexEntityInfosOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListPatternAnyEntityInfosOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateEntityRoleOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreatePrebuiltEntityRoleOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateClosedListEntityRoleOptionalParameter;
@@ -52,8 +50,8 @@ import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailablePrebuiltEntityModel;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListModelCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListModelPatchObject;
@@ -64,6 +62,8 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Comp
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CustomPrebuiltModel;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntitiesSuggestionExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityExtractor;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityModelCreateObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityModelUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityRole;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityRoleCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityRoleUpdateObject;
@@ -72,16 +72,16 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Expl
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExplicitListItemCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExplicitListItemUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalChildEntity;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalChildModelCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalChildModelUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalEntityExtractor;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalEntityModel;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.IntentClassifier;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.IntentsSuggestionExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LabelTextObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelCreateObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelInfoResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelUpdateObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternAnyEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternAnyModelCreateObject;
@@ -152,23 +152,15 @@ public class ModelsImpl implements Models {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addEntity" })
         @POST("apps/{appId}/versions/{versionId}/entities")
-        Observable<Response<ResponseBody>> addEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Header("accept-language") String acceptLanguage, @Body ModelCreateObject modelCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body EntityModelCreateObject entityModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listEntities" })
         @GET("apps/{appId}/versions/{versionId}/entities")
         Observable<Response<ResponseBody>> listEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addHierarchicalEntity" })
-        @POST("apps/{appId}/versions/{versionId}/hierarchicalentities")
-        Observable<Response<ResponseBody>> addHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body HierarchicalEntityModel hierarchicalModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listHierarchicalEntities" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities")
         Observable<Response<ResponseBody>> listHierarchicalEntities(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCompositeEntity" })
-        @POST("apps/{appId}/versions/{versionId}/compositeentities")
-        Observable<Response<ResponseBody>> addCompositeEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body CompositeEntityModel compositeModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCompositeEntities" })
         @GET("apps/{appId}/versions/{versionId}/compositeentities")
@@ -218,21 +210,45 @@ public class ModelsImpl implements Models {
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}")
         Observable<Response<ResponseBody>> getEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateEntity" })
-        @PUT("apps/{appId}/versions/{versionId}/entities/{entityId}")
-        Observable<Response<ResponseBody>> updateEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body ModelUpdateObject modelUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteEntity" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/entities/{entityId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateEntityChild" })
+        @PATCH("apps/{appId}/versions/{versionId}/entities/{entityId}")
+        Observable<Response<ResponseBody>> updateEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body EntityModelUpdateObject entityModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getIntentFeatures" })
+        @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/features")
+        Observable<Response<ResponseBody>> getIntentFeatures(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models replaceIntentFeatures" })
+        @PUT("apps/{appId}/versions/{versionId}/intents/{intentId}/features")
+        Observable<Response<ResponseBody>> replaceIntentFeatures(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Body List<ModelFeatureInformation> featureRelationsUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteIntentFeature" })
+        @HTTP(path = "apps/{appId}/versions/{versionId}/intents/{intentId}/features", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteIntentFeature(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Body ModelFeatureInformation featureRelationDeleteObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntityFeatures" })
+        @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/features")
+        Observable<Response<ResponseBody>> getEntityFeatures(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models replaceEntityFeatures" })
+        @PUT("apps/{appId}/versions/{versionId}/entities/{entityId}/features")
+        Observable<Response<ResponseBody>> replaceEntityFeatures(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body List<ModelFeatureInformation> featureRelationsUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteEntityFeature" })
+        @HTTP(path = "apps/{appId}/versions/{versionId}/entities/{entityId}/features", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteEntityFeature(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body ModelFeatureInformation featureRelationDeleteObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntity" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}")
         Observable<Response<ResponseBody>> getHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateHierarchicalEntity" })
-        @PUT("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}")
-        Observable<Response<ResponseBody>> updateHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Body HierarchicalEntityModel hierarchicalModelUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @PATCH("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}")
+        Observable<Response<ResponseBody>> updateHierarchicalEntity(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body ModelUpdateObject modelUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteHierarchicalEntity" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}", method = "DELETE", hasBody = true)
@@ -276,19 +292,19 @@ public class ModelsImpl implements Models {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteSubList" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") int subListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") long subListId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateSubList" })
         @PUT("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists/{subListId}")
-        Observable<Response<ResponseBody>> updateSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") int subListId, @Body WordListBaseUpdateObject wordListBaseUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateSubList(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("clEntityId") UUID clEntityId, @Path("subListId") long subListId, @Body WordListBaseUpdateObject wordListBaseUpdateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getIntentSuggestions" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listIntentSuggestions" })
         @GET("apps/{appId}/versions/{versionId}/intents/{intentId}/suggest")
-        Observable<Response<ResponseBody>> getIntentSuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listIntentSuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("intentId") UUID intentId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntitySuggestions" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listEntitySuggestions" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/suggest")
-        Observable<Response<ResponseBody>> getEntitySuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listEntitySuggestions(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addSubList" })
         @POST("apps/{appId}/versions/{versionId}/closedlists/{clEntityId}/sublists")
@@ -322,21 +338,21 @@ public class ModelsImpl implements Models {
         @HTTP(path = "apps/{appId}/versions/{versionId}/customprebuiltdomains/{domainName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteCustomPrebuiltDomain(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("domainName") String domainName, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addEntityChild" })
+        @POST("apps/{appId}/versions/{versionId}/entities/{entityId}/children")
+        Observable<Response<ResponseBody>> addEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Body ChildEntityModelCreateObject childEntityModelCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntityChild" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}")
         Observable<Response<ResponseBody>> getHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models updateHierarchicalEntityChild" })
-        @PUT("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}")
+        @PATCH("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}")
         Observable<Response<ResponseBody>> updateHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Body HierarchicalChildModelUpdateObject hierarchicalChildModelUpdateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models deleteHierarchicalEntityChild" })
         @HTTP(path = "apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children/{hChildId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Path("hChildId") UUID hChildId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addHierarchicalEntityChild" })
-        @POST("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/children")
-        Observable<Response<ResponseBody>> addHierarchicalEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body HierarchicalChildModelCreateObject hierarchicalChildModelCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models addCompositeEntityChild" })
         @POST("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children")
@@ -346,81 +362,81 @@ public class ModelsImpl implements Models {
         @HTTP(path = "apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/children/{cChildId}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> deleteCompositeEntityChild(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Path("cChildId") UUID cChildId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getRegexEntityInfos" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listRegexEntityInfos" })
         @GET("apps/{appId}/versions/{versionId}/regexentities")
-        Observable<Response<ResponseBody>> getRegexEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRegexEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createRegexEntityModel" })
         @POST("apps/{appId}/versions/{versionId}/regexentities")
         Observable<Response<ResponseBody>> createRegexEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body RegexModelCreateObject regexEntityExtractorCreateObj, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPatternAnyEntityInfos" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listPatternAnyEntityInfos" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities")
-        Observable<Response<ResponseBody>> getPatternAnyEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPatternAnyEntityInfos(@Path("appId") UUID appId, @Path("versionId") String versionId, @Query("skip") Integer skip, @Query("take") Integer take, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createPatternAnyEntityModel" })
         @POST("apps/{appId}/versions/{versionId}/patternanyentities")
         Observable<Response<ResponseBody>> createPatternAnyEntityModel(@Path("appId") UUID appId, @Path("versionId") String versionId, @Body PatternAnyModelCreateObject extractorCreateObject, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/entities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/entities/{entityId}/roles")
         Observable<Response<ResponseBody>> createEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPrebuiltEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listPrebuiltEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles")
-        Observable<Response<ResponseBody>> getPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createPrebuiltEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/prebuilts/{entityId}/roles")
         Observable<Response<ResponseBody>> createPrebuiltEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getClosedListEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listClosedListEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles")
-        Observable<Response<ResponseBody>> getClosedListEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listClosedListEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createClosedListEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/closedlists/{entityId}/roles")
         Observable<Response<ResponseBody>> createClosedListEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getRegexEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listRegexEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getRegexEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRegexEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createRegexEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/regexentities/{entityId}/roles")
         Observable<Response<ResponseBody>> createRegexEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCompositeEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCompositeEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles")
-        Observable<Response<ResponseBody>> getCompositeEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCompositeEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createCompositeEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/compositeentities/{cEntityId}/roles")
         Observable<Response<ResponseBody>> createCompositeEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("cEntityId") UUID cEntityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getPatternAnyEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listPatternAnyEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getPatternAnyEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listPatternAnyEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createPatternAnyEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/patternanyentities/{entityId}/roles")
         Observable<Response<ResponseBody>> createPatternAnyEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getHierarchicalEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listHierarchicalEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles")
-        Observable<Response<ResponseBody>> getHierarchicalEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listHierarchicalEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createHierarchicalEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/hierarchicalentities/{hEntityId}/roles")
         Observable<Response<ResponseBody>> createHierarchicalEntityRole(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("hEntityId") UUID hEntityId, @Header("accept-language") String acceptLanguage, @Body EntityRoleCreateObject entityRoleCreateObject, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models getCustomPrebuiltEntityRoles" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models listCustomPrebuiltEntityRoles" })
         @GET("apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles")
-        Observable<Response<ResponseBody>> getCustomPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listCustomPrebuiltEntityRoles(@Path("appId") UUID appId, @Path("versionId") String versionId, @Path("entityId") UUID entityId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.luis.authoring.Models createCustomPrebuiltEntityRole" })
         @POST("apps/{appId}/versions/{versionId}/customprebuiltentities/{entityId}/roles")
@@ -570,13 +586,13 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param addIntentOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
@@ -585,7 +601,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -599,7 +615,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -617,7 +633,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -641,7 +657,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -676,10 +692,10 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<UUID> addIntentDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<UUID, CloudException>newInstance(this.client.serializerAdapter())
+    private ServiceResponse<UUID> addIntentDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<UUID, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(201, new TypeToken<UUID>() { }.getType())
-                .registerError(CloudException.class)
+                .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
@@ -741,7 +757,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -756,7 +772,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -770,7 +786,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -788,7 +804,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -813,7 +829,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -917,47 +933,46 @@ public class ModelsImpl implements Models {
         }
     }
 
-
     /**
-     * Adds an entity extractor to the application.
+     * Adds an entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityModelCreateObject A model object containing the name of the new entity extractor and its children.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    public UUID addEntity(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter) {
-        return addEntityWithServiceResponseAsync(appId, versionId, addEntityOptionalParameter).toBlocking().single().body();
+    public UUID addEntity(UUID appId, String versionId, EntityModelCreateObject entityModelCreateObject) {
+        return addEntityWithServiceResponseAsync(appId, versionId, entityModelCreateObject).toBlocking().single().body();
     }
 
     /**
-     * Adds an entity extractor to the application.
+     * Adds an entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityModelCreateObject A model object containing the name of the new entity extractor and its children.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<UUID> addEntityAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter, final ServiceCallback<UUID> serviceCallback) {
-        return ServiceFuture.fromResponse(addEntityWithServiceResponseAsync(appId, versionId, addEntityOptionalParameter), serviceCallback);
+    public ServiceFuture<UUID> addEntityAsync(UUID appId, String versionId, EntityModelCreateObject entityModelCreateObject, final ServiceCallback<UUID> serviceCallback) {
+        return ServiceFuture.fromResponse(addEntityWithServiceResponseAsync(appId, versionId, entityModelCreateObject), serviceCallback);
     }
 
     /**
-     * Adds an entity extractor to the application.
+     * Adds an entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityModelCreateObject A model object containing the name of the new entity extractor and its children.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    public Observable<UUID> addEntityAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter) {
-        return addEntityWithServiceResponseAsync(appId, versionId, addEntityOptionalParameter).map(new Func1<ServiceResponse<UUID>, UUID>() {
+    public Observable<UUID> addEntityAsync(UUID appId, String versionId, EntityModelCreateObject entityModelCreateObject) {
+        return addEntityWithServiceResponseAsync(appId, versionId, entityModelCreateObject).map(new Func1<ServiceResponse<UUID>, UUID>() {
             @Override
             public UUID call(ServiceResponse<UUID> response) {
                 return response.body();
@@ -966,15 +981,15 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds an entity extractor to the application.
+     * Adds an entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityModelCreateObject A model object containing the name of the new entity extractor and its children.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter) {
+    public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, EntityModelCreateObject entityModelCreateObject) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -984,34 +999,12 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final String name = addEntityOptionalParameter != null ? addEntityOptionalParameter.name() : null;
-
-        return addEntityWithServiceResponseAsync(appId, versionId, name);
-    }
-
-    /**
-     * Adds an entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param name Name of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<ServiceResponse<UUID>> addEntityWithServiceResponseAsync(UUID appId, String versionId, String name) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        if (entityModelCreateObject == null) {
+            throw new IllegalArgumentException("Parameter entityModelCreateObject is required and cannot be null.");
         }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        ModelCreateObject modelCreateObject = new ModelCreateObject();
-        modelCreateObject.withName(name);
+        Validator.validate(entityModelCreateObject);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.addEntity(appId, versionId, this.client.acceptLanguage(), modelCreateObject, parameterizedHost, this.client.userAgent())
+        return service.addEntity(appId, versionId, entityModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
                 @Override
                 public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
@@ -1032,65 +1025,9 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
-    @Override
-    public ModelsAddEntityParameters addEntity() {
-        return new ModelsAddEntityParameters(this);
-    }
 
     /**
-     * Internal class implementing ModelsAddEntityDefinition.
-     */
-    class ModelsAddEntityParameters implements ModelsAddEntityDefinition {
-        private ModelsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private String name;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ModelsAddEntityParameters(ModelsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ModelsAddEntityParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public ModelsAddEntityParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public ModelsAddEntityParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public UUID execute() {
-        return addEntityWithServiceResponseAsync(appId, versionId, name).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<UUID> executeAsync() {
-            return addEntityWithServiceResponseAsync(appId, versionId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
-                @Override
-                public UUID call(ServiceResponse<UUID> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1098,14 +1035,14 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;EntityExtractor&gt; object if successful.
+     * @return the List&lt;NDepthEntityExtractor&gt; object if successful.
      */
-    public List<EntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
+    public List<NDepthEntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
         return listEntitiesWithServiceResponseAsync(appId, versionId, listEntitiesOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1114,38 +1051,38 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter, final ServiceCallback<List<EntityExtractor>> serviceCallback) {
+    public ServiceFuture<List<NDepthEntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter, final ServiceCallback<List<NDepthEntityExtractor>> serviceCallback) {
         return ServiceFuture.fromResponse(listEntitiesWithServiceResponseAsync(appId, versionId, listEntitiesOptionalParameter), serviceCallback);
     }
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param listEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityExtractor&gt; object
+     * @return the observable to the List&lt;NDepthEntityExtractor&gt; object
      */
-    public Observable<List<EntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
-        return listEntitiesWithServiceResponseAsync(appId, versionId, listEntitiesOptionalParameter).map(new Func1<ServiceResponse<List<EntityExtractor>>, List<EntityExtractor>>() {
+    public Observable<List<NDepthEntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
+        return listEntitiesWithServiceResponseAsync(appId, versionId, listEntitiesOptionalParameter).map(new Func1<ServiceResponse<List<NDepthEntityExtractor>>, List<NDepthEntityExtractor>>() {
             @Override
-            public List<EntityExtractor> call(ServiceResponse<List<EntityExtractor>> response) {
+            public List<NDepthEntityExtractor> call(ServiceResponse<List<NDepthEntityExtractor>> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param listEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityExtractor&gt; object
+     * @return the observable to the List&lt;NDepthEntityExtractor&gt; object
      */
-    public Observable<ServiceResponse<List<EntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
+    public Observable<ServiceResponse<List<NDepthEntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1162,16 +1099,16 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param skip The number of entries to skip. Default value is 0.
      * @param take The number of entries to return. Maximum page size is 500. Default is 100.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityExtractor&gt; object
+     * @return the observable to the List&lt;NDepthEntityExtractor&gt; object
      */
-    public Observable<ServiceResponse<List<EntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+    public Observable<ServiceResponse<List<NDepthEntityExtractor>>> listEntitiesWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -1183,11 +1120,11 @@ public class ModelsImpl implements Models {
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.listEntities(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityExtractor>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<NDepthEntityExtractor>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<EntityExtractor>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<NDepthEntityExtractor>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityExtractor>> clientResponse = listEntitiesDelegate(response);
+                        ServiceResponse<List<NDepthEntityExtractor>> clientResponse = listEntitiesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1196,9 +1133,9 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityExtractor>> listEntitiesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<List<EntityExtractor>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<List<EntityExtractor>>() { }.getType())
+    private ServiceResponse<List<NDepthEntityExtractor>> listEntitiesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<NDepthEntityExtractor>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<NDepthEntityExtractor>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -1251,116 +1188,24 @@ public class ModelsImpl implements Models {
         }
 
         @Override
-        public List<EntityExtractor> execute() {
+        public List<NDepthEntityExtractor> execute() {
         return listEntitiesWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
     }
 
         @Override
-        public Observable<List<EntityExtractor>> executeAsync() {
-            return listEntitiesWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<EntityExtractor>>, List<EntityExtractor>>() {
+        public Observable<List<NDepthEntityExtractor>> executeAsync() {
+            return listEntitiesWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<NDepthEntityExtractor>>, List<NDepthEntityExtractor>>() {
                 @Override
-                public List<EntityExtractor> call(ServiceResponse<List<EntityExtractor>> response) {
+                public List<NDepthEntityExtractor> call(ServiceResponse<List<NDepthEntityExtractor>> response) {
                     return response.body();
                 }
             });
         }
     }
 
-    /**
-     * Adds a hierarchical entity extractor to the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
-     */
-    public UUID addHierarchicalEntity(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject) {
-        return addHierarchicalEntityWithServiceResponseAsync(appId, versionId, hierarchicalModelCreateObject).toBlocking().single().body();
-    }
 
     /**
-     * Adds a hierarchical entity extractor to the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UUID> addHierarchicalEntityAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject, final ServiceCallback<UUID> serviceCallback) {
-        return ServiceFuture.fromResponse(addHierarchicalEntityWithServiceResponseAsync(appId, versionId, hierarchicalModelCreateObject), serviceCallback);
-    }
-
-    /**
-     * Adds a hierarchical entity extractor to the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<UUID> addHierarchicalEntityAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject) {
-        return addHierarchicalEntityWithServiceResponseAsync(appId, versionId, hierarchicalModelCreateObject).map(new Func1<ServiceResponse<UUID>, UUID>() {
-            @Override
-            public UUID call(ServiceResponse<UUID> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds a hierarchical entity extractor to the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<ServiceResponse<UUID>> addHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        if (hierarchicalModelCreateObject == null) {
-            throw new IllegalArgumentException("Parameter hierarchicalModelCreateObject is required and cannot be null.");
-        }
-        Validator.validate(hierarchicalModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.addHierarchicalEntity(appId, versionId, hierarchicalModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
-                @Override
-                public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UUID> clientResponse = addHierarchicalEntityDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<UUID> addHierarchicalEntityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<UUID, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<UUID>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1375,7 +1220,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1389,7 +1234,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1407,7 +1252,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1432,7 +1277,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1536,101 +1381,9 @@ public class ModelsImpl implements Models {
         }
     }
 
-    /**
-     * Adds a composite entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
-     */
-    public UUID addCompositeEntity(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject) {
-        return addCompositeEntityWithServiceResponseAsync(appId, versionId, compositeModelCreateObject).toBlocking().single().body();
-    }
 
     /**
-     * Adds a composite entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UUID> addCompositeEntityAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject, final ServiceCallback<UUID> serviceCallback) {
-        return ServiceFuture.fromResponse(addCompositeEntityWithServiceResponseAsync(appId, versionId, compositeModelCreateObject), serviceCallback);
-    }
-
-    /**
-     * Adds a composite entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<UUID> addCompositeEntityAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject) {
-        return addCompositeEntityWithServiceResponseAsync(appId, versionId, compositeModelCreateObject).map(new Func1<ServiceResponse<UUID>, UUID>() {
-            @Override
-            public UUID call(ServiceResponse<UUID> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Adds a composite entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<ServiceResponse<UUID>> addCompositeEntityWithServiceResponseAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        if (compositeModelCreateObject == null) {
-            throw new IllegalArgumentException("Parameter compositeModelCreateObject is required and cannot be null.");
-        }
-        Validator.validate(compositeModelCreateObject);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.addCompositeEntity(appId, versionId, compositeModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
-                @Override
-                public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UUID> clientResponse = addCompositeEntityDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<UUID> addCompositeEntityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<UUID, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<UUID>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-
-    /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1645,7 +1398,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1659,7 +1412,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1677,7 +1430,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1702,7 +1455,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1808,7 +1561,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1823,7 +1576,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1837,7 +1590,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1855,7 +1608,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1880,7 +1633,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1985,11 +1738,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2000,11 +1753,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -2014,11 +1767,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -2032,11 +1785,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -2077,7 +1830,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2092,7 +1845,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2106,7 +1859,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2124,7 +1877,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2170,7 +1923,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2185,7 +1938,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2199,7 +1952,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2217,7 +1970,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2242,7 +1995,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2347,7 +2100,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2361,7 +2114,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2374,7 +2127,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2391,7 +2144,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2432,7 +2185,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2447,7 +2200,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2461,7 +2214,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2479,7 +2232,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2504,7 +2257,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2610,7 +2363,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2626,7 +2379,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2641,7 +2394,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2660,7 +2413,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2689,7 +2442,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2805,7 +2558,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2820,7 +2573,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2834,7 +2587,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2852,7 +2605,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2897,7 +2650,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2913,7 +2666,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2928,7 +2681,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2947,7 +2700,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2975,7 +2728,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3086,7 +2839,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3102,7 +2855,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3117,7 +2870,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3136,7 +2889,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3164,12 +2917,12 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param deleteUtterances Also delete the intent's utterances (true). Or move the utterances to the None intent (false - the default value).
+     * @param deleteUtterances If true, deletes the intent's example utterances. If false, moves the example utterances to the None intent. The default value is false.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -3272,7 +3025,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3280,14 +3033,14 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntityExtractor object if successful.
+     * @return the NDepthEntityExtractor object if successful.
      */
-    public EntityExtractor getEntity(UUID appId, String versionId, UUID entityId) {
+    public NDepthEntityExtractor getEntity(UUID appId, String versionId, UUID entityId) {
         return getEntityWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3296,38 +3049,38 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<EntityExtractor> serviceCallback) {
+    public ServiceFuture<NDepthEntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<NDepthEntityExtractor> serviceCallback) {
         return ServiceFuture.fromResponse(getEntityWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityExtractor object
+     * @return the observable to the NDepthEntityExtractor object
      */
-    public Observable<EntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId) {
-        return getEntityWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<EntityExtractor>, EntityExtractor>() {
+    public Observable<NDepthEntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId) {
+        return getEntityWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<NDepthEntityExtractor>, NDepthEntityExtractor>() {
             @Override
-            public EntityExtractor call(ServiceResponse<EntityExtractor> response) {
+            public NDepthEntityExtractor call(ServiceResponse<NDepthEntityExtractor> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityExtractor object
+     * @return the observable to the NDepthEntityExtractor object
      */
-    public Observable<ServiceResponse<EntityExtractor>> getEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<NDepthEntityExtractor>> getEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -3342,11 +3095,11 @@ public class ModelsImpl implements Models {
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.getEntity(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntityExtractor>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NDepthEntityExtractor>>>() {
                 @Override
-                public Observable<ServiceResponse<EntityExtractor>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<NDepthEntityExtractor>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<EntityExtractor> clientResponse = getEntityDelegate(response);
+                        ServiceResponse<NDepthEntityExtractor> clientResponse = getEntityDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3355,208 +3108,19 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<EntityExtractor> getEntityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<EntityExtractor, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<EntityExtractor>() { }.getType())
+    private ServiceResponse<NDepthEntityExtractor> getEntityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<NDepthEntityExtractor, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<NDepthEntityExtractor>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
-
     /**
-     * Updates the name of an entity extractor.
+     * Deletes an entity or a child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    public OperationStatus updateEntity(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter) {
-        return updateEntityWithServiceResponseAsync(appId, versionId, entityId, updateEntityOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Updates the name of an entity extractor.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<OperationStatus> updateEntityAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(updateEntityWithServiceResponseAsync(appId, versionId, entityId, updateEntityOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Updates the name of an entity extractor.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<OperationStatus> updateEntityAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter) {
-        return updateEntityWithServiceResponseAsync(appId, versionId, entityId, updateEntityOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-            @Override
-            public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates the name of an entity extractor.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> updateEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        if (entityId == null) {
-            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
-        }
-        final String name = updateEntityOptionalParameter != null ? updateEntityOptionalParameter.name() : null;
-
-        return updateEntityWithServiceResponseAsync(appId, versionId, entityId, name);
-    }
-
-    /**
-     * Updates the name of an entity extractor.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @param name The entity's new name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    public Observable<ServiceResponse<OperationStatus>> updateEntityWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, String name) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        if (entityId == null) {
-            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
-        }
-        ModelUpdateObject modelUpdateObject = new ModelUpdateObject();
-        modelUpdateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.updateEntity(appId, versionId, entityId, this.client.acceptLanguage(), modelUpdateObject, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
-                @Override
-                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<OperationStatus> clientResponse = updateEntityDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<OperationStatus> updateEntityDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<OperationStatus>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public ModelsUpdateEntityParameters updateEntity() {
-        return new ModelsUpdateEntityParameters(this);
-    }
-
-    /**
-     * Internal class implementing ModelsUpdateEntityDefinition.
-     */
-    class ModelsUpdateEntityParameters implements ModelsUpdateEntityDefinition {
-        private ModelsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private UUID entityId;
-        private String name;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ModelsUpdateEntityParameters(ModelsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ModelsUpdateEntityParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public ModelsUpdateEntityParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public ModelsUpdateEntityParameters withEntityId(UUID entityId) {
-            this.entityId = entityId;
-            return this;
-        }
-
-        @Override
-        public ModelsUpdateEntityParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public OperationStatus execute() {
-        return updateEntityWithServiceResponseAsync(appId, versionId, entityId, name).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<OperationStatus> executeAsync() {
-            return updateEntityWithServiceResponseAsync(appId, versionId, entityId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
-                @Override
-                public OperationStatus call(ServiceResponse<OperationStatus> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-    /**
-     * Deletes an entity extractor from the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -3567,11 +3131,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an entity extractor from the application.
+     * Deletes an entity or a child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -3581,11 +3145,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an entity extractor from the application.
+     * Deletes an entity or a child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -3599,11 +3163,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes an entity extractor from the application.
+     * Deletes an entity or a child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -3643,7 +3207,684 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity model.
+     * Updates the name of an entity extractor or the name and instanceOf model of a child entity extractor.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @param entityModelUpdateObject A model object containing the name new entity extractor or the name and instance of model of a child entity extractor
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus updateEntityChild(UUID appId, String versionId, UUID entityId, EntityModelUpdateObject entityModelUpdateObject) {
+        return updateEntityChildWithServiceResponseAsync(appId, versionId, entityId, entityModelUpdateObject).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the name of an entity extractor or the name and instanceOf model of a child entity extractor.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @param entityModelUpdateObject A model object containing the name new entity extractor or the name and instance of model of a child entity extractor
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> updateEntityChildAsync(UUID appId, String versionId, UUID entityId, EntityModelUpdateObject entityModelUpdateObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(updateEntityChildWithServiceResponseAsync(appId, versionId, entityId, entityModelUpdateObject), serviceCallback);
+    }
+
+    /**
+     * Updates the name of an entity extractor or the name and instanceOf model of a child entity extractor.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @param entityModelUpdateObject A model object containing the name new entity extractor or the name and instance of model of a child entity extractor
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> updateEntityChildAsync(UUID appId, String versionId, UUID entityId, EntityModelUpdateObject entityModelUpdateObject) {
+        return updateEntityChildWithServiceResponseAsync(appId, versionId, entityId, entityModelUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the name of an entity extractor or the name and instanceOf model of a child entity extractor.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @param entityModelUpdateObject A model object containing the name new entity extractor or the name and instance of model of a child entity extractor
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> updateEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, EntityModelUpdateObject entityModelUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (entityId == null) {
+            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
+        }
+        if (entityModelUpdateObject == null) {
+            throw new IllegalArgumentException("Parameter entityModelUpdateObject is required and cannot be null.");
+        }
+        Validator.validate(entityModelUpdateObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.updateEntityChild(appId, versionId, entityId, entityModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = updateEntityChildDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> updateEntityChildDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ModelFeatureInformation&gt; object if successful.
+     */
+    public List<ModelFeatureInformation> getIntentFeatures(UUID appId, String versionId, UUID intentId) {
+        return getIntentFeaturesWithServiceResponseAsync(appId, versionId, intentId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ModelFeatureInformation>> getIntentFeaturesAsync(UUID appId, String versionId, UUID intentId, final ServiceCallback<List<ModelFeatureInformation>> serviceCallback) {
+        return ServiceFuture.fromResponse(getIntentFeaturesWithServiceResponseAsync(appId, versionId, intentId), serviceCallback);
+    }
+
+    /**
+     * Gets the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ModelFeatureInformation&gt; object
+     */
+    public Observable<List<ModelFeatureInformation>> getIntentFeaturesAsync(UUID appId, String versionId, UUID intentId) {
+        return getIntentFeaturesWithServiceResponseAsync(appId, versionId, intentId).map(new Func1<ServiceResponse<List<ModelFeatureInformation>>, List<ModelFeatureInformation>>() {
+            @Override
+            public List<ModelFeatureInformation> call(ServiceResponse<List<ModelFeatureInformation>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ModelFeatureInformation&gt; object
+     */
+    public Observable<ServiceResponse<List<ModelFeatureInformation>>> getIntentFeaturesWithServiceResponseAsync(UUID appId, String versionId, UUID intentId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (intentId == null) {
+            throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getIntentFeatures(appId, versionId, intentId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelFeatureInformation>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ModelFeatureInformation>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<ModelFeatureInformation>> clientResponse = getIntentFeaturesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<ModelFeatureInformation>> getIntentFeaturesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<ModelFeatureInformation>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<ModelFeatureInformation>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus replaceIntentFeatures(UUID appId, String versionId, UUID intentId, List<ModelFeatureInformation> featureRelationsUpdateObject) {
+        return replaceIntentFeaturesWithServiceResponseAsync(appId, versionId, intentId, featureRelationsUpdateObject).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> replaceIntentFeaturesAsync(UUID appId, String versionId, UUID intentId, List<ModelFeatureInformation> featureRelationsUpdateObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(replaceIntentFeaturesWithServiceResponseAsync(appId, versionId, intentId, featureRelationsUpdateObject), serviceCallback);
+    }
+
+    /**
+     * Updates the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> replaceIntentFeaturesAsync(UUID appId, String versionId, UUID intentId, List<ModelFeatureInformation> featureRelationsUpdateObject) {
+        return replaceIntentFeaturesWithServiceResponseAsync(appId, versionId, intentId, featureRelationsUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> replaceIntentFeaturesWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, List<ModelFeatureInformation> featureRelationsUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (intentId == null) {
+            throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
+        }
+        if (featureRelationsUpdateObject == null) {
+            throw new IllegalArgumentException("Parameter featureRelationsUpdateObject is required and cannot be null.");
+        }
+        Validator.validate(featureRelationsUpdateObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.replaceIntentFeatures(appId, versionId, intentId, featureRelationsUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = replaceIntentFeaturesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> replaceIntentFeaturesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus deleteIntentFeature(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationDeleteObject) {
+        return deleteIntentFeatureWithServiceResponseAsync(appId, versionId, intentId, featureRelationDeleteObject).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> deleteIntentFeatureAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationDeleteObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteIntentFeatureWithServiceResponseAsync(appId, versionId, intentId, featureRelationDeleteObject), serviceCallback);
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> deleteIntentFeatureAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationDeleteObject) {
+        return deleteIntentFeatureWithServiceResponseAsync(appId, versionId, intentId, featureRelationDeleteObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> deleteIntentFeatureWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationDeleteObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (intentId == null) {
+            throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
+        }
+        if (featureRelationDeleteObject == null) {
+            throw new IllegalArgumentException("Parameter featureRelationDeleteObject is required and cannot be null.");
+        }
+        Validator.validate(featureRelationDeleteObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteIntentFeature(appId, versionId, intentId, featureRelationDeleteObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = deleteIntentFeatureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> deleteIntentFeatureDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ModelFeatureInformation&gt; object if successful.
+     */
+    public List<ModelFeatureInformation> getEntityFeatures(UUID appId, String versionId, UUID entityId) {
+        return getEntityFeaturesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<ModelFeatureInformation>> getEntityFeaturesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<ModelFeatureInformation>> serviceCallback) {
+        return ServiceFuture.fromResponse(getEntityFeaturesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    }
+
+    /**
+     * Gets the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ModelFeatureInformation&gt; object
+     */
+    public Observable<List<ModelFeatureInformation>> getEntityFeaturesAsync(UUID appId, String versionId, UUID entityId) {
+        return getEntityFeaturesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<ModelFeatureInformation>>, List<ModelFeatureInformation>>() {
+            @Override
+            public List<ModelFeatureInformation> call(ServiceResponse<List<ModelFeatureInformation>> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ModelFeatureInformation&gt; object
+     */
+    public Observable<ServiceResponse<List<ModelFeatureInformation>>> getEntityFeaturesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (entityId == null) {
+            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.getEntityFeatures(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ModelFeatureInformation>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ModelFeatureInformation>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<ModelFeatureInformation>> clientResponse = getEntityFeaturesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<List<ModelFeatureInformation>> getEntityFeaturesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<List<ModelFeatureInformation>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<List<ModelFeatureInformation>>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus replaceEntityFeatures(UUID appId, String versionId, UUID entityId, List<ModelFeatureInformation> featureRelationsUpdateObject) {
+        return replaceEntityFeaturesWithServiceResponseAsync(appId, versionId, entityId, featureRelationsUpdateObject).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> replaceEntityFeaturesAsync(UUID appId, String versionId, UUID entityId, List<ModelFeatureInformation> featureRelationsUpdateObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(replaceEntityFeaturesWithServiceResponseAsync(appId, versionId, entityId, featureRelationsUpdateObject), serviceCallback);
+    }
+
+    /**
+     * Updates the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> replaceEntityFeaturesAsync(UUID appId, String versionId, UUID entityId, List<ModelFeatureInformation> featureRelationsUpdateObject) {
+        return replaceEntityFeaturesWithServiceResponseAsync(appId, versionId, entityId, featureRelationsUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> replaceEntityFeaturesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, List<ModelFeatureInformation> featureRelationsUpdateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (entityId == null) {
+            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
+        }
+        if (featureRelationsUpdateObject == null) {
+            throw new IllegalArgumentException("Parameter featureRelationsUpdateObject is required and cannot be null.");
+        }
+        Validator.validate(featureRelationsUpdateObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.replaceEntityFeatures(appId, versionId, entityId, featureRelationsUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = replaceEntityFeaturesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> replaceEntityFeaturesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    public OperationStatus deleteEntityFeature(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationDeleteObject) {
+        return deleteEntityFeatureWithServiceResponseAsync(appId, versionId, entityId, featureRelationDeleteObject).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<OperationStatus> deleteEntityFeatureAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationDeleteObject, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteEntityFeatureWithServiceResponseAsync(appId, versionId, entityId, featureRelationDeleteObject), serviceCallback);
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<OperationStatus> deleteEntityFeatureAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationDeleteObject) {
+        return deleteEntityFeatureWithServiceResponseAsync(appId, versionId, entityId, featureRelationDeleteObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+            @Override
+            public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a relation from the feature relations used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> deleteEntityFeatureWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationDeleteObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (entityId == null) {
+            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
+        }
+        if (featureRelationDeleteObject == null) {
+            throw new IllegalArgumentException("Parameter featureRelationDeleteObject is required and cannot be null.");
+        }
+        Validator.validate(featureRelationDeleteObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.deleteEntityFeature(appId, versionId, entityId, featureRelationDeleteObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
+                @Override
+                public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<OperationStatus> clientResponse = deleteEntityFeatureDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<OperationStatus> deleteEntityFeatureDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<OperationStatus, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<OperationStatus>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3658,7 +3899,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity model.
+     * Gets information about a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3672,7 +3913,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity model.
+     * Gets information about a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3690,7 +3931,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity model.
+     * Gets information about a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3733,49 +3974,50 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+
     /**
-     * Updates the name and children of a hierarchical entity model.
+     * Updates the name of a hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
+     * @param updateHierarchicalEntityOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus updateHierarchicalEntity(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject) {
-        return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, hierarchicalModelUpdateObject).toBlocking().single().body();
+    public OperationStatus updateHierarchicalEntity(UUID appId, String versionId, UUID hEntityId, UpdateHierarchicalEntityOptionalParameter updateHierarchicalEntityOptionalParameter) {
+        return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, updateHierarchicalEntityOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Updates the name and children of a hierarchical entity model.
+     * Updates the name of a hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
+     * @param updateHierarchicalEntityOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject, final ServiceCallback<OperationStatus> serviceCallback) {
-        return ServiceFuture.fromResponse(updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, hierarchicalModelUpdateObject), serviceCallback);
+    public ServiceFuture<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, UpdateHierarchicalEntityOptionalParameter updateHierarchicalEntityOptionalParameter, final ServiceCallback<OperationStatus> serviceCallback) {
+        return ServiceFuture.fromResponse(updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, updateHierarchicalEntityOptionalParameter), serviceCallback);
     }
 
     /**
-     * Updates the name and children of a hierarchical entity model.
+     * Updates the name of a hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
+     * @param updateHierarchicalEntityOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject) {
-        return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, hierarchicalModelUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+    public Observable<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, UpdateHierarchicalEntityOptionalParameter updateHierarchicalEntityOptionalParameter) {
+        return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, updateHierarchicalEntityOptionalParameter).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
             @Override
             public OperationStatus call(ServiceResponse<OperationStatus> response) {
                 return response.body();
@@ -3784,16 +4026,16 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name and children of a hierarchical entity model.
+     * Updates the name of a hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param hEntityId The hierarchical entity extractor ID.
-     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
+     * @param updateHierarchicalEntityOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject) {
+    public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, UpdateHierarchicalEntityOptionalParameter updateHierarchicalEntityOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -3806,12 +4048,38 @@ public class ModelsImpl implements Models {
         if (hEntityId == null) {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
-        if (hierarchicalModelUpdateObject == null) {
-            throw new IllegalArgumentException("Parameter hierarchicalModelUpdateObject is required and cannot be null.");
+        final String name = updateHierarchicalEntityOptionalParameter != null ? updateHierarchicalEntityOptionalParameter.name() : null;
+
+        return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, name);
+    }
+
+    /**
+     * Updates the name of a hierarchical entity model in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param name The entity's new name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    public Observable<ServiceResponse<OperationStatus>> updateHierarchicalEntityWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, String name) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
-        Validator.validate(hierarchicalModelUpdateObject);
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (hEntityId == null) {
+            throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
+        }
+        ModelUpdateObject modelUpdateObject = new ModelUpdateObject();
+        modelUpdateObject.withName(name);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.updateHierarchicalEntity(appId, versionId, hEntityId, hierarchicalModelUpdateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.updateHierarchicalEntity(appId, versionId, hEntityId, this.client.acceptLanguage(), modelUpdateObject, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatus>>>() {
                 @Override
                 public Observable<ServiceResponse<OperationStatus>> call(Response<ResponseBody> response) {
@@ -3832,8 +4100,71 @@ public class ModelsImpl implements Models {
                 .build(response);
     }
 
+    @Override
+    public ModelsUpdateHierarchicalEntityParameters updateHierarchicalEntity() {
+        return new ModelsUpdateHierarchicalEntityParameters(this);
+    }
+
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Internal class implementing ModelsUpdateHierarchicalEntityDefinition.
+     */
+    class ModelsUpdateHierarchicalEntityParameters implements ModelsUpdateHierarchicalEntityDefinition {
+        private ModelsImpl parent;
+        private UUID appId;
+        private String versionId;
+        private UUID hEntityId;
+        private String name;
+
+        /**
+         * Constructor.
+         * @param parent the parent object.
+         */
+        ModelsUpdateHierarchicalEntityParameters(ModelsImpl parent) {
+            this.parent = parent;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityParameters withAppId(UUID appId) {
+            this.appId = appId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityParameters withVersionId(String versionId) {
+            this.versionId = versionId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityParameters withHEntityId(UUID hEntityId) {
+            this.hEntityId = hEntityId;
+            return this;
+        }
+
+        @Override
+        public ModelsUpdateHierarchicalEntityParameters withName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        @Override
+        public OperationStatus execute() {
+        return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, name).toBlocking().single().body();
+    }
+
+        @Override
+        public Observable<OperationStatus> executeAsync() {
+            return updateHierarchicalEntityWithServiceResponseAsync(appId, versionId, hEntityId, name).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
+                @Override
+                public OperationStatus call(ServiceResponse<OperationStatus> response) {
+                    return response.body();
+                }
+            });
+        }
+    }
+
+    /**
+     * Deletes a hierarchical entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3848,7 +4179,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Deletes a hierarchical entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3862,7 +4193,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Deletes a hierarchical entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3880,7 +4211,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Deletes a hierarchical entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3924,7 +4255,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3939,7 +4270,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3953,7 +4284,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3971,7 +4302,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4015,7 +4346,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4031,7 +4362,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4046,7 +4377,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4065,7 +4396,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4114,7 +4445,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4129,7 +4460,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4143,7 +4474,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4161,7 +4492,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4205,11 +4536,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -4220,11 +4551,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list model ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -4234,11 +4565,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClosedListEntityExtractor object
      */
@@ -4252,11 +4583,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClosedListEntityExtractor object
      */
@@ -4296,12 +4627,12 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -4312,12 +4643,12 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -4327,12 +4658,12 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -4346,12 +4677,12 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -4396,11 +4727,11 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -4412,11 +4743,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4427,11 +4758,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
@@ -4446,11 +4777,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
@@ -4474,11 +4805,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param subLists Sublists to add.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
@@ -4585,11 +4916,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a closed list model from the application.
+     * Deletes a list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -4600,11 +4931,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a closed list model from the application.
+     * Deletes a list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -4614,11 +4945,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a closed list model from the application.
+     * Deletes a list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -4632,11 +4963,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a closed list model from the application.
+     * Deletes a list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -4676,7 +5007,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4691,7 +5022,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4705,7 +5036,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4723,7 +5054,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4767,7 +5098,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4782,7 +5113,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4796,7 +5127,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4814,7 +5145,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4858,47 +5189,47 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus deleteSubList(UUID appId, String versionId, UUID clEntityId, int subListId) {
+    public OperationStatus deleteSubList(UUID appId, String versionId, UUID clEntityId, long subListId) {
         return deleteSubListWithServiceResponseAsync(appId, versionId, clEntityId, subListId).toBlocking().single().body();
     }
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId, final ServiceCallback<OperationStatus> serviceCallback) {
+    public ServiceFuture<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, long subListId, final ServiceCallback<OperationStatus> serviceCallback) {
         return ServiceFuture.fromResponse(deleteSubListWithServiceResponseAsync(appId, versionId, clEntityId, subListId), serviceCallback);
     }
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId) {
+    public Observable<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, long subListId) {
         return deleteSubListWithServiceResponseAsync(appId, versionId, clEntityId, subListId).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
             @Override
             public OperationStatus call(ServiceResponse<OperationStatus> response) {
@@ -4908,16 +5239,16 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> deleteSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, int subListId) {
+    public Observable<ServiceResponse<OperationStatus>> deleteSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, long subListId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -4953,11 +5284,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -4965,38 +5296,38 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    public OperationStatus updateSubList(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
+    public OperationStatus updateSubList(UUID appId, String versionId, UUID clEntityId, long subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
         return updateSubListWithServiceResponseAsync(appId, versionId, clEntityId, subListId, wordListBaseUpdateObject).toBlocking().single().body();
     }
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject, final ServiceCallback<OperationStatus> serviceCallback) {
+    public ServiceFuture<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, long subListId, WordListBaseUpdateObject wordListBaseUpdateObject, final ServiceCallback<OperationStatus> serviceCallback) {
         return ServiceFuture.fromResponse(updateSubListWithServiceResponseAsync(appId, versionId, clEntityId, subListId, wordListBaseUpdateObject), serviceCallback);
     }
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
+    public Observable<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, long subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
         return updateSubListWithServiceResponseAsync(appId, versionId, clEntityId, subListId, wordListBaseUpdateObject).map(new Func1<ServiceResponse<OperationStatus>, OperationStatus>() {
             @Override
             public OperationStatus call(ServiceResponse<OperationStatus> response) {
@@ -5006,17 +5337,17 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    public Observable<ServiceResponse<OperationStatus>> updateSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
+    public Observable<ServiceResponse<OperationStatus>> updateSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, long subListId, WordListBaseUpdateObject wordListBaseUpdateObject) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5057,48 +5388,48 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
      */
-    public List<IntentsSuggestionExample> getIntentSuggestions(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter) {
-        return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, getIntentSuggestionsOptionalParameter).toBlocking().single().body();
+    public List<IntentsSuggestionExample> listIntentSuggestions(UUID appId, String versionId, UUID intentId, ListIntentSuggestionsOptionalParameter listIntentSuggestionsOptionalParameter) {
+        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, listIntentSuggestionsOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IntentsSuggestionExample>> getIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter, final ServiceCallback<List<IntentsSuggestionExample>> serviceCallback) {
-        return ServiceFuture.fromResponse(getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, getIntentSuggestionsOptionalParameter), serviceCallback);
+    public ServiceFuture<List<IntentsSuggestionExample>> listIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, ListIntentSuggestionsOptionalParameter listIntentSuggestionsOptionalParameter, final ServiceCallback<List<IntentsSuggestionExample>> serviceCallback) {
+        return ServiceFuture.fromResponse(listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, listIntentSuggestionsOptionalParameter), serviceCallback);
     }
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
-    public Observable<List<IntentsSuggestionExample>> getIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter) {
-        return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, getIntentSuggestionsOptionalParameter).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
+    public Observable<List<IntentsSuggestionExample>> listIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, ListIntentSuggestionsOptionalParameter listIntentSuggestionsOptionalParameter) {
+        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, listIntentSuggestionsOptionalParameter).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
             @Override
             public List<IntentsSuggestionExample> call(ServiceResponse<List<IntentsSuggestionExample>> response) {
                 return response.body();
@@ -5107,16 +5438,16 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
-    public Observable<ServiceResponse<List<IntentsSuggestionExample>>> getIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter) {
+    public Observable<ServiceResponse<List<IntentsSuggestionExample>>> listIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, ListIntentSuggestionsOptionalParameter listIntentSuggestionsOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5129,13 +5460,13 @@ public class ModelsImpl implements Models {
         if (intentId == null) {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
-        final Integer take = getIntentSuggestionsOptionalParameter != null ? getIntentSuggestionsOptionalParameter.take() : null;
+        final Integer take = listIntentSuggestionsOptionalParameter != null ? listIntentSuggestionsOptionalParameter.take() : null;
 
-        return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take);
+        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take);
     }
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5144,7 +5475,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
-    public Observable<ServiceResponse<List<IntentsSuggestionExample>>> getIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer take) {
+    public Observable<ServiceResponse<List<IntentsSuggestionExample>>> listIntentSuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID intentId, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5158,12 +5489,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter intentId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getIntentSuggestions(appId, versionId, intentId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listIntentSuggestions(appId, versionId, intentId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IntentsSuggestionExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IntentsSuggestionExample>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<IntentsSuggestionExample>> clientResponse = getIntentSuggestionsDelegate(response);
+                        ServiceResponse<List<IntentsSuggestionExample>> clientResponse = listIntentSuggestionsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5172,7 +5503,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<IntentsSuggestionExample>> getIntentSuggestionsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<IntentsSuggestionExample>> listIntentSuggestionsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<IntentsSuggestionExample>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<IntentsSuggestionExample>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -5180,14 +5511,14 @@ public class ModelsImpl implements Models {
     }
 
     @Override
-    public ModelsGetIntentSuggestionsParameters getIntentSuggestions() {
-        return new ModelsGetIntentSuggestionsParameters(this);
+    public ModelsListIntentSuggestionsParameters listIntentSuggestions() {
+        return new ModelsListIntentSuggestionsParameters(this);
     }
 
     /**
-     * Internal class implementing ModelsGetIntentSuggestionsDefinition.
+     * Internal class implementing ModelsListIntentSuggestionsDefinition.
      */
-    class ModelsGetIntentSuggestionsParameters implements ModelsGetIntentSuggestionsDefinition {
+    class ModelsListIntentSuggestionsParameters implements ModelsListIntentSuggestionsDefinition {
         private ModelsImpl parent;
         private UUID appId;
         private String versionId;
@@ -5198,42 +5529,42 @@ public class ModelsImpl implements Models {
          * Constructor.
          * @param parent the parent object.
          */
-        ModelsGetIntentSuggestionsParameters(ModelsImpl parent) {
+        ModelsListIntentSuggestionsParameters(ModelsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public ModelsGetIntentSuggestionsParameters withAppId(UUID appId) {
+        public ModelsListIntentSuggestionsParameters withAppId(UUID appId) {
             this.appId = appId;
             return this;
         }
 
         @Override
-        public ModelsGetIntentSuggestionsParameters withVersionId(String versionId) {
+        public ModelsListIntentSuggestionsParameters withVersionId(String versionId) {
             this.versionId = versionId;
             return this;
         }
 
         @Override
-        public ModelsGetIntentSuggestionsParameters withIntentId(UUID intentId) {
+        public ModelsListIntentSuggestionsParameters withIntentId(UUID intentId) {
             this.intentId = intentId;
             return this;
         }
 
         @Override
-        public ModelsGetIntentSuggestionsParameters withTake(Integer take) {
+        public ModelsListIntentSuggestionsParameters withTake(Integer take) {
             this.take = take;
             return this;
         }
 
         @Override
         public List<IntentsSuggestionExample> execute() {
-        return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).toBlocking().single().body();
+        return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<IntentsSuggestionExample>> executeAsync() {
-            return getIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
+            return listIntentSuggestionsWithServiceResponseAsync(appId, versionId, intentId, take).map(new Func1<ServiceResponse<List<IntentsSuggestionExample>>, List<IntentsSuggestionExample>>() {
                 @Override
                 public List<IntentsSuggestionExample> call(ServiceResponse<List<IntentsSuggestionExample>> response) {
                     return response.body();
@@ -5244,48 +5575,48 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
      */
-    public List<EntitiesSuggestionExample> getEntitySuggestions(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter) {
-        return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, getEntitySuggestionsOptionalParameter).toBlocking().single().body();
+    public List<EntitiesSuggestionExample> listEntitySuggestions(UUID appId, String versionId, UUID entityId, ListEntitySuggestionsOptionalParameter listEntitySuggestionsOptionalParameter) {
+        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, listEntitySuggestionsOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntitiesSuggestionExample>> getEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter, final ServiceCallback<List<EntitiesSuggestionExample>> serviceCallback) {
-        return ServiceFuture.fromResponse(getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, getEntitySuggestionsOptionalParameter), serviceCallback);
+    public ServiceFuture<List<EntitiesSuggestionExample>> listEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, ListEntitySuggestionsOptionalParameter listEntitySuggestionsOptionalParameter, final ServiceCallback<List<EntitiesSuggestionExample>> serviceCallback) {
+        return ServiceFuture.fromResponse(listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, listEntitySuggestionsOptionalParameter), serviceCallback);
     }
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
-    public Observable<List<EntitiesSuggestionExample>> getEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter) {
-        return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, getEntitySuggestionsOptionalParameter).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
+    public Observable<List<EntitiesSuggestionExample>> listEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, ListEntitySuggestionsOptionalParameter listEntitySuggestionsOptionalParameter) {
+        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, listEntitySuggestionsOptionalParameter).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
             @Override
             public List<EntitiesSuggestionExample> call(ServiceResponse<List<EntitiesSuggestionExample>> response) {
                 return response.body();
@@ -5294,16 +5625,16 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
-    public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> getEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter) {
+    public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> listEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, ListEntitySuggestionsOptionalParameter listEntitySuggestionsOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5316,13 +5647,13 @@ public class ModelsImpl implements Models {
         if (entityId == null) {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
-        final Integer take = getEntitySuggestionsOptionalParameter != null ? getEntitySuggestionsOptionalParameter.take() : null;
+        final Integer take = listEntitySuggestionsOptionalParameter != null ? listEntitySuggestionsOptionalParameter.take() : null;
 
-        return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take);
+        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take);
     }
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5331,7 +5662,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
-    public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> getEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, Integer take) {
+    public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> listEntitySuggestionsWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5345,12 +5676,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getEntitySuggestions(appId, versionId, entityId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listEntitySuggestions(appId, versionId, entityId, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntitiesSuggestionExample>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntitiesSuggestionExample>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntitiesSuggestionExample>> clientResponse = getEntitySuggestionsDelegate(response);
+                        ServiceResponse<List<EntitiesSuggestionExample>> clientResponse = listEntitySuggestionsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5359,7 +5690,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntitiesSuggestionExample>> getEntitySuggestionsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntitiesSuggestionExample>> listEntitySuggestionsDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntitiesSuggestionExample>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntitiesSuggestionExample>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -5367,14 +5698,14 @@ public class ModelsImpl implements Models {
     }
 
     @Override
-    public ModelsGetEntitySuggestionsParameters getEntitySuggestions() {
-        return new ModelsGetEntitySuggestionsParameters(this);
+    public ModelsListEntitySuggestionsParameters listEntitySuggestions() {
+        return new ModelsListEntitySuggestionsParameters(this);
     }
 
     /**
-     * Internal class implementing ModelsGetEntitySuggestionsDefinition.
+     * Internal class implementing ModelsListEntitySuggestionsDefinition.
      */
-    class ModelsGetEntitySuggestionsParameters implements ModelsGetEntitySuggestionsDefinition {
+    class ModelsListEntitySuggestionsParameters implements ModelsListEntitySuggestionsDefinition {
         private ModelsImpl parent;
         private UUID appId;
         private String versionId;
@@ -5385,42 +5716,42 @@ public class ModelsImpl implements Models {
          * Constructor.
          * @param parent the parent object.
          */
-        ModelsGetEntitySuggestionsParameters(ModelsImpl parent) {
+        ModelsListEntitySuggestionsParameters(ModelsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public ModelsGetEntitySuggestionsParameters withAppId(UUID appId) {
+        public ModelsListEntitySuggestionsParameters withAppId(UUID appId) {
             this.appId = appId;
             return this;
         }
 
         @Override
-        public ModelsGetEntitySuggestionsParameters withVersionId(String versionId) {
+        public ModelsListEntitySuggestionsParameters withVersionId(String versionId) {
             this.versionId = versionId;
             return this;
         }
 
         @Override
-        public ModelsGetEntitySuggestionsParameters withEntityId(UUID entityId) {
+        public ModelsListEntitySuggestionsParameters withEntityId(UUID entityId) {
             this.entityId = entityId;
             return this;
         }
 
         @Override
-        public ModelsGetEntitySuggestionsParameters withTake(Integer take) {
+        public ModelsListEntitySuggestionsParameters withTake(Integer take) {
             this.take = take;
             return this;
         }
 
         @Override
         public List<EntitiesSuggestionExample> execute() {
-        return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).toBlocking().single().body();
+        return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<EntitiesSuggestionExample>> executeAsync() {
-            return getEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
+            return listEntitySuggestionsWithServiceResponseAsync(appId, versionId, entityId, take).map(new Func1<ServiceResponse<List<EntitiesSuggestionExample>>, List<EntitiesSuggestionExample>>() {
                 @Override
                 public List<EntitiesSuggestionExample> call(ServiceResponse<List<EntitiesSuggestionExample>> response) {
                     return response.body();
@@ -5430,66 +5761,66 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
+     * @return the long object if successful.
      */
-    public int addSubList(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
+    public long addSubList(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
         return addSubListWithServiceResponseAsync(appId, versionId, clEntityId, wordListCreateObject).toBlocking().single().body();
     }
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Integer> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject, final ServiceCallback<Integer> serviceCallback) {
+    public ServiceFuture<Long> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject, final ServiceCallback<Long> serviceCallback) {
         return ServiceFuture.fromResponse(addSubListWithServiceResponseAsync(appId, versionId, clEntityId, wordListCreateObject), serviceCallback);
     }
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
+     * @return the observable to the Long object
      */
-    public Observable<Integer> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
-        return addSubListWithServiceResponseAsync(appId, versionId, clEntityId, wordListCreateObject).map(new Func1<ServiceResponse<Integer>, Integer>() {
+    public Observable<Long> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
+        return addSubListWithServiceResponseAsync(appId, versionId, clEntityId, wordListCreateObject).map(new Func1<ServiceResponse<Long>, Long>() {
             @Override
-            public Integer call(ServiceResponse<Integer> response) {
+            public Long call(ServiceResponse<Long> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Integer object
+     * @return the observable to the Long object
      */
-    public Observable<ServiceResponse<Integer>> addSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
+    public Observable<ServiceResponse<Long>> addSubListWithServiceResponseAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -5508,11 +5839,11 @@ public class ModelsImpl implements Models {
         Validator.validate(wordListCreateObject);
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
         return service.addSubList(appId, versionId, clEntityId, wordListCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Integer>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Long>>>() {
                 @Override
-                public Observable<ServiceResponse<Integer>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Long>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Integer> clientResponse = addSubListDelegate(response);
+                        ServiceResponse<Long> clientResponse = addSubListDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -5521,16 +5852,16 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<Integer> addSubListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Integer, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<Integer>() { }.getType())
+    private ServiceResponse<Long> addSubListDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Long, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<Long>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
 
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5545,7 +5876,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5559,7 +5890,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5577,7 +5908,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5601,7 +5932,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5700,11 +6031,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -5715,11 +6046,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -5729,11 +6060,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -5747,11 +6078,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -5792,7 +6123,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5806,7 +6137,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5819,7 +6150,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5836,7 +6167,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5876,11 +6207,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -5891,11 +6222,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -5905,11 +6236,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -5923,11 +6254,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -5968,7 +6299,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5982,7 +6313,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5995,7 +6326,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6012,7 +6343,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6052,7 +6383,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6066,7 +6397,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6079,7 +6410,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6096,7 +6427,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6136,7 +6467,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6151,7 +6482,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6165,7 +6496,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6183,7 +6514,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6227,7 +6558,106 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Creates a single child in an existing entity model hierarchy in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param childEntityModelCreateObject A model object containing the name of the new child model and its children.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UUID object if successful.
+     */
+    public UUID addEntityChild(UUID appId, String versionId, UUID entityId, ChildEntityModelCreateObject childEntityModelCreateObject) {
+        return addEntityChildWithServiceResponseAsync(appId, versionId, entityId, childEntityModelCreateObject).toBlocking().single().body();
+    }
+
+    /**
+     * Creates a single child in an existing entity model hierarchy in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param childEntityModelCreateObject A model object containing the name of the new child model and its children.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<UUID> addEntityChildAsync(UUID appId, String versionId, UUID entityId, ChildEntityModelCreateObject childEntityModelCreateObject, final ServiceCallback<UUID> serviceCallback) {
+        return ServiceFuture.fromResponse(addEntityChildWithServiceResponseAsync(appId, versionId, entityId, childEntityModelCreateObject), serviceCallback);
+    }
+
+    /**
+     * Creates a single child in an existing entity model hierarchy in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param childEntityModelCreateObject A model object containing the name of the new child model and its children.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    public Observable<UUID> addEntityChildAsync(UUID appId, String versionId, UUID entityId, ChildEntityModelCreateObject childEntityModelCreateObject) {
+        return addEntityChildWithServiceResponseAsync(appId, versionId, entityId, childEntityModelCreateObject).map(new Func1<ServiceResponse<UUID>, UUID>() {
+            @Override
+            public UUID call(ServiceResponse<UUID> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Creates a single child in an existing entity model hierarchy in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param childEntityModelCreateObject A model object containing the name of the new child model and its children.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    public Observable<ServiceResponse<UUID>> addEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID entityId, ChildEntityModelCreateObject childEntityModelCreateObject) {
+        if (this.client.endpoint() == null) {
+            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
+        }
+        if (appId == null) {
+            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
+        }
+        if (versionId == null) {
+            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
+        }
+        if (entityId == null) {
+            throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
+        }
+        if (childEntityModelCreateObject == null) {
+            throw new IllegalArgumentException("Parameter childEntityModelCreateObject is required and cannot be null.");
+        }
+        Validator.validate(childEntityModelCreateObject);
+        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
+        return service.addEntityChild(appId, versionId, entityId, childEntityModelCreateObject, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
+                @Override
+                public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<UUID> clientResponse = addEntityChildDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<UUID> addEntityChildDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<UUID, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(201, new TypeToken<UUID>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6243,7 +6673,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6258,7 +6688,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6277,7 +6707,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Gets information about the child's model contained in an hierarchical entity child model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6326,7 +6756,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6343,7 +6773,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6359,7 +6789,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6379,7 +6809,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6411,7 +6841,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6532,7 +6962,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Deletes a hierarchical entity extractor child in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6548,7 +6978,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Deletes a hierarchical entity extractor child in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6563,7 +6993,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Deletes a hierarchical entity extractor child in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6582,7 +7012,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Deletes a hierarchical entity extractor child in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6631,196 +7061,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
-     */
-    public UUID addHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter) {
-        return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, addHierarchicalEntityChildOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<UUID> addHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter, final ServiceCallback<UUID> serviceCallback) {
-        return ServiceFuture.fromResponse(addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, addHierarchicalEntityChildOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<UUID> addHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter) {
-        return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, addHierarchicalEntityChildOptionalParameter).map(new Func1<ServiceResponse<UUID>, UUID>() {
-            @Override
-            public UUID call(ServiceResponse<UUID> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<ServiceResponse<UUID>> addHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        if (hEntityId == null) {
-            throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
-        }
-        final String name = addHierarchicalEntityChildOptionalParameter != null ? addHierarchicalEntityChildOptionalParameter.name() : null;
-
-        return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, name);
-    }
-
-    /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param name the String value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    public Observable<ServiceResponse<UUID>> addHierarchicalEntityChildWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId, String name) {
-        if (this.client.endpoint() == null) {
-            throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
-        }
-        if (appId == null) {
-            throw new IllegalArgumentException("Parameter appId is required and cannot be null.");
-        }
-        if (versionId == null) {
-            throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
-        }
-        if (hEntityId == null) {
-            throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
-        }
-        HierarchicalChildModelCreateObject hierarchicalChildModelCreateObject = new HierarchicalChildModelCreateObject();
-        hierarchicalChildModelCreateObject.withName(name);
-        String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.addHierarchicalEntityChild(appId, versionId, hEntityId, this.client.acceptLanguage(), hierarchicalChildModelCreateObject, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<UUID>>>() {
-                @Override
-                public Observable<ServiceResponse<UUID>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<UUID> clientResponse = addHierarchicalEntityChildDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<UUID> addHierarchicalEntityChildDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<UUID, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<UUID>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-    @Override
-    public ModelsAddHierarchicalEntityChildParameters addHierarchicalEntityChild() {
-        return new ModelsAddHierarchicalEntityChildParameters(this);
-    }
-
-    /**
-     * Internal class implementing ModelsAddHierarchicalEntityChildDefinition.
-     */
-    class ModelsAddHierarchicalEntityChildParameters implements ModelsAddHierarchicalEntityChildDefinition {
-        private ModelsImpl parent;
-        private UUID appId;
-        private String versionId;
-        private UUID hEntityId;
-        private String name;
-
-        /**
-         * Constructor.
-         * @param parent the parent object.
-         */
-        ModelsAddHierarchicalEntityChildParameters(ModelsImpl parent) {
-            this.parent = parent;
-        }
-
-        @Override
-        public ModelsAddHierarchicalEntityChildParameters withAppId(UUID appId) {
-            this.appId = appId;
-            return this;
-        }
-
-        @Override
-        public ModelsAddHierarchicalEntityChildParameters withVersionId(String versionId) {
-            this.versionId = versionId;
-            return this;
-        }
-
-        @Override
-        public ModelsAddHierarchicalEntityChildParameters withHEntityId(UUID hEntityId) {
-            this.hEntityId = hEntityId;
-            return this;
-        }
-
-        @Override
-        public ModelsAddHierarchicalEntityChildParameters withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        @Override
-        public UUID execute() {
-        return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, name).toBlocking().single().body();
-    }
-
-        @Override
-        public Observable<UUID> executeAsync() {
-            return addHierarchicalEntityChildWithServiceResponseAsync(appId, versionId, hEntityId, name).map(new Func1<ServiceResponse<UUID>, UUID>() {
-                @Override
-                public UUID call(ServiceResponse<UUID> response) {
-                    return response.body();
-                }
-            });
-        }
-    }
-
-
-    /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6836,7 +7077,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6851,7 +7092,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6870,7 +7111,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6898,7 +7139,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7008,7 +7249,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7024,7 +7265,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7039,7 +7280,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7058,7 +7299,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7107,45 +7348,45 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RegexEntityExtractor&gt; object if successful.
      */
-    public List<RegexEntityExtractor> getRegexEntityInfos(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter) {
-        return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, getRegexEntityInfosOptionalParameter).toBlocking().single().body();
+    public List<RegexEntityExtractor> listRegexEntityInfos(UUID appId, String versionId, ListRegexEntityInfosOptionalParameter listRegexEntityInfosOptionalParameter) {
+        return listRegexEntityInfosWithServiceResponseAsync(appId, versionId, listRegexEntityInfosOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<RegexEntityExtractor>> getRegexEntityInfosAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter, final ServiceCallback<List<RegexEntityExtractor>> serviceCallback) {
-        return ServiceFuture.fromResponse(getRegexEntityInfosWithServiceResponseAsync(appId, versionId, getRegexEntityInfosOptionalParameter), serviceCallback);
+    public ServiceFuture<List<RegexEntityExtractor>> listRegexEntityInfosAsync(UUID appId, String versionId, ListRegexEntityInfosOptionalParameter listRegexEntityInfosOptionalParameter, final ServiceCallback<List<RegexEntityExtractor>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRegexEntityInfosWithServiceResponseAsync(appId, versionId, listRegexEntityInfosOptionalParameter), serviceCallback);
     }
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
-    public Observable<List<RegexEntityExtractor>> getRegexEntityInfosAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter) {
-        return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, getRegexEntityInfosOptionalParameter).map(new Func1<ServiceResponse<List<RegexEntityExtractor>>, List<RegexEntityExtractor>>() {
+    public Observable<List<RegexEntityExtractor>> listRegexEntityInfosAsync(UUID appId, String versionId, ListRegexEntityInfosOptionalParameter listRegexEntityInfosOptionalParameter) {
+        return listRegexEntityInfosWithServiceResponseAsync(appId, versionId, listRegexEntityInfosOptionalParameter).map(new Func1<ServiceResponse<List<RegexEntityExtractor>>, List<RegexEntityExtractor>>() {
             @Override
             public List<RegexEntityExtractor> call(ServiceResponse<List<RegexEntityExtractor>> response) {
                 return response.body();
@@ -7154,15 +7395,15 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
-    public Observable<ServiceResponse<List<RegexEntityExtractor>>> getRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter) {
+    public Observable<ServiceResponse<List<RegexEntityExtractor>>> listRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, ListRegexEntityInfosOptionalParameter listRegexEntityInfosOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -7172,14 +7413,14 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = getRegexEntityInfosOptionalParameter != null ? getRegexEntityInfosOptionalParameter.skip() : null;
-        final Integer take = getRegexEntityInfosOptionalParameter != null ? getRegexEntityInfosOptionalParameter.take() : null;
+        final Integer skip = listRegexEntityInfosOptionalParameter != null ? listRegexEntityInfosOptionalParameter.skip() : null;
+        final Integer take = listRegexEntityInfosOptionalParameter != null ? listRegexEntityInfosOptionalParameter.take() : null;
 
-        return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take);
+        return listRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take);
     }
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7188,7 +7429,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
-    public Observable<ServiceResponse<List<RegexEntityExtractor>>> getRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+    public Observable<ServiceResponse<List<RegexEntityExtractor>>> listRegexEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -7199,12 +7440,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getRegexEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listRegexEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RegexEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RegexEntityExtractor>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<RegexEntityExtractor>> clientResponse = getRegexEntityInfosDelegate(response);
+                        ServiceResponse<List<RegexEntityExtractor>> clientResponse = listRegexEntityInfosDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7213,7 +7454,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<RegexEntityExtractor>> getRegexEntityInfosDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<RegexEntityExtractor>> listRegexEntityInfosDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<RegexEntityExtractor>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<RegexEntityExtractor>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -7221,14 +7462,14 @@ public class ModelsImpl implements Models {
     }
 
     @Override
-    public ModelsGetRegexEntityInfosParameters getRegexEntityInfos() {
-        return new ModelsGetRegexEntityInfosParameters(this);
+    public ModelsListRegexEntityInfosParameters listRegexEntityInfos() {
+        return new ModelsListRegexEntityInfosParameters(this);
     }
 
     /**
-     * Internal class implementing ModelsGetRegexEntityInfosDefinition.
+     * Internal class implementing ModelsListRegexEntityInfosDefinition.
      */
-    class ModelsGetRegexEntityInfosParameters implements ModelsGetRegexEntityInfosDefinition {
+    class ModelsListRegexEntityInfosParameters implements ModelsListRegexEntityInfosDefinition {
         private ModelsImpl parent;
         private UUID appId;
         private String versionId;
@@ -7239,42 +7480,42 @@ public class ModelsImpl implements Models {
          * Constructor.
          * @param parent the parent object.
          */
-        ModelsGetRegexEntityInfosParameters(ModelsImpl parent) {
+        ModelsListRegexEntityInfosParameters(ModelsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public ModelsGetRegexEntityInfosParameters withAppId(UUID appId) {
+        public ModelsListRegexEntityInfosParameters withAppId(UUID appId) {
             this.appId = appId;
             return this;
         }
 
         @Override
-        public ModelsGetRegexEntityInfosParameters withVersionId(String versionId) {
+        public ModelsListRegexEntityInfosParameters withVersionId(String versionId) {
             this.versionId = versionId;
             return this;
         }
 
         @Override
-        public ModelsGetRegexEntityInfosParameters withSkip(Integer skip) {
+        public ModelsListRegexEntityInfosParameters withSkip(Integer skip) {
             this.skip = skip;
             return this;
         }
 
         @Override
-        public ModelsGetRegexEntityInfosParameters withTake(Integer take) {
+        public ModelsListRegexEntityInfosParameters withTake(Integer take) {
             this.take = take;
             return this;
         }
 
         @Override
         public List<RegexEntityExtractor> execute() {
-        return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+        return listRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<RegexEntityExtractor>> executeAsync() {
-            return getRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<RegexEntityExtractor>>, List<RegexEntityExtractor>>() {
+            return listRegexEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<RegexEntityExtractor>>, List<RegexEntityExtractor>>() {
                 @Override
                 public List<RegexEntityExtractor> call(ServiceResponse<List<RegexEntityExtractor>> response) {
                     return response.body();
@@ -7284,11 +7525,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -7299,11 +7540,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -7313,11 +7554,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -7331,11 +7572,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -7377,45 +7618,45 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
      */
-    public List<PatternAnyEntityExtractor> getPatternAnyEntityInfos(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter) {
-        return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, getPatternAnyEntityInfosOptionalParameter).toBlocking().single().body();
+    public List<PatternAnyEntityExtractor> listPatternAnyEntityInfos(UUID appId, String versionId, ListPatternAnyEntityInfosOptionalParameter listPatternAnyEntityInfosOptionalParameter) {
+        return listPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, listPatternAnyEntityInfosOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter, final ServiceCallback<List<PatternAnyEntityExtractor>> serviceCallback) {
-        return ServiceFuture.fromResponse(getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, getPatternAnyEntityInfosOptionalParameter), serviceCallback);
+    public ServiceFuture<List<PatternAnyEntityExtractor>> listPatternAnyEntityInfosAsync(UUID appId, String versionId, ListPatternAnyEntityInfosOptionalParameter listPatternAnyEntityInfosOptionalParameter, final ServiceCallback<List<PatternAnyEntityExtractor>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, listPatternAnyEntityInfosOptionalParameter), serviceCallback);
     }
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
-    public Observable<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter) {
-        return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, getPatternAnyEntityInfosOptionalParameter).map(new Func1<ServiceResponse<List<PatternAnyEntityExtractor>>, List<PatternAnyEntityExtractor>>() {
+    public Observable<List<PatternAnyEntityExtractor>> listPatternAnyEntityInfosAsync(UUID appId, String versionId, ListPatternAnyEntityInfosOptionalParameter listPatternAnyEntityInfosOptionalParameter) {
+        return listPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, listPatternAnyEntityInfosOptionalParameter).map(new Func1<ServiceResponse<List<PatternAnyEntityExtractor>>, List<PatternAnyEntityExtractor>>() {
             @Override
             public List<PatternAnyEntityExtractor> call(ServiceResponse<List<PatternAnyEntityExtractor>> response) {
                 return response.body();
@@ -7424,15 +7665,15 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
-    public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> getPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter) {
+    public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> listPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, ListPatternAnyEntityInfosOptionalParameter listPatternAnyEntityInfosOptionalParameter) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -7442,14 +7683,14 @@ public class ModelsImpl implements Models {
         if (versionId == null) {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
-        final Integer skip = getPatternAnyEntityInfosOptionalParameter != null ? getPatternAnyEntityInfosOptionalParameter.skip() : null;
-        final Integer take = getPatternAnyEntityInfosOptionalParameter != null ? getPatternAnyEntityInfosOptionalParameter.take() : null;
+        final Integer skip = listPatternAnyEntityInfosOptionalParameter != null ? listPatternAnyEntityInfosOptionalParameter.skip() : null;
+        final Integer take = listPatternAnyEntityInfosOptionalParameter != null ? listPatternAnyEntityInfosOptionalParameter.take() : null;
 
-        return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take);
+        return listPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take);
     }
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7458,7 +7699,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
-    public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> getPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
+    public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> listPatternAnyEntityInfosWithServiceResponseAsync(UUID appId, String versionId, Integer skip, Integer take) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -7469,12 +7710,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter versionId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getPatternAnyEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listPatternAnyEntityInfos(appId, versionId, skip, take, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<PatternAnyEntityExtractor>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<PatternAnyEntityExtractor>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<PatternAnyEntityExtractor>> clientResponse = getPatternAnyEntityInfosDelegate(response);
+                        ServiceResponse<List<PatternAnyEntityExtractor>> clientResponse = listPatternAnyEntityInfosDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7483,7 +7724,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<PatternAnyEntityExtractor>> listPatternAnyEntityInfosDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<PatternAnyEntityExtractor>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<PatternAnyEntityExtractor>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -7491,14 +7732,14 @@ public class ModelsImpl implements Models {
     }
 
     @Override
-    public ModelsGetPatternAnyEntityInfosParameters getPatternAnyEntityInfos() {
-        return new ModelsGetPatternAnyEntityInfosParameters(this);
+    public ModelsListPatternAnyEntityInfosParameters listPatternAnyEntityInfos() {
+        return new ModelsListPatternAnyEntityInfosParameters(this);
     }
 
     /**
-     * Internal class implementing ModelsGetPatternAnyEntityInfosDefinition.
+     * Internal class implementing ModelsListPatternAnyEntityInfosDefinition.
      */
-    class ModelsGetPatternAnyEntityInfosParameters implements ModelsGetPatternAnyEntityInfosDefinition {
+    class ModelsListPatternAnyEntityInfosParameters implements ModelsListPatternAnyEntityInfosDefinition {
         private ModelsImpl parent;
         private UUID appId;
         private String versionId;
@@ -7509,42 +7750,42 @@ public class ModelsImpl implements Models {
          * Constructor.
          * @param parent the parent object.
          */
-        ModelsGetPatternAnyEntityInfosParameters(ModelsImpl parent) {
+        ModelsListPatternAnyEntityInfosParameters(ModelsImpl parent) {
             this.parent = parent;
         }
 
         @Override
-        public ModelsGetPatternAnyEntityInfosParameters withAppId(UUID appId) {
+        public ModelsListPatternAnyEntityInfosParameters withAppId(UUID appId) {
             this.appId = appId;
             return this;
         }
 
         @Override
-        public ModelsGetPatternAnyEntityInfosParameters withVersionId(String versionId) {
+        public ModelsListPatternAnyEntityInfosParameters withVersionId(String versionId) {
             this.versionId = versionId;
             return this;
         }
 
         @Override
-        public ModelsGetPatternAnyEntityInfosParameters withSkip(Integer skip) {
+        public ModelsListPatternAnyEntityInfosParameters withSkip(Integer skip) {
             this.skip = skip;
             return this;
         }
 
         @Override
-        public ModelsGetPatternAnyEntityInfosParameters withTake(Integer take) {
+        public ModelsListPatternAnyEntityInfosParameters withTake(Integer take) {
             this.take = take;
             return this;
         }
 
         @Override
         public List<PatternAnyEntityExtractor> execute() {
-        return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
+        return listPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).toBlocking().single().body();
     }
 
         @Override
         public Observable<List<PatternAnyEntityExtractor>> executeAsync() {
-            return getPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternAnyEntityExtractor>>, List<PatternAnyEntityExtractor>>() {
+            return listPatternAnyEntityInfosWithServiceResponseAsync(appId, versionId, skip, take).map(new Func1<ServiceResponse<List<PatternAnyEntityExtractor>>, List<PatternAnyEntityExtractor>>() {
                 @Override
                 public List<PatternAnyEntityExtractor> call(ServiceResponse<List<PatternAnyEntityExtractor>> response) {
                     return response.body();
@@ -7554,7 +7795,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7569,7 +7810,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7583,7 +7824,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7601,7 +7842,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7646,7 +7887,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7656,12 +7897,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getEntityRoles(UUID appId, String versionId, UUID entityId) {
-        return getEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    public List<EntityRole> listEntityRoles(UUID appId, String versionId, UUID entityId) {
+        return listEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7670,12 +7911,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7683,8 +7924,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
-        return getEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
+        return listEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -7693,7 +7934,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7701,7 +7942,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -7715,12 +7956,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -7729,7 +7970,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -7738,7 +7979,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7754,7 +7995,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7769,7 +8010,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7788,7 +8029,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7816,7 +8057,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7926,7 +8167,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7936,12 +8177,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId) {
-        return getPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    public List<EntityRole> listPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId) {
+        return listPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7950,12 +8191,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7963,8 +8204,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
-        return getPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
+        return listPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -7973,7 +8214,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -7981,7 +8222,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -7995,12 +8236,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getPrebuiltEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listPrebuiltEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -8009,7 +8250,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getPrebuiltEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listPrebuiltEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -8018,7 +8259,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8034,7 +8275,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8049,7 +8290,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8068,7 +8309,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8096,7 +8337,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8206,7 +8447,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8216,12 +8457,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getClosedListEntityRoles(UUID appId, String versionId, UUID entityId) {
-        return getClosedListEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    public List<EntityRole> listClosedListEntityRoles(UUID appId, String versionId, UUID entityId) {
+        return listClosedListEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8230,12 +8471,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getClosedListEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listClosedListEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8243,8 +8484,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
-        return getClosedListEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
+        return listClosedListEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -8253,7 +8494,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8261,7 +8502,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getClosedListEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listClosedListEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -8275,12 +8516,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getClosedListEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listClosedListEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getClosedListEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listClosedListEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -8289,7 +8530,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getClosedListEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listClosedListEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -8298,7 +8539,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8314,7 +8555,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8329,7 +8570,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8348,7 +8589,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8376,7 +8617,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8486,7 +8727,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8496,12 +8737,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getRegexEntityRoles(UUID appId, String versionId, UUID entityId) {
-        return getRegexEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    public List<EntityRole> listRegexEntityRoles(UUID appId, String versionId, UUID entityId) {
+        return listRegexEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8510,12 +8751,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getRegexEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listRegexEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8523,8 +8764,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
-        return getRegexEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
+        return listRegexEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -8533,7 +8774,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8541,7 +8782,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getRegexEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listRegexEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -8555,12 +8796,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getRegexEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listRegexEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getRegexEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listRegexEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -8569,7 +8810,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getRegexEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listRegexEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -8578,7 +8819,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8594,7 +8835,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8609,7 +8850,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8628,7 +8869,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8656,7 +8897,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8766,7 +9007,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8776,12 +9017,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getCompositeEntityRoles(UUID appId, String versionId, UUID cEntityId) {
-        return getCompositeEntityRolesWithServiceResponseAsync(appId, versionId, cEntityId).toBlocking().single().body();
+    public List<EntityRole> listCompositeEntityRoles(UUID appId, String versionId, UUID cEntityId) {
+        return listCompositeEntityRolesWithServiceResponseAsync(appId, versionId, cEntityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8790,12 +9031,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getCompositeEntityRolesWithServiceResponseAsync(appId, versionId, cEntityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCompositeEntityRolesWithServiceResponseAsync(appId, versionId, cEntityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8803,8 +9044,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId) {
-        return getCompositeEntityRolesWithServiceResponseAsync(appId, versionId, cEntityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId) {
+        return listCompositeEntityRolesWithServiceResponseAsync(appId, versionId, cEntityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -8813,7 +9054,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8821,7 +9062,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getCompositeEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listCompositeEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID cEntityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -8835,12 +9076,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter cEntityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getCompositeEntityRoles(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listCompositeEntityRoles(appId, versionId, cEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getCompositeEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listCompositeEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -8849,7 +9090,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getCompositeEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listCompositeEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -8858,7 +9099,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8874,7 +9115,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8889,7 +9130,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8908,7 +9149,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -8936,7 +9177,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9046,7 +9287,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9056,12 +9297,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getPatternAnyEntityRoles(UUID appId, String versionId, UUID entityId) {
-        return getPatternAnyEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    public List<EntityRole> listPatternAnyEntityRoles(UUID appId, String versionId, UUID entityId) {
+        return listPatternAnyEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9070,12 +9311,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getPatternAnyEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listPatternAnyEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9083,8 +9324,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
-        return getPatternAnyEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
+        return listPatternAnyEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -9093,7 +9334,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9101,7 +9342,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getPatternAnyEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listPatternAnyEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -9115,12 +9356,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getPatternAnyEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listPatternAnyEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getPatternAnyEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listPatternAnyEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -9129,7 +9370,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getPatternAnyEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listPatternAnyEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -9138,7 +9379,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9154,7 +9395,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9169,7 +9410,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9188,7 +9429,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9216,7 +9457,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9326,7 +9567,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9336,12 +9577,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getHierarchicalEntityRoles(UUID appId, String versionId, UUID hEntityId) {
-        return getHierarchicalEntityRolesWithServiceResponseAsync(appId, versionId, hEntityId).toBlocking().single().body();
+    public List<EntityRole> listHierarchicalEntityRoles(UUID appId, String versionId, UUID hEntityId) {
+        return listHierarchicalEntityRolesWithServiceResponseAsync(appId, versionId, hEntityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9350,12 +9591,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getHierarchicalEntityRolesWithServiceResponseAsync(appId, versionId, hEntityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listHierarchicalEntityRolesWithServiceResponseAsync(appId, versionId, hEntityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9363,8 +9604,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId) {
-        return getHierarchicalEntityRolesWithServiceResponseAsync(appId, versionId, hEntityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId) {
+        return listHierarchicalEntityRolesWithServiceResponseAsync(appId, versionId, hEntityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -9373,7 +9614,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9381,7 +9622,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getHierarchicalEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listHierarchicalEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID hEntityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -9395,12 +9636,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter hEntityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getHierarchicalEntityRoles(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listHierarchicalEntityRoles(appId, versionId, hEntityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getHierarchicalEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listHierarchicalEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -9409,7 +9650,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getHierarchicalEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listHierarchicalEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -9418,7 +9659,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9434,7 +9675,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9449,7 +9690,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9468,7 +9709,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9496,7 +9737,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9606,7 +9847,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9616,12 +9857,12 @@ public class ModelsImpl implements Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    public List<EntityRole> getCustomPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId) {
-        return getCustomPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
+    public List<EntityRole> listCustomPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId) {
+        return listCustomPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).toBlocking().single().body();
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9630,12 +9871,12 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<EntityRole>> getCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
-        return ServiceFuture.fromResponse(getCustomPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
+    public ServiceFuture<List<EntityRole>> listCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId, final ServiceCallback<List<EntityRole>> serviceCallback) {
+        return ServiceFuture.fromResponse(listCustomPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId), serviceCallback);
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9643,8 +9884,8 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<List<EntityRole>> getCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
-        return getCustomPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
+    public Observable<List<EntityRole>> listCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId) {
+        return listCustomPrebuiltEntityRolesWithServiceResponseAsync(appId, versionId, entityId).map(new Func1<ServiceResponse<List<EntityRole>>, List<EntityRole>>() {
             @Override
             public List<EntityRole> call(ServiceResponse<List<EntityRole>> response) {
                 return response.body();
@@ -9653,7 +9894,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9661,7 +9902,7 @@ public class ModelsImpl implements Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    public Observable<ServiceResponse<List<EntityRole>>> getCustomPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
+    public Observable<ServiceResponse<List<EntityRole>>> listCustomPrebuiltEntityRolesWithServiceResponseAsync(UUID appId, String versionId, UUID entityId) {
         if (this.client.endpoint() == null) {
             throw new IllegalArgumentException("Parameter this.client.endpoint() is required and cannot be null.");
         }
@@ -9675,12 +9916,12 @@ public class ModelsImpl implements Models {
             throw new IllegalArgumentException("Parameter entityId is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{Endpoint}", this.client.endpoint());
-        return service.getCustomPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.listCustomPrebuiltEntityRoles(appId, versionId, entityId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<EntityRole>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<EntityRole>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<EntityRole>> clientResponse = getCustomPrebuiltEntityRolesDelegate(response);
+                        ServiceResponse<List<EntityRole>> clientResponse = listCustomPrebuiltEntityRolesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -9689,7 +9930,7 @@ public class ModelsImpl implements Models {
             });
     }
 
-    private ServiceResponse<List<EntityRole>> getCustomPrebuiltEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<EntityRole>> listCustomPrebuiltEntityRolesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<List<EntityRole>, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<List<EntityRole>>() { }.getType())
                 .registerError(ErrorResponseException.class)
@@ -9698,7 +9939,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9714,7 +9955,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9729,7 +9970,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9748,7 +9989,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9776,7 +10017,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9886,7 +10127,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9901,7 +10142,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9915,7 +10156,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9933,7 +10174,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9978,7 +10219,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -9994,7 +10235,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10009,7 +10250,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10028,7 +10269,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10056,7 +10297,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10166,11 +10407,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
+     * @param regexEntityId The regular expression entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -10181,11 +10422,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
+     * @param regexEntityId The regular expression entity model ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -10195,11 +10436,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
+     * @param regexEntityId The regular expression entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegexEntityExtractor object
      */
@@ -10213,11 +10454,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
+     * @param regexEntityId The regular expression entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegexEntityExtractor object
      */
@@ -10257,11 +10498,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -10273,11 +10514,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -10288,11 +10529,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
@@ -10307,11 +10548,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
@@ -10356,11 +10597,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -10371,11 +10612,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -10385,11 +10626,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -10403,11 +10644,11 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -10447,7 +10688,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10462,7 +10703,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10476,7 +10717,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10494,7 +10735,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10538,7 +10779,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10554,7 +10795,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10569,7 +10810,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10588,7 +10829,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10637,7 +10878,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10652,7 +10893,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10666,7 +10907,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10684,7 +10925,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10728,7 +10969,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10744,7 +10985,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10759,7 +11000,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10778,7 +11019,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10827,7 +11068,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10844,7 +11085,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10860,7 +11101,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10880,7 +11121,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -10912,7 +11153,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11033,7 +11274,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11049,7 +11290,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11064,7 +11305,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11083,7 +11324,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11131,7 +11372,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11147,7 +11388,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11162,7 +11403,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11181,7 +11422,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11230,7 +11471,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11247,7 +11488,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11263,7 +11504,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11283,7 +11524,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11315,7 +11556,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11436,7 +11677,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role in a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11452,7 +11693,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role in a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11467,7 +11708,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role in a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11486,7 +11727,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role in a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11534,7 +11775,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11550,7 +11791,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11565,7 +11806,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11584,7 +11825,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11633,7 +11874,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11650,7 +11891,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11666,7 +11907,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11686,7 +11927,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11718,7 +11959,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11839,7 +12080,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11855,7 +12096,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11870,7 +12111,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11889,7 +12130,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11937,7 +12178,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11953,7 +12194,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11968,7 +12209,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -11987,7 +12228,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12036,7 +12277,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12053,7 +12294,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12069,7 +12310,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12089,7 +12330,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12121,7 +12362,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12242,7 +12483,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given regular expression in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12258,7 +12499,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given regular expression in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12273,7 +12514,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given regular expression in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12292,7 +12533,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given regular expression in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12340,7 +12581,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12356,7 +12597,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12371,7 +12612,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12390,7 +12631,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12439,7 +12680,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12456,7 +12697,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12472,7 +12713,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12492,7 +12733,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12524,7 +12765,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12645,7 +12886,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12661,7 +12902,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12676,7 +12917,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12695,7 +12936,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12743,7 +12984,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12759,7 +13000,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12774,7 +13015,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12793,7 +13034,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12842,7 +13083,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12859,7 +13100,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12875,7 +13116,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12895,7 +13136,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -12927,7 +13168,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13048,7 +13289,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13064,7 +13305,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13079,7 +13320,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13098,7 +13339,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13146,7 +13387,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13162,7 +13403,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13177,7 +13418,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13196,7 +13437,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13245,7 +13486,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13262,7 +13503,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13278,7 +13519,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13298,7 +13539,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13330,7 +13571,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13451,7 +13692,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given hierarchical role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13467,7 +13708,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given hierarchical role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13482,7 +13723,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given hierarchical role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13501,7 +13742,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given hierarchical role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13549,7 +13790,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13565,7 +13806,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13580,7 +13821,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13599,7 +13840,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13648,7 +13889,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13665,7 +13906,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13681,7 +13922,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13701,7 +13942,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13733,7 +13974,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13854,7 +14095,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13870,7 +14111,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13885,7 +14126,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13904,7 +14145,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13952,7 +14193,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13968,7 +14209,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -13983,7 +14224,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14002,7 +14243,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14048,7 +14289,7 @@ public class ModelsImpl implements Models {
 
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14065,7 +14306,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14081,7 +14322,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14101,7 +14342,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14130,7 +14371,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14248,7 +14489,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14264,7 +14505,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14279,7 +14520,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -14298,7 +14539,7 @@ public class ModelsImpl implements Models {
     }
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.

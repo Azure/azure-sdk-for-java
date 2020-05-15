@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ElasticPoolPerDatabaseSettings model. */
 @Fluent
 public final class ElasticPoolPerDatabaseSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolPerDatabaseSettings.class);
+
     /*
      * The minimum capacity all databases are guaranteed.
      */
@@ -60,5 +64,13 @@ public final class ElasticPoolPerDatabaseSettings {
     public ElasticPoolPerDatabaseSettings withMaxCapacity(Double maxCapacity) {
         this.maxCapacity = maxCapacity;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

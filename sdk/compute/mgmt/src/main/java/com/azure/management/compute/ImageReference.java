@@ -6,11 +6,15 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImageReference model. */
 @Fluent
 public final class ImageReference extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageReference.class);
+
     /*
      * The image publisher.
      */
@@ -127,5 +131,13 @@ public final class ImageReference extends SubResource {
     public ImageReference withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

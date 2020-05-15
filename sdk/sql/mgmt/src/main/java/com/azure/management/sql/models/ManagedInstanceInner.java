@@ -7,11 +7,13 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ManagedInstanceLicenseType;
 import com.azure.management.sql.ManagedInstanceProxyOverride;
 import com.azure.management.sql.ManagedServerCreateMode;
 import com.azure.management.sql.ResourceIdentity;
 import com.azure.management.sql.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -19,6 +21,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class ManagedInstanceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceInner.class);
+
     /*
      * The Azure Active Directory identity of the managed instance.
      */
@@ -590,5 +594,19 @@ public class ManagedInstanceInner extends Resource {
     public ManagedInstanceInner withMinimalTlsVersion(String minimalTlsVersion) {
         this.minimalTlsVersion = minimalTlsVersion;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 }

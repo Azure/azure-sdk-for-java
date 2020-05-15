@@ -16,8 +16,9 @@ import com.azure.core.management.AzureEnvironment;
 @ServiceClientBuilder(serviceClients = {KeyVaultManagementClientImpl.class})
 public final class KeyVaultManagementClientBuilder {
     /*
-     * Subscription credentials which uniquely identify Microsoft Azure subscription.
-     * The subscription ID forms part of the URI for every service call.
+     * Subscription credentials which uniquely identify Microsoft Azure
+     * subscription. The subscription ID forms part of the URI for every
+     * service call.
      */
     private String subscriptionId;
 

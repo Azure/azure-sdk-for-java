@@ -5,11 +5,15 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedClusterIdentity model. */
 @Fluent
 public final class ManagedClusterIdentity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterIdentity.class);
+
     /*
      * The principal id of the system assigned identity which is used by master
      * components.
@@ -75,5 +79,13 @@ public final class ManagedClusterIdentity {
     public ManagedClusterIdentity withType(ResourceIdentityType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

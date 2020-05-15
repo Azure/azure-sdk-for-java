@@ -5,7 +5,9 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.SyncFullSchemaTable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 /** The SyncFullSchemaProperties model. */
 @Immutable
 public final class SyncFullSchemaPropertiesInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SyncFullSchemaPropertiesInner.class);
+
     /*
      * List of tables in the database full schema.
      */
@@ -41,5 +45,16 @@ public final class SyncFullSchemaPropertiesInner {
      */
     public OffsetDateTime lastUpdateTime() {
         return this.lastUpdateTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (tables() != null) {
+            tables().forEach(e -> e.validate());
+        }
     }
 }

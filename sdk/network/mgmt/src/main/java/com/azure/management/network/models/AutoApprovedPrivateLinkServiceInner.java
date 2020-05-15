@@ -5,11 +5,15 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutoApprovedPrivateLinkService model. */
 @Fluent
 public final class AutoApprovedPrivateLinkServiceInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoApprovedPrivateLinkServiceInner.class);
+
     /*
      * The id of the private link service resource.
      */
@@ -34,5 +38,13 @@ public final class AutoApprovedPrivateLinkServiceInner {
     public AutoApprovedPrivateLinkServiceInner withPrivateLinkService(String privateLinkService) {
         this.privateLinkService = privateLinkService;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

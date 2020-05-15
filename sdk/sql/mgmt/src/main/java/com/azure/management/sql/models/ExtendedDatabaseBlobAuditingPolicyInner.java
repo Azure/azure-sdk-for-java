@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.BlobAuditingPolicyState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +18,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtendedDatabaseBlobAuditingPolicyInner.class);
+
     /*
      * Specifies condition of where clause when creating an audit.
      */
@@ -38,9 +42,17 @@ public class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource {
     private String storageEndpoint;
 
     /*
-     * Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, storageAccountAccessKey is
-     * required.
+     * Specifies the identifier key of the auditing storage account.
+     * If state is Enabled and storageEndpoint is specified, not specifying the
+     * storageAccountAccessKey will use SQL server system-assigned managed
+     * identity to access the storage.
+     * Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active
+     * Directory (AAD).
+     * 2. Grant SQL Server identity access to the storage account by adding
+     * 'Storage Blob Data Contributor' RBAC role to the server identity.
+     * For more information, see [Auditing to storage using Managed Identity
+     * authentication](https://go.microsoft.com/fwlink/?linkid=2114355)
      */
     @JsonProperty(value = "properties.storageAccountAccessKey")
     private String storageAccountAccessKey;
@@ -242,7 +254,12 @@ public class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource {
 
     /**
      * Get the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, storageAccountAccessKey is required.
+     * is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server
+     * system-assigned managed identity to access the storage. Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD). 2. Grant SQL Server
+     * identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+     * identity. For more information, see [Auditing to storage using Managed Identity
+     * authentication](https://go.microsoft.com/fwlink/?linkid=2114355).
      *
      * @return the storageAccountAccessKey value.
      */
@@ -252,7 +269,12 @@ public class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource {
 
     /**
      * Set the storageAccountAccessKey property: Specifies the identifier key of the auditing storage account. If state
-     * is Enabled and storageEndpoint is specified, storageAccountAccessKey is required.
+     * is Enabled and storageEndpoint is specified, not specifying the storageAccountAccessKey will use SQL server
+     * system-assigned managed identity to access the storage. Prerequisites for using managed identity authentication:
+     * 1. Assign SQL Server a system-assigned managed identity in Azure Active Directory (AAD). 2. Grant SQL Server
+     * identity access to the storage account by adding 'Storage Blob Data Contributor' RBAC role to the server
+     * identity. For more information, see [Auditing to storage using Managed Identity
+     * authentication](https://go.microsoft.com/fwlink/?linkid=2114355).
      *
      * @param storageAccountAccessKey the storageAccountAccessKey value to set.
      * @return the ExtendedDatabaseBlobAuditingPolicyInner object itself.
@@ -487,5 +509,13 @@ public class ExtendedDatabaseBlobAuditingPolicyInner extends ProxyResource {
     public ExtendedDatabaseBlobAuditingPolicyInner withQueueDelayMs(Integer queueDelayMs) {
         this.queueDelayMs = queueDelayMs;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

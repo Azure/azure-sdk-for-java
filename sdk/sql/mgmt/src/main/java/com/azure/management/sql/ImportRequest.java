@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImportRequest model. */
 @Fluent
 public final class ImportRequest extends ExportRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportRequest.class);
+
     /*
      * The name of the database to import.
      */
@@ -142,5 +146,36 @@ public final class ImportRequest extends ExportRequest {
     public ImportRequest withMaxSizeBytes(String maxSizeBytes) {
         this.maxSizeBytes = maxSizeBytes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (databaseName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property databaseName in model ImportRequest"));
+        }
+        if (edition() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property edition in model ImportRequest"));
+        }
+        if (serviceObjectiveName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property serviceObjectiveName in model ImportRequest"));
+        }
+        if (maxSizeBytes() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property maxSizeBytes in model ImportRequest"));
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutomaticOSUpgradePolicy model. */
 @Fluent
 public final class AutomaticOSUpgradePolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticOSUpgradePolicy.class);
+
     /*
      * Indicates whether OS upgrades should automatically be applied to scale
      * set instances in a rolling fashion when a newer version of the OS image
@@ -76,5 +80,13 @@ public final class AutomaticOSUpgradePolicy {
     public AutomaticOSUpgradePolicy withDisableAutomaticRollback(Boolean disableAutomaticRollback) {
         this.disableAutomaticRollback = disableAutomaticRollback;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

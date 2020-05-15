@@ -5,12 +5,16 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The FailoverPolicies model. */
 @Fluent
 public final class FailoverPolicies {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailoverPolicies.class);
+
     /*
      * List of failover policies.
      */
@@ -35,5 +39,21 @@ public final class FailoverPolicies {
     public FailoverPolicies withFailoverPolicies(List<FailoverPolicy> failoverPolicies) {
         this.failoverPolicies = failoverPolicies;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (failoverPolicies() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property failoverPolicies in model FailoverPolicies"));
+        } else {
+            failoverPolicies().forEach(e -> e.validate());
+        }
     }
 }

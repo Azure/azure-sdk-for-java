@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImagePurchasePlan model. */
 @Fluent
 public final class ImagePurchasePlan {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImagePurchasePlan.class);
+
     /*
      * The plan ID.
      */
@@ -86,5 +90,13 @@ public final class ImagePurchasePlan {
     public ImagePurchasePlan withProduct(String product) {
         this.product = product;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

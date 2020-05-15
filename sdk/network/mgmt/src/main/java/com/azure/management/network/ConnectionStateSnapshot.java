@@ -5,6 +5,8 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The ConnectionStateSnapshot model. */
 @Fluent
 public final class ConnectionStateSnapshot {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionStateSnapshot.class);
+
     /*
      * The connection state.
      */
@@ -259,5 +263,16 @@ public final class ConnectionStateSnapshot {
      */
     public List<ConnectivityHop> hops() {
         return this.hops;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (hops() != null) {
+            hops().forEach(e -> e.validate());
+        }
     }
 }
