@@ -26,12 +26,14 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
     private IDocumentQueryExecutionComponent<T> component;
     private int actualPageSize;
     private UUID correlatedActivityId;
+    private QueryInfo queryInfo;
 
     private PipelinedDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int actualPageSize,
-            UUID correlatedActivityId) {
+            UUID correlatedActivityId, QueryInfo queryInfo) {
         this.component = component;
         this.actualPageSize = actualPageSize;
         this.correlatedActivityId = correlatedActivityId;
+        this.queryInfo = queryInfo;
 
         // this.executeNextSchedulingMetrics = new SchedulingStopwatch();
         // this.executeNextSchedulingMetrics.Ready();
@@ -140,7 +142,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         int pageSize = Math.min(actualPageSize, Utils.getValueOrDefault(queryInfo.getTop(), (actualPageSize)));
         return createTakeComponentFunction.apply(feedOptions.getRequestContinuation())
-                .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId));
+                .map(c -> new PipelinedDocumentQueryExecutionContext<>(c, pageSize, correlatedActivityId, queryInfo));
     }
 
     public static <T extends Resource> Flux<PipelinedDocumentQueryExecutionContext<T>> createReadManyAsync(
@@ -155,7 +157,7 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         // TODO: Making pagesize -1. Should be reviewed
         return documentQueryExecutionComponentFlux.map(c -> new PipelinedDocumentQueryExecutionContext<>(c, -1,
-                                                                                                  activityId));
+                                                                                                  activityId, null));
     }
 
     @Override
@@ -164,5 +166,9 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         // TODO add more code here
         return this.component.drainAsync(actualPageSize);
+    }
+
+    public QueryInfo getQueryInfo() {
+        return this.queryInfo;
     }
 }

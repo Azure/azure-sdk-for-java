@@ -615,4 +615,12 @@ public final class ModelBridgeInternal {
     public static ThroughputResponse createThroughputRespose(ResourceResponse<Offer> offerResourceResponse) {
         return new ThroughputResponse(offerResourceResponse);
     }
+
+    public static void addQueryInfoToFeedResponse(FeedResponse<?> feedResponse, QueryInfo queryInfo){
+        feedResponse.setQueryinfo(queryInfo);
+    }
+
+    public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {
+        return response.getQueryInfo();
+    }
 }

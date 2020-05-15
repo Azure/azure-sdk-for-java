@@ -63,6 +63,7 @@ public class Utils {
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         Utils.simpleObjectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
+        Utils.simpleObjectMapper.configure(DeserializationFeature.ACCEPT_FLOAT_AS_INT, false);
 
         Utils.simpleObjectMapper.registerModule(new AfterburnerModule());
     }

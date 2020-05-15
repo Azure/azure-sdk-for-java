@@ -11,6 +11,7 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -62,7 +63,7 @@ public class AggregateQueryTests extends TestSuiteBase {
 
     private CosmosAsyncClient client;
 
-    @Factory(dataProvider = "clientBuildersWithDirect")
+    @Factory(dataProvider = "clientBuildersWithDirectSession")
     public AggregateQueryTests(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -71,15 +72,16 @@ public class AggregateQueryTests extends TestSuiteBase {
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        
+
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {
 
-            CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
+            CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(queryConfig.query, options,
+                                                                                     JsonNode.class);
 
-            FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+            FeedResponseListValidator<JsonNode> validator = new FeedResponseListValidator.Builder<JsonNode>()
                 .withAggregateValue(queryConfig.expected)
                 .numberOfPages(1)
                 .hasValidQueryMetrics(qmEnabled)
