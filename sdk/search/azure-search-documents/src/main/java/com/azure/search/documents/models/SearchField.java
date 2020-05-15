@@ -51,8 +51,7 @@ public final class SearchField {
      * increase in index storage requirements. Default is true for simple
      * fields and null for complex fields.
      */
-    @JsonProperty(value = "retrievable")
-    private Boolean retrievable;
+    private Boolean hidden;
 
     /*
      * A value indicating whether the field is full-text searchable. This means
@@ -310,10 +309,10 @@ public final class SearchField {
      * property does not cause any increase in index storage requirements.
      * Default is true for simple fields and null for complex fields.
      *
-     * @return the retrievable value.
+     * @return the hidden value.
      */
-    public Boolean isRetrievable() {
-        return this.retrievable;
+    public Boolean isHidden() {
+        return this.hidden;
     }
 
     /**
@@ -326,11 +325,11 @@ public final class SearchField {
      * property does not cause any increase in index storage requirements.
      * Default is true for simple fields and null for complex fields.
      *
-     * @param retrievable the retrievable value to set.
+     * @param hidden the hidden value to set.
      * @return the SearchField object itself.
      */
-    public SearchField setRetrievable(Boolean retrievable) {
-        this.retrievable = retrievable;
+    public SearchField setHidden(Boolean retrievable) {
+        this.hidden = retrievable;
         return this;
     }
 

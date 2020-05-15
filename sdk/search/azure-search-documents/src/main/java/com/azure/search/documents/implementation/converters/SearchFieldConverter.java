@@ -9,10 +9,12 @@ import com.azure.search.documents.implementation.models.SearchField;
  */
 public final class SearchFieldConverter {
     public static SearchField convert(com.azure.search.documents.models.SearchField obj) {
-        return DefaultConverter.convert(obj, SearchField.class);
+        return DefaultConverter.convert(obj, SearchField.class)
+            .setRetrievable(obj.isHidden() == null ? null : !obj.isHidden());
     }
 
     public static com.azure.search.documents.models.SearchField convert(SearchField obj) {
-        return DefaultConverter.convert(obj, com.azure.search.documents.models.SearchField.class);
+        return DefaultConverter.convert(obj, com.azure.search.documents.models.SearchField.class)
+            .setHidden(obj.isRetrievable() == null ? null : !obj.isRetrievable());
     }
 }
