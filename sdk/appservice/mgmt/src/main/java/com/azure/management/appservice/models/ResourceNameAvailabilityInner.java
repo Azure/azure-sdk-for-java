@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.InAvailabilityReasonType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceNameAvailability model. */
 @Fluent
 public final class ResourceNameAvailabilityInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNameAvailabilityInner.class);
+
     /*
      * <code>true</code> indicates name is valid and available.
      * <code>false</code> indicates the name is invalid, unavailable, or both.
@@ -104,5 +108,13 @@ public final class ResourceNameAvailabilityInner {
     public ResourceNameAvailabilityInner withMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -6,15 +6,19 @@ package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.FlowLogFormatParameters;
 import com.azure.management.network.RetentionPolicyParameters;
 import com.azure.management.network.TrafficAnalyticsProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FlowLogInformation model. */
 @JsonFlatten
 @Fluent
 public class FlowLogInformationInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogInformationInner.class);
+
     /*
      * The ID of the resource to configure for flow log and traffic analytics
      * (optional) .
@@ -173,5 +177,34 @@ public class FlowLogInformationInner {
     public FlowLogInformationInner withFormat(FlowLogFormatParameters format) {
         this.format = format;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model FlowLogInformationInner"));
+        }
+        if (flowAnalyticsConfiguration() != null) {
+            flowAnalyticsConfiguration().validate();
+        }
+        if (storageId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property storageId in model FlowLogInformationInner"));
+        }
+        if (retentionPolicy() != null) {
+            retentionPolicy().validate();
+        }
+        if (format() != null) {
+            format().validate();
+        }
     }
 }

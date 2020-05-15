@@ -10,10 +10,13 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the ContainerRegistryManagementClientImpl type. */
 public final class ContainerRegistryManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(ContainerRegistryManagementClientImpl.class);
+
     /** The Microsoft Azure subscription ID. */
     private String subscriptionId;
 

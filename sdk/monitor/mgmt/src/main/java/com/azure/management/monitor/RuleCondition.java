@@ -6,10 +6,13 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /** The RuleCondition model. */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -31,6 +34,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonFlatten
 @Fluent
 public class RuleCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleCondition.class);
+
     /*
      * the resource from which the rule collects its data. For this type
      * dataSource will always be of type RuleMetricDataSource.
@@ -58,5 +63,16 @@ public class RuleCondition {
     public RuleCondition withDataSource(RuleDataSource dataSource) {
         this.dataSource = dataSource;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dataSource() != null) {
+            dataSource().validate();
+        }
     }
 }

@@ -7,7 +7,9 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.OperatingSystemTypes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -15,6 +17,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class GalleryApplicationInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationInner.class);
+
     /*
      * The description of this gallery Application Definition resource. This
      * property is updatable.
@@ -182,5 +186,13 @@ public class GalleryApplicationInner extends Resource {
     public GalleryApplicationInner withSupportedOSType(OperatingSystemTypes supportedOSType) {
         this.supportedOSType = supportedOSType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

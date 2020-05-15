@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DiagnosticsProfile model. */
 @Fluent
 public final class DiagnosticsProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticsProfile.class);
+
     /*
      * Boot Diagnostics is a debugging feature which allows you to view Console
      * Output and Screenshot to diagnose VM status. <br><br> You can easily
@@ -41,5 +45,16 @@ public final class DiagnosticsProfile {
     public DiagnosticsProfile withBootDiagnostics(BootDiagnostics bootDiagnostics) {
         this.bootDiagnostics = bootDiagnostics;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (bootDiagnostics() != null) {
+            bootDiagnostics().validate();
+        }
     }
 }

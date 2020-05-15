@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ServerKeyType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -15,6 +17,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class ServerKeyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerKeyInner.class);
+
     /*
      * Kind of encryption protector. This is metadata used for the Azure portal
      * experience.
@@ -174,5 +178,13 @@ public class ServerKeyInner extends ProxyResource {
     public ServerKeyInner withCreationDate(OffsetDateTime creationDate) {
         this.creationDate = creationDate;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

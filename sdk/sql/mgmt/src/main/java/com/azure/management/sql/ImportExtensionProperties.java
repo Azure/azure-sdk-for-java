@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImportExtensionProperties model. */
 @Fluent
 public final class ImportExtensionProperties extends ExportRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportExtensionProperties.class);
+
     /*
      * The type of import operation being performed. This is always Import.
      */
@@ -39,5 +43,15 @@ public final class ImportExtensionProperties extends ExportRequest {
     public ImportExtensionProperties withOperationMode(String operationMode) {
         this.operationMode = operationMode;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

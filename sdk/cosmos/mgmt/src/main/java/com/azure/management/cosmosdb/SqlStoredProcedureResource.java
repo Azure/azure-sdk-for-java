@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SqlStoredProcedureResource model. */
 @Fluent
 public class SqlStoredProcedureResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlStoredProcedureResource.class);
+
     /*
      * Name of the Cosmos DB SQL storedProcedure
      */
@@ -60,5 +64,18 @@ public class SqlStoredProcedureResource {
     public SqlStoredProcedureResource withBody(String body) {
         this.body = body;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model SqlStoredProcedureResource"));
+        }
     }
 }

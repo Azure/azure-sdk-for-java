@@ -27,14 +27,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.dns.RecordType;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecordSets. */
 public final class RecordSetsInner {
+    private final ClientLogger logger = new ClientLogger(RecordSetsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final RecordSetsService service;
 
@@ -64,7 +67,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetInner>> update(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -82,7 +85,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -101,7 +104,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -118,7 +121,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/{recordType}/{relativeRecordSetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -134,7 +137,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/{recordType}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetListResultInner>> listByType(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -151,7 +154,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/recordsets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetListResultInner>> listByDnsZone(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -167,7 +170,7 @@ public final class RecordSetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/dnsZones/{zoneName}/all")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetListResultInner>> listAllByDnsZone(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -181,21 +184,21 @@ public final class RecordSetsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetListResultInner>> listByTypeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetListResultInner>> listByDnsZoneNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RecordSetListResultInner>> listAllByDnsZoneNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -211,7 +214,7 @@ public final class RecordSetsInner {
      * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify
      *     the last-seen etag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -223,6 +226,35 @@ public final class RecordSetsInner {
         RecordType recordType,
         RecordSetInner parameters,
         String ifMatch) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -251,8 +283,76 @@ public final class RecordSetsInner {
      * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
      * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify
      *     the last-seen etag value to prevent accidentally overwriting concurrent changes.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS record set (a collection of DNS records with the same name and type).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RecordSetInner>> updateWithResponseAsync(
+        String resourceGroupName,
+        String zoneName,
+        String relativeRecordSetName,
+        RecordType recordType,
+        RecordSetInner parameters,
+        String ifMatch,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .update(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                relativeRecordSetName,
+                recordType,
+                ifMatch,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Updates a record set within a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set.
+     * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify
+     *     the last-seen etag value to prevent accidentally overwriting concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -285,7 +385,7 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set.
      * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -321,7 +421,7 @@ public final class RecordSetsInner {
      * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify
      *     the last-seen etag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -345,7 +445,7 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set.
      * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -375,7 +475,7 @@ public final class RecordSetsInner {
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
      *     set. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -388,6 +488,35 @@ public final class RecordSetsInner {
         RecordSetInner parameters,
         String ifMatch,
         String ifNoneMatch) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -420,8 +549,81 @@ public final class RecordSetsInner {
      *     the last-seen etag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
      *     set. Other values will be ignored.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS record set (a collection of DNS records with the same name and type).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RecordSetInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String zoneName,
+        String relativeRecordSetName,
+        RecordType recordType,
+        RecordSetInner parameters,
+        String ifMatch,
+        String ifNoneMatch,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        return service
+            .createOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                relativeRecordSetName,
+                recordType,
+                ifMatch,
+                ifNoneMatch,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a record set within a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA can be updated but not
+     *     created (they are created when the DNS zone is created).
+     * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
+     * @param ifMatch The etag of the record set. Omit this value to always overwrite the current record set. Specify
+     *     the last-seen etag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
+     *     set. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -456,7 +658,7 @@ public final class RecordSetsInner {
      *     created (they are created when the DNS zone is created).
      * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -496,7 +698,7 @@ public final class RecordSetsInner {
      * @param ifNoneMatch Set to '*' to allow a new record set to be created, but to prevent updating an existing record
      *     set. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -524,7 +726,7 @@ public final class RecordSetsInner {
      *     created (they are created when the DNS zone is created).
      * @param parameters Describes a DNS record set (a collection of DNS records with the same name and type).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS record set (a collection of DNS records with the same name and type).
      */
@@ -554,7 +756,7 @@ public final class RecordSetsInner {
      * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the
      *     last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -565,6 +767,30 @@ public final class RecordSetsInner {
         String relativeRecordSetName,
         RecordType recordType,
         String ifMatch) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -592,8 +818,69 @@ public final class RecordSetsInner {
      *     deleted when the DNS zone is deleted).
      * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the
      *     last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName,
+        String zoneName,
+        String relativeRecordSetName,
+        RecordType recordType,
+        String ifMatch,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .delete(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                relativeRecordSetName,
+                recordType,
+                ifMatch,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes a record set from a DNS zone. This operation cannot be undone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
+     *     deleted when the DNS zone is deleted).
+     * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the
+     *     last-seen etag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -617,7 +904,7 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
      *     deleted when the DNS zone is deleted).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -641,7 +928,7 @@ public final class RecordSetsInner {
      * @param ifMatch The etag of the record set. Omit this value to always delete the current record set. Specify the
      *     last-seen etag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -663,7 +950,7 @@ public final class RecordSetsInner {
      * @param recordType The type of DNS record in this record set. Record sets of type SOA cannot be deleted (they are
      *     deleted when the DNS zone is deleted).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -681,13 +968,37 @@ public final class RecordSetsInner {
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a record set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RecordSetInner>> getWithResponseAsync(
         String resourceGroupName, String zoneName, String relativeRecordSetName, RecordType recordType) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -711,8 +1022,64 @@ public final class RecordSetsInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a record set.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RecordSetInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String zoneName,
+        String relativeRecordSetName,
+        RecordType recordType,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (relativeRecordSetName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter relativeRecordSetName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                relativeRecordSetName,
+                recordType,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets a record set.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
+     * @param recordType The type of DNS record in this record set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a record set.
      */
@@ -738,7 +1105,7 @@ public final class RecordSetsInner {
      * @param relativeRecordSetName The name of the record set, relative to the name of the zone.
      * @param recordType The type of DNS record in this record set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a record set.
      */
@@ -759,13 +1126,33 @@ public final class RecordSetsInner {
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecordSetInner>> listByTypeSinglePageAsync(
         String resourceGroupName, String zoneName, RecordType recordType, Integer top, String recordsetnamesuffix) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -802,8 +1189,74 @@ public final class RecordSetsInner {
      * @param recordsetnamesuffix The suffix label of the record set name that has to be used to filter the record set
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecordSetInner>> listByTypeSinglePageAsync(
+        String resourceGroupName,
+        String zoneName,
+        RecordType recordType,
+        Integer top,
+        String recordsetnamesuffix,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (recordType == null) {
+            return Mono.error(new IllegalArgumentException("Parameter recordType is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listByType(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                recordType,
+                top,
+                recordsetnamesuffix,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists the record sets of a specified type in a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param recordType The type of record sets to enumerate.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @param recordsetnamesuffix The suffix label of the record set name that has to be used to filter the record set
+     *     enumerations. If this parameter is specified, Enumeration will return only records that end with
+     *     .&lt;recordSetNameSuffix&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -821,8 +1274,37 @@ public final class RecordSetsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @param recordsetnamesuffix The suffix label of the record set name that has to be used to filter the record set
+     *     enumerations. If this parameter is specified, Enumeration will return only records that end with
+     *     .&lt;recordSetNameSuffix&gt;.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecordSetInner> listByTypeAsync(
+        String resourceGroupName,
+        String zoneName,
+        RecordType recordType,
+        Integer top,
+        String recordsetnamesuffix,
+        Context context) {
+        return new PagedFlux<>(
+            () -> listByTypeSinglePageAsync(resourceGroupName, zoneName, recordType, top, recordsetnamesuffix, context),
+            nextLink -> listByTypeNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists the record sets of a specified type in a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param recordType The type of record sets to enumerate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -847,7 +1329,7 @@ public final class RecordSetsInner {
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -864,7 +1346,7 @@ public final class RecordSetsInner {
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @param recordType The type of record sets to enumerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -886,13 +1368,30 @@ public final class RecordSetsInner {
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecordSetInner>> listByDnsZoneSinglePageAsync(
         String resourceGroupName, String zoneName, Integer top, String recordsetnamesuffix) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -927,8 +1426,64 @@ public final class RecordSetsInner {
      * @param recordsetnamesuffix The suffix label of the record set name that has to be used to filter the record set
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecordSetInner>> listByDnsZoneSinglePageAsync(
+        String resourceGroupName, String zoneName, Integer top, String recordsetnamesuffix, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listByDnsZone(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                top,
+                recordsetnamesuffix,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all record sets in a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @param recordsetnamesuffix The suffix label of the record set name that has to be used to filter the record set
+     *     enumerations. If this parameter is specified, Enumeration will return only records that end with
+     *     .&lt;recordSetNameSuffix&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -945,8 +1500,31 @@ public final class RecordSetsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @param recordsetnamesuffix The suffix label of the record set name that has to be used to filter the record set
+     *     enumerations. If this parameter is specified, Enumeration will return only records that end with
+     *     .&lt;recordSetNameSuffix&gt;.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecordSetInner> listByDnsZoneAsync(
+        String resourceGroupName, String zoneName, Integer top, String recordsetnamesuffix, Context context) {
+        return new PagedFlux<>(
+            () -> listByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top, recordsetnamesuffix, context),
+            nextLink -> listByDnsZoneNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all record sets in a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -970,7 +1548,7 @@ public final class RecordSetsInner {
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -986,7 +1564,7 @@ public final class RecordSetsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -1008,13 +1586,30 @@ public final class RecordSetsInner {
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecordSetInner>> listAllByDnsZoneSinglePageAsync(
         String resourceGroupName, String zoneName, Integer top, String recordSetNameSuffix) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1049,8 +1644,64 @@ public final class RecordSetsInner {
      * @param recordSetNameSuffix The suffix label of the record set name that has to be used to filter the record set
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecordSetInner>> listAllByDnsZoneSinglePageAsync(
+        String resourceGroupName, String zoneName, Integer top, String recordSetNameSuffix, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (zoneName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter zoneName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listAllByDnsZone(
+                this.client.getHost(),
+                resourceGroupName,
+                zoneName,
+                top,
+                recordSetNameSuffix,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all record sets in a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @param recordSetNameSuffix The suffix label of the record set name that has to be used to filter the record set
+     *     enumerations. If this parameter is specified, Enumeration will return only records that end with
+     *     .&lt;recordSetNameSuffix&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -1067,8 +1718,31 @@ public final class RecordSetsInner {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
+     * @param recordSetNameSuffix The suffix label of the record set name that has to be used to filter the record set
+     *     enumerations. If this parameter is specified, Enumeration will return only records that end with
+     *     .&lt;recordSetNameSuffix&gt;.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecordSetInner> listAllByDnsZoneAsync(
+        String resourceGroupName, String zoneName, Integer top, String recordSetNameSuffix, Context context) {
+        return new PagedFlux<>(
+            () -> listAllByDnsZoneSinglePageAsync(resourceGroupName, zoneName, top, recordSetNameSuffix, context),
+            nextLink -> listAllByDnsZoneNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all record sets in a DNS zone.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param zoneName The name of the DNS zone (without a terminating dot).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -1092,7 +1766,7 @@ public final class RecordSetsInner {
      *     enumerations. If this parameter is specified, Enumeration will return only records that end with
      *     .&lt;recordSetNameSuffix&gt;.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -1108,7 +1782,7 @@ public final class RecordSetsInner {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param zoneName The name of the DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
@@ -1125,12 +1799,15 @@ public final class RecordSetsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecordSetInner>> listByTypeNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByTypeNext(nextLink, context))
             .<PagedResponse<RecordSetInner>>map(
@@ -1149,13 +1826,44 @@ public final class RecordSetsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecordSetInner>> listByTypeNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByTypeNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecordSetInner>> listByDnsZoneNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByDnsZoneNext(nextLink, context))
             .<PagedResponse<RecordSetInner>>map(
@@ -1174,13 +1882,44 @@ public final class RecordSetsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecordSetInner>> listByDnsZoneNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByDnsZoneNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a record set List operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecordSetInner>> listAllByDnsZoneNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listAllByDnsZoneNext(nextLink, context))
             .<PagedResponse<RecordSetInner>>map(
@@ -1193,5 +1932,33 @@ public final class RecordSetsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a record set List operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecordSetInner>> listAllByDnsZoneNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listAllByDnsZoneNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

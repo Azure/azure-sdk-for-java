@@ -5,17 +5,21 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The StaticSiteCollection model. */
 @Fluent
 public final class StaticSiteCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteCollectionInner.class);
+
     /*
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<StaticSiteARMResourceInner> value;
+    private List<StaticSiteArmResourceInner> value;
 
     /*
      * Link to next page of resources.
@@ -28,7 +32,7 @@ public final class StaticSiteCollectionInner {
      *
      * @return the value value.
      */
-    public List<StaticSiteARMResourceInner> value() {
+    public List<StaticSiteArmResourceInner> value() {
         return this.value;
     }
 
@@ -38,7 +42,7 @@ public final class StaticSiteCollectionInner {
      * @param value the value value to set.
      * @return the StaticSiteCollectionInner object itself.
      */
-    public StaticSiteCollectionInner withValue(List<StaticSiteARMResourceInner> value) {
+    public StaticSiteCollectionInner withValue(List<StaticSiteArmResourceInner> value) {
         this.value = value;
         return this;
     }
@@ -50,5 +54,20 @@ public final class StaticSiteCollectionInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model StaticSiteCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -25,7 +25,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -64,7 +64,7 @@ public final class PolicyDefinitionsInner {
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
                 + "/{policyDefinitionName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -78,7 +78,7 @@ public final class PolicyDefinitionsInner {
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
                 + "/{policyDefinitionName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -91,7 +91,7 @@ public final class PolicyDefinitionsInner {
             "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions"
                 + "/{policyDefinitionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionInner>> get(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -102,7 +102,7 @@ public final class PolicyDefinitionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionInner>> getBuiltIn(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -114,7 +114,7 @@ public final class PolicyDefinitionsInner {
             "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
                 + "/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionInner>> createOrUpdateAtManagementGroup(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -128,7 +128,7 @@ public final class PolicyDefinitionsInner {
             "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
                 + "/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteAtManagementGroup(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -141,7 +141,7 @@ public final class PolicyDefinitionsInner {
             "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
                 + "/Microsoft.Authorization/policyDefinitions/{policyDefinitionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionInner>> getAtManagementGroup(
             @HostParam("$host") String host,
             @PathParam("policyDefinitionName") String policyDefinitionName,
@@ -152,7 +152,7 @@ public final class PolicyDefinitionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -162,7 +162,7 @@ public final class PolicyDefinitionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionListResultInner>> listBuiltIn(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
 
@@ -171,7 +171,7 @@ public final class PolicyDefinitionsInner {
             "/providers/Microsoft.Management/managementgroups/{managementGroupId}/providers"
                 + "/Microsoft.Authorization/policyDefinitions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionListResultInner>> listByManagementGroup(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -181,21 +181,21 @@ public final class PolicyDefinitionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionListResultInner>> listBuiltInNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PolicyDefinitionListResultInner>> listByManagementGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -206,7 +206,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -253,7 +253,7 @@ public final class PolicyDefinitionsInner {
      * @param parameters The policy definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -295,7 +295,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -319,7 +319,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to create.
      * @param parameters The policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -333,7 +333,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -372,7 +372,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -406,7 +406,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -420,7 +420,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -433,7 +433,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -472,7 +472,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -507,7 +507,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -529,7 +529,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -543,7 +543,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the built-in policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -571,7 +571,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the built-in policy definition to get.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -594,7 +594,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the built-in policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -616,7 +616,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the built-in policy definition to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -632,7 +632,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param parameters The policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -678,7 +678,7 @@ public final class PolicyDefinitionsInner {
      * @param parameters The policy definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -719,7 +719,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param parameters The policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -744,7 +744,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param parameters The policy definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -760,7 +760,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -799,7 +799,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -829,7 +829,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -845,7 +845,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to delete.
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -859,7 +859,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -898,7 +898,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -928,7 +928,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -952,7 +952,7 @@ public final class PolicyDefinitionsInner {
      * @param policyDefinitionName The name of the policy definition to get.
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the policy definition.
      */
@@ -964,7 +964,7 @@ public final class PolicyDefinitionsInner {
     /**
      * This operation retrieves a list of all the policy definitions in a given subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1006,7 +1006,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1038,7 +1038,7 @@ public final class PolicyDefinitionsInner {
     /**
      * This operation retrieves a list of all the policy definitions in a given subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1052,7 +1052,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1064,7 +1064,7 @@ public final class PolicyDefinitionsInner {
     /**
      * This operation retrieves a list of all the policy definitions in a given subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1076,7 +1076,7 @@ public final class PolicyDefinitionsInner {
     /**
      * This operation retrieves a list of all the built-in policy definitions.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1105,7 +1105,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1131,7 +1131,7 @@ public final class PolicyDefinitionsInner {
     /**
      * This operation retrieves a list of all the built-in policy definitions.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1146,7 +1146,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1159,7 +1159,7 @@ public final class PolicyDefinitionsInner {
     /**
      * This operation retrieves a list of all the built-in policy definitions.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1173,7 +1173,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1211,7 +1211,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1244,7 +1244,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1261,7 +1261,7 @@ public final class PolicyDefinitionsInner {
      * @param managementGroupId The ID of the management group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1277,7 +1277,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param managementGroupId The ID of the management group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1291,7 +1291,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1320,7 +1320,7 @@ public final class PolicyDefinitionsInner {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1347,7 +1347,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1376,7 +1376,7 @@ public final class PolicyDefinitionsInner {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1403,7 +1403,7 @@ public final class PolicyDefinitionsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */
@@ -1432,7 +1432,7 @@ public final class PolicyDefinitionsInner {
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of policy definitions.
      */

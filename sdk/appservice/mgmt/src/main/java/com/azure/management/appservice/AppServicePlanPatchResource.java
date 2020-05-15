@@ -6,6 +6,8 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -13,6 +15,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class AppServicePlanPatchResource extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanPatchResource.class);
+
     /*
      * Target worker tier assigned to the App Service plan.
      */
@@ -456,5 +460,18 @@ public class AppServicePlanPatchResource extends ProxyOnlyResource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (hostingEnvironmentProfile() != null) {
+            hostingEnvironmentProfile().validate();
+        }
     }
 }

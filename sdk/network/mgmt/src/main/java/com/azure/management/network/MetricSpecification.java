@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricSpecification model. */
 @Fluent
 public final class MetricSpecification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
+
     /*
      * The name of the metric.
      */
@@ -373,5 +377,19 @@ public final class MetricSpecification {
     public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (availabilities() != null) {
+            availabilities().forEach(e -> e.validate());
+        }
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
     }
 }

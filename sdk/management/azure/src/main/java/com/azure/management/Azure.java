@@ -66,7 +66,7 @@ import com.azure.management.network.NetworkSecurityGroups;
 import com.azure.management.network.NetworkUsages;
 import com.azure.management.network.NetworkWatchers;
 import com.azure.management.network.Networks;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.network.RouteFilters;
 import com.azure.management.network.RouteTables;
 import com.azure.management.network.VirtualNetworkGateways;
@@ -556,8 +556,8 @@ public final class Azure {
     }
 
     /** @return entry point to managing public IP addresses */
-    public PublicIPAddresses publicIPAddresses() {
-        return this.networkManager.publicIPAddresses();
+    public PublicIpAddresses publicIpAddresses() {
+        return this.networkManager.publicIpAddresses();
     }
 
     //    /**

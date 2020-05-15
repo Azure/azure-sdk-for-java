@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PacketCaptureParameters model. */
 @Fluent
 public class PacketCaptureParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureParameters.class);
+
     /*
      * The ID of the targeted resource, only VM is currently supported.
      */
@@ -165,5 +169,29 @@ public class PacketCaptureParameters {
     public PacketCaptureParameters withFilters(List<PacketCaptureFilter> filters) {
         this.filters = filters;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (target() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
+        }
+        if (storageLocation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property storageLocation in model PacketCaptureParameters"));
+        } else {
+            storageLocation().validate();
+        }
+        if (filters() != null) {
+            filters().forEach(e -> e.validate());
+        }
     }
 }

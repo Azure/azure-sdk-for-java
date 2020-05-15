@@ -5,14 +5,18 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AzureReachabilityReportItem;
 import com.azure.management.network.AzureReachabilityReportLocation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AzureReachabilityReport model. */
 @Fluent
 public final class AzureReachabilityReportInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportInner.class);
+
     /*
      * The aggregation level of Azure reachability report. Can be Country,
      * State or City.
@@ -92,5 +96,35 @@ public final class AzureReachabilityReportInner {
     public AzureReachabilityReportInner withReachabilityReport(List<AzureReachabilityReportItem> reachabilityReport) {
         this.reachabilityReport = reachabilityReport;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (aggregationLevel() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property aggregationLevel in model AzureReachabilityReportInner"));
+        }
+        if (providerLocation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property providerLocation in model AzureReachabilityReportInner"));
+        } else {
+            providerLocation().validate();
+        }
+        if (reachabilityReport() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property reachabilityReport in model AzureReachabilityReportInner"));
+        } else {
+            reachabilityReport().forEach(e -> e.validate());
+        }
     }
 }

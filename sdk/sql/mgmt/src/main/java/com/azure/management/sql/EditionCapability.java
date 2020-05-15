@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The EditionCapability model. */
 @Fluent
 public final class EditionCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EditionCapability.class);
+
     /*
      * The database edition name.
      */
@@ -125,5 +129,22 @@ public final class EditionCapability {
     public EditionCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedServiceLevelObjectives() != null) {
+            supportedServiceLevelObjectives().forEach(e -> e.validate());
+        }
+        if (readScale() != null) {
+            readScale().validate();
+        }
+        if (supportedStorageCapabilities() != null) {
+            supportedStorageCapabilities().forEach(e -> e.validate());
+        }
     }
 }

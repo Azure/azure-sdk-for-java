@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetOSProfile model. */
 @Fluent
 public final class VirtualMachineScaleSetOSProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetOSProfile.class);
+
     /*
      * Specifies the computer name prefix for all of the virtual machines in
      * the scale set. Computer name prefixes must be 1 to 15 characters long.
@@ -295,5 +299,22 @@ public final class VirtualMachineScaleSetOSProfile {
     public VirtualMachineScaleSetOSProfile withSecrets(List<VaultSecretGroup> secrets) {
         this.secrets = secrets;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (windowsConfiguration() != null) {
+            windowsConfiguration().validate();
+        }
+        if (linuxConfiguration() != null) {
+            linuxConfiguration().validate();
+        }
+        if (secrets() != null) {
+            secrets().forEach(e -> e.validate());
+        }
     }
 }

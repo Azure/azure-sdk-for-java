@@ -11,7 +11,7 @@ import com.azure.management.graphrbac.BuiltInRole;
 import com.azure.management.msi.Identity;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.models.HasNetworkInterfaces;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -250,7 +250,7 @@ public interface VirtualMachine
      *
      * @return the public IP of the primary network interface
      */
-    PublicIPAddress getPrimaryPublicIPAddress();
+    PublicIpAddress getPrimaryPublicIPAddress();
 
     /**
      * @return the resource ID of the public IP address associated with this virtual machine's primary network interface
@@ -510,7 +510,7 @@ public interface VirtualMachine
              * @param creatable a creatable definition for a new public IP
              * @return the next stage of the definition
              */
-            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(Creatable<PublicIPAddress> creatable);
+            WithProximityPlacementGroup withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable);
 
             /**
              * Creates a new public IP address in the same region and resource group as the resource, with the specified
@@ -529,7 +529,7 @@ public interface VirtualMachine
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            WithProximityPlacementGroup withExistingPrimaryPublicIPAddress(PublicIPAddress publicIPAddress);
+            WithProximityPlacementGroup withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Specifies that the VM should not have a public IP address.

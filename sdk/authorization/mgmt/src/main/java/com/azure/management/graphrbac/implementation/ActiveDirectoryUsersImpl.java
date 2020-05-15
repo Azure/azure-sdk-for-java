@@ -25,7 +25,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().inner().users().list(null));
+        return wrapList(this.manager().inner().users().list());
     }
 
     @Override
@@ -71,13 +71,14 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
                             .users()
                             .listAsync(
                                 String
-                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")))
+                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")),
+                                null)
                             .singleOrEmpty();
                     } else {
                         return manager()
                             .inner()
                             .users()
-                            .listAsync(String.format("displayName eq '%s'", name))
+                            .listAsync(String.format("displayName eq '%s'", name), null)
                             .singleOrEmpty();
                     }
                 })
@@ -86,7 +87,7 @@ class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listAsync() {
-        return wrapPageAsync(this.inner().listAsync(null));
+        return wrapPageAsync(this.inner().listAsync());
     }
 
     @Override

@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Address model. */
 @Fluent
 public final class Address {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Address.class);
+
     /*
      * First line of an Address.
      */
@@ -164,5 +168,36 @@ public final class Address {
     public Address withState(String state) {
         this.state = state;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (address1() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property address1 in model Address"));
+        }
+        if (city() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property city in model Address"));
+        }
+        if (country() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property country in model Address"));
+        }
+        if (postalCode() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property postalCode in model Address"));
+        }
+        if (state() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property state in model Address"));
+        }
     }
 }
