@@ -89,7 +89,7 @@ stages:
                     - checkout: self
                     - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
                       parameters:
-                        SourceFolder: ${{parameters.ArtifactName}} 
+                        SourceFolder: ${{parameters.ArtifactName}}-signed
                         TargetFolder: ${{artifact.safeName}}
                         PackageName: ${{artifact.name}}
                       displayName: Stage artifacts
@@ -119,7 +119,7 @@ stages:
                       - checkout: self
                       - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
                         parameters:
-                          SourceFolder: ${{parameters.ArtifactName}} 
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
                           TargetFolder: ${{artifact.safeName}}
                           PackageName: ${{artifact.name}}
                         displayName: Stage artifacts
@@ -195,7 +195,7 @@ stages:
                       - checkout: self
                       - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
                         parameters:
-                          SourceFolder: ${{parameters.ArtifactName}} 
+                          SourceFolder: ${{parameters.ArtifactName}}-signed
                           TargetFolder: ${{artifact.safeName}}
                           PackageName: ${{artifact.name}}
                         displayName: Stage artifacts
