@@ -300,7 +300,7 @@ textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.
 For samples on using the production recommended option `ExtractKeyPhrasesBatch` see [here][extract_key_phrases_sample].
 Please refer to the service documentation for a conceptual discussion of [key phrase extraction][key_phrase_extraction].
 
-### Recognize entity
+### Recognize entities
 Run a predictive model to identify a collection of named entities in the passed-in document or batch of documents and 
 categorize those entities into categories such as person, location, or organization.  For more information on available
 categories, see [Text Analytics Named Entity Categories][named_entities_categories].
@@ -315,7 +315,7 @@ textAnalyticsClient.recognizeEntities(document).forEach(entity ->
 For samples on using the production recommended option `RecognizeEntitiesBatch` see [here][recognize_entities_sample].
 Please refer to the service documentation for a conceptual discussion of [named entity recognition][named_entity_recognition].
 
-### Recognize linked entity
+### Recognize linked entities
 Run a predictive model to identify a collection of entities found in the passed-in document or batch of documents, 
 and include information linking the entities to their corresponding entries in a well-known knowledge base.
 
