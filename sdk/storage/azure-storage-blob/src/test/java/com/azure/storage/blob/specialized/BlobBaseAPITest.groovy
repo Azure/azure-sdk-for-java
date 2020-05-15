@@ -194,14 +194,8 @@ class BlobBaseAPITest extends APISpec {
         '&'             | ','             | '\0'       | '\0'       | false          || _
         '\\'            | ','             | '\0'       | '\0'       | false          || _
         ','             | '.'             | '\0'       | '\0'       | false          || _ /* Column separator. */
-//        '\n'            | '\t'            | '\0'       | '\0'       | false          || _
-//        '.'             | '\r'            | '\0'       | '\\'       | false          || _ /* \r and \n are bring written as nothing - probably a generator bug? */
-//        '\n'            | '<'             | '\0'       | '\0'       | false          || _
-//        '\n'            | '>'             | '\0'       | '\0'       | false          || _
-//        '\n'            | '&'             | '\0'       | '\0'       | false          || _
-//        '\n'            | '\\'            | '\0'       | '\0'       | false          || _
-//        '\n'            | ','             | '\0'       | '\0'       | false          || _
-//        '"'             | ','             | '\0'       | '\\'       | false          || _ /* Field quote. */
+//        .
+//        | ','             | '\0'       | '\\'       | false          || _ /* Field quote. */
     }
 
     /* Note: Input delimited tested everywhere else. */
@@ -215,6 +209,7 @@ class BlobBaseAPITest extends APISpec {
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         bc.download(downloadData)
+        downloadData.write(10) /* writing extra new line */
         byte[] downloadedData = downloadData.toByteArray()
         BlobQueryOptions options = new BlobQueryOptions().setInputSerialization(ser).setOutputSerialization(ser)
 

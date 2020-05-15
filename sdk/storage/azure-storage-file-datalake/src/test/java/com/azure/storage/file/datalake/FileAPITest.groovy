@@ -2820,6 +2820,7 @@ class FileAPITest extends APISpec {
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         fc.read(downloadData)
+        downloadData.write(10) /* writing extra new line */
         byte[] downloadedData = downloadData.toByteArray()
         FileQueryOptions options = new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser)
 
