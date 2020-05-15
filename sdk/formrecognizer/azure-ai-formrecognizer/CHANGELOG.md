@@ -2,6 +2,12 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 
+FormTraining Client updates:
+- Adopt the `training` namespace for Form Recognizer Training Clients
+- Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients
+- Rename parameter `useLabelFile` to `useTrainingLabels` on `beginTraining` method in FormTrainingClients
+- Replace parameters `filePrefix` and `includeSubFolders` with `TrainModelOptions` model 
+- Rename AccountProperties `count` and `limit` to `customModelCount` and `customModelLimit`
 
 ## 1.0.0-beta.2 (2020-05-06)
 - Fixed Receipt type bug to select the valueString field via fieldValue.

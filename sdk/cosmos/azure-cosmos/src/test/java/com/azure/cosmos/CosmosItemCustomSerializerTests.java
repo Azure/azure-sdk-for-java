@@ -17,6 +17,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -224,15 +225,19 @@ public class CosmosItemCustomSerializerTests extends TestSuiteBase {
 
     public static final class GsonPojo {
         @Expose
+        @JsonIgnore
         private String id;
 
         @Expose
+        @JsonIgnore
         private String mypk;
 
         @Expose
+        @JsonIgnore
         private String firstName;
 
         @Expose
+        @JsonIgnore
         private String lastName;
 
         private transient String secret;
