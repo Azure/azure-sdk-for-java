@@ -88,7 +88,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.Artifacts}}
           AdditionalModules: ${{parameters.AdditionalModules}}
-  
+
       - task: Maven@3
         displayName: 'Build and Package'
         inputs:
@@ -161,7 +161,7 @@ jobs:
           options: '--no-transfer-progress -DskipTests -Dgpg.skip -Dverify-readme -pl $(ProjectList) -am'
           mavenOptions: '$(MemoryOptions)'
           javaHomeOption: 'JDKVersion'
-          jdkVersionOption: '1.11'
+          jdkVersionOption: '1.8'
           jdkArchitectureOption: 'x64'
           publishJUnitResults: false
           goals: 'install'
