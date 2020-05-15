@@ -12,6 +12,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -706,4 +707,29 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             emitterProcessor.subscribe(syncSubscriber);
         }
     }
+
+    public void autoRenewLock(MessageLockToken lockToken, Duration maxLockRenewalDuration) {
+    }
+
+    public void autoRenewLock(String sessionId, Duration maxLockRenewalDuration) {
+    }
+
+
+    /**
+     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * needs to be in this transaction.
+     * @return a new transaction
+     */
+    public Transaction createTransaction() {
+        return null;
+    }
+
+    public void commitTransaction(Transaction transaction) {
+
+    }
+
+    public void rollbackTransaction(Transaction transaction) {
+
+    }
+
 }

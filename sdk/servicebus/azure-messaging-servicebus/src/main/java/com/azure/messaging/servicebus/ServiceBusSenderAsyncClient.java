@@ -462,4 +462,21 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             return Collections.emptySet();
         }
     }
+
+    /**
+     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * needs to be in this transaction.
+     * @return a new transaction
+     */
+    public Mono<Transaction> createTransaction() {
+        return null;
+    }
+
+    public Mono<Void> commitTransaction(Transaction transaction) {
+        return null;
+    }
+
+    public Mono<Void> rollbackTransaction(Transaction transaction) {
+        return null;
+    }
 }

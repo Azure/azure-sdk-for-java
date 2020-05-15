@@ -19,8 +19,6 @@ import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.amqp.implementation.TokenManagerProvider;
 import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.TransactionManager;
-import com.azure.messaging.servicebus.TransactionManagerAsync;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
@@ -238,11 +236,9 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                     logger.info("Creating management node. entityPath: [{}]. address: [{}]. linkName: [{}]",
                         entityPath, address, linkName);
 
-                    /*new ManagementChannel(createRequestResponseChannel(sessionName, linkName, address),
-                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
-                        retryOptions.getTryTimeout());*/
-                    //return new TransactionManagerAsync( null, null);
-                    return null;
+
+                    return new TransactionManagerImpl(createSendLink(linkName, linkName, retryOptions), fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
+                        retryOptions.getTryTimeout());
                 }));
             }));
     }

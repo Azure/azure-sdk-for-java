@@ -856,11 +856,13 @@ public final class ServiceBusClientBuilder {
         }
     }
 
-    public TransactionManager buildTransactionManager() {
+    /*public TransactionManager buildTransactionManager() {
         return null;
     }
 
     public TransactionManagerAsync buildAsyncTransactionManager() {
         return null;
     }
+
+     */
 }

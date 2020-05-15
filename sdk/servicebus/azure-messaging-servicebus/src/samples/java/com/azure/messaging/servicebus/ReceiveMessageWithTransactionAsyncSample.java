@@ -3,10 +3,13 @@ package com.azure.messaging.servicebus;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
+import reactor.core.publisher.SignalType;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class ReceiveMessageWithTransactionAsyncSample {
 
@@ -39,6 +42,10 @@ public class ReceiveMessageWithTransactionAsyncSample {
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
+        ServiceBusSenderAsyncClient sender = builder.sender()
+            .queueName("<<queue-name>>")
+            .buildAsyncClient();
+
         // At most, the receiver will automatically renew the message lock until 120 seconds have elapsed.
         // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
         // enableAutoComplete to false, means the onus is on users to complete, abandon, defer, or dead-letter the
@@ -47,19 +54,16 @@ public class ReceiveMessageWithTransactionAsyncSample {
             .setIsAutoCompleteEnabled(false)
             .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
 
-        TransactionManagerAsync asyncTransactionManager = builder.buildAsyncTransactionManager();
 
         AtomicReference<Transaction>  transaction = new AtomicReference<>();
         Disposable subscription = receiver.receive(options)
             .flatMap(context -> {
-
                 if (transaction.get() ==  null) {
-                    asyncTransactionManager.beginTransaction().map(transactionCreated -> {
+                    receiver.createTransaction().map(transactionCreated -> {
                         transaction.set(transactionCreated);
                         return transactionCreated;
                     });
                 }
-
                 boolean messageProcessed = false;
                 // Process the context and its message here.
                 // Change the `messageProcessed` according to you business logic and if you are able to process the
@@ -67,20 +71,24 @@ public class ReceiveMessageWithTransactionAsyncSample {
                 if (messageProcessed) {
                     return receiver.complete(context.getMessage(), transaction.get());
                 } else {
-                    return receiver.abandon(context.getMessage(), transaction.get());
+                    return receiver.abandon(context.getMessage(),null, transaction.get());
                 }
             })
-            .subscribe(aVoid -> {},
-                error -> {
+            .then(
+                sender.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8)), transaction.get())
+            )
+            .doFinally(type -> {
+                if (type == SignalType.ON_ERROR) {
                     if (transaction.get() != null) {
-                        asyncTransactionManager.endTransaction(transaction.get(), false).block();
+                        receiver.rollbackTransaction(transaction.get());
                     }
-                },
-                () -> {
+                } else if (type == SignalType.ON_COMPLETE) {
                     if (transaction.get() != null) {
-                        asyncTransactionManager.endTransaction(transaction.get(), true).block();
+                        receiver.commitTransaction(transaction.get());
                     }
-                });
+                }
+            })
+            .subscribe();
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(60);

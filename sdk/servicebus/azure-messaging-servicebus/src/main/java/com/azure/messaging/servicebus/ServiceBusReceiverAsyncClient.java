@@ -176,10 +176,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return abandon(lockToken, receiverOptions.getSessionId());
     }
 
-    public Mono<Void> abandon(MessageLockToken lockToken, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
     /**
      * Abandon a {@link ServiceBusReceivedMessage message} with its lock token. This will make the message available
      * again for processing. Abandoning a message will increase the delivery count on the message.
@@ -195,10 +191,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, String sessionId) {
         return abandon(lockToken, null, sessionId);
-    }
-
-    public Mono<Void> abandon(MessageLockToken lockToken, String sessionId, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -308,10 +300,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(lockToken, receiverOptions.getSessionId());
     }
 
-    public Mono<Void> defer(MessageLockToken lockToken, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
-
-    }
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token. This will move message into the deferred
      * subqueue.
@@ -330,9 +318,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return defer(lockToken, null, sessionId);
     }
 
-    public Mono<Void> defer(MessageLockToken lockToken, String sessionId, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
-    }
 
     /**
      * Defers a {@link ServiceBusReceivedMessage message} using its lock token with modified message property. This will
@@ -399,10 +384,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> deadLetter(MessageLockToken lockToken) {
         return deadLetter(lockToken, receiverOptions.getSessionId());
-    }
-
-    public Mono<Void> deadLetter(MessageLockToken lockToken, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
     }
 
     /**
@@ -823,6 +804,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             });
     }
 
+
+
     /**
      * Asynchronously renews the lock on the specified message. The lock will be renewed based on the setting specified
      * on the entity. When a message is received in {@link ReceiveMode#PEEK_LOCK} mode, the message is locked on the
@@ -1103,5 +1086,38 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             final ServiceBusAsyncConsumer existing = consumer.get();
             return existing != null ? existing.getLinkName() : null;
         }
+    }
+
+    public Mono<Void> autoRenewLock(MessageLockToken lockToken, Duration maxLockRenewalDuration) {
+        return null;
+    }
+
+    public Mono<Void> autoRenewLock(String sessionId, Duration maxLockRenewalDuration) {
+        return null;
+    }
+
+
+    /**
+     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * needs to be in this transaction.
+     * @return a new transaction
+     */
+    public Mono<Transaction> createTransaction() {
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
+            .flatMap(transactionManager -> transactionManager.createTransaction());
+    }
+
+    public Mono<Void> commitTransaction(Transaction transaction) {
+        return null;
+    }
+
+    public Mono<Void> rollbackTransaction(Transaction transaction) {
+        return null;
     }
 }

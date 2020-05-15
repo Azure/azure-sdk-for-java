@@ -168,4 +168,19 @@ public class ServiceBusSenderClient implements AutoCloseable {
     public void close() {
         asyncClient.close();
     }
+
+    /**
+     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * needs to be in this transaction.
+     * @return a new transaction
+     */
+    public Transaction createTransaction() {
+        return null;
+    }
+
+    public void commitTransaction(Transaction transaction) {
+    }
+    public void rollbackTransaction(Transaction transaction) {
+    }
+
 }

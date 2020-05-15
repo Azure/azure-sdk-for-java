@@ -4,6 +4,8 @@ import com.azure.core.util.IterableStream;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class ReceiveMessageWithTransactionSample {
     /**
      * Main method to invoke this demo on how to receive a set of {@link ServiceBusMessage messages} from an Azure
@@ -32,9 +34,12 @@ public class ReceiveMessageWithTransactionSample {
             .queueName("<<queue-name>>")
             .buildClient();
 
-        TransactionManager syncTransactionManager = builder.buildTransactionManager();
+        ServiceBusSenderClient senderClient = builder
+            .sender()
+            .topicName("<< TOPIC NAME >>")
+            .buildClient();
 
-        Transaction transaction = syncTransactionManager.beginTransaction();
+        Transaction transaction = receiverClient.createTransaction();
 
         final IterableStream<ServiceBusReceivedMessageContext> receivedMessages =
             receiverClient.receive(5);
@@ -51,7 +56,9 @@ public class ReceiveMessageWithTransactionSample {
             processed.set(true);
         });
 
-        syncTransactionManager.endTransaction(transaction, processed.get());
+        senderClient.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8)), transaction);
+
+        receiverClient.commitTransaction(transaction);
 
         // Close the receiver.
         receiverClient.close();
