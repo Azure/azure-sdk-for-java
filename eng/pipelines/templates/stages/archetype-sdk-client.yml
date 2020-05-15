@@ -3,8 +3,8 @@ parameters:
   AdditionalModules: []
   SDKType: client
   ServiceDirectory: not-specified
-  TargetDocRepoOwner: 'MicrosoftDocs'
-  TargetDocRepoName: 'azure-docs-sdk-python'
+  TargetDocRepoOwner: 'Azure'
+  TargetDocRepoName: 'azure-docs-sdk-java'
   
   
 stages:
