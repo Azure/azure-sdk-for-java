@@ -5,13 +5,17 @@
 package com.azure.management.resources.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.DeploymentPropertiesExtended;
 import com.azure.management.resources.ErrorResponse;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeploymentValidateResult model. */
 @Fluent
 public final class DeploymentValidateResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentValidateResultInner.class);
+
     /*
      * The deployment validation error.
      */
@@ -62,5 +66,19 @@ public final class DeploymentValidateResultInner {
     public DeploymentValidateResultInner withProperties(DeploymentPropertiesExtended properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

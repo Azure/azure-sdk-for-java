@@ -29,7 +29,7 @@ public class LUISAuthoringManager {
      * @return the Language Understanding Authoring API client
      */
     public static LUISAuthoringClient authenticate(EndpointAPI endpointAPI, String luisAuthoringKey) {
-        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI.toString()), luisAuthoringKey)
+        return authenticate(String.format("https://%s/luis/authoring/v3.0-preview", endpointAPI.toString()), luisAuthoringKey)
             .withEndpoint(endpointAPI.toString());
     }
 
@@ -78,7 +78,7 @@ public class LUISAuthoringManager {
      * @return the Language Understanding (LUIS) Authoring API client
      */
     public static LUISAuthoringClient authenticate(EndpointAPI endpointAPI, ServiceClientCredentials credentials) {
-        return authenticate(String.format("https://%s/luis/api/v2.0/", endpointAPI), credentials)
+        return authenticate(String.format("https://%s/luis/authoring/v3.0-preview", endpointAPI), credentials)
             .withEndpoint(endpointAPI.toString());
     }
 

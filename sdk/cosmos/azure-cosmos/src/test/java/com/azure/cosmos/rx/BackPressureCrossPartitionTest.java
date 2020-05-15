@@ -73,11 +73,11 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
         includedPath.setPath("/*");
         Collection<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(stringIndex), "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "getPrecision", -1);
         indexes.add(stringIndex);
 
         Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializableFromIndex(numberIndex), "getPrecision", -1);
+        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(numberIndex), "getPrecision", -1);
         indexes.add(numberIndex);
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);

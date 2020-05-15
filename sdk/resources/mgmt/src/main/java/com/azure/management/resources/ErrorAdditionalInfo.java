@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ErrorAdditionalInfo model. */
 @Immutable
 public final class ErrorAdditionalInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ErrorAdditionalInfo.class);
+
     /*
      * The additional info type.
      */
@@ -38,5 +42,13 @@ public final class ErrorAdditionalInfo {
      */
     public Object info() {
         return this.info;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }
