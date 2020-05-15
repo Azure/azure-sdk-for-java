@@ -395,7 +395,7 @@
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-            files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
+            files="com.azure.core.management.implementation.polling.PollOperation.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files="com.azure.core.management.implementation.polling.PollingState.java"/>
 
