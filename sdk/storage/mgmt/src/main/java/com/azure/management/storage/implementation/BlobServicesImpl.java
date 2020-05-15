@@ -4,13 +4,13 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.management.storage.BlobServiceProperties;
-import com.azure.management.storage.BlobServices;
-import com.azure.management.storage.models.BlobServicePropertiesInner;
-import com.azure.management.storage.models.BlobServicesInner;
+import com.azure.management.storage.models.BlobServiceProperties;
+import com.azure.management.storage.models.BlobServices;
+import com.azure.management.storage.inner.BlobServicePropertiesInner;
+import com.azure.management.storage.inner.BlobServicesClient;
 import reactor.core.publisher.Mono;
 
-class BlobServicesImpl extends WrapperImpl<BlobServicesInner> implements BlobServices {
+class BlobServicesImpl extends WrapperImpl<BlobServicesClient> implements BlobServices {
     private final StorageManager manager;
 
     BlobServicesImpl(StorageManager manager) {

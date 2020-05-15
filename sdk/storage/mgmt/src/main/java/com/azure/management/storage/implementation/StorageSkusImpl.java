@@ -5,9 +5,9 @@ package com.azure.management.storage.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.storage.StorageSku;
-import com.azure.management.storage.StorageSkus;
-import com.azure.management.storage.models.SkusInner;
+import com.azure.management.storage.models.StorageSku;
+import com.azure.management.storage.models.StorageSkus;
+import com.azure.management.storage.inner.SkusClient;
 
 /** The implementation for {@link StorageSkus}. */
 class StorageSkusImpl implements StorageSkus {
@@ -34,7 +34,7 @@ class StorageSkusImpl implements StorageSkus {
     }
 
     @Override
-    public SkusInner inner() {
+    public SkusClient inner() {
         return manager.inner().skus();
     }
 }

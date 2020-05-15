@@ -4,19 +4,19 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
-import com.azure.management.storage.CheckNameAvailabilityResult;
-import com.azure.management.storage.ServiceSasParameters;
-import com.azure.management.storage.SkuName;
-import com.azure.management.storage.StorageAccount;
-import com.azure.management.storage.StorageAccounts;
-import com.azure.management.storage.models.StorageAccountInner;
-import com.azure.management.storage.models.StorageAccountsInner;
+import com.azure.management.storage.models.CheckNameAvailabilityResult;
+import com.azure.management.storage.models.ServiceSasParameters;
+import com.azure.management.storage.models.SkuName;
+import com.azure.management.storage.models.StorageAccount;
+import com.azure.management.storage.models.StorageAccounts;
+import com.azure.management.storage.inner.StorageAccountInner;
+import com.azure.management.storage.inner.StorageAccountsClient;
 import reactor.core.publisher.Mono;
 
 /** The implementation of StorageAccounts and its parent interfaces. */
 class StorageAccountsImpl
     extends TopLevelModifiableResourcesImpl<
-        StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsInner, StorageManager>
+        StorageAccount, StorageAccountImpl, StorageAccountInner, StorageAccountsClient, StorageManager>
     implements StorageAccounts {
 
     StorageAccountsImpl(final StorageManager storageManager) {

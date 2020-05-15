@@ -3,9 +3,9 @@
 
 package com.azure.management.storage.implementation;
 
-import com.azure.management.storage.EncryptionService;
-import com.azure.management.storage.EncryptionServices;
-import com.azure.management.storage.StorageAccountEncryptionStatus;
+import com.azure.management.storage.models.EncryptionService;
+import com.azure.management.storage.models.EncryptionServices;
+import com.azure.management.storage.models.StorageAccountEncryptionStatus;
 import java.time.OffsetDateTime;
 
 /** Shared implementation of StorageAccountEncryptionStatus. */

@@ -3,7 +3,7 @@
 
 package com.azure.management.storage.implementation;
 
-import com.azure.management.storage.AccountStatus;
+import com.azure.management.storage.models.AccountStatus;
 
 /** An instance of this class stores the availability of a storage account. */
 public class AccountStatuses {

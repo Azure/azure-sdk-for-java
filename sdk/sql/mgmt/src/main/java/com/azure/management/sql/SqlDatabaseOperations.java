@@ -6,7 +6,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
 import com.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.azure.management.resources.fluentcore.model.Creatable;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import java.time.OffsetDateTime;
 
 /** A representation of the Azure SQL Database operations. */

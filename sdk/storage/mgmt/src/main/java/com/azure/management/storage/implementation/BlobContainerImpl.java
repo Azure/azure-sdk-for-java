@@ -4,15 +4,15 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.storage.BlobContainer;
-import com.azure.management.storage.ImmutabilityPolicyProperties;
-import com.azure.management.storage.LeaseDuration;
-import com.azure.management.storage.LeaseState;
-import com.azure.management.storage.LeaseStatus;
-import com.azure.management.storage.LegalHoldProperties;
-import com.azure.management.storage.PublicAccess;
-import com.azure.management.storage.models.BlobContainerInner;
-import com.azure.management.storage.models.BlobContainersInner;
+import com.azure.management.storage.models.BlobContainer;
+import com.azure.management.storage.models.ImmutabilityPolicyProperties;
+import com.azure.management.storage.models.LeaseDuration;
+import com.azure.management.storage.models.LeaseState;
+import com.azure.management.storage.models.LeaseStatus;
+import com.azure.management.storage.models.LegalHoldProperties;
+import com.azure.management.storage.models.PublicAccess;
+import com.azure.management.storage.inner.BlobContainerInner;
+import com.azure.management.storage.inner.BlobContainersClient;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -56,7 +56,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> createResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().blobContainers();
         return client
             .createAsync(this.resourceGroupName, this.accountName, this.containerName,
                 this.inner().withPublicAccess(cpublicAccess).withMetadata(cmetadata))
@@ -65,7 +65,7 @@ class BlobContainerImpl extends CreatableUpdatableImpl<BlobContainer, BlobContai
 
     @Override
     public Mono<BlobContainer> updateResourceAsync() {
-        BlobContainersInner client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().blobContainers();
         return client
             .updateAsync(this.resourceGroupName, this.accountName, this.containerName,
                 this.inner().withPublicAccess(upublicAccess).withMetadata(umetadata))

@@ -6,6 +6,9 @@ package com.azure.management.storage;
 import com.azure.core.http.HttpPipeline;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.storage.models.BlobServiceProperties;
+import com.azure.management.storage.models.BlobServices;
+import com.azure.management.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

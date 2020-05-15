@@ -4,13 +4,13 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
-import com.azure.management.storage.ManagementPolicies;
-import com.azure.management.storage.ManagementPolicy;
-import com.azure.management.storage.models.ManagementPoliciesInner;
-import com.azure.management.storage.models.ManagementPolicyInner;
+import com.azure.management.storage.models.ManagementPolicies;
+import com.azure.management.storage.models.ManagementPolicy;
+import com.azure.management.storage.inner.ManagementPoliciesClient;
+import com.azure.management.storage.inner.ManagementPolicyInner;
 import reactor.core.publisher.Mono;
 
-class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesInner> implements ManagementPolicies {
+class ManagementPoliciesImpl extends WrapperImpl<ManagementPoliciesClient> implements ManagementPolicies {
     private final StorageManager manager;
 
     ManagementPoliciesImpl(StorageManager manager) {

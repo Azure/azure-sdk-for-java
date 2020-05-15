@@ -13,7 +13,7 @@ import com.azure.management.sql.SqlDatabase;
 import com.azure.management.sql.SqlDatabaseExportRequest;
 import com.azure.management.sql.SqlDatabaseImportExportResponse;
 import com.azure.management.sql.StorageKeyType;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.StorageAccount;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.implementation.models.StorageErrorException;

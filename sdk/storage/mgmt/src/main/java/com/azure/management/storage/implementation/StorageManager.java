@@ -11,17 +11,17 @@ import com.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import com.azure.management.storage.BlobContainers;
-import com.azure.management.storage.BlobServices;
-import com.azure.management.storage.ManagementPolicies;
-import com.azure.management.storage.StorageAccounts;
-import com.azure.management.storage.StorageSkus;
-import com.azure.management.storage.Usages;
-import com.azure.management.storage.models.StorageManagementClientBuilder;
-import com.azure.management.storage.models.StorageManagementClientImpl;
+import com.azure.management.storage.StorageManagementClient;
+import com.azure.management.storage.models.BlobContainers;
+import com.azure.management.storage.models.BlobServices;
+import com.azure.management.storage.models.ManagementPolicies;
+import com.azure.management.storage.models.StorageAccounts;
+import com.azure.management.storage.models.StorageSkus;
+import com.azure.management.storage.models.Usages;
+import com.azure.management.storage.StorageManagementClientBuilder;
 
 /** Entry point to Azure storage resource management. */
-public final class StorageManager extends Manager<StorageManager, StorageManagementClientImpl> {
+public final class StorageManager extends Manager<StorageManager, StorageManagementClient> {
     // Collections
     private StorageAccounts storageAccounts;
     private Usages storageUsages;

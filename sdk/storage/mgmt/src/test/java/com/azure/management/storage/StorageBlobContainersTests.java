@@ -9,6 +9,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.storage.models.BlobContainer;
+import com.azure.management.storage.models.BlobContainers;
+import com.azure.management.storage.models.PublicAccess;
+import com.azure.management.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

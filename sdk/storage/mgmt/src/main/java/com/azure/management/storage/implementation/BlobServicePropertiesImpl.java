@@ -4,12 +4,12 @@
 package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.storage.BlobServiceProperties;
-import com.azure.management.storage.CorsRule;
-import com.azure.management.storage.CorsRules;
-import com.azure.management.storage.DeleteRetentionPolicy;
-import com.azure.management.storage.models.BlobServicePropertiesInner;
-import com.azure.management.storage.models.BlobServicesInner;
+import com.azure.management.storage.models.BlobServiceProperties;
+import com.azure.management.storage.models.CorsRule;
+import com.azure.management.storage.models.CorsRules;
+import com.azure.management.storage.models.DeleteRetentionPolicy;
+import com.azure.management.storage.inner.BlobServicePropertiesInner;
+import com.azure.management.storage.inner.BlobServicesClient;
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Mono;
@@ -47,7 +47,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public Mono<BlobServiceProperties> createResourceAsync() {
-        BlobServicesInner client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().blobServices();
         return client
             .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
             .map(innerToFluentMap(this));
@@ -55,7 +55,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public Mono<BlobServiceProperties> updateResourceAsync() {
-        BlobServicesInner client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().blobServices();
         return client
             .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
             .map(innerToFluentMap(this));
@@ -63,7 +63,7 @@ class BlobServicePropertiesImpl
 
     @Override
     protected Mono<BlobServicePropertiesInner> getInnerAsync() {
-        BlobServicesInner client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().blobServices();
         return client.getServicePropertiesAsync(this.resourceGroupName, this.accountName);
     }
 

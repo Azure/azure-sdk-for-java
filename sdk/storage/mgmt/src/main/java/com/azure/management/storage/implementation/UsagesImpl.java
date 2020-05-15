@@ -4,9 +4,9 @@ package com.azure.management.storage.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.management.storage.Usages;
-import com.azure.management.storage.models.UsageInner;
-import com.azure.management.storage.models.UsagesInner;
+import com.azure.management.storage.models.Usages;
+import com.azure.management.storage.inner.UsageInner;
+import com.azure.management.storage.inner.UsagesClient;
 
 /** The implementation of {@link Usages}. */
 class UsagesImpl implements Usages {
@@ -33,7 +33,7 @@ class UsagesImpl implements Usages {
     }
 
     @Override
-    public UsagesInner inner() {
+    public UsagesClient inner() {
         return this.manager().inner().usages();
     }
 }

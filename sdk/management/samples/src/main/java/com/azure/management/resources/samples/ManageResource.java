@@ -10,8 +10,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
-import com.azure.management.storage.SkuName;
-import com.azure.management.storage.StorageAccount;
+import com.azure.management.storage.models.SkuName;
+import com.azure.management.storage.models.StorageAccount;
 
 /**
  * Azure Resource sample for managing resources -

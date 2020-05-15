@@ -3,9 +3,9 @@
 
 package com.azure.management.storage.implementation;
 
-import com.azure.management.storage.EncryptionService;
-import com.azure.management.storage.EncryptionServices;
-import com.azure.management.storage.StorageService;
+import com.azure.management.storage.models.EncryptionService;
+import com.azure.management.storage.models.EncryptionServices;
+import com.azure.management.storage.models.StorageService;
 
 /** Implementation of StorageAccountEncryptionStatus for Queue service. */
 class QueueServiceEncryptionStatusImpl extends StorageAccountEncryptionStatusImpl {

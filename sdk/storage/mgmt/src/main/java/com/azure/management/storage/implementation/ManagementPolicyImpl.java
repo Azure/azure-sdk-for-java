@@ -5,15 +5,15 @@ package com.azure.management.storage.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.azure.management.storage.BlobTypes;
-import com.azure.management.storage.ManagementPolicy;
-import com.azure.management.storage.ManagementPolicyBaseBlob;
-import com.azure.management.storage.ManagementPolicyRule;
-import com.azure.management.storage.ManagementPolicySchema;
-import com.azure.management.storage.ManagementPolicySnapShot;
-import com.azure.management.storage.PolicyRule;
-import com.azure.management.storage.models.ManagementPoliciesInner;
-import com.azure.management.storage.models.ManagementPolicyInner;
+import com.azure.management.storage.models.BlobTypes;
+import com.azure.management.storage.models.ManagementPolicy;
+import com.azure.management.storage.models.ManagementPolicyBaseBlob;
+import com.azure.management.storage.models.ManagementPolicyRule;
+import com.azure.management.storage.models.ManagementPolicySchema;
+import com.azure.management.storage.models.ManagementPolicySnapShot;
+import com.azure.management.storage.models.PolicyRule;
+import com.azure.management.storage.inner.ManagementPoliciesClient;
+import com.azure.management.storage.inner.ManagementPolicyInner;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,7 +59,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> createResourceAsync() {
-        ManagementPoliciesInner client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().managementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, cpolicy)
             .map(
@@ -72,7 +72,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> updateResourceAsync() {
-        ManagementPoliciesInner client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().managementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, upolicy)
             .map(
@@ -85,7 +85,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     protected Mono<ManagementPolicyInner> getInnerAsync() {
-        ManagementPoliciesInner client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().managementPolicies();
         return client.getAsync(this.resourceGroupName, this.accountName);
     }
 
