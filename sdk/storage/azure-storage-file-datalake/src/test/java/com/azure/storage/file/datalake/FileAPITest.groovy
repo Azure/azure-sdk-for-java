@@ -3088,46 +3088,6 @@ class FileAPITest extends APISpec {
         }
     }
 
-    class MockProgressReceiver implements ProgressReceiver {
-
-        List<Long> progressList
-
-        MockProgressReceiver() {
-            this.progressList = new ArrayList<>()
-        }
-
-        @Override
-        void reportProgress(long bytesRead) {
-            progressList.add(bytesRead)
-        }
-    }
-
-    class MockErrorReceiver implements ErrorReceiver<FileQueryError> {
-
-        String expectedType
-        int numErrors
-
-        MockErrorReceiver(String expectedType) {
-            this.expectedType = expectedType
-            this.numErrors = 0
-        }
-
-        @Override
-        void reportError(FileQueryError error) {
-            assert !error.isFatal()
-            assert error.getName() == expectedType
-            numErrors++
-        }
-    }
-
-    class RandomOtherSerialization extends FileQuerySerialization {
-        @Override
-        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
-            this.recordSeparator = recordSeparator;
-            return this;
-        }
-    }
-
     @Unroll
     def "Query input output IA"() {
         setup:
@@ -3236,6 +3196,46 @@ class FileAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    class MockProgressReceiver implements ProgressReceiver {
+
+        List<Long> progressList
+
+        MockProgressReceiver() {
+            this.progressList = new ArrayList<>()
+        }
+
+        @Override
+        void reportProgress(long bytesRead) {
+            progressList.add(bytesRead)
+        }
+    }
+
+    class MockErrorReceiver implements ErrorReceiver<FileQueryError> {
+
+        String expectedType
+        int numErrors
+
+        MockErrorReceiver(String expectedType) {
+            this.expectedType = expectedType
+            this.numErrors = 0
+        }
+
+        @Override
+        void reportError(FileQueryError error) {
+            assert !error.isFatal()
+            assert error.getName() == expectedType
+            numErrors++
+        }
+    }
+
+    class RandomOtherSerialization extends FileQuerySerialization {
+        @Override
+        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
+            this.recordSeparator = recordSeparator;
+            return this;
+        }
     }
 
 }

@@ -54,6 +54,10 @@ public class BlobQueryReader {
     /**
      * Avro parses a quick query reactive stream.
      *
+     * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
+     * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
+     * either be a result data record, an end record, a progress record or an error record.
+     *
      * @return The parsed quick query reactive stream.
      */
     public Flux<ByteBuffer> read() {

@@ -34,12 +34,14 @@ import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.net.URL;
@@ -951,7 +953,7 @@ public class BlobClientBase {
      * @param expression The query expression.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    public BlobQueryInputStream openQueryInputStream(String expression) {
+    public InputStream openQueryInputStream(String expression) {
         return openQueryInputStream(expression, null);
     }
 
@@ -969,14 +971,14 @@ public class BlobClientBase {
      * @param queryOptions {@link BlobQueryOptions The query options}.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    public BlobQueryInputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
+    public InputStream openQueryInputStream(String expression, BlobQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         Flux<ByteBuffer> data = client.queryWithResponse(expression, queryOptions)
             .flatMapMany(BlobQueryAsyncResponse::getValue);
 
         // Create input stream from the data.
-        return new BlobQueryInputStream(data);
+        return new FluxInputStream(data);
     }
 
     /**

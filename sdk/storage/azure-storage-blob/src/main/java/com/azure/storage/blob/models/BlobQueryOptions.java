@@ -3,12 +3,14 @@
 
 package com.azure.storage.blob.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ProgressReceiver;
 
 /**
  * Optional parameters for Blob Query.
  */
+@Fluent
 public class BlobQueryOptions {
 
     private BlobQuerySerialization inputSerialization;

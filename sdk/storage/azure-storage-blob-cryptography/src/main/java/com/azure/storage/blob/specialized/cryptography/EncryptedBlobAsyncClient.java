@@ -451,20 +451,20 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     }
 
     /**
-     * Unsupported.
+     * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
     public Flux<ByteBuffer> query(String expression) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query a client side encrypted client"));
+            "Cannot query data encrypted on client side"));
     }
 
     /**
-     * Unsupported.
+     * Unsupported. Cannot query data encrypted on client side.
      */
     @Override
     public Mono<BlobQueryAsyncResponse> queryWithResponse(String expression, BlobQueryOptions queryOptions) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query a client side encrypted client"));
+            "Cannot query data encrypted on client side"));
     }
 }

@@ -194,7 +194,6 @@ class BlobBaseAPITest extends APISpec {
         '&'             | ','             | '\0'       | '\0'       | false          || _
         '\\'            | ','             | '\0'       | '\0'       | false          || _
         ','             | '.'             | '\0'       | '\0'       | false          || _ /* Column separator. */
-//        .
 //        | ','             | '\0'       | '\\'       | false          || _ /* Field quote. */
     }
 
@@ -477,38 +476,6 @@ class BlobBaseAPITest extends APISpec {
         }
     }
 
-    class MockProgressReceiver implements ProgressReceiver {
-
-        List<Long> progressList
-
-        MockProgressReceiver() {
-            this.progressList = new ArrayList<>()
-        }
-
-        @Override
-        void reportProgress(long bytesRead) {
-            progressList.add(bytesRead)
-        }
-    }
-
-    class MockErrorReceiver implements ErrorReceiver<BlobQueryError> {
-
-        String expectedType
-        int numErrors
-
-        MockErrorReceiver(String expectedType) {
-            this.expectedType = expectedType
-            this.numErrors = 0
-        }
-
-        @Override
-        void reportError(BlobQueryError nonFatalError) {
-            assert !nonFatalError.isFatal()
-            assert nonFatalError.getName() == expectedType
-            numErrors++
-        }
-    }
-
     def "Query snapshot"() {
         setup:
         BlobQueryDelimitedSerialization ser = new BlobQueryDelimitedSerialization()
@@ -546,14 +513,6 @@ class BlobBaseAPITest extends APISpec {
         then:
         notThrown(BlobStorageException)
         osData == downloadedData
-    }
-
-    class RandomOtherSerialization extends BlobQuerySerialization {
-        @Override
-        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
-            this.recordSeparator = recordSeparator;
-            return this;
-        }
     }
 
     @Unroll
@@ -664,5 +623,45 @@ class BlobBaseAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    class MockProgressReceiver implements ProgressReceiver {
+
+        List<Long> progressList
+
+        MockProgressReceiver() {
+            this.progressList = new ArrayList<>()
+        }
+
+        @Override
+        void reportProgress(long bytesRead) {
+            progressList.add(bytesRead)
+        }
+    }
+
+    class MockErrorReceiver implements ErrorReceiver<BlobQueryError> {
+
+        String expectedType
+        int numErrors
+
+        MockErrorReceiver(String expectedType) {
+            this.expectedType = expectedType
+            this.numErrors = 0
+        }
+
+        @Override
+        void reportError(BlobQueryError nonFatalError) {
+            assert !nonFatalError.isFatal()
+            assert nonFatalError.getName() == expectedType
+            numErrors++
+        }
+    }
+
+    class RandomOtherSerialization extends BlobQuerySerialization {
+        @Override
+        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
+            this.recordSeparator = recordSeparator;
+            return this;
+        }
     }
 }
