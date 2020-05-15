@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrivateLinkResourceProperties model. */
 @Immutable
 public final class PrivateLinkResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
+
     /*
      * The private link resource group id.
      */
@@ -39,5 +43,13 @@ public final class PrivateLinkResourceProperties {
      */
     public List<String> requiredMembers() {
         return this.requiredMembers;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

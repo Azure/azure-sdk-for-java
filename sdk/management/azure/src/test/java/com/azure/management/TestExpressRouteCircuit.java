@@ -99,7 +99,7 @@ public class TestExpressRouteCircuit {
                 .withPrimaryPeerAddressPrefix("123.0.0.0/30")
                 .withSecondaryPeerAddressPrefix("123.0.0.4/30")
                 .withVlanId(200)
-                .withPeerASN(100)
+                .withPeerAsn(100)
                 .create();
             Assertions.assertEquals(erc.peeringsMap().size(), 1);
             return erc;
@@ -115,7 +115,7 @@ public class TestExpressRouteCircuit {
                     .get(ExpressRoutePeeringType.MICROSOFT_PEERING.toString())
                     .update()
                     .withVlanId(300)
-                    .withPeerASN(101)
+                    .withPeerAsn(101)
                     .withSecondaryPeerAddressPrefix("123.0.0.8/30")
                     .apply();
             Assertions.assertEquals(300, peering.vlanId());

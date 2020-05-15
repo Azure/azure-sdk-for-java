@@ -5,14 +5,18 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationBase model. */
 @Fluent
 public class ApplicationBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationBase.class);
+
     /*
      * A property on the application to indicate if the application accepts
      * other IDPs or not or partially accepts.
@@ -819,5 +823,37 @@ public class ApplicationBase {
     public ApplicationBase withWwwHomepage(String wwwHomepage) {
         this.wwwHomepage = wwwHomepage;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (appRoles() != null) {
+            appRoles().forEach(e -> e.validate());
+        }
+        if (informationalUrls() != null) {
+            informationalUrls().validate();
+        }
+        if (keyCredentials() != null) {
+            keyCredentials().forEach(e -> e.validate());
+        }
+        if (oauth2Permissions() != null) {
+            oauth2Permissions().forEach(e -> e.validate());
+        }
+        if (optionalClaims() != null) {
+            optionalClaims().validate();
+        }
+        if (passwordCredentials() != null) {
+            passwordCredentials().forEach(e -> e.validate());
+        }
+        if (preAuthorizedApplications() != null) {
+            preAuthorizedApplications().forEach(e -> e.validate());
+        }
+        if (requiredResourceAccess() != null) {
+            requiredResourceAccess().forEach(e -> e.validate());
+        }
     }
 }

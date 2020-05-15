@@ -21,7 +21,7 @@ public interface StorageSku extends HasInner<SkuInformationInner> {
     /** @return the regions that the sku is available */
     List<Region> regions();
     /** @return the capability information in the specified sku */
-    List<SKUCapability> capabilities();
+    List<SkuCapability> capabilities();
     /** @return restrictions because of which sku cannot be used */
     List<Restriction> restrictions();
     /** @return the storage account kind if the sku describes a storage account resource */

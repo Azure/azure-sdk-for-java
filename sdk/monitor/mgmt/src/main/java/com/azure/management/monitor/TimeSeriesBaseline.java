@@ -5,6 +5,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The TimeSeriesBaseline model. */
 @Fluent
 public final class TimeSeriesBaseline {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesBaseline.class);
+
     /*
      * The aggregation type of the metric.
      */
@@ -140,5 +144,36 @@ public final class TimeSeriesBaseline {
     public TimeSeriesBaseline withMetadata(List<BaselineMetadata> metadata) {
         this.metadata = metadata;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (aggregation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property aggregation in model TimeSeriesBaseline"));
+        }
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
+        if (timestamps() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property timestamps in model TimeSeriesBaseline"));
+        }
+        if (data() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property data in model TimeSeriesBaseline"));
+        } else {
+            data().forEach(e -> e.validate());
+        }
+        if (metadata() != null) {
+            metadata().forEach(e -> e.validate());
+        }
     }
 }

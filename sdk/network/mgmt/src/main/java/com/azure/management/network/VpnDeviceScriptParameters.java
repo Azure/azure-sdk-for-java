@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnDeviceScriptParameters model. */
 @Fluent
 public final class VpnDeviceScriptParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnDeviceScriptParameters.class);
+
     /*
      * The vendor for the vpn device.
      */
@@ -86,5 +90,13 @@ public final class VpnDeviceScriptParameters {
     public VpnDeviceScriptParameters withFirmwareVersion(String firmwareVersion) {
         this.firmwareVersion = firmwareVersion;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

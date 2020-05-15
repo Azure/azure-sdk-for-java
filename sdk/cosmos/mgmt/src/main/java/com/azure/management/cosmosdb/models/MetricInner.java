@@ -5,9 +5,11 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.cosmosdb.MetricName;
 import com.azure.management.cosmosdb.MetricValue;
 import com.azure.management.cosmosdb.UnitType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 /** The Metric model. */
 @Immutable
 public class MetricInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricInner.class);
+
     /*
      * The start time for the metric (ISO-8601 format).
      */
@@ -103,5 +107,19 @@ public class MetricInner {
      */
     public List<MetricValue> metricValues() {
         return this.metricValues;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
+        if (metricValues() != null) {
+            metricValues().forEach(e -> e.validate());
+        }
     }
 }

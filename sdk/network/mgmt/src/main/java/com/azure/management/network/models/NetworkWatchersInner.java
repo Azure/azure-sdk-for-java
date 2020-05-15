@@ -27,13 +27,14 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.network.AvailableProvidersListParameters;
 import com.azure.management.network.AzureReachabilityReportParameters;
 import com.azure.management.network.ConnectivityParameters;
-import com.azure.management.network.ErrorResponseException;
 import com.azure.management.network.FlowLogStatusParameters;
 import com.azure.management.network.NetworkConfigurationDiagnosticParameters;
 import com.azure.management.network.NextHopParameters;
@@ -42,7 +43,7 @@ import com.azure.management.network.SecurityGroupViewParameters;
 import com.azure.management.network.TagsObject;
 import com.azure.management.network.TopologyParameters;
 import com.azure.management.network.TroubleshootingParameters;
-import com.azure.management.network.VerificationIPFlowParameters;
+import com.azure.management.network.VerificationIpFlowParameters;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
@@ -56,6 +57,8 @@ public final class NetworkWatchersInner
     implements InnerSupportsGet<NetworkWatcherInner>,
         InnerSupportsListing<NetworkWatcherInner>,
         InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(NetworkWatchersInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final NetworkWatchersService service;
 
@@ -85,7 +88,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NetworkWatcherInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -100,7 +103,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NetworkWatcherInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -114,7 +117,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -128,7 +131,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NetworkWatcherInner>> updateTags(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -143,7 +146,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NetworkWatcherListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -154,7 +157,7 @@ public final class NetworkWatchersInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/networkWatchers")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NetworkWatcherListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -166,7 +169,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/topology")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TopologyInner>> getTopology(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -181,14 +184,14 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/ipFlowVerify")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<Flux<ByteBuffer>>> verifyIPFlow(
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> verifyIpFlow(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VerificationIPFlowParameters parameters,
+            @BodyParam("application/json") VerificationIpFlowParameters parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -196,7 +199,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/nextHop")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getNextHop(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -211,7 +214,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/securityGroupView")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getVMSecurityRules(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -226,7 +229,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/troubleshoot")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getTroubleshooting(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -241,7 +244,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/queryTroubleshootResult")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getTroubleshootingResult(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -256,7 +259,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/configureFlowLog")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> setFlowLogConfiguration(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -271,7 +274,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/queryFlowLogStatus")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getFlowLogStatus(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -286,7 +289,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectivityCheck")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> checkConnectivity(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -301,7 +304,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/azureReachabilityReport")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getAzureReachabilityReport(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -316,7 +319,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/availableProvidersList")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> listAvailableProviders(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -331,7 +334,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/networkConfigurationDiagnostic")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> getNetworkConfigurationDiagnostic(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -346,7 +349,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -360,14 +363,14 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/ipFlowVerify")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<VerificationIPFlowResultInner>> beginVerifyIPFlow(
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<SimpleResponse<VerificationIpFlowResultInner>> beginVerifyIpFlow(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("networkWatcherName") String networkWatcherName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") VerificationIPFlowParameters parameters,
+            @BodyParam("application/json") VerificationIpFlowParameters parameters,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
@@ -375,7 +378,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/nextHop")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NextHopResultInner>> beginGetNextHop(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -390,7 +393,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/securityGroupView")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SecurityGroupViewResultInner>> beginGetVMSecurityRules(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -405,7 +408,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/troubleshoot")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TroubleshootingResultInner>> beginGetTroubleshooting(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -420,7 +423,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/queryTroubleshootResult")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TroubleshootingResultInner>> beginGetTroubleshootingResult(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -435,7 +438,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/configureFlowLog")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FlowLogInformationInner>> beginSetFlowLogConfiguration(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -450,7 +453,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/queryFlowLogStatus")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<FlowLogInformationInner>> beginGetFlowLogStatus(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -465,7 +468,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/connectivityCheck")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ConnectivityInformationInner>> beginCheckConnectivity(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -480,7 +483,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/azureReachabilityReport")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AzureReachabilityReportInner>> beginGetAzureReachabilityReport(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -495,7 +498,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/availableProvidersList")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AvailableProvidersListInner>> beginListAvailableProviders(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -510,7 +513,7 @@ public final class NetworkWatchersInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/networkWatchers/{networkWatcherName}/networkConfigurationDiagnostic")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<NetworkConfigurationDiagnosticResponseInner>> beginGetNetworkConfigurationDiagnostic(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -528,13 +531,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Network watcher in a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<NetworkWatcherInner>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -557,8 +583,58 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Network watcher in a resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network watcher in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<NetworkWatcherInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .createOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a network watcher in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Network watcher in a resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network watcher in a resource group.
      */
@@ -583,7 +659,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Network watcher in a resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network watcher in a resource group.
      */
@@ -599,13 +675,31 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network watcher by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<NetworkWatcherInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String networkWatcherName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -626,8 +720,51 @@ public final class NetworkWatchersInner
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network watcher by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<NetworkWatcherInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Gets the specified network watcher by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network watcher by resource group.
      */
@@ -650,7 +787,7 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified network watcher by resource group.
      */
@@ -665,13 +802,31 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String networkWatcherName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -693,7 +848,7 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -713,7 +868,7 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -728,13 +883,31 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<NetworkWatcherInner>> updateTagsWithResponseAsync(
         String resourceGroupName, String networkWatcherName, Map<String, String> tags) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         TagsObject parameters = new TagsObject();
         parameters.withTags(tags);
@@ -759,8 +932,55 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param tags Resource tags.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network watcher in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<NetworkWatcherInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, Map<String, String> tags, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        TagsObject parameters = new TagsObject();
+        parameters.withTags(tags);
+        return service
+            .updateTags(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Updates a network watcher tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param tags Resource tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network watcher in a resource group.
      */
@@ -785,7 +1005,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param tags Resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network watcher in a resource group.
      */
@@ -800,12 +1020,26 @@ public final class NetworkWatchersInner
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NetworkWatcherInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -828,8 +1062,45 @@ public final class NetworkWatchersInner
      * Gets all network watchers by resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network watchers by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<NetworkWatcherInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Gets all network watchers by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by resource group.
      */
@@ -842,8 +1113,23 @@ public final class NetworkWatchersInner
      * Gets all network watchers by resource group.
      *
      * @param resourceGroupName The name of the resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network watchers by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NetworkWatcherInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context));
+    }
+
+    /**
+     * Gets all network watchers by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by resource group.
      */
@@ -855,12 +1141,22 @@ public final class NetworkWatchersInner
     /**
      * Gets all network watchers by subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<NetworkWatcherInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -875,7 +1171,37 @@ public final class NetworkWatchersInner
     /**
      * Gets all network watchers by subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network watchers by subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<NetworkWatcherInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Gets all network watchers by subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription.
      */
@@ -887,7 +1213,21 @@ public final class NetworkWatchersInner
     /**
      * Gets all network watchers by subscription.
      *
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all network watchers by subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<NetworkWatcherInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context));
+    }
+
+    /**
+     * Gets all network watchers by subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription.
      */
@@ -903,13 +1243,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current network topology by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TopologyInner>> getTopologyWithResponseAsync(
         String resourceGroupName, String networkWatcherName, TopologyParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -932,8 +1295,58 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current network topology by resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<TopologyInner>> getTopologyWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, TopologyParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .getTopology(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Gets the current network topology by resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the representation of topology.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current network topology by resource group.
      */
@@ -958,7 +1371,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current network topology by resource group.
      */
@@ -975,19 +1388,42 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Flux<ByteBuffer>>> verifyIPFlowWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, VerificationIPFlowParameters parameters) {
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> verifyIpFlowWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .verifyIPFlow(
+                        .verifyIpFlow(
                             this.client.getHost(),
                             resourceGroupName,
                             networkWatcherName,
@@ -1005,22 +1441,22 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VerificationIPFlowResultInner> verifyIPFlowAsync(
-        String resourceGroupName, String networkWatcherName, VerificationIPFlowParameters parameters) {
+    public Mono<VerificationIpFlowResultInner> verifyIpFlowAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            verifyIPFlowWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
+            verifyIpFlowWithResponseAsync(resourceGroupName, networkWatcherName, parameters);
         return this
             .client
-            .<VerificationIPFlowResultInner, VerificationIPFlowResultInner>getLroResultAsync(
+            .<VerificationIpFlowResultInner, VerificationIpFlowResultInner>getLroResultAsync(
                 mono,
                 this.client.getHttpPipeline(),
-                VerificationIPFlowResultInner.class,
-                VerificationIPFlowResultInner.class)
+                VerificationIpFlowResultInner.class,
+                VerificationIpFlowResultInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
@@ -1032,14 +1468,14 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VerificationIPFlowResultInner verifyIPFlow(
-        String resourceGroupName, String networkWatcherName, VerificationIPFlowParameters parameters) {
-        return verifyIPFlowAsync(resourceGroupName, networkWatcherName, parameters).block();
+    public VerificationIpFlowResultInner verifyIpFlow(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
+        return verifyIpFlowAsync(resourceGroupName, networkWatcherName, parameters).block();
     }
 
     /**
@@ -1049,13 +1485,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getNextHopWithResponseAsync(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1079,7 +1538,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
@@ -1103,7 +1562,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
@@ -1120,13 +1579,35 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getVMSecurityRulesWithResponseAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         SecurityGroupViewParameters parameters = new SecurityGroupViewParameters();
         parameters.withTargetResourceId(targetResourceId);
@@ -1152,7 +1633,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
@@ -1179,7 +1660,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
@@ -1196,13 +1677,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getTroubleshootingWithResponseAsync(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1226,7 +1730,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
@@ -1250,7 +1754,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
@@ -1267,13 +1771,35 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getTroubleshootingResultWithResponseAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         QueryTroubleshootingParameters parameters = new QueryTroubleshootingParameters();
         parameters.withTargetResourceId(targetResourceId);
@@ -1299,7 +1825,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
@@ -1323,7 +1849,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
@@ -1340,13 +1866,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> setFlowLogConfigurationWithResponseAsync(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1370,7 +1919,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -1394,7 +1943,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -1411,13 +1960,35 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getFlowLogStatusWithResponseAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         FlowLogStatusParameters parameters = new FlowLogStatusParameters();
         parameters.withTargetResourceId(targetResourceId);
@@ -1443,7 +2014,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -1467,7 +2038,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -1485,13 +2056,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> checkConnectivityWithResponseAsync(
         String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1516,7 +2110,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
@@ -1544,7 +2138,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
@@ -1561,13 +2155,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Geographic and time constraints for Azure reachability report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
         String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1591,7 +2208,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Geographic and time constraints for Azure reachability report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
@@ -1618,7 +2235,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Geographic and time constraints for Azure reachability report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
@@ -1635,13 +2252,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Constraints that determine the list of available Internet service providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> listAvailableProvidersWithResponseAsync(
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1665,7 +2305,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Constraints that determine the list of available Internet service providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
@@ -1692,7 +2332,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Constraints that determine the list of available Internet service providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
@@ -1709,13 +2349,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
         String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1739,7 +2402,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network configuration diagnostic.
      */
@@ -1767,7 +2430,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network configuration diagnostic.
      */
@@ -1783,12 +2446,30 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String networkWatcherName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1809,8 +2490,51 @@ public final class NetworkWatchersInner
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes the specified network watcher resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1826,7 +2550,7 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1841,19 +2565,42 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<VerificationIPFlowResultInner>> beginVerifyIPFlowWithResponseAsync(
-        String resourceGroupName, String networkWatcherName, VerificationIPFlowParameters parameters) {
+    public Mono<SimpleResponse<VerificationIpFlowResultInner>> beginVerifyIpFlowWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .beginVerifyIPFlow(
+                        .beginVerifyIpFlow(
                             this.client.getHost(),
                             resourceGroupName,
                             networkWatcherName,
@@ -1870,17 +2617,67 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<VerificationIPFlowResultInner> beginVerifyIPFlowAsync(
-        String resourceGroupName, String networkWatcherName, VerificationIPFlowParameters parameters) {
-        return beginVerifyIPFlowWithResponseAsync(resourceGroupName, networkWatcherName, parameters)
+    public Mono<SimpleResponse<VerificationIpFlowResultInner>> beginVerifyIpFlowWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginVerifyIpFlow(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of IP flow verification on the target resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
+        return beginVerifyIpFlowWithResponseAsync(resourceGroupName, networkWatcherName, parameters)
             .flatMap(
-                (SimpleResponse<VerificationIPFlowResultInner> res) -> {
+                (SimpleResponse<VerificationIpFlowResultInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1896,14 +2693,14 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VerificationIPFlowResultInner beginVerifyIPFlow(
-        String resourceGroupName, String networkWatcherName, VerificationIPFlowParameters parameters) {
-        return beginVerifyIPFlowAsync(resourceGroupName, networkWatcherName, parameters).block();
+    public VerificationIpFlowResultInner beginVerifyIpFlow(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters) {
+        return beginVerifyIpFlowAsync(resourceGroupName, networkWatcherName, parameters).block();
     }
 
     /**
@@ -1913,13 +2710,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<NextHopResultInner>> beginGetNextHopWithResponseAsync(
         String resourceGroupName, String networkWatcherName, NextHopParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1942,8 +2762,58 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the next hop from the specified VM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<NextHopResultInner>> beginGetNextHopWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginGetNextHop(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Gets the next hop from the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the source and destination endpoint.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
@@ -1968,7 +2838,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the next hop from the specified VM.
      */
@@ -1985,13 +2855,35 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SecurityGroupViewResultInner>> beginGetVMSecurityRulesWithResponseAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         SecurityGroupViewParameters parameters = new SecurityGroupViewParameters();
         parameters.withTargetResourceId(targetResourceId);
@@ -2016,8 +2908,59 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configured and effective security group rules on the specified VM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SecurityGroupViewResultInner>> beginGetVMSecurityRulesWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String targetResourceId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        SecurityGroupViewParameters parameters = new SecurityGroupViewParameters();
+        parameters.withTargetResourceId(targetResourceId);
+        return service
+            .beginGetVMSecurityRules(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Gets the configured and effective security group rules on the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param targetResourceId ID of the target VM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
@@ -2042,7 +2985,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param targetResourceId ID of the target VM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configured and effective security group rules on the specified VM.
      */
@@ -2059,13 +3002,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TroubleshootingResultInner>> beginGetTroubleshootingWithResponseAsync(
         String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -2088,8 +3054,58 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return troubleshooting information gained from specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<TroubleshootingResultInner>> beginGetTroubleshootingWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginGetTroubleshooting(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Initiate troubleshooting on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
@@ -2114,7 +3130,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooting information gained from specified resource.
      */
@@ -2131,13 +3147,35 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TroubleshootingResultInner>> beginGetTroubleshootingResultWithResponseAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         QueryTroubleshootingParameters parameters = new QueryTroubleshootingParameters();
         parameters.withTargetResourceId(targetResourceId);
@@ -2162,8 +3200,59 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the last completed troubleshooting result on a specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<TroubleshootingResultInner>> beginGetTroubleshootingResultWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String targetResourceId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        QueryTroubleshootingParameters parameters = new QueryTroubleshootingParameters();
+        parameters.withTargetResourceId(targetResourceId);
+        return service
+            .beginGetTroubleshootingResult(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Get the last completed troubleshooting result on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param targetResourceId The target resource ID to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
@@ -2188,7 +3277,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource ID to query the troubleshooting result.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the last completed troubleshooting result on a specified resource.
      */
@@ -2205,13 +3294,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FlowLogInformationInner>> beginSetFlowLogConfigurationWithResponseAsync(
         String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -2234,8 +3346,58 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the configuration of flow log and traffic analytics (optional).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FlowLogInformationInner>> beginSetFlowLogConfigurationWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginSetFlowLogConfiguration(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -2260,7 +3422,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Information on the configuration of flow log and traffic analytics (optional) .
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -2277,13 +3439,35 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<FlowLogInformationInner>> beginGetFlowLogStatusWithResponseAsync(
         String resourceGroupName, String networkWatcherName, String targetResourceId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         FlowLogStatusParameters parameters = new FlowLogStatusParameters();
         parameters.withTargetResourceId(targetResourceId);
@@ -2308,8 +3492,59 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the configuration of flow log and traffic analytics (optional).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<FlowLogInformationInner>> beginGetFlowLogStatusWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String targetResourceId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (targetResourceId == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter targetResourceId is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        FlowLogStatusParameters parameters = new FlowLogStatusParameters();
+        parameters.withTargetResourceId(targetResourceId);
+        return service
+            .beginGetFlowLogStatus(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Queries status of flow log and traffic analytics (optional) on a specified resource.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -2334,7 +3569,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param targetResourceId The target resource where getting the flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
@@ -2352,13 +3587,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ConnectivityInformationInner>> beginCheckConnectivityWithResponseAsync(
         String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -2382,8 +3640,59 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the connectivity status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ConnectivityInformationInner>> beginCheckConnectivityWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginCheckConnectivity(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
@@ -2409,7 +3718,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the connectivity status.
      */
@@ -2426,13 +3735,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Geographic and time constraints for Azure reachability report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AzureReachabilityReportInner>> beginGetAzureReachabilityReportWithResponseAsync(
         String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -2455,8 +3787,61 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Geographic and time constraints for Azure reachability report.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the relative latency score for internet service providers from a specified location to Azure regions.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<AzureReachabilityReportInner>> beginGetAzureReachabilityReportWithResponseAsync(
+        String resourceGroupName,
+        String networkWatcherName,
+        AzureReachabilityReportParameters parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginGetAzureReachabilityReport(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Gets the relative latency score for internet service providers from a specified location to Azure regions.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Geographic and time constraints for Azure reachability report.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
@@ -2481,7 +3866,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Geographic and time constraints for Azure reachability report.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
@@ -2498,13 +3883,36 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Constraints that determine the list of available Internet service providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<AvailableProvidersListInner>> beginListAvailableProvidersWithResponseAsync(
         String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -2527,8 +3935,61 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Constraints that determine the list of available Internet service providers.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of available countries with details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<AvailableProvidersListInner>> beginListAvailableProvidersWithResponseAsync(
+        String resourceGroupName,
+        String networkWatcherName,
+        AvailableProvidersListParameters parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginListAvailableProviders(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Lists all available internet service providers for a specified Azure region.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Constraints that determine the list of available Internet service providers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
@@ -2553,7 +4014,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Constraints that determine the list of available Internet service providers.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available countries with details.
      */
@@ -2570,7 +4031,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network configuration diagnostic.
      */
@@ -2578,6 +4039,29 @@ public final class NetworkWatchersInner
     public Mono<SimpleResponse<NetworkConfigurationDiagnosticResponseInner>>
         beginGetNetworkConfigurationDiagnosticWithResponseAsync(
             String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -2600,8 +4084,62 @@ public final class NetworkWatchersInner
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network configuration diagnostic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<NetworkConfigurationDiagnosticResponseInner>>
+        beginGetNetworkConfigurationDiagnosticWithResponseAsync(
+            String resourceGroupName,
+            String networkWatcherName,
+            NetworkConfigurationDiagnosticParameters parameters,
+            Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (networkWatcherName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkWatcherName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginGetNetworkConfigurationDiagnostic(
+                this.client.getHost(),
+                resourceGroupName,
+                networkWatcherName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                context);
+    }
+
+    /**
+     * Get network configuration diagnostic.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters to get network configuration diagnostic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network configuration diagnostic.
      */
@@ -2627,7 +4165,7 @@ public final class NetworkWatchersInner
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return network configuration diagnostic.
      */

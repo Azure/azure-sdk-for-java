@@ -6,7 +6,9 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -14,6 +16,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class CertificateEmailInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateEmailInner.class);
+
     /*
      * Email id.
      */
@@ -24,7 +28,7 @@ public class CertificateEmailInner extends ProxyOnlyResource {
      * Time stamp.
      */
     @JsonProperty(value = "properties.timeStamp")
-    private OffsetDateTime timeStamp;
+    private OffsetDateTime timestamp;
 
     /**
      * Get the emailId property: Email id.
@@ -47,22 +51,32 @@ public class CertificateEmailInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the timeStamp property: Time stamp.
+     * Get the timestamp property: Time stamp.
      *
-     * @return the timeStamp value.
+     * @return the timestamp value.
      */
-    public OffsetDateTime timeStamp() {
-        return this.timeStamp;
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
-     * Set the timeStamp property: Time stamp.
+     * Set the timestamp property: Time stamp.
      *
-     * @param timeStamp the timeStamp value to set.
+     * @param timestamp the timestamp value to set.
      * @return the CertificateEmailInner object itself.
      */
-    public CertificateEmailInner withTimeStamp(OffsetDateTime timeStamp) {
-        this.timeStamp = timeStamp;
+    public CertificateEmailInner withTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

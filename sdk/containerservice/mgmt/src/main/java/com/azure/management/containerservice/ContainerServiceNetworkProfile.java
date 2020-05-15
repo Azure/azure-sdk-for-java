@@ -5,11 +5,15 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerServiceNetworkProfile model. */
 @Fluent
 public final class ContainerServiceNetworkProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceNetworkProfile.class);
+
     /*
      * Network plugin used for building Kubernetes network.
      */
@@ -41,7 +45,7 @@ public final class ContainerServiceNetworkProfile {
      * the Kubernetes service address range specified in serviceCidr.
      */
     @JsonProperty(value = "dnsServiceIP")
-    private String dnsServiceIP;
+    private String dnsServiceIp;
 
     /*
      * A CIDR notation IP range assigned to the Docker bridge network. It must
@@ -146,24 +150,24 @@ public final class ContainerServiceNetworkProfile {
     }
 
     /**
-     * Get the dnsServiceIP property: An IP address assigned to the Kubernetes DNS service. It must be within the
+     * Get the dnsServiceIp property: An IP address assigned to the Kubernetes DNS service. It must be within the
      * Kubernetes service address range specified in serviceCidr.
      *
-     * @return the dnsServiceIP value.
+     * @return the dnsServiceIp value.
      */
-    public String dnsServiceIP() {
-        return this.dnsServiceIP;
+    public String dnsServiceIp() {
+        return this.dnsServiceIp;
     }
 
     /**
-     * Set the dnsServiceIP property: An IP address assigned to the Kubernetes DNS service. It must be within the
+     * Set the dnsServiceIp property: An IP address assigned to the Kubernetes DNS service. It must be within the
      * Kubernetes service address range specified in serviceCidr.
      *
-     * @param dnsServiceIP the dnsServiceIP value to set.
+     * @param dnsServiceIp the dnsServiceIp value to set.
      * @return the ContainerServiceNetworkProfile object itself.
      */
-    public ContainerServiceNetworkProfile withDnsServiceIP(String dnsServiceIP) {
-        this.dnsServiceIP = dnsServiceIP;
+    public ContainerServiceNetworkProfile withDnsServiceIp(String dnsServiceIp) {
+        this.dnsServiceIp = dnsServiceIp;
         return this;
     }
 
@@ -228,5 +232,16 @@ public final class ContainerServiceNetworkProfile {
         ManagedClusterLoadBalancerProfile loadBalancerProfile) {
         this.loadBalancerProfile = loadBalancerProfile;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (loadBalancerProfile() != null) {
+            loadBalancerProfile().validate();
+        }
     }
 }

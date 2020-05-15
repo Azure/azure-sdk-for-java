@@ -27,7 +27,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -75,7 +75,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -86,7 +86,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistenceAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -97,7 +97,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -109,7 +109,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> getAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -120,7 +120,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -131,7 +131,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -143,7 +143,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -154,7 +154,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{scope}/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -166,7 +166,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -176,7 +176,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistenceAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -186,7 +186,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -197,7 +197,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> getAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -207,7 +207,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -217,7 +217,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -228,7 +228,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -238,7 +238,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtTenantScope(
             @HostParam("$host") String host,
             @QueryParam("$filter") String filter,
@@ -251,7 +251,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -264,7 +264,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistenceAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -277,7 +277,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -291,7 +291,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> getAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -304,7 +304,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -317,7 +317,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -331,7 +331,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -344,7 +344,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -356,7 +356,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -367,7 +367,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistenceAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -378,7 +378,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -390,7 +390,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> getAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -401,7 +401,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -413,7 +413,7 @@ public final class DeploymentsInner
         @Post(
             "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}" + "/validate")
         @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validateAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -425,7 +425,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> whatIfAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -439,7 +439,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}"
                 + "/exportTemplate")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplateAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -450,7 +450,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("$filter") String filter,
@@ -464,7 +464,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -478,7 +478,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistence(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -492,7 +492,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -507,7 +507,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -521,7 +521,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/cancel")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancel(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -535,7 +535,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/validate")
         @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentValidateResultInner>> validate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -550,7 +550,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> whatIf(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -565,7 +565,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/exportTemplate")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExportResultInner>> exportTemplate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -579,7 +579,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -592,7 +592,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/providers/Microsoft.Resources/calculateTemplateHash")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TemplateHashResultInner>> calculateTemplateHash(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -602,7 +602,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -613,7 +613,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{scope}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtScope(
             @HostParam("$host") String host,
             @PathParam("scope") String scope,
@@ -625,7 +625,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -635,7 +635,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtTenantScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -648,7 +648,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -661,7 +661,7 @@ public final class DeploymentsInner
             "/providers/Microsoft.Management/managementGroups/{groupId}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtManagementGroupScope(
             @HostParam("$host") String host,
             @PathParam("groupId") String groupId,
@@ -673,7 +673,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -684,7 +684,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdateAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -696,7 +696,7 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<DeploymentsBeginWhatIfAtSubscriptionScopeResponse> beginWhatIfAtSubscriptionScope(
             @HostParam("$host") String host,
             @PathParam("deploymentName") String deploymentName,
@@ -710,7 +710,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -724,7 +724,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentExtendedInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -739,7 +739,7 @@ public final class DeploymentsInner
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Resources"
                 + "/deployments/{deploymentName}/whatIf")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<DeploymentsBeginWhatIfResponse> beginWhatIf(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -752,35 +752,35 @@ public final class DeploymentsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtTenantScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtManagementGroupScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listAtSubscriptionScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DeploymentListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -796,7 +796,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -832,7 +832,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -857,7 +857,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -871,7 +871,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -903,7 +903,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -930,7 +930,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -953,7 +953,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -974,7 +974,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -1017,7 +1017,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -1041,7 +1041,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -1057,7 +1057,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1089,7 +1089,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1115,7 +1115,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1138,7 +1138,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1155,7 +1155,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1189,7 +1189,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1217,7 +1217,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1234,7 +1234,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1250,7 +1250,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -1295,7 +1295,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -1330,7 +1330,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -1356,7 +1356,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -1372,7 +1372,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -1405,7 +1405,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -1432,7 +1432,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -1455,7 +1455,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -1472,7 +1472,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1512,7 +1512,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1547,7 +1547,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1566,7 +1566,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1583,7 +1583,7 @@ public final class DeploymentsInner
      *
      * @param scope The scope of a deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1604,7 +1604,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1618,7 +1618,7 @@ public final class DeploymentsInner
      *
      * @param scope The scope of a deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the given scope.
      */
@@ -1640,7 +1640,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1672,7 +1672,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1696,7 +1696,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1709,7 +1709,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1737,7 +1737,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1760,7 +1760,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1782,7 +1782,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1802,7 +1802,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -1836,7 +1836,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -1859,7 +1859,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -1873,7 +1873,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1900,7 +1900,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1922,7 +1922,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1944,7 +1944,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -1960,7 +1960,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1990,7 +1990,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2013,7 +2013,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2029,7 +2029,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2044,7 +2044,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2080,7 +2080,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2111,7 +2111,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2136,7 +2136,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2150,7 +2150,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -2179,7 +2179,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -2202,7 +2202,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -2224,7 +2224,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -2240,7 +2240,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2274,7 +2274,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2305,7 +2305,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2324,7 +2324,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2338,7 +2338,7 @@ public final class DeploymentsInner
     /**
      * Get all the deployments at the tenant scope.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2359,7 +2359,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2371,7 +2371,7 @@ public final class DeploymentsInner
     /**
      * Get all the deployments at the tenant scope.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
      */
@@ -2394,7 +2394,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2431,7 +2431,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2457,7 +2457,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2471,7 +2471,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2504,7 +2504,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2532,7 +2532,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2555,7 +2555,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2576,7 +2576,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -2619,7 +2619,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -2643,7 +2643,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -2659,7 +2659,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -2692,7 +2692,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -2720,7 +2720,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -2743,7 +2743,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -2760,7 +2760,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2794,7 +2794,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2824,7 +2824,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2842,7 +2842,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2858,7 +2858,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2903,7 +2903,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2938,7 +2938,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2964,7 +2964,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -2980,7 +2980,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -3013,7 +3013,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -3041,7 +3041,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -3065,7 +3065,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -3082,7 +3082,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3123,7 +3123,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3159,7 +3159,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3180,7 +3180,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3197,7 +3197,7 @@ public final class DeploymentsInner
      *
      * @param groupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3219,7 +3219,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3234,7 +3234,7 @@ public final class DeploymentsInner
      *
      * @param groupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a management group.
      */
@@ -3256,7 +3256,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3298,7 +3298,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3322,7 +3322,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3335,7 +3335,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -3373,7 +3373,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -3407,7 +3407,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -3429,7 +3429,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -3449,7 +3449,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -3494,7 +3494,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -3517,7 +3517,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -3532,7 +3532,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -3571,7 +3571,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -3605,7 +3605,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -3627,7 +3627,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -3643,7 +3643,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3683,7 +3683,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3718,7 +3718,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3734,7 +3734,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3749,7 +3749,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -3796,7 +3796,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -3838,7 +3838,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -3863,7 +3863,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -3879,7 +3879,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -3924,7 +3924,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -3947,7 +3947,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -3961,7 +3961,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -4000,7 +4000,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -4034,7 +4034,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -4056,7 +4056,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -4072,7 +4072,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4119,7 +4119,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4162,7 +4162,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4180,7 +4180,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4194,7 +4194,7 @@ public final class DeploymentsInner
     /**
      * Get all the deployments for a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4214,7 +4214,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4226,7 +4226,7 @@ public final class DeploymentsInner
     /**
      * Get all the deployments for a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
      */
@@ -4251,7 +4251,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4302,7 +4302,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4329,7 +4329,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4344,7 +4344,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -4390,7 +4390,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -4431,7 +4431,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -4455,7 +4455,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -4477,7 +4477,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -4529,7 +4529,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -4554,7 +4554,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -4570,7 +4570,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -4615,7 +4615,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -4655,7 +4655,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -4678,7 +4678,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a deployment.
      */
@@ -4695,7 +4695,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4741,7 +4741,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4783,7 +4783,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -4800,7 +4800,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4817,7 +4817,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -4871,7 +4871,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -4920,7 +4920,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -4947,7 +4947,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information from validate template deployment response.
      */
@@ -4965,7 +4965,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -5017,7 +5017,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -5042,7 +5042,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -5058,7 +5058,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -5103,7 +5103,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -5143,7 +5143,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -5166,7 +5166,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deployment export result.
      */
@@ -5184,7 +5184,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5239,7 +5239,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5289,7 +5289,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5311,7 +5311,7 @@ public final class DeploymentsInner
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5329,7 +5329,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
      *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5352,7 +5352,7 @@ public final class DeploymentsInner
      *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5368,7 +5368,7 @@ public final class DeploymentsInner
      * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
      *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a resource group.
      */
@@ -5385,7 +5385,7 @@ public final class DeploymentsInner
      *
      * @param template Any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to calculate template hash.
      */
@@ -5412,7 +5412,7 @@ public final class DeploymentsInner
      * @param template Any object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to calculate template hash.
      */
@@ -5434,7 +5434,7 @@ public final class DeploymentsInner
      *
      * @param template Any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to calculate template hash.
      */
@@ -5456,7 +5456,7 @@ public final class DeploymentsInner
      *
      * @param template Any object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to calculate template hash.
      */
@@ -5476,7 +5476,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5513,7 +5513,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5545,7 +5545,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5565,7 +5565,7 @@ public final class DeploymentsInner
      * @param scope The scope of a deployment.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5580,7 +5580,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5624,7 +5624,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5658,7 +5658,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5683,7 +5683,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5703,7 +5703,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5736,7 +5736,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5763,7 +5763,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5782,7 +5782,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5796,7 +5796,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5831,7 +5831,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5861,7 +5861,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5885,7 +5885,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -5906,7 +5906,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5944,7 +5944,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5977,7 +5977,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -5998,7 +5998,7 @@ public final class DeploymentsInner
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6013,7 +6013,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6057,7 +6057,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6091,7 +6091,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6116,7 +6116,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6136,7 +6136,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6179,7 +6179,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6218,7 +6218,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6238,7 +6238,7 @@ public final class DeploymentsInner
      *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6252,7 +6252,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6298,7 +6298,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6339,7 +6339,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6363,7 +6363,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6379,7 +6379,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6425,7 +6425,7 @@ public final class DeploymentsInner
      * @param parameters Deployment What-if operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6466,7 +6466,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6490,7 +6490,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6513,7 +6513,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6564,7 +6564,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6611,7 +6611,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -6634,7 +6634,7 @@ public final class DeploymentsInner
      *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -6650,7 +6650,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6703,7 +6703,7 @@ public final class DeploymentsInner
      * @param parameters Deployment operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6751,7 +6751,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6777,7 +6777,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return deployment information.
      */
@@ -6795,7 +6795,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6848,7 +6848,7 @@ public final class DeploymentsInner
      * @param parameters Deployment What-if operation parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6896,7 +6896,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6922,7 +6922,7 @@ public final class DeploymentsInner
      * @param deploymentName The name of the deployment.
      * @param parameters Deployment What-if operation parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the What-If operation.
      */
@@ -6937,7 +6937,7 @@ public final class DeploymentsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -6966,7 +6966,7 @@ public final class DeploymentsInner
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -6994,7 +6994,7 @@ public final class DeploymentsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7023,7 +7023,7 @@ public final class DeploymentsInner
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7051,7 +7051,7 @@ public final class DeploymentsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7080,7 +7080,7 @@ public final class DeploymentsInner
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7108,7 +7108,7 @@ public final class DeploymentsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7137,7 +7137,7 @@ public final class DeploymentsInner
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7165,7 +7165,7 @@ public final class DeploymentsInner
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */
@@ -7194,7 +7194,7 @@ public final class DeploymentsInner
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of deployments.
      */

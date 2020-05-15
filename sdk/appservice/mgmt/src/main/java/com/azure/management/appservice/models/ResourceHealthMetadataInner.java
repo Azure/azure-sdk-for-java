@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceHealthMetadata model. */
 @JsonFlatten
 @Fluent
 public class ResourceHealthMetadataInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceHealthMetadataInner.class);
+
     /*
      * The category that the resource matches in the RHC Policy File
      */
@@ -63,5 +67,15 @@ public class ResourceHealthMetadataInner extends ProxyOnlyResource {
     public ResourceHealthMetadataInner withSignalAvailability(Boolean signalAvailability) {
         this.signalAvailability = signalAvailability;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

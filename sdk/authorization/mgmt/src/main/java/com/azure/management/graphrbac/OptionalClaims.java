@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OptionalClaims model. */
 @Fluent
 public final class OptionalClaims {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OptionalClaims.class);
+
     /*
      * Optional claims requested to be included in the id token.
      */
@@ -87,5 +91,22 @@ public final class OptionalClaims {
     public OptionalClaims withSamlToken(List<OptionalClaim> samlToken) {
         this.samlToken = samlToken;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (idToken() != null) {
+            idToken().forEach(e -> e.validate());
+        }
+        if (accessToken() != null) {
+            accessToken().forEach(e -> e.validate());
+        }
+        if (samlToken() != null) {
+            samlToken().forEach(e -> e.validate());
+        }
     }
 }

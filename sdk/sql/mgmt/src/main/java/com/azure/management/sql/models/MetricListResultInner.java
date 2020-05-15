@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MetricListResult model. */
 @Fluent
 public final class MetricListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricListResultInner.class);
+
     /*
      * The list of metrics for the database.
      */
@@ -35,5 +39,20 @@ public final class MetricListResultInner {
     public MetricListResultInner withValue(List<MetricInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model MetricListResultInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

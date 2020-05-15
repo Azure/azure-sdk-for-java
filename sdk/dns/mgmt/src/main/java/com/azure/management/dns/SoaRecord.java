@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SoaRecord model. */
 @Fluent
 public final class SoaRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SoaRecord.class);
+
     /*
      * The domain name of the authoritative name server for this SOA record.
      */
@@ -193,5 +197,13 @@ public final class SoaRecord {
     public SoaRecord withMinimumTtl(Long minimumTtl) {
         this.minimumTtl = minimumTtl;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

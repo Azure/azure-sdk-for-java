@@ -65,7 +65,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public long timeToLive() {
-        return this.inner().tTL();
+        return this.inner().ttl();
     }
 
     @Override
@@ -254,7 +254,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withTimeToLive(long ttlInSeconds) {
-        this.inner().withTTL(ttlInSeconds);
+        this.inner().withTtl(ttlInSeconds);
         return this;
     }
 
@@ -381,9 +381,9 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             this.inner().metadata().clear();
         }
 
-        if (this.inner().tTL() != null) {
-            resource.withTTL(this.inner().tTL());
-            this.inner().withTTL(null);
+        if (this.inner().ttl() != null) {
+            resource.withTtl(this.inner().ttl());
+            this.inner().withTtl(null);
         }
 
         return prepareForUpdate(resource);

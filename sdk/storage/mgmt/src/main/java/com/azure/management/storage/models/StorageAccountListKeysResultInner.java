@@ -5,13 +5,17 @@
 package com.azure.management.storage.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.StorageAccountKey;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The StorageAccountListKeysResult model. */
 @Immutable
 public final class StorageAccountListKeysResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountListKeysResultInner.class);
+
     /*
      * Gets the list of storage account keys and their properties for the
      * specified storage account.
@@ -27,5 +31,16 @@ public final class StorageAccountListKeysResultInner {
      */
     public List<StorageAccountKey> keys() {
         return this.keys;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keys() != null) {
+            keys().forEach(e -> e.validate());
+        }
     }
 }

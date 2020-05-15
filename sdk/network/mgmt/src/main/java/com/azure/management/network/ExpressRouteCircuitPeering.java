@@ -130,7 +130,7 @@ public interface ExpressRouteCircuitPeering
              * @param peerASN AS number for peering. Both 2-byte and 4-byte AS numbers can be used
              * @return next stage of definition
              */
-            WithCreate withPeerASN(long peerASN);
+            WithCreate withPeerAsn(long peerASN);
         }
 
         interface WithCreate extends Creatable<ExpressRouteCircuitPeering> {
@@ -174,7 +174,7 @@ public interface ExpressRouteCircuitPeering
 
         /** The stage of Express Route Circuit Peering update allowing to specify AS number for peering. */
         interface WithPeerASN {
-            Update withPeerASN(long peerASN);
+            Update withPeerAsn(long peerASN);
         }
     }
 }

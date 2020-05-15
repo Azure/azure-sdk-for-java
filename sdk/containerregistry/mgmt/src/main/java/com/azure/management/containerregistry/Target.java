@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Target model. */
 @Fluent
 public final class Target {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Target.class);
+
     /*
      * The MIME type of the referenced object.
      */
@@ -243,5 +247,13 @@ public final class Target {
     public Target withVersion(String version) {
         this.version = version;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

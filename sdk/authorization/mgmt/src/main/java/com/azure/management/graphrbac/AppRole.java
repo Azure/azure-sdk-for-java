@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AppRole model. */
 @Fluent
 public final class AppRole {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRole.class);
+
     /*
      * Unique role identifier inside the appRoles collection.
      */
@@ -187,5 +191,13 @@ public final class AppRole {
     public AppRole withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

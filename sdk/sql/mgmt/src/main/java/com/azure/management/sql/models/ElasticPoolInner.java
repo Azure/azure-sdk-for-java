@@ -7,10 +7,12 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ElasticPoolLicenseType;
 import com.azure.management.sql.ElasticPoolPerDatabaseSettings;
 import com.azure.management.sql.ElasticPoolState;
 import com.azure.management.sql.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -18,6 +20,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class ElasticPoolInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ElasticPoolInner.class);
+
     /*
      * The elastic pool SKU.
      *
@@ -218,5 +222,19 @@ public class ElasticPoolInner extends Resource {
     public ElasticPoolInner withLicenseType(ElasticPoolLicenseType licenseType) {
         this.licenseType = licenseType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (perDatabaseSettings() != null) {
+            perDatabaseSettings().validate();
+        }
     }
 }

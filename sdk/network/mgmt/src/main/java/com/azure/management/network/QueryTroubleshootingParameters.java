@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The QueryTroubleshootingParameters model. */
 @Fluent
 public final class QueryTroubleshootingParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryTroubleshootingParameters.class);
+
     /*
      * The target resource ID to query the troubleshooting result.
      */
@@ -34,5 +38,19 @@ public final class QueryTroubleshootingParameters {
     public QueryTroubleshootingParameters withTargetResourceId(String targetResourceId) {
         this.targetResourceId = targetResourceId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model QueryTroubleshootingParameters"));
+        }
     }
 }

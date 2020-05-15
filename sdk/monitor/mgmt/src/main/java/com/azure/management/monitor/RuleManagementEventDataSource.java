@@ -6,15 +6,20 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+
 /** The RuleManagementEventDataSource model. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource")
 @JsonFlatten
 @Fluent
-public final class RuleManagementEventDataSource extends RuleDataSource {
+public class RuleManagementEventDataSource extends RuleDataSource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleManagementEventDataSource.class);
+
     /*
      * the event name.
      */
@@ -253,5 +258,18 @@ public final class RuleManagementEventDataSource extends RuleDataSource {
     public RuleManagementEventDataSource withClaims(RuleManagementEventClaimsDataSource claims) {
         this.claims = claims;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (claims() != null) {
+            claims().validate();
+        }
     }
 }

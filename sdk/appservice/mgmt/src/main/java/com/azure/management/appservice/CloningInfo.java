@@ -5,6 +5,8 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +14,8 @@ import java.util.UUID;
 /** The CloningInfo model. */
 @Fluent
 public final class CloningInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloningInfo.class);
+
     /*
      * Correlation ID of cloning operation. This ID ties multiple cloning
      * operations
@@ -338,5 +342,18 @@ public final class CloningInfo {
     public CloningInfo withTrafficManagerProfileName(String trafficManagerProfileName) {
         this.trafficManagerProfileName = trafficManagerProfileName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceWebAppId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sourceWebAppId in model CloningInfo"));
+        }
     }
 }

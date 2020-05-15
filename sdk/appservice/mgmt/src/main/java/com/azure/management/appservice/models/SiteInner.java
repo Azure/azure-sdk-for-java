@@ -7,14 +7,16 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.CloningInfo;
-import com.azure.management.appservice.HostNameSslState;
 import com.azure.management.appservice.HostingEnvironmentProfile;
+import com.azure.management.appservice.HostnameSslState;
 import com.azure.management.appservice.ManagedServiceIdentity;
 import com.azure.management.appservice.RedundancyMode;
 import com.azure.management.appservice.SiteAvailabilityState;
 import com.azure.management.appservice.SlotSwapStatus;
 import com.azure.management.appservice.UsageState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,6 +26,8 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class SiteInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteInner.class);
+
     /*
      * Managed service identity.
      */
@@ -81,7 +85,7 @@ public class SiteInner extends Resource {
      * hostnames.
      */
     @JsonProperty(value = "properties.hostNameSslStates")
-    private List<HostNameSslState> hostNameSslStates;
+    private List<HostnameSslState> hostnameSslStates;
 
     /*
      * Resource ID of the associated App Service plan, formatted as:
@@ -241,7 +245,7 @@ public class SiteInner extends Resource {
      * Default hostname of the app. Read-only.
      */
     @JsonProperty(value = "properties.defaultHostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultHostName;
+    private String defaultHostname;
 
     /*
      * Status of the last deployment slot swap operation.
@@ -373,22 +377,22 @@ public class SiteInner extends Resource {
     }
 
     /**
-     * Get the hostNameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
+     * Get the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
      *
-     * @return the hostNameSslStates value.
+     * @return the hostnameSslStates value.
      */
-    public List<HostNameSslState> hostNameSslStates() {
-        return this.hostNameSslStates;
+    public List<HostnameSslState> hostnameSslStates() {
+        return this.hostnameSslStates;
     }
 
     /**
-     * Set the hostNameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
+     * Set the hostnameSslStates property: Hostname SSL states are used to manage the SSL bindings for app's hostnames.
      *
-     * @param hostNameSslStates the hostNameSslStates value to set.
+     * @param hostnameSslStates the hostnameSslStates value to set.
      * @return the SiteInner object itself.
      */
-    public SiteInner withHostNameSslStates(List<HostNameSslState> hostNameSslStates) {
-        this.hostNameSslStates = hostNameSslStates;
+    public SiteInner withHostnameSslStates(List<HostnameSslState> hostnameSslStates) {
+        this.hostnameSslStates = hostnameSslStates;
         return this;
     }
 
@@ -773,12 +777,12 @@ public class SiteInner extends Resource {
     }
 
     /**
-     * Get the defaultHostName property: Default hostname of the app. Read-only.
+     * Get the defaultHostname property: Default hostname of the app. Read-only.
      *
-     * @return the defaultHostName value.
+     * @return the defaultHostname value.
      */
-    public String defaultHostName() {
-        return this.defaultHostName;
+    public String defaultHostname() {
+        return this.defaultHostname;
     }
 
     /**
@@ -859,5 +863,31 @@ public class SiteInner extends Resource {
     public SiteInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (hostnameSslStates() != null) {
+            hostnameSslStates().forEach(e -> e.validate());
+        }
+        if (siteConfig() != null) {
+            siteConfig().validate();
+        }
+        if (hostingEnvironmentProfile() != null) {
+            hostingEnvironmentProfile().validate();
+        }
+        if (cloningInfo() != null) {
+            cloningInfo().validate();
+        }
+        if (slotSwapStatus() != null) {
+            slotSwapStatus().validate();
+        }
     }
 }

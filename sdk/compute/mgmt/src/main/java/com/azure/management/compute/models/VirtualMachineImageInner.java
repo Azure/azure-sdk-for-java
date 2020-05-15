@@ -6,11 +6,13 @@ package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.AutomaticOSUpgradeProperties;
 import com.azure.management.compute.DataDiskImage;
 import com.azure.management.compute.HyperVGenerationTypes;
 import com.azure.management.compute.OSDiskImage;
 import com.azure.management.compute.PurchasePlan;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImageInner.class);
+
     /*
      * Used for establishing the purchase context of any 3rd Party artifact
      * through MarketPlace.
@@ -148,5 +152,27 @@ public class VirtualMachineImageInner extends VirtualMachineImageResourceInner {
     public VirtualMachineImageInner withHyperVGeneration(HyperVGenerationTypes hyperVGeneration) {
         this.hyperVGeneration = hyperVGeneration;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (osDiskImage() != null) {
+            osDiskImage().validate();
+        }
+        if (dataDiskImages() != null) {
+            dataDiskImages().forEach(e -> e.validate());
+        }
+        if (automaticOSUpgradeProperties() != null) {
+            automaticOSUpgradeProperties().validate();
+        }
     }
 }

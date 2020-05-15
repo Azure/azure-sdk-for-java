@@ -7,15 +7,19 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.JobStepAction;
 import com.azure.management.sql.JobStepExecutionOptions;
 import com.azure.management.sql.JobStepOutput;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobStep model. */
 @JsonFlatten
 @Fluent
 public class JobStepInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepInner.class);
+
     /*
      * The job step's index within the job. If not specified when creating the
      * job step, it will be created as the last step. If not specified when
@@ -176,5 +180,22 @@ public class JobStepInner extends ProxyResource {
     public JobStepInner withExecutionOptions(JobStepExecutionOptions executionOptions) {
         this.executionOptions = executionOptions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (action() != null) {
+            action().validate();
+        }
+        if (output() != null) {
+            output().validate();
+        }
+        if (executionOptions() != null) {
+            executionOptions().validate();
+        }
     }
 }

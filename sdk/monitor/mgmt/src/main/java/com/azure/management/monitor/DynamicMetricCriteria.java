@@ -5,6 +5,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,6 +17,8 @@ import java.time.OffsetDateTime;
 @JsonTypeName("DynamicThresholdCriterion")
 @Fluent
 public final class DynamicMetricCriteria extends MultiMetricCriteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicMetricCriteria.class);
+
     /*
      * The operator used to compare the metric value against the threshold.
      */
@@ -126,5 +130,34 @@ public final class DynamicMetricCriteria extends MultiMetricCriteria {
     public DynamicMetricCriteria withIgnoreDataBefore(OffsetDateTime ignoreDataBefore) {
         this.ignoreDataBefore = ignoreDataBefore;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (operator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property operator in model DynamicMetricCriteria"));
+        }
+        if (alertSensitivity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property alertSensitivity in model DynamicMetricCriteria"));
+        }
+        if (failingPeriods() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property failingPeriods in model DynamicMetricCriteria"));
+        } else {
+            failingPeriods().validate();
+        }
     }
 }
