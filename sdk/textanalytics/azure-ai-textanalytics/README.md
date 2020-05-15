@@ -86,7 +86,7 @@ In order to interact with the Text Analytics service, you will need to create an
 both the asynchronous and synchronous clients can be created by using `TextAnalyticsClientBuilder` invoking `buildClient()`
 creates a synchronous client while `buildAsyncClient()` creates its asynchronous counterpart.
 
-You will need an **endpoint** and either an **key** or **AAD TokenCredential** to instantiate a client object. 
+You will need an **endpoint** and either a **key** or **AAD TokenCredential** to instantiate a client object. 
 
 ##### Looking up the endpoint
 You can find the **endpoint** for your Text Analytics resource in the [Azure Portal][azure_portal] under the "Keys and Endpoint",
