@@ -228,7 +228,7 @@ class ServiceBusReceiverClientTest {
         // Arrange
         final long sequenceNumber = 154;
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-        when(asyncClient.peekAt(sequenceNumber)).thenReturn(Mono.just(message));
+        when(asyncClient.browseAt(sequenceNumber)).thenReturn(Mono.just(message));
 
         // Act
         final ServiceBusReceivedMessage actual = client.browseAt(sequenceNumber);
@@ -267,7 +267,7 @@ class ServiceBusReceiverClientTest {
                 }
             });
         });
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.browseBatch(maxMessages)).thenReturn(messages);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
@@ -311,7 +311,7 @@ class ServiceBusReceiverClientTest {
             });
         });
 
-        when(asyncClient.peekBatch(maxMessages)).thenReturn(messages);
+        when(asyncClient.browseBatch(maxMessages)).thenReturn(messages);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatch(maxMessages);
@@ -340,7 +340,7 @@ class ServiceBusReceiverClientTest {
                 sink.complete();
             });
         });
-        when(asyncClient.peekBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
+        when(asyncClient.browseBatchAt(maxMessages, sequenceNumber)).thenReturn(messages);
 
         // Act
         final IterableStream<ServiceBusReceivedMessage> actual = client.browseBatchAt(maxMessages, sequenceNumber);

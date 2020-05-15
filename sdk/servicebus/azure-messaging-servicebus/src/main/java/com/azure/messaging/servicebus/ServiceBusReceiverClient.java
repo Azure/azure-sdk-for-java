@@ -332,7 +332,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public ServiceBusReceivedMessage browseAt(long sequenceNumber) {
-        return asyncClient.peekAt(sequenceNumber).block(operationTimeout);
+        return asyncClient.browseAt(sequenceNumber).block(operationTimeout);
     }
 
     /**
@@ -346,7 +346,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public ServiceBusReceivedMessage browseAt(long sequenceNumber, String sessionId) {
-        return asyncClient.peekAt(sequenceNumber, sessionId).block(operationTimeout);
+        return asyncClient.browseAt(sequenceNumber, sessionId).block(operationTimeout);
     }
 
     /**
@@ -364,7 +364,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatch(maxMessages)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatch(maxMessages)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
@@ -389,7 +389,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatch(maxMessages, sessionId)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatch(maxMessages, sessionId)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
@@ -415,7 +415,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatchAt(maxMessages, sequenceNumber)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatchAt(maxMessages, sequenceNumber)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
@@ -443,7 +443,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatchAt(maxMessages, sequenceNumber, sessionId)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatchAt(maxMessages, sequenceNumber, sessionId)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
