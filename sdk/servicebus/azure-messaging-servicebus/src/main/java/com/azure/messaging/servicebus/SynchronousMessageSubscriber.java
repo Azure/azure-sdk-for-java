@@ -68,7 +68,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
     /**
-     *  Queue the work to be picked up by drain loop.
+     * Queue the work to be picked up by drain loop.
      * @param work
      */
     void queueWork(SynchronousReceiveWork work) {
@@ -161,8 +161,8 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
 
     /**
-     *
      * @param work on which timeout thread need to start.
+     *
      * @return
      */
     private Disposable getTimeoutOperation(SynchronousReceiveWork work) {
