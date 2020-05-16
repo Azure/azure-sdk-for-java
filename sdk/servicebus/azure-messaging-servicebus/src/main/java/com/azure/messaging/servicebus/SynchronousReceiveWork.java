@@ -4,6 +4,7 @@
 package com.azure.messaging.servicebus;
 
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.Disposable;
 import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
@@ -19,6 +20,9 @@ class SynchronousReceiveWork {
     private final int numberToReceive;
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
+
+    // Indicate state that timeout has occured.
+    public boolean workTimedOut = false;
 
     private volatile Throwable error = null;
 
@@ -67,13 +71,21 @@ class SynchronousReceiveWork {
     }
 
     /**
+     *
+     * @return remaining events to receive.
+     */
+    int getRemaining() {
+        return remaining.get();
+    }
+
+    /**
      * Gets whether or not the work item has reached a terminal state.
      *
      * @return {@code true} if all the events have been fetched, it has been cancelled, or an error occurred. {@code
      *     false} otherwise.
      */
     boolean isTerminal() {
-        return emitter.isCancelled() || remaining.get() == 0 || error != null;
+        return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut;
     }
 
     /**
@@ -100,6 +112,15 @@ class SynchronousReceiveWork {
     }
 
     /**
+     * When timeout happens, we will complete this work.
+     */
+    void timeout() {
+        logger.info("[{}]: Work timeout occurred. So completing the work.", id);
+        emitter.complete();
+        workTimedOut = true;
+    }
+
+    /**
      * Publishes an error downstream. This is a terminal step.
      *
      * @param error Error to publish downstream.
@@ -107,5 +128,13 @@ class SynchronousReceiveWork {
     void error(Throwable error) {
         this.error = error;
         emitter.error(error);
+    }
+
+    /**
+     *
+     * @return the error.
+     */
+    Throwable getError() {
+        return this.error;
     }
 }

@@ -625,7 +625,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
                            FluxSink<ServiceBusReceivedMessageContext> emitter) {
-        synchronized (lock) {
             final long id = idGenerator.getAndIncrement();
             final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
                 emitter);
@@ -647,5 +646,4 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
             }
             logger.verbose("[{}] Receive request queued up.", work.getId());
         }
-    }
 }
