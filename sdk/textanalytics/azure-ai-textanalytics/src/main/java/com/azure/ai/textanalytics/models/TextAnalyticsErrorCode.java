@@ -84,7 +84,7 @@ public final class TextAnalyticsErrorCode extends ExpandableStringEnum<TextAnaly
      * @return The corresponding TextAnalyticsErrorCode.
      */
     @JsonCreator
-    public static TextAnalyticsErrorCode fromString(String name) {
+    static TextAnalyticsErrorCode fromString(String name) {
         return fromString(name, TextAnalyticsErrorCode.class);
     }
 }
