@@ -27,9 +27,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     private final Queue<ServiceBusReceivedMessageContext> bufferMessages = new ConcurrentLinkedQueue<>();
     private final AtomicLong remaining = new AtomicLong();
 
-    // Flag to indicate more messages have arrived while we were in drain loop
-    private final AtomicBoolean moreDeliveryArrived = new AtomicBoolean();
-
     private final long requested;
     private final Object currentWorkLock = new Object();
 
@@ -63,7 +60,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     @Override
     protected void hookOnNext(ServiceBusReceivedMessageContext message) {
         bufferMessages.add(message);
-        moreDeliveryArrived.set(true);
         drain();
     }
 
@@ -106,18 +102,34 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             return;
         }
 
+        // Acquiring the lock
         synchronized (currentWorkLock) {
 
+            // Making sure current work not become terminal since last drain queue cycle
+            if (currentWork != null && currentWork.isTerminal()) {
+                workQueue.remove(currentWork);
+                if (currentTimeoutOperation != null & !currentTimeoutOperation.isDisposed()) {
+                    currentTimeoutOperation.dispose();
+                }
+                currentTimeoutOperation = null;
+            }
+
             // We should process a work when
-            // 1. it is first time getting picked up 2. or more messages have arrived while we were in drain loop.
+            // 1. it is first time getting picked up
+            // 2. or more messages have arrived while we were in drain loop.
             // We might not have all the message in bufferMessages needed for workQueue, Thus we will only remove work
             // from queue when we have delivered all the messages to currentWork.
 
-            while ((currentWork = workQueue.peek()) != null && (currentTimeoutOperation == null || moreDeliveryArrived.get())) {
+            while ((currentWork = workQueue.peek()) != null && (currentTimeoutOperation == null || bufferMessages.size() > 0 )) {
 
+                // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
                     // this work already finished by either timeout or no more messages to send, process next work.
                     workQueue.remove(currentWork);
+                    if (currentTimeoutOperation != null & !currentTimeoutOperation.isDisposed()) {
+                        currentTimeoutOperation.dispose();
+                    }
+                    currentTimeoutOperation = null;
                     continue;
                 }
 
@@ -125,9 +137,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     // timer to complete the currentWork in case of timeout trigger
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
                 }
-
-                // since we are processing bufferMessages, we can set it to false now.
-                moreDeliveryArrived.set(false);
 
                 // Send messages to currentWork from buffer
                 while (bufferMessages.size() > 0 && !currentWork.isTerminal()) {
@@ -137,7 +146,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
                 // if  we have delivered all the messages to currentWork, we will complete it.
                 if (currentWork.isTerminal()) {
-                    if (currentWork.getError() != null) {
+                    if (currentWork.getError() == null) {
                         currentWork.complete();
                     }
                     // Now remove from queue since it is complete
@@ -160,7 +169,6 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
         }
     }
-
 
     /**
      * @param work on which timeout thread need to start.

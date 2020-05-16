@@ -20,20 +20,21 @@ class SynchronousReceiveWork {
     private final Duration timeout;
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
 
-    // Indicate state that timeout has occurred.
+    // Indicate state that timeout has occurred for this work.
     public boolean workTimedOut = false;
 
     private volatile Throwable error = null;
 
     /**
      * Creates a new synchronous receive work.
-     * @param id              Identifier for the work.
+     *
+     * @param id Identifier for the work.
      * @param numberToReceive Maximum number of events to receive.
-     * @param timeout         Maximum duration to wait for {@code numberOfReceive} events.
-     * @param emitter         Sink to publish received messages to.
+     * @param timeout Maximum duration to wait for {@code numberOfReceive} events.
+     * @param emitter Sink to publish received messages to.
      */
     SynchronousReceiveWork(long id, int numberToReceive, Duration timeout,
-                           FluxSink<ServiceBusReceivedMessageContext> emitter) {
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
         this.id = id;
         this.remaining = new AtomicInteger(numberToReceive);
         this.numberToReceive = numberToReceive;
@@ -43,6 +44,7 @@ class SynchronousReceiveWork {
 
     /**
      * Gets the unique identifier for this work.
+     *
      * @return The unique identifier for this work.
      */
     long getId() {
@@ -51,6 +53,7 @@ class SynchronousReceiveWork {
 
     /**
      * Gets the maximum duration to wait for the work to complete.
+     *
      * @return The duration to wait for the work to complete.
      */
     Duration getTimeout() {
@@ -59,6 +62,7 @@ class SynchronousReceiveWork {
 
     /**
      * Gets the number of events to receive.
+     *
      * @return The number of events to receive.
      */
     int getNumberOfEvents() {
@@ -74,8 +78,9 @@ class SynchronousReceiveWork {
 
     /**
      * Gets whether or not the work item has reached a terminal state.
-     * @return {@code true} if all the events have been fetched, it has been cancelled, time-out or an error occurred.
-     * {@code false} otherwise.
+     *
+     * @return {@code true} if all the events have been fetched, it has been cancelled, or an error occurred. {@code
+     *     false} otherwise.
      */
     boolean isTerminal() {
         return emitter.isCancelled() || remaining.get() == 0 || error != null || workTimedOut;
@@ -83,6 +88,7 @@ class SynchronousReceiveWork {
 
     /**
      * Publishes the next message to a downstream subscriber.
+     *
      * @param message Event to publish downstream.
      */
     void next(ServiceBusReceivedMessageContext message) {
@@ -104,16 +110,17 @@ class SynchronousReceiveWork {
     }
 
     /**
-     * When timeout happens, we will complete this work.
+     * Completes the publisher and sets the state to timeout.
      */
     void timeout() {
-        logger.info("[{}]: Work timeout occurred. So completing the work.", id);
+        logger.info("[{}]: Work timeout occurred. Completing the work.", id);
         emitter.complete();
         workTimedOut = true;
     }
 
     /**
      * Publishes an error downstream. This is a terminal step.
+     *
      * @param error Error to publish downstream.
      */
     void error(Throwable error) {
@@ -122,6 +129,7 @@ class SynchronousReceiveWork {
     }
 
     /**
+     * Returns the error object.
      * @return the error.
      */
     Throwable getError() {
