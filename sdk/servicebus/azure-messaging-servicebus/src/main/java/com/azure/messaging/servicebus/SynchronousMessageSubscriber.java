@@ -32,6 +32,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     private Disposable currentTimeoutOperation;
     private SynchronousReceiveWork currentWork;
+    private boolean subscriberInitialized;
 
     private volatile Subscription subscription;
 
@@ -49,6 +50,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         this.subscription = subscription;
         remaining.addAndGet(requested);
         subscription.request(requested);
+        subscriberInitialized = true;
         drain();
     }
 
@@ -72,7 +74,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
             work.getTimeout());
         workQueue.add(work);
-        drain();
+
+        // Do not drain if another thread want to queue the work before we have subscriber
+        if (subscriberInitialized) {
+            drain();
+        }
     }
 
     /**
