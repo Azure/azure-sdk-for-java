@@ -69,7 +69,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     /**
      * Queue the work to be picked up by drain loop.
-     * @param work
+     * @param work to be queued.
      */
     void queueWork(SynchronousReceiveWork work) {
 
@@ -126,9 +126,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     currentTimeoutOperation = getTimeoutOperation(currentWork);
                 }
 
+                // since we are processing bufferMessages, we can set it to false now.
+                moreDeliveryArrived.set(false);
+
                 // Send messages to currentWork from buffer
                 while (bufferMessages.size() > 0 && !currentWork.isTerminal()) {
-                    moreDeliveryArrived.set(false);
                     currentWork.next(bufferMessages.poll());
                     remaining.decrementAndGet();
                 }
