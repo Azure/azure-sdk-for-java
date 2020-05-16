@@ -21,6 +21,7 @@ import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SynchronousSink;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Date;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public class TransactionManagerImpl implements TransactionManager {
             final Message message = createManagementMessage(OPERATION_RENEW_SESSION_LOCK, associatedLinkName);
 
             final Map<String, Object> body = new HashMap<>();
-            body.put(ManagementConstants.SESSION_ID, sessionId);
+            //body.put(ManagementConstants.SESSION_ID, sessionId);
 
             message.setBody(new AmqpValue(body));
 
@@ -71,13 +72,19 @@ public class TransactionManagerImpl implements TransactionManager {
         })).map(response -> {
             final Object value = ((AmqpValue) response.getBody()).getValue();
 
-            return ((Date) expirationValue).toInstant();
+            Transaction transaction = null;//new Transaction(ByteBuffer.wrap("".getBytes()));
+            return transaction;
         });
     }
 
     private Mono<Message> sendWithVerify(AmqpSendLink sendLink, Message message) {
         return sendLink.send(message)
-            .handle((Message response, SynchronousSink<Message> sink) -> {
+            .handle(Message response, SynchronousSink<Message> sink) -> {
+                Message m =  null;
+                sink.next(response);
+                //return ;
+            })
+            /*.handle((Message response, SynchronousSink<Message> sink) -> {
                 if (RequestResponseUtils.isSuccessful(response)) {
                     sink.next(response);
                     return;
@@ -93,7 +100,7 @@ public class TransactionManagerImpl implements TransactionManager {
                     statusCode, statusDescription, errorCondition);
 
                 sink.error(throwable);
-            })
+            })*/
             .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
                 sendLink.getErrorContext())));
     }
