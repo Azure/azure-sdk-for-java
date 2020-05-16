@@ -8,12 +8,10 @@ import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -151,12 +149,11 @@ class RecognizeEntityAsyncClient {
                 null,
                 new CategorizedEntityCollection(
                     new IterableStream<>(documentEntities.getEntities().stream().map(entity ->
-                        new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
+                        new CategorizedEntity(entity.getText(), entity.getCategory(),
                             entity.getSubcategory(), entity.getConfidenceScore()))
                         .collect(Collectors.toList())),
-                    new IterableStream<>(documentEntities.getWarnings().stream().map(warning ->
-                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                            warning.getMessage()))
+                    new IterableStream<>(documentEntities.getWarnings().stream()
+                        .map(warning -> new TextAnalyticsWarning(warning.getCode().toString(), warning.getMessage()))
                         .collect(Collectors.toList())))
             )));
         // Document errors

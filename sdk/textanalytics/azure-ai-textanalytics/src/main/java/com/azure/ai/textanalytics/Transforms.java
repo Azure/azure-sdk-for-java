@@ -8,12 +8,11 @@ import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
 import com.azure.ai.textanalytics.implementation.models.RequestStatistics;
 import com.azure.ai.textanalytics.implementation.models.TextAnalyticsError;
-import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
-import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
+import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,12 +78,12 @@ final class Transforms {
         TextAnalyticsError textAnalyticsError) {
         if (textAnalyticsError.getInnererror() == null) {
             return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-                TextAnalyticsErrorCode.fromString(textAnalyticsError.getCode().toString()),
+                textAnalyticsError.getCode().toString(),
                 textAnalyticsError.getMessage(),
                 textAnalyticsError.getTarget());
         }
         return new com.azure.ai.textanalytics.models.TextAnalyticsError(
-            TextAnalyticsErrorCode.fromString(textAnalyticsError.getInnererror().getCode().toString()),
+            textAnalyticsError.getInnererror().getCode().toString(),
             textAnalyticsError.getInnererror().getMessage(),
             textAnalyticsError.getInnererror().getTarget());
     }

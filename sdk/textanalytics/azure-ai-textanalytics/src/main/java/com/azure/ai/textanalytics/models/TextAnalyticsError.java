@@ -34,8 +34,8 @@ public final class TextAnalyticsError {
      * @param message The error message.
      * @param target The error target.
      */
-    public TextAnalyticsError(TextAnalyticsErrorCode code, String message, String target) {
-        this.code = code;
+    public TextAnalyticsError(String code, String message, String target) {
+        this.code = TextAnalyticsErrorCode.fromString(code);
         this.message = message;
         this.target = target;
     }

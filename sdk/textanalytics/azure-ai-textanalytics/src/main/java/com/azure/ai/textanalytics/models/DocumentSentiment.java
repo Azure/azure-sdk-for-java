@@ -26,9 +26,9 @@ public final class DocumentSentiment {
      * @param sentences An {@link IterableStream} of sentence sentiments.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning}.
      */
-    public DocumentSentiment(TextSentiment sentiment, SentimentConfidenceScores confidenceScores,
+    public DocumentSentiment(String sentiment, SentimentConfidenceScores confidenceScores,
         IterableStream<SentenceSentiment> sentences, IterableStream<TextAnalyticsWarning> warnings) {
-        this.sentiment = sentiment;
+        this.sentiment = TextSentiment.fromString(sentiment);
         this.confidenceScores = confidenceScores;
         this.sentences = sentences;
         this.warnings = warnings;

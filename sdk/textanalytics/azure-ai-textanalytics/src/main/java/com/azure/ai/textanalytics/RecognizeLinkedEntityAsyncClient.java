@@ -13,7 +13,6 @@ import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
@@ -101,8 +100,7 @@ class RecognizeLinkedEntityAsyncClient {
             return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
                 getRecognizedLinkedEntitiesResponseInPage(documents, options, context)).flux());
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
         }
     }
 
@@ -149,9 +147,8 @@ class RecognizeLinkedEntityAsyncClient {
                 null,
                 new LinkedEntityCollection(
                     mapLinkedEntity(documentLinkedEntities.getEntities()),
-                    new IterableStream<>(documentLinkedEntities.getWarnings().stream().map(warning ->
-                        new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                            warning.getMessage()))
+                    new IterableStream<>(documentLinkedEntities.getWarnings().stream()
+                        .map(warning -> new TextAnalyticsWarning(warning.getCode().toString(), warning.getMessage()))
                         .collect(Collectors.toList())))
             )));
         // Document errors
