@@ -67,6 +67,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         drain();
     }
 
+    /**
+     *  Queue the work to be picked up by drain loop.
+     * @param work
+     */
     void queueWork(SynchronousReceiveWork work) {
 
         logger.info("[{}] Pending: {}, Scheduling receive timeout task '{}'.", work.getId(), work.getNumberOfEvents(),
@@ -75,6 +79,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         drain();
     }
 
+    /**
+     * Drain the work, only one thread can be in this loop at a time.
+     */
     private void drain() {
         // If someone is already in this loop, then we are already clearing the queue.
         if (!wip.compareAndSet(0, 1)) {
@@ -91,6 +98,9 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         }
     }
 
+    /***
+     * Drain the queue using a lock on current work in progress.
+     */
     private void drainQueue() {
         if (isTerminated()) {
             return;
@@ -150,6 +160,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     }
 
 
+    /**
+     *
+     * @param work on which timeout thread need to start.
+     * @return
+     */
     private Disposable getTimeoutOperation(SynchronousReceiveWork work) {
         Duration timeout = work.getTimeout();
         return Mono.delay(timeout).thenReturn(work)
