@@ -124,7 +124,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
                 // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
-                    // this work already finished by either timeout or no more messages to send, process next work.
+                    // This work already finished by either timeout or no more messages to send, process next work.
                     workQueue.remove(currentWork);
                     if (currentTimeoutOperation != null & !currentTimeoutOperation.isDisposed()) {
                         currentTimeoutOperation.dispose();
