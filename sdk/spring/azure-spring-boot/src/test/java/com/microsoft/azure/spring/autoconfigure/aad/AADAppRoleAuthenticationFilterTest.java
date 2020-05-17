@@ -39,12 +39,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class AADAppRoleAuthenticationFilterTest {
 
-    public static final String TOKEN = "dummy-token";
+    private static final String TOKEN = "dummy-token";
 
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
@@ -81,6 +82,7 @@ public class AADAppRoleAuthenticationFilterTest {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);
+        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
 
         // Check in subsequent filter that authentication is available!
         final FilterChain filterChain = (request, response) -> {
@@ -109,6 +111,7 @@ public class AADAppRoleAuthenticationFilterTest {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(any())).thenThrow(new BadJWTException("bad token"));
+        when(userPrincipalManager.isTokenIssuedByAAD(any())).thenReturn(true);
 
         filter.doFilterInternal(request, response, mock(FilterChain.class));
     }
@@ -121,6 +124,7 @@ public class AADAppRoleAuthenticationFilterTest {
 
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + TOKEN);
         when(userPrincipalManager.buildUserPrincipal(TOKEN)).thenReturn(dummyPrincipal);
+        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
 
         // Check in subsequent filter that authentication is available and default roles are filled.
         final FilterChain filterChain = (request, response) -> {
@@ -151,6 +155,41 @@ public class AADAppRoleAuthenticationFilterTest {
         assertThat("Set should contain the two granted authority 'ROLE_user' and 'ROLE_ADMIN'", result,
             CoreMatchers.hasItems(new SimpleGrantedAuthority("ROLE_user"),
                 new SimpleGrantedAuthority("ROLE_ADMIN")));
+    }
+
+    @Test
+    public void testTokenNotIssuedByAAD() throws ServletException, IOException {
+        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(false);
+
+        final FilterChain filterChain = (request, response) -> {
+            final SecurityContext context = SecurityContextHolder.getContext();
+            assertNotNull(context);
+            final Authentication authentication = context.getAuthentication();
+            assertNull(authentication);
+        };
+
+        filter.doFilterInternal(request, response, filterChain);
+    }
+
+    @Test
+    public void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
+        BadJOSEException {
+        final Authentication authentication = mock(Authentication.class);
+        when(authentication.isAuthenticated()).thenReturn(true);
+        when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(true);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        final FilterChain filterChain = (request, response) -> {
+            final SecurityContext context = SecurityContextHolder.getContext();
+            assertNotNull(context);
+            assertNotNull(context.getAuthentication());
+            SecurityContextHolder.clearContext();
+        };
+
+        filter.doFilterInternal(request, response, filterChain);
+        verify(userPrincipalManager, times(0)).buildUserPrincipal(TOKEN);
+
     }
 
 }
