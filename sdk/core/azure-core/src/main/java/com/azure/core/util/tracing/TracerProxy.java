@@ -15,13 +15,13 @@ import java.util.ServiceLoader;
  */
 public final class TracerProxy {
 
-    private static Tracer TRACER;
+    private static Tracer tracer;
 
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
         Iterator<?> iterator = serviceLoader.iterator();
         if (iterator.hasNext()) {
-            TRACER = serviceLoader.iterator().next();
+            tracer = serviceLoader.iterator().next();
         }
     }
 
@@ -42,10 +42,10 @@ public final class TracerProxy {
      * @return An updated {@link Context} object.
      */
     public static Context start(String methodName, Context context) {
-        if (TRACER == null) {
+        if (tracer == null) {
             return context;
         }
-        return TRACER.start(methodName, context);
+        return tracer.start(methodName, context);
     }
 
     /**
@@ -57,10 +57,10 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void setAttribute(String key, String value, Context context) {
-        if (TRACER == null) {
+        if (tracer == null) {
             return;
         }
-        TRACER.setAttribute(key, value, context);
+        tracer.setAttribute(key, value, context);
     }
 
     /**
@@ -71,10 +71,10 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void end(int responseCode, Throwable error, Context context) {
-        if (TRACER == null) {
+        if (tracer == null) {
             return;
         }
-        TRACER.end(responseCode, error, context);
+        tracer.end(responseCode, error, context);
     }
 
     /**
@@ -86,9 +86,9 @@ public final class TracerProxy {
      * @return An updated {@link Context} object.
      */
     public static Context setSpanName(String spanName, Context context) {
-        if (TRACER == null) {
+        if (tracer == null) {
             return context;
         }
-        return TRACER.setSpanName(spanName, context);
+        return tracer.setSpanName(spanName, context);
     }
 }
