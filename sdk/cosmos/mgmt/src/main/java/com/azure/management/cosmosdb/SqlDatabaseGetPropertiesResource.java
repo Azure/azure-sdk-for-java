@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SqlDatabaseGetPropertiesResource model. */
 @Fluent
 public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDatabaseGetPropertiesResource.class);
+
     /*
      * A system generated property that specified the addressable path of the
      * collections resource.
@@ -112,5 +116,15 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

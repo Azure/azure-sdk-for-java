@@ -17,13 +17,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ManagedDatabaseRestoreDetails. */
 public final class ManagedDatabaseRestoreDetailsInner {
+    private final ClientLogger logger = new ClientLogger(ManagedDatabaseRestoreDetailsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final ManagedDatabaseRestoreDetailsService service;
 
@@ -58,7 +61,7 @@ public final class ManagedDatabaseRestoreDetailsInner {
                 + "/managedInstances/{managedInstanceName}/databases/{databaseName}/restoreDetails"
                 + "/{restoreDetailsName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ManagedDatabaseRestoreDetailsResultInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -78,13 +81,34 @@ public final class ManagedDatabaseRestoreDetailsInner {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed database restore details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
         String resourceGroupName, String managedInstanceName, String databaseName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String restoreDetailsName = "Default";
         final String apiVersion = "2019-06-01-preview";
         return FluxUtil
@@ -110,8 +134,59 @@ public final class ManagedDatabaseRestoreDetailsInner {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return managed database restore details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<ManagedDatabaseRestoreDetailsResultInner>> getWithResponseAsync(
+        String resourceGroupName, String managedInstanceName, String databaseName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (managedInstanceName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter managedInstanceName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String restoreDetailsName = "Default";
+        final String apiVersion = "2019-06-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                managedInstanceName,
+                databaseName,
+                restoreDetailsName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets managed database restore details.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param managedInstanceName The name of the managed instance.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed database restore details.
      */
@@ -137,7 +212,7 @@ public final class ManagedDatabaseRestoreDetailsInner {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return managed database restore details.
      */

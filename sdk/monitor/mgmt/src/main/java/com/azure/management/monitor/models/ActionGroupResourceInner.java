@@ -7,6 +7,7 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.ArmRoleReceiver;
 import com.azure.management.monitor.AutomationRunbookReceiver;
 import com.azure.management.monitor.AzureAppPushReceiver;
@@ -17,6 +18,7 @@ import com.azure.management.monitor.LogicAppReceiver;
 import com.azure.management.monitor.SmsReceiver;
 import com.azure.management.monitor.VoiceReceiver;
 import com.azure.management.monitor.WebhookReceiver;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -24,6 +26,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ActionGroupResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionGroupResourceInner.class);
+
     /*
      * The short name of the action group. This will be used in SMS messages.
      */
@@ -344,5 +348,43 @@ public class ActionGroupResourceInner extends Resource {
     public ActionGroupResourceInner withArmRoleReceivers(List<ArmRoleReceiver> armRoleReceivers) {
         this.armRoleReceivers = armRoleReceivers;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (emailReceivers() != null) {
+            emailReceivers().forEach(e -> e.validate());
+        }
+        if (smsReceivers() != null) {
+            smsReceivers().forEach(e -> e.validate());
+        }
+        if (webhookReceivers() != null) {
+            webhookReceivers().forEach(e -> e.validate());
+        }
+        if (itsmReceivers() != null) {
+            itsmReceivers().forEach(e -> e.validate());
+        }
+        if (azureAppPushReceivers() != null) {
+            azureAppPushReceivers().forEach(e -> e.validate());
+        }
+        if (automationRunbookReceivers() != null) {
+            automationRunbookReceivers().forEach(e -> e.validate());
+        }
+        if (voiceReceivers() != null) {
+            voiceReceivers().forEach(e -> e.validate());
+        }
+        if (logicAppReceivers() != null) {
+            logicAppReceivers().forEach(e -> e.validate());
+        }
+        if (azureFunctionReceivers() != null) {
+            azureFunctionReceivers().forEach(e -> e.validate());
+        }
+        if (armRoleReceivers() != null) {
+            armRoleReceivers().forEach(e -> e.validate());
+        }
     }
 }

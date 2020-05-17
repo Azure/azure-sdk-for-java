@@ -5,6 +5,8 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The AbnormalTimePeriod model. */
 @Fluent
 public final class AbnormalTimePeriod {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AbnormalTimePeriod.class);
+
     /*
      * Start time of the downtime
      */
@@ -114,5 +118,19 @@ public final class AbnormalTimePeriod {
     public AbnormalTimePeriod withSolutions(List<Solution> solutions) {
         this.solutions = solutions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (events() != null) {
+            events().forEach(e -> e.validate());
+        }
+        if (solutions() != null) {
+            solutions().forEach(e -> e.validate());
+        }
     }
 }

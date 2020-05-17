@@ -31,21 +31,8 @@ import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.ai.formrecognizer.models.USReceiptItem;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.AddDatePolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RequestIdPolicy;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
@@ -59,14 +46,11 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerClientBuilder.OCP_APIM_SUBSCRIPTION_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_PROPERTIES;
@@ -253,63 +237,73 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             USReceiptItem actualReceiptItem = actualReceiptItemList.get(i);
             validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.NAME.toString()),
                 actualReceiptItem.getName(), readResults, includeTextDetails);
-            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.QUANTITY.toString()), actualReceiptItem.getQuantity(), readResults, includeTextDetails);
-            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.TOTAL_PRICE.toString()), actualReceiptItem.getTotalPrice(), readResults, includeTextDetails);
+            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.QUANTITY.toString()),
+                actualReceiptItem.getQuantity(), readResults, includeTextDetails);
+            validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.TOTAL_PRICE.toString()),
+                actualReceiptItem.getTotalPrice(), readResults, includeTextDetails);
             validateFieldValueTransforms(expectedReceiptItem.getValueObject().get(ReceiptItemType.PRICE.toString()),
                 actualReceiptItem.getPrice(), readResults, includeTextDetails);
         }
     }
 
     @Test
-    abstract void recognizeReceiptSourceUrl();
+    abstract void recognizeReceiptSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptSourceUrlTextDetails();
+    abstract void recognizeReceiptSourceUrlTextDetails(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptData();
+    abstract void recognizeReceiptData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
+    // Turn off the tests as there is service regression on the media type.
+    // Issue link: https://github.com/Azure/azure-sdk-for-java/issues/11036
+    // @Test
+    // abstract void recognizeReceiptDataTextDetails(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataTextDetails();
+    abstract void recognizeReceiptDataTextDetailsWithNullData(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataTextDetailsWithNullData();
+    abstract void recognizeReceiptDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeReceiptDataWithContentTypeAutoDetection();
+    abstract void recognizeLayoutData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutData();
+    abstract void recognizeLayoutDataWithNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutDataWithNullData();
+    abstract void recognizeLayoutDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutDataWithContentTypeAutoDetection();
+    abstract void recognizeLayoutSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutSourceUrl();
+    abstract void recognizeLayoutInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeLayoutInvalidSourceUrl();
+    abstract void recognizeCustomFormLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledData();
+    abstract void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormUnlabeledData();
+    abstract void recognizeCustomFormLabeledDataWithNullValues(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataWithNullValues();
+    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void recognizeCustomFormLabeledDataWithContentTypeAutoDetection();
+    abstract void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
-    @Test
-    abstract void recognizeCustomFormInvalidSourceUrl();
-
-    void validateUSReceiptData(USReceipt actualRecognizedReceipt,
-        boolean includeTextDetails) {
+    void validateUSReceiptData(USReceipt actualRecognizedReceipt, boolean includeTextDetails) {
         final AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = analyzeResult.getReadResults();
         DocumentResult documentResult = analyzeResult.getDocumentResults().get(0);
@@ -328,24 +322,21 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
             actualRecognizedReceipt.getMerchantPhoneNumber(), readResults, includeTextDetails);
         validateFieldValueTransforms(expectedReceiptFields.get("MerchantAddress"),
             actualRecognizedReceipt.getMerchantAddress(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("Total"),
-            actualRecognizedReceipt.getTotal(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"),
-            actualRecognizedReceipt.getSubtotal(), readResults, includeTextDetails);
-        validateFieldValueTransforms(expectedReceiptFields.get("Tax"),
-            actualRecognizedReceipt.getTax(), readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("Total"), actualRecognizedReceipt.getTotal(),
+            readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("Subtotal"), actualRecognizedReceipt.getSubtotal(),
+            readResults, includeTextDetails);
+        validateFieldValueTransforms(expectedReceiptFields.get("Tax"), actualRecognizedReceipt.getTax(), readResults,
+            includeTextDetails);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionDate"),
-            actualRecognizedReceipt.getTransactionDate(),
-            readResults, includeTextDetails);
+            actualRecognizedReceipt.getTransactionDate(), readResults, includeTextDetails);
         validateFieldValueTransforms(expectedReceiptFields.get("TransactionTime"),
-            actualRecognizedReceipt.getTransactionTime(),
-            readResults, includeTextDetails);
+            actualRecognizedReceipt.getTransactionTime(), readResults, includeTextDetails);
         validateReceiptItemsData(expectedReceiptFields.get("Items").getValueArray(),
             actualRecognizedReceipt.getReceiptItems(), readResults, includeTextDetails);
     }
 
-    void validateLayoutDataResults(IterableStream<FormPage> actualFormPages,
-        boolean includeTextDetails) {
+    void validateLayoutDataResults(IterableStream<FormPage> actualFormPages, boolean includeTextDetails) {
         AnalyzeResult analyzeResult = getAnalyzeRawResponse().getAnalyzeResult();
         final List<PageResult> pageResults = analyzeResult.getPageResults();
         final List<ReadResult> readResults = analyzeResult.getReadResults();
@@ -367,20 +358,19 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         }
     }
 
-    void validateReceiptResultData(IterableStream<RecognizedReceipt> actualResult,
-        boolean includeTextDetails) {
+    void validateReceiptResultData(IterableStream<RecognizedReceipt> actualResult, boolean includeTextDetails) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         List<RecognizedReceipt> actualReceiptList = actualResult.stream().collect(Collectors.toList());
         for (int i = 0; i < actualReceiptList.size(); i++) {
             final RecognizedReceipt actualReceipt = actualReceiptList.get(i);
             assertEquals("en-US", actualReceipt.getReceiptLocale());
-            validateLabeledData(actualReceipt.getRecognizedForm(), includeTextDetails,
-                rawResponse.getReadResults(), rawResponse.getDocumentResults().get(i));
+            validateLabeledData(actualReceipt.getRecognizedForm(), includeTextDetails, rawResponse.getReadResults(),
+                rawResponse.getDocumentResults().get(i));
         }
     }
 
-    void validateRecognizedResult(IterableStream<RecognizedForm> actualForms,
-        boolean includeTextDetails, boolean isLabeled) {
+    void validateRecognizedResult(IterableStream<RecognizedForm> actualForms, boolean includeTextDetails,
+        boolean isLabeled) {
         final AnalyzeResult rawResponse = getAnalyzeRawResponse().getAnalyzeResult();
         List<ReadResult> readResults = rawResponse.getReadResults();
         List<PageResult> pageResults = rawResponse.getPageResults();
@@ -390,11 +380,10 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         for (int i = 0; i < actualFormList.size(); i++) {
             validateLayoutDataResults(actualFormList.get(i).getPages(), includeTextDetails);
             if (isLabeled) {
-                validateLabeledData(actualFormList.get(i), includeTextDetails, readResults,
-                    documentResults.get(i));
+                validateLabeledData(actualFormList.get(i), includeTextDetails, readResults, documentResults.get(i));
             } else {
-                validateUnLabeledResult(actualFormList.get(i), includeTextDetails, readResults,
-                    pageResults.get(i), pageResults);
+                validateUnLabeledResult(actualFormList.get(i), includeTextDetails, readResults, pageResults.get(i),
+                    pageResults);
             }
         }
     }
@@ -497,53 +486,6 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         });
     }
 
-    protected <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        // TODO: #9252 AAD not supported by service
-        // TokenCredential credential = null;
-        AzureKeyCredential credential = null;
-
-        if (!interceptorManager.isPlaybackMode()) {
-            credential = new AzureKeyCredential(getApiKey());
-        }
-
-        HttpClient httpClient;
-        Configuration buildConfiguration = Configuration.getGlobalConfiguration().clone();
-
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(httpLogOptions.getApplicationId(), clientName, clientVersion,
-            buildConfiguration));
-        policies.add(new RequestIdPolicy());
-        policies.add(new AddDatePolicy());
-
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        if (credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
-        }
-
-        policies.add(new RetryPolicy());
-
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
-
-        if (interceptorManager.isPlaybackMode()) {
-            httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
-        }
-        policies.add(interceptorManager.getRecordPolicy());
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient)
-            .build();
-
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
-    }
-
     /**
      * Get the string of API key value based on the test running mode.
      *
@@ -555,8 +497,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     }
 
     protected String getEndpoint() {
-        return interceptorManager.isPlaybackMode()
-            ? "https://localhost:8080"
+        return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
             : Configuration.getGlobalConfiguration().get(AZURE_FORM_RECOGNIZER_ENDPOINT);
     }
 
@@ -609,8 +550,8 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
         final SerializerAdapter serializerAdapter = getSerializerAdapter();
         final NetworkCallRecord networkCallRecord =
             interceptorManager.getRecordedData().findFirstAndRemoveNetworkCall(record -> {
-                AnalyzeOperationResult rawModelResponse = deserializeRawResponse(serializerAdapter,
-                    record, AnalyzeOperationResult.class);
+                AnalyzeOperationResult rawModelResponse = deserializeRawResponse(serializerAdapter, record,
+                    AnalyzeOperationResult.class);
                 return rawModelResponse != null && rawModelResponse.getStatus() == OperationStatus.SUCCEEDED;
             });
         interceptorManager.getRecordedData().addNetworkCall(networkCallRecord);

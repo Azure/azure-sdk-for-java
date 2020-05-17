@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Identifier model. */
 @JsonFlatten
 @Fluent
 public class IdentifierInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentifierInner.class);
+
     /*
      * String representation of the identity.
      */
@@ -37,5 +41,15 @@ public class IdentifierInner extends ProxyOnlyResource {
     public IdentifierInner withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

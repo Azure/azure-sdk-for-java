@@ -5,11 +5,15 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteCircuitStats model. */
 @Fluent
 public final class ExpressRouteCircuitStatsInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitStatsInner.class);
+
     /*
      * Gets BytesIn of the peering.
      */
@@ -112,5 +116,13 @@ public final class ExpressRouteCircuitStatsInner {
     public ExpressRouteCircuitStatsInner withSecondarybytesOut(Long secondarybytesOut) {
         this.secondarybytesOut = secondarybytesOut;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

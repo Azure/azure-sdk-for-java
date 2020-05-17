@@ -28,7 +28,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -36,7 +36,6 @@ import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.cosmosdb.DatabaseAccountCreateUpdateParameters;
 import com.azure.management.cosmosdb.DatabaseAccountRegenerateKeyParameters;
 import com.azure.management.cosmosdb.DatabaseAccountUpdateParameters;
-import com.azure.management.cosmosdb.ErrorResponseException;
 import com.azure.management.cosmosdb.FailoverPolicies;
 import com.azure.management.cosmosdb.FailoverPolicy;
 import com.azure.management.cosmosdb.KeyKind;
@@ -44,11 +43,10 @@ import com.azure.management.cosmosdb.RegionForOnlineOffline;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
 import java.nio.ByteBuffer;
 import java.util.List;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DatabaseAccounts. */
 public final class DatabaseAccountsInner
@@ -86,7 +84,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountGetResultsInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -100,7 +98,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> update(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -115,7 +113,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -130,7 +128,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -144,7 +142,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/failoverPriorityChange")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> failoverPriorityChange(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -157,7 +155,7 @@ public final class DatabaseAccountsInner
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/databaseAccounts")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountsListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -169,7 +167,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountsListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -182,7 +180,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/listKeys")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountListKeysResultInner>> listKeys(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -196,7 +194,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/listConnectionStrings")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountListConnectionStringsResultInner>> listConnectionStrings(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -210,7 +208,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/offlineRegion")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> offlineRegion(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -225,7 +223,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/onlineRegion")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> onlineRegion(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -240,7 +238,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/readonlykeys")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountListReadOnlyKeysResultInner>> getReadOnlyKeys(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -254,7 +252,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/readonlykeys")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountListReadOnlyKeysResultInner>> listReadOnlyKeys(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -268,7 +266,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/regenerateKey")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> regenerateKey(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -281,7 +279,7 @@ public final class DatabaseAccountsInner
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head("/providers/Microsoft.DocumentDB/databaseAccountNames/{accountName}")
         @ExpectedResponses({200, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkNameExists(
             @HostParam("$host") String host,
             @PathParam("accountName") String accountName,
@@ -293,7 +291,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/metrics")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<MetricListResultInner>> listMetrics(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -308,7 +306,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/usages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UsagesResultInner>> listUsages(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -323,7 +321,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/metricDefinitions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<MetricDefinitionsListResultInner>> listMetricDefinitions(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -337,7 +335,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountGetResultsInner>> beginUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -352,7 +350,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DatabaseAccountGetResultsInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -367,7 +365,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -381,7 +379,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/failoverPriorityChange")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginFailoverPriorityChange(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -396,7 +394,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/offlineRegion")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginOfflineRegion(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -411,7 +409,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/onlineRegion")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginOnlineRegion(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -426,7 +424,7 @@ public final class DatabaseAccountsInner
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
                 + "/databaseAccounts/{accountName}/regenerateKey")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginRegenerateKey(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -443,13 +441,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountGetResultsInner>> getByResourceGroupWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -470,8 +485,50 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountGetResultsInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .getByResourceGroup(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -494,7 +551,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -510,13 +567,36 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
         String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (updateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter updateParameters is required and cannot be null."));
+        } else {
+            updateParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -540,7 +620,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -567,7 +647,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -585,13 +665,37 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (createUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter createUpdateParameters is required and cannot be null."));
+        } else {
+            createUpdateParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -616,7 +720,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -644,7 +748,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -660,13 +764,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -688,7 +809,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -708,7 +829,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -725,13 +846,36 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> failoverPriorityChangeWithResponseAsync(
         String resourceGroupName, String accountName, List<FailoverPolicy> failoverPolicies) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (failoverPolicies == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter failoverPolicies is required and cannot be null."));
+        } else {
+            failoverPolicies.forEach(e -> e.validate());
+        }
         final String apiVersion = "2019-08-01";
         FailoverPolicies failoverParameters = new FailoverPolicies();
         failoverParameters.withFailoverPolicies(failoverPolicies);
@@ -759,7 +903,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -784,7 +928,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -796,12 +940,22 @@ public final class DatabaseAccountsInner
     /**
      * Lists all the Azure Cosmos DB database accounts available under the subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the database accounts and their properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatabaseAccountGetResultsInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -816,7 +970,37 @@ public final class DatabaseAccountsInner
     /**
      * Lists all the Azure Cosmos DB database accounts available under the subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the database accounts and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DatabaseAccountGetResultsInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists all the Azure Cosmos DB database accounts available under the subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the database accounts and their properties.
      */
@@ -828,7 +1012,21 @@ public final class DatabaseAccountsInner
     /**
      * Lists all the Azure Cosmos DB database accounts available under the subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the database accounts and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatabaseAccountGetResultsInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context));
+    }
+
+    /**
+     * Lists all the Azure Cosmos DB database accounts available under the subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the database accounts and their properties.
      */
@@ -842,13 +1040,27 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the database accounts and their properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<DatabaseAccountGetResultsInner>> listByResourceGroupSinglePageAsync(
         String resourceGroupName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -871,8 +1083,45 @@ public final class DatabaseAccountsInner
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
      * @param resourceGroupName Name of an Azure resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the database accounts and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DatabaseAccountGetResultsInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listByResourceGroup(
+                this.client.getHost(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists all the Azure Cosmos DB database accounts available under the given resource group.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the database accounts and their properties.
      */
@@ -885,8 +1134,24 @@ public final class DatabaseAccountsInner
      * Lists all the Azure Cosmos DB database accounts available under the given resource group.
      *
      * @param resourceGroupName Name of an Azure resource group.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List operation response, that contains the database accounts and their properties.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DatabaseAccountGetResultsInner> listByResourceGroupAsync(
+        String resourceGroupName, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context));
+    }
+
+    /**
+     * Lists all the Azure Cosmos DB database accounts available under the given resource group.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the database accounts and their properties.
      */
@@ -901,13 +1166,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys for the given database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountListKeysResultInner>> listKeysWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -928,8 +1210,50 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountListKeysResultInner>> listKeysWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listKeys(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Lists the access keys for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys for the given database account.
      */
@@ -952,7 +1276,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the access keys for the given database account.
      */
@@ -967,13 +1291,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connection strings for the given database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountListConnectionStringsResultInner>> listConnectionStringsWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -994,8 +1335,50 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connection strings for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountListConnectionStringsResultInner>> listConnectionStringsWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listConnectionStrings(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Lists the connection strings for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connection strings for the given database account.
      */
@@ -1019,7 +1402,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the connection strings for the given database account.
      */
@@ -1036,13 +1419,33 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> offlineRegionWithResponseAsync(
         String resourceGroupName, String accountName, String region) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         RegionForOnlineOffline regionParameterForOffline = new RegionForOnlineOffline();
         regionParameterForOffline.withRegion(region);
@@ -1068,7 +1471,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1090,7 +1493,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1105,13 +1508,33 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> onlineRegionWithResponseAsync(
         String resourceGroupName, String accountName, String region) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         RegionForOnlineOffline regionParameterForOnline = new RegionForOnlineOffline();
         regionParameterForOnline.withRegion(region);
@@ -1137,7 +1560,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1159,7 +1582,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1173,13 +1596,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the read-only access keys for the given database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountListReadOnlyKeysResultInner>> getReadOnlyKeysWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1200,8 +1640,50 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the read-only access keys for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountListReadOnlyKeysResultInner>> getReadOnlyKeysWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .getReadOnlyKeys(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Lists the read-only access keys for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the read-only access keys for the given database account.
      */
@@ -1225,7 +1707,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the read-only access keys for the given database account.
      */
@@ -1240,13 +1722,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the read-only access keys for the given database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountListReadOnlyKeysResultInner>> listReadOnlyKeysWithResponseAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1267,8 +1766,50 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the read-only access keys for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountListReadOnlyKeysResultInner>> listReadOnlyKeysWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listReadOnlyKeys(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Lists the read-only access keys for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the read-only access keys for the given database account.
      */
@@ -1292,7 +1833,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the read-only access keys for the given database account.
      */
@@ -1308,13 +1849,33 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, KeyKind keyKind) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyKind == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyKind is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         DatabaseAccountRegenerateKeyParameters keyToRegenerate = new DatabaseAccountRegenerateKeyParameters();
         keyToRegenerate.withKeyKind(keyKind);
@@ -1340,7 +1901,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1362,7 +1923,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1376,12 +1937,19 @@ public final class DatabaseAccountsInner
      *
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Boolean>> checkNameExistsWithResponseAsync(String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(context -> service.checkNameExists(this.client.getHost(), accountName, apiVersion, context))
@@ -1393,8 +1961,32 @@ public final class DatabaseAccountsInner
      * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
      *
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<Boolean>> checkNameExistsWithResponseAsync(String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service.checkNameExists(this.client.getHost(), accountName, apiVersion, context);
+    }
+
+    /**
+     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+     *
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1417,7 +2009,7 @@ public final class DatabaseAccountsInner
      *
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1440,13 +2032,33 @@ public final class DatabaseAccountsInner
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list metrics request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
         String resourceGroupName, String accountName, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (filter == null) {
+            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1475,8 +2087,61 @@ public final class DatabaseAccountsInner
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list metrics request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<MetricInner>> listMetricsSinglePageAsync(
+        String resourceGroupName, String accountName, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (filter == null) {
+            return Mono.error(new IllegalArgumentException("Parameter filter is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listMetrics(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                filter,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Retrieves the metrics determined by the given filter for the given database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list metrics request.
      */
@@ -1493,8 +2158,28 @@ public final class DatabaseAccountsInner
      * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
      *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
      *     timeGrain. The supported operator is eq.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list metrics request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricInner> listMetricsAsync(
+        String resourceGroupName, String accountName, String filter, Context context) {
+        return new PagedFlux<>(() -> listMetricsSinglePageAsync(resourceGroupName, accountName, filter, context));
+    }
+
+    /**
+     * Retrieves the metrics determined by the given filter for the given database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param filter An OData filter expression that describes a subset of metrics to return. The parameters that can be
+     *     filtered are name.value (name of the metric, can have an or of multiple names), startTime, endTime, and
+     *     timeGrain. The supported operator is eq.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list metrics request.
      */
@@ -1511,13 +2196,30 @@ public final class DatabaseAccountsInner
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list usage request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listUsagesSinglePageAsync(
         String resourceGroupName, String accountName, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1545,8 +2247,57 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list usage request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<UsageInner>> listUsagesSinglePageAsync(
+        String resourceGroupName, String accountName, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listUsages(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                filter,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Retrieves the usages (most recent data) for the given database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list usage request.
      */
@@ -1560,8 +2311,27 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
+     *     name.value (name of the metric, can have an or of multiple names).
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list usage request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<UsageInner> listUsagesAsync(
+        String resourceGroupName, String accountName, String filter, Context context) {
+        return new PagedFlux<>(() -> listUsagesSinglePageAsync(resourceGroupName, accountName, filter, context));
+    }
+
+    /**
+     * Retrieves the usages (most recent data) for the given database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list usage request.
      */
@@ -1580,7 +2350,7 @@ public final class DatabaseAccountsInner
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
      *     name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list usage request.
      */
@@ -1595,7 +2365,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list usage request.
      */
@@ -1612,13 +2382,30 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list metric definitions request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
         String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1643,8 +2430,54 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list metric definitions request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<MetricDefinitionInner>> listMetricDefinitionsSinglePageAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .listMetricDefinitions(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Retrieves metric definitions for the given database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list metric definitions request.
      */
@@ -1658,8 +2491,25 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a list metric definitions request.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
+        String resourceGroupName, String accountName, Context context) {
+        return new PagedFlux<>(() -> listMetricDefinitionsSinglePageAsync(resourceGroupName, accountName, context));
+    }
+
+    /**
+     * Retrieves metric definitions for the given database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a list metric definitions request.
      */
@@ -1675,13 +2525,36 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountGetResultsInner>> beginUpdateWithResponseAsync(
         String resourceGroupName, String accountName, DatabaseAccountUpdateParameters updateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (updateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter updateParameters is required and cannot be null."));
+        } else {
+            updateParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1704,8 +2577,61 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountGetResultsInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountUpdateParameters updateParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (updateParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter updateParameters is required and cannot be null."));
+        } else {
+            updateParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                updateParameters,
+                context);
+    }
+
+    /**
+     * Updates the properties of an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -1730,7 +2656,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param updateParameters Parameters for patching Azure Cosmos DB database account properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -1748,13 +2674,37 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DatabaseAccountGetResultsInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String accountName, DatabaseAccountCreateUpdateParameters createUpdateParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (createUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter createUpdateParameters is required and cannot be null."));
+        } else {
+            createUpdateParameters.validate();
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1778,8 +2728,63 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DatabaseAccountGetResultsInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        DatabaseAccountCreateUpdateParameters createUpdateParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (createUpdateParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter createUpdateParameters is required and cannot be null."));
+        } else {
+            createUpdateParameters.validate();
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                createUpdateParameters,
+                context);
+    }
+
+    /**
+     * Creates or updates an Azure Cosmos DB database account. The "Update" method is preferred when performing updates
+     * on an account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -1805,7 +2810,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param createUpdateParameters Parameters to create and update Cosmos DB database accounts.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Cosmos DB database account.
      */
@@ -1821,12 +2826,29 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String accountName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         return FluxUtil
             .withContext(
@@ -1847,8 +2869,50 @@ public final class DatabaseAccountsInner
      *
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String accountName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1864,7 +2928,7 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1881,13 +2945,36 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginFailoverPriorityChangeWithResponseAsync(
         String resourceGroupName, String accountName, List<FailoverPolicy> failoverPolicies) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (failoverPolicies == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter failoverPolicies is required and cannot be null."));
+        } else {
+            failoverPolicies.forEach(e -> e.validate());
+        }
         final String apiVersion = "2019-08-01";
         FailoverPolicies failoverParameters = new FailoverPolicies();
         failoverParameters.withFailoverPolicies(failoverPolicies);
@@ -1914,8 +3001,62 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginFailoverPriorityChangeWithResponseAsync(
+        String resourceGroupName, String accountName, List<FailoverPolicy> failoverPolicies, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (failoverPolicies == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter failoverPolicies is required and cannot be null."));
+        } else {
+            failoverPolicies.forEach(e -> e.validate());
+        }
+        final String apiVersion = "2019-08-01";
+        FailoverPolicies failoverParameters = new FailoverPolicies();
+        failoverParameters.withFailoverPolicies(failoverPolicies);
+        return service
+            .beginFailoverPriorityChange(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                failoverParameters,
+                context);
+    }
+
+    /**
+     * Changes the failover priority for the Azure Cosmos DB database account. A failover priority of 0 indicates a
+     * write region. The maximum value for a failover priority = (total number of regions - 1). Failover priority values
+     * must be unique for each of the regions in which the database account exists.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param failoverPolicies List of failover policies.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1935,7 +3076,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param failoverPolicies List of failover policies.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1951,13 +3092,33 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginOfflineRegionWithResponseAsync(
         String resourceGroupName, String accountName, String region) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         RegionForOnlineOffline regionParameterForOffline = new RegionForOnlineOffline();
         regionParameterForOffline.withRegion(region);
@@ -1982,8 +3143,57 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginOfflineRegionWithResponseAsync(
+        String resourceGroupName, String accountName, String region, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        RegionForOnlineOffline regionParameterForOffline = new RegionForOnlineOffline();
+        regionParameterForOffline.withRegion(region);
+        return service
+            .beginOfflineRegion(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                regionParameterForOffline,
+                context);
+    }
+
+    /**
+     * Offline the specified region for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param region Cosmos DB region, with spaces between words and each word capitalized.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2000,7 +3210,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2015,13 +3225,33 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginOnlineRegionWithResponseAsync(
         String resourceGroupName, String accountName, String region) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         RegionForOnlineOffline regionParameterForOnline = new RegionForOnlineOffline();
         regionParameterForOnline.withRegion(region);
@@ -2046,8 +3276,57 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginOnlineRegionWithResponseAsync(
+        String resourceGroupName, String accountName, String region, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (region == null) {
+            return Mono.error(new IllegalArgumentException("Parameter region is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        RegionForOnlineOffline regionParameterForOnline = new RegionForOnlineOffline();
+        regionParameterForOnline.withRegion(region);
+        return service
+            .beginOnlineRegion(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                regionParameterForOnline,
+                context);
+    }
+
+    /**
+     * Online the specified region for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param region Cosmos DB region, with spaces between words and each word capitalized.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2064,7 +3343,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param region Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2079,13 +3358,33 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginRegenerateKeyWithResponseAsync(
         String resourceGroupName, String accountName, KeyKind keyKind) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyKind == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyKind is required and cannot be null."));
+        }
         final String apiVersion = "2019-08-01";
         DatabaseAccountRegenerateKeyParameters keyToRegenerate = new DatabaseAccountRegenerateKeyParameters();
         keyToRegenerate.withKeyKind(keyKind);
@@ -2110,8 +3409,57 @@ public final class DatabaseAccountsInner
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginRegenerateKeyWithResponseAsync(
+        String resourceGroupName, String accountName, KeyKind keyKind, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (keyKind == null) {
+            return Mono.error(new IllegalArgumentException("Parameter keyKind is required and cannot be null."));
+        }
+        final String apiVersion = "2019-08-01";
+        DatabaseAccountRegenerateKeyParameters keyToRegenerate = new DatabaseAccountRegenerateKeyParameters();
+        keyToRegenerate.withKeyKind(keyKind);
+        return service
+            .beginRegenerateKey(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                apiVersion,
+                keyToRegenerate,
+                context);
+    }
+
+    /**
+     * Regenerates an access key for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Cosmos DB database account name.
+     * @param keyKind The access key to regenerate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2128,7 +3476,7 @@ public final class DatabaseAccountsInner
      * @param accountName Cosmos DB database account name.
      * @param keyKind The access key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

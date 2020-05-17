@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SnapshotRecoverySource model. */
 @Fluent
 public final class SnapshotRecoverySource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotRecoverySource.class);
+
     /*
      * Geographical location of the source web app, e.g. SouthEastAsia,
      * SouthCentralUS
@@ -25,7 +29,6 @@ public final class SnapshotRecoverySource {
      * for other slots.
      */
     @JsonProperty(value = "id")
-
     private String id;
 
     /**
@@ -74,5 +77,13 @@ public final class SnapshotRecoverySource {
     public SnapshotRecoverySource withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

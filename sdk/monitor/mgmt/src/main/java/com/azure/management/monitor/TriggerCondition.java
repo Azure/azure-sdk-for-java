@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TriggerCondition model. */
 @Fluent
 public final class TriggerCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerCondition.class);
+
     /*
      * Evaluation operation for rule - 'GreaterThan' or 'LessThan.
      */
@@ -86,5 +90,22 @@ public final class TriggerCondition {
     public TriggerCondition withMetricTrigger(LogMetricTrigger metricTrigger) {
         this.metricTrigger = metricTrigger;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (thresholdOperator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property thresholdOperator in model TriggerCondition"));
+        }
+        if (metricTrigger() != null) {
+            metricTrigger().validate();
+        }
     }
 }

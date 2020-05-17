@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DedicatedHostAllocatableVM model. */
 @Fluent
 public final class DedicatedHostAllocatableVM {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostAllocatableVM.class);
+
     /*
      * VM size in terms of which the unutilized capacity is represented.
      */
@@ -63,5 +67,13 @@ public final class DedicatedHostAllocatableVM {
     public DedicatedHostAllocatableVM withCount(Double count) {
         this.count = count;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

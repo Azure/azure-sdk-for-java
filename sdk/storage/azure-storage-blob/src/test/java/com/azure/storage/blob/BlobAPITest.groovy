@@ -8,6 +8,7 @@ import com.azure.core.http.RequestConditions
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobErrorCode
@@ -91,7 +92,7 @@ class BlobAPITest extends APISpec {
 
         when:
         // Uses blob output stream under the hood.
-        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null)
+        bc.uploadWithResponse(input, 20 * Constants.MB, pto, null, null, null, null, null, null)
 
         then:
         notThrown(BlobStorageException)

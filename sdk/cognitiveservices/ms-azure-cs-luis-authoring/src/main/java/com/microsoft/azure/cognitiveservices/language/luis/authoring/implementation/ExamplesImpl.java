@@ -84,11 +84,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -99,11 +99,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -113,11 +113,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LabelExampleResponse object
      */
@@ -131,11 +131,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LabelExampleResponse object
      */
@@ -176,11 +176,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
+     * @param exampleLabelObjectArray Array of example utterances.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -191,11 +191,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
+     * @param exampleLabelObjectArray Array of example utterances.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -205,11 +205,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
+     * @param exampleLabelObjectArray Array of example utterances.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
@@ -223,11 +223,11 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
+     * @param exampleLabelObjectArray Array of example utterances.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
@@ -270,7 +270,7 @@ public class ExamplesImpl implements Examples {
 
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -285,7 +285,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -299,7 +299,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -317,7 +317,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -342,7 +342,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -447,7 +447,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -462,7 +462,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -476,7 +476,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -494,7 +494,7 @@ public class ExamplesImpl implements Examples {
     }
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.

@@ -6,14 +6,18 @@ package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.management.cosmosdb.ARMProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.cosmosdb.ArmProxyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PrivateLinkResource model. */
 @JsonFlatten
 @Immutable
-public class PrivateLinkResourceInner extends ARMProxyResource {
+public class PrivateLinkResourceInner extends ArmProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
+
     /*
      * The private link resource group id.
      */
@@ -25,6 +29,12 @@ public class PrivateLinkResourceInner extends ARMProxyResource {
      */
     @JsonProperty(value = "properties.requiredMembers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredMembers;
+
+    /*
+     * The private link resource required zone names.
+     */
+    @JsonProperty(value = "properties.requiredZoneNames", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> requiredZoneNames;
 
     /**
      * Get the groupId property: The private link resource group id.
@@ -42,5 +52,24 @@ public class PrivateLinkResourceInner extends ARMProxyResource {
      */
     public List<String> requiredMembers() {
         return this.requiredMembers;
+    }
+
+    /**
+     * Get the requiredZoneNames property: The private link resource required zone names.
+     *
+     * @return the requiredZoneNames value.
+     */
+    public List<String> requiredZoneNames() {
+        return this.requiredZoneNames;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

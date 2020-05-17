@@ -5,6 +5,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 /** The MetricAlertStatusProperties model. */
 @Fluent
 public final class MetricAlertStatusProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatusProperties.class);
+
     /*
      * An object describing the type of the dimensions.
      */
@@ -88,5 +92,13 @@ public final class MetricAlertStatusProperties {
     public MetricAlertStatusProperties withTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

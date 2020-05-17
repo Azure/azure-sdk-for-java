@@ -7,6 +7,8 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualNetworkTapInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkTapInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -46,14 +50,14 @@ public class VirtualNetworkTapInner extends Resource {
      * receive the tap.
      */
     @JsonProperty(value = "properties.destinationNetworkInterfaceIPConfiguration")
-    private NetworkInterfaceIPConfigurationInner destinationNetworkInterfaceIPConfiguration;
+    private NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration;
 
     /*
      * The reference to the private IP address on the internal Load Balancer
      * that will receive the tap.
      */
     @JsonProperty(value = "properties.destinationLoadBalancerFrontEndIPConfiguration")
-    private FrontendIPConfigurationInner destinationLoadBalancerFrontEndIPConfiguration;
+    private FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration;
 
     /*
      * The VXLAN destination port that will receive the tapped traffic.
@@ -117,49 +121,49 @@ public class VirtualNetworkTapInner extends Resource {
     }
 
     /**
-     * Get the destinationNetworkInterfaceIPConfiguration property: The reference to the private IP Address of the
+     * Get the destinationNetworkInterfaceIpConfiguration property: The reference to the private IP Address of the
      * collector nic that will receive the tap.
      *
-     * @return the destinationNetworkInterfaceIPConfiguration value.
+     * @return the destinationNetworkInterfaceIpConfiguration value.
      */
-    public NetworkInterfaceIPConfigurationInner destinationNetworkInterfaceIPConfiguration() {
-        return this.destinationNetworkInterfaceIPConfiguration;
+    public NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration() {
+        return this.destinationNetworkInterfaceIpConfiguration;
     }
 
     /**
-     * Set the destinationNetworkInterfaceIPConfiguration property: The reference to the private IP Address of the
+     * Set the destinationNetworkInterfaceIpConfiguration property: The reference to the private IP Address of the
      * collector nic that will receive the tap.
      *
-     * @param destinationNetworkInterfaceIPConfiguration the destinationNetworkInterfaceIPConfiguration value to set.
+     * @param destinationNetworkInterfaceIpConfiguration the destinationNetworkInterfaceIpConfiguration value to set.
      * @return the VirtualNetworkTapInner object itself.
      */
-    public VirtualNetworkTapInner withDestinationNetworkInterfaceIPConfiguration(
-        NetworkInterfaceIPConfigurationInner destinationNetworkInterfaceIPConfiguration) {
-        this.destinationNetworkInterfaceIPConfiguration = destinationNetworkInterfaceIPConfiguration;
+    public VirtualNetworkTapInner withDestinationNetworkInterfaceIpConfiguration(
+        NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration) {
+        this.destinationNetworkInterfaceIpConfiguration = destinationNetworkInterfaceIpConfiguration;
         return this;
     }
 
     /**
-     * Get the destinationLoadBalancerFrontEndIPConfiguration property: The reference to the private IP address on the
+     * Get the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
      *
-     * @return the destinationLoadBalancerFrontEndIPConfiguration value.
+     * @return the destinationLoadBalancerFrontEndIpConfiguration value.
      */
-    public FrontendIPConfigurationInner destinationLoadBalancerFrontEndIPConfiguration() {
-        return this.destinationLoadBalancerFrontEndIPConfiguration;
+    public FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration() {
+        return this.destinationLoadBalancerFrontEndIpConfiguration;
     }
 
     /**
-     * Set the destinationLoadBalancerFrontEndIPConfiguration property: The reference to the private IP address on the
+     * Set the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
      *
-     * @param destinationLoadBalancerFrontEndIPConfiguration the destinationLoadBalancerFrontEndIPConfiguration value to
+     * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value to
      *     set.
      * @return the VirtualNetworkTapInner object itself.
      */
-    public VirtualNetworkTapInner withDestinationLoadBalancerFrontEndIPConfiguration(
-        FrontendIPConfigurationInner destinationLoadBalancerFrontEndIPConfiguration) {
-        this.destinationLoadBalancerFrontEndIPConfiguration = destinationLoadBalancerFrontEndIPConfiguration;
+    public VirtualNetworkTapInner withDestinationLoadBalancerFrontEndIpConfiguration(
+        FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration) {
+        this.destinationLoadBalancerFrontEndIpConfiguration = destinationLoadBalancerFrontEndIpConfiguration;
         return this;
     }
 
@@ -201,5 +205,22 @@ public class VirtualNetworkTapInner extends Resource {
     public VirtualNetworkTapInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkInterfaceTapConfigurations() != null) {
+            networkInterfaceTapConfigurations().forEach(e -> e.validate());
+        }
+        if (destinationNetworkInterfaceIpConfiguration() != null) {
+            destinationNetworkInterfaceIpConfiguration().validate();
+        }
+        if (destinationLoadBalancerFrontEndIpConfiguration() != null) {
+            destinationLoadBalancerFrontEndIpConfiguration().validate();
+        }
     }
 }

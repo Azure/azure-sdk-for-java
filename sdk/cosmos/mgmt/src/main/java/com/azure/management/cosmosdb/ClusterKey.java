@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ClusterKey model. */
 @Fluent
 public final class ClusterKey {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterKey.class);
+
     /*
      * Name of the Cosmos DB Cassandra table cluster key
      */
@@ -61,5 +65,13 @@ public final class ClusterKey {
     public ClusterKey withOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

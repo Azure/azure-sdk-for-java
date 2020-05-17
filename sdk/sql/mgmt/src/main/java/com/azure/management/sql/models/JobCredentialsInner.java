@@ -25,13 +25,16 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobCredentials. */
 public final class JobCredentialsInner {
+    private final ClientLogger logger = new ClientLogger(JobCredentialsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final JobCredentialsService service;
 
@@ -61,7 +64,7 @@ public final class JobCredentialsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/credentials")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobCredentialListResultInner>> listByAgent(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -76,7 +79,7 @@ public final class JobCredentialsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobCredentialInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -92,7 +95,7 @@ public final class JobCredentialsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobCredentialInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -109,7 +112,7 @@ public final class JobCredentialsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/servers/{serverName}/jobAgents/{jobAgentName}/credentials/{credentialName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -123,7 +126,7 @@ public final class JobCredentialsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<JobCredentialListResultInner>> listByAgentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -136,13 +139,33 @@ public final class JobCredentialsInner {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of jobs credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<JobCredentialInner>> listByAgentSinglePageAsync(
         String resourceGroupName, String serverName, String jobAgentName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -175,8 +198,65 @@ public final class JobCredentialsInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of jobs credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<JobCredentialInner>> listByAgentSinglePageAsync(
+        String resourceGroupName, String serverName, String jobAgentName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .listByAgent(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets a list of jobs credentials.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of jobs credentials.
      */
@@ -195,8 +275,29 @@ public final class JobCredentialsInner {
      *     from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of jobs credentials.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<JobCredentialInner> listByAgentAsync(
+        String resourceGroupName, String serverName, String jobAgentName, Context context) {
+        return new PagedFlux<>(
+            () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName, context),
+            nextLink -> listByAgentNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets a list of jobs credentials.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of jobs credentials.
      */
@@ -215,13 +316,36 @@ public final class JobCredentialsInner {
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a jobs credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<JobCredentialInner>> getWithResponseAsync(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (credentialName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -247,8 +371,61 @@ public final class JobCredentialsInner {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a jobs credential.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<JobCredentialInner>> getWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (credentialName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                credentialName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Gets a jobs credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a jobs credential.
      */
@@ -275,7 +452,7 @@ public final class JobCredentialsInner {
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a jobs credential.
      */
@@ -295,7 +472,7 @@ public final class JobCredentialsInner {
      * @param credentialName The name of the credential.
      * @param parameters A stored credential that can be used by a job to connect to target databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a stored credential that can be used by a job to connect to target databases.
      */
@@ -306,6 +483,34 @@ public final class JobCredentialsInner {
         String jobAgentName,
         String credentialName,
         JobCredentialInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (credentialName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -333,8 +538,73 @@ public final class JobCredentialsInner {
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
      * @param parameters A stored credential that can be used by a job to connect to target databases.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a stored credential that can be used by a job to connect to target databases.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<JobCredentialInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String credentialName,
+        JobCredentialInner parameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (credentialName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .createOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                credentialName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                parameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a job credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @param parameters A stored credential that can be used by a job to connect to target databases.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a stored credential that can be used by a job to connect to target databases.
      */
@@ -366,7 +636,7 @@ public final class JobCredentialsInner {
      * @param credentialName The name of the credential.
      * @param parameters A stored credential that can be used by a job to connect to target databases.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a stored credential that can be used by a job to connect to target databases.
      */
@@ -389,13 +659,36 @@ public final class JobCredentialsInner {
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
         String resourceGroupName, String serverName, String jobAgentName, String credentialName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (credentialName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2017-03-01-preview";
         return FluxUtil
             .withContext(
@@ -421,8 +714,61 @@ public final class JobCredentialsInner {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String serverName, String jobAgentName, String credentialName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serverName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serverName is required and cannot be null."));
+        }
+        if (jobAgentName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
+        }
+        if (credentialName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter credentialName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2017-03-01-preview";
+        return service
+            .delete(
+                this.client.getHost(),
+                resourceGroupName,
+                serverName,
+                jobAgentName,
+                credentialName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Deletes a job credential.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param credentialName The name of the credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -442,7 +788,7 @@ public final class JobCredentialsInner {
      * @param jobAgentName The name of the job agent.
      * @param credentialName The name of the credential.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -455,12 +801,15 @@ public final class JobCredentialsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of job credentials.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByAgentNext(nextLink, context))
             .<PagedResponse<JobCredentialInner>>map(
@@ -473,5 +822,33 @@ public final class JobCredentialsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of job credentials.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<JobCredentialInner>> listByAgentNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByAgentNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

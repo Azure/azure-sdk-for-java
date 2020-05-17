@@ -8,8 +8,10 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.InstanceViewStatus;
 import com.azure.management.compute.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AvailabilitySetInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetInner.class);
+
     /*
      * Sku of the availability set, only name is required to be set. See
      * AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
@@ -171,5 +175,19 @@ public class AvailabilitySetInner extends Resource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

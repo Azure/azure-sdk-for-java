@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.ConsentType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OAuth2PermissionGrant model. */
 @Fluent
 public final class OAuth2PermissionGrantInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantInner.class);
+
     /*
      * Microsoft.DirectoryServices.OAuth2PermissionGrant
      */
@@ -256,5 +260,13 @@ public final class OAuth2PermissionGrantInner {
     public OAuth2PermissionGrantInner withExpiryTime(String expiryTime) {
         this.expiryTime = expiryTime;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

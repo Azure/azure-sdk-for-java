@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ConnectivityDestination model. */
 @Fluent
 public final class ConnectivityDestination {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityDestination.class);
+
     /*
      * The ID of the resource to which a connection attempt will be made.
      */
@@ -87,5 +91,13 @@ public final class ConnectivityDestination {
     public ConnectivityDestination withPort(Integer port) {
         this.port = port;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

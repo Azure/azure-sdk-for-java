@@ -7,16 +7,20 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.ApiError;
 import com.azure.management.compute.RollingUpgradePolicy;
 import com.azure.management.compute.RollingUpgradeProgressInfo;
 import com.azure.management.compute.RollingUpgradeRunningStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RollingUpgradeStatusInfo model. */
 @JsonFlatten
 @Immutable
 public class RollingUpgradeStatusInfoInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RollingUpgradeStatusInfoInner.class);
+
     /*
      * The rolling upgrade policies applied for this upgrade.
      */
@@ -76,5 +80,25 @@ public class RollingUpgradeStatusInfoInner extends Resource {
      */
     public ApiError error() {
         return this.error;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (policy() != null) {
+            policy().validate();
+        }
+        if (runningStatus() != null) {
+            runningStatus().validate();
+        }
+        if (progress() != null) {
+            progress().validate();
+        }
+        if (error() != null) {
+            error().validate();
+        }
     }
 }

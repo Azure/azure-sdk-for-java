@@ -4,7 +4,6 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.ConnectionMode;
-import com.azure.cosmos.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.benchmark.Configuration.Operation.OperationTypeConverter;
 import com.beust.jcommander.IStringConverter;
@@ -25,6 +24,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.Duration;
@@ -123,6 +123,9 @@ class Configuration {
 
     @Parameter(names = "-printingInterval", description = "Interval of time after which Metrics should be printed (seconds)")
     private int printingInterval = 10;
+
+    @Parameter(names = "-reportingDirectory", description = "Location of a directory to which metrics should be printed as comma-separated values")
+    private String reportingDirectory = null;
 
     @Parameter(names = "-numberOfPreCreatedDocuments", description = "Total NUMBER Of Documents To pre create for a read workload to use")
     private int numberOfPreCreatedDocuments = 1000;
@@ -256,11 +259,12 @@ class Configuration {
         return documentDataFieldCount;
     }
 
-    ConnectionPolicy getConnectionPolicy() {
-        ConnectionPolicy policy = new ConnectionPolicy();
-        policy.setConnectionMode(connectionMode);
-        policy.setMaxPoolSize(maxConnectionPoolSize);
-        return policy;
+    Integer getMaxConnectionPoolSize() {
+        return maxConnectionPoolSize;
+    }
+
+    ConnectionMode getConnectionMode() {
+        return connectionMode;
     }
 
     ConsistencyLevel getConsistencyLevel() {
@@ -285,6 +289,10 @@ class Configuration {
 
     int getPrintingInterval() {
         return printingInterval;
+    }
+
+    File getReportingDirectory() {
+        return reportingDirectory == null ? null : new File(reportingDirectory);
     }
 
     int getConcurrency() {

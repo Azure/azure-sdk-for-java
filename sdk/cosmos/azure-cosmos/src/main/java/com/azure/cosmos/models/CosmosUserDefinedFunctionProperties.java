@@ -2,22 +2,25 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * The type Cosmos user defined function properties.
  */
-public final class CosmosUserDefinedFunctionProperties extends Resource {
+public final class CosmosUserDefinedFunctionProperties {
+
+    private UserDefinedFunction userDefinedFunction;
 
     /**
      * Constructor
      */
     public CosmosUserDefinedFunctionProperties() {
-        super();
+        this.userDefinedFunction = new UserDefinedFunction();
     }
 
     /**
@@ -26,18 +29,7 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @param jsonString the json string that represents the cosmos user defined function properties.
      */
     CosmosUserDefinedFunctionProperties(String jsonString) {
-        super(jsonString);
-    }
-
-    /**
-     * Sets the id
-     *
-     * @param id the name of the resource.
-     * @return the current instance of cosmos user defined function properties
-     */
-    public CosmosUserDefinedFunctionProperties setId(String id) {
-        super.setId(id);
-        return this;
+        this.userDefinedFunction = new UserDefinedFunction(jsonString);
     }
 
     /**
@@ -46,7 +38,7 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @return the body.
      */
     public String getBody() {
-        return super.getString(Constants.Properties.BODY);
+        return this.userDefinedFunction.getBody();
     }
 
     /**
@@ -56,8 +48,59 @@ public final class CosmosUserDefinedFunctionProperties extends Resource {
      * @return the CosmosUserDefinedFunctionProperties.
      */
     public CosmosUserDefinedFunctionProperties setBody(String body) {
-        super.set(Constants.Properties.BODY, body);
+        this.userDefinedFunction.setBody(body);
         return this;
+    }
+
+    Resource getResource() {
+        return this.userDefinedFunction;
+    }
+
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource.
+     */
+    public String getId() {
+        return this.userDefinedFunction.getId();
+    }
+
+    /**
+     * Sets the id
+     *
+     * @param id the name of the resource.
+     * @return the current cosmos trigger properties instance
+     */
+    public CosmosUserDefinedFunctionProperties setId(String id) {
+        this.userDefinedFunction.setId(id);
+        return this;
+    }
+
+    /**
+     * Gets the ID associated with the resource.
+     *
+     * @return the ID associated with the resource.
+     */
+    public String getResourceId() {
+        return this.userDefinedFunction.getResourceId();
+    }
+
+    /**
+     * Get the last modified timestamp associated with the resource.
+     *
+     * @return the timestamp.
+     */
+    public OffsetDateTime getTimestamp() {
+        return this.userDefinedFunction.getTimestamp();
+    }
+
+    /**
+     * Get the entity tag associated with the resource.
+     *
+     * @return the e tag.
+     */
+    public String getETag() {
+        return this.userDefinedFunction.getETag();
     }
 
     static List<CosmosUserDefinedFunctionProperties> getFromV2Results(List<UserDefinedFunction> results) {

@@ -5,17 +5,25 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The GroupAddMemberParameters model. */
 @Fluent
 public final class GroupAddMemberParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupAddMemberParameters.class);
+
     /*
      * A member object URL, such as
      * "https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd",
-     * where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and "f260bbc4-c254-447b-94cf-293b5ec434dd" is the
-     * objectId of the member (user, application, servicePrincipal, group) to be added.
+     * where "0b1f9851-1bf0-433f-aec3-cb9272f093dc" is the tenantId and
+     * "f260bbc4-c254-447b-94cf-293b5ec434dd" is the objectId of the member
+     * (user, application, servicePrincipal, group) to be added.
      */
     @JsonProperty(value = "url", required = true)
     private String url;
@@ -23,8 +31,7 @@ public final class GroupAddMemberParameters {
     /*
      * Request parameters for adding a member to a group.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the url property: A member object URL, such as
@@ -57,6 +64,7 @@ public final class GroupAddMemberParameters {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -70,5 +78,26 @@ public final class GroupAddMemberParameters {
     public GroupAddMemberParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (url() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property url in model GroupAddMemberParameters"));
+        }
     }
 }

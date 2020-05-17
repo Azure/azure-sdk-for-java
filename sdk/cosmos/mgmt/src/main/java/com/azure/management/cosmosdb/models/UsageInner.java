@@ -5,13 +5,17 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.cosmosdb.MetricName;
 import com.azure.management.cosmosdb.UnitType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Usage model. */
 @Immutable
 public class UsageInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+
     /*
      * The unit of the metric.
      */
@@ -85,5 +89,16 @@ public class UsageInner {
      */
     public Long currentValue() {
         return this.currentValue;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() != null) {
+            name().validate();
+        }
     }
 }

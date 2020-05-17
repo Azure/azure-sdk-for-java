@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.CosmosKeyCredential;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -608,7 +609,9 @@ public final class RntbdTransportClientTest {
     @Test(enabled = false, groups = "direct")
     public void verifyGoneResponseMapsToGoneException() throws Exception {
 
-        final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(requestTimeout).build();
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(requestTimeout);
+        final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy).build();
         final SslContext sslContext = SslContextBuilder.forClient().build();
 
         try (final RntbdTransportClient transportClient = new RntbdTransportClient(options, sslContext)) {
@@ -694,9 +697,10 @@ public final class RntbdTransportClientTest {
         final RntbdResponse response
     ) {
         final UserAgentContainer userAgent = new UserAgentContainer();
-        final Duration timeout = Duration.ofMillis(1000);
+        ConnectionPolicy connectionPolicy = ConnectionPolicy.getDefaultPolicy();
+        connectionPolicy.setRequestTimeout(Duration.ofMillis(1000));
 
-        try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, timeout, response)) {
+        try (final RntbdTransportClient client = getRntbdTransportClientUnderTest(userAgent, connectionPolicy, response)) {
 
             final Mono<StoreResponse> responseMono;
 
@@ -712,11 +716,11 @@ public final class RntbdTransportClientTest {
 
     private static RntbdTransportClient getRntbdTransportClientUnderTest(
         final UserAgentContainer userAgent,
-        final Duration requestTimeout,
+        final ConnectionPolicy connectionPolicy,
         final RntbdResponse expected
     ) {
 
-        final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(requestTimeout)
+        final RntbdTransportClient.Options options = new RntbdTransportClient.Options.Builder(connectionPolicy)
             .userAgent(userAgent)
             .build();
 

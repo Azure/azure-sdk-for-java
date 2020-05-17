@@ -6,6 +6,8 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class StorageAccountCreateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCreateParameters.class);
+
     /*
      * Required. Gets or sets the SKU name.
      */
@@ -420,5 +424,51 @@ public class StorageAccountCreateParameters {
     public StorageAccountCreateParameters withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sku in model StorageAccountCreateParameters"));
+        } else {
+            sku().validate();
+        }
+        if (kind() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property kind in model StorageAccountCreateParameters"));
+        }
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property location in model StorageAccountCreateParameters"));
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (customDomain() != null) {
+            customDomain().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
+        if (azureFilesIdentityBasedAuthentication() != null) {
+            azureFilesIdentityBasedAuthentication().validate();
+        }
+        if (routingPreference() != null) {
+            routingPreference().validate();
+        }
     }
 }

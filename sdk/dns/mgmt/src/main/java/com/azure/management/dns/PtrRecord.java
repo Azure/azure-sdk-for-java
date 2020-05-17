@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PtrRecord model. */
 @Fluent
 public final class PtrRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PtrRecord.class);
+
     /*
      * The PTR target domain name for this PTR record.
      */
@@ -34,5 +38,13 @@ public final class PtrRecord {
     public PtrRecord withPtrdname(String ptrdname) {
         this.ptrdname = ptrdname;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

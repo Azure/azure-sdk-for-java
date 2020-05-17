@@ -3,6 +3,8 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,18 +20,34 @@ import java.util.List;
  *
  * @see UniqueKeyPolicy
  */
-public final class UniqueKey extends JsonSerializable {
+public final class UniqueKey {
     private List<String> paths;
+
+    private JsonSerializable jsonSerializable;
 
     /**
      * Instantiates a new Unique key.
      */
     public UniqueKey() {
-        super();
+        this.jsonSerializable = new JsonSerializable();
     }
 
+    /**
+     * Initializes a new instance of the UniqueKey class.
+     *
+     * @param jsonString the json string that represents the included path.
+     */
     UniqueKey(String jsonString) {
-        super(jsonString);
+        this.jsonSerializable = new JsonSerializable(jsonString);
+    }
+
+    /**
+     * Initializes a new instance of the UniqueKey class.
+     *
+     * @param objectNode the object node that represents the included path.
+     */
+    UniqueKey(ObjectNode objectNode) {
+        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
@@ -42,7 +60,7 @@ public final class UniqueKey extends JsonSerializable {
      */
     public List<String> getPaths() {
         if (this.paths == null) {
-            this.paths = super.getList(Constants.Properties.PATHS, String.class);
+            this.paths = this.jsonSerializable.getList(Constants.Properties.PATHS, String.class);
 
             if (this.paths == null) {
                 this.paths = new ArrayList<String>();
@@ -67,11 +85,12 @@ public final class UniqueKey extends JsonSerializable {
         return this;
     }
 
-    @Override
-    protected void populatePropertyBag() {
-        super.populatePropertyBag();
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
         if (paths != null) {
-            super.set(Constants.Properties.PATHS, paths);
+            this.jsonSerializable.set(Constants.Properties.PATHS, paths);
         }
     }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

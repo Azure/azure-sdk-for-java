@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Location model. */
 @Fluent
 public final class Location {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Location.class);
+
     /*
      * The unique identifier of the region within the database account.
      * Example: &lt;accountName&gt;-&lt;locationName&gt;.
@@ -39,7 +43,7 @@ public final class Location {
      * for use. 'Updating' – the Cosmos DB account is being updated. 'Deleting'
      * – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB
      * account failed creation. 'Offline' - the Cosmos DB account is not
-     * active.
+     * active. 'DeletionFailed' – the Cosmos DB account deletion failed.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -106,7 +110,7 @@ public final class Location {
      * Creating state, only properties that are specified as input for the Create Cosmos DB account operation are
      * returned. 'Succeeded' – the Cosmos DB account is active for use. 'Updating' – the Cosmos DB account is being
      * updated. 'Deleting' – the Cosmos DB account is being deleted. 'Failed' – the Cosmos DB account failed creation.
-     * 'Offline' - the Cosmos DB account is not active.
+     * 'Offline' - the Cosmos DB account is not active. 'DeletionFailed' – the Cosmos DB account deletion failed.
      *
      * @return the provisioningState value.
      */
@@ -156,5 +160,13 @@ public final class Location {
     public Location withIsZoneRedundant(Boolean isZoneRedundant) {
         this.isZoneRedundant = isZoneRedundant;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

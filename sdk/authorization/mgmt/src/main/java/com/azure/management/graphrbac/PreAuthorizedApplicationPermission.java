@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PreAuthorizedApplicationPermission model. */
 @Fluent
 public final class PreAuthorizedApplicationPermission {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationPermission.class);
+
     /*
      * Indicates whether the permission set is DirectAccess or impersonation.
      */
@@ -61,5 +65,13 @@ public final class PreAuthorizedApplicationPermission {
     public PreAuthorizedApplicationPermission withAccessGrants(List<String> accessGrants) {
         this.accessGrants = accessGrants;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,6 +27,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class RunRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunRequest.class);
+
     /*
      * The value that indicates whether archiving is enabled for the run or
      * not.
@@ -50,5 +54,13 @@ public class RunRequest {
     public RunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
         this.isArchiveEnabled = isArchiveEnabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

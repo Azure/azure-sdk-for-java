@@ -5,7 +5,9 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.models.ProviderInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 /** The DeploymentPropertiesExtended model. */
 @Fluent
 public final class DeploymentPropertiesExtended {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentPropertiesExtended.class);
+
     /*
      * The state of the provisioning.
      */
@@ -335,5 +339,31 @@ public final class DeploymentPropertiesExtended {
     public DeploymentPropertiesExtended withOnErrorDeployment(OnErrorDeploymentExtended onErrorDeployment) {
         this.onErrorDeployment = onErrorDeployment;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (providers() != null) {
+            providers().forEach(e -> e.validate());
+        }
+        if (dependencies() != null) {
+            dependencies().forEach(e -> e.validate());
+        }
+        if (templateLink() != null) {
+            templateLink().validate();
+        }
+        if (parametersLink() != null) {
+            parametersLink().validate();
+        }
+        if (debugSetting() != null) {
+            debugSetting().validate();
+        }
+        if (onErrorDeployment() != null) {
+            onErrorDeployment().validate();
+        }
     }
 }

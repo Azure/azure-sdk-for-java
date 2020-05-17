@@ -6,12 +6,16 @@ package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ThroughputSettingsUpdateParameters model. */
 @JsonFlatten
 @Fluent
-public class ThroughputSettingsUpdateParameters extends ARMResourceProperties {
+public class ThroughputSettingsUpdateParameters extends ArmResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsUpdateParameters.class);
+
     /*
      * The standard JSON format of a resource throughput
      */
@@ -36,5 +40,23 @@ public class ThroughputSettingsUpdateParameters extends ARMResourceProperties {
     public ThroughputSettingsUpdateParameters withResource(ThroughputSettingsResource resource) {
         this.resource = resource;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (resource() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resource in model ThroughputSettingsUpdateParameters"));
+        } else {
+            resource().validate();
+        }
     }
 }
