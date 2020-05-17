@@ -169,9 +169,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentResultWithNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller = client.beginRecognizeContent(null,
-            LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null);
-        syncPoller.waitForCompletion();
         assertThrows(RuntimeException.class, () ->
             client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG, null));
     }

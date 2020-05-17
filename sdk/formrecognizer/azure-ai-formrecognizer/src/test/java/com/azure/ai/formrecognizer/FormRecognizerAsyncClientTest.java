@@ -213,16 +213,8 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeContentResultWithNullData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        contentFromDataRunner((data) -> {
-            assertThrows(RuntimeException.class, () -> client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH,
-                FormContentType.IMAGE_JPEG, null).getSyncPoller());
-            SyncPoller<OperationResult, IterableStream<FormPage>> syncPoller = client.beginRecognizeContent(toFluxByteBuffer(data), LAYOUT_FILE_LENGTH, FormContentType.IMAGE_JPEG,
-                null).getSyncPoller();
-            syncPoller.waitForCompletion();
-
-            assertThrows(RuntimeException.class, () -> client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH,
-                FormContentType.IMAGE_JPEG, null).getSyncPoller());
-        });
+        assertThrows(RuntimeException.class, () -> client.beginRecognizeContent(null, LAYOUT_FILE_LENGTH,
+            FormContentType.IMAGE_JPEG, null).getSyncPoller());
     }
 
 
