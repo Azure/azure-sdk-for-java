@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/formrecognizer/v2.0-preview//layout/analyze",
+    "Uri" : "https://javaformrecognizertestresource.cognitiveservices.azure.com/formrecognizer/v2.0-preview//layout/analyze",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.3 (11.0.5; Windows 10 10.0)",
-      "x-ms-client-request-id" : "559be6ad-acf6-4ec7-b969-919f68876089",
+      "User-Agent" : "azsdk-java-azure-ai-formrecognizer/1.0.0-beta.1 (11.0.5; Windows 10 10.0)",
+      "x-ms-client-request-id" : "b733f8d9-e56e-4c92-94b1-db015a90e104",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-envoy-upstream-service-time" : "932",
+      "x-envoy-upstream-service-time" : "999",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "274843c5-b24f-4325-80c8-f1cbd88fc035",
+      "apim-request-id" : "d780cb39-fcd0-4a59-9376-6206a5d189a1",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"InvalidImageURL\",\"message\":\"Image URL is badly formatted.\"}}",
-      "Date" : "Sun, 17 May 2020 04:24:16 GMT",
+      "Date" : "Wed, 22 Apr 2020 22:31:07 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
