@@ -12,40 +12,46 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An object representing a recognized text region.
+ * Text extracted from a page in the input document.
  */
-public class TextRecognitionResult {
+public class ReadResult {
     /**
      * The 1-based page number of the recognition result.
      */
-    @JsonProperty(value = "page")
-    private Integer page;
+    @JsonProperty(value = "page", required = true)
+    private int page;
+
+    /**
+     * The BCP-47 language code of the recognized text page.
+     */
+    @JsonProperty(value = "language")
+    private String language;
 
     /**
      * The orientation of the image in degrees in the clockwise direction.
-     * Range between [0, 360).
+     * Range between [-180, 180).
      */
-    @JsonProperty(value = "clockwiseOrientation")
-    private Double clockwiseOrientation;
+    @JsonProperty(value = "angle", required = true)
+    private double angle;
 
     /**
      * The width of the image in pixels or the PDF in inches.
      */
-    @JsonProperty(value = "width")
-    private Double width;
+    @JsonProperty(value = "width", required = true)
+    private double width;
 
     /**
      * The height of the image in pixels or the PDF in inches.
      */
-    @JsonProperty(value = "height")
-    private Double height;
+    @JsonProperty(value = "height", required = true)
+    private double height;
 
     /**
      * The unit used in the Width, Height and BoundingBox. For images, the unit
      * is 'pixel'. For PDF, the unit is 'inch'. Possible values include:
      * 'pixel', 'inch'.
      */
-    @JsonProperty(value = "unit")
+    @JsonProperty(value = "unit", required = true)
     private TextRecognitionResultDimensionUnit unit;
 
     /**
@@ -59,7 +65,7 @@ public class TextRecognitionResult {
      *
      * @return the page value
      */
-    public Integer page() {
+    public int page() {
         return this.page;
     }
 
@@ -67,30 +73,50 @@ public class TextRecognitionResult {
      * Set the page value.
      *
      * @param page the page value to set
-     * @return the TextRecognitionResult object itself.
+     * @return the ReadResult object itself.
      */
-    public TextRecognitionResult withPage(Integer page) {
+    public ReadResult withPage(int page) {
         this.page = page;
         return this;
     }
 
     /**
-     * Get the clockwiseOrientation value.
+     * Get the language value.
      *
-     * @return the clockwiseOrientation value
+     * @return the language value
      */
-    public Double clockwiseOrientation() {
-        return this.clockwiseOrientation;
+    public String language() {
+        return this.language;
     }
 
     /**
-     * Set the clockwiseOrientation value.
+     * Set the language value.
      *
-     * @param clockwiseOrientation the clockwiseOrientation value to set
-     * @return the TextRecognitionResult object itself.
+     * @param language the language value to set
+     * @return the ReadResult object itself.
      */
-    public TextRecognitionResult withClockwiseOrientation(Double clockwiseOrientation) {
-        this.clockwiseOrientation = clockwiseOrientation;
+    public ReadResult withLanguage(String language) {
+        this.language = language;
+        return this;
+    }
+
+    /**
+     * Get the angle value.
+     *
+     * @return the angle value
+     */
+    public double angle() {
+        return this.angle;
+    }
+
+    /**
+     * Set the angle value.
+     *
+     * @param angle the angle value to set
+     * @return the ReadResult object itself.
+     */
+    public ReadResult withAngle(double angle) {
+        this.angle = angle;
         return this;
     }
 
@@ -99,7 +125,7 @@ public class TextRecognitionResult {
      *
      * @return the width value
      */
-    public Double width() {
+    public double width() {
         return this.width;
     }
 
@@ -107,9 +133,9 @@ public class TextRecognitionResult {
      * Set the width value.
      *
      * @param width the width value to set
-     * @return the TextRecognitionResult object itself.
+     * @return the ReadResult object itself.
      */
-    public TextRecognitionResult withWidth(Double width) {
+    public ReadResult withWidth(double width) {
         this.width = width;
         return this;
     }
@@ -119,7 +145,7 @@ public class TextRecognitionResult {
      *
      * @return the height value
      */
-    public Double height() {
+    public double height() {
         return this.height;
     }
 
@@ -127,9 +153,9 @@ public class TextRecognitionResult {
      * Set the height value.
      *
      * @param height the height value to set
-     * @return the TextRecognitionResult object itself.
+     * @return the ReadResult object itself.
      */
-    public TextRecognitionResult withHeight(Double height) {
+    public ReadResult withHeight(double height) {
         this.height = height;
         return this;
     }
@@ -147,9 +173,9 @@ public class TextRecognitionResult {
      * Set the unit value.
      *
      * @param unit the unit value to set
-     * @return the TextRecognitionResult object itself.
+     * @return the ReadResult object itself.
      */
-    public TextRecognitionResult withUnit(TextRecognitionResultDimensionUnit unit) {
+    public ReadResult withUnit(TextRecognitionResultDimensionUnit unit) {
         this.unit = unit;
         return this;
     }
@@ -167,9 +193,9 @@ public class TextRecognitionResult {
      * Set the lines value.
      *
      * @param lines the lines value to set
-     * @return the TextRecognitionResult object itself.
+     * @return the ReadResult object itself.
      */
-    public TextRecognitionResult withLines(List<Line> lines) {
+    public ReadResult withLines(List<Line> lines) {
         this.lines = lines;
         return this;
     }

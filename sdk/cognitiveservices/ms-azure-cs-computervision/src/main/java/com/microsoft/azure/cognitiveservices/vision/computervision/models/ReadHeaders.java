@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines headers for RecognizeText operation.
+ * Defines headers for Read operation.
  */
-public class RecognizeTextHeaders {
+public class ReadHeaders {
     /**
      * URL to query for status of the operation. The operation ID will expire
      * in 48 hours.
@@ -34,9 +34,9 @@ public class RecognizeTextHeaders {
      * Set the operationLocation value.
      *
      * @param operationLocation the operationLocation value to set
-     * @return the RecognizeTextHeaders object itself.
+     * @return the ReadHeaders object itself.
      */
-    public RecognizeTextHeaders withOperationLocation(String operationLocation) {
+    public ReadHeaders withOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
     }
