@@ -6,11 +6,15 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImageDataDisk model. */
 @Fluent
 public final class ImageDataDisk {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDataDisk.class);
+
     /*
      * Specifies the logical unit number of the data disk. This value is used
      * to identify data disks within the VM and therefore must be unique for
@@ -211,5 +215,13 @@ public final class ImageDataDisk {
     public ImageDataDisk withStorageAccountType(StorageAccountTypes storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

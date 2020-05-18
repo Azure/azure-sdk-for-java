@@ -44,7 +44,7 @@ Merging Pull Requests (for project contributors with write access)
 
 ### Pre-requisites
 
-- Install Java Development Kit 8
+- Install Java Development Kit 8 or 11
   - add `JAVA_HOME` to environment variables
 - Install [Maven](http://maven.apache.org/download.cgi)
   - add `MAVEN_HOME` to environment variables
@@ -54,52 +54,11 @@ Merging Pull Requests (for project contributors with write access)
 `REG ADD HKLM\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1`<br>*(might need to type `yes` to override key if it already exists)*<br><br>
 2.- Set up `git` by running:<br> `git config --system core.longpaths true`
 
-### Building and Testing
+### Building and Unit Testing
 
->**Note**: Build and test instructions have recently changed. The ```pom.client.xml``` file is no
-> longer in the root of the repository and should be not be used as an aggregator moving forward.
-
-This repository uses Maven to build the various modules that make up the Azure SDK for Java. You can build the entire set of modules by running the following command from the root of the repository:
-
-```
-mvn -Dgpg.skip clean install
-```
-
-This will build, test and install all of the modules into your local Maven cache. Optionally, you
-can also skip unit test execution by issuing the following command. This can be useful when you
-just want to try out a quick change without having to worry about unit tests.
-
-```
-mvn -Dgpg.skip -DskipTests clean install
-```
-
-If you only want to work on one module, you may opt to build just that module and its dependencies (e.g. com.azure:azure-messaging-eventhubs):
-
-```
-mvn -Dgpg.skip -DskipTests -pl com.azure:azure-messaging-eventhubs -am
-```
-
-The ```-pl``` switch takes a comma seperated list of fully qualified module names and the ```-am```
-switch tells Maven to _also make_ all of the dependencies within the repository that it depends on. If
-you are making changes across two modules you can tell Maven to build them both like this:
-
-```
-mvn -Dgpg.skip -DskipTests -pl com.azure:azure-messaging-eventhubs,com.azure:azure-core-amqp -am
-```
-
-Some parts of the SDK have multiple modules for a particular service, if you want to avoid typing
-in all those module names for the ```-pl``` switch you can just target the appropriate POM file
-(e.g. sdk/eventhubs/pom.xml) and execute the following command.
-
-```
-mvn -f sdk/eventhubs/pom.xml -Dgpg.skip clean install
-```
-
-Note that any dependencies for those modules will need to be in the Maven cache so will want to run
-the first command listed above once to get the cache primed with all the dependencies.
-
->**Note**: Refer to [wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning about how to build using Java 11 
->and [this wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit testing
+Refer to the [build wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Building) for learning how to build Java SDKs
+and the [unit testing wiki](https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing) for guidelines on unit 
+testing.
 
 ### Live testing
 
@@ -136,7 +95,7 @@ Tooling has been introduced to centralize versioning and help ease the pain of u
 
 The dependency-version should be set to the most recent released version and the current-version is set to the next version to be released. For example:
 
-`com.azure:azure-identity;1.0.0-preview.4;1.0.0-preview.5`
+`com.azure:azure-identity;1.0.0-beta.4;1.0.0-beta.5`
 
 Note: In the case of a new artifact both versions will be the same. In the case of a released artifact, the dependecny version should be the latest released version.
 
@@ -172,7 +131,7 @@ In POM files this is done by inserting a specifically formatted comment on the s
 ```xml
   <groupId>MyGroup</groupId>
   <artifactId>MyArtifact</artifactId>
-  <version>1.0.0-preview.1</version> <!-- {x-version-update;MyGroup:MyArtifact;[current|dependency]} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;MyGroup:MyArtifact;[current|dependency]} -->
 ```
 
 The last element of the tag would be current or dependency depending on the criteria previously explained.
@@ -183,7 +142,7 @@ In README files this ends up being slightly different. Because the version tag i
     ```xml
       <groupId>MyGroup</groupId>
       <artifactId>MyArtifact</artifactId>
-      <version>1.0.0-preview.1</version>
+      <version>1.0.0-beta.1</version>
     ```
     [//]: # ({x-version-update-end})
 

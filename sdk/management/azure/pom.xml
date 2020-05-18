@@ -7,12 +7,12 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>com.azure</groupId>
-    <artifactId>azure-parent</artifactId>
+    <artifactId>azure-management-parent</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure</artifactId>
+  <artifactId>azure-management</artifactId>
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK</name>

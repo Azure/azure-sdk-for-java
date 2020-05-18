@@ -8,7 +8,7 @@ import com.azure.management.network.models.HasBackendPort;
 import com.azure.management.network.models.HasCookieBasedAffinity;
 import com.azure.management.network.models.HasFrontendPort;
 import com.azure.management.network.models.HasHostName;
-import com.azure.management.network.models.HasPublicIPAddress;
+import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.network.models.HasServerNameIndication;
 import com.azure.management.network.models.HasSslCertificate;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -22,7 +22,7 @@ import java.util.Collection;
 public interface ApplicationGatewayRequestRoutingRule
     extends HasInner<ApplicationGatewayRequestRoutingRuleInner>,
         ChildResource<ApplicationGateway>,
-        HasPublicIPAddress,
+        HasPublicIpAddress,
         HasSslCertificate<ApplicationGatewaySslCertificate>,
         HasFrontendPort,
         HasBackendPort,

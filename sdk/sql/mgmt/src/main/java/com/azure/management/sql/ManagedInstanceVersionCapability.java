@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagedInstanceVersionCapability model. */
 @Fluent
 public final class ManagedInstanceVersionCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedInstanceVersionCapability.class);
+
     /*
      * The server version name.
      */
@@ -95,5 +99,19 @@ public final class ManagedInstanceVersionCapability {
     public ManagedInstanceVersionCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (supportedEditions() != null) {
+            supportedEditions().forEach(e -> e.validate());
+        }
+        if (supportedInstancePoolEditions() != null) {
+            supportedInstancePoolEditions().forEach(e -> e.validate());
+        }
     }
 }

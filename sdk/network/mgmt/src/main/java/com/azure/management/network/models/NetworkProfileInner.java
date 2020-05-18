@@ -7,8 +7,10 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ContainerNetworkInterface;
 import com.azure.management.network.ContainerNetworkInterfaceConfiguration;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class NetworkProfileInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfileInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -152,5 +156,19 @@ public class NetworkProfileInner extends Resource {
     public NetworkProfileInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (containerNetworkInterfaces() != null) {
+            containerNetworkInterfaces().forEach(e -> e.validate());
+        }
+        if (containerNetworkInterfaceConfigurations() != null) {
+            containerNetworkInterfaceConfigurations().forEach(e -> e.validate());
+        }
     }
 }

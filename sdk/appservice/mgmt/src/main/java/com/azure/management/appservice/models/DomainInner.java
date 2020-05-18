@@ -7,13 +7,15 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.Contact;
 import com.azure.management.appservice.DnsType;
 import com.azure.management.appservice.DomainPropertiesDomainNotRenewableReasonsItem;
 import com.azure.management.appservice.DomainPurchaseConsent;
 import com.azure.management.appservice.DomainStatus;
-import com.azure.management.appservice.HostName;
+import com.azure.management.appservice.Hostname;
 import com.azure.management.appservice.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,6 +24,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DomainInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
+
     /*
      * Administrative contact.
      */
@@ -109,7 +113,7 @@ public class DomainInner extends Resource {
      * All hostnames derived from the domain and assigned to Azure resources.
      */
     @JsonProperty(value = "properties.managedHostNames", access = JsonProperty.Access.WRITE_ONLY)
-    private List<HostName> managedHostNames;
+    private List<Hostname> managedHostNames;
 
     /*
      * Legal agreement consent.
@@ -347,7 +351,7 @@ public class DomainInner extends Resource {
      *
      * @return the managedHostNames value.
      */
-    public List<HostName> managedHostNames() {
+    public List<Hostname> managedHostNames() {
         return this.managedHostNames;
     }
 
@@ -478,5 +482,31 @@ public class DomainInner extends Resource {
     public DomainInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (contactAdmin() != null) {
+            contactAdmin().validate();
+        }
+        if (contactBilling() != null) {
+            contactBilling().validate();
+        }
+        if (contactRegistrant() != null) {
+            contactRegistrant().validate();
+        }
+        if (contactTech() != null) {
+            contactTech().validate();
+        }
+        if (managedHostNames() != null) {
+            managedHostNames().forEach(e -> e.validate());
+        }
+        if (consent() != null) {
+            consent().validate();
+        }
     }
 }

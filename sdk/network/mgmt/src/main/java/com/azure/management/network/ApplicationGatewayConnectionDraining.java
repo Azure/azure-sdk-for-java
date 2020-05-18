@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewayConnectionDraining model. */
 @Fluent
 public final class ApplicationGatewayConnectionDraining {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayConnectionDraining.class);
+
     /*
      * Whether connection draining is enabled or not.
      */
@@ -63,5 +67,13 @@ public final class ApplicationGatewayConnectionDraining {
     public ApplicationGatewayConnectionDraining withDrainTimeoutInSec(int drainTimeoutInSec) {
         this.drainTimeoutInSec = drainTimeoutInSec;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

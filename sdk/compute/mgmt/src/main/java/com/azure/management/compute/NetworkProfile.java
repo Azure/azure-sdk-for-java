@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkProfile model. */
 @Fluent
 public final class NetworkProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
+
     /*
      * Specifies the list of resource Ids for the network interfaces associated
      * with the virtual machine.
@@ -38,5 +42,16 @@ public final class NetworkProfile {
     public NetworkProfile withNetworkInterfaces(List<NetworkInterfaceReference> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkInterfaces() != null) {
+            networkInterfaces().forEach(e -> e.validate());
+        }
     }
 }

@@ -14,22 +14,22 @@ public final class AccountProperties {
     /*
      * The current count of trained custom models.
      */
-    private final int count;
+    private final int customModelCount;
 
     /*
      * Max number of models that can be trained for this account.
      */
-    private final int limit;
+    private final int customModelLimit;
 
     /**
      * Constructs an AccountProperties object.
      *
-     * @param count The current count of trained custom models.
-     * @param limit Max number of models that can be trained for this account.
+     * @param customModelCount The current count of trained custom models.
+     * @param customModelLimit Max number of models that can be trained for this account.
      */
-    public AccountProperties(final int count, final int limit) {
-        this.count = count;
-        this.limit = limit;
+    public AccountProperties(final int customModelCount, final int customModelLimit) {
+        this.customModelCount = customModelCount;
+        this.customModelLimit = customModelLimit;
     }
 
     /**
@@ -37,8 +37,8 @@ public final class AccountProperties {
      *
      * @return the count value.
      */
-    public int getCount() {
-        return this.count;
+    public int getCustomModelCount() {
+        return this.customModelCount;
     }
 
     /**
@@ -47,7 +47,7 @@ public final class AccountProperties {
      *
      * @return the limit value.
      */
-    public int getLimit() {
-        return this.limit;
+    public int getCustomModelLimit() {
+        return this.customModelLimit;
     }
 }

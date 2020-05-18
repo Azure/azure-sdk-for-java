@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryDataDiskImage model. */
 @Immutable
 public final class GalleryDataDiskImage extends GalleryDiskImage {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryDataDiskImage.class);
+
     /*
      * This property specifies the logical unit number of the data disk. This
      * value is used to identify data disks within the Virtual Machine and
@@ -28,5 +32,15 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
      */
     public Integer lun() {
         return this.lun;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

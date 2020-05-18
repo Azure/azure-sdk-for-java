@@ -5,11 +5,15 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Capability model. */
 @Fluent
 public final class CapabilityInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilityInner.class);
+
     /*
      * Name of the SKU capability.
      */
@@ -86,5 +90,13 @@ public final class CapabilityInner {
     public CapabilityInner withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

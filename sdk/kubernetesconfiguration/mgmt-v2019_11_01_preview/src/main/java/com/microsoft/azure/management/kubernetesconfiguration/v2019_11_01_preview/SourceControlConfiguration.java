@@ -94,7 +94,7 @@ public interface SourceControlConfiguration extends HasInner<SourceControlConfig
     /**
      * The entirety of the SourceControlConfiguration definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProvider, DefinitionStages.WithClusterResourceName, DefinitionStages.WithClusterName, DefinitionStages.WithApiVersion, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithProvider, DefinitionStages.WithClusterResourceName, DefinitionStages.WithClusterName, DefinitionStages.WithCreate {
     }
 
     /**
@@ -141,19 +141,7 @@ public interface SourceControlConfiguration extends HasInner<SourceControlConfig
             * @param clusterName The name of the kubernetes cluster
             * @return the next definition stage
             */
-            WithApiVersion withClusterName(String clusterName);
-        }
-
-        /**
-         * The stage of the sourcecontrolconfiguration definition allowing to specify ApiVersion.
-         */
-        interface WithApiVersion {
-           /**
-            * Specifies apiVersion.
-            * @param apiVersion The API version to be used with the HTTP request
-            * @return the next definition stage
-            */
-            WithCreate withApiVersion(String apiVersion);
+            WithCreate withClusterName(String clusterName);
         }
 
         /**
@@ -263,25 +251,13 @@ public interface SourceControlConfiguration extends HasInner<SourceControlConfig
     /**
      * The template for a SourceControlConfiguration update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<SourceControlConfiguration>, UpdateStages.WithApiVersion, UpdateStages.WithEnableHelmOperator, UpdateStages.WithHelmOperatorProperties, UpdateStages.WithOperatorInstanceName, UpdateStages.WithOperatorNamespace, UpdateStages.WithOperatorParams, UpdateStages.WithOperatorScope, UpdateStages.WithOperatorType, UpdateStages.WithRepositoryUrl {
+    interface Update extends Appliable<SourceControlConfiguration>, UpdateStages.WithEnableHelmOperator, UpdateStages.WithHelmOperatorProperties, UpdateStages.WithOperatorInstanceName, UpdateStages.WithOperatorNamespace, UpdateStages.WithOperatorParams, UpdateStages.WithOperatorScope, UpdateStages.WithOperatorType, UpdateStages.WithRepositoryUrl {
     }
 
     /**
      * Grouping of SourceControlConfiguration update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the sourcecontrolconfiguration update allowing to specify ApiVersion.
-         */
-        interface WithApiVersion {
-            /**
-             * Specifies apiVersion.
-             * @param apiVersion The API version to be used with the HTTP request
-             * @return the next update stage
-             */
-            Update withApiVersion(String apiVersion);
-        }
-
         /**
          * The stage of the sourcecontrolconfiguration update allowing to specify EnableHelmOperator.
          */

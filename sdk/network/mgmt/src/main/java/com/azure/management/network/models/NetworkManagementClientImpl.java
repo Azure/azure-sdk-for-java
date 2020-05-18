@@ -23,15 +23,18 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 import com.azure.management.network.ErrorException;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the NetworkManagementClientImpl type. */
 public final class NetworkManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(NetworkManagementClientImpl.class);
+
     /** The proxy service used to perform REST calls. */
     private final NetworkManagementClientService service;
 
@@ -422,16 +425,16 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return this.loadBalancerBackendAddressPools;
     }
 
-    /** The LoadBalancerFrontendIPConfigurationsInner object to access its operations. */
-    private final LoadBalancerFrontendIPConfigurationsInner loadBalancerFrontendIPConfigurations;
+    /** The LoadBalancerFrontendIpConfigurationsInner object to access its operations. */
+    private final LoadBalancerFrontendIpConfigurationsInner loadBalancerFrontendIpConfigurations;
 
     /**
-     * Gets the LoadBalancerFrontendIPConfigurationsInner object to access its operations.
+     * Gets the LoadBalancerFrontendIpConfigurationsInner object to access its operations.
      *
-     * @return the LoadBalancerFrontendIPConfigurationsInner object.
+     * @return the LoadBalancerFrontendIpConfigurationsInner object.
      */
-    public LoadBalancerFrontendIPConfigurationsInner loadBalancerFrontendIPConfigurations() {
-        return this.loadBalancerFrontendIPConfigurations;
+    public LoadBalancerFrontendIpConfigurationsInner loadBalancerFrontendIpConfigurations() {
+        return this.loadBalancerFrontendIpConfigurations;
     }
 
     /** The InboundNatRulesInner object to access its operations. */
@@ -518,16 +521,16 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return this.networkInterfaces;
     }
 
-    /** The NetworkInterfaceIPConfigurationsInner object to access its operations. */
-    private final NetworkInterfaceIPConfigurationsInner networkInterfaceIPConfigurations;
+    /** The NetworkInterfaceIpConfigurationsInner object to access its operations. */
+    private final NetworkInterfaceIpConfigurationsInner networkInterfaceIpConfigurations;
 
     /**
-     * Gets the NetworkInterfaceIPConfigurationsInner object to access its operations.
+     * Gets the NetworkInterfaceIpConfigurationsInner object to access its operations.
      *
-     * @return the NetworkInterfaceIPConfigurationsInner object.
+     * @return the NetworkInterfaceIpConfigurationsInner object.
      */
-    public NetworkInterfaceIPConfigurationsInner networkInterfaceIPConfigurations() {
-        return this.networkInterfaceIPConfigurations;
+    public NetworkInterfaceIpConfigurationsInner networkInterfaceIpConfigurations() {
+        return this.networkInterfaceIpConfigurations;
     }
 
     /** The NetworkInterfaceLoadBalancersInner object to access its operations. */
@@ -686,28 +689,28 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         return this.privateLinkServices;
     }
 
-    /** The PublicIPAddressesInner object to access its operations. */
-    private final PublicIPAddressesInner publicIPAddresses;
+    /** The PublicIpAddressesInner object to access its operations. */
+    private final PublicIpAddressesInner publicIpAddresses;
 
     /**
-     * Gets the PublicIPAddressesInner object to access its operations.
+     * Gets the PublicIpAddressesInner object to access its operations.
      *
-     * @return the PublicIPAddressesInner object.
+     * @return the PublicIpAddressesInner object.
      */
-    public PublicIPAddressesInner publicIPAddresses() {
-        return this.publicIPAddresses;
+    public PublicIpAddressesInner publicIpAddresses() {
+        return this.publicIpAddresses;
     }
 
-    /** The PublicIPPrefixesInner object to access its operations. */
-    private final PublicIPPrefixesInner publicIPPrefixes;
+    /** The PublicIpPrefixesInner object to access its operations. */
+    private final PublicIpPrefixesInner publicIpPrefixes;
 
     /**
-     * Gets the PublicIPPrefixesInner object to access its operations.
+     * Gets the PublicIpPrefixesInner object to access its operations.
      *
-     * @return the PublicIPPrefixesInner object.
+     * @return the PublicIpPrefixesInner object.
      */
-    public PublicIPPrefixesInner publicIPPrefixes() {
-        return this.publicIPPrefixes;
+    public PublicIpPrefixesInner publicIpPrefixes() {
+        return this.publicIpPrefixes;
     }
 
     /** The RouteFiltersInner object to access its operations. */
@@ -1134,7 +1137,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         this.firewallPolicyRuleGroups = new FirewallPolicyRuleGroupsInner(this);
         this.loadBalancers = new LoadBalancersInner(this);
         this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsInner(this);
-        this.loadBalancerFrontendIPConfigurations = new LoadBalancerFrontendIPConfigurationsInner(this);
+        this.loadBalancerFrontendIpConfigurations = new LoadBalancerFrontendIpConfigurationsInner(this);
         this.inboundNatRules = new InboundNatRulesInner(this);
         this.loadBalancerLoadBalancingRules = new LoadBalancerLoadBalancingRulesInner(this);
         this.loadBalancerOutboundRules = new LoadBalancerOutboundRulesInner(this);
@@ -1142,7 +1145,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         this.loadBalancerProbes = new LoadBalancerProbesInner(this);
         this.natGateways = new NatGatewaysInner(this);
         this.networkInterfaces = new NetworkInterfacesInner(this);
-        this.networkInterfaceIPConfigurations = new NetworkInterfaceIPConfigurationsInner(this);
+        this.networkInterfaceIpConfigurations = new NetworkInterfaceIpConfigurationsInner(this);
         this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersInner(this);
         this.networkInterfaceTapConfigurations = new NetworkInterfaceTapConfigurationsInner(this);
         this.networkProfiles = new NetworkProfilesInner(this);
@@ -1156,8 +1159,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
         this.privateEndpoints = new PrivateEndpointsInner(this);
         this.availablePrivateEndpointTypes = new AvailablePrivateEndpointTypesInner(this);
         this.privateLinkServices = new PrivateLinkServicesInner(this);
-        this.publicIPAddresses = new PublicIPAddressesInner(this);
-        this.publicIPPrefixes = new PublicIPPrefixesInner(this);
+        this.publicIpAddresses = new PublicIpAddressesInner(this);
+        this.publicIpPrefixes = new PublicIpPrefixesInner(this);
         this.routeFilters = new RouteFiltersInner(this);
         this.routeFilterRules = new RouteFilterRulesInner(this);
         this.routeTables = new RouteTablesInner(this);
@@ -1202,10 +1205,9 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
     private interface NetworkManagementClientService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}"
-                + "/CheckDnsNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Network/locations/{location}/CheckDnsNameAvailability")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailability(
             @HostParam("$host") String host,
             @PathParam("location") String location,
@@ -1216,15 +1218,15 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualWans/{virtualWANName}/supportedSecurityProviders")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWANName}/supportedSecurityProviders")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProviders(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("virtualWANName") String virtualWANName,
+            @PathParam("virtualWANName") String virtualWanName,
             @QueryParam("api-version") String apiVersion,
             Context context);
     }
@@ -1236,13 +1238,28 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckDnsNameAvailability API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
         String location, String domainNameLabel) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (domainNameLabel == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter domainNameLabel is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1259,8 +1276,44 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param location The location of the domain name.
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the CheckDnsNameAvailability API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DnsNameAvailabilityResultInner>> checkDnsNameAvailabilityWithResponseAsync(
+        String location, String domainNameLabel, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (domainNameLabel == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter domainNameLabel is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .checkDnsNameAvailability(
+                this.getHost(), location, domainNameLabel, apiVersion, this.getSubscriptionId(), context);
+    }
+
+    /**
+     * Checks whether a domain name in the cloudapp.azure.com zone is available for use.
+     *
+     * @param location The location of the domain name.
+     * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
+     *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckDnsNameAvailability API service call.
      */
@@ -1284,7 +1337,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * @param domainNameLabel The domain name to be verified. It must conform to the following regular expression:
      *     ^[a-z][a-z0-9-]{1,61}[a-z0-9]$.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the CheckDnsNameAvailability API service call.
      */
@@ -1297,7 +1350,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * Gives the supported security providers for the virtual wan.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which supported security providers are needed.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1305,7 +1358,22 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
-        String resourceGroupName, String virtualWANName) {
+        String resourceGroupName, String virtualWanName) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -1315,7 +1383,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
                             this.getHost(),
                             this.getSubscriptionId(),
                             resourceGroupName,
-                            virtualWANName,
+                            virtualWanName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.getContext())));
@@ -1325,7 +1393,42 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * Gives the supported security providers for the virtual wan.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which supported security providers are needed.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of SecurityProviders.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<VirtualWanSecurityProvidersInner>> supportedSecurityProvidersWithResponseAsync(
+        String resourceGroupName, String virtualWanName, Context context) {
+        if (this.getHost() == null) {
+            return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
+        }
+        if (this.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter this.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualWanName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .supportedSecurityProviders(
+                this.getHost(), this.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, context);
+    }
+
+    /**
+     * Gives the supported security providers for the virtual wan.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1333,8 +1436,8 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualWanSecurityProvidersInner> supportedSecurityProvidersAsync(
-        String resourceGroupName, String virtualWANName) {
-        return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWANName)
+        String resourceGroupName, String virtualWanName) {
+        return supportedSecurityProvidersWithResponseAsync(resourceGroupName, virtualWanName)
             .flatMap(
                 (SimpleResponse<VirtualWanSecurityProvidersInner> res) -> {
                     if (res.getValue() != null) {
@@ -1349,7 +1452,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      * Gives the supported security providers for the virtual wan.
      *
      * @param resourceGroupName The resource group name.
-     * @param virtualWANName The name of the VirtualWAN for which supported security providers are needed.
+     * @param virtualWanName The name of the VirtualWAN for which supported security providers are needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1357,7 +1460,7 @@ public final class NetworkManagementClientImpl extends AzureServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualWanSecurityProvidersInner supportedSecurityProviders(
-        String resourceGroupName, String virtualWANName) {
-        return supportedSecurityProvidersAsync(resourceGroupName, virtualWANName).block();
+        String resourceGroupName, String virtualWanName) {
+        return supportedSecurityProvidersAsync(resourceGroupName, virtualWanName).block();
     }
 }

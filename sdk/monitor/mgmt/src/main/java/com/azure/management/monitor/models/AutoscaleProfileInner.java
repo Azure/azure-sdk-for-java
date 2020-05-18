@@ -5,15 +5,19 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.Recurrence;
 import com.azure.management.monitor.ScaleCapacity;
 import com.azure.management.monitor.TimeWindow;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AutoscaleProfile model. */
 @Fluent
 public final class AutoscaleProfileInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleProfileInner.class);
+
     /*
      * the name of the profile.
      */
@@ -151,5 +155,38 @@ public final class AutoscaleProfileInner {
     public AutoscaleProfileInner withRecurrence(Recurrence recurrence) {
         this.recurrence = recurrence;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model AutoscaleProfileInner"));
+        }
+        if (capacity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property capacity in model AutoscaleProfileInner"));
+        } else {
+            capacity().validate();
+        }
+        if (rules() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property rules in model AutoscaleProfileInner"));
+        } else {
+            rules().forEach(e -> e.validate());
+        }
+        if (fixedDate() != null) {
+            fixedDate().validate();
+        }
+        if (recurrence() != null) {
+            recurrence().validate();
+        }
     }
 }

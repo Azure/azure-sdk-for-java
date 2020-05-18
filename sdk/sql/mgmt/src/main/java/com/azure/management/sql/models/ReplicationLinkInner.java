@@ -7,8 +7,10 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ReplicationRole;
 import com.azure.management.sql.ReplicationState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -16,17 +18,13 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Immutable
 public class ReplicationLinkInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationLinkInner.class);
+
     /*
      * Location of the server that contains this firewall rule.
      */
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
-
-    /*
-     * Type of resource this is.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /*
      * Legacy value indicating whether termination is allowed.  Currently
@@ -96,15 +94,6 @@ public class ReplicationLinkInner extends ProxyResource {
      */
     public String location() {
         return this.location;
-    }
-
-    /**
-     * Get the type property: Type of resource this is.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
     }
 
     /**
@@ -196,5 +185,13 @@ public class ReplicationLinkInner extends ProxyResource {
      */
     public ReplicationState replicationState() {
         return this.replicationState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

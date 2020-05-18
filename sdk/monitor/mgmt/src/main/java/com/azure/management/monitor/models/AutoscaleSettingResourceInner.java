@@ -7,7 +7,9 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.AutoscaleNotification;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AutoscaleSettingResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSettingResourceInner.class);
+
     /*
      * the collection of automatic scaling profiles that specify different
      * scaling parameters for different time periods. A maximum of 20 profiles
@@ -153,5 +157,24 @@ public class AutoscaleSettingResourceInner extends Resource {
     public AutoscaleSettingResourceInner withTargetResourceUri(String targetResourceUri) {
         this.targetResourceUri = targetResourceUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (profiles() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property profiles in model AutoscaleSettingResourceInner"));
+        } else {
+            profiles().forEach(e -> e.validate());
+        }
+        if (notifications() != null) {
+            notifications().forEach(e -> e.validate());
+        }
     }
 }

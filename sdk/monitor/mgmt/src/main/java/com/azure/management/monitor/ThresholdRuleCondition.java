@@ -5,18 +5,22 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import java.time.Duration;
 
 /** The ThresholdRuleCondition model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.ThresholdRuleCondition")
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@JsonFlatten
 @Fluent
-public final class ThresholdRuleCondition extends RuleCondition {
+public class ThresholdRuleCondition extends RuleCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThresholdRuleCondition.class);
+
     /*
      * the operator used to compare the data and the threshold.
      */
@@ -127,5 +131,20 @@ public final class ThresholdRuleCondition extends RuleCondition {
     public ThresholdRuleCondition withTimeAggregation(TimeAggregationOperator timeAggregation) {
         this.timeAggregation = timeAggregation;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (operator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property operator in model ThresholdRuleCondition"));
+        }
     }
 }

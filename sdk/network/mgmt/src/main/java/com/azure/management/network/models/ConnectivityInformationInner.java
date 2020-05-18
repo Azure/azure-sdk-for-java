@@ -5,14 +5,18 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ConnectionStatus;
 import com.azure.management.network.ConnectivityHop;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ConnectivityInformation model. */
 @Immutable
 public final class ConnectivityInformationInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityInformationInner.class);
+
     /*
      * List of hops between the source and the destination.
      */
@@ -116,5 +120,16 @@ public final class ConnectivityInformationInner {
      */
     public Integer probesFailed() {
         return this.probesFailed;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (hops() != null) {
+            hops().forEach(e -> e.validate());
+        }
     }
 }

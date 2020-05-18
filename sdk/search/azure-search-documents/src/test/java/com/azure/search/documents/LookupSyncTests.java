@@ -13,7 +13,6 @@ import com.azure.search.documents.test.environment.models.Hotel;
 import com.azure.search.documents.test.environment.models.HotelAddress;
 import com.azure.search.documents.test.environment.models.HotelRoom;
 import com.azure.search.documents.test.environment.models.ModelWithPrimitiveCollections;
-import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -25,22 +24,41 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 import static com.azure.search.documents.TestHelpers.assertObjectEquals;
+import static com.azure.search.documents.TestHelpers.convertToType;
+import static com.azure.search.documents.TestHelpers.generateRequestOptions;
+import static com.azure.search.documents.TestHelpers.uploadDocument;
 import static java.lang.Double.NEGATIVE_INFINITY;
 import static java.lang.Double.NaN;
 import static java.lang.Double.POSITIVE_INFINITY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LookupSyncTests extends SearchIndexClientTestBase {
-    private static final String INDEX_NAME = "hotels";
-
+public class LookupSyncTests extends SearchTestBase {
+    private final List<String> indexesToDelete = new ArrayList<>();
     private SearchIndexClient client;
+
+    @Override
+    protected void afterTest() {
+        super.afterTest();
+
+        SearchServiceClient serviceClient = getSearchServiceClientBuilder().buildClient();
+        for (String index : indexesToDelete) {
+            serviceClient.deleteIndex(index);
+        }
+    }
+
+    private SearchIndexClient setupClient(Supplier<String> indexSupplier) {
+        String indexName = indexSupplier.get();
+        indexesToDelete.add(indexName);
+
+        return getSearchIndexClientBuilder(indexName).buildClient();
+    }
 
     @Test
     public void canGetStaticallyTypedDocument() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         Hotel expected = prepareExpectedHotel();
         uploadDocument(client, expected);
@@ -52,8 +70,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canGetStaticallyTypedDocumentWithNullOrEmptyValues() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         Hotel expected = prepareEmptyHotel();
         uploadDocument(client, expected);
@@ -65,8 +82,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canGetStaticallyTypedDocumentWithPascalCaseFields() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         Hotel expected = preparePascalCaseFieldsHotel();
         uploadDocument(client, expected);
@@ -78,8 +94,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canRoundtripStaticallyTypedPrimitiveCollections() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        client = setupClient(this::setupIndexWithDataTypes);
 
         ModelWithPrimitiveCollections expected = preparePrimitivesModel();
         uploadDocument(client, expected);
@@ -91,52 +106,47 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void getStaticallyTypedDocumentSetsUnselectedFieldsToNull() throws ParseException {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         Hotel indexedDoc = prepareSelectedFieldsHotel();
         Hotel expected = new Hotel()
             .hotelName("Countryside Hotel")
-            .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.")
+            .description("Save up to 50% off traditional hotels.  Free WiFi, great location near downtown, "
+                + "full kitchen, washer & dryer, 24/7 support, bowling alley, fitness center and more.")
             .address(new HotelAddress().city("Durham"))
             .rooms(Arrays.asList(new HotelRoom().baseRate(2.44), new HotelRoom().baseRate(7.69)));
 
         uploadDocument(client, indexedDoc);
 
         List<String> selectedFields = Arrays.asList("Description", "HotelName", "Address/City", "Rooms/BaseRate");
-        Response<SearchDocument> response = client.getDocumentWithResponse(indexedDoc.hotelId(), selectedFields, generateRequestOptions(), Context.NONE);
+        Response<SearchDocument> response = client.getDocumentWithResponse(indexedDoc.hotelId(), selectedFields,
+            generateRequestOptions(), Context.NONE);
         Hotel actual = convertToType(response.getValue(), Hotel.class);
         assertObjectEquals(expected, actual, true);
     }
 
     @Test
     public void canGetDynamicDocumentWithNullOrEmptyValues() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
-        SearchDocument expectedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("HotelName", null);
-                put("Tags", Collections.emptyList());
-                put("ParkingIncluded", null);
-                put("LastRenovationDate", null);
-                put("Rating", null);
-                put("Location", null);
-                put("Address", null);
-                put("Rooms", Collections.singletonList(
-                    new SearchDocument(new HashMap<String, Object>() {
-                        {
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", Collections.emptyList());
-                        }
-                    }
-                )));
-            }
-        });
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+        expectedDoc.put("HotelName", null);
+        expectedDoc.put("Tags", Collections.emptyList());
+        expectedDoc.put("ParkingIncluded", null);
+        expectedDoc.put("LastRenovationDate", null);
+        expectedDoc.put("Rating", null);
+        expectedDoc.put("Location", null);
+        expectedDoc.put("Address", null);
+
+        SearchDocument room = new SearchDocument();
+        room.put("BaseRate", null);
+        room.put("BedOptions", null);
+        room.put("SleepsCount", null);
+        room.put("SmokingAllowed", null);
+        room.put("Tags", Collections.emptyList());
+
+        expectedDoc.put("Rooms", Collections.singletonList(room));
 
         uploadDocument(client, expectedDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
@@ -148,30 +158,23 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void getDynamicDocumentWithEmptyObjectsReturnsObjectsFullOfNulls() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
-        SearchDocument originalDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("Address", new SearchDocument());
-            }
-        });
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("HotelId", "1");
+        originalDoc.put("Address", new SearchDocument());
 
-        SearchDocument expectedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("Address", new SearchDocument(new HashMap<String, Object>() {
-                    {
-                        put("StreetAddress", null);
-                        put("City", null);
-                        put("StateProvince", null);
-                        put("Country", null);
-                        put("PostalCode", null);
-                    }
-                }));
-            }
-        });
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        SearchDocument address = new SearchDocument();
+        address.put("StreetAddress", null);
+        address.put("City", null);
+        address.put("StateProvince", null);
+        address.put("Country", null);
+        address.put("PostalCode", null);
+        expectedDoc.put("Address", address);
 
         uploadDocument(client, originalDoc);
         // Select only the fields set in the test case so we don't get superfluous data back.
@@ -183,36 +186,29 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void emptyDynamicallyTypedPrimitiveCollectionsRoundtripAsObjectArrays() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        client = setupClient(this::setupIndexWithDataTypes);
 
         String docKey = "3";
 
-        SearchDocument originalDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("Key", docKey);
-                put("Dates", new Object[]{});
-                put("Doubles", new Double[]{});
-                put("Bools", new boolean[]{});
-                put("Longs", new Long[]{});
-                put("Strings", new String[]{});
-                put("Ints", new int[]{});
-                put("Points", new Object[]{});
-            }
-        });
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("Key", docKey);
+        originalDoc.put("Dates", new Object[]{});
+        originalDoc.put("Doubles", new Double[]{});
+        originalDoc.put("Bools", new boolean[]{});
+        originalDoc.put("Longs", new Long[]{});
+        originalDoc.put("Strings", new String[]{});
+        originalDoc.put("Ints", new int[]{});
+        originalDoc.put("Points", new Object[]{});
 
-        SearchDocument expectedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("Key", docKey);
-                put("Doubles", Collections.emptyList());
-                put("Bools", Collections.emptyList());
-                put("Longs", Collections.emptyList());
-                put("Strings", Collections.emptyList());
-                put("Ints", Collections.emptyList());
-                put("Points", Collections.emptyList());
-                put("Dates", Collections.emptyList());
-            }
-        });
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("Key", docKey);
+        expectedDoc.put("Doubles", Collections.emptyList());
+        expectedDoc.put("Bools", Collections.emptyList());
+        expectedDoc.put("Longs", Collections.emptyList());
+        expectedDoc.put("Strings", Collections.emptyList());
+        expectedDoc.put("Ints", Collections.emptyList());
+        expectedDoc.put("Points", Collections.emptyList());
+        expectedDoc.put("Dates", Collections.emptyList());
 
         uploadDocument(client, originalDoc);
 
@@ -222,58 +218,43 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void emptyDynamicObjectsInCollectionExpandedOnGetWhenCollectionFieldSelected() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
-        SearchDocument originalDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("Rooms", Arrays.asList(
-                    new SearchDocument(),
-                    new SearchDocument(new HashMap<String, Object>() {
-                        {
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", Collections.emptyList());
-                        }
-                    }
-                )));
-            }
-        });
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("HotelId", "1");
 
-        SearchDocument expectedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("Rooms", Arrays.asList(
-                    new SearchDocument(new HashMap<String, Object>() {
-                        {
-                            put("Description", null);
-                            put("Description_fr", null);
-                            put("Type", null);
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", Collections.emptyList());
-                        }
-                    }),
-                    new SearchDocument(new HashMap<String, Object>() {
-                        {
-                            put("Description", null);
-                            put("Description_fr", null);
-                            put("Type", null);
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", Collections.emptyList());
-                        }
-                    }
-                )));
-            }
-        });
+        SearchDocument originalRoom = new SearchDocument();
+        originalRoom.put("BaseRate", null);
+        originalRoom.put("BedOptions", null);
+        originalRoom.put("SleepsCount", null);
+        originalRoom.put("SmokingAllowed", null);
+        originalRoom.put("Tags", Collections.emptyList());
+        originalDoc.put("Rooms", Arrays.asList(new SearchDocument(), originalRoom));
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        SearchDocument expectedRoom1 = new SearchDocument();
+        expectedRoom1.put("Description", null);
+        expectedRoom1.put("Description_fr", null);
+        expectedRoom1.put("Type", null);
+        expectedRoom1.put("BaseRate", null);
+        expectedRoom1.put("BedOptions", null);
+        expectedRoom1.put("SleepsCount", null);
+        expectedRoom1.put("SmokingAllowed", null);
+        expectedRoom1.put("Tags", Collections.emptyList());
+
+        SearchDocument expectedRoom2 = new SearchDocument();
+        expectedRoom2.put("Description", null);
+        expectedRoom2.put("Description_fr", null);
+        expectedRoom2.put("Type", null);
+        expectedRoom2.put("BaseRate", null);
+        expectedRoom2.put("BedOptions", null);
+        expectedRoom2.put("SleepsCount", null);
+        expectedRoom2.put("SmokingAllowed", null);
+        expectedRoom2.put("Tags", Collections.emptyList());
+
+        expectedDoc.put("Rooms", Arrays.asList(expectedRoom1, expectedRoom2));
 
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms");
@@ -284,8 +265,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void getDynamicDocumentCannotAlwaysDetermineCorrectType() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("HotelId", "1");
@@ -308,8 +288,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void canGetDocumentWithBase64EncodedKey() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         String complexKey = Base64.getEncoder().encodeToString(new byte[]{1, 2, 3, 4, 5});
 
@@ -322,8 +301,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void roundTrippingDateTimeOffsetNormalizesToUtc() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
         SearchDocument indexedDoc = new SearchDocument();
         indexedDoc.put("HotelId", "1");
@@ -339,43 +317,29 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void emptyDynamicObjectsOmittedFromCollectionOnGetWhenSubFieldsSelected() {
-        createHotelIndex();
-        client = getSearchIndexClientBuilder(INDEX_NAME).buildClient();
+        client = setupClient(this::createHotelIndex);
 
-        SearchDocument originalDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("Rooms", Arrays.asList(
-                    new SearchDocument(),
-                    new SearchDocument(new HashMap<String, Object>() {
-                        {
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", Collections.emptyList());
-                        }
-                    }
-                )));
-            }
-        });
+        SearchDocument originalDoc = new SearchDocument();
+        originalDoc.put("HotelId", "1");
 
-        SearchDocument expectedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("HotelId", "1");
-                put("Rooms", Collections.singletonList(
-                    new SearchDocument(new HashMap<String, Object>() {
-                        {
-                            put("BaseRate", null);
-                            put("BedOptions", null);
-                            put("SleepsCount", null);
-                            put("SmokingAllowed", null);
-                            put("Tags", Collections.emptyList());
-                        }
-                    }
-                )));
-            }
-        });
+        SearchDocument originalRoom = new SearchDocument();
+        originalRoom.put("BaseRate", null);
+        originalRoom.put("BedOptions", null);
+        originalRoom.put("SleepsCount", null);
+        originalRoom.put("SmokingAllowed", null);
+        originalRoom.put("Tags", Collections.emptyList());
+        originalDoc.put("Rooms", Arrays.asList(new SearchDocument(), originalRoom));
+
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("HotelId", "1");
+
+        SearchDocument expectedRoom = new SearchDocument();
+        expectedRoom.put("BaseRate", null);
+        expectedRoom.put("BedOptions", null);
+        expectedRoom.put("SleepsCount", null);
+        expectedRoom.put("SmokingAllowed", null);
+        expectedRoom.put("Tags", Collections.emptyList());
+        expectedDoc.put("Rooms", Collections.singletonList(expectedRoom));
 
         uploadDocument(client, originalDoc);
         List<String> selectedFields = Arrays.asList("HotelId", "Rooms/BaseRate", "Rooms/BedOptions", "Rooms/SleepsCount", "Rooms/SmokingAllowed", "Rooms/Tags");
@@ -386,39 +350,32 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
 
     @Test
     public void dynamicallyTypedPrimitiveCollectionsDoNotAllRoundtripCorrectly() {
-        String indexName = setupIndexWithDataTypes();
-        client = getSearchIndexClientBuilder(indexName).buildClient();
+        client = setupClient(this::setupIndexWithDataTypes);
 
         String docKey = "1";
         OffsetDateTime dateTime = OffsetDateTime.parse("2019-08-13T14:30:00Z");
         GeoPoint geoPoint = GeoPoint.create(1.0, 100.0);
 
-        SearchDocument indexedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("Key", docKey);
-                put("Dates", new OffsetDateTime[]{dateTime});
-                put("Doubles", new Double[]{0.0, 5.8, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN});
-                put("Bools", new Boolean[]{true, false});
-                put("Longs", new Long[]{9999999999999999L, 832372345832523L});
-                put("Strings", new String[]{"hello", "bye"});
-                put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
-                put("Points", new GeoPoint[]{geoPoint});
-            }
-        });
+        SearchDocument indexedDoc = new SearchDocument();
+        indexedDoc.put("Key", docKey);
+        indexedDoc.put("Dates", new OffsetDateTime[]{dateTime});
+        indexedDoc.put("Doubles", new Double[]{0.0, 5.8, POSITIVE_INFINITY, NEGATIVE_INFINITY, NaN});
+        indexedDoc.put("Bools", new Boolean[]{true, false});
+        indexedDoc.put("Longs", new Long[]{9999999999999999L, 832372345832523L});
+        indexedDoc.put("Strings", new String[]{"hello", "bye"});
+        indexedDoc.put("Ints", new int[]{1, 2, 3, 4, -13, 5, 0});
+        indexedDoc.put("Points", new GeoPoint[]{geoPoint});
 
         // This is the expected document when querying the document later
-        SearchDocument expectedDoc = new SearchDocument(new HashMap<String, Object>() {
-            {
-                put("Key", docKey);
-                put("Doubles", Arrays.asList(0.0, 5.8, "INF", "-INF", "NaN"));
-                put("Bools", Arrays.asList(true, false));
-                put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
-                put("Strings", Arrays.asList("hello", "bye"));
-                put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
-                put("Points", Collections.singletonList(geoPoint));
-                put("Dates", Collections.singletonList(dateTime));
-            }
-        });
+        SearchDocument expectedDoc = new SearchDocument();
+        expectedDoc.put("Key", docKey);
+        expectedDoc.put("Doubles", Arrays.asList(0.0, 5.8, "INF", "-INF", "NaN"));
+        expectedDoc.put("Bools", Arrays.asList(true, false));
+        expectedDoc.put("Longs", Arrays.asList(9999999999999999L, 832372345832523L));
+        expectedDoc.put("Strings", Arrays.asList("hello", "bye"));
+        expectedDoc.put("Ints", Arrays.asList(1, 2, 3, 4, -13, 5, 0));
+        expectedDoc.put("Points", Collections.singletonList(geoPoint));
+        expectedDoc.put("Dates", Collections.singletonList(dateTime));
 
         uploadDocument(client, indexedDoc);
 
@@ -438,7 +395,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
                 "concierge"))
             .parkingIncluded(false)
             .smokingAllowed(false)
-            .lastRenovationDate(DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
+            .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
             .rating(5)
             .location(GeoPoint.create(47.678581, -122.131577))
             .rooms(new ArrayList<>());
@@ -466,7 +423,7 @@ public class LookupSyncTests extends SearchIndexClientTestBase {
             .tags(Arrays.asList("24-hour front desk service", "coffee in lobby", "restaurant"))
             .parkingIncluded(false)
             .smokingAllowed(true)
-            .lastRenovationDate(DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
+            .lastRenovationDate(TestHelpers.DATE_FORMAT.parse("2010-06-27T00:00:00Z"))
             .rating(3)
             .location(GeoPoint.create(35.904160, -78.940483))
             .address(new HotelAddress().streetAddress("6910 Fayetteville Rd").city("Durham").stateProvince("NC").country("USA").postalCode("27713"))

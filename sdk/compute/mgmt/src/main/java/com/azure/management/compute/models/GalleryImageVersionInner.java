@@ -7,16 +7,20 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.GalleryImageVersionPropertiesProvisioningState;
 import com.azure.management.compute.GalleryImageVersionPublishingProfile;
 import com.azure.management.compute.GalleryImageVersionStorageProfile;
 import com.azure.management.compute.ReplicationStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryImageVersion model. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
+
     /*
      * The publishing profile of a gallery Image Version.
      */
@@ -80,22 +84,28 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the storageProfile value.
-     *
-     * @param storageProfile the storageProfile value to set
-     * @return the GalleryImageVersionInner object itself.
-     */
-    public GalleryImageVersionInner withStorageProfile(GalleryImageVersionStorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
-        return this;
-    }
-
-    /**
      * Get the replicationStatus property: This is the replication status of the gallery Image Version.
      *
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publishingProfile() != null) {
+            publishingProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (replicationStatus() != null) {
+            replicationStatus().validate();
+        }
     }
 }

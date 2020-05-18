@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HardwareProfile model. */
 @Fluent
 public final class HardwareProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
+
     /*
      * Specifies the size of the virtual machine. For more information about
      * virtual machine sizes, see [Sizes for virtual
@@ -62,5 +66,13 @@ public final class HardwareProfile {
     public HardwareProfile withVmSize(VirtualMachineSizeTypes vmSize) {
         this.vmSize = vmSize;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

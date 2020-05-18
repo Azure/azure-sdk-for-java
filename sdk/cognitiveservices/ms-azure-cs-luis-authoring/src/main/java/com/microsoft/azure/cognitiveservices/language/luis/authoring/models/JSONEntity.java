@@ -33,6 +33,12 @@ public class JSONEntity {
     private String entity;
 
     /**
+     * The role the entity plays in the utterance.
+     */
+    @JsonProperty(value = "role")
+    private String role;
+
+    /**
      * Get the startPos value.
      *
      * @return the startPos value
@@ -89,6 +95,26 @@ public class JSONEntity {
      */
     public JSONEntity withEntity(String entity) {
         this.entity = entity;
+        return this;
+    }
+
+    /**
+     * Get the role value.
+     *
+     * @return the role value
+     */
+    public String role() {
+        return this.role;
+    }
+
+    /**
+     * Set the role value.
+     *
+     * @param role the role value to set
+     * @return the JSONEntity object itself.
+     */
+    public JSONEntity withRole(String role) {
+        this.role = role;
         return this;
     }
 

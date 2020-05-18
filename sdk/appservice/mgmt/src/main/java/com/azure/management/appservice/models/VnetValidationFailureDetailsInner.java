@@ -6,8 +6,10 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.VnetValidationTestFailure;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationFailureDetailsInner.class);
+
     /*
      * A flag describing whether or not validation failed.
      */
@@ -65,5 +69,18 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     public VnetValidationFailureDetailsInner withFailedTests(List<VnetValidationTestFailure> failedTests) {
         this.failedTests = failedTests;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (failedTests() != null) {
+            failedTests().forEach(e -> e.validate());
+        }
     }
 }

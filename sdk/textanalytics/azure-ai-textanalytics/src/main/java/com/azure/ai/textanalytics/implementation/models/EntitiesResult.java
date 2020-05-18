@@ -26,7 +26,8 @@ public final class EntitiesResult {
     private List<DocumentError> errors;
 
     /*
-     * The statistics property.
+     * if showStats=true was specified in the request this field will contain
+     * information about the request payload.
      */
     @JsonProperty(value = "statistics")
     private RequestStatistics statistics;
@@ -39,7 +40,7 @@ public final class EntitiesResult {
 
     /**
      * Get the documents property: Response by document.
-     *
+     * 
      * @return the documents value.
      */
     public List<DocumentEntities> getDocuments() {
@@ -48,7 +49,7 @@ public final class EntitiesResult {
 
     /**
      * Set the documents property: Response by document.
-     *
+     * 
      * @param documents the documents value to set.
      * @return the EntitiesResult object itself.
      */
@@ -59,7 +60,7 @@ public final class EntitiesResult {
 
     /**
      * Get the errors property: Errors by document id.
-     *
+     * 
      * @return the errors value.
      */
     public List<DocumentError> getErrors() {
@@ -68,7 +69,7 @@ public final class EntitiesResult {
 
     /**
      * Set the errors property: Errors by document id.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the EntitiesResult object itself.
      */
@@ -78,8 +79,9 @@ public final class EntitiesResult {
     }
 
     /**
-     * Get the statistics property: The statistics property.
-     *
+     * Get the statistics property: if showStats=true was specified in the
+     * request this field will contain information about the request payload.
+     * 
      * @return the statistics value.
      */
     public RequestStatistics getStatistics() {
@@ -87,8 +89,9 @@ public final class EntitiesResult {
     }
 
     /**
-     * Set the statistics property: The statistics property.
-     *
+     * Set the statistics property: if showStats=true was specified in the
+     * request this field will contain information about the request payload.
+     * 
      * @param statistics the statistics value to set.
      * @return the EntitiesResult object itself.
      */
@@ -100,7 +103,7 @@ public final class EntitiesResult {
     /**
      * Get the modelVersion property: This field indicates which model is used
      * for scoring.
-     *
+     * 
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -110,7 +113,7 @@ public final class EntitiesResult {
     /**
      * Set the modelVersion property: This field indicates which model is used
      * for scoring.
-     *
+     * 
      * @param modelVersion the modelVersion value to set.
      * @return the EntitiesResult object itself.
      */

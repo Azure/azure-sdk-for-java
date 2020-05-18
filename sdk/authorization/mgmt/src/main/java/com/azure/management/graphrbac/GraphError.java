@@ -6,12 +6,16 @@ package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GraphError model. */
 @JsonFlatten
 @Fluent
 public class GraphError {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GraphError.class);
+
     /*
      * Error code.
      */
@@ -62,5 +66,13 @@ public class GraphError {
     public GraphError withMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

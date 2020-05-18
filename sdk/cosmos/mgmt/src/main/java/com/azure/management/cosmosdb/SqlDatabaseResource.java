@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SqlDatabaseResource model. */
 @Fluent
 public class SqlDatabaseResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDatabaseResource.class);
+
     /*
      * Name of the Cosmos DB SQL database
      */
@@ -34,5 +38,18 @@ public class SqlDatabaseResource {
     public SqlDatabaseResource withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model SqlDatabaseResource"));
+        }
     }
 }

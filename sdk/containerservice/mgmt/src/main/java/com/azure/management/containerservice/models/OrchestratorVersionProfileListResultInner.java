@@ -6,7 +6,9 @@ package com.azure.management.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerservice.OrchestratorVersionProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class OrchestratorVersionProfileListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfileListResultInner.class);
+
     /*
      * Id of the orchestrator version profile list result.
      */
@@ -83,5 +87,21 @@ public class OrchestratorVersionProfileListResultInner {
     public OrchestratorVersionProfileListResultInner withOrchestrators(List<OrchestratorVersionProfile> orchestrators) {
         this.orchestrators = orchestrators;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (orchestrators() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property orchestrators in model OrchestratorVersionProfileListResultInner"));
+        } else {
+            orchestrators().forEach(e -> e.validate());
+        }
     }
 }

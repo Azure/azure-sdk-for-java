@@ -5,12 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagedClusterLoadBalancerProfile model. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfile.class);
+
     /*
      * Desired managed outbound IPs for the cluster load balancer.
      */
@@ -21,7 +25,7 @@ public final class ManagedClusterLoadBalancerProfile {
      * Desired outbound IP Prefix resources for the cluster load balancer.
      */
     @JsonProperty(value = "outboundIPPrefixes")
-    private ManagedClusterLoadBalancerProfileOutboundIPPrefixes outboundIPPrefixes;
+    private ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes;
 
     /*
      * Desired outbound IP resources for the cluster load balancer.
@@ -57,23 +61,23 @@ public final class ManagedClusterLoadBalancerProfile {
     }
 
     /**
-     * Get the outboundIPPrefixes property: Desired outbound IP Prefix resources for the cluster load balancer.
+     * Get the outboundIpPrefixes property: Desired outbound IP Prefix resources for the cluster load balancer.
      *
-     * @return the outboundIPPrefixes value.
+     * @return the outboundIpPrefixes value.
      */
-    public ManagedClusterLoadBalancerProfileOutboundIPPrefixes outboundIPPrefixes() {
-        return this.outboundIPPrefixes;
+    public ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes() {
+        return this.outboundIpPrefixes;
     }
 
     /**
-     * Set the outboundIPPrefixes property: Desired outbound IP Prefix resources for the cluster load balancer.
+     * Set the outboundIpPrefixes property: Desired outbound IP Prefix resources for the cluster load balancer.
      *
-     * @param outboundIPPrefixes the outboundIPPrefixes value to set.
+     * @param outboundIpPrefixes the outboundIpPrefixes value to set.
      * @return the ManagedClusterLoadBalancerProfile object itself.
      */
-    public ManagedClusterLoadBalancerProfile withOutboundIPPrefixes(
-        ManagedClusterLoadBalancerProfileOutboundIPPrefixes outboundIPPrefixes) {
-        this.outboundIPPrefixes = outboundIPPrefixes;
+    public ManagedClusterLoadBalancerProfile withOutboundIpPrefixes(
+        ManagedClusterLoadBalancerProfileOutboundIpPrefixes outboundIpPrefixes) {
+        this.outboundIpPrefixes = outboundIpPrefixes;
         return this;
     }
 
@@ -115,5 +119,25 @@ public final class ManagedClusterLoadBalancerProfile {
     public ManagedClusterLoadBalancerProfile withEffectiveOutboundIPs(List<ResourceReference> effectiveOutboundIPs) {
         this.effectiveOutboundIPs = effectiveOutboundIPs;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (managedOutboundIPs() != null) {
+            managedOutboundIPs().validate();
+        }
+        if (outboundIpPrefixes() != null) {
+            outboundIpPrefixes().validate();
+        }
+        if (outboundIPs() != null) {
+            outboundIPs().validate();
+        }
+        if (effectiveOutboundIPs() != null) {
+            effectiveOutboundIPs().forEach(e -> e.validate());
+        }
     }
 }

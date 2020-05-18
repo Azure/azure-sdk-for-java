@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryDiskImage model. */
 @Immutable
 public class GalleryDiskImage {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryDiskImage.class);
+
     /*
      * This property indicates the size of the VHD to be created.
      */
@@ -39,5 +43,13 @@ public class GalleryDiskImage {
      */
     public HostCaching hostCaching() {
         return this.hostCaching;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

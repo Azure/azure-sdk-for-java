@@ -176,9 +176,7 @@ public class SearchServiceClientBuilderTests {
 
         StepVerifier.create(searchServiceAsyncClient.getHttpPipeline().send(
             request(searchServiceAsyncClient.getEndpoint())))
-            .assertNext(response -> {
-                assertEquals(200, response.getStatusCode());
-            })
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 

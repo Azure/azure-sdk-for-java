@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.ProximityPlacementGroupType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ProximityPlacementGroupInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProximityPlacementGroupInner.class);
+
     /*
      * Specifies the type of the proximity placement group. <br><br> Possible
      * values are: <br><br> **Standard** : Co-locate resources within an Azure
@@ -97,5 +101,13 @@ public class ProximityPlacementGroupInner extends Resource {
      */
     public List<SubResource> availabilitySets() {
         return this.availabilitySets;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

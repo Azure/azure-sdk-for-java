@@ -6,8 +6,10 @@ package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ConnectionMonitorDestination;
 import com.azure.management.network.ConnectionMonitorSource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -15,6 +17,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class ConnectionMonitorInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
+
     /*
      * Connection monitor location.
      */
@@ -170,5 +174,28 @@ public class ConnectionMonitorInner {
     public ConnectionMonitorInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
         this.monitoringIntervalInSeconds = monitoringIntervalInSeconds;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (source() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property source in model ConnectionMonitorInner"));
+        } else {
+            source().validate();
+        }
+        if (destination() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destination in model ConnectionMonitorInner"));
+        } else {
+            destination().validate();
+        }
     }
 }

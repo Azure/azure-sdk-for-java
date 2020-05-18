@@ -43,9 +43,9 @@ class SourceControlConfigurationsImpl extends WrapperImpl<SourceControlConfigura
     }
 
     @Override
-    public Observable<SourceControlConfiguration> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
+    public Observable<SourceControlConfiguration> getAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
         SourceControlConfigurationsInner client = this.inner();
-        return client.getAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion)
+        return client.getAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName)
         .map(new Func1<SourceControlConfigurationInner, SourceControlConfiguration>() {
             @Override
             public SourceControlConfiguration call(SourceControlConfigurationInner inner) {
@@ -55,15 +55,15 @@ class SourceControlConfigurationsImpl extends WrapperImpl<SourceControlConfigura
     }
 
     @Override
-    public Completable deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName, String apiVersion) {
+    public Completable deleteAsync(String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, String sourceControlConfigurationName) {
         SourceControlConfigurationsInner client = this.inner();
-        return client.deleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName, apiVersion).toCompletable();
+        return client.deleteAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, sourceControlConfigurationName).toCompletable();
     }
 
     @Override
-    public Observable<SourceControlConfiguration> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName, final String apiVersion) {
+    public Observable<SourceControlConfiguration> listAsync(final String resourceGroupName, final String clusterRp, final String clusterResourceName, final String clusterName) {
         SourceControlConfigurationsInner client = this.inner();
-        return client.listAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName, apiVersion)
+        return client.listAsync(resourceGroupName, clusterRp, clusterResourceName, clusterName)
         .flatMapIterable(new Func1<Page<SourceControlConfigurationInner>, Iterable<SourceControlConfigurationInner>>() {
             @Override
             public Iterable<SourceControlConfigurationInner> call(Page<SourceControlConfigurationInner> page) {

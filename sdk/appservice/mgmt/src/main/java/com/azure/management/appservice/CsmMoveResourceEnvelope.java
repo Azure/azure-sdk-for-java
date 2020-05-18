@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CsmMoveResourceEnvelope model. */
 @Fluent
 public final class CsmMoveResourceEnvelope {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmMoveResourceEnvelope.class);
+
     /*
      * The targetResourceGroup property.
      */
@@ -61,5 +65,13 @@ public final class CsmMoveResourceEnvelope {
     public CsmMoveResourceEnvelope withResources(List<String> resources) {
         this.resources = resources;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }
