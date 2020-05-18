@@ -539,7 +539,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         List<IncludedPath> includedPaths = new ArrayList<>();
         IncludedPath includedPath = new IncludedPath();
         includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
+        List<Index> indexes = new ArrayList<>();
         Index stringIndex = Index.range(DataType.STRING);
         BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "getPrecision", -1);
         indexes.add(stringIndex);

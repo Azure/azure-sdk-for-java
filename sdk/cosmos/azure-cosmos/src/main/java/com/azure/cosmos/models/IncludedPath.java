@@ -6,19 +6,18 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.IndexKind;
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Represents an included path of the IndexingPolicy in the Azure Cosmos DB database service.
  */
 public final class IncludedPath {
-    private Collection<Index> indexes;
+    private List<Index> indexes;
     private JsonSerializable jsonSerializable;
 
     /**
@@ -31,19 +30,11 @@ public final class IncludedPath {
     /**
      * Constructor.
      *
-     * @param jsonString the json string that represents the included path.
+     * @param path the included path.
      */
-    public IncludedPath(String jsonString) {
-        this.jsonSerializable = new JsonSerializable(jsonString);
-    }
-
-    /**
-     * Constructor.
-     *
-     * @param objectNode the object node that represents the included path.
-     */
-    IncludedPath(ObjectNode objectNode) {
-        this.jsonSerializable = new JsonSerializable(objectNode);
+    public IncludedPath(String path) {
+        this();
+        this.setPath(path);
     }
 
     /**
@@ -71,7 +62,7 @@ public final class IncludedPath {
      *
      * @return the included paths.
      */
-    public Collection<Index> getIndexes() {
+    public List<Index> getIndexes() {
         if (this.indexes == null) {
             this.indexes = this.getIndexCollection();
 
@@ -89,15 +80,15 @@ public final class IncludedPath {
      * @param indexes the indexes
      * @return the indexes
      */
-    public IncludedPath setIndexes(Collection<Index> indexes) {
+    public IncludedPath setIndexes(List<Index> indexes) {
         this.indexes = indexes;
         return this;
     }
 
-    private Collection<Index> getIndexCollection() {
+    private List<Index> getIndexCollection() {
         if (this.jsonSerializable.getPropertyBag() != null && this.jsonSerializable.getPropertyBag().has(Constants.Properties.INDEXES)) {
             ArrayNode jsonArray = (ArrayNode) this.jsonSerializable.getPropertyBag().get(Constants.Properties.INDEXES);
-            Collection<Index> result = new ArrayList<Index>();
+            List<Index> result = new ArrayList<Index>();
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 JsonNode jsonObject = jsonArray.get(i);
