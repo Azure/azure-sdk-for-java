@@ -62,6 +62,12 @@ public class IntegrationRuntimeSsisProperties {
     private List<CustomSetupBase> expressCustomSetupProperties;
 
     /**
+     * Package stores for the SSIS Integration Runtime.
+     */
+    @JsonProperty(value = "packageStores")
+    private List<PackageStore> packageStores;
+
+    /**
      * Get unmatched properties from the message are deserialized this collection.
      *
      * @return the additionalProperties value
@@ -198,6 +204,26 @@ public class IntegrationRuntimeSsisProperties {
      */
     public IntegrationRuntimeSsisProperties withExpressCustomSetupProperties(List<CustomSetupBase> expressCustomSetupProperties) {
         this.expressCustomSetupProperties = expressCustomSetupProperties;
+        return this;
+    }
+
+    /**
+     * Get package stores for the SSIS Integration Runtime.
+     *
+     * @return the packageStores value
+     */
+    public List<PackageStore> packageStores() {
+        return this.packageStores;
+    }
+
+    /**
+     * Set package stores for the SSIS Integration Runtime.
+     *
+     * @param packageStores the packageStores value to set
+     * @return the IntegrationRuntimeSsisProperties object itself.
+     */
+    public IntegrationRuntimeSsisProperties withPackageStores(List<PackageStore> packageStores) {
+        this.packageStores = packageStores;
         return this;
     }
 
