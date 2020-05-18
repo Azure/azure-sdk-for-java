@@ -7,6 +7,7 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 
 import java.time.Duration;
 
@@ -14,16 +15,14 @@ import java.time.Duration;
  * Code snippet for {@link FormTrainingAsyncClient}
  */
 public class FormTrainingAsyncClientJavaDocCodeSnippets {
-    private FormTrainingAsyncClient formTrainingAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient()
-        .getFormTrainingAsyncClient();
+    private FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for {@link FormTrainingAsyncClient} initialization
      */
     public void formTrainingAsyncClientInInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization
-        FormTrainingAsyncClient formTrainingAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient()
-            .getFormTrainingAsyncClient();
+        FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization
     }
 

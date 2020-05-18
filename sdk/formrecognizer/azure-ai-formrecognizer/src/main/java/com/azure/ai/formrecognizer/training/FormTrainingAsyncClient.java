@@ -19,6 +19,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -58,7 +59,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see FormRecognizerClientBuilder
  * @see FormRecognizerAsyncClient
  */
-@ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
+@ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
 public class FormTrainingAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
@@ -72,11 +73,27 @@ public class FormTrainingAsyncClient {
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
      */
-    // TODO (savaity): Should not be a public constructor, still deciding the best approach here,
-    //  to be redone in #10909
-    public FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
+    FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
+    }
+
+    /**
+     * Creates a new {@link FormRecognizerAsyncClient} object. The new {@code FormTrainingAsyncClient}
+     * uses the same request policy pipeline as the {@code FormTrainingAsyncClient}.
+     *
+     * @return A new {@code FormRecognizerAsyncClient} object.
+     */
+    public FormRecognizerAsyncClient getFormRecognizerAsyncClient() {
+        return new FormRecognizerClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline()).buildAsyncClient();
+    }
+
+    HttpPipeline getHttpPipeline() {
+        return service.getHttpPipeline();
+    }
+
+    String getEndpoint() {
+        return service.getEndpoint();
     }
 
     /**

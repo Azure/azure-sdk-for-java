@@ -33,7 +33,7 @@ import java.time.Duration;
  * @see FormRecognizerClientBuilder
  * @see FormRecognizerClient
  */
-@ServiceClient(builder = FormRecognizerClientBuilder.class)
+@ServiceClient(builder = FormTrainingClientBuilder.class)
 public class FormTrainingClient {
 
     private final FormTrainingAsyncClient client;
@@ -44,9 +44,19 @@ public class FormTrainingClient {
      *
      * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
      */
-    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
-    public FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
+    FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
         this.client = formTrainingAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link FormRecognizerClient} object. The new {@code FormTrainingClient}
+     * uses the same request policy pipeline as the {@code FormTrainingClient}.
+     *
+     * @return A new {@code FormRecognizerClient} object.
+     */
+    public FormRecognizerClient getFormRecognizerClient() {
+        return new FormRecognizerClientBuilder().endpoint(client.getEndpoint()).pipeline(client.getHttpPipeline())
+            .buildClient();
     }
 
     /**

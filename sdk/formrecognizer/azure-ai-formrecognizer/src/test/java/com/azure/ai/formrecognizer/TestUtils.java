@@ -101,7 +101,6 @@ final class TestUtils {
         return JacksonAdapter.createDefaultSerializerAdapter();
     }
 
-
     /**
      * Returns a stream of arguments that includes all combinations of eligible {@link HttpClient HttpClients} and
      * service versions that should be tested.
