@@ -104,7 +104,7 @@ public interface ScaleRule extends HasInner<ScaleRuleInner>, HasParent<Autoscale
      *
      * @return the cooldown value
      */
-    Duration coolDown();
+    Duration cooldown();
 
     /** The entirety of an autoscale profile scale rule definition. */
     interface Definition
