@@ -7,7 +7,7 @@ import com.azure.management.network.models.ApplicationGatewayRequestRoutingRuleI
 import com.azure.management.network.models.HasBackendPort;
 import com.azure.management.network.models.HasCookieBasedAffinity;
 import com.azure.management.network.models.HasFrontendPort;
-import com.azure.management.network.models.HasHostName;
+import com.azure.management.network.models.HasHostname;
 import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.network.models.HasServerNameIndication;
 import com.azure.management.network.models.HasSslCertificate;
@@ -15,6 +15,7 @@ import com.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
+
 import java.util.Collection;
 
 /** A client-side representation of an application gateway request routing rule. */
@@ -26,7 +27,7 @@ public interface ApplicationGatewayRequestRoutingRule
         HasSslCertificate<ApplicationGatewaySslCertificate>,
         HasFrontendPort,
         HasBackendPort,
-        HasHostName,
+        HasHostname,
         HasCookieBasedAffinity,
         HasServerNameIndication {
 
@@ -74,7 +75,7 @@ public interface ApplicationGatewayRequestRoutingRule
          */
         interface WithAttach<ParentT>
             extends Attachable.InDefinition<ParentT>,
-                WithHostName<ParentT>,
+                WithHostname<ParentT>,
                 WithCookieBasedAffinity<ParentT>,
                 WithUrlPathMap<ParentT> {
         }
@@ -351,7 +352,7 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithHostName<ParentT> extends HasHostName.DefinitionStages.WithHostName<WithAttach<ParentT>> {
+        interface WithHostname<ParentT> extends HasHostname.DefinitionStages.WithHostname<WithAttach<ParentT>> {
         }
 
         /**
@@ -529,7 +530,7 @@ public interface ApplicationGatewayRequestRoutingRule
          */
         interface WithAttach<ParentT>
             extends Attachable.InUpdate<ParentT>,
-                WithHostName<ParentT>,
+                WithHostname<ParentT>,
                 WithCookieBasedAffinity<ParentT>,
                 WithRedirectConfig<ParentT> {
         }
@@ -822,7 +823,7 @@ public interface ApplicationGatewayRequestRoutingRule
          *
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithHostName<ParentT> extends HasHostName.UpdateDefinitionStages.WithHostName<WithAttach<ParentT>> {
+        interface WithHostname<ParentT> extends HasHostname.UpdateDefinitionStages.WithHostname<WithAttach<ParentT>> {
         }
 
         /**
