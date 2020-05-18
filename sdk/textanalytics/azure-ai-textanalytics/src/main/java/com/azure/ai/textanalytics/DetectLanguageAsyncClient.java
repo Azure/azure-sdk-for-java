@@ -28,12 +28,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toLanguageInput;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -121,7 +122,7 @@ class DetectLanguageAsyncClient {
             detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),
                 documentLanguage.getStatistics() == null
-                    ? null : Transforms.toTextDocumentStatistics(documentLanguage.getStatistics()),
+                    ? null : toTextDocumentStatistics(documentLanguage.getStatistics()),
                 null,
                 new DetectedLanguage(detectedLanguage.getName(),
                     detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore(),
