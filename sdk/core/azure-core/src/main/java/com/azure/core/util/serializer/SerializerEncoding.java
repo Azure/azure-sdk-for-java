@@ -34,14 +34,12 @@ public enum SerializerEncoding {
 
     static {
         // Encodings and suffixes from: https://tools.ietf.org/html/rfc6838
-        final Comparator<String> comparator = Comparator.comparing(Function.identity(), String::compareToIgnoreCase);
-
-        SUPPORTED_MIME_TYPES = new TreeMap<>(comparator);
+        SUPPORTED_MIME_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         SUPPORTED_MIME_TYPES.put("text/xml", XML);
         SUPPORTED_MIME_TYPES.put("application/xml", XML);
         SUPPORTED_MIME_TYPES.put("application/json", JSON);
 
-        SUPPORTED_SUFFIXES = new TreeMap<>(comparator);
+        SUPPORTED_SUFFIXES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         SUPPORTED_SUFFIXES.put("xml", XML);
         SUPPORTED_SUFFIXES.put("json", JSON);
     }
