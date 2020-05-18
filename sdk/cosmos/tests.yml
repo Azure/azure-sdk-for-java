@@ -4,6 +4,9 @@ variables:
   - template: ../../eng/pipelines/templates/variables/globals.yml
   - name: AdditionalArgs
     value: ''
+  # Setting a global $(SubscriptionConfiguration) for Cosmos
+  - name: SubscriptionConfiguration
+    value: ''
 
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
