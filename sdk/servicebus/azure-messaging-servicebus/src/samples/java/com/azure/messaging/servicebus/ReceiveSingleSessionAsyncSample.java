@@ -53,8 +53,7 @@ public class ReceiveSingleSessionAsyncSample {
                 // Process message
                 return receiver.complete(context.getMessage());
             }).subscribe(aVoid -> {
-                },
-                error -> System.err.println("Error occurred: " + error));
+            }, error -> System.err.println("Error occurred: " + error));
 
         // Subscribe is not a blocking call so we sleep here so the program does not end.
         TimeUnit.SECONDS.sleep(60);

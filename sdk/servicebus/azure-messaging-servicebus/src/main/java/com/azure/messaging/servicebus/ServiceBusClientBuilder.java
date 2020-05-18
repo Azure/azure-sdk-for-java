@@ -444,6 +444,9 @@ public final class ServiceBusClientBuilder {
     /**
      * Builder for creating {@link ServiceBusSenderClient} and {@link ServiceBusSenderAsyncClient} to publish messages
      * to Service Bus.
+     *
+     * @see ServiceBusSenderAsyncClient
+     * @see ServiceBusSenderClient
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusSenderClient.class, ServiceBusSenderAsyncClient.class})
     public final class ServiceBusSenderClientBuilder {
@@ -531,7 +534,10 @@ public final class ServiceBusClientBuilder {
 
     /**
      * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
-     * messages from a session aware Service Bus entity.
+     * messages from a <b>session aware</b> Service Bus entity.
+     *
+     * @see ServiceBusReceiverAsyncClient
+     * @see ServiceBusReceiverClient
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusSessionReceiverClientBuilder {
@@ -740,6 +746,9 @@ public final class ServiceBusClientBuilder {
     /**
      * Builder for creating {@link ServiceBusReceiverClient} and {@link ServiceBusReceiverAsyncClient} to consume
      * messages from Service Bus.
+     *
+     * @see ServiceBusReceiverAsyncClient
+     * @see ServiceBusReceiverClient
      */
     @ServiceClientBuilder(serviceClients = {ServiceBusReceiverClient.class, ServiceBusReceiverAsyncClient.class})
     public final class ServiceBusReceiverClientBuilder {

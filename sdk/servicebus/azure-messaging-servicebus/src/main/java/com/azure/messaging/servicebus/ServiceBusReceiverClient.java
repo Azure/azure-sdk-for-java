@@ -443,8 +443,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatchAt(maxMessages, sequenceNumber, sessionId)
-            .timeout(operationTimeout);
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatchAt(maxMessages, sequenceNumber,
+            sessionId).timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
         messages.subscribe();

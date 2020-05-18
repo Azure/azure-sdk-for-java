@@ -56,7 +56,7 @@ public class ReceiveMessageAzureIdentityAsyncSample {
 
                 return receiverAsyncClient.complete(message);
             })
-            .subscribe(aVoid -> {},
+            .subscribe(aVoid -> System.out.println("Processed message."),
                 error -> System.err.println("Error occurred while receiving message: " + error),
                 () -> System.out.println("Receiving complete."));
 

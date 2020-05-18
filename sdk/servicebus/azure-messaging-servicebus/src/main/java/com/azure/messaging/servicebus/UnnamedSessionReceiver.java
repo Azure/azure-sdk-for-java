@@ -257,12 +257,12 @@ class UnnamedSessionReceiver implements AutoCloseable {
                     lockedUntil);
                 sessionLockedUntil.set(lockedUntil);
             }, error -> {
-                logger.error("Error occurred while renewing lock token.", error);
-                cancelReceiveProcessor.onNext(new ServiceBusReceivedMessageContext(sessionId.get(), error));
-            }, () -> {
-                logger.verbose("Renewing session lock task completed.");
-                cancelReceiveProcessor.onComplete();
-            });
+                    logger.error("Error occurred while renewing lock token.", error);
+                    cancelReceiveProcessor.onNext(new ServiceBusReceivedMessageContext(sessionId.get(), error));
+                }, () -> {
+                    logger.verbose("Renewing session lock task completed.");
+                    cancelReceiveProcessor.onComplete();
+                });
     }
 
     private static final class SessionMessageManagement implements MessageManagementOperations {
