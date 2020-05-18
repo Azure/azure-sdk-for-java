@@ -7,12 +7,13 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The VirtualMachineScaleSetIdentity model. */
 @Fluent
-public final class VirtualMachineScaleSetIdentity {
+public class VirtualMachineScaleSetIdentity {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetIdentity.class);
 
     /*
@@ -45,6 +46,7 @@ public final class VirtualMachineScaleSetIdentity {
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
+    @JsonInclude(content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineScaleSetIdentityUserAssignedIdentities> userAssignedIdentities;
 
     /**
