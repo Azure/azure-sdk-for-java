@@ -617,7 +617,7 @@ public final class ModelBridgeInternal {
     }
 
     public static void addQueryInfoToFeedResponse(FeedResponse<?> feedResponse, QueryInfo queryInfo){
-        feedResponse.setQueryinfo(queryInfo);
+        feedResponse.setQueryInfo(queryInfo);
     }
 
     public static QueryInfo getQueryInfoFromFeedResponse(FeedResponse<?> response) {

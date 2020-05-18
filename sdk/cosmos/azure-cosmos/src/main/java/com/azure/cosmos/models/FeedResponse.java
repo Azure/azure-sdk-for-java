@@ -403,7 +403,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         return null;
     }
 
-    void setQueryinfo(QueryInfo queryInfo) {
+    void setQueryInfo(QueryInfo queryInfo) {
         this.queryInfo = queryInfo;
     }
 
