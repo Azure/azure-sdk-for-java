@@ -363,7 +363,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[api_reference_doc]: https://docs.microsoft.com/java/api/overview/azure/textanalytics?view=azure-java-preview
+[api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
