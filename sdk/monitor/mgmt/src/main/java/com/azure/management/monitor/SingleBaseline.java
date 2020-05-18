@@ -5,14 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The SingleBaseline model.
- */
+/** The SingleBaseline model. */
 @Fluent
 public final class SingleBaseline {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SingleBaseline.class);
+
     /*
      * the sensitivity of the baseline.
      */
@@ -33,7 +35,7 @@ public final class SingleBaseline {
 
     /**
      * Get the sensitivity property: the sensitivity of the baseline.
-     * 
+     *
      * @return the sensitivity value.
      */
     public BaselineSensitivity sensitivity() {
@@ -42,7 +44,7 @@ public final class SingleBaseline {
 
     /**
      * Set the sensitivity property: the sensitivity of the baseline.
-     * 
+     *
      * @param sensitivity the sensitivity value to set.
      * @return the SingleBaseline object itself.
      */
@@ -53,7 +55,7 @@ public final class SingleBaseline {
 
     /**
      * Get the lowThresholds property: The low thresholds of the baseline.
-     * 
+     *
      * @return the lowThresholds value.
      */
     public List<Double> lowThresholds() {
@@ -62,7 +64,7 @@ public final class SingleBaseline {
 
     /**
      * Set the lowThresholds property: The low thresholds of the baseline.
-     * 
+     *
      * @param lowThresholds the lowThresholds value to set.
      * @return the SingleBaseline object itself.
      */
@@ -73,7 +75,7 @@ public final class SingleBaseline {
 
     /**
      * Get the highThresholds property: The high thresholds of the baseline.
-     * 
+     *
      * @return the highThresholds value.
      */
     public List<Double> highThresholds() {
@@ -82,12 +84,35 @@ public final class SingleBaseline {
 
     /**
      * Set the highThresholds property: The high thresholds of the baseline.
-     * 
+     *
      * @param highThresholds the highThresholds value to set.
      * @return the SingleBaseline object itself.
      */
     public SingleBaseline withHighThresholds(List<Double> highThresholds) {
         this.highThresholds = highThresholds;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sensitivity() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sensitivity in model SingleBaseline"));
+        }
+        if (lowThresholds() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property lowThresholds in model SingleBaseline"));
+        }
+        if (highThresholds() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property highThresholds in model SingleBaseline"));
+        }
     }
 }

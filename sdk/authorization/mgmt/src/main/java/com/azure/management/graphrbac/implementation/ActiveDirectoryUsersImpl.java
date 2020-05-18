@@ -14,23 +14,18 @@ import com.azure.management.resources.fluentcore.arm.collection.implementation.C
 import com.azure.management.resources.fluentcore.model.HasInner;
 import reactor.core.publisher.Mono;
 
-/**
- * The implementation of Users and its parent interfaces.
- */
-class ActiveDirectoryUsersImpl
-        extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
-        implements ActiveDirectoryUsers,
-            HasInner<UsersInner> {
+/** The implementation of Users and its parent interfaces. */
+class ActiveDirectoryUsersImpl extends CreatableWrappersImpl<ActiveDirectoryUser, ActiveDirectoryUserImpl, UserInner>
+    implements ActiveDirectoryUsers, HasInner<UsersInner> {
     private final GraphRbacManager manager;
 
-    ActiveDirectoryUsersImpl(
-            final GraphRbacManager manager) {
+    ActiveDirectoryUsersImpl(final GraphRbacManager manager) {
         this.manager = manager;
     }
 
     @Override
     public PagedIterable<ActiveDirectoryUser> list() {
-        return wrapList(this.manager().inner().users().list(null));
+        return wrapList(this.manager().inner().users().list());
     }
 
     @Override
@@ -48,9 +43,12 @@ class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<ActiveDirectoryUser> getByIdAsync(String id) {
-        return manager().inner().users().getAsync(id)
-                .onErrorResume(GraphErrorException.class, e -> Mono.empty())
-                .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
+        return manager()
+            .inner()
+            .users()
+            .getAsync(id)
+            .onErrorResume(GraphErrorException.class, e -> Mono.empty())
+            .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 
     @Override
@@ -60,24 +58,36 @@ class ActiveDirectoryUsersImpl
 
     @Override
     public Mono<ActiveDirectoryUser> getByNameAsync(final String name) {
-        return manager().inner().users().getAsync(name)
-                .onErrorResume(GraphErrorException.class, e -> {
+        return manager()
+            .inner()
+            .users()
+            .getAsync(name)
+            .onErrorResume(
+                GraphErrorException.class,
+                e -> {
                     if (name.contains("@")) {
-                        return manager().inner().users().listAsync(
-                                String.format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_"))
-                        ).singleOrEmpty();
+                        return manager()
+                            .inner()
+                            .users()
+                            .listAsync(
+                                String
+                                    .format("mail eq '%s' or mailNickName eq '%s#EXT#'", name, name.replace("@", "_")),
+                                null)
+                            .singleOrEmpty();
                     } else {
-                        return manager().inner().users().listAsync(
-                                String.format("displayName eq '%s'", name)
-                        ).singleOrEmpty();
+                        return manager()
+                            .inner()
+                            .users()
+                            .listAsync(String.format("displayName eq '%s'", name), null)
+                            .singleOrEmpty();
                     }
                 })
-                .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
+            .map(userInner -> new ActiveDirectoryUserImpl(userInner, manager()));
     }
 
     @Override
     public PagedFlux<ActiveDirectoryUser> listAsync() {
-        return wrapPageAsync(this.inner().listAsync(null));
+        return wrapPageAsync(this.inner().listAsync());
     }
 
     @Override

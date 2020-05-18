@@ -3,20 +3,24 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.AppServicePlan;
-import com.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.azure.management.appservice.CustomHostnameDnsRecordType;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.appservice.WebApp;
 import com.azure.management.resources.fluentcore.arm.CountryIsoCode;
 import com.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.samples.Utils;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 
 import java.io.File;
+import java.util.Locale;
 
 
 /**
@@ -64,7 +68,7 @@ public final class ManageWebAppWithDomainSsl {
             // Create a second web app with the same app service plan
 
             System.out.println("Creating another web app " + app2Name + "...");
-            AppServicePlan plan = azure.appServices().appServicePlans().getById(app1.appServicePlanId());
+            AppServicePlan plan = azure.appServicePlans().getById(app1.appServicePlanId());
             WebApp app2 = azure.webApps().define(app2Name)
                     .withExistingWindowsPlan(plan)
                     .withExistingResourceGroup(rgName)
@@ -78,7 +82,7 @@ public final class ManageWebAppWithDomainSsl {
 
             System.out.println("Purchasing a domain " + domainName + "...");
 
-            AppServiceDomain domain = azure.appServices().domains().define(domainName)
+            AppServiceDomain domain = azure.appServiceDomains().define(domainName)
                     .withExistingResourceGroup(rgName)
                     .defineRegistrantContact()
                         .withFirstName("Jon")
@@ -107,7 +111,7 @@ public final class ManageWebAppWithDomainSsl {
                     .defineHostnameBinding()
                         .withAzureManagedDomain(domain)
                         .withSubDomain(app1Name)
-                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
                         .attach()
                     .apply();
 
@@ -117,8 +121,8 @@ public final class ManageWebAppWithDomainSsl {
             //============================================================
             // Create a self-singed SSL certificate
 
-            String pfxPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithDomainSsl.class.getSimpleName().toLowerCase() + ".pfx";
-            String cerPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithDomainSsl.class.getSimpleName().toLowerCase() + ".cer";
+            String pfxPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".pfx";
+            String cerPath = ManageWebAppWithDomainSsl.class.getResource("/").getPath() + "webapp_" + ManageWebAppWithDomainSsl.class.getSimpleName().toLowerCase(Locale.ROOT) + ".cer";
 
             System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
@@ -149,7 +153,7 @@ public final class ManageWebAppWithDomainSsl {
                     .withManagedHostnameBindings(domain, app2Name)
                     .defineSslBinding()
                         .forHostname(app2Name + "." + domainName)
-                        .withExistingCertificate(app1.hostNameSslStates().get(app1Name + "." + domainName).thumbprint())
+                        .withExistingCertificate(app1.hostnameSslStates().get(app1Name + "." + domainName).thumbprint())
                         .withSniBasedSsl()
                         .attach()
                     .apply();
@@ -186,12 +190,16 @@ public final class ManageWebAppWithDomainSsl {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
-            Azure azure = Azure.configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+            Azure azure = Azure
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

@@ -3,6 +3,7 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.ResourceIdentityType;
 import com.azure.management.compute.VirtualMachineIdentity;
 import com.azure.management.compute.VirtualMachineIdentityUserAssignedIdentities;
@@ -18,30 +19,30 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
 /**
- * Utility class to set Managed Service Identity (MSI) property on a virtual machine,
- * install or update MSI extension and create role assignments for the service principal
- * associated with the virtual machine.
+ * Utility class to set Managed Service Identity (MSI) property on a virtual machine, install or update MSI extension
+ * and create role assignments for the service principal associated with the virtual machine.
  */
 class VirtualMachineMsiHandler extends RoleAssignmentHelper {
     private final VirtualMachineImpl virtualMachine;
 
     private List<String> creatableIdentityKeys;
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
+    private final ClientLogger logger = new ClientLogger(VirtualMachineMsiHandler.class);
 
     /**
      * Creates VirtualMachineMsiHandler.
      *
      * @param rbacManager the graph rbac manager
-     * @param virtualMachine the virtual machine to which MSI extension needs to be installed and
-     *                       for which role assignments needs to be created
+     * @param virtualMachine the virtual machine to which MSI extension needs to be installed and for which role
+     *     assignments needs to be created
      */
-    VirtualMachineMsiHandler(final GraphRbacManager rbacManager,
-                             VirtualMachineImpl virtualMachine) {
+    VirtualMachineMsiHandler(final GraphRbacManager rbacManager, VirtualMachineImpl virtualMachine) {
         super(rbacManager, virtualMachine.taskGroup(), virtualMachine.idProvider());
         this.virtualMachine = virtualMachine;
         this.creatableIdentityKeys = new ArrayList<>();
@@ -49,9 +50,8 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that Local Managed Service Identity needs to be enabled in the virtual machine.
-     * If MSI extension is not already installed then it will be installed with access token
-     * port as 50342.
+     * Specifies that Local Managed Service Identity needs to be enabled in the virtual machine. If MSI extension is not
+     * already installed then it will be installed with access token port as 50342.
      *
      * @return VirtualMachineMsiHandler
      */
@@ -67,21 +67,26 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
      */
     VirtualMachineMsiHandler withoutLocalManagedServiceIdentity() {
         if (this.virtualMachine.inner().identity() == null
-                || this.virtualMachine.inner().identity().type() == null
-                || this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.NONE)
-                || this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
+            || this.virtualMachine.inner().identity().type() == null
+            || this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.NONE)
+            || this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.USER_ASSIGNED)) {
             return this;
         } else if (this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
             this.virtualMachine.inner().identity().withType(ResourceIdentityType.NONE);
-        } else if (this.virtualMachine.inner().identity().type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+        } else if (this
+            .virtualMachine
+            .inner()
+            .identity()
+            .type()
+            .equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
             this.virtualMachine.inner().identity().withType(ResourceIdentityType.USER_ASSIGNED);
         }
         return this;
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity
-     * of the virtual machine.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the virtual
+     * machine.
      *
      * @param creatableIdentity yet-to-be-created identity to be associated with the virtual machine
      * @return VirtualMachineMsiHandler
@@ -99,8 +104,8 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be set as one of the External Managed Service Identity
-     * of the virtual machine.
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the virtual
+     * machine.
      *
      * @param identity an identity to associate
      * @return VirtualMachineMsiHandler
@@ -112,8 +117,8 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
-     * Specifies that given identity should be removed from the list of External Managed Service Identity
-     * associated with the virtual machine machine.
+     * Specifies that given identity should be removed from the list of External Managed Service Identity associated
+     * with the virtual machine machine.
      *
      * @param identityId resource id of the identity
      * @return VirtualMachineMsiHandler
@@ -171,9 +176,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
         }
     }
 
-    /**
-     * Clear VirtualMachineMsiHandler post-run specific internal state.
-     */
+    /** Clear VirtualMachineMsiHandler post-run specific internal state. */
     void clear() {
         this.userAssignedIdentities = new HashMap<>();
     }
@@ -202,22 +205,25 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                 VirtualMachineIdentity currentIdentity = this.virtualMachine.inner().identity();
                 if (currentIdentity != null && currentIdentity.userAssignedIdentities() != null) {
                     for (String id : currentIdentity.userAssignedIdentities().keySet()) {
-                        currentIds.add(id.toLowerCase());
+                        currentIds.add(id.toLowerCase(Locale.ROOT));
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, VirtualMachineIdentityUserAssignedIdentities> entrySet : this.userAssignedIdentities.entrySet()) {
+                for (Map.Entry<String, VirtualMachineIdentityUserAssignedIdentities> entrySet
+                    : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
-                        removeIds.add(entrySet.getKey().toLowerCase());
+                        removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));
                     }
                 }
                 // If so check user want to remove all the identities
-                boolean removeAllCurrentIds = currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
+                boolean removeAllCurrentIds =
+                    currentIds.size() == removeIds.size() && currentIds.containsAll(removeIds);
                 if (removeAllCurrentIds) {
-                    // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the identities]
+                    // If so adjust  the identity type [Setting type to SYSTEM_ASSIGNED orNONE will remove all the
+                    // identities]
                     if (currentIdentity == null || currentIdentity.type() == null) {
                         vmUpdate.withIdentity(new VirtualMachineIdentity().withType(ResourceIdentityType.NONE));
-                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)) {
+                    } else if (currentIdentity.type().equals(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED)) {
                         vmUpdate.withIdentity(currentIdentity);
                         vmUpdate.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED);
                     } else if (currentIdentity.type().equals(ResourceIdentityType.USER_ASSIGNED)) {
@@ -229,9 +235,7 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
                     return true;
                 } else {
                     // Check user is asking to remove identities though there is no identities currently associated
-                    if (currentIds.size() == 0
-                            && removeIds.size() != 0
-                            && currentIdentity == null) {
+                    if (currentIds.size() == 0 && removeIds.size() != 0 && currentIdentity == null) {
                         // If so we are in a invalid state but we want to send user input to service and let service
                         // handle it (ignore or error).
                         vmUpdate.withIdentity(new VirtualMachineIdentity().withType(ResourceIdentityType.NONE));
@@ -251,8 +255,8 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
      */
     private void initVMIdentity(ResourceIdentityType identityType) {
         if (!identityType.equals(ResourceIdentityType.USER_ASSIGNED)
-                && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
-            throw new IllegalArgumentException("Invalid argument: " + identityType);
+            && !identityType.equals(ResourceIdentityType.SYSTEM_ASSIGNED)) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid argument: " + identityType));
         }
 
         VirtualMachineInner virtualMachineInner = this.virtualMachine.inner();
@@ -260,11 +264,11 @@ class VirtualMachineMsiHandler extends RoleAssignmentHelper {
             virtualMachineInner.withIdentity(new VirtualMachineIdentity());
         }
         if (virtualMachineInner.identity().type() == null
-                || virtualMachineInner.identity().type().equals(ResourceIdentityType.NONE)
-                || virtualMachineInner.identity().type().equals(identityType)) {
+            || virtualMachineInner.identity().type().equals(ResourceIdentityType.NONE)
+            || virtualMachineInner.identity().type().equals(identityType)) {
             virtualMachineInner.identity().withType(identityType);
         } else {
-            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED);
+            virtualMachineInner.identity().withType(ResourceIdentityType.SYSTEM_ASSIGNED__USER_ASSIGNED);
         }
     }
 }

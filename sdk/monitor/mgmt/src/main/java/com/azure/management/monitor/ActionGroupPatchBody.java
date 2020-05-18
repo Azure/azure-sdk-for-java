@@ -6,15 +6,17 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ActionGroupPatchBody model.
- */
+/** The ActionGroupPatchBody model. */
 @JsonFlatten
 @Fluent
 public class ActionGroupPatchBody {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionGroupPatchBody.class);
+
     /*
      * Resource tags
      */
@@ -30,7 +32,7 @@ public class ActionGroupPatchBody {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -39,7 +41,7 @@ public class ActionGroupPatchBody {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ActionGroupPatchBody object itself.
      */
@@ -49,10 +51,9 @@ public class ActionGroupPatchBody {
     }
 
     /**
-     * Get the enabled property: Indicates whether this action group is
-     * enabled. If an action group is not enabled, then none of its actions
-     * will be activated.
-     * 
+     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
+     * none of its actions will be activated.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -60,15 +61,22 @@ public class ActionGroupPatchBody {
     }
 
     /**
-     * Set the enabled property: Indicates whether this action group is
-     * enabled. If an action group is not enabled, then none of its actions
-     * will be activated.
-     * 
+     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
+     * none of its actions will be activated.
+     *
      * @param enabled the enabled value to set.
      * @return the ActionGroupPatchBody object itself.
      */
     public ActionGroupPatchBody withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

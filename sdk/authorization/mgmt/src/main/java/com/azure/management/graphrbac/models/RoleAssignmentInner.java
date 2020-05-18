@@ -6,14 +6,16 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoleAssignment model.
- */
+/** The RoleAssignment model. */
 @JsonFlatten
 @Fluent
 public class RoleAssignmentInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentInner.class);
+
     /*
      * The role assignment ID.
      */
@@ -58,16 +60,16 @@ public class RoleAssignmentInner {
 
     /**
      * Get the id property: The role assignment ID.
-     * 
+     *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
     /**
      * Get the name property: The role assignment name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -76,7 +78,7 @@ public class RoleAssignmentInner {
 
     /**
      * Get the type property: The role assignment type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -85,7 +87,7 @@ public class RoleAssignmentInner {
 
     /**
      * Get the scope property: The role assignment scope.
-     * 
+     *
      * @return the scope value.
      */
     public String scope() {
@@ -94,7 +96,7 @@ public class RoleAssignmentInner {
 
     /**
      * Set the scope property: The role assignment scope.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the RoleAssignmentInner object itself.
      */
@@ -105,7 +107,7 @@ public class RoleAssignmentInner {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     * 
+     *
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -114,7 +116,7 @@ public class RoleAssignmentInner {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     * 
+     *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentInner object itself.
      */
@@ -125,7 +127,7 @@ public class RoleAssignmentInner {
 
     /**
      * Get the principalId property: The principal ID.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -134,7 +136,7 @@ public class RoleAssignmentInner {
 
     /**
      * Set the principalId property: The principal ID.
-     * 
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentInner object itself.
      */
@@ -144,9 +146,8 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Get the canDelegate property: The Delegation flag for the role
-     * assignment.
-     * 
+     * Get the canDelegate property: The Delegation flag for the role assignment.
+     *
      * @return the canDelegate value.
      */
     public Boolean canDelegate() {
@@ -154,14 +155,21 @@ public class RoleAssignmentInner {
     }
 
     /**
-     * Set the canDelegate property: The Delegation flag for the role
-     * assignment.
-     * 
+     * Set the canDelegate property: The Delegation flag for the role assignment.
+     *
      * @param canDelegate the canDelegate value to set.
      * @return the RoleAssignmentInner object itself.
      */
     public RoleAssignmentInner withCanDelegate(Boolean canDelegate) {
         this.canDelegate = canDelegate;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

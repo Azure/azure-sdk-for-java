@@ -8,12 +8,9 @@ import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.compute.models.VirtualMachineScaleSetSkuInner;
 import com.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 
-/**
- * Implementation of VirtualMachineScaleSetSku.
- */
-class VirtualMachineScaleSetSkuImpl
-        extends WrapperImpl<VirtualMachineScaleSetSkuInner>
-        implements VirtualMachineScaleSetSku {
+/** Implementation of VirtualMachineScaleSetSku. */
+class VirtualMachineScaleSetSkuImpl extends WrapperImpl<VirtualMachineScaleSetSkuInner>
+    implements VirtualMachineScaleSetSku {
     VirtualMachineScaleSetSkuImpl(VirtualMachineScaleSetSkuInner inner) {
         super(inner);
     }
@@ -33,4 +30,3 @@ class VirtualMachineScaleSetSkuImpl
         return this.inner().capacity();
     }
 }
-

@@ -8,7 +8,7 @@ import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.implementation.ComputeManager;
-import com.azure.management.network.IPAllocationMethod;
+import com.azure.management.network.IpAllocationMethod;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerBackend;
 import com.azure.management.network.LoadBalancerFrontend;
@@ -26,42 +26,37 @@ import com.azure.management.network.LoadDistribution;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.Networks;
-import com.azure.management.network.PublicIPAddress;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddress;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
-import org.junit.jupiter.api.Assertions;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import org.junit.jupiter.api.Assertions;
 
-/**
- * Test of load balancer management.
- */
+/** Test of load balancer management. */
 public class TestLoadBalancer {
-    String TEST_ID = "";
-    Region REGION = Region.US_NORTH_CENTRAL;
-    String GROUP_NAME = "";
-    String LB_NAME = "";
-    String[] PIP_NAMES = null;
+    String testId = "";
+    Region region = Region.US_NORTH_CENTRAL;
+    String groupName = "";
+    String lbName = "";
+    String[] pipNames = null;
 
     private void initializeResourceNames(SdkContext sdkContext) {
-        TEST_ID = sdkContext.randomResourceName("", 8);
-        GROUP_NAME = "rg" + TEST_ID;
-        LB_NAME = "lb" + TEST_ID;
-        PIP_NAMES = new String[]{"pipa" + TEST_ID, "pipb" + TEST_ID};
+        testId = sdkContext.randomResourceName("", 8);
+        groupName = "rg" + testId;
+        lbName = "lb" + testId;
+        pipNames = new String[] {"pipa" + testId, "pipb" + testId};
     }
 
-    /**
-     * Internet-facing LB test with NAT pool test.
-     */
+    /** Internet-facing LB test with NAT pool test. */
     public class InternetWithNatPool extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final ComputeManager computeManager;
 
@@ -83,21 +78,23 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
-            ensurePIPs(resources.manager().publicIPAddresses());
-            PublicIPAddress pip0 = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+            ensurePIPs(resources.manager().publicIpAddresses());
+            PublicIpAddress pip0 = resources.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
 
             // Create a load balancer
-            LoadBalancer lb = resources.define(LB_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            LoadBalancer lb =
+                resources
+                    .define(lbName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
 
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
-                    .withProtocol(TransportProtocol.TCP)    // Required
+                    .withProtocol(TransportProtocol.TCP) // Required
                     .fromExistingPublicIPAddress(pip0)
                     .fromFrontendPort(81)
                     .toBackend("backend1")
-                    .toBackendPort(82)                    // Optionals
+                    .toBackendPort(82) // Optionals
                     .withProbe("tcpProbe1")
                     .withIdleTimeoutInMinutes(10)
                     .withLoadDistribution(LoadDistribution.SOURCE_IP)
@@ -113,13 +110,13 @@ public class TestLoadBalancer {
 
                     // Probes (Optional)
                     .defineTcpProbe("tcpProbe1")
-                    .withPort(25)               // Required
-                    .withIntervalInSeconds(15)  // Optionals
+                    .withPort(25) // Required
+                    .withIntervalInSeconds(15) // Optionals
                     .withNumberOfProbes(5)
                     .attach()
                     .defineHttpProbe("httpProbe1")
-                    .withRequestPath("/")       // Required
-                    .withIntervalInSeconds(13)  // Optionals
+                    .withRequestPath("/") // Required
+                    .withIntervalInSeconds(13) // Optionals
                     .withNumberOfProbes(4)
                     .attach()
 
@@ -127,7 +124,6 @@ public class TestLoadBalancer {
                     .defineBackend("backend1")
                     .withExistingVirtualMachines(existingVMs)
                     .attach()
-
                     .create();
 
             // Verify frontends
@@ -137,7 +133,7 @@ public class TestLoadBalancer {
             LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assertions.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assertions.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assertions.assertTrue(pip0.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
             // Verify backends
             Assertions.assertEquals(1, lb.backends().size());
@@ -168,7 +164,9 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            resource = resource.update()
+            resource =
+                resource
+                    .update()
                     .withoutBackend("backend1")
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatPool("natpool1")
@@ -206,9 +204,7 @@ public class TestLoadBalancer {
         }
     }
 
-    /**
-     * Internet-facing LB test with NAT rules.
-     */
+    /** Internet-facing LB test with NAT rules. */
     public class InternetWithNatRule extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final ComputeManager computeManager;
 
@@ -230,23 +226,25 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), this.computeManager, 2);
-            ensurePIPs(resources.manager().publicIPAddresses());
-            PublicIPAddress pip = resources.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+            ensurePIPs(resources.manager().publicIpAddresses());
+            PublicIpAddress pip = resources.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
             NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
             NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
 
             // Create a load balancer
-            LoadBalancer lb = resources.define(LB_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            LoadBalancer lb =
+                resources
+                    .define(lbName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
 
                     // Load balancing rules
                     .defineLoadBalancingRule("rule1")
-                    .withProtocol(TransportProtocol.TCP)    // Required
+                    .withProtocol(TransportProtocol.TCP) // Required
                     .fromExistingPublicIPAddress(pip)
                     .fromFrontendPort(81)
                     .toBackend("backend1")
-                    .toBackendPort(82)                     // Optionals
+                    .toBackendPort(82) // Optionals
                     .withProbe("tcpProbe1")
                     .withIdleTimeoutInMinutes(10)
                     .withLoadDistribution(LoadDistribution.SOURCE_IP)
@@ -255,44 +253,60 @@ public class TestLoadBalancer {
                     // Inbound NAT rules
                     .defineInboundNatRule("natrule1")
                     .withProtocol(TransportProtocol.TCP)
-                    .fromExistingPublicIPAddress(pip)   // Implicitly uses the same frontend because the PIP is the same
+                    .fromExistingPublicIPAddress(pip) // Implicitly uses the same frontend because the PIP is the same
                     .fromFrontendPort(88)
                     .attach()
 
                     // Probes (Optional)
                     .defineTcpProbe("tcpProbe1")
-                    .withPort(25)               // Required
-                    .withIntervalInSeconds(15)  // Optionals
+                    .withPort(25) // Required
+                    .withIntervalInSeconds(15) // Optionals
                     .withNumberOfProbes(5)
                     .attach()
                     .defineHttpProbe("httpProbe1")
-                    .withRequestPath("/")       // Required
-                    .withIntervalInSeconds(13)  // Optionals
+                    .withRequestPath("/") // Required
+                    .withIntervalInSeconds(13) // Optionals
                     .withNumberOfProbes(4)
                     .attach()
-
                     .create();
 
             String backendName = lb.backends().values().iterator().next().name();
             String frontendName = lb.frontends().values().iterator().next().name();
 
             // Connect NICs explicitly
-            nic1.update()
-                    .withExistingLoadBalancerBackend(lb, backendName)
-                    .withExistingLoadBalancerInboundNatRule(lb, "natrule1")
-                    .apply();
+            nic1
+                .update()
+                .withExistingLoadBalancerBackend(lb, backendName)
+                .withExistingLoadBalancerInboundNatRule(lb, "natrule1")
+                .apply();
             TestNetworkInterface.printNic(nic1);
-            Assertions.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
-                    .equalsIgnoreCase(backendName));
-            Assertions.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerInboundNatRules().get(0).name()
-                    .equalsIgnoreCase("natrule1"));
+            Assertions
+                .assertTrue(
+                    nic1
+                        .primaryIPConfiguration()
+                        .listAssociatedLoadBalancerBackends()
+                        .get(0)
+                        .name()
+                        .equalsIgnoreCase(backendName));
+            Assertions
+                .assertTrue(
+                    nic1
+                        .primaryIPConfiguration()
+                        .listAssociatedLoadBalancerInboundNatRules()
+                        .get(0)
+                        .name()
+                        .equalsIgnoreCase("natrule1"));
 
-            nic2.update()
-                    .withExistingLoadBalancerBackend(lb, backendName)
-                    .apply();
+            nic2.update().withExistingLoadBalancerBackend(lb, backendName).apply();
             TestNetworkInterface.printNic(nic2);
-            Assertions.assertTrue(nic2.primaryIPConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
-                    .equalsIgnoreCase(backendName));
+            Assertions
+                .assertTrue(
+                    nic2
+                        .primaryIPConfiguration()
+                        .listAssociatedLoadBalancerBackends()
+                        .get(0)
+                        .name()
+                        .equalsIgnoreCase(backendName));
 
             // Verify frontends
             Assertions.assertEquals(1, lb.frontends().size());
@@ -302,7 +316,7 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(frontend);
             Assertions.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
             pip.refresh();
             Assertions.assertTrue(pip.getAssignedLoadBalancerFrontend().name().equalsIgnoreCase(frontendName));
@@ -350,24 +364,20 @@ public class TestLoadBalancer {
             NetworkInterface nic2 = nics.get(1);
 
             // Remove the NIC associations
-            nic1.update()
-                    .withoutLoadBalancerBackends()
-                    .withoutLoadBalancerInboundNatRules()
-                    .apply();
+            nic1.update().withoutLoadBalancerBackends().withoutLoadBalancerInboundNatRules().apply();
             Assertions.assertTrue(nic1.primaryIPConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
 
-            nic2.update()
-                    .withoutLoadBalancerBackends()
-                    .withoutLoadBalancerInboundNatRules()
-                    .apply();
+            nic2.update().withoutLoadBalancerBackends().withoutLoadBalancerInboundNatRules().apply();
             Assertions.assertTrue(nic2.primaryIPConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
 
             // Update the load balancer
-            ensurePIPs(resource.manager().publicIPAddresses());
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[1]);
-            resource = resource.update()
+            ensurePIPs(resource.manager().publicIpAddresses());
+            PublicIpAddress pip = resource.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[1]);
+            resource =
+                resource
+                    .update()
                     .updatePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(pip)
+                    .withExistingPublicIpAddress(pip)
                     .parent()
                     .withoutLoadBalancingRule("rule1")
                     .withoutInboundNatRule("natrule1")
@@ -384,15 +394,13 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(frontend);
             Assertions.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
             return resource;
         }
     }
 
-    /**
-     * Internet-facing minimalistic LB test without LB rules, only a NAT rule.
-     */
+    /** Internet-facing minimalistic LB test without LB rules, only a NAT rule. */
     public class InternetNatOnly extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final ComputeManager computeManager;
 
@@ -414,15 +422,21 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(resources.manager().networks(), computeManager, 2);
-            Creatable<PublicIPAddress> pipDef = resources.manager().publicIPAddresses().define(PIP_NAMES[0])
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
-                    .withLeafDomainLabel(PIP_NAMES[0]);
+            Creatable<PublicIpAddress> pipDef =
+                resources
+                    .manager()
+                    .publicIpAddresses()
+                    .define(pipNames[0])
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
+                    .withLeafDomainLabel(pipNames[0]);
 
             // Create a load balancer
-            LoadBalancer lb = resources.define(LB_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            LoadBalancer lb =
+                resources
+                    .define(lbName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
                     // Inbound NAT rule
                     .defineInboundNatRule("natrule1")
                     .withProtocol(TransportProtocol.TCP)
@@ -442,7 +456,7 @@ public class TestLoadBalancer {
             Assertions.assertEquals(0, lb.privateFrontends().size());
             LoadBalancerPublicFrontend frontend = lb.publicFrontends().values().iterator().next();
             Assertions.assertNotNull(frontend);
-            Assertions.assertNotNull(frontend.publicIPAddressId());
+            Assertions.assertNotNull(frontend.publicIpAddressId());
 
             // Verify probes
             Assertions.assertTrue(lb.tcpProbes().isEmpty());
@@ -459,10 +473,10 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(natRule.frontend());
             Assertions.assertTrue(natRule.frontend().isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) natRule.frontend();
-            PublicIPAddress pip = publicFrontend.getPublicIPAddress();
+            PublicIpAddress pip = publicFrontend.getPublicIpAddress();
             Assertions.assertNotNull(pip);
-            Assertions.assertEquals(pip.name(), PIP_NAMES[0]);
-            Assertions.assertEquals(pip.leafDomainLabel(), PIP_NAMES[0]);
+            Assertions.assertEquals(pip.name(), pipNames[0]);
+            Assertions.assertEquals(pip.leafDomainLabel(), pipNames[0]);
             Assertions.assertEquals(88, natRule.frontendPort());
 
             // Verify backends
@@ -471,7 +485,8 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(backend);
             Assertions.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
-                Assertions.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+                Assertions
+                    .assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
             }
 
             return lb;
@@ -484,15 +499,21 @@ public class TestLoadBalancer {
             LoadBalancerInboundNatRule natRule = resource.inboundNatRules().values().iterator().next();
             Assertions.assertNotNull(natRule);
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) natRule.frontend();
-            PublicIPAddress pip = resource.manager().publicIPAddresses().define(PIP_NAMES[1])
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
-                    .withLeafDomainLabel(PIP_NAMES[1])
+            PublicIpAddress pip =
+                resource
+                    .manager()
+                    .publicIpAddresses()
+                    .define(pipNames[1])
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
+                    .withLeafDomainLabel(pipNames[1])
                     .create();
 
-            resource = resource.update()
+            resource =
+                resource
+                    .update()
                     .updatePublicFrontend(publicFrontend.name())
-                    .withExistingPublicIPAddress(pip)
+                    .withExistingPublicIpAddress(pip)
                     .parent()
                     .defineBackend("backend2")
                     .attach()
@@ -510,7 +531,7 @@ public class TestLoadBalancer {
             LoadBalancerFrontend frontend = resource.frontends().get(publicFrontend.name());
             Assertions.assertTrue(frontend.isPublic());
             publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
             Assertions.assertEquals(0, publicFrontend.loadBalancingRules().size());
 
             // Verify probes
@@ -531,9 +552,7 @@ public class TestLoadBalancer {
         }
     }
 
-    /**
-     * Internet-facing minimalistic LB test.
-     */
+    /** Internet-facing minimalistic LB test. */
     public class InternetMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final ComputeManager computeManager;
 
@@ -558,9 +577,11 @@ public class TestLoadBalancer {
             String pipDnsLabel = resources.manager().getSdkContext().randomResourceName("pip", 20);
 
             // Create a load balancer
-            LoadBalancer lb = resources.define(LB_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            LoadBalancer lb =
+                resources
+                    .define(lbName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
                     // LB rule
                     .defineLoadBalancingRule("lbrule1")
                     .withProtocol(TransportProtocol.TCP)
@@ -576,10 +597,12 @@ public class TestLoadBalancer {
             Assertions.assertEquals(0, lb.privateFrontends().size());
             LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assertions.assertEquals(1, frontend.loadBalancingRules().size());
-            Assertions.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
+            Assertions
+                .assertTrue(
+                    "lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             Assertions.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            PublicIPAddress pip = publicFrontend.getPublicIPAddress();
+            PublicIpAddress pip = publicFrontend.getPublicIpAddress();
             Assertions.assertNotNull(pip);
             Assertions.assertTrue(pip.leafDomainLabel().equalsIgnoreCase(pipDnsLabel));
 
@@ -602,7 +625,8 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(backend);
             Assertions.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
-                Assertions.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+                Assertions
+                    .assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
             }
 
             return lb;
@@ -610,17 +634,19 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
-            ensurePIPs(resource.manager().publicIPAddresses());
-            PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+            ensurePIPs(resource.manager().publicIpAddresses());
+            PublicIpAddress pip = resource.manager().publicIpAddresses().getByResourceGroup(groupName, pipNames[0]);
             Assertions.assertNotNull(pip);
             LoadBalancerBackend backend = resource.backends().values().iterator().next();
             Assertions.assertNotNull(backend);
             LoadBalancingRule lbRule = resource.loadBalancingRules().get("lbrule1");
             Assertions.assertNotNull(lbRule);
 
-            resource = resource.update()
+            resource =
+                resource
+                    .update()
                     .updatePublicFrontend(lbRule.frontend().name())
-                    .withExistingPublicIPAddress(pip)
+                    .withExistingPublicIpAddress(pip)
                     .parent()
                     .defineTcpProbe("tcpprobe")
                     .withPort(22)
@@ -655,7 +681,7 @@ public class TestLoadBalancer {
             LoadBalancerFrontend frontend = lbRule.frontend();
             Assertions.assertTrue(frontend.isPublic());
             LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+            Assertions.assertTrue(pip.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
             Assertions.assertEquals(2, publicFrontend.loadBalancingRules().size());
 
             // Verify probes
@@ -699,9 +725,7 @@ public class TestLoadBalancer {
         }
     }
 
-    /**
-     * Internal minimalistic LB test.
-     */
+    /** Internal minimalistic LB test. */
     public class InternalMinimal extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final ComputeManager computeManager;
         private Network network;
@@ -729,9 +753,11 @@ public class TestLoadBalancer {
             this.network = existingVMs[0].getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
 
             // Create a load balancer
-            LoadBalancer lb = resources.define(LB_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            LoadBalancer lb =
+                resources
+                    .define(lbName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
                     // LB rule
                     .defineLoadBalancingRule("lbrule1")
                     .withProtocol(TransportProtocol.TCP)
@@ -748,12 +774,14 @@ public class TestLoadBalancer {
             LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assertions.assertEquals(1, frontend.loadBalancingRules().size());
             Assertions.assertFalse(frontend.isPublic());
-            Assertions.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
+            Assertions
+                .assertTrue(
+                    "lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assertions.assertTrue(network.id().equalsIgnoreCase(privateFrontend.networkId()));
-            Assertions.assertNotNull(privateFrontend.privateIPAddress());
+            Assertions.assertNotNull(privateFrontend.privateIpAddress());
             Assertions.assertTrue("subnet1".equalsIgnoreCase(privateFrontend.subnetName()));
-            Assertions.assertEquals(IPAllocationMethod.DYNAMIC, privateFrontend.privateIPAllocationMethod());
+            Assertions.assertEquals(IpAllocationMethod.DYNAMIC, privateFrontend.privateIpAllocationMethod());
 
             // Verify TCP probes
             Assertions.assertEquals(0, lb.tcpProbes().size());
@@ -776,7 +804,8 @@ public class TestLoadBalancer {
 
             Assertions.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
-                Assertions.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+                Assertions
+                    .assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
             }
 
             return lb;
@@ -788,10 +817,12 @@ public class TestLoadBalancer {
             Assertions.assertNotNull(backend);
             LoadBalancingRule lbRule = resource.loadBalancingRules().get("lbrule1");
             Assertions.assertNotNull(lbRule);
-            resource = resource.update()
+            resource =
+                resource
+                    .update()
                     .updatePrivateFrontend(lbRule.frontend().name())
                     .withExistingSubnet(this.network, "subnet2")
-                    .withPrivateIPAddressStatic("10.0.0.13")
+                    .withPrivateIpAddressStatic("10.0.0.13")
                     .parent()
                     .defineTcpProbe("tcpprobe")
                     .withPort(22)
@@ -828,8 +859,8 @@ public class TestLoadBalancer {
             Assertions.assertFalse(frontend.isPublic());
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assertions.assertTrue("subnet2".equalsIgnoreCase(privateFrontend.subnetName()));
-            Assertions.assertEquals(IPAllocationMethod.STATIC, privateFrontend.privateIPAllocationMethod());
-            Assertions.assertTrue("10.0.0.13".equalsIgnoreCase(privateFrontend.privateIPAddress()));
+            Assertions.assertEquals(IpAllocationMethod.STATIC, privateFrontend.privateIpAllocationMethod());
+            Assertions.assertTrue("10.0.0.13".equalsIgnoreCase(privateFrontend.privateIpAddress()));
             Assertions.assertEquals(2, privateFrontend.loadBalancingRules().size());
 
             // Verify probes
@@ -873,9 +904,7 @@ public class TestLoadBalancer {
         }
     }
 
-    /**
-     * Basic SKU load balancer with zoned private
-     */
+    /** Basic SKU load balancer with zoned private */
     public class InternalWithZone extends TestTemplate<LoadBalancer, LoadBalancers> {
         private final ComputeManager computeManager;
         private Network network;
@@ -886,7 +915,7 @@ public class TestLoadBalancer {
          * @param computeManager compute manager
          */
         public InternalWithZone(ComputeManager computeManager) {
-            REGION = Region.US_EAST2;
+            region = Region.US_EAST2;
             initializeResourceNames(computeManager.getSdkContext());
             this.computeManager = computeManager;
         }
@@ -905,9 +934,11 @@ public class TestLoadBalancer {
             this.network = existingVMs[0].getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
 
             // Create a load balancer
-            LoadBalancer lb = resources.define(LB_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            LoadBalancer lb =
+                resources
+                    .define(lbName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
                     // LB rule
                     .defineLoadBalancingRule("lbrule1")
                     .withProtocol(TransportProtocol.TCP)
@@ -930,12 +961,14 @@ public class TestLoadBalancer {
             LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
             Assertions.assertEquals(1, frontend.loadBalancingRules().size());
             Assertions.assertFalse(frontend.isPublic());
-            Assertions.assertTrue("lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
+            Assertions
+                .assertTrue(
+                    "lbrule1".equalsIgnoreCase(frontend.loadBalancingRules().values().iterator().next().name()));
             LoadBalancerPrivateFrontend privateFrontend = (LoadBalancerPrivateFrontend) frontend;
             Assertions.assertTrue(network.id().equalsIgnoreCase(privateFrontend.networkId()));
-            Assertions.assertNotNull(privateFrontend.privateIPAddress());
+            Assertions.assertNotNull(privateFrontend.privateIpAddress());
             Assertions.assertTrue("subnet1".equalsIgnoreCase(privateFrontend.subnetName()));
-            Assertions.assertEquals(IPAllocationMethod.DYNAMIC, privateFrontend.privateIPAllocationMethod());
+            Assertions.assertEquals(IpAllocationMethod.DYNAMIC, privateFrontend.privateIpAllocationMethod());
             // Verify frontend zone
             Assertions.assertNotNull(privateFrontend.availabilityZones());
             Assertions.assertFalse(privateFrontend.availabilityZones().isEmpty());
@@ -962,7 +995,8 @@ public class TestLoadBalancer {
 
             Assertions.assertEquals(2, backend.backendNicIPConfigurationNames().size());
             for (VirtualMachine vm : existingVMs) {
-                Assertions.assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
+                Assertions
+                    .assertTrue(backend.backendNicIPConfigurationNames().containsKey(vm.primaryNetworkInterfaceId()));
             }
 
             return lb;
@@ -978,13 +1012,16 @@ public class TestLoadBalancer {
     }
 
     // Create VNet for the LB
-    private Map<String, PublicIPAddress> ensurePIPs(PublicIPAddresses pips) throws Exception {
-        List<Creatable<PublicIPAddress>> creatablePips = new ArrayList<>();
-        for (int i = 0; i < PIP_NAMES.length; i++) {
-            creatablePips.add(pips.define(PIP_NAMES[i])
-                    .withRegion(REGION)
-                    .withNewResourceGroup(GROUP_NAME)
-                    .withLeafDomainLabel(PIP_NAMES[i]));
+    private Map<String, PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
+        List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
+        for (int i = 0; i < pipNames.length; i++) {
+            creatablePips
+                .add(
+                    pips
+                        .define(pipNames[i])
+                        .withRegion(region)
+                        .withNewResourceGroup(groupName)
+                        .withLeafDomainLabel(pipNames[i]));
         }
 
         return pips.create(creatablePips);
@@ -993,28 +1030,36 @@ public class TestLoadBalancer {
     // Ensure VMs for the LB
     private VirtualMachine[] ensureVMs(Networks networks, ComputeManager computeManager, int count) throws Exception {
         // Create a network for the VMs
-        Network network = networks.define("net" + TEST_ID)
-                .withRegion(REGION)
-                .withNewResourceGroup(GROUP_NAME)
+        Network network =
+            networks
+                .define("net" + testId)
+                .withRegion(region)
+                .withNewResourceGroup(groupName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/29")
                 .withSubnet("subnet2", "10.0.0.8/29")
                 .create();
 
-        Creatable<AvailabilitySet> availabilitySetDefinition = computeManager.availabilitySets().define("as" + TEST_ID)
-                .withRegion(REGION)
-                .withExistingResourceGroup(GROUP_NAME)
+        Creatable<AvailabilitySet> availabilitySetDefinition =
+            computeManager
+                .availabilitySets()
+                .define("as" + testId)
+                .withRegion(region)
+                .withExistingResourceGroup(groupName)
                 .withSku(AvailabilitySetSkuTypes.ALIGNED);
 
         // Create the requested number of VM definitions
-        String userName = "testuser" + TEST_ID;
+        String userName = "testuser" + testId;
         List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             String vmName = computeManager.getSdkContext().randomResourceName("vm", 15);
 
-            Creatable<VirtualMachine> vm = computeManager.virtualMachines().define(vmName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
+            Creatable<VirtualMachine> vm =
+                computeManager
+                    .virtualMachines()
+                    .define(vmName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(groupName)
                     .withExistingPrimaryNetwork(network)
                     .withSubnet(network.subnets().values().iterator().next().name())
                     .withPrimaryPrivateIPAddressDynamic()
@@ -1039,64 +1084,82 @@ public class TestLoadBalancer {
     // Print LB info
     static void printLB(LoadBalancer resource) {
         StringBuilder info = new StringBuilder();
-        info.append("Load balancer: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tBackends: ").append(resource.backends().keySet().toString());
+        info
+            .append("Load balancer: ")
+            .append(resource.id())
+            .append("Name: ")
+            .append(resource.name())
+            .append("\n\tResource group: ")
+            .append(resource.resourceGroupName())
+            .append("\n\tRegion: ")
+            .append(resource.region())
+            .append("\n\tTags: ")
+            .append(resource.tags())
+            .append("\n\tBackends: ")
+            .append(resource.backends().keySet().toString());
 
         // Show public IP addresses
-        info.append("\n\tPublic IP address IDs: ")
-                .append(resource.publicIPAddressIds().size());
-        for (String pipId : resource.publicIPAddressIds()) {
+        info.append("\n\tPublic IP address IDs: ").append(resource.publicIpAddressIds().size());
+        for (String pipId : resource.publicIpAddressIds()) {
             info.append("\n\t\tPIP id: ").append(pipId);
         }
 
         // Show TCP probes
-        info.append("\n\tTCP probes: ")
-                .append(resource.tcpProbes().size());
+        info.append("\n\tTCP probes: ").append(resource.tcpProbes().size());
         for (LoadBalancerTcpProbe probe : resource.tcpProbes().values()) {
-            info.append("\n\t\tProbe name: ").append(probe.name())
-                    .append("\n\t\t\tPort: ").append(probe.port())
-                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+            info
+                .append("\n\t\tProbe name: ")
+                .append(probe.name())
+                .append("\n\t\t\tPort: ")
+                .append(probe.port())
+                .append("\n\t\t\tInterval in seconds: ")
+                .append(probe.intervalInSeconds())
+                .append("\n\t\t\tRetries before unhealthy: ")
+                .append(probe.numberOfProbes());
 
             // Show associated load balancing rules
-            info.append("\n\t\t\tReferenced from load balancing rules: ")
-                    .append(probe.loadBalancingRules().size());
+            info.append("\n\t\t\tReferenced from load balancing rules: ").append(probe.loadBalancingRules().size());
             for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
         }
 
         // Show HTTP probes
-        info.append("\n\tHTTP probes: ")
-                .append(resource.httpProbes().size());
+        info.append("\n\tHTTP probes: ").append(resource.httpProbes().size());
         for (LoadBalancerHttpProbe probe : resource.httpProbes().values()) {
-            info.append("\n\t\tProbe name: ").append(probe.name())
-                    .append("\n\t\t\tPort: ").append(probe.port())
-                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
-                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
-                    .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
+            info
+                .append("\n\t\tProbe name: ")
+                .append(probe.name())
+                .append("\n\t\t\tPort: ")
+                .append(probe.port())
+                .append("\n\t\t\tInterval in seconds: ")
+                .append(probe.intervalInSeconds())
+                .append("\n\t\t\tRetries before unhealthy: ")
+                .append(probe.numberOfProbes())
+                .append("\n\t\t\tHTTP request path: ")
+                .append(probe.requestPath());
 
             // Show associated load balancing rules
-            info.append("\n\t\t\tReferenced from load balancing rules: ")
-                    .append(probe.loadBalancingRules().size());
+            info.append("\n\t\t\tReferenced from load balancing rules: ").append(probe.loadBalancingRules().size());
             for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
         }
 
         // Show load balancing rules
-        info.append("\n\tLoad balancing rules: ")
-                .append(resource.loadBalancingRules().size());
+        info.append("\n\tLoad balancing rules: ").append(resource.loadBalancingRules().size());
         for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
-            info.append("\n\t\tLB rule name: ").append(rule.name())
-                    .append("\n\t\t\tProtocol: ").append(rule.protocol())
-                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIPEnabled())
-                    .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
-                    .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
+            info
+                .append("\n\t\tLB rule name: ")
+                .append(rule.name())
+                .append("\n\t\t\tProtocol: ")
+                .append(rule.protocol())
+                .append("\n\t\t\tFloating IP enabled? ")
+                .append(rule.floatingIPEnabled())
+                .append("\n\t\t\tIdle timeout in minutes: ")
+                .append(rule.idleTimeoutInMinutes())
+                .append("\n\t\t\tLoad distribution method: ")
+                .append(rule.loadDistribution().toString());
 
             LoadBalancerFrontend frontend = rule.frontend();
             info.append("\n\t\t\tFrontend: ");
@@ -1128,96 +1191,116 @@ public class TestLoadBalancer {
         }
 
         // Show frontends
-        info.append("\n\tFrontends: ")
-                .append(resource.frontends().size());
+        info.append("\n\tFrontends: ").append(resource.frontends().size());
         for (LoadBalancerFrontend frontend : resource.frontends().values()) {
-            info.append("\n\t\tFrontend name: ").append(frontend.name())
-                    .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
+            info
+                .append("\n\t\tFrontend name: ")
+                .append(frontend.name())
+                .append("\n\t\t\tInternet facing: ")
+                .append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIPAddressId());
+                info
+                    .append("\n\t\t\tPublic IP Address ID: ")
+                    .append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
             } else {
-                info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
-                        .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
-                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAllocationMethod());
+                info
+                    .append("\n\t\t\tVirtual network ID: ")
+                    .append(((LoadBalancerPrivateFrontend) frontend).networkId())
+                    .append("\n\t\t\tSubnet name: ")
+                    .append(((LoadBalancerPrivateFrontend) frontend).subnetName())
+                    .append("\n\t\t\tPrivate IP address: ")
+                    .append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
+                    .append("\n\t\t\tPrivate IP allocation method: ")
+                    .append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
             }
 
             // Inbound NAT pool references
-            info.append("\n\t\t\tReferenced inbound NAT pools: ")
-                    .append(frontend.inboundNatPools().size());
+            info.append("\n\t\t\tReferenced inbound NAT pools: ").append(frontend.inboundNatPools().size());
             for (LoadBalancerInboundNatPool pool : frontend.inboundNatPools().values()) {
                 info.append("\n\t\t\t\tName: ").append(pool.name());
             }
 
             // Inbound NAT rule references
-            info.append("\n\t\t\tReferenced inbound NAT rules: ")
-                    .append(frontend.inboundNatRules().size());
+            info.append("\n\t\t\tReferenced inbound NAT rules: ").append(frontend.inboundNatRules().size());
             for (LoadBalancerInboundNatRule rule : frontend.inboundNatRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
 
             // Load balancing rule references
-            info.append("\n\t\t\tReferenced load balancing rules: ")
-                    .append(frontend.loadBalancingRules().size());
+            info.append("\n\t\t\tReferenced load balancing rules: ").append(frontend.loadBalancingRules().size());
             for (LoadBalancingRule rule : frontend.loadBalancingRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
         }
 
         // Show inbound NAT rules
-        info.append("\n\tInbound NAT rules: ")
-                .append(resource.inboundNatRules().size());
+        info.append("\n\tInbound NAT rules: ").append(resource.inboundNatRules().size());
         for (LoadBalancerInboundNatRule natRule : resource.inboundNatRules().values()) {
-            info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
-                    .append("\n\t\t\tProtocol: ").append(natRule.protocol().toString())
-                    .append("\n\t\t\tFrontend: ").append(natRule.frontend().name())
-                    .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
-                    .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
-                    .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
-                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIPConfigurationName())
-                    .append("\n\t\t\tFloating IP? ").append(natRule.floatingIPEnabled())
-                    .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
+            info
+                .append("\n\t\tInbound NAT rule name: ")
+                .append(natRule.name())
+                .append("\n\t\t\tProtocol: ")
+                .append(natRule.protocol().toString())
+                .append("\n\t\t\tFrontend: ")
+                .append(natRule.frontend().name())
+                .append("\n\t\t\tFrontend port: ")
+                .append(natRule.frontendPort())
+                .append("\n\t\t\tBackend port: ")
+                .append(natRule.backendPort())
+                .append("\n\t\t\tBackend NIC ID: ")
+                .append(natRule.backendNetworkInterfaceId())
+                .append("\n\t\t\tBackend NIC IP config name: ")
+                .append(natRule.backendNicIpConfigurationName())
+                .append("\n\t\t\tFloating IP? ")
+                .append(natRule.floatingIPEnabled())
+                .append("\n\t\t\tIdle timeout in minutes: ")
+                .append(natRule.idleTimeoutInMinutes());
         }
 
         // Show inbound NAT pools
-        info.append("\n\tInbound NAT pools: ")
-                .append(resource.inboundNatPools().size());
+        info.append("\n\tInbound NAT pools: ").append(resource.inboundNatPools().size());
         for (LoadBalancerInboundNatPool natPool : resource.inboundNatPools().values()) {
-            info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
-                    .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
-                    .append("\n\t\t\tFrontend: ").append(natPool.frontend().name())
-                    .append("\n\t\t\tFrontend port range: ")
-                    .append(natPool.frontendPortRangeStart())
-                    .append("-")
-                    .append(natPool.frontendPortRangeEnd())
-                    .append("\n\t\t\tBackend port: ").append(natPool.backendPort());
+            info
+                .append("\n\t\tInbound NAT pool name: ")
+                .append(natPool.name())
+                .append("\n\t\t\tProtocol: ")
+                .append(natPool.protocol().toString())
+                .append("\n\t\t\tFrontend: ")
+                .append(natPool.frontend().name())
+                .append("\n\t\t\tFrontend port range: ")
+                .append(natPool.frontendPortRangeStart())
+                .append("-")
+                .append(natPool.frontendPortRangeEnd())
+                .append("\n\t\t\tBackend port: ")
+                .append(natPool.backendPort());
         }
 
         // Show backends
-        info.append("\n\tBackends: ")
-                .append(resource.backends().size());
+        info.append("\n\tBackends: ").append(resource.backends().size());
         for (LoadBalancerBackend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs
-            info.append("\n\t\t\tReferenced NICs: ")
-                    .append(backend.backendNicIPConfigurationNames().entrySet().size());
+            info.append("\n\t\t\tReferenced NICs: ").append(backend.backendNicIPConfigurationNames().entrySet().size());
             for (Entry<String, String> entry : backend.backendNicIPConfigurationNames().entrySet()) {
-                info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
-                        .append(" - IP Config: ").append(entry.getValue());
+                info
+                    .append("\n\t\t\t\tNIC ID: ")
+                    .append(entry.getKey())
+                    .append(" - IP Config: ")
+                    .append(entry.getValue());
             }
 
             // Show assigned virtual machines
             Set<String> vmIds = backend.getVirtualMachineIds();
-            info.append("\n\t\t\tReferenced virtual machine ids: ")
-                    .append(vmIds.size());
+            info.append("\n\t\t\tReferenced virtual machine ids: ").append(vmIds.size());
             for (String vmId : vmIds) {
                 info.append("\n\t\t\t\tVM ID: ").append(vmId);
             }
 
             // Show assigned load balancing rules
-            info.append("\n\t\t\tReferenced load balancing rules: ")
-                    .append(new ArrayList<String>(backend.loadBalancingRules().keySet()));
+            info
+                .append("\n\t\t\tReferenced load balancing rules: ")
+                .append(new ArrayList<String>(backend.loadBalancingRules().keySet()));
         }
 
         System.out.println(info.toString());

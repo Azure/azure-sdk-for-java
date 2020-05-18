@@ -5,14 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The MetricAlertAction model.
- */
+/** The MetricAlertAction model. */
 @Fluent
 public final class MetricAlertAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertAction.class);
+
     /*
      * the id of the action group to use.
      */
@@ -23,11 +25,11 @@ public final class MetricAlertAction {
      * The properties of a webhook object.
      */
     @JsonProperty(value = "webHookProperties")
-    private Map<String, String> webHookProperties;
+    private Map<String, String> webhookProperties;
 
     /**
      * Get the actionGroupId property: the id of the action group to use.
-     * 
+     *
      * @return the actionGroupId value.
      */
     public String actionGroupId() {
@@ -36,7 +38,7 @@ public final class MetricAlertAction {
 
     /**
      * Set the actionGroupId property: the id of the action group to use.
-     * 
+     *
      * @param actionGroupId the actionGroupId value to set.
      * @return the MetricAlertAction object itself.
      */
@@ -46,22 +48,30 @@ public final class MetricAlertAction {
     }
 
     /**
-     * Get the webHookProperties property: The properties of a webhook object.
-     * 
-     * @return the webHookProperties value.
+     * Get the webhookProperties property: The properties of a webhook object.
+     *
+     * @return the webhookProperties value.
      */
-    public Map<String, String> webHookProperties() {
-        return this.webHookProperties;
+    public Map<String, String> webhookProperties() {
+        return this.webhookProperties;
     }
 
     /**
-     * Set the webHookProperties property: The properties of a webhook object.
-     * 
-     * @param webHookProperties the webHookProperties value to set.
+     * Set the webhookProperties property: The properties of a webhook object.
+     *
+     * @param webhookProperties the webhookProperties value to set.
      * @return the MetricAlertAction object itself.
      */
-    public MetricAlertAction withWebHookProperties(Map<String, String> webHookProperties) {
-        this.webHookProperties = webHookProperties;
+    public MetricAlertAction withWebhookProperties(Map<String, String> webhookProperties) {
+        this.webhookProperties = webhookProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

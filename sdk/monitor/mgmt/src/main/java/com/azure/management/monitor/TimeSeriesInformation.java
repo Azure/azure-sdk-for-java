@@ -5,15 +5,17 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The TimeSeriesInformation model.
- */
+/** The TimeSeriesInformation model. */
 @Fluent
 public final class TimeSeriesInformation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TimeSeriesInformation.class);
+
     /*
      * the list of sensitivities for calculating the baseline.
      */
@@ -33,9 +35,8 @@ public final class TimeSeriesInformation {
     private List<OffsetDateTime> timestamps;
 
     /**
-     * Get the sensitivities property: the list of sensitivities for
-     * calculating the baseline.
-     * 
+     * Get the sensitivities property: the list of sensitivities for calculating the baseline.
+     *
      * @return the sensitivities value.
      */
     public List<String> sensitivities() {
@@ -43,9 +44,8 @@ public final class TimeSeriesInformation {
     }
 
     /**
-     * Set the sensitivities property: the list of sensitivities for
-     * calculating the baseline.
-     * 
+     * Set the sensitivities property: the list of sensitivities for calculating the baseline.
+     *
      * @param sensitivities the sensitivities value to set.
      * @return the TimeSeriesInformation object itself.
      */
@@ -56,7 +56,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Get the values property: The metric values to calculate the baseline.
-     * 
+     *
      * @return the values value.
      */
     public List<Double> values() {
@@ -65,7 +65,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Set the values property: The metric values to calculate the baseline.
-     * 
+     *
      * @param values the values value to set.
      * @return the TimeSeriesInformation object itself.
      */
@@ -76,7 +76,7 @@ public final class TimeSeriesInformation {
 
     /**
      * Get the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @return the timestamps value.
      */
     public List<OffsetDateTime> timestamps() {
@@ -85,12 +85,31 @@ public final class TimeSeriesInformation {
 
     /**
      * Set the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @param timestamps the timestamps value to set.
      * @return the TimeSeriesInformation object itself.
      */
     public TimeSeriesInformation withTimestamps(List<OffsetDateTime> timestamps) {
         this.timestamps = timestamps;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sensitivities() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sensitivities in model TimeSeriesInformation"));
+        }
+        if (values() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property values in model TimeSeriesInformation"));
+        }
     }
 }

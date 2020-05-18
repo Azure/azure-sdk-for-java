@@ -15,7 +15,7 @@ public class SqlDatabaseImpl extends WrapperImpl<SqlDatabaseGetResultsInner> imp
 
     @Override
     public String sqlDatabaseId() {
-        return this.inner().resource().getId();
+        return this.inner().resource().id();
     }
 
     @Override

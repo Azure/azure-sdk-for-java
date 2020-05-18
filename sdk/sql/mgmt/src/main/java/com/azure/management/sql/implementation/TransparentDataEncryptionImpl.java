@@ -35,17 +35,17 @@ class TransparentDataEncryptionImpl
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlServerManager = sqlServerManager;
-        this.resourceId = ResourceId.fromString(this.inner().getId());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override
     public String name() {
-        return this.inner().getName();
+        return this.inner().name();
     }
 
     @Override
     public String id() {
-        return this.inner().getId();
+        return this.inner().id();
     }
 
     @Override
@@ -109,12 +109,10 @@ class TransparentDataEncryptionImpl
                 .inner()
                 .transparentDataEncryptionActivities()
                 .listByConfiguration(this.resourceGroupName, this.sqlServerName, this.databaseName());
-        if (transparentDataEncryptionActivityInners != null) {
-            for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
-                : transparentDataEncryptionActivityInners) {
-                transparentDataEncryptionActivities
-                    .add(new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
-            }
+        for (TransparentDataEncryptionActivityInner transparentDataEncryptionActivityInner
+            : transparentDataEncryptionActivityInners) {
+            transparentDataEncryptionActivities
+                .add(new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
         }
         return Collections.unmodifiableList(transparentDataEncryptionActivities);
     }
@@ -127,8 +125,7 @@ class TransparentDataEncryptionImpl
             .transparentDataEncryptionActivities()
             .listByConfigurationAsync(this.resourceGroupName, this.sqlServerName, this.databaseName())
             .mapPage(
-                transparentDataEncryptionActivityInner ->
-                    new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner));
+                TransparentDataEncryptionActivityImpl::new);
     }
 
     @Override

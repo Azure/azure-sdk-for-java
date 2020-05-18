@@ -6,17 +6,19 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The AlertRuleResourcePatch model.
- */
+/** The AlertRuleResourcePatch model. */
 @JsonFlatten
 @Fluent
 public class AlertRuleResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleResourcePatch.class);
+
     /*
      * Resource tags
      */
@@ -63,7 +65,7 @@ public class AlertRuleResourcePatch {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -72,7 +74,7 @@ public class AlertRuleResourcePatch {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the AlertRuleResourcePatch object itself.
      */
@@ -83,7 +85,7 @@ public class AlertRuleResourcePatch {
 
     /**
      * Get the name property: the name of the alert rule.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -92,7 +94,7 @@ public class AlertRuleResourcePatch {
 
     /**
      * Set the name property: the name of the alert rule.
-     * 
+     *
      * @param name the name value to set.
      * @return the AlertRuleResourcePatch object itself.
      */
@@ -102,9 +104,8 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Get the description property: the description of the alert rule that
-     * will be included in the alert email.
-     * 
+     * Get the description property: the description of the alert rule that will be included in the alert email.
+     *
      * @return the description value.
      */
     public String description() {
@@ -112,9 +113,8 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Set the description property: the description of the alert rule that
-     * will be included in the alert email.
-     * 
+     * Set the description property: the description of the alert rule that will be included in the alert email.
+     *
      * @param description the description value to set.
      * @return the AlertRuleResourcePatch object itself.
      */
@@ -124,9 +124,8 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Get the isEnabled property: the flag that indicates whether the alert
-     * rule is enabled.
-     * 
+     * Get the isEnabled property: the flag that indicates whether the alert rule is enabled.
+     *
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -134,9 +133,8 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Set the isEnabled property: the flag that indicates whether the alert
-     * rule is enabled.
-     * 
+     * Set the isEnabled property: the flag that indicates whether the alert rule is enabled.
+     *
      * @param isEnabled the isEnabled value to set.
      * @return the AlertRuleResourcePatch object itself.
      */
@@ -146,9 +144,8 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Get the condition property: the condition that results in the alert rule
-     * being activated.
-     * 
+     * Get the condition property: the condition that results in the alert rule being activated.
+     *
      * @return the condition value.
      */
     public RuleCondition condition() {
@@ -156,9 +153,8 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Set the condition property: the condition that results in the alert rule
-     * being activated.
-     * 
+     * Set the condition property: the condition that results in the alert rule being activated.
+     *
      * @param condition the condition value to set.
      * @return the AlertRuleResourcePatch object itself.
      */
@@ -168,9 +164,9 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when
-     * the alert rule becomes active, and when an alert condition is resolved.
-     * 
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
+     *
      * @return the actions value.
      */
     public List<RuleAction> actions() {
@@ -178,9 +174,9 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when
-     * the alert rule becomes active, and when an alert condition is resolved.
-     * 
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
+     * alert condition is resolved.
+     *
      * @param actions the actions value to set.
      * @return the AlertRuleResourcePatch object itself.
      */
@@ -190,12 +186,25 @@ public class AlertRuleResourcePatch {
     }
 
     /**
-     * Get the lastUpdatedTime property: Last time the rule was updated in
-     * ISO8601 format.
-     * 
+     * Get the lastUpdatedTime property: Last time the rule was updated in ISO8601 format.
+     *
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
         return this.lastUpdatedTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (condition() != null) {
+            condition().validate();
+        }
+        if (actions() != null) {
+            actions().forEach(e -> e.validate());
+        }
     }
 }

@@ -3,19 +3,21 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.storage.common.ErrorReceiver;
-import com.azure.storage.common.ProgressReceiver;
+import com.azure.core.annotation.Fluent;
+
+import java.util.function.Consumer;
 
 /**
  * Optional parameters for File Query.
  */
+@Fluent
 public class FileQueryOptions {
 
     private FileQuerySerialization inputSerialization;
     private FileQuerySerialization outputSerialization;
     private DataLakeRequestConditions requestConditions;
-    private ErrorReceiver<FileQueryError> errorReceiver;
-    private ProgressReceiver progressReceiver;
+    private Consumer<FileQueryError> errorConsumer;
+    private Consumer<FileQueryProgress> progressConsumer;
 
     /**
      * Constructs a {@link FileQueryOptions}.
@@ -84,42 +86,42 @@ public class FileQueryOptions {
     }
 
     /**
-     * Gets the error receiver.
+     * Gets the error consumer.
      *
-     * @return the error receiver.
+     * @return the error consumer.
      */
-    public ErrorReceiver<FileQueryError> getErrorReceiver() {
-        return errorReceiver;
+    public Consumer<FileQueryError> getErrorConsumer() {
+        return errorConsumer;
     }
 
     /**
-     * Sets the error receiver.
+     * Sets the error consumer.
      *
-     * @param errorReceiver The error receiver.
+     * @param errorConsumer The error consumer.
      * @return the updated FileQueryOptions object.
      */
-    public FileQueryOptions setErrorReceiver(ErrorReceiver<FileQueryError> errorReceiver) {
-        this.errorReceiver = errorReceiver;
+    public FileQueryOptions setErrorConsumer(Consumer<FileQueryError> errorConsumer) {
+        this.errorConsumer = errorConsumer;
         return this;
     }
 
     /**
-     * Gets the progress receiver.
+     * Gets the progress consumer.
      *
-     * @return the progress receiver.
+     * @return the progress consumer.
      */
-    public ProgressReceiver getProgressReceiver() {
-        return progressReceiver;
+    public Consumer<FileQueryProgress> getProgressConsumer() {
+        return progressConsumer;
     }
 
     /**
-     * Sets the progress receiver.
+     * Sets the progress consumer.
      *
-     * @param progressReceiver The progress receiver.
+     * @param progressConsumer The progress consumer.
      * @return the updated FileQueryOptions object.
      */
-    public FileQueryOptions setProgressReceiver(ProgressReceiver progressReceiver) {
-        this.progressReceiver = progressReceiver;
+    public FileQueryOptions setProgressConsumer(Consumer<FileQueryProgress> progressConsumer) {
+        this.progressConsumer = progressConsumer;
         return this;
     }
 }

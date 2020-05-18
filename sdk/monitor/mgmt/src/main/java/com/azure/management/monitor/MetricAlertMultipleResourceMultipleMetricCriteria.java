@@ -5,21 +5,23 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
 import java.util.List;
 
-/**
- * The MetricAlertMultipleResourceMultipleMetricCriteria model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+/** The MetricAlertMultipleResourceMultipleMetricCriteria model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria")
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
-public final class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
+public class MetricAlertMultipleResourceMultipleMetricCriteria extends MetricAlertCriteria {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(MetricAlertMultipleResourceMultipleMetricCriteria.class);
+
     /*
      * the list of multiple metric criteria for this 'all of' operation.
      */
@@ -27,9 +29,8 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     private List<MultiMetricCriteria> allOf;
 
     /**
-     * Get the allOf property: the list of multiple metric criteria for this
-     * 'all of' operation.
-     * 
+     * Get the allOf property: the list of multiple metric criteria for this 'all of' operation.
+     *
      * @return the allOf value.
      */
     public List<MultiMetricCriteria> allOf() {
@@ -37,15 +38,26 @@ public final class MetricAlertMultipleResourceMultipleMetricCriteria extends Met
     }
 
     /**
-     * Set the allOf property: the list of multiple metric criteria for this
-     * 'all of' operation.
-     * 
+     * Set the allOf property: the list of multiple metric criteria for this 'all of' operation.
+     *
      * @param allOf the allOf value to set.
-     * @return the MetricAlertMultipleResourceMultipleMetricCriteria object
-     * itself.
+     * @return the MetricAlertMultipleResourceMultipleMetricCriteria object itself.
      */
     public MetricAlertMultipleResourceMultipleMetricCriteria withAllOf(List<MultiMetricCriteria> allOf) {
         this.allOf = allOf;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (allOf() != null) {
+            allOf().forEach(e -> e.validate());
+        }
     }
 }

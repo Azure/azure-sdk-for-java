@@ -3,14 +3,14 @@
 
 package com.azure.management.compute;
 
-import com.azure.management.RestClient;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.LoadBalancerSkuType;
 import com.azure.management.network.LoadBalancingRule;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.PublicIPSkuType;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.TransportProtocol;
@@ -19,27 +19,28 @@ import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.CreatedResources;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.Iterator;
-import java.util.Map;
-
 public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManagementTest {
-    private String RG_NAME = "";
-    private final Region REGION = Region.US_EAST2;
-    private final String VMNAME = "javavm";
+    private String rgName = "";
+    private final Region region = Region.US_EAST2;
+    private final String vmName = "javavm";
 
     @Override
-    protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        RG_NAME = generateRandomResourceName("javacsmrg", 15);
-        super.initializeClients(restClient, defaultSubscription, domain);
+    protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
+        rgName = generateRandomResourceName("javacsmrg", 15);
+        super.initializeClients(httpPipeline, profile);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(rgName);
     }
 
     @Test
@@ -48,10 +49,12 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         final String proxyGroupName = "plg1Test";
         // Create a zoned virtual machine
         //
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withNewPrimaryPublicIPAddress(pipDnsLabel)
@@ -72,22 +75,29 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         Assertions.assertFalse(virtualMachine.availabilityZones().isEmpty());
         Assertions.assertTrue(virtualMachine.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
 
-        //Check the proximity placement group information
+        // Check the proximity placement group information
         Assertions.assertNotNull(virtualMachine.proximityPlacementGroup());
-        Assertions.assertEquals(ProximityPlacementGroupType.STANDARD, virtualMachine.proximityPlacementGroup().proximityPlacementGroupType());
+        Assertions
+            .assertEquals(
+                ProximityPlacementGroupType.STANDARD,
+                virtualMachine.proximityPlacementGroup().proximityPlacementGroupType());
         Assertions.assertNotNull(virtualMachine.proximityPlacementGroup().virtualMachineIds());
-        Assertions.assertTrue(virtualMachine.id().equalsIgnoreCase(virtualMachine.proximityPlacementGroup().virtualMachineIds().get(0)));
+        Assertions
+            .assertTrue(
+                virtualMachine
+                    .id()
+                    .equalsIgnoreCase(virtualMachine.proximityPlacementGroup().virtualMachineIds().get(0)));
 
         // Checks the zone assigned to the implicitly created public IP address.
         // Implicitly created PIP will be BASIC
         //
-        PublicIPAddress publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
+        PublicIpAddress publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
         Assertions.assertNotNull(publicIPAddress.availabilityZones());
         Assertions.assertFalse(publicIPAddress.availabilityZones().isEmpty());
         Assertions.assertTrue(publicIPAddress.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Checks the zone assigned to the implicitly created managed OS disk.
         //
-        String osDiskId = virtualMachine.osDiskId();    // Only VM based on managed disk can have zone assigned
+        String osDiskId = virtualMachine.osDiskId(); // Only VM based on managed disk can have zone assigned
         Assertions.assertNotNull(osDiskId);
         Assertions.assertFalse(osDiskId.isEmpty());
         Disk osDisk = computeManager.disks().getById(osDiskId);
@@ -104,23 +114,31 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Create zoned public IP for the virtual machine
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress = networkManager.publicIPAddresses()
+        PublicIpAddress publicIPAddress =
+            networkManager
+                .publicIpAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
-                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)  // since the SKU is BASIC and VM is zoned, PIP must be zoned
-                .withSku(PublicIPSkuType.BASIC)    // Basic sku is never zone resilient, so if you want it zoned, specify explicitly as above.
+                .withAvailabilityZone(
+                    AvailabilityZoneId.ZONE_1) // since the SKU is BASIC and VM is zoned, PIP must be zoned
+                .withSku(
+                    PublicIPSkuType
+                        .BASIC) // Basic sku is never zone resilient, so if you want it zoned, specify explicitly as
+                                // above.
                 // Create PIP
                 .create();
         // Create a zoned data disk for the virtual machine
         //
         final String diskName = generateRandomResourceName("dsk", 10);
-        Disk dataDisk = computeManager.disks()
+        Disk dataDisk =
+            computeManager
+                .disks()
                 .define(diskName)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withData()
                 .withSizeInGB(100)
                 // Optionals
@@ -129,10 +147,12 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .create();
         // Create a zoned virtual machine
         //
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withExistingPrimaryPublicIPAddress(publicIPAddress)
@@ -172,7 +192,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         Assertions.assertTrue(dataDisk.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Checks the zone assigned to the implicitly created managed OS disk.
         //
-        String osDiskId = virtualMachine.osDiskId();    // Only VM based on managed disk can have zone assigned
+        String osDiskId = virtualMachine.osDiskId(); // Only VM based on managed disk can have zone assigned
         Assertions.assertNotNull(osDiskId);
         Assertions.assertFalse(osDiskId.isEmpty());
         Disk osDisk = computeManager.disks().getById(osDiskId);
@@ -189,21 +209,29 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Create zone resilient public IP for the virtual machine
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress = networkManager.publicIPAddresses()
+        PublicIpAddress publicIPAddress =
+            networkManager
+                .publicIpAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
-                .withSku(PublicIPSkuType.STANDARD)  // No zone selected, STANDARD SKU is zone resilient [zone resilient: resources deployed in all zones by the service and it will be served by all AZs all the time]
+                .withSku(
+                    PublicIPSkuType
+                        .STANDARD) // No zone selected, STANDARD SKU is zone resilient [zone resilient: resources
+                                   // deployed in all zones by the service and it will be served by all AZs all the
+                                   // time]
                 // Create PIP
                 .create();
         // Create a zoned virtual machine
         //
-        VirtualMachine virtualMachine = computeManager.virtualMachines()
-                .define(VMNAME)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        VirtualMachine virtualMachine =
+            computeManager
+                .virtualMachines()
+                .define(vmName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIPAddressDynamic()
                 .withExistingPrimaryPublicIPAddress(publicIPAddress)
@@ -225,17 +253,25 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
         Assertions.assertNotNull(publicIPAddress.sku());
         Assertions.assertTrue(publicIPAddress.sku().equals(PublicIPSkuType.STANDARD));
-        Assertions.assertNotNull(publicIPAddress.availabilityZones());  // Though zone-resilient, this property won't be populated by the service.
+        Assertions
+            .assertNotNull(
+                publicIPAddress
+                    .availabilityZones()); // Though zone-resilient, this property won't be populated by the service.
         Assertions.assertTrue(publicIPAddress.availabilityZones().isEmpty());
     }
 
     @Test
     @Disabled("Though valid scenario, ignoring it due to network service bug")
-    public void canCreateRegionalNonAvailSetVirtualMachinesAndAssociateThemWithSingleBackendPoolOfZoneResilientLoadBalancer() throws Exception {
+    public void
+        canCreateRegionalNonAvailSetVirtualMachinesAndAssociateThemWithSingleBackendPoolOfZoneResilientLoadBalancer()
+            throws Exception {
         final String networkName = generateRandomResourceName("net", 10);
-        Network network = networkManager.networks().define(networkName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        Network network =
+            networkManager
+                .networks()
+                .define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/29")
                 .withSubnet("subnet2", "10.0.0.8/29")
@@ -246,12 +282,14 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         Iterator<Subnet> subnets = network.subnets().values().iterator();
         // Define first regional virtual machine
         //
-        Creatable<VirtualMachine> creatableVM1 = computeManager.virtualMachines()
+        Creatable<VirtualMachine> creatableVM1 =
+            computeManager
+                .virtualMachines()
                 .define(generateRandomResourceName("vm1", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
-                .withSubnet(subnets.next().name())      // Put VM in first subnet
+                .withSubnet(subnets.next().name()) // Put VM in first subnet
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -262,12 +300,14 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
 
         // Define second regional virtual machine
         //
-        Creatable<VirtualMachine> creatableVM2 = computeManager.virtualMachines()
+        Creatable<VirtualMachine> creatableVM2 =
+            computeManager
+                .virtualMachines()
                 .define(generateRandomResourceName("vm2", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
-                .withSubnet(subnets.next().name())  // Put VM in second subnet
+                .withSubnet(subnets.next().name()) // Put VM in second subnet
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -276,29 +316,33 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
 
-        CreatedResources<VirtualMachine> createdVMs = computeManager.virtualMachines()
-                .create(creatableVM1, creatableVM2);
+        CreatedResources<VirtualMachine> createdVMs =
+            computeManager.virtualMachines().create(creatableVM1, creatableVM2);
 
         VirtualMachine firstVirtualMachine = createdVMs.get(creatableVM1.key());
-        VirtualMachine secondVirtualMachine  = createdVMs.get(creatableVM2.key());
+        VirtualMachine secondVirtualMachine = createdVMs.get(creatableVM2.key());
 
         // Work around bug in the network service
         // Once the fix is deployed remove below code to powerOff and deallocate VMs
         //
-        //  Completable completable1 = firstVirtualMachine.powerOffAsync().concatWith(firstVirtualMachine.deallocateAsync());
-        //  Completable completable2 = secondVirtualMachine.powerOffAsync().concatWith(secondVirtualMachine.deallocateAsync());
+        //  Completable completable1 =
+        // firstVirtualMachine.powerOffAsync().concatWith(firstVirtualMachine.deallocateAsync());
+        //  Completable completable2 =
+        // secondVirtualMachine.powerOffAsync().concatWith(secondVirtualMachine.deallocateAsync());
         //  Completable.merge(completable1, completable2).await();
 
         // Creates a public IP address for the internet-facing load-balancer
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress = networkManager.publicIPAddresses()
+        PublicIpAddress publicIPAddress =
+            networkManager
+                .publicIpAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
-                .withSku(PublicIPSkuType.STANDARD)  //  STANDARD LB requires STANDARD PIP
+                .withSku(PublicIPSkuType.STANDARD) //  STANDARD LB requires STANDARD PIP
                 // Create PIP
                 .create();
 
@@ -306,27 +350,33 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // two backend pool associated with this IP Config
         //
         final String lbName = generateRandomResourceName("lb", 10);
-        LoadBalancer lb = this.networkManager.loadBalancers()
+        LoadBalancer lb =
+            this
+                .networkManager
+                .loadBalancers()
                 .define(lbName)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(RG_NAME)
-                    .defineLoadBalancingRule("rule-1")
-                        .withProtocol(TransportProtocol.TCP)
-                        .fromFrontend("front-end-1")
-                        .fromFrontendPort(80)
-                        .toExistingVirtualMachines(firstVirtualMachine, secondVirtualMachine)
-                        .withProbe("tcpProbe-1")
-                        .attach()
-                    .definePublicFrontend("front-end-1") // Define the frontend IP configuration used by the LB rule
-                        .withExistingPublicIPAddress(publicIPAddress)
-                        .attach()
-                    .defineTcpProbe("tcpProbe-1") // Define the Probe used by the LB rule
-                        .withPort(25)
-                        .withIntervalInSeconds(15)
-                        .withNumberOfProbes(5)
-                        .attach()
-                    .withSku(LoadBalancerSkuType.STANDARD)  // "zone-resilient LB" which don't have the constraint that all VMs needs to be in the same availability set
-                    .create();
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .defineLoadBalancingRule("rule-1")
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend("front-end-1")
+                .fromFrontendPort(80)
+                .toExistingVirtualMachines(firstVirtualMachine, secondVirtualMachine)
+                .withProbe("tcpProbe-1")
+                .attach()
+                .definePublicFrontend("front-end-1") // Define the frontend IP configuration used by the LB rule
+                .withExistingPublicIpAddress(publicIPAddress)
+                .attach()
+                .defineTcpProbe("tcpProbe-1") // Define the Probe used by the LB rule
+                .withPort(25)
+                .withIntervalInSeconds(15)
+                .withNumberOfProbes(5)
+                .attach()
+                .withSku(
+                    LoadBalancerSkuType
+                        .STANDARD) // "zone-resilient LB" which don't have the constraint that all VMs needs to be in
+                                   // the same availability set
+                .create();
 
         // Zone resilient LB does not care VMs are zoned or regional, in the above cases VMs are regional.
         //
@@ -339,7 +389,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         LoadBalancerFrontend frontend = lb.frontends().values().iterator().next();
         Assertions.assertTrue(frontend.isPublic());
         LoadBalancerPublicFrontend publicFrontend = (LoadBalancerPublicFrontend) frontend;
-        Assertions.assertTrue(publicIPAddress.id().equalsIgnoreCase(publicFrontend.publicIPAddressId()));
+        Assertions.assertTrue(publicIPAddress.id().equalsIgnoreCase(publicFrontend.publicIpAddressId()));
 
         // Verify backends
         Assertions.assertEquals(1, lb.backends().size());
@@ -366,11 +416,15 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
 
     @Test
     @Disabled("Though valid scenario, ignoring it due to network service bug")
-    public void canCreateZonedVirtualMachinesAndAssociateThemWithSingleBackendPoolOfZoneResilientLoadBalancer() throws Exception {
+    public void canCreateZonedVirtualMachinesAndAssociateThemWithSingleBackendPoolOfZoneResilientLoadBalancer()
+        throws Exception {
         final String networkName = generateRandomResourceName("net", 10);
-        Network network = networkManager.networks().define(networkName)
-                .withRegion(REGION)
-                .withNewResourceGroup(RG_NAME)
+        Network network =
+            networkManager
+                .networks()
+                .define(networkName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
                 .withAddressSpace("10.0.0.0/28")
                 .withSubnet("subnet1", "10.0.0.0/29")
                 .withSubnet("subnet2", "10.0.0.8/29")
@@ -381,12 +435,14 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         Iterator<Subnet> subnets = network.subnets().values().iterator();
         // Define first regional virtual machine
         //
-        Creatable<VirtualMachine> creatableVM1 = computeManager.virtualMachines()
+        Creatable<VirtualMachine> creatableVM1 =
+            computeManager
+                .virtualMachines()
                 .define(generateRandomResourceName("vm1", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
-                .withSubnet(subnets.next().name())      // Put VM in first subnet
+                .withSubnet(subnets.next().name()) // Put VM in first subnet
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -398,12 +454,14 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
 
         // Define second regional virtual machine
         //
-        Creatable<VirtualMachine> creatableVM2 = computeManager.virtualMachines()
+        Creatable<VirtualMachine> creatableVM2 =
+            computeManager
+                .virtualMachines()
                 .define(generateRandomResourceName("vm2", 10))
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withExistingPrimaryNetwork(network)
-                .withSubnet(subnets.next().name())  // Put VM in second subnet
+                .withSubnet(subnets.next().name()) // Put VM in second subnet
                 .withPrimaryPrivateIPAddressDynamic()
                 .withoutPrimaryPublicIPAddress()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
@@ -413,19 +471,21 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
 
-        CreatedResources<VirtualMachine> createdVMs = computeManager.virtualMachines()
-                .create(creatableVM1, creatableVM2);
+        CreatedResources<VirtualMachine> createdVMs =
+            computeManager.virtualMachines().create(creatableVM1, creatableVM2);
 
         // Creates a public IP address for the internet-facing load-balancer
         //
         final String pipDnsLabel = generateRandomResourceName("pip", 10);
-        PublicIPAddress publicIPAddress = networkManager.publicIPAddresses()
+        PublicIpAddress publicIPAddress =
+            networkManager
+                .publicIpAddresses()
                 .define(pipDnsLabel)
-                .withRegion(REGION)
-                .withExistingResourceGroup(RG_NAME)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
                 .withStaticIP()
                 // Optionals
-                .withSku(PublicIPSkuType.STANDARD)  //  STANDARD LB requires STANDARD PIP
+                .withSku(PublicIPSkuType.STANDARD) //  STANDARD LB requires STANDARD PIP
                 // Create PIP
                 .create();
 
@@ -441,8 +501,12 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // Sku of PublicIP and LoadBalancer must match
         //
 
-        PublicIPAddress lbPip = this.networkManager.publicIPAddresses().define(publicIPName)
-                .withRegion(REGION)
+        PublicIpAddress lbPip =
+            this
+                .networkManager
+                .publicIpAddresses()
+                .define(publicIPName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withLeafDomainLabel(publicIPName)
                 // Optionals
@@ -451,28 +515,32 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 // Create
                 .create();
 
-        LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
-                .withRegion(REGION)
+        LoadBalancer loadBalancer =
+            this
+                .networkManager
+                .loadBalancers()
+                .define(loadBalancerName)
+                .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
 
                 // Add two rules that uses above backend and probe
                 .defineLoadBalancingRule("httpRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(80)
-                    .toExistingVirtualMachines(createdVMs.get(creatableVM1.key()))
-                    .withProbe("httpProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(80)
+                .toExistingVirtualMachines(createdVMs.get(creatableVM1.key()))
+                .withProbe("httpProbe")
+                .attach()
                 .defineLoadBalancingRule("httpsRule")
-                    .withProtocol(TransportProtocol.TCP)
-                    .fromFrontend(frontendName)
-                    .fromFrontendPort(443)
-                    .toExistingVirtualMachines(createdVMs.get(creatableVM2.key()))
-                    .withProbe("httpsProbe")
-                    .attach()
+                .withProtocol(TransportProtocol.TCP)
+                .fromFrontend(frontendName)
+                .fromFrontendPort(443)
+                .toExistingVirtualMachines(createdVMs.get(creatableVM2.key()))
+                .withProbe("httpsProbe")
+                .attach()
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                .withExistingPublicIPAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
+                .withExistingPublicIpAddress(publicIPAddress) // Frontend with PIP means internet-facing load-balancer
                 .attach()
 
                 // Add two probes one per rule
@@ -493,5 +561,3 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         // availability set and put it in a different backend pool.
     }
 }
-
-

@@ -21,109 +21,167 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.management.monitor.ErrorResponseException;
+import com.azure.core.management.exception.ManagementException;
+import com.azure.core.util.Context;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * MetricNamespaces.
- */
+/** An instance of this class provides access to all the operations defined in MetricNamespaces. */
 public final class MetricNamespacesInner {
-    /**
-     * The proxy service used to perform REST calls.
-     */
-    private MetricNamespacesService service;
+    private final ClientLogger logger = new ClientLogger(MetricNamespacesInner.class);
 
-    /**
-     * The service client containing this operation class.
-     */
-    private MonitorClientImpl client;
+    /** The proxy service used to perform REST calls. */
+    private final MetricNamespacesService service;
+
+    /** The service client containing this operation class. */
+    private final MonitorClientImpl client;
 
     /**
      * Initializes an instance of MetricNamespacesInner.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     MetricNamespacesInner(MonitorClientImpl client) {
-        this.service = RestProxy.create(MetricNamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(MetricNamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * MonitorClientMetricNamespaces to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for MonitorClientMetricNamespaces to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorClientMetricNamespaces")
+    @ServiceInterface(name = "MonitorClientMetricN")
     private interface MetricNamespacesService {
-        @Headers({ "Accept: application/json", "Content-Type: application/json" })
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceUri}/providers/microsoft.insights/metricNamespaces")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<SimpleResponse<MetricNamespaceCollectionInner>> list(@HostParam("$host") String host, @PathParam(value = "resourceUri", encoded = true) String resourceUri, @QueryParam("api-version") String apiVersion, @QueryParam("startTime") String startTime);
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<SimpleResponse<MetricNamespaceCollectionInner>> list(
+            @HostParam("$host") String host,
+            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+            @QueryParam("api-version") String apiVersion,
+            @QueryParam("startTime") String startTime,
+            Context context);
     }
 
     /**
      * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri 
-     * @param startTime 
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricNamespaceInner>> listSinglePageAsync(String resourceUri, String startTime) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
         final String apiVersion = "2017-12-01-preview";
-        return service.list(this.client.getHost(), resourceUri, apiVersion, startTime)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getHost(), resourceUri, apiVersion, startTime, context))
+            .<PagedResponse<MetricNamespaceInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
      * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri 
-     * @param startTime 
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<MetricNamespaceInner>> listSinglePageAsync(
+        String resourceUri, String startTime, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String apiVersion = "2017-12-01-preview";
+        return service
+            .list(this.client.getHost(), resourceUri, apiVersion, startTime, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Lists the metric namespaces for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricNamespaceInner> listAsync(String resourceUri, String startTime) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, startTime));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, startTime));
     }
 
     /**
      * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri 
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<MetricNamespaceInner> listAsync(String resourceUri, String startTime, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, startTime, context));
+    }
+
+    /**
+     * Lists the metric namespaces for the resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MetricNamespaceInner> listAsync(String resourceUri) {
         final String startTime = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceUri, startTime));
+        final Context context = null;
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceUri, startTime));
     }
 
     /**
      * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri 
-     * @param startTime 
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param startTime The ISO 8601 conform Date start time from which to query for metric namespaces.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespaceInner> list(String resourceUri, String startTime) {
@@ -132,15 +190,17 @@ public final class MetricNamespacesInner {
 
     /**
      * Lists the metric namespaces for the resource.
-     * 
-     * @param resourceUri 
+     *
+     * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents collection of metric namespaces.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricNamespaceInner> list(String resourceUri) {
         final String startTime = null;
+        final Context context = null;
         return new PagedIterable<>(listAsync(resourceUri, startTime));
     }
 }

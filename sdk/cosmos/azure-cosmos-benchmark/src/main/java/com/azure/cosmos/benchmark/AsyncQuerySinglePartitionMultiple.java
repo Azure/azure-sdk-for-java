@@ -20,7 +20,6 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
         super(cfg);
         options = new FeedOptions();
         options.setPartitionKey(new PartitionKey("pk"));
-        options.setMaxItemCount(10);
     }
 
     @Override
@@ -40,6 +39,6 @@ class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Pojo
 
         concurrencyControlSemaphore.acquire();
 
-        obs.byPage().subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
+        obs.byPage(10).subscribeOn(Schedulers.parallel()).subscribe(baseSubscriber);
     }
 }

@@ -5,13 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ActivityLogAlertLeafCondition model.
- */
+/** The ActivityLogAlertLeafCondition model. */
 @Fluent
 public final class ActivityLogAlertLeafCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertLeafCondition.class);
+
     /*
      * The name of the field that this condition will examine. The possible
      * values for this field are (case-insensitive): 'resourceId', 'category',
@@ -30,12 +32,10 @@ public final class ActivityLogAlertLeafCondition {
     private String equals;
 
     /**
-     * Get the field property: The name of the field that this condition will
-     * examine. The possible values for this field are (case-insensitive):
-     * 'resourceId', 'category', 'caller', 'level', 'operationName',
-     * 'resourceGroup', 'resourceProvider', 'status', 'subStatus',
-     * 'resourceType', or anything beginning with 'properties.'.
-     * 
+     * Get the field property: The name of the field that this condition will examine. The possible values for this
+     * field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup',
+     * 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
+     *
      * @return the field value.
      */
     public String field() {
@@ -43,12 +43,10 @@ public final class ActivityLogAlertLeafCondition {
     }
 
     /**
-     * Set the field property: The name of the field that this condition will
-     * examine. The possible values for this field are (case-insensitive):
-     * 'resourceId', 'category', 'caller', 'level', 'operationName',
-     * 'resourceGroup', 'resourceProvider', 'status', 'subStatus',
-     * 'resourceType', or anything beginning with 'properties.'.
-     * 
+     * Set the field property: The name of the field that this condition will examine. The possible values for this
+     * field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName', 'resourceGroup',
+     * 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties.'.
+     *
      * @param field the field value to set.
      * @return the ActivityLogAlertLeafCondition object itself.
      */
@@ -58,9 +56,9 @@ public final class ActivityLogAlertLeafCondition {
     }
 
     /**
-     * Get the equals property: The field value will be compared to this value
-     * (case-insensitive) to determine if the condition is met.
-     * 
+     * Get the equals property: The field value will be compared to this value (case-insensitive) to determine if the
+     * condition is met.
+     *
      * @return the equals value.
      */
     public String equals() {
@@ -68,14 +66,34 @@ public final class ActivityLogAlertLeafCondition {
     }
 
     /**
-     * Set the equals property: The field value will be compared to this value
-     * (case-insensitive) to determine if the condition is met.
-     * 
+     * Set the equals property: The field value will be compared to this value (case-insensitive) to determine if the
+     * condition is met.
+     *
      * @param equals the equals value to set.
      * @return the ActivityLogAlertLeafCondition object itself.
      */
     public ActivityLogAlertLeafCondition withEquals(String equals) {
         this.equals = equals;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (field() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property field in model ActivityLogAlertLeafCondition"));
+        }
+        if (equals() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property equals in model ActivityLogAlertLeafCondition"));
+        }
     }
 }

@@ -5,37 +5,33 @@ package com.azure.management.network.implementation;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkSecurityGroup;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.network.RouteTable;
 import com.azure.management.network.ServiceEndpointPropertiesFormat;
 import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.network.Subnet;
-import com.azure.management.network.models.IPAddressAvailabilityResultInner;
-import com.azure.management.network.models.IPConfigurationInner;
+import com.azure.management.network.models.IpAddressAvailabilityResultInner;
+import com.azure.management.network.models.IpConfigurationInner;
 import com.azure.management.network.models.NetworkSecurityGroupInner;
 import com.azure.management.network.models.RouteTableInner;
 import com.azure.management.network.models.SubnetInner;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-/**
- * Implementation for Subnet and its create and update interfaces.
- */
-class SubnetImpl
-        extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
-        implements
-        Subnet,
+/** Implementation for Subnet and its create and update interfaces. */
+class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
+    implements Subnet,
         Subnet.Definition<Network.DefinitionStages.WithCreateAndSubnet>,
         Subnet.UpdateDefinition<Network.Update>,
         Subnet.Update {
@@ -47,7 +43,7 @@ class SubnetImpl
     // Getters
     @Override
     public int networkInterfaceIPConfigurationCount() {
-        List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        List<IpConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
         if (ipConfigRefs != null) {
             return ipConfigRefs.size();
         } else {
@@ -67,12 +63,12 @@ class SubnetImpl
 
     @Override
     public String networkSecurityGroupId() {
-        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().getId() : null;
+        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
     }
 
     @Override
     public String routeTableId() {
-        return (this.inner().routeTable() != null) ? this.inner().routeTable().getId() : null;
+        return (this.inner().routeTable() != null) ? this.inner().routeTable().id() : null;
     }
 
     @Override
@@ -111,7 +107,8 @@ class SubnetImpl
 
     @Override
     public SubnetImpl withExistingNetworkSecurityGroup(String resourceId) {
-        // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs or REST
+        // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs
+        // or REST
         NetworkSecurityGroupInner reference = new NetworkSecurityGroupInner().withId(resourceId);
         this.inner().withNetworkSecurityGroup(reference);
         return this;
@@ -141,7 +138,6 @@ class SubnetImpl
         return this;
     }
 
-
     @Override
     public SubnetImpl withAccessFromService(ServiceEndpointType service) {
         if (this.inner().serviceEndpoints() == null) {
@@ -155,11 +151,13 @@ class SubnetImpl
             }
         }
         if (!found) {
-            this.inner()
-                    .serviceEndpoints()
-                    .add(new ServiceEndpointPropertiesFormat()
-                            .withService(service.toString())
-                            .withLocations(new ArrayList<String>()));
+            this
+                .inner()
+                .serviceEndpoints()
+                .add(
+                    new ServiceEndpointPropertiesFormat()
+                        .withService(service.toString())
+                        .withLocations(new ArrayList<String>()));
         }
         return this;
     }
@@ -193,37 +191,35 @@ class SubnetImpl
     @Override
     public RouteTable getRouteTable() {
         return (this.routeTableId() != null)
-                ? this.parent().manager().routeTables().getById(this.routeTableId())
-                : null;
+            ? this.parent().manager().routeTables().getById(this.routeTableId())
+            : null;
     }
 
     @Override
     public NetworkSecurityGroup getNetworkSecurityGroup() {
         String nsgId = this.networkSecurityGroupId();
-        return (nsgId != null)
-                ? this.parent().manager().networkSecurityGroups().getById(nsgId)
-                : null;
+        return (nsgId != null) ? this.parent().manager().networkSecurityGroups().getById(nsgId) : null;
     }
 
     @Override
-    public Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations() {
-        return Collections.unmodifiableSet(new TreeSet<NicIPConfiguration>(listNetworkInterfaceIPConfigurations()));
+    public Set<NicIpConfiguration> getNetworkInterfaceIPConfigurations() {
+        return Collections.unmodifiableSet(new TreeSet<NicIpConfiguration>(listNetworkInterfaceIPConfigurations()));
     }
 
     @Override
-    public Collection<NicIPConfiguration> listNetworkInterfaceIPConfigurations() {
-        Collection<NicIPConfiguration> ipConfigs = new ArrayList<>();
+    public Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations() {
+        Collection<NicIpConfiguration> ipConfigs = new ArrayList<>();
         Map<String, NetworkInterface> nics = new TreeMap<>();
-        List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        List<IpConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
         if (ipConfigRefs == null) {
             return ipConfigs;
         }
 
-        for (IPConfigurationInner ipConfigRef : ipConfigRefs) {
-            String nicID = ResourceUtils.parentResourceIdFromResourceId(ipConfigRef.getId());
-            String ipConfigName = ResourceUtils.nameFromResourceId(ipConfigRef.getId());
+        for (IpConfigurationInner ipConfigRef : ipConfigRefs) {
+            String nicID = ResourceUtils.parentResourceIdFromResourceId(ipConfigRef.id());
+            String ipConfigName = ResourceUtils.nameFromResourceId(ipConfigRef.id());
             // Check if NIC already cached
-            NetworkInterface nic = nics.get(nicID.toLowerCase());
+            NetworkInterface nic = nics.get(nicID.toLowerCase(Locale.ROOT));
             if (nic == null) {
                 //  NIC not previously found, so ask Azure for it
                 nic = this.parent().manager().networkInterfaces().getById(nicID);
@@ -235,10 +231,10 @@ class SubnetImpl
             }
 
             // Cache the NIC
-            nics.put(nic.id().toLowerCase(), nic);
+            nics.put(nic.id().toLowerCase(Locale.ROOT), nic);
 
             // Get the IP config
-            NicIPConfiguration ipConfig = nic.ipConfigurations().get(ipConfigName);
+            NicIpConfiguration ipConfig = nic.ipConfigurations().get(ipConfigName);
             if (ipConfig == null) {
                 // IP config not found, so ignore this bad reference
                 continue;
@@ -260,15 +256,18 @@ class SubnetImpl
         }
         String takenIPAddress = cidr.split("/")[0];
 
-        IPAddressAvailabilityResultInner result = this.parent().manager().networks().inner().checkIPAddressAvailability(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                takenIPAddress);
+        IpAddressAvailabilityResultInner result =
+            this
+                .parent()
+                .manager()
+                .networks()
+                .inner()
+                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null) {
             return ipAddresses;
         }
 
-        ipAddresses.addAll(result.availableIPAddresses());
+        ipAddresses.addAll(result.availableIpAddresses());
         return ipAddresses;
     }
 }

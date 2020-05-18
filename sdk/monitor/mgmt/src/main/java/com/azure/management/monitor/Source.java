@@ -5,14 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Source model.
- */
+/** The Source model. */
 @Fluent
 public final class Source {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Source.class);
+
     /*
      * Log search query. Required for action type - AlertingAction
      */
@@ -35,19 +37,11 @@ public final class Source {
      * Set value to 'ResultCount' .
      */
     @JsonProperty(value = "queryType")
-    private String queryType;
+    private QueryType queryType;
 
     /**
-     * Creates an instance of Source class.
-     */
-    public Source() {
-        queryType = "ResultCount";
-    }
-
-    /**
-     * Get the query property: Log search query. Required for action type -
-     * AlertingAction.
-     * 
+     * Get the query property: Log search query. Required for action type - AlertingAction.
+     *
      * @return the query value.
      */
     public String query() {
@@ -55,9 +49,8 @@ public final class Source {
     }
 
     /**
-     * Set the query property: Log search query. Required for action type -
-     * AlertingAction.
-     * 
+     * Set the query property: Log search query. Required for action type - AlertingAction.
+     *
      * @param query the query value to set.
      * @return the Source object itself.
      */
@@ -67,9 +60,8 @@ public final class Source {
     }
 
     /**
-     * Get the authorizedResources property: List of  Resource referred into
-     * query.
-     * 
+     * Get the authorizedResources property: List of Resource referred into query.
+     *
      * @return the authorizedResources value.
      */
     public List<String> authorizedResources() {
@@ -77,9 +69,8 @@ public final class Source {
     }
 
     /**
-     * Set the authorizedResources property: List of  Resource referred into
-     * query.
-     * 
+     * Set the authorizedResources property: List of Resource referred into query.
+     *
      * @param authorizedResources the authorizedResources value to set.
      * @return the Source object itself.
      */
@@ -89,9 +80,8 @@ public final class Source {
     }
 
     /**
-     * Get the dataSourceId property: The resource uri over which log search
-     * query is to be run.
-     * 
+     * Get the dataSourceId property: The resource uri over which log search query is to be run.
+     *
      * @return the dataSourceId value.
      */
     public String dataSourceId() {
@@ -99,9 +89,8 @@ public final class Source {
     }
 
     /**
-     * Set the dataSourceId property: The resource uri over which log search
-     * query is to be run.
-     * 
+     * Set the dataSourceId property: The resource uri over which log search query is to be run.
+     *
      * @param dataSourceId the dataSourceId value to set.
      * @return the Source object itself.
      */
@@ -112,21 +101,34 @@ public final class Source {
 
     /**
      * Get the queryType property: Set value to 'ResultCount' .
-     * 
+     *
      * @return the queryType value.
      */
-    public String queryType() {
+    public QueryType queryType() {
         return this.queryType;
     }
 
     /**
      * Set the queryType property: Set value to 'ResultCount' .
-     * 
+     *
      * @param queryType the queryType value to set.
      * @return the Source object itself.
      */
-    public Source withQueryType(String queryType) {
+    public Source withQueryType(QueryType queryType) {
         this.queryType = queryType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dataSourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property dataSourceId in model Source"));
+        }
     }
 }

@@ -7,25 +7,24 @@ import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.VirtualMachines;
-import com.azure.management.network.PublicIPAddress;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddress;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.resources.core.TestBase;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
-import org.junit.jupiter.api.Assertions;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
+import org.junit.jupiter.api.Assertions;
 
 public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, VirtualMachines> {
-    final PublicIPAddresses pips;
+    final PublicIpAddresses pips;
 
-    public TestVirtualMachineCustomData(PublicIPAddresses pips) {
+    public TestVirtualMachineCustomData(PublicIpAddresses pips) {
         this.pips = pips;
     }
 
@@ -42,13 +41,17 @@ public class TestVirtualMachineCustomData extends TestTemplate<VirtualMachine, V
         byte[] cloudInitEncoded = Base64.getEncoder().encode(cloudInitAsBytes);
         String cloudInitEncodedString = new String(cloudInitEncoded);
 
-        PublicIPAddress pip = pips.define(publicIpDnsLabel)
+        PublicIpAddress pip =
+            pips
+                .define(publicIpDnsLabel)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withLeafDomainLabel(publicIpDnsLabel)
                 .create();
 
-        VirtualMachine vm = virtualMachines.define(vmName)
+        VirtualMachine vm =
+            virtualMachines
+                .define(vmName)
                 .withRegion(pip.regionName())
                 .withExistingResourceGroup(pip.resourceGroupName())
                 .withNewPrimaryNetwork("10.0.0.0/28")

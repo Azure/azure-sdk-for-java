@@ -3,19 +3,16 @@
 
 package com.azure.management.cosmosdb.implementation;
 
-import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.serializer.AzureJacksonAdapter;
-import com.azure.management.AzureTokenCredential;
-import com.azure.management.RestClient;
-import com.azure.management.RestClientBuilder;
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpPipeline;
 import com.azure.management.cosmosdb.CosmosDBAccounts;
 import com.azure.management.cosmosdb.models.CosmosDBManagementClientBuilder;
 import com.azure.management.cosmosdb.models.CosmosDBManagementClientImpl;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
+import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 
 /** Entry point to Azure compute resource management. */
@@ -33,44 +30,35 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param credentials the credentials to use
-     * @param subscriptionId the subscription
+     * @param credential the credential to use
+     * @param profile the profile to use
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-        return authenticate(
-            new RestClientBuilder()
-                .withBaseUrl(credentials.getEnvironment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
-                .withCredential(credentials)
-                .withSerializerAdapter(new AzureJacksonAdapter())
-                //                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withPolicy(new ProviderRegistrationPolicy(credentials))
-                .withPolicy(new ResourceManagerThrottlingPolicy())
-                .buildClient(),
-            subscriptionId);
+    public static CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile) {
+        return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(RestClient restClient, String subscriptionId) {
-        return authenticate(restClient, subscriptionId, new SdkContext());
+    public static CosmosDBManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        return authenticate(httpPipeline, profile, new SdkContext());
     }
 
     /**
      * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
      *
-     * @param restClient the RestClient to be used for API calls.
-     * @param subscriptionId the subscription
+     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param profile the profile to use
      * @param sdkContext the sdk context
      * @return the ComputeManager
      */
-    public static CosmosDBManager authenticate(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
-        return new CosmosDBManager(restClient, subscriptionId, sdkContext);
+    public static CosmosDBManager authenticate(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
+        return new CosmosDBManager(httpPipeline, profile, sdkContext);
     }
 
     /** The interface allowing configurations to be set. */
@@ -78,29 +66,29 @@ public final class CosmosDBManager extends Manager<CosmosDBManager, CosmosDBMana
         /**
          * Creates an instance of ComputeManager that exposes Compute resource management API entry points.
          *
-         * @param credentials the credentials to use
-         * @param subscriptionId the subscription
+         * @param credential the credential to use
+         * @param profile the profile to use
          * @return the ComputeManager
          */
-        CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId);
+        CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile);
     }
 
     /** The implementation for Configurable interface. */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
-        public CosmosDBManager authenticate(AzureTokenCredential credentials, String subscriptionId) {
-            return CosmosDBManager.authenticate(buildRestClient(credentials), subscriptionId);
+        public CosmosDBManager authenticate(TokenCredential credential, AzureProfile profile) {
+            return CosmosDBManager.authenticate(buildHttpPipeline(credential, profile), profile);
         }
     }
 
-    private CosmosDBManager(RestClient restClient, String subscriptionId, SdkContext sdkContext) {
+    private CosmosDBManager(HttpPipeline httpPipeline, AzureProfile profile, SdkContext sdkContext) {
         super(
-            restClient,
-            subscriptionId,
+            httpPipeline,
+            profile,
             new CosmosDBManagementClientBuilder()
-                .host(restClient.getBaseUrl().toString())
-                .pipeline(restClient.getHttpPipeline())
-                .subscriptionId(subscriptionId)
+                .host(profile.environment().getResourceManagerEndpoint())
+                .pipeline(httpPipeline)
+                .subscriptionId(profile.subscriptionId())
                 .buildClient(),
             sdkContext);
     }

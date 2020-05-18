@@ -5,19 +5,21 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
-/**
- * The RuleMetricDataSource model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+/** The RuleMetricDataSource model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource")
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
-public final class RuleMetricDataSource extends RuleDataSource {
+public class RuleMetricDataSource extends RuleDataSource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleMetricDataSource.class);
+
     /*
      * the name of the metric that defines what the rule monitors.
      */
@@ -25,9 +27,8 @@ public final class RuleMetricDataSource extends RuleDataSource {
     private String metricName;
 
     /**
-     * Get the metricName property: the name of the metric that defines what
-     * the rule monitors.
-     * 
+     * Get the metricName property: the name of the metric that defines what the rule monitors.
+     *
      * @return the metricName value.
      */
     public String metricName() {
@@ -35,14 +36,23 @@ public final class RuleMetricDataSource extends RuleDataSource {
     }
 
     /**
-     * Set the metricName property: the name of the metric that defines what
-     * the rule monitors.
-     * 
+     * Set the metricName property: the name of the metric that defines what the rule monitors.
+     *
      * @param metricName the metricName value to set.
      * @return the RuleMetricDataSource object itself.
      */
     public RuleMetricDataSource withMetricName(String metricName) {
         this.metricName = metricName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

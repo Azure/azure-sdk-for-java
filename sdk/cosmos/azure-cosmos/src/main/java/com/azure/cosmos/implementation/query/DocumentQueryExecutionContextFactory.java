@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.OperationType;
@@ -48,7 +48,7 @@ public class DocumentQueryExecutionContextFactory {
                 resourceLink, null
                 // TODO      AuthorizationTokenType.INVALID)
                 ); //this request doesnt actually go to server
-        return collectionCache.resolveCollectionAsync(request);
+        return collectionCache.resolveCollectionAsync(null, request);
     }
 
     public static <T extends Resource> Flux<? extends IDocumentQueryExecutionContext<T>> createDocumentQueryExecutionContextAsync(

@@ -1,5 +1,8 @@
 # Release History
 
+## 4.2.0-beta.4 (Unreleased)
+
+
 ## 4.2.0-beta.3 (2020-04-09)
 - Added `LocalCryptographyClient`, `LocalCryptographyAsyncClient`, `LocalKeyEncryptionKeyClient` and `LocalKeyEncryptionKeyAsyncClient` to perform cryptography operations locally.
 - Added `retryPolicy` setter in `KeyClientBuilder`, `CryptographyClientBuilder` and `KeyEncryptionKeyClientBuilder`

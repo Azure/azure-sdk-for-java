@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Sku model.
- */
+/** The Sku model. */
 @Fluent
 public final class Sku {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
+
     /*
      * The SKU name. Required for account creation; optional for update. Note
      * that in older versions, SKU name was called accountType.
@@ -26,10 +28,9 @@ public final class Sku {
     private SkuTier tier;
 
     /**
-     * Get the name property: The SKU name. Required for account creation;
-     * optional for update. Note that in older versions, SKU name was called
-     * accountType.
-     * 
+     * Get the name property: The SKU name. Required for account creation; optional for update. Note that in older
+     * versions, SKU name was called accountType.
+     *
      * @return the name value.
      */
     public SkuName name() {
@@ -37,10 +38,9 @@ public final class Sku {
     }
 
     /**
-     * Set the name property: The SKU name. Required for account creation;
-     * optional for update. Note that in older versions, SKU name was called
-     * accountType.
-     * 
+     * Set the name property: The SKU name. Required for account creation; optional for update. Note that in older
+     * versions, SKU name was called accountType.
+     *
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -51,10 +51,22 @@ public final class Sku {
 
     /**
      * Get the tier property: The SKU tier. This is based on the SKU name.
-     * 
+     *
      * @return the tier value.
      */
     public SkuTier tier() {
         return this.tier;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+        }
     }
 }

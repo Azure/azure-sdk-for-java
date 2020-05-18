@@ -3,16 +3,17 @@
 
 package com.azure.management.resources.fluentcore.policy;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.management.CloudError;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.management.AzureTokenCredential;
 import com.azure.management.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -30,14 +31,17 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
     private static final String LINKED_AUTHORIZATION_FAILED = "LinkedAuthorizationFailed";
     private static final String SCHEMA_FORMAT = "Bearer %s";
 
-    private final AzureTokenCredential[] tokenCredentials;
+    private final TokenCredential[] tokenCredentials;
+    private final AzureEnvironment environment;
 
     /**
      * Initialize an auxiliary authentication policy with the list of AzureTokenCredentials.
      *
+     * @param environment the Azure environment
      * @param credentials the AzureTokenCredentials list
      */
-    public AuxiliaryAuthenticationPolicy(AzureTokenCredential... credentials) {
+    public AuxiliaryAuthenticationPolicy(AzureEnvironment environment, TokenCredential... credentials) {
+        this.environment = environment;
         this.tokenCredentials = credentials;
     }
 
@@ -58,10 +62,10 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
                             String bodyStr = new String(body, StandardCharsets.UTF_8);
 
                             AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
-                            CloudError cloudError;
+                            ManagementError cloudError;
                             try {
                                 cloudError = jacksonAdapter.deserialize(
-                                    bodyStr, CloudError.class, SerializerEncoding.JSON);
+                                    bodyStr, ManagementError.class, SerializerEncoding.JSON);
                             } catch (IOException e) {
                                 return Mono.just(bufferedResponse);
                             }
@@ -73,7 +77,7 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
                                     .flatMap(
                                         credential -> {
                                             String defaultScope = Utils.getDefaultScopeFromRequest(
-                                                context.getHttpRequest(), credential.getEnvironment());
+                                                context.getHttpRequest(), this.environment);
                                             return credential.getToken(
                                                 new TokenRequestContext().addScopes(defaultScope))
                                                     .map(accessToken ->

@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoutingPreference model.
- */
+/** The RoutingPreference model. */
 @Fluent
 public final class RoutingPreference {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingPreference.class);
+
     /*
      * Routing Choice defines the kind of network routing opted by the user.
      */
@@ -33,9 +35,8 @@ public final class RoutingPreference {
     private Boolean publishInternetEndpoints;
 
     /**
-     * Get the routingChoice property: Routing Choice defines the kind of
-     * network routing opted by the user.
-     * 
+     * Get the routingChoice property: Routing Choice defines the kind of network routing opted by the user.
+     *
      * @return the routingChoice value.
      */
     public RoutingChoice routingChoice() {
@@ -43,9 +44,8 @@ public final class RoutingPreference {
     }
 
     /**
-     * Set the routingChoice property: Routing Choice defines the kind of
-     * network routing opted by the user.
-     * 
+     * Set the routingChoice property: Routing Choice defines the kind of network routing opted by the user.
+     *
      * @param routingChoice the routingChoice value to set.
      * @return the RoutingPreference object itself.
      */
@@ -55,10 +55,9 @@ public final class RoutingPreference {
     }
 
     /**
-     * Get the publishMicrosoftEndpoints property: A boolean flag which
-     * indicates whether microsoft routing storage endpoints are to be
-     * published.
-     * 
+     * Get the publishMicrosoftEndpoints property: A boolean flag which indicates whether microsoft routing storage
+     * endpoints are to be published.
+     *
      * @return the publishMicrosoftEndpoints value.
      */
     public Boolean publishMicrosoftEndpoints() {
@@ -66,12 +65,10 @@ public final class RoutingPreference {
     }
 
     /**
-     * Set the publishMicrosoftEndpoints property: A boolean flag which
-     * indicates whether microsoft routing storage endpoints are to be
-     * published.
-     * 
-     * @param publishMicrosoftEndpoints the publishMicrosoftEndpoints value to
-     * set.
+     * Set the publishMicrosoftEndpoints property: A boolean flag which indicates whether microsoft routing storage
+     * endpoints are to be published.
+     *
+     * @param publishMicrosoftEndpoints the publishMicrosoftEndpoints value to set.
      * @return the RoutingPreference object itself.
      */
     public RoutingPreference withPublishMicrosoftEndpoints(Boolean publishMicrosoftEndpoints) {
@@ -80,10 +77,9 @@ public final class RoutingPreference {
     }
 
     /**
-     * Get the publishInternetEndpoints property: A boolean flag which
-     * indicates whether internet routing storage endpoints are to be
-     * published.
-     * 
+     * Get the publishInternetEndpoints property: A boolean flag which indicates whether internet routing storage
+     * endpoints are to be published.
+     *
      * @return the publishInternetEndpoints value.
      */
     public Boolean publishInternetEndpoints() {
@@ -91,16 +87,22 @@ public final class RoutingPreference {
     }
 
     /**
-     * Set the publishInternetEndpoints property: A boolean flag which
-     * indicates whether internet routing storage endpoints are to be
-     * published.
-     * 
-     * @param publishInternetEndpoints the publishInternetEndpoints value to
-     * set.
+     * Set the publishInternetEndpoints property: A boolean flag which indicates whether internet routing storage
+     * endpoints are to be published.
+     *
+     * @param publishInternetEndpoints the publishInternetEndpoints value to set.
      * @return the RoutingPreference object itself.
      */
     public RoutingPreference withPublishInternetEndpoints(Boolean publishInternetEndpoints) {
         this.publishInternetEndpoints = publishInternetEndpoints;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

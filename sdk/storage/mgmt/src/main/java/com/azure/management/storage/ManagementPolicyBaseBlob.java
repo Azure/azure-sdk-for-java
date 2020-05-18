@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagementPolicyBaseBlob model.
- */
+/** The ManagementPolicyBaseBlob model. */
 @Fluent
 public final class ManagementPolicyBaseBlob {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyBaseBlob.class);
+
     /*
      * The function to tier blobs to cool storage. Support blobs currently at
      * Hot tier
@@ -33,9 +35,8 @@ public final class ManagementPolicyBaseBlob {
     private DateAfterModification delete;
 
     /**
-     * Get the tierToCool property: The function to tier blobs to cool storage.
-     * Support blobs currently at Hot tier.
-     * 
+     * Get the tierToCool property: The function to tier blobs to cool storage. Support blobs currently at Hot tier.
+     *
      * @return the tierToCool value.
      */
     public DateAfterModification tierToCool() {
@@ -43,9 +44,8 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Set the tierToCool property: The function to tier blobs to cool storage.
-     * Support blobs currently at Hot tier.
-     * 
+     * Set the tierToCool property: The function to tier blobs to cool storage. Support blobs currently at Hot tier.
+     *
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -55,9 +55,9 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Get the tierToArchive property: The function to tier blobs to archive
-     * storage. Support blobs currently at Hot or Cool tier.
-     * 
+     * Get the tierToArchive property: The function to tier blobs to archive storage. Support blobs currently at Hot or
+     * Cool tier.
+     *
      * @return the tierToArchive value.
      */
     public DateAfterModification tierToArchive() {
@@ -65,9 +65,9 @@ public final class ManagementPolicyBaseBlob {
     }
 
     /**
-     * Set the tierToArchive property: The function to tier blobs to archive
-     * storage. Support blobs currently at Hot or Cool tier.
-     * 
+     * Set the tierToArchive property: The function to tier blobs to archive storage. Support blobs currently at Hot or
+     * Cool tier.
+     *
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
@@ -78,7 +78,7 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Get the delete property: The function to delete the blob.
-     * 
+     *
      * @return the delete value.
      */
     public DateAfterModification delete() {
@@ -87,12 +87,29 @@ public final class ManagementPolicyBaseBlob {
 
     /**
      * Set the delete property: The function to delete the blob.
-     * 
+     *
      * @param delete the delete value to set.
      * @return the ManagementPolicyBaseBlob object itself.
      */
     public ManagementPolicyBaseBlob withDelete(DateAfterModification delete) {
         this.delete = delete;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (tierToCool() != null) {
+            tierToCool().validate();
+        }
+        if (tierToArchive() != null) {
+            tierToArchive().validate();
+        }
+        if (delete() != null) {
+            delete().validate();
+        }
     }
 }

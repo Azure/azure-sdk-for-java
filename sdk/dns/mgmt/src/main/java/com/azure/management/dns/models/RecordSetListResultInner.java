@@ -5,14 +5,16 @@
 package com.azure.management.dns.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RecordSetListResult model.
- */
+/** The RecordSetListResult model. */
 @Fluent
 public final class RecordSetListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetListResultInner.class);
+
     /*
      * Information about the record sets in the response.
      */
@@ -26,9 +28,8 @@ public final class RecordSetListResultInner {
     private String nextLink;
 
     /**
-     * Get the value property: Information about the record sets in the
-     * response.
-     * 
+     * Get the value property: Information about the record sets in the response.
+     *
      * @return the value value.
      */
     public List<RecordSetInner> value() {
@@ -36,9 +37,8 @@ public final class RecordSetListResultInner {
     }
 
     /**
-     * Set the value property: Information about the record sets in the
-     * response.
-     * 
+     * Set the value property: Information about the record sets in the response.
+     *
      * @param value the value value to set.
      * @return the RecordSetListResultInner object itself.
      */
@@ -48,12 +48,22 @@ public final class RecordSetListResultInner {
     }
 
     /**
-     * Get the nextLink property: The continuation token for the next page of
-     * results.
-     * 
+     * Get the nextLink property: The continuation token for the next page of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

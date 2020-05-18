@@ -5,17 +5,24 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The MultiMetricCriteria model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "criterionType", defaultImpl = MultiMetricCriteria.class)
+/** The MultiMetricCriteria model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "criterionType",
+    defaultImpl = MultiMetricCriteria.class)
 @JsonTypeName("MultiMetricCriteria")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "StaticThresholdCriterion", value = MetricCriteria.class),
@@ -23,6 +30,8 @@ import java.util.Map;
 })
 @Fluent
 public class MultiMetricCriteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MultiMetricCriteria.class);
+
     /*
      * Name of the criteria.
      */
@@ -56,12 +65,11 @@ public class MultiMetricCriteria {
     /*
      * The types of conditions for a multi resource alert.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the name property: Name of the criteria.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -70,7 +78,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the name property: Name of the criteria.
-     * 
+     *
      * @param name the name value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -81,7 +89,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the metricName property: Name of the metric.
-     * 
+     *
      * @return the metricName value.
      */
     public String metricName() {
@@ -90,7 +98,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the metricName property: Name of the metric.
-     * 
+     *
      * @param metricName the metricName value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -101,7 +109,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the metricNamespace property: Namespace of the metric.
-     * 
+     *
      * @return the metricNamespace value.
      */
     public String metricNamespace() {
@@ -110,7 +118,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the metricNamespace property: Namespace of the metric.
-     * 
+     *
      * @param metricNamespace the metricNamespace value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -121,7 +129,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the timeAggregation property: the criteria time aggregation types.
-     * 
+     *
      * @return the timeAggregation value.
      */
     public AggregationType timeAggregation() {
@@ -130,7 +138,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the timeAggregation property: the criteria time aggregation types.
-     * 
+     *
      * @param timeAggregation the timeAggregation value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -141,7 +149,7 @@ public class MultiMetricCriteria {
 
     /**
      * Get the dimensions property: List of dimension conditions.
-     * 
+     *
      * @return the dimensions value.
      */
     public List<MetricDimension> dimensions() {
@@ -150,7 +158,7 @@ public class MultiMetricCriteria {
 
     /**
      * Set the dimensions property: List of dimension conditions.
-     * 
+     *
      * @param dimensions the dimensions value to set.
      * @return the MultiMetricCriteria object itself.
      */
@@ -160,24 +168,58 @@ public class MultiMetricCriteria {
     }
 
     /**
-     * Get the additionalProperties property: The types of conditions for a
-     * multi resource alert.
-     * 
+     * Get the additionalProperties property: The types of conditions for a multi resource alert.
+     *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
-     * Set the additionalProperties property: The types of conditions for a
-     * multi resource alert.
-     * 
+     * Set the additionalProperties property: The types of conditions for a multi resource alert.
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the MultiMetricCriteria object itself.
      */
     public MultiMetricCriteria withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model MultiMetricCriteria"));
+        }
+        if (metricName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property metricName in model MultiMetricCriteria"));
+        }
+        if (timeAggregation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property timeAggregation in model MultiMetricCriteria"));
+        }
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
     }
 }

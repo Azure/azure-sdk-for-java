@@ -5,23 +5,17 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.resources.fluentcore.model.Creatable;
 
-/**
- * An interface representing a model's ability to references a frontend.
- */
+/** An interface representing a model's ability to references a frontend. */
 @Fluent
 public interface HasFrontend {
-    /**
-     * @return the associated frontend
-     */
+    /** @return the associated frontend */
     LoadBalancerFrontend frontend();
 
-    /**
-     * Grouping of definition stages involving specifying the frontend.
-     */
+    /** Grouping of definition stages involving specifying the frontend. */
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to specify a load balancer frontend.
@@ -38,11 +32,12 @@ public interface HasFrontend {
             ReturnT fromFrontend(String frontendName);
 
             /**
-             * Specifies that network traffic should be received on a new public IP address that is to be created along with the load balancer
-             * in the same region and resource group but under the provided leaf DNS label, assuming it is available.
-             * <p>
-             * A new automatically-named public frontend will be implicitly created on this load balancer for each such new public IP address, so make
-             * sure to use a unique DNS label.
+             * Specifies that network traffic should be received on a new public IP address that is to be created along
+             * with the load balancer in the same region and resource group but under the provided leaf DNS label,
+             * assuming it is available.
+             *
+             * <p>A new automatically-named public frontend will be implicitly created on this load balancer for each
+             * such new public IP address, so make sure to use a unique DNS label.
              *
              * @param leafDnsLabel a unique leaf DNS label to create the public IP address under
              * @return the next stage of the definition
@@ -50,21 +45,23 @@ public interface HasFrontend {
             ReturnT fromNewPublicIPAddress(String leafDnsLabel);
 
             /**
-             * Specifies that network traffic should be received on a new public IP address that is to be created along with the load balancer
-             * based on the provided definition.
-             * <p>
-             * A new automatically-named public frontend will be implicitly created on this load balancer for each such new public IP address.
+             * Specifies that network traffic should be received on a new public IP address that is to be created along
+             * with the load balancer based on the provided definition.
+             *
+             * <p>A new automatically-named public frontend will be implicitly created on this load balancer for each
+             * such new public IP address.
              *
              * @param pipDefinition a definition for the new public IP
              * @return the next stage of the definition
              */
-            ReturnT fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition);
+            ReturnT fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition);
 
             /**
-             * Specifies that network traffic should be received on a new public IP address that is to be automatically created woth default settings
-             * along with the load balancer.
-             * <p>
-             * A new automatically-named public frontend will be implicitly created on this load balancer for each such new public IP address.
+             * Specifies that network traffic should be received on a new public IP address that is to be automatically
+             * created woth default settings along with the load balancer.
+             *
+             * <p>A new automatically-named public frontend will be implicitly created on this load balancer for each
+             * such new public IP address.
              *
              * @return the next stage of the definition
              */
@@ -72,20 +69,22 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing public IP address to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
-             * Else, an automatically named new public frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this public IP address, that is the frontend
+             * that will be used. Else, an automatically named new public frontend will be created implicitly on the
+             * load balancer.
              *
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT fromExistingPublicIPAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Specifies an existing public IP address to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
-             * Else, an automatically named new public frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this public IP address, that is the frontend
+             * that will be used. Else, an automatically named new public frontend will be created implicitly on the
+             * load balancer.
              *
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
@@ -94,9 +93,10 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing private subnet to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
-             * Else, an automatically named new private frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this subnet, that is the frontend that will
+             * be used. Else, an automatically named new private frontend will be created implicitly on the load
+             * balancer.
              *
              * @param network an existing network
              * @param subnetName the name of an existing subnet within the specified network
@@ -106,9 +106,10 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing private subnet to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
-             * Else, an automatically named new private frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this subnet, that is the frontend that will
+             * be used. Else, an automatically named new private frontend will be created implicitly on the load
+             * balancer.
              *
              * @param networkResourceId the resource ID of an existing network
              * @param subnetName the name of an existing subnet within the specified network
@@ -118,9 +119,10 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing private subnet to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
-             * Else, an automatically named new private frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this subnet, that is the frontend that will
+             * be used. Else, an automatically named new private frontend will be created implicitly on the load
+             * balancer.
              *
              * @param subnet an existing subnet
              * @return the next stage of the definition
@@ -129,9 +131,7 @@ public interface HasFrontend {
         }
     }
 
-    /**
-     * Grouping of update stages involving specifying the frontend.
-     */
+    /** Grouping of update stages involving specifying the frontend. */
     interface UpdateStages {
         /**
          * The stage of an update allowing to specify a frontend.
@@ -149,9 +149,7 @@ public interface HasFrontend {
         }
     }
 
-    /**
-     * Grouping of definition stages applicable as part of a resource update involving modifying the frontend.
-     */
+    /** Grouping of definition stages applicable as part of a resource update involving modifying the frontend. */
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to specify a frontend from to associate.
@@ -169,20 +167,22 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing public IP address to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
-             * Else, an automatically named new public frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this public IP address, that is the frontend
+             * that will be used. Else, an automatically named new public frontend will be created implicitly on the
+             * load balancer.
              *
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
+            ReturnT fromExistingPublicIPAddress(PublicIpAddress publicIPAddress);
 
             /**
              * Specifies an existing public IP address to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this public IP address, that is the frontend that will be used.
-             * Else, an automatically named new public frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this public IP address, that is the frontend
+             * that will be used. Else, an automatically named new public frontend will be created implicitly on the
+             * load balancer.
              *
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
@@ -191,9 +191,10 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing private subnet to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
-             * Else, an automatically named new private frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this subnet, that is the frontend that will
+             * be used. Else, an automatically named new private frontend will be created implicitly on the load
+             * balancer.
              *
              * @param network an existing network
              * @param subnetName the name of an existing subnet within the specified network
@@ -203,9 +204,10 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing private subnet to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
-             * Else, an automatically named new private frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this subnet, that is the frontend that will
+             * be used. Else, an automatically named new private frontend will be created implicitly on the load
+             * balancer.
              *
              * @param networkResourceId the resource ID of an existing network
              * @param subnetName the name of an existing subnet within the specified network
@@ -215,9 +217,10 @@ public interface HasFrontend {
 
             /**
              * Specifies an existing private subnet to receive network traffic from.
-             * <p>
-             * If this load balancer already has a frontend referencing this subnet, that is the frontend that will be used.
-             * Else, an automatically named new private frontend will be created implicitly on the load balancer.
+             *
+             * <p>If this load balancer already has a frontend referencing this subnet, that is the frontend that will
+             * be used. Else, an automatically named new private frontend will be created implicitly on the load
+             * balancer.
              *
              * @param subnet an existing subnet
              * @return the next stage of the definition

@@ -6,14 +6,16 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The TrackedResource model.
- */
+/** The TrackedResource model. */
 @Fluent
 public class TrackedResource extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResource.class);
+
     /*
      * Resource tags.
      */
@@ -28,7 +30,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -37,7 +39,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the TrackedResource object itself.
      */
@@ -48,7 +50,7 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Get the location property: The geo-location where the resource lives.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -57,12 +59,25 @@ public class TrackedResource extends ProxyResource {
 
     /**
      * Set the location property: The geo-location where the resource lives.
-     * 
+     *
      * @param location the location value to set.
      * @return the TrackedResource object itself.
      */
     public TrackedResource withLocation(String location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property location in model TrackedResource"));
+        }
     }
 }

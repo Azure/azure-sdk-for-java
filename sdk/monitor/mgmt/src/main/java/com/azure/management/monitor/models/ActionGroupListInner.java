@@ -5,14 +5,16 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActionGroupList model.
- */
+/** The ActionGroupList model. */
 @Fluent
 public final class ActionGroupListInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionGroupListInner.class);
+
     /*
      * The list of action groups.
      */
@@ -27,7 +29,7 @@ public final class ActionGroupListInner {
 
     /**
      * Get the value property: The list of action groups.
-     * 
+     *
      * @return the value value.
      */
     public List<ActionGroupResourceInner> value() {
@@ -36,7 +38,7 @@ public final class ActionGroupListInner {
 
     /**
      * Set the value property: The list of action groups.
-     * 
+     *
      * @param value the value value to set.
      * @return the ActionGroupListInner object itself.
      */
@@ -46,9 +48,8 @@ public final class ActionGroupListInner {
     }
 
     /**
-     * Get the nextLink property: Provides the link to retrieve the next set of
-     * elements.
-     * 
+     * Get the nextLink property: Provides the link to retrieve the next set of elements.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,14 +57,24 @@ public final class ActionGroupListInner {
     }
 
     /**
-     * Set the nextLink property: Provides the link to retrieve the next set of
-     * elements.
-     * 
+     * Set the nextLink property: Provides the link to retrieve the next set of elements.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ActionGroupListInner object itself.
      */
     public ActionGroupListInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

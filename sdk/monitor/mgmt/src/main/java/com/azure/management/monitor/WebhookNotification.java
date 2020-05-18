@@ -5,14 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The WebhookNotification model.
- */
+/** The WebhookNotification model. */
 @Fluent
 public final class WebhookNotification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookNotification.class);
+
     /*
      * the service address to receive the notification.
      */
@@ -26,9 +28,8 @@ public final class WebhookNotification {
     private Map<String, String> properties;
 
     /**
-     * Get the serviceUri property: the service address to receive the
-     * notification.
-     * 
+     * Get the serviceUri property: the service address to receive the notification.
+     *
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -36,9 +37,8 @@ public final class WebhookNotification {
     }
 
     /**
-     * Set the serviceUri property: the service address to receive the
-     * notification.
-     * 
+     * Set the serviceUri property: the service address to receive the notification.
+     *
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookNotification object itself.
      */
@@ -48,9 +48,8 @@ public final class WebhookNotification {
     }
 
     /**
-     * Get the properties property: a property bag of settings. This value can
-     * be empty.
-     * 
+     * Get the properties property: a property bag of settings. This value can be empty.
+     *
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -58,14 +57,21 @@ public final class WebhookNotification {
     }
 
     /**
-     * Set the properties property: a property bag of settings. This value can
-     * be empty.
-     * 
+     * Set the properties property: a property bag of settings. This value can be empty.
+     *
      * @param properties the properties value to set.
      * @return the WebhookNotification object itself.
      */
     public WebhookNotification withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

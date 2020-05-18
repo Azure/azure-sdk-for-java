@@ -6,19 +6,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.util.List;
 
-/**
- * An client-side representation of a load balancer frontend.
- */
+/** An client-side representation of a load balancer frontend. */
 @Fluent
-public interface Ipv6PeeringConfig extends
-        HasInner<Ipv6ExpressRouteCircuitPeeringConfig> {
+public interface Ipv6PeeringConfig extends HasInner<Ipv6ExpressRouteCircuitPeeringConfig> {
 
-    /**
-     * Grouping of public frontend definition stages.
-     */
+    /** Grouping of public frontend definition stages. */
     interface DefinitionStages {
         /**
          * The first stage of a public frontend definition.
@@ -29,7 +23,8 @@ public interface Ipv6PeeringConfig extends
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify primary address prefix.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify primary address
+         * prefix.
          */
         interface WithPrimaryPeerAddressPrefix<ParentT> {
             /**
@@ -40,7 +35,8 @@ public interface Ipv6PeeringConfig extends
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address prefix.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address
+         * prefix.
          */
         interface WithSecondaryPeerAddressPrefix<ParentT> {
             /**
@@ -50,9 +46,7 @@ public interface Ipv6PeeringConfig extends
             WithAttach<ParentT> withSecondaryPeerAddressPrefix(String addressPrefix);
         }
 
-        /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify customer ASN.
-         */
+        /** The stage of Cross Connection Peering IPv6 configuration definition allowing to specify customer ASN. */
         interface WithCustomerASN<ParentT> {
             /**
              * Specifies customer ASN.
@@ -60,11 +54,12 @@ public interface Ipv6PeeringConfig extends
              * @param customerASN customer ASN
              * @return the next satge of the definition
              */
-            WithRoutingRegistryName<ParentT> withCustomerASN(int customerASN);
+            WithRoutingRegistryName<ParentT> withCustomerAsn(int customerASN);
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify routing registry name.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify routing registry
+         * name.
          */
         interface WithRoutingRegistryName<ParentT> {
             /**
@@ -77,13 +72,14 @@ public interface Ipv6PeeringConfig extends
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address prefix.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address
+         * prefix.
          */
         interface WithAdvertisedPublicPrefixes<ParentT> {
             /**
-             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP session. Method will overwrite existing list.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP
+             * session. Method will overwrite existing list. Only public IP address prefixes are accepted. A set of
+             * prefixes can be sent as a comma-separated list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefixes advertised prefixes
              * @return next stage of definition
@@ -91,9 +87,9 @@ public interface Ipv6PeeringConfig extends
             WithCustomerASN<ParentT> withAdvertisedPublicPrefixes(List<String> publicPrefixes);
 
             /**
-             * Specify advertised prefix: sets a prefix that is planned to advertise over the BGP session. Method will add a prefix to existing list.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefix: sets a prefix that is planned to advertise over the BGP session. Method will
+             * add a prefix to existing list. Only public IP address prefixes are accepted. A set of prefixes can be
+             * sent as a comma-separated list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefix advertised prefix
              * @return next stage of definition
@@ -101,9 +97,7 @@ public interface Ipv6PeeringConfig extends
             WithCustomerASN<ParentT> withAdvertisedPublicPrefix(String publicPrefix);
         }
 
-        /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter.
-         */
+        /** The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter. */
         interface WithRouteFilter<ParentT> {
             /**
              * Sets route filter id.
@@ -123,15 +117,13 @@ public interface Ipv6PeeringConfig extends
 
         /**
          * The final stage of a public frontend definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the frontend definition can be
+         * attached to the parent load balancer definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
-                WithRouteFilter<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT>, WithRouteFilter<ParentT> {
         }
     }
 
@@ -140,8 +132,8 @@ public interface Ipv6PeeringConfig extends
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT>,
             DefinitionStages.WithPrimaryPeerAddressPrefix<ParentT>,
             DefinitionStages.WithSecondaryPeerAddressPrefix<ParentT>,
@@ -149,18 +141,14 @@ public interface Ipv6PeeringConfig extends
             DefinitionStages.WithRoutingRegistryName<ParentT> {
     }
 
-    /**
-     * Grouping of public frontend update stages.
-     */
+    /** Grouping of public frontend update stages. */
     interface UpdateStages {
-        /**
-         * The stage of a public frontend update allowing to specify an existing public IP address.
-         */
+        /** The stage of a public frontend update allowing to specify an existing public IP address. */
         interface WithAdvertisedPublicPrefixes {
             /**
-             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP session.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP
+             * session. Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated
+             * list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefixes advertised prefixes
              * @return next stage of update
@@ -168,9 +156,9 @@ public interface Ipv6PeeringConfig extends
             Update withAdvertisedPublicPrefixes(List<String> publicPrefixes);
 
             /**
-             * Specify advertised prefix: sets a prefix that is planned to advertise over the BGP session. Method will add a prefix to existing list.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefix: sets a prefix that is planned to advertise over the BGP session. Method will
+             * add a prefix to existing list. Only public IP address prefixes are accepted. A set of prefixes can be
+             * sent as a comma-separated list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefix advertised prefix
              * @return next stage of definition
@@ -210,7 +198,7 @@ public interface Ipv6PeeringConfig extends
              * @param customerASN customer ASN
              * @return the next stage of the update
              */
-            Update withCustomerASN(int customerASN);
+            Update withCustomerAsn(int customerASN);
         }
 
         /**
@@ -226,9 +214,7 @@ public interface Ipv6PeeringConfig extends
             Update withRoutingRegistryName(String routingRegistryName);
         }
 
-        /**
-         * The stage of Cross Connection Peering IPv6 configuration update allowing to specify route filter.
-         */
+        /** The stage of Cross Connection Peering IPv6 configuration update allowing to specify route filter. */
         interface WithRouteFilter {
             /**
              * Sets route filter id.
@@ -247,11 +233,9 @@ public interface Ipv6PeeringConfig extends
         }
     }
 
-    /**
-     * The entirety of a public frontend update as part of an Internet-facing load balancer update.
-     */
-    interface Update extends
-            Settable<ExpressRouteCrossConnectionPeering.Update>,
+    /** The entirety of a public frontend update as part of an Internet-facing load balancer update. */
+    interface Update
+        extends Settable<ExpressRouteCrossConnectionPeering.Update>,
             UpdateStages.WithAdvertisedPublicPrefixes,
             UpdateStages.WithPrimaryPeerAddressPrefix,
             UpdateStages.WithSecondaryPeerAddressPrefix,
@@ -260,9 +244,7 @@ public interface Ipv6PeeringConfig extends
             UpdateStages.WithRouteFilter {
     }
 
-    /**
-     * Grouping of public frontend definition stages applicable as part of an Internet-facing load balancer update.
-     */
+    /** Grouping of public frontend definition stages applicable as part of an Internet-facing load balancer update. */
     interface UpdateDefinitionStages {
         /**
          * The first stage of a public frontend definition.
@@ -274,9 +256,9 @@ public interface Ipv6PeeringConfig extends
 
         interface WithAdvertisedPublicPrefixes<ParentT> {
             /**
-             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP session.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP
+             * session. Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated
+             * list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefixes advertised prefixes
              * @return next stage of definition
@@ -284,9 +266,9 @@ public interface Ipv6PeeringConfig extends
             WithCustomerASN<ParentT> withAdvertisedPublicPrefixes(List<String> publicPrefixes);
 
             /**
-             * Specify advertised prefix: sets a prefix that is planned to advertise over the BGP session. Method will add a prefix to existing list.
-             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
-             * These prefixes must be registered to you in an RIR / IRR.
+             * Specify advertised prefix: sets a prefix that is planned to advertise over the BGP session. Method will
+             * add a prefix to existing list. Only public IP address prefixes are accepted. A set of prefixes can be
+             * sent as a comma-separated list. These prefixes must be registered to you in an RIR / IRR.
              *
              * @param publicPrefix advertised prefix
              * @return next stage of definition
@@ -295,7 +277,8 @@ public interface Ipv6PeeringConfig extends
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify primary address prefix.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify primary address
+         * prefix.
          */
         interface WithPrimaryPeerAddressPrefix<ParentT> {
             /**
@@ -306,7 +289,8 @@ public interface Ipv6PeeringConfig extends
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address prefix.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary address
+         * prefix.
          */
         interface WithSecondaryPeerAddressPrefix<ParentT> {
             /**
@@ -317,7 +301,8 @@ public interface Ipv6PeeringConfig extends
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary customer ASN.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify secondary customer
+         * ASN.
          */
         interface WithCustomerASN<ParentT> {
             /**
@@ -326,11 +311,12 @@ public interface Ipv6PeeringConfig extends
              * @param customerASN customer ASN
              * @return the next satge of the definition
              */
-            WithRoutingRegistryName<ParentT> withCustomerASN(int customerASN);
+            WithRoutingRegistryName<ParentT> withCustomerAsn(int customerASN);
         }
 
         /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify routing registry name.
+         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify routing registry
+         * name.
          */
         interface WithRoutingRegistryName<ParentT> {
             /**
@@ -342,9 +328,7 @@ public interface Ipv6PeeringConfig extends
             WithPrimaryPeerAddressPrefix<ParentT> withRoutingRegistryName(String routingRegistryName);
         }
 
-        /**
-         * The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter.
-         */
+        /** The stage of Cross Connection Peering IPv6 configuration definition allowing to specify route filter. */
         interface WithRouteFilter<ParentT> {
             /**
              * Sets route filter id.
@@ -362,28 +346,26 @@ public interface Ipv6PeeringConfig extends
             WithAttach<ParentT> withoutRouteFilter();
         }
 
-
         /**
          * The final stage of peering IPv6 configuration definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent peering definition definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the frontend definition can be
+         * attached to the parent peering definition definition.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
-                WithRouteFilter<ParentT> {
+        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT>, WithRouteFilter<ParentT> {
         }
     }
 
     /**
-     * The entirety of Cross Connection Peering IPv6 configuration definition as part of Cross Connection Peering update.
+     * The entirety of Cross Connection Peering IPv6 configuration definition as part of Cross Connection Peering
+     * update.
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
             UpdateDefinitionStages.WithAdvertisedPublicPrefixes<ParentT>,
             UpdateDefinitionStages.WithPrimaryPeerAddressPrefix<ParentT>,
@@ -392,4 +374,3 @@ public interface Ipv6PeeringConfig extends
             UpdateDefinitionStages.WithRoutingRegistryName<ParentT> {
     }
 }
-

@@ -6,18 +6,20 @@ package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.LogSettings;
 import com.azure.management.monitor.MetricSettings;
 import com.azure.management.monitor.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DiagnosticSettingsResource model.
- */
+/** The DiagnosticSettingsResource model. */
 @JsonFlatten
 @Fluent
 public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticSettingsResourceInner.class);
+
     /*
      * The resource ID of the storage account to which you would like to send
      * Diagnostic Logs.
@@ -76,9 +78,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     private String logAnalyticsDestinationType;
 
     /**
-     * Get the storageAccountId property: The resource ID of the storage
-     * account to which you would like to send Diagnostic Logs.
-     * 
+     * Get the storageAccountId property: The resource ID of the storage account to which you would like to send
+     * Diagnostic Logs.
+     *
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -86,9 +88,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the storageAccountId property: The resource ID of the storage
-     * account to which you would like to send Diagnostic Logs.
-     * 
+     * Set the storageAccountId property: The resource ID of the storage account to which you would like to send
+     * Diagnostic Logs.
+     *
      * @param storageAccountId the storageAccountId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -98,9 +100,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the serviceBusRuleId property: The service bus rule Id of the
-     * diagnostic setting. This is here to maintain backwards compatibility.
-     * 
+     * Get the serviceBusRuleId property: The service bus rule Id of the diagnostic setting. This is here to maintain
+     * backwards compatibility.
+     *
      * @return the serviceBusRuleId value.
      */
     public String serviceBusRuleId() {
@@ -108,9 +110,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the serviceBusRuleId property: The service bus rule Id of the
-     * diagnostic setting. This is here to maintain backwards compatibility.
-     * 
+     * Set the serviceBusRuleId property: The service bus rule Id of the diagnostic setting. This is here to maintain
+     * backwards compatibility.
+     *
      * @param serviceBusRuleId the serviceBusRuleId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -120,9 +122,8 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the eventHubAuthorizationRuleId property: The resource Id for the
-     * event hub authorization rule.
-     * 
+     * Get the eventHubAuthorizationRuleId property: The resource Id for the event hub authorization rule.
+     *
      * @return the eventHubAuthorizationRuleId value.
      */
     public String eventHubAuthorizationRuleId() {
@@ -130,11 +131,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the eventHubAuthorizationRuleId property: The resource Id for the
-     * event hub authorization rule.
-     * 
-     * @param eventHubAuthorizationRuleId the eventHubAuthorizationRuleId value
-     * to set.
+     * Set the eventHubAuthorizationRuleId property: The resource Id for the event hub authorization rule.
+     *
+     * @param eventHubAuthorizationRuleId the eventHubAuthorizationRuleId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
     public DiagnosticSettingsResourceInner withEventHubAuthorizationRuleId(String eventHubAuthorizationRuleId) {
@@ -143,9 +142,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the eventHubName property: The name of the event hub. If none is
-     * specified, the default event hub will be selected.
-     * 
+     * Get the eventHubName property: The name of the event hub. If none is specified, the default event hub will be
+     * selected.
+     *
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -153,9 +152,9 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the eventHubName property: The name of the event hub. If none is
-     * specified, the default event hub will be selected.
-     * 
+     * Set the eventHubName property: The name of the event hub. If none is specified, the default event hub will be
+     * selected.
+     *
      * @param eventHubName the eventHubName value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -166,7 +165,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the metrics property: The list of metric settings.
-     * 
+     *
      * @return the metrics value.
      */
     public List<MetricSettings> metrics() {
@@ -175,7 +174,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the metrics property: The list of metric settings.
-     * 
+     *
      * @param metrics the metrics value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -186,7 +185,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the logs property: The list of logs settings.
-     * 
+     *
      * @return the logs value.
      */
     public List<LogSettings> logs() {
@@ -195,7 +194,7 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the logs property: The list of logs settings.
-     * 
+     *
      * @param logs the logs value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -205,11 +204,10 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the workspaceId property: The full ARM resource ID of the Log
-     * Analytics workspace to which you would like to send Diagnostic Logs.
-     * Example:
+     * Get the workspaceId property: The full ARM resource ID of the Log Analytics workspace to which you would like to
+     * send Diagnostic Logs. Example:
      * /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
-     * 
+     *
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -217,11 +215,10 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the workspaceId property: The full ARM resource ID of the Log
-     * Analytics workspace to which you would like to send Diagnostic Logs.
-     * Example:
+     * Set the workspaceId property: The full ARM resource ID of the Log Analytics workspace to which you would like to
+     * send Diagnostic Logs. Example:
      * /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2.
-     * 
+     *
      * @param workspaceId the workspaceId value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
@@ -231,12 +228,11 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the logAnalyticsDestinationType property: A string indicating
-     * whether the export to Log Analytics should use the default destination
-     * type, i.e. AzureDiagnostics, or use a destination type constructed as
-     * follows: &lt;normalized service identity&gt;_&lt;normalized category
-     * name&gt;. Possible values are: Dedicated and null (null is default.).
-     * 
+     * Get the logAnalyticsDestinationType property: A string indicating whether the export to Log Analytics should use
+     * the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows:
+     * &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null
+     * (null is default.).
+     *
      * @return the logAnalyticsDestinationType value.
      */
     public String logAnalyticsDestinationType() {
@@ -244,18 +240,32 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     }
 
     /**
-     * Set the logAnalyticsDestinationType property: A string indicating
-     * whether the export to Log Analytics should use the default destination
-     * type, i.e. AzureDiagnostics, or use a destination type constructed as
-     * follows: &lt;normalized service identity&gt;_&lt;normalized category
-     * name&gt;. Possible values are: Dedicated and null (null is default.).
-     * 
-     * @param logAnalyticsDestinationType the logAnalyticsDestinationType value
-     * to set.
+     * Set the logAnalyticsDestinationType property: A string indicating whether the export to Log Analytics should use
+     * the default destination type, i.e. AzureDiagnostics, or use a destination type constructed as follows:
+     * &lt;normalized service identity&gt;_&lt;normalized category name&gt;. Possible values are: Dedicated and null
+     * (null is default.).
+     *
+     * @param logAnalyticsDestinationType the logAnalyticsDestinationType value to set.
      * @return the DiagnosticSettingsResourceInner object itself.
      */
     public DiagnosticSettingsResourceInner withLogAnalyticsDestinationType(String logAnalyticsDestinationType) {
         this.logAnalyticsDestinationType = logAnalyticsDestinationType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (metrics() != null) {
+            metrics().forEach(e -> e.validate());
+        }
+        if (logs() != null) {
+            logs().forEach(e -> e.validate());
+        }
     }
 }

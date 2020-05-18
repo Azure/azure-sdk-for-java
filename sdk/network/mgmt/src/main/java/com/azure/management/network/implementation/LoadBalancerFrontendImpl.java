@@ -3,7 +3,7 @@
 package com.azure.management.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.management.network.IPAllocationMethod;
+import com.azure.management.network.IpAllocationMethod;
 import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.LoadBalancerInboundNatPool;
@@ -12,16 +12,15 @@ import com.azure.management.network.LoadBalancerPrivateFrontend;
 import com.azure.management.network.LoadBalancerPublicFrontend;
 import com.azure.management.network.LoadBalancingRule;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
-import com.azure.management.network.models.FrontendIPConfigurationInner;
-import com.azure.management.network.models.PublicIPAddressInner;
+import com.azure.management.network.models.FrontendIpConfigurationInner;
+import com.azure.management.network.models.PublicIpAddressInner;
 import com.azure.management.network.models.SubnetInner;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.azure.management.resources.fluentcore.model.Creatable;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,13 +28,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-/**
- * Implementation for LoadBalancerPublicFrontend.
- */
-class LoadBalancerFrontendImpl
-        extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerFrontend,
+/** Implementation for LoadBalancerPublicFrontend. */
+class LoadBalancerFrontendImpl extends ChildResourceImpl<FrontendIpConfigurationInner, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerFrontend,
         LoadBalancerPrivateFrontend,
         LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithCreate>,
         LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
@@ -45,7 +40,7 @@ class LoadBalancerFrontendImpl
         LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerPublicFrontend.Update {
 
-    LoadBalancerFrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
+    LoadBalancerFrontendImpl(FrontendIpConfigurationInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -55,7 +50,7 @@ class LoadBalancerFrontendImpl
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.getId());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
@@ -65,20 +60,20 @@ class LoadBalancerFrontendImpl
     public String subnetName() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.nameFromResourceId(subnetRef.getId());
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
         } else {
             return null;
         }
     }
 
     @Override
-    public String privateIPAddress() {
-        return this.inner().privateIPAddress();
+    public String privateIpAddress() {
+        return this.inner().privateIpAddress();
     }
 
     @Override
-    public IPAllocationMethod privateIPAllocationMethod() {
-        return this.inner().privateIPAllocationMethod();
+    public IpAllocationMethod privateIpAllocationMethod() {
+        return this.inner().privateIpAllocationMethod();
     }
 
     @Override
@@ -87,13 +82,13 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public String publicIPAddressId() {
-        return this.inner().publicIPAddress().getId();
+    public String publicIpAddressId() {
+        return this.inner().publicIpAddress().id();
     }
 
     @Override
     public boolean isPublic() {
-        return (this.inner().publicIPAddress() != null);
+        return (this.inner().publicIpAddress() != null);
     }
 
     @Override
@@ -101,7 +96,7 @@ class LoadBalancerFrontendImpl
         final Map<String, LoadBalancingRule> rules = new TreeMap<>();
         if (this.inner().loadBalancingRules() != null) {
             for (SubResource innerRef : this.inner().loadBalancingRules()) {
-                String name = ResourceUtils.nameFromResourceId(innerRef.getId());
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancingRule rule = this.parent().loadBalancingRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
@@ -117,7 +112,7 @@ class LoadBalancerFrontendImpl
         final Map<String, LoadBalancerInboundNatPool> pools = new TreeMap<>();
         if (this.inner().inboundNatPools() != null) {
             for (SubResource innerRef : this.inner().inboundNatPools()) {
-                String name = ResourceUtils.nameFromResourceId(innerRef.getId());
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancerInboundNatPool pool = this.parent().inboundNatPools().get(name);
                 if (pool != null) {
                     pools.put(name, pool);
@@ -133,7 +128,7 @@ class LoadBalancerFrontendImpl
         final Map<String, LoadBalancerInboundNatRule> rules = new TreeMap<>();
         if (this.inner().inboundNatRules() != null) {
             for (SubResource innerRef : this.inner().inboundNatRules()) {
-                String name = ResourceUtils.nameFromResourceId(innerRef.getId());
+                String name = ResourceUtils.nameFromResourceId(innerRef.id());
                 LoadBalancerInboundNatRule rule = this.parent().inboundNatRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
@@ -153,11 +148,12 @@ class LoadBalancerFrontendImpl
 
     @Override
     public LoadBalancerFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
-        SubnetInner subnetRef = (SubnetInner) new SubnetInner()
-                .setId(parentNetworkResourceId + "/subnets/" + subnetName);
-        this.inner()
-                .withSubnet(subnetRef)
-                .withPublicIPAddress(null); // Ensure no conflicting public and private settings
+        SubnetInner subnetRef = new SubnetInner();
+        subnetRef.withId(parentNetworkResourceId + "/subnets/" + subnetName);
+        this
+            .inner()
+            .withSubnet(subnetRef)
+            .withPublicIpAddress(null); // Ensure no conflicting public and private settings
         return this;
     }
 
@@ -178,67 +174,70 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public LoadBalancerFrontendImpl withExistingPublicIPAddress(PublicIPAddress pip) {
-        return this.withExistingPublicIPAddress(pip.id());
+    public LoadBalancerFrontendImpl withExistingPublicIpAddress(PublicIpAddress pip) {
+        return this.withExistingPublicIpAddress(pip.id());
     }
 
     @Override
-    public LoadBalancerFrontendImpl withExistingPublicIPAddress(String resourceId) {
-        PublicIPAddressInner pipRef = new PublicIPAddressInner().withId(resourceId);
-        this.inner()
-                .withPublicIPAddress(pipRef)
+    public LoadBalancerFrontendImpl withExistingPublicIpAddress(String resourceId) {
+        PublicIpAddressInner pipRef = new PublicIpAddressInner().withId(resourceId);
+        this
+            .inner()
+            .withPublicIpAddress(pipRef)
 
-                // Ensure no conflicting public and private settings
-                .withSubnet(null)
-                .withPrivateIPAddress(null)
-                .withPrivateIPAllocationMethod(null);
+            // Ensure no conflicting public and private settings
+            .withSubnet(null)
+            .withPrivateIpAddress(null)
+            .withPrivateIpAllocationMethod(null);
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withoutPublicIPAddress() {
-        this.inner().withPublicIPAddress(null);
+    public LoadBalancerFrontendImpl withoutPublicIpAddress() {
+        this.inner().withPublicIpAddress(null);
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withPrivateIPAddressDynamic() {
-        this.inner()
-                .withPrivateIPAddress(null)
-                .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
+    public LoadBalancerFrontendImpl withPrivateIpAddressDynamic() {
+        this
+            .inner()
+            .withPrivateIpAddress(null)
+            .withPrivateIpAllocationMethod(IpAllocationMethod.DYNAMIC)
 
-                // Ensure no conflicting public and private settings
-                .withPublicIPAddress(null);
+            // Ensure no conflicting public and private settings
+            .withPublicIpAddress(null);
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withPrivateIPAddressStatic(String ipAddress) {
-        this.inner()
-                .withPrivateIPAddress(ipAddress)
-                .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
+    public LoadBalancerFrontendImpl withPrivateIpAddressStatic(String ipAddress) {
+        this
+            .inner()
+            .withPrivateIpAddress(ipAddress)
+            .withPrivateIpAllocationMethod(IpAllocationMethod.STATIC)
 
-                // Ensure no conflicting public and private settings
-                .withPublicIPAddress(null);
+            // Ensure no conflicting public and private settings
+            .withPublicIpAddress(null);
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withNewPublicIPAddress(String leafDnsLabel) {
+    public LoadBalancerFrontendImpl withNewPublicIpAddress(String leafDnsLabel) {
         this.parent().withNewPublicIPAddress(leafDnsLabel, this.name());
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
+    public LoadBalancerFrontendImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         this.parent().withNewPublicIPAddress(creatable, this.name());
         return this;
     }
 
     @Override
-    public LoadBalancerFrontendImpl withNewPublicIPAddress() {
+    public LoadBalancerFrontendImpl withNewPublicIpAddress() {
         String dnsLabel = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
-        return this.withNewPublicIPAddress(dnsLabel);
+        return this.withNewPublicIpAddress(dnsLabel);
     }
 
     // Verbs
@@ -249,12 +248,12 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public PublicIPAddress getPublicIPAddress() {
-        final String pipId = this.publicIPAddressId();
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
         if (pipId == null) {
             return null;
         } else {
-            return this.parent().manager().publicIPAddresses().getById(pipId);
+            return this.parent().manager().publicIpAddresses().getById(pipId);
         }
     }
 
@@ -274,4 +273,3 @@ class LoadBalancerFrontendImpl
         return Collections.unmodifiableSet(zones);
     }
 }
-

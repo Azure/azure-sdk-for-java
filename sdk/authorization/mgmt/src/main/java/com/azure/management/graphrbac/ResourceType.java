@@ -5,14 +5,16 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourceType model.
- */
+/** The ResourceType model. */
 @Fluent
 public final class ResourceType {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceType.class);
+
     /*
      * The resource type name.
      */
@@ -33,7 +35,7 @@ public final class ResourceType {
 
     /**
      * Get the name property: The resource type name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,7 +44,7 @@ public final class ResourceType {
 
     /**
      * Set the name property: The resource type name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ResourceType object itself.
      */
@@ -53,7 +55,7 @@ public final class ResourceType {
 
     /**
      * Get the displayName property: The resource type display name.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -62,7 +64,7 @@ public final class ResourceType {
 
     /**
      * Set the displayName property: The resource type display name.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the ResourceType object itself.
      */
@@ -73,7 +75,7 @@ public final class ResourceType {
 
     /**
      * Get the operations property: The resource type operations.
-     * 
+     *
      * @return the operations value.
      */
     public List<ProviderOperation> operations() {
@@ -82,12 +84,23 @@ public final class ResourceType {
 
     /**
      * Set the operations property: The resource type operations.
-     * 
+     *
      * @param operations the operations value to set.
      * @return the ResourceType object itself.
      */
     public ResourceType withOperations(List<ProviderOperation> operations) {
         this.operations = operations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (operations() != null) {
+            operations().forEach(e -> e.validate());
+        }
     }
 }

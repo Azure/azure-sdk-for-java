@@ -5,13 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoleAssignmentFilter model.
- */
+/** The RoleAssignmentFilter model. */
 @Fluent
 public final class RoleAssignmentFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentFilter.class);
+
     /*
      * Returns role assignment of the specific principal.
      */
@@ -25,9 +27,8 @@ public final class RoleAssignmentFilter {
     private Boolean canDelegate;
 
     /**
-     * Get the principalId property: Returns role assignment of the specific
-     * principal.
-     * 
+     * Get the principalId property: Returns role assignment of the specific principal.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -35,9 +36,8 @@ public final class RoleAssignmentFilter {
     }
 
     /**
-     * Set the principalId property: Returns role assignment of the specific
-     * principal.
-     * 
+     * Set the principalId property: Returns role assignment of the specific principal.
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentFilter object itself.
      */
@@ -47,9 +47,8 @@ public final class RoleAssignmentFilter {
     }
 
     /**
-     * Get the canDelegate property: The Delegation flag for the role
-     * assignment.
-     * 
+     * Get the canDelegate property: The Delegation flag for the role assignment.
+     *
      * @return the canDelegate value.
      */
     public Boolean canDelegate() {
@@ -57,14 +56,21 @@ public final class RoleAssignmentFilter {
     }
 
     /**
-     * Set the canDelegate property: The Delegation flag for the role
-     * assignment.
-     * 
+     * Set the canDelegate property: The Delegation flag for the role assignment.
+     *
      * @param canDelegate the canDelegate value to set.
      * @return the RoleAssignmentFilter object itself.
      */
     public RoleAssignmentFilter withCanDelegate(Boolean canDelegate) {
         this.canDelegate = canDelegate;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -6,16 +6,18 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The LogProfileResourcePatch model.
- */
+/** The LogProfileResourcePatch model. */
 @JsonFlatten
 @Fluent
 public class LogProfileResourcePatch {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogProfileResourcePatch.class);
+
     /*
      * Resource tags
      */
@@ -62,7 +64,7 @@ public class LogProfileResourcePatch {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -71,7 +73,7 @@ public class LogProfileResourcePatch {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -81,9 +83,9 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Get the storageAccountId property: the resource id of the storage
-     * account to which you would like to send the Activity Log.
-     * 
+     * Get the storageAccountId property: the resource id of the storage account to which you would like to send the
+     * Activity Log.
+     *
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -91,9 +93,9 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Set the storageAccountId property: the resource id of the storage
-     * account to which you would like to send the Activity Log.
-     * 
+     * Set the storageAccountId property: the resource id of the storage account to which you would like to send the
+     * Activity Log.
+     *
      * @param storageAccountId the storageAccountId value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -103,11 +105,10 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Get the serviceBusRuleId property: The service bus rule ID of the
-     * service bus namespace in which you would like to have Event Hubs created
-     * for streaming the Activity Log. The rule ID is of the format: '{service
-     * bus resource ID}/authorizationrules/{key name}'.
-     * 
+     * Get the serviceBusRuleId property: The service bus rule ID of the service bus namespace in which you would like
+     * to have Event Hubs created for streaming the Activity Log. The rule ID is of the format: '{service bus resource
+     * ID}/authorizationrules/{key name}'.
+     *
      * @return the serviceBusRuleId value.
      */
     public String serviceBusRuleId() {
@@ -115,11 +116,10 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Set the serviceBusRuleId property: The service bus rule ID of the
-     * service bus namespace in which you would like to have Event Hubs created
-     * for streaming the Activity Log. The rule ID is of the format: '{service
-     * bus resource ID}/authorizationrules/{key name}'.
-     * 
+     * Set the serviceBusRuleId property: The service bus rule ID of the service bus namespace in which you would like
+     * to have Event Hubs created for streaming the Activity Log. The rule ID is of the format: '{service bus resource
+     * ID}/authorizationrules/{key name}'.
+     *
      * @param serviceBusRuleId the serviceBusRuleId value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -129,10 +129,9 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Get the locations property: List of regions for which Activity Log
-     * events should be stored or streamed. It is a comma separated list of
-     * valid ARM locations including the 'global' location.
-     * 
+     * Get the locations property: List of regions for which Activity Log events should be stored or streamed. It is a
+     * comma separated list of valid ARM locations including the 'global' location.
+     *
      * @return the locations value.
      */
     public List<String> locations() {
@@ -140,10 +139,9 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Set the locations property: List of regions for which Activity Log
-     * events should be stored or streamed. It is a comma separated list of
-     * valid ARM locations including the 'global' location.
-     * 
+     * Set the locations property: List of regions for which Activity Log events should be stored or streamed. It is a
+     * comma separated list of valid ARM locations including the 'global' location.
+     *
      * @param locations the locations value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -153,10 +151,9 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Get the categories property: the categories of the logs. These
-     * categories are created as is convenient to the user. Some values are:
-     * 'Write', 'Delete', and/or 'Action.'.
-     * 
+     * Get the categories property: the categories of the logs. These categories are created as is convenient to the
+     * user. Some values are: 'Write', 'Delete', and/or 'Action.'.
+     *
      * @return the categories value.
      */
     public List<String> categories() {
@@ -164,10 +161,9 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Set the categories property: the categories of the logs. These
-     * categories are created as is convenient to the user. Some values are:
-     * 'Write', 'Delete', and/or 'Action.'.
-     * 
+     * Set the categories property: the categories of the logs. These categories are created as is convenient to the
+     * user. Some values are: 'Write', 'Delete', and/or 'Action.'.
+     *
      * @param categories the categories value to set.
      * @return the LogProfileResourcePatch object itself.
      */
@@ -177,9 +173,8 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Get the retentionPolicy property: the retention policy for the events in
-     * the log.
-     * 
+     * Get the retentionPolicy property: the retention policy for the events in the log.
+     *
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -187,14 +182,24 @@ public class LogProfileResourcePatch {
     }
 
     /**
-     * Set the retentionPolicy property: the retention policy for the events in
-     * the log.
-     * 
+     * Set the retentionPolicy property: the retention policy for the events in the log.
+     *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the LogProfileResourcePatch object itself.
      */
     public LogProfileResourcePatch withRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (retentionPolicy() != null) {
+            retentionPolicy().validate();
+        }
     }
 }

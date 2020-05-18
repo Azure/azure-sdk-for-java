@@ -5,24 +5,34 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 
-/**
- * The RuleDataSource model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type", defaultImpl = RuleDataSource.class)
+/** The RuleDataSource model. */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "odata\\.type",
+    defaultImpl = RuleDataSource.class)
 @JsonTypeName("RuleDataSource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource", value = RuleMetricDataSource.class),
-    @JsonSubTypes.Type(name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource", value = RuleManagementEventDataSource.class)
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.RuleMetricDataSource",
+        value = RuleMetricDataSource.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.Azure.Management.Insights.Models.RuleManagementEventDataSource",
+        value = RuleManagementEventDataSource.class)
 })
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
 public class RuleDataSource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleDataSource.class);
+
     /*
      * the resource identifier of the resource the rule monitors. **NOTE**:
      * this property cannot be updated for an existing rule.
@@ -31,10 +41,9 @@ public class RuleDataSource {
     private String resourceUri;
 
     /**
-     * Get the resourceUri property: the resource identifier of the resource
-     * the rule monitors. **NOTE**: this property cannot be updated for an
-     * existing rule.
-     * 
+     * Get the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property
+     * cannot be updated for an existing rule.
+     *
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -42,15 +51,22 @@ public class RuleDataSource {
     }
 
     /**
-     * Set the resourceUri property: the resource identifier of the resource
-     * the rule monitors. **NOTE**: this property cannot be updated for an
-     * existing rule.
-     * 
+     * Set the resourceUri property: the resource identifier of the resource the rule monitors. **NOTE**: this property
+     * cannot be updated for an existing rule.
+     *
      * @param resourceUri the resourceUri value to set.
      * @return the RuleDataSource object itself.
      */
     public RuleDataSource withResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -7,17 +7,19 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.CorsRules;
 import com.azure.management.storage.DeleteRetentionPolicy;
 import com.azure.management.storage.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The FileServiceProperties model.
- */
+/** The FileServiceProperties model. */
 @JsonFlatten
 @Fluent
 public class FileServicePropertiesInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServicePropertiesInner.class);
+
     /*
      * Sku name and tier.
      */
@@ -41,7 +43,7 @@ public class FileServicePropertiesInner extends ProxyResource {
 
     /**
      * Get the sku property: Sku name and tier.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -49,11 +51,10 @@ public class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the cors property: Specifies CORS rules for the File service. You
-     * can include up to five CorsRule elements in the request. If no CorsRule
-     * elements are included in the request body, all CORS rules will be
-     * deleted, and CORS will be disabled for the File service.
-     * 
+     * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the File service.
+     *
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -61,11 +62,10 @@ public class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the cors property: Specifies CORS rules for the File service. You
-     * can include up to five CorsRule elements in the request. If no CorsRule
-     * elements are included in the request body, all CORS rules will be
-     * deleted, and CORS will be disabled for the File service.
-     * 
+     * Set the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the File service.
+     *
      * @param cors the cors value to set.
      * @return the FileServicePropertiesInner object itself.
      */
@@ -75,9 +75,8 @@ public class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Get the shareDeleteRetentionPolicy property: The file service properties
-     * for share soft delete.
-     * 
+     * Get the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
+     *
      * @return the shareDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
@@ -85,15 +84,30 @@ public class FileServicePropertiesInner extends ProxyResource {
     }
 
     /**
-     * Set the shareDeleteRetentionPolicy property: The file service properties
-     * for share soft delete.
-     * 
-     * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value
-     * to set.
+     * Set the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
+     *
+     * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value to set.
      * @return the FileServicePropertiesInner object itself.
      */
     public FileServicePropertiesInner withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         this.shareDeleteRetentionPolicy = shareDeleteRetentionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (cors() != null) {
+            cors().validate();
+        }
+        if (shareDeleteRetentionPolicy() != null) {
+            shareDeleteRetentionPolicy().validate();
+        }
     }
 }

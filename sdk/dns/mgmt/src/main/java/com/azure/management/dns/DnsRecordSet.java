@@ -8,51 +8,35 @@ import com.azure.management.resources.fluentcore.arm.models.ExternalChildResourc
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.util.List;
 import java.util.Map;
 
-/**
- * An immutable client-side representation of a record set in Azure DNS Zone.
- */
+/** An immutable client-side representation of a record set in Azure DNS Zone. */
 @Fluent
-public interface DnsRecordSet extends
-        ExternalChildResource<DnsRecordSet, DnsZone>,
-        HasInner<RecordSetInner> {
+public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZone>, HasInner<RecordSetInner> {
 
-    /**
-     * @return the type of records in this record set
-     */
+    /** @return the type of records in this record set */
     RecordType recordType();
 
-    /**
-     * @return TTL of the records in this record set
-     */
+    /** @return TTL of the records in this record set */
     long timeToLive();
 
-    /**
-     * @return the metadata associated with this record set.
-     */
+    /** @return the metadata associated with this record set. */
     Map<String, String> metadata();
 
-    /**
-     * @return the fully qualified domain name of the record set.
-     */
-
+    /** @return the fully qualified domain name of the record set. */
     String fqdn();
 
-    /**
-     * @return the etag associated with the record set.
-     */
-    String eTag();
+    /** @return the etag associated with the record set. */
+    String etag();
 
     /**
      * The entirety of a DNS zone record set definition as a part of parent definition.
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-            DefinitionStages.ARecordSetBlank<ParentT>,
+    interface Definition<ParentT>
+        extends DefinitionStages.ARecordSetBlank<ParentT>,
             DefinitionStages.WithARecordIPv4Address<ParentT>,
             DefinitionStages.WithARecordIPv4AddressOrAttachable<ParentT>,
             DefinitionStages.AaaaRecordSetBlank<ParentT>,
@@ -82,9 +66,7 @@ public interface DnsRecordSet extends
             DefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of DNS zone record set definition stages as a part of parent DNS zone definition.
-     */
+    /** Grouping of DNS zone record set definition stages as a part of parent DNS zone definition. */
     interface DefinitionStages {
         /**
          * The first stage of an A record definition.
@@ -110,13 +92,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the A record set definition allowing to add additional A records or
-         * attach the record set to the parent.
+         * The stage of the A record set definition allowing to add additional A records or attach the record set to the
+         * parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithARecordIPv4AddressOrAttachable<ParentT>
-                extends WithARecordIPv4Address<ParentT>, WithAttach<ParentT> {
+            extends WithARecordIPv4Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -143,15 +125,14 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the AAAA record set definition allowing to add additional AAAA records or
-         * attach the record set to the parent.
+         * The stage of the AAAA record set definition allowing to add additional AAAA records or attach the record set
+         * to the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAaaaRecordIPv6AddressOrAttachable<ParentT>
-                extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
+            extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
         }
-
 
         /**
          * The first stage of a Caa record definition.
@@ -179,13 +160,12 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the Caa record set definition allowing to add additional Caa records or attach the record set
-         * to the parent.
+         * The stage of the Caa record set definition allowing to add additional Caa records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithCaaRecordEntryOrAttachable<ParentT>
-                extends WithCaaRecordEntry<ParentT>, WithAttach<ParentT> {
+        interface WithCaaRecordEntryOrAttachable<ParentT> extends WithCaaRecordEntry<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -244,13 +224,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the MX record set definition allowing to add additional MX records or attach the record set
-         * to the parent.
+         * The stage of the MX record set definition allowing to add additional MX records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMXRecordMailExchangeOrAttachable<ParentT>
-                extends WithMXRecordMailExchange<ParentT>, WithAttach<ParentT> {
+            extends WithMXRecordMailExchange<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -277,13 +257,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the NS record set definition allowing to add additional NS records or
-         * attach the record set to the parent.
+         * The stage of the NS record set definition allowing to add additional NS records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNSRecordNameServerOrAttachable<ParentT>
-                extends WithNSRecordNameServer<ParentT>, WithAttach<ParentT> {
+            extends WithNSRecordNameServer<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -310,13 +290,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the PTR record set definition allowing to add additional PTR records or
-         * attach the record set to the parent.
+         * The stage of the PTR record set definition allowing to add additional PTR records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPtrRecordTargetDomainNameOrAttachable<ParentT>
-                extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
+            extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -339,20 +319,20 @@ public interface DnsRecordSet extends
              * @param target the canonical name of the target host running the service
              * @param port the port on which the service is bounded
              * @param priority the priority of the target host, lower the value higher the priority
-             * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
+             * @param weight the relative weight (preference) of the records with the same priority, higher the value
+             *     more the preference
              * @return the next stage of the definition
              */
             WithSrvRecordEntryOrAttachable<ParentT> withRecord(String target, int port, int priority, int weight);
         }
 
         /**
-         * The stage of the SRV record set definition allowing to add additional SRV records or attach the record set
-         * to the parent.
+         * The stage of the SRV record set definition allowing to add additional SRV records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithSrvRecordEntryOrAttachable<ParentT>
-            extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
+        interface WithSrvRecordEntryOrAttachable<ParentT> extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -379,17 +359,18 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the TXT record set definition allowing to add additional TXT records or attach the record set
-         * to the parent.
+         * The stage of the TXT record set definition allowing to add additional TXT records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface  WithTxtRecordTextValueOrAttachable<ParentT>
+        interface WithTxtRecordTextValueOrAttachable<ParentT>
             extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
         }
 
         /**
-         * The stage of the record set definition allowing to specify the Time To Live (TTL) for the records in this record set.
+         * The stage of the record set definition allowing to specify the Time To Live (TTL) for the records in this
+         * record set.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
@@ -433,15 +414,17 @@ public interface DnsRecordSet extends
             WithAttach<ParentT> withETagCheck();
         }
 
-        /** The final stage of the DNS zone record set definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the DNS zone record set
-         * definition can be attached to the parent traffic manager profile definition using {@link DnsRecordSet.DefinitionStages.WithAttach#attach()}.
+        /**
+         * The final stage of the DNS zone record set definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the DNS zone record set definition can
+         * be attached to the parent traffic manager profile definition using {@link
+         * DnsRecordSet.DefinitionStages.WithAttach#attach()}.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InDefinition<ParentT>,
+        interface WithAttach<ParentT>
+            extends Attachable.InDefinition<ParentT>,
                 DefinitionStages.WithTtl<ParentT>,
                 DefinitionStages.WithMetadata<ParentT>,
                 DefinitionStages.WithETagCheck<ParentT> {
@@ -453,8 +436,8 @@ public interface DnsRecordSet extends
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.ARecordSetBlank<ParentT>,
+    interface UpdateDefinition<ParentT>
+        extends UpdateDefinitionStages.ARecordSetBlank<ParentT>,
             UpdateDefinitionStages.WithARecordIPv4Address<ParentT>,
             UpdateDefinitionStages.WithARecordIPv4AddressOrAttachable<ParentT>,
             UpdateDefinitionStages.AaaaRecordSetBlank<ParentT>,
@@ -484,9 +467,7 @@ public interface DnsRecordSet extends
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
 
-    /**
-     * Grouping of DNS zone record set definition stages as a part of parent DNS zone update.
-     */
+    /** Grouping of DNS zone record set definition stages as a part of parent DNS zone update. */
     interface UpdateDefinitionStages {
         /**
          * The first stage of a A record definition.
@@ -512,13 +493,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the A record set definition allowing to add additional A records or
-         * attach the record set to the parent.
+         * The stage of the A record set definition allowing to add additional A records or attach the record set to the
+         * parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithARecordIPv4AddressOrAttachable<ParentT>
-                extends WithARecordIPv4Address<ParentT>, WithAttach<ParentT> {
+            extends WithARecordIPv4Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -545,13 +526,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the AAAA record set definition allowing to add additional A records or
-         * attach the record set to the parent.
+         * The stage of the AAAA record set definition allowing to add additional A records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithAaaaRecordIPv6AddressOrAttachable<ParentT>
-                extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
+            extends WithAaaaRecordIPv6Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -580,13 +561,12 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the Caa record set definition allowing to add additional Caa records or attach the record set
-         * to the parent.
+         * The stage of the Caa record set definition allowing to add additional Caa records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithCaaRecordEntryOrAttachable<ParentT>
-                extends WithCaaRecordEntry<ParentT>, WithAttach<ParentT> {
+        interface WithCaaRecordEntryOrAttachable<ParentT> extends WithCaaRecordEntry<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -645,13 +625,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the MX record set definition allowing to add additional MX records or attach the record set
-         * to the parent.
+         * The stage of the MX record set definition allowing to add additional MX records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithMXRecordMailExchangeOrAttachable<ParentT>
-                extends WithMXRecordMailExchange<ParentT>, WithAttach<ParentT> {
+            extends WithMXRecordMailExchange<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -678,13 +658,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the NS record set definition allowing to add additional NS records or
-         * attach the record set to the parent.
+         * The stage of the NS record set definition allowing to add additional NS records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithNSRecordNameServerOrAttachable<ParentT>
-                extends WithNSRecordNameServer<ParentT>, WithAttach<ParentT> {
+            extends WithNSRecordNameServer<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -711,13 +691,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the PTR record set definition allowing to add additional PTR records or
-         * attach the record set to the parent.
+         * The stage of the PTR record set definition allowing to add additional PTR records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
         interface WithPtrRecordTargetDomainNameOrAttachable<ParentT>
-                extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
+            extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -740,20 +720,20 @@ public interface DnsRecordSet extends
              * @param target the canonical name of the target host running the service
              * @param port the port on which the service is bounded
              * @param priority the priority of the target host, lower the value higher the priority
-             * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
+             * @param weight the relative weight (preference) of the records with the same priority, higher the value
+             *     more the preference
              * @return the next stage of the definition
              */
             WithSrvRecordEntryOrAttachable<ParentT> withRecord(String target, int port, int priority, int weight);
         }
 
         /**
-         * The stage of the SRV record set definition allowing to add additional SRV records or attach the record set
-         * to the parent.
+         * The stage of the SRV record set definition allowing to add additional SRV records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithSrvRecordEntryOrAttachable<ParentT>
-                extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
+        interface WithSrvRecordEntryOrAttachable<ParentT> extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -780,13 +760,13 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the TXT record set definition allowing to add additional TXT records or attach the record set
-         * to the parent.
+         * The stage of the TXT record set definition allowing to add additional TXT records or attach the record set to
+         * the parent.
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface  WithTxtRecordTextValueOrAttachable<ParentT>
-                extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
+        interface WithTxtRecordTextValueOrAttachable<ParentT>
+            extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -832,28 +812,28 @@ public interface DnsRecordSet extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withETagCheck();
-    }
+        }
 
-        /** The final stage of the DNS zone record set definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the DNS zone record set
-         * definition can be attached to the parent traffic manager profile definition
-         * using {@link DnsRecordSet.UpdateDefinitionStages.WithAttach#attach()}.
+        /**
+         * The final stage of the DNS zone record set definition.
+         *
+         * <p>At this stage, any remaining optional settings can be specified, or the DNS zone record set definition can
+         * be attached to the parent traffic manager profile definition using {@link
+         * DnsRecordSet.UpdateDefinitionStages.WithAttach#attach()}.
+         *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT>,
+        interface WithAttach<ParentT>
+            extends Attachable.InUpdate<ParentT>,
                 UpdateDefinitionStages.WithTtl<ParentT>,
                 UpdateDefinitionStages.WithMetadata<ParentT>,
                 UpdateDefinitionStages.WithETagCheck<ParentT> {
         }
     }
 
-    /**
-     * The entirety of a record sets update as a part of parent DNS zone update.
-     */
-    interface UpdateCombined extends
-            UpdateARecordSet,
+    /** The entirety of a record sets update as a part of parent DNS zone update. */
+    interface UpdateCombined
+        extends UpdateARecordSet,
             UpdateAaaaRecordSet,
             UpdateCaaRecordSet,
             UpdateCNameRecordSet,
@@ -866,103 +846,56 @@ public interface DnsRecordSet extends
             Update {
     }
 
-    /**
-     * The entirety of an A record set update as a part of parent DNS zone update.
-     */
-    interface UpdateARecordSet extends
-            UpdateStages.WithARecordIPv4Address,
-            Update {
+    /** The entirety of an A record set update as a part of parent DNS zone update. */
+    interface UpdateARecordSet extends UpdateStages.WithARecordIPv4Address, Update {
     }
 
-    /**
-     * The entirety of an AAAA record set update as a part of parent DNS zone update.
-     */
-    interface UpdateAaaaRecordSet extends
-            UpdateStages.WithAaaaRecordIPv6Address,
-            Update {
+    /** The entirety of an AAAA record set update as a part of parent DNS zone update. */
+    interface UpdateAaaaRecordSet extends UpdateStages.WithAaaaRecordIPv6Address, Update {
     }
 
-    /**
-     * The entirety of a Caa record set update as a part of parent DNS zone update.
-     */
-    interface UpdateCaaRecordSet extends
-            UpdateStages.WithCaaRecordEntry,
-            Update {
+    /** The entirety of a Caa record set update as a part of parent DNS zone update. */
+    interface UpdateCaaRecordSet extends UpdateStages.WithCaaRecordEntry, Update {
     }
 
-    /**
-     * The entirety of CNAME record set update as part of parent DNS zone update.
-     */
-    interface UpdateCNameRecordSet extends
-            UpdateStages.WithCNameRecordAlias,
-            Update {
+    /** The entirety of CNAME record set update as part of parent DNS zone update. */
+    interface UpdateCNameRecordSet extends UpdateStages.WithCNameRecordAlias, Update {
     }
 
-    /**
-     * The entirety of a MX record set update as a part of parent DNS zone update.
-     */
-    interface UpdateMXRecordSet extends
-            UpdateStages.WithMXRecordMailExchange,
-            Update {
+    /** The entirety of a MX record set update as a part of parent DNS zone update. */
+    interface UpdateMXRecordSet extends UpdateStages.WithMXRecordMailExchange, Update {
     }
 
-    /**
-     * The entirety of a NS record set update as a part of parent DNS zone update.
-     */
-    interface UpdateNSRecordSet extends
-            UpdateStages.WithNSRecordNameServer,
-            Update {
+    /** The entirety of a NS record set update as a part of parent DNS zone update. */
+    interface UpdateNSRecordSet extends UpdateStages.WithNSRecordNameServer, Update {
     }
 
-    /**
-     * The entirety of a PTR record set update as a part of parent DNS zone update.
-     */
-    interface UpdatePtrRecordSet extends
-            UpdateStages.WithPtrRecordTargetDomainName,
-            Update {
+    /** The entirety of a PTR record set update as a part of parent DNS zone update. */
+    interface UpdatePtrRecordSet extends UpdateStages.WithPtrRecordTargetDomainName, Update {
     }
 
-    /**
-     * The entirety of a SRV record set update as a part of parent DNS zone update.
-     */
-    interface UpdateSrvRecordSet extends
-            UpdateStages.WithSrvRecordEntry,
-            Update {
+    /** The entirety of a SRV record set update as a part of parent DNS zone update. */
+    interface UpdateSrvRecordSet extends UpdateStages.WithSrvRecordEntry, Update {
     }
 
-    /**
-     * The entirety of a TXT record set update as a part of parent DNS zone update.
-     */
-    interface UpdateTxtRecordSet extends
-            UpdateStages.WithTxtRecordTextValue,
-            Update {
+    /** The entirety of a TXT record set update as a part of parent DNS zone update. */
+    interface UpdateTxtRecordSet extends UpdateStages.WithTxtRecordTextValue, Update {
     }
 
-    /**
-     * The entirety of a SOA record update as a part of parent DNS zone update.
-     */
-    interface UpdateSoaRecord extends
-            UpdateStages.WithSoaRecordAttributes,
-            Update {
+    /** The entirety of a SOA record update as a part of parent DNS zone update. */
+    interface UpdateSoaRecord extends UpdateStages.WithSoaRecordAttributes, Update {
     }
 
     /**
      * the set of configurations that can be updated for DNS record set irrespective of their type {@link RecordType}.
      */
-    interface Update extends
-            Settable<DnsZone.Update>,
-            UpdateStages.WithTtl,
-            UpdateStages.WithMetadata,
-            UpdateStages.WithETagCheck {
+    interface Update
+        extends Settable<DnsZone.Update>, UpdateStages.WithTtl, UpdateStages.WithMetadata, UpdateStages.WithETagCheck {
     }
 
-    /**
-     * Grouping of DNS zone record set update stages.
-     */
+    /** Grouping of DNS zone record set update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the A record set update allowing to add or remove A record.
-         */
+        /** The stage of the A record set update allowing to add or remove A record. */
         interface WithARecordIPv4Address {
             /**
              * Creates an A record with the provided IPv4 address in the record set.
@@ -981,9 +914,7 @@ public interface DnsRecordSet extends
             UpdateARecordSet withoutIPv4Address(String ipv4Address);
         }
 
-        /**
-         * The stage of the AAAA record set update allowing to add or remove AAAA record.
-         */
+        /** The stage of the AAAA record set update allowing to add or remove AAAA record. */
         interface WithAaaaRecordIPv6Address {
             /**
              * Creates an AAAA record with the provided IPv6 address in this record set.
@@ -1002,9 +933,7 @@ public interface DnsRecordSet extends
             UpdateAaaaRecordSet withoutIPv6Address(String ipv6Address);
         }
 
-        /**
-         * The stage of the Caa record definition allowing to add or remove service record.
-         */
+        /** The stage of the Caa record definition allowing to add or remove service record. */
         interface WithCaaRecordEntry {
             /**
              * Specifies a Caa record for a service.
@@ -1027,9 +956,7 @@ public interface DnsRecordSet extends
             UpdateCaaRecordSet withoutRecord(int flags, String tag, String value);
         }
 
-        /**
-         * The stage of the CNAME record set update allowing to update the CNAME record.
-         */
+        /** The stage of the CNAME record set update allowing to update the CNAME record. */
         interface WithCNameRecordAlias {
             /**
              * The new alias for the CNAME record set.
@@ -1040,9 +967,7 @@ public interface DnsRecordSet extends
             UpdateCNameRecordSet withAlias(String alias);
         }
 
-        /**
-         * The stage of the MX record set definition allowing to add or remove MX record.
-         */
+        /** The stage of the MX record set definition allowing to add or remove MX record. */
         interface WithMXRecordMailExchange {
             /**
              * Creates and assigns priority to a MX record with the provided mail exchange server in this record set.
@@ -1063,9 +988,7 @@ public interface DnsRecordSet extends
             UpdateMXRecordSet withoutMailExchange(String mailExchangeHostName, int priority);
         }
 
-        /**
-         * The stage of the NS record set definition allowing to add or remove a NS record.
-         */
+        /** The stage of the NS record set definition allowing to add or remove a NS record. */
         interface WithNSRecordNameServer {
             /**
              * Creates a NS record with the provided name server in this record set.
@@ -1084,9 +1007,7 @@ public interface DnsRecordSet extends
             UpdateNSRecordSet withoutNameServer(String nameServerHostName);
         }
 
-        /**
-         * The stage of the CName record set definition allowing to add or remove CName record.
-         */
+        /** The stage of the CName record set definition allowing to add or remove CName record. */
         interface WithPtrRecordTargetDomainName {
             /**
              * Creates a CName record with the provided canonical name in this record set.
@@ -1105,9 +1026,7 @@ public interface DnsRecordSet extends
             UpdatePtrRecordSet withoutTargetDomainName(String targetDomainName);
         }
 
-        /**
-         * The stage of the SRV record definition allowing to add or remove service record.
-         */
+        /** The stage of the SRV record definition allowing to add or remove service record. */
         interface WithSrvRecordEntry {
             /**
              * Specifies a service record for a service.
@@ -1115,7 +1034,8 @@ public interface DnsRecordSet extends
              * @param target the canonical name of the target host running the service
              * @param port the port on which the service is bounded
              * @param priority the priority of the target host, lower the value higher the priority
-             * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
+             * @param weight the relative weight (preference) of the records with the same priority, higher the value
+             *     more the preference
              * @return the next stage of the record set update
              */
             UpdateSrvRecordSet withRecord(String target, int port, int priority, int weight);
@@ -1132,9 +1052,7 @@ public interface DnsRecordSet extends
             UpdateSrvRecordSet withoutRecord(String target, int port, int priority, int weight);
         }
 
-        /**
-         * The stage of the Txt record definition allowing to add or remove TXT record.
-         */
+        /** The stage of the Txt record definition allowing to add or remove TXT record. */
         interface WithTxtRecordTextValue {
             /**
              * Creates a Txt record with the given text in this record set.
@@ -1161,9 +1079,7 @@ public interface DnsRecordSet extends
             UpdateTxtRecordSet withoutText(List<String> textChunks);
         }
 
-        /**
-         * The stage of the SOA record definition allowing to update its attributes.
-         */
+        /** The stage of the SOA record definition allowing to update its attributes. */
         interface WithSoaRecordAttributes {
             /**
              * Specifies the email server associated with the SOA record.
@@ -1174,8 +1090,8 @@ public interface DnsRecordSet extends
             UpdateSoaRecord withEmailServer(String emailServerHostName);
 
             /**
-             * Specifies time in seconds that a secondary name server should wait before trying to contact the
-             * the primary name server for a zone file update.
+             * Specifies time in seconds that a secondary name server should wait before trying to contact the the
+             * primary name server for a zone file update.
              *
              * @param refreshTimeInSeconds the refresh time in seconds
              * @return the next stage of the record set update
@@ -1183,8 +1099,8 @@ public interface DnsRecordSet extends
             UpdateSoaRecord withRefreshTimeInSeconds(long refreshTimeInSeconds);
 
             /**
-             * Specifies the time in seconds that a secondary name server should wait before trying to contact
-             * the primary name server again after a failed attempt to check for a zone file update.
+             * Specifies the time in seconds that a secondary name server should wait before trying to contact the
+             * primary name server again after a failed attempt to check for a zone file update.
              *
              * @param refreshTimeInSeconds the retry time in seconds
              * @return the next stage of the record set update
@@ -1192,8 +1108,8 @@ public interface DnsRecordSet extends
             UpdateSoaRecord withRetryTimeInSeconds(long refreshTimeInSeconds);
 
             /**
-             * Specifies the time in seconds that a secondary name server will treat its cached zone file as valid
-             * when the primary name server cannot be contacted.
+             * Specifies the time in seconds that a secondary name server will treat its cached zone file as valid when
+             * the primary name server cannot be contacted.
              *
              * @param expireTimeInSeconds the expire time in seconds
              * @return the next stage of the record set update
@@ -1217,9 +1133,7 @@ public interface DnsRecordSet extends
             UpdateSoaRecord withSerialNumber(long serialNumber);
         }
 
-        /**
-         * The stage of the record set update allowing to specify TTL for the records in this record set.
-         */
+        /** The stage of the record set update allowing to specify TTL for the records in this record set. */
         interface WithTtl {
             /**
              * Specifies the TTL for the records in the record set.
@@ -1230,9 +1144,7 @@ public interface DnsRecordSet extends
             Update withTimeToLive(long ttlInSeconds);
         }
 
-        /**
-         * An update allowing metadata to be modified for the resource.
-         */
+        /** An update allowing metadata to be modified for the resource. */
         interface WithMetadata {
             /**
              * Adds a metadata to the record set.
@@ -1252,25 +1164,22 @@ public interface DnsRecordSet extends
             Update withoutMetadata(String key);
         }
 
-        /**
-         * The stage of the record set update allowing to enable ETag validation.
-         */
+        /** The stage of the record set update allowing to enable ETag validation. */
         interface WithETagCheck {
             /**
-             * Specifies that If-Match header needs to set to the current eTag value associated
-             * with the record set.
+             * Specifies that If-Match header needs to set to the current etag value associated with the record set.
              *
              * @return the next stage of the update
              */
             Update withETagCheck();
 
             /**
-             * Specifies that if-Match header needs to set to the given eTag value.
+             * Specifies that if-Match header needs to set to the given etag value.
              *
-             * @param eTagValue the eTag value
+             * @param etagValue the etag value
              * @return the next stage of the update
              */
-            Update withETagCheck(String eTagValue);
+            Update withETagCheck(String etagValue);
         }
     }
 }

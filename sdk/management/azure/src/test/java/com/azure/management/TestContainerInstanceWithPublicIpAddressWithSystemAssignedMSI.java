@@ -1,27 +1,31 @@
-//package com.azure.management;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 //
-//import com.microsoft.azure.management.containerinstance.ResourceIdentityType;
-//import com.microsoft.azure.management.containerinstance.Container;
-//import com.microsoft.azure.management.containerinstance.ContainerGroup;
-//import com.microsoft.azure.management.containerinstance.ContainerGroupRestartPolicy;
-//import com.microsoft.azure.management.containerinstance.ContainerGroups;
-//import com.microsoft.azure.management.containerinstance.ContainerPort;
-//import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
-//import com.microsoft.azure.management.containerinstance.Operation;
-//import com.microsoft.azure.management.containerinstance.Volume;
-//import com.microsoft.azure.management.containerinstance.VolumeMount;
-//import com.microsoft.azure.management.graphrbac.BuiltInRole;
-//import com.microsoft.azure.management.msi.Identity;
-//import com.microsoft.azure.management.msi.implementation.MSIManager;
-//import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-//import org.junit.Assert;
+// package com.azure.management;
 //
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.Map;
-//import java.util.Set;
+// import com.microsoft.azure.management.containerinstance.ResourceIdentityType;
+// import com.microsoft.azure.management.containerinstance.Container;
+// import com.microsoft.azure.management.containerinstance.ContainerGroup;
+// import com.microsoft.azure.management.containerinstance.ContainerGroupRestartPolicy;
+// import com.microsoft.azure.management.containerinstance.ContainerGroups;
+// import com.microsoft.azure.management.containerinstance.ContainerPort;
+// import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
+// import com.microsoft.azure.management.containerinstance.Operation;
+// import com.microsoft.azure.management.containerinstance.Volume;
+// import com.microsoft.azure.management.containerinstance.VolumeMount;
+// import com.microsoft.azure.management.graphrbac.BuiltInRole;
+// import com.microsoft.azure.management.msi.Identity;
+// import com.microsoft.azure.management.msi.implementation.MSIManager;
+// import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+// import org.junit.Assert;
 //
-//public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI extends TestTemplate<ContainerGroup, ContainerGroups> {
+// import java.util.ArrayList;
+// import java.util.List;
+// import java.util.Map;
+// import java.util.Set;
+//
+// public class TestContainerInstanceWithPublicIpAddressWithSystemAssignedMSI extends TestTemplate<ContainerGroup,
+// ContainerGroups> {
 //
 //    @Override
 //    public ContainerGroup createResource(ContainerGroups containerGroups) throws Exception {
@@ -161,7 +165,8 @@
 //            info.append("\n\tVolume mapping: ");
 //            for (Map.Entry<String, Volume> entry: resource.volumes().entrySet()) {
 //                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ")
-//                    .append(entry.getValue().azureFile() != null ? entry.getValue().azureFile().shareName() : "empty direcory volume");
+//                    .append(entry.getValue().azureFile() != null ? entry.getValue().azureFile().shareName() : "empty
+// direcory volume");
 //            }
 //        }
 //        if (resource.containers() != null) {
@@ -199,4 +204,4 @@
 //
 //        System.out.println(info.toString());
 //    }
-//}
+// }

@@ -5,13 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ProviderOperation model.
- */
+/** The ProviderOperation model. */
 @Fluent
 public final class ProviderOperation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperation.class);
+
     /*
      * The operation name.
      */
@@ -50,7 +52,7 @@ public final class ProviderOperation {
 
     /**
      * Get the name property: The operation name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -59,7 +61,7 @@ public final class ProviderOperation {
 
     /**
      * Set the name property: The operation name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ProviderOperation object itself.
      */
@@ -70,7 +72,7 @@ public final class ProviderOperation {
 
     /**
      * Get the displayName property: The operation display name.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -79,7 +81,7 @@ public final class ProviderOperation {
 
     /**
      * Set the displayName property: The operation display name.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the ProviderOperation object itself.
      */
@@ -90,7 +92,7 @@ public final class ProviderOperation {
 
     /**
      * Get the description property: The operation description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -99,7 +101,7 @@ public final class ProviderOperation {
 
     /**
      * Set the description property: The operation description.
-     * 
+     *
      * @param description the description value to set.
      * @return the ProviderOperation object itself.
      */
@@ -110,7 +112,7 @@ public final class ProviderOperation {
 
     /**
      * Get the origin property: The operation origin.
-     * 
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -119,7 +121,7 @@ public final class ProviderOperation {
 
     /**
      * Set the origin property: The operation origin.
-     * 
+     *
      * @param origin the origin value to set.
      * @return the ProviderOperation object itself.
      */
@@ -130,7 +132,7 @@ public final class ProviderOperation {
 
     /**
      * Get the properties property: The operation properties.
-     * 
+     *
      * @return the properties value.
      */
     public Object properties() {
@@ -139,7 +141,7 @@ public final class ProviderOperation {
 
     /**
      * Set the properties property: The operation properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the ProviderOperation object itself.
      */
@@ -149,9 +151,8 @@ public final class ProviderOperation {
     }
 
     /**
-     * Get the isDataAction property: The dataAction flag to specify the
-     * operation type.
-     * 
+     * Get the isDataAction property: The dataAction flag to specify the operation type.
+     *
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -159,14 +160,21 @@ public final class ProviderOperation {
     }
 
     /**
-     * Set the isDataAction property: The dataAction flag to specify the
-     * operation type.
-     * 
+     * Set the isDataAction property: The dataAction flag to specify the operation type.
+     *
      * @param isDataAction the isDataAction value to set.
      * @return the ProviderOperation object itself.
      */
     public ProviderOperation withIsDataAction(Boolean isDataAction) {
         this.isDataAction = isDataAction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

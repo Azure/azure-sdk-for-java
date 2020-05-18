@@ -15,13 +15,13 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryAsyncResponse;
-import com.azure.storage.file.datalake.models.FileQueryInputStream;
 import com.azure.storage.file.datalake.models.FileQueryOptions;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -568,7 +568,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param expression The query expression.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    public FileQueryInputStream openQueryInputStream(String expression) {
+    public InputStream openQueryInputStream(String expression) {
         return openQueryInputStream(expression, null);
     }
 
@@ -586,14 +586,14 @@ public class DataLakeFileClient extends DataLakePathClient {
      * @param queryOptions {@link FileQueryOptions The query options}.
      * @return An <code>InputStream</code> object that represents the stream to use for reading the query response.
      */
-    public FileQueryInputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
+    public InputStream openQueryInputStream(String expression, FileQueryOptions queryOptions) {
 
         // Data to subscribe to and read from.
         Flux<ByteBuffer> data = dataLakeFileAsyncClient.queryWithResponse(expression, queryOptions)
             .flatMapMany(FileQueryAsyncResponse::getValue);
 
         // Create input stream from the data.
-        return new FileQueryInputStream(data);
+        return new FluxInputStream(data);
     }
 
     /**

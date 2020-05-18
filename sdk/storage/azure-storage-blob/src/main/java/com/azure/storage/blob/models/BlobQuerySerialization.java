@@ -9,7 +9,7 @@ package com.azure.storage.blob.models;
  */
 public abstract class BlobQuerySerialization {
 
-    protected char recordSeparator;
+    private char recordSeparator;
 
     /**
      * Gets the record separator.
@@ -20,5 +20,13 @@ public abstract class BlobQuerySerialization {
         return recordSeparator;
     }
 
-    abstract BlobQuerySerialization setRecordSeparator(char recordSeparator);
+    /**
+     * Sets the record separator.
+     * @param recordSeparator the record separator.
+     * @return the updated BlobQuerySerialization object.
+     */
+    public BlobQuerySerialization setRecordSeparator(char recordSeparator) {
+        this.recordSeparator = recordSeparator;
+        return this;
+    }
 }

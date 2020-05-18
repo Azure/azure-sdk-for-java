@@ -19,7 +19,7 @@ public class DetectLanguageAsync {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
-            .apiKey(new AzureKeyCredential("{api_key}"))
+            .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
 
@@ -27,8 +27,8 @@ public class DetectLanguageAsync {
         String document = "hello world";
 
         client.detectLanguage(document).subscribe(
-            result -> System.out.printf("Detected primary language: %s, ISO 6391 name: %s, score: %f.%n",
-                result.getName(), result.getIso6391Name(), result.getScore()),
+            result -> System.out.printf("Detected primary language: %s, ISO 6391 name: %s, confidence score: %f.%n",
+                result.getName(), result.getIso6391Name(), result.getConfidenceScore()),
             error -> System.err.println("There was an error detecting language of the text." + error),
             () -> System.out.println("Language detected."));
 

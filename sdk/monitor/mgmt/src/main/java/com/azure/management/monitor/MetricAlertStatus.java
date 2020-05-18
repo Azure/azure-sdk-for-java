@@ -5,13 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The MetricAlertStatus model.
- */
+/** The MetricAlertStatus model. */
 @Fluent
 public final class MetricAlertStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricAlertStatus.class);
+
     /*
      * The status name.
      */
@@ -38,7 +40,7 @@ public final class MetricAlertStatus {
 
     /**
      * Get the name property: The status name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -47,7 +49,7 @@ public final class MetricAlertStatus {
 
     /**
      * Set the name property: The status name.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetricAlertStatus object itself.
      */
@@ -58,16 +60,16 @@ public final class MetricAlertStatus {
 
     /**
      * Get the id property: The alert rule arm id.
-     * 
+     *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
     /**
      * Set the id property: The alert rule arm id.
-     * 
+     *
      * @param id the id value to set.
      * @return the MetricAlertStatus object itself.
      */
@@ -78,7 +80,7 @@ public final class MetricAlertStatus {
 
     /**
      * Get the type property: The extended resource type name.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -87,7 +89,7 @@ public final class MetricAlertStatus {
 
     /**
      * Set the type property: The extended resource type name.
-     * 
+     *
      * @param type the type value to set.
      * @return the MetricAlertStatus object itself.
      */
@@ -97,9 +99,8 @@ public final class MetricAlertStatus {
     }
 
     /**
-     * Get the properties property: The alert status properties of the metric
-     * alert status.
-     * 
+     * Get the properties property: The alert status properties of the metric alert status.
+     *
      * @return the properties value.
      */
     public MetricAlertStatusProperties properties() {
@@ -107,14 +108,24 @@ public final class MetricAlertStatus {
     }
 
     /**
-     * Set the properties property: The alert status properties of the metric
-     * alert status.
-     * 
+     * Set the properties property: The alert status properties of the metric alert status.
+     *
      * @param properties the properties value to set.
      * @return the MetricAlertStatus object itself.
      */
     public MetricAlertStatus withProperties(MetricAlertStatusProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

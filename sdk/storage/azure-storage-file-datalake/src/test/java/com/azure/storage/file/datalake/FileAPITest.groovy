@@ -7,7 +7,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
-import com.azure.storage.common.ErrorReceiver
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
@@ -27,6 +26,7 @@ import java.nio.file.OpenOption
 import java.nio.file.StandardOpenOption
 import java.security.MessageDigest
 import java.time.Duration
+import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
     DataLakeFileClient fc
@@ -1758,16 +1758,16 @@ class FileAPITest extends APISpec {
     @Unroll
     def "Append data illegal arguments"() {
         when:
-        fc.append(data == null ? null : data.get(), 0, dataSize)
+        fc.append(is == null ? null : is.get(), 0, dataSize)
 
         then:
         thrown(exceptionType)
 
         where:
-        data               | dataSize            | exceptionType
-        null               | defaultDataSize     | NullPointerException
-        defaultInputStream | defaultDataSize + 1 | UnexpectedLengthException
-        defaultInputStream | defaultDataSize - 1 | UnexpectedLengthException
+        is                 | dataSize            || exceptionType
+        null               | defaultDataSize     || NullPointerException
+        defaultInputStream | defaultDataSize + 1 || UnexpectedLengthException
+        defaultInputStream | defaultDataSize - 1 || UnexpectedLengthException
     }
 
     def "Append data empty body"() {
@@ -2787,9 +2787,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -2799,9 +2797,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(BlobStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
 
         // To calculate the size of data being tested = numCopies * 32 bytes
         where:
@@ -2824,6 +2820,7 @@ class FileAPITest extends APISpec {
 
         ByteArrayOutputStream downloadData = new ByteArrayOutputStream()
         fc.read(downloadData)
+        downloadData.write(10) /* writing extra new line */
         byte[] downloadedData = downloadData.toByteArray()
         FileQueryOptions options = new FileQueryOptions().setInputSerialization(ser).setOutputSerialization(ser)
 
@@ -2834,9 +2831,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(IOException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert queryData[j] == downloadedData[j]
-        }
+        queryData == downloadedData
 
         /* Output Stream. */
         when:
@@ -2846,9 +2841,7 @@ class FileAPITest extends APISpec {
 
         then:
         notThrown(DataLakeStorageException)
-        for (int j = 0; j < downloadedData.length; j++) {
-            assert osData[j] == downloadedData[j]
-        }
+        osData == downloadedData
 
         where:
         numCopies | recordSeparator || _
@@ -2949,7 +2942,7 @@ class FileAPITest extends APISpec {
         FileQueryOptions options = new FileQueryOptions()
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorReceiver(receiver)
+            .setErrorConsumer(receiver)
 
         /* Input Stream. */
         when:
@@ -2966,7 +2959,7 @@ class FileAPITest extends APISpec {
         options = new FileQueryOptions()
             .setInputSerialization(base.setColumnSeparator(',' as char))
             .setOutputSerialization(base.setColumnSeparator(',' as char))
-            .setErrorReceiver(receiver)
+            .setErrorConsumer(receiver)
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -2999,7 +2992,7 @@ class FileAPITest extends APISpec {
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
-        thrown(UncheckedIOException)
+        thrown(Exceptions.ReactiveException)
     }
 
     def "Query progress receiver"() {
@@ -3016,7 +3009,7 @@ class FileAPITest extends APISpec {
         def sizeofBlobToRead = fc.getProperties().getFileSize()
         def expression = "SELECT * from BlobStorage"
         FileQueryOptions options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
@@ -3037,7 +3030,7 @@ class FileAPITest extends APISpec {
         when:
         mockReceiver = new MockProgressReceiver()
         options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -3058,7 +3051,7 @@ class FileAPITest extends APISpec {
         def mockReceiver = new MockProgressReceiver()
         def expression = "SELECT * from BlobStorage"
         FileQueryOptions options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
 
         /* Input Stream. */
         when:
@@ -3084,7 +3077,7 @@ class FileAPITest extends APISpec {
         mockReceiver = new MockProgressReceiver()
         temp = 0
         options = new FileQueryOptions()
-            .setProgressReceiver(mockReceiver as ProgressReceiver)
+            .setProgressConsumer(mockReceiver as Consumer)
         fc.queryWithResponse(new ByteArrayOutputStream(), expression, options, null, null)
 
         then:
@@ -3095,45 +3088,12 @@ class FileAPITest extends APISpec {
         }
     }
 
-    class MockProgressReceiver implements ProgressReceiver {
-
-        List<Long> progressList
-
-        MockProgressReceiver() {
-            this.progressList = new ArrayList<>()
-        }
-
-        @Override
-        void reportProgress(long bytesRead) {
-            progressList.add(bytesRead)
-        }
-    }
-
-    class MockErrorReceiver implements ErrorReceiver<FileQueryError> {
-
-        String expectedType
-        int numErrors
-
-        MockErrorReceiver(String expectedType) {
-            this.expectedType = expectedType
-            this.numErrors = 0
-        }
-
-        @Override
-        void reportError(FileQueryError error) {
-            assert !error.isFatal()
-            assert error.getName() == expectedType
-            numErrors++
-        }
-    }
-
     @Unroll
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
-        FileQuerySerialization ser = Spy() {
-            return '\n'
-        }
+        FileQuerySerialization ser = new RandomOtherSerialization()
+
         def inSer = input ? ser : null
         def outSer = output ? ser : null
         def expression = "SELECT * from BlobStorage"
@@ -3236,6 +3196,46 @@ class FileAPITest extends APISpec {
         null     | null       | garbageEtag | null         | null
         null     | null       | null        | receivedEtag | null
         null     | null       | null        | null         | garbageLeaseID
+    }
+
+    class MockProgressReceiver implements Consumer<FileQueryProgress> {
+
+        List<Long> progressList
+
+        MockProgressReceiver() {
+            this.progressList = new ArrayList<>()
+        }
+
+        @Override
+        void accept(FileQueryProgress progress) {
+            progressList.add(progress.getBytesScanned())
+        }
+    }
+
+    class MockErrorReceiver implements Consumer<FileQueryError> {
+
+        String expectedType
+        int numErrors
+
+        MockErrorReceiver(String expectedType) {
+            this.expectedType = expectedType
+            this.numErrors = 0
+        }
+
+        @Override
+        void accept(FileQueryError error) {
+            assert !error.isFatal()
+            assert error.getName() == expectedType
+            numErrors++
+        }
+    }
+
+    class RandomOtherSerialization extends FileQuerySerialization {
+        @Override
+        public RandomOtherSerialization setRecordSeparator(char recordSeparator) {
+            this.recordSeparator = recordSeparator;
+            return this;
+        }
     }
 
 }

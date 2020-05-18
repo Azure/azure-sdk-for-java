@@ -5,13 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BaselineMetadata model.
- */
+/** The BaselineMetadata model. */
 @Fluent
 public final class BaselineMetadata {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaselineMetadata.class);
+
     /*
      * Name of the baseline metadata.
      */
@@ -26,7 +28,7 @@ public final class BaselineMetadata {
 
     /**
      * Get the name property: Name of the baseline metadata.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -35,7 +37,7 @@ public final class BaselineMetadata {
 
     /**
      * Set the name property: Name of the baseline metadata.
-     * 
+     *
      * @param name the name value to set.
      * @return the BaselineMetadata object itself.
      */
@@ -46,7 +48,7 @@ public final class BaselineMetadata {
 
     /**
      * Get the value property: Value of the baseline metadata.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -55,12 +57,30 @@ public final class BaselineMetadata {
 
     /**
      * Set the value property: Value of the baseline metadata.
-     * 
+     *
      * @param value the value value to set.
      * @return the BaselineMetadata object itself.
      */
     public BaselineMetadata withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model BaselineMetadata"));
+        }
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model BaselineMetadata"));
+        }
     }
 }

@@ -5,14 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The UpdateHistoryProperty model.
- */
+/** The UpdateHistoryProperty model. */
 @Immutable
 public final class UpdateHistoryProperty {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateHistoryProperty.class);
+
     /*
      * The ImmutabilityPolicy update type of a blob container, possible values
      * include: put, lock and extend.
@@ -54,9 +56,9 @@ public final class UpdateHistoryProperty {
     private String upn;
 
     /**
-     * Get the update property: The ImmutabilityPolicy update type of a blob
-     * container, possible values include: put, lock and extend.
-     * 
+     * Get the update property: The ImmutabilityPolicy update type of a blob container, possible values include: put,
+     * lock and extend.
+     *
      * @return the update value.
      */
     public ImmutabilityPolicyUpdateType update() {
@@ -64,10 +66,9 @@ public final class UpdateHistoryProperty {
     }
 
     /**
-     * Get the immutabilityPeriodSinceCreationInDays property: The immutability
-     * period for the blobs in the container since the policy creation, in
-     * days.
-     * 
+     * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
+     * since the policy creation, in days.
+     *
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -75,9 +76,8 @@ public final class UpdateHistoryProperty {
     }
 
     /**
-     * Get the timestamp property: Returns the date and time the
-     * ImmutabilityPolicy was updated.
-     * 
+     * Get the timestamp property: Returns the date and time the ImmutabilityPolicy was updated.
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -85,9 +85,8 @@ public final class UpdateHistoryProperty {
     }
 
     /**
-     * Get the objectIdentifier property: Returns the Object ID of the user who
-     * updated the ImmutabilityPolicy.
-     * 
+     * Get the objectIdentifier property: Returns the Object ID of the user who updated the ImmutabilityPolicy.
+     *
      * @return the objectIdentifier value.
      */
     public String objectIdentifier() {
@@ -95,9 +94,9 @@ public final class UpdateHistoryProperty {
     }
 
     /**
-     * Get the tenantId property: Returns the Tenant ID that issued the token
-     * for the user who updated the ImmutabilityPolicy.
-     * 
+     * Get the tenantId property: Returns the Tenant ID that issued the token for the user who updated the
+     * ImmutabilityPolicy.
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -105,12 +104,19 @@ public final class UpdateHistoryProperty {
     }
 
     /**
-     * Get the upn property: Returns the User Principal Name of the user who
-     * updated the ImmutabilityPolicy.
-     * 
+     * Get the upn property: Returns the User Principal Name of the user who updated the ImmutabilityPolicy.
+     *
      * @return the upn value.
      */
     public String upn() {
         return this.upn;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

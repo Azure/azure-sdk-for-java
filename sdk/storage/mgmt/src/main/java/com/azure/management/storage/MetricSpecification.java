@@ -5,14 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The MetricSpecification model.
- */
+/** The MetricSpecification model. */
 @Fluent
 public final class MetricSpecification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
+
     /*
      * Name of metric specification.
      */
@@ -69,7 +71,7 @@ public final class MetricSpecification {
 
     /**
      * Get the name property: Name of metric specification.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -78,7 +80,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: Name of metric specification.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -89,7 +91,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: Display name of metric specification.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -98,7 +100,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: Display name of metric specification.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -108,9 +110,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the displayDescription property: Display description of metric
-     * specification.
-     * 
+     * Get the displayDescription property: Display description of metric specification.
+     *
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -118,9 +119,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the displayDescription property: Display description of metric
-     * specification.
-     * 
+     * Set the displayDescription property: Display description of metric specification.
+     *
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -131,7 +131,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: Unit could be Bytes or Count.
-     * 
+     *
      * @return the unit value.
      */
     public String unit() {
@@ -140,7 +140,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: Unit could be Bytes or Count.
-     * 
+     *
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -150,9 +150,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the dimensions property: Dimensions of blobs, including blob type
-     * and access tier.
-     * 
+     * Get the dimensions property: Dimensions of blobs, including blob type and access tier.
+     *
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -160,9 +159,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the dimensions property: Dimensions of blobs, including blob type
-     * and access tier.
-     * 
+     * Set the dimensions property: Dimensions of blobs, including blob type and access tier.
+     *
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -173,7 +171,7 @@ public final class MetricSpecification {
 
     /**
      * Get the aggregationType property: Aggregation type could be Average.
-     * 
+     *
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -182,7 +180,7 @@ public final class MetricSpecification {
 
     /**
      * Set the aggregationType property: Aggregation type could be Average.
-     * 
+     *
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -192,9 +190,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero property: The property to decide fill gap with
-     * zero or not.
-     * 
+     * Get the fillGapWithZero property: The property to decide fill gap with zero or not.
+     *
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -202,9 +199,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero property: The property to decide fill gap with
-     * zero or not.
-     * 
+     * Set the fillGapWithZero property: The property to decide fill gap with zero or not.
+     *
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
@@ -214,9 +210,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the category property: The category this metric specification belong
-     * to, could be Capacity.
-     * 
+     * Get the category property: The category this metric specification belong to, could be Capacity.
+     *
      * @return the category value.
      */
     public String category() {
@@ -224,9 +219,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the category property: The category this metric specification belong
-     * to, could be Capacity.
-     * 
+     * Set the category property: The category this metric specification belong to, could be Capacity.
+     *
      * @param category the category value to set.
      * @return the MetricSpecification object itself.
      */
@@ -237,7 +231,7 @@ public final class MetricSpecification {
 
     /**
      * Get the resourceIdDimensionNameOverride property: Account Resource Id.
-     * 
+     *
      * @return the resourceIdDimensionNameOverride value.
      */
     public String resourceIdDimensionNameOverride() {
@@ -246,13 +240,23 @@ public final class MetricSpecification {
 
     /**
      * Set the resourceIdDimensionNameOverride property: Account Resource Id.
-     * 
-     * @param resourceIdDimensionNameOverride the
-     * resourceIdDimensionNameOverride value to set.
+     *
+     * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set.
      * @return the MetricSpecification object itself.
      */
     public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
         this.resourceIdDimensionNameOverride = resourceIdDimensionNameOverride;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
     }
 }

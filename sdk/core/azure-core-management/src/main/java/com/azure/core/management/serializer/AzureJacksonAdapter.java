@@ -15,6 +15,6 @@ public final class AzureJacksonAdapter extends JacksonAdapter {
      */
     public AzureJacksonAdapter() {
         super();
-        serializer().registerModule(CloudErrorDeserializer.getModule(simpleMapper()));
+        serializer().registerModule(ManagementErrorDeserializer.getModule(simpleMapper()));
     }
 }

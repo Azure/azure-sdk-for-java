@@ -5,14 +5,16 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EventCategoryCollection model.
- */
+/** The EventCategoryCollection model. */
 @Fluent
 public final class EventCategoryCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventCategoryCollectionInner.class);
+
     /*
      * the list that includes the Azure event categories.
      */
@@ -20,9 +22,8 @@ public final class EventCategoryCollectionInner {
     private List<LocalizableStringInner> value;
 
     /**
-     * Get the value property: the list that includes the Azure event
-     * categories.
-     * 
+     * Get the value property: the list that includes the Azure event categories.
+     *
      * @return the value value.
      */
     public List<LocalizableStringInner> value() {
@@ -30,14 +31,29 @@ public final class EventCategoryCollectionInner {
     }
 
     /**
-     * Set the value property: the list that includes the Azure event
-     * categories.
-     * 
+     * Set the value property: the list that includes the Azure event categories.
+     *
      * @param value the value value to set.
      * @return the EventCategoryCollectionInner object itself.
      */
     public EventCategoryCollectionInner withValue(List<LocalizableStringInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model EventCategoryCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

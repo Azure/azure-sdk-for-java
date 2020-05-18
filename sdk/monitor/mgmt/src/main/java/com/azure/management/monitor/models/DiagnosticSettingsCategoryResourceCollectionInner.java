@@ -5,14 +5,17 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DiagnosticSettingsCategoryResourceCollection model.
- */
+/** The DiagnosticSettingsCategoryResourceCollection model. */
 @Fluent
 public final class DiagnosticSettingsCategoryResourceCollectionInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DiagnosticSettingsCategoryResourceCollectionInner.class);
+
     /*
      * The collection of diagnostic settings category resources.
      */
@@ -20,9 +23,8 @@ public final class DiagnosticSettingsCategoryResourceCollectionInner {
     private List<DiagnosticSettingsCategoryResourceInner> value;
 
     /**
-     * Get the value property: The collection of diagnostic settings category
-     * resources.
-     * 
+     * Get the value property: The collection of diagnostic settings category resources.
+     *
      * @return the value value.
      */
     public List<DiagnosticSettingsCategoryResourceInner> value() {
@@ -30,15 +32,25 @@ public final class DiagnosticSettingsCategoryResourceCollectionInner {
     }
 
     /**
-     * Set the value property: The collection of diagnostic settings category
-     * resources.
-     * 
+     * Set the value property: The collection of diagnostic settings category resources.
+     *
      * @param value the value value to set.
-     * @return the DiagnosticSettingsCategoryResourceCollectionInner object
-     * itself.
+     * @return the DiagnosticSettingsCategoryResourceCollectionInner object itself.
      */
-    public DiagnosticSettingsCategoryResourceCollectionInner withValue(List<DiagnosticSettingsCategoryResourceInner> value) {
+    public DiagnosticSettingsCategoryResourceCollectionInner withValue(
+        List<DiagnosticSettingsCategoryResourceInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

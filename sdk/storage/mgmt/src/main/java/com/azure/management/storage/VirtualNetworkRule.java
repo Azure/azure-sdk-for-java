@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VirtualNetworkRule model.
- */
+/** The VirtualNetworkRule model. */
 @Fluent
 public final class VirtualNetworkRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkRule.class);
+
     /*
      * Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
@@ -32,10 +34,9 @@ public final class VirtualNetworkRule {
     private State state;
 
     /**
-     * Get the virtualNetworkResourceId property: Resource ID of a subnet, for
-     * example:
+     * Get the virtualNetworkResourceId property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     * 
+     *
      * @return the virtualNetworkResourceId value.
      */
     public String virtualNetworkResourceId() {
@@ -43,12 +44,10 @@ public final class VirtualNetworkRule {
     }
 
     /**
-     * Set the virtualNetworkResourceId property: Resource ID of a subnet, for
-     * example:
+     * Set the virtualNetworkResourceId property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}.
-     * 
-     * @param virtualNetworkResourceId the virtualNetworkResourceId value to
-     * set.
+     *
+     * @param virtualNetworkResourceId the virtualNetworkResourceId value to set.
      * @return the VirtualNetworkRule object itself.
      */
     public VirtualNetworkRule withVirtualNetworkResourceId(String virtualNetworkResourceId) {
@@ -58,7 +57,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Get the action property: The action of virtual network rule.
-     * 
+     *
      * @return the action value.
      */
     public Action action() {
@@ -67,7 +66,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Set the action property: The action of virtual network rule.
-     * 
+     *
      * @param action the action value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -78,7 +77,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Get the state property: Gets the state of virtual network rule.
-     * 
+     *
      * @return the state value.
      */
     public State state() {
@@ -87,12 +86,26 @@ public final class VirtualNetworkRule {
 
     /**
      * Set the state property: Gets the state of virtual network rule.
-     * 
+     *
      * @param state the state value to set.
      * @return the VirtualNetworkRule object itself.
      */
     public VirtualNetworkRule withState(State state) {
         this.state = state;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualNetworkResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualNetworkResourceId in model VirtualNetworkRule"));
+        }
     }
 }

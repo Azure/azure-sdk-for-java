@@ -3,25 +3,21 @@
 
 package com.azure.management;
 
-
 import com.azure.management.compute.DataDisk;
 import com.azure.management.compute.VirtualMachine;
 
-/**
- * Test utilities.
- */
+/** Test utilities. */
 public final class TestUtils {
     private TestUtils() {
-
     }
 
-//    public static void print(ManagementLock lock) {
-//        StringBuffer info = new StringBuffer();
-//        info.append("\nLock ID: ").append(lock.id())
-//            .append("\nLocked resource ID: ").append(lock.lockedResourceId())
-//            .append("\nLevel: ").append(lock.level());
-//        System.out.println(info.toString());
-//    }
+    //    public static void print(ManagementLock lock) {
+    //        StringBuffer info = new StringBuffer();
+    //        info.append("\nLock ID: ").append(lock.id())
+    //            .append("\nLocked resource ID: ").append(lock.lockedResourceId())
+    //            .append("\nLevel: ").append(lock.level());
+    //        System.out.println(info.toString());
+    //    }
 
     /**
      * Shows the virtual machine.
@@ -53,17 +49,15 @@ public final class TestUtils {
             }
             if (resource.storageProfile().osDisk().encryptionSettings() != null) {
                 storageProfile.append("\n\t\t\tEncryptionSettings: ");
-                storageProfile.append("\n\t\t\t\tEnabled: ").append(resource.storageProfile().osDisk().encryptionSettings().enabled());
-                storageProfile.append("\n\t\t\t\tDiskEncryptionKey Uri: ").append(resource
-                        .storageProfile()
-                        .osDisk()
-                        .encryptionSettings()
-                        .diskEncryptionKey().secretUrl());
-                storageProfile.append("\n\t\t\t\tKeyEncryptionKey Uri: ").append(resource
-                        .storageProfile()
-                        .osDisk()
-                        .encryptionSettings()
-                        .keyEncryptionKey().keyUrl());
+                storageProfile
+                    .append("\n\t\t\t\tEnabled: ")
+                    .append(resource.storageProfile().osDisk().encryptionSettings().enabled());
+                storageProfile
+                    .append("\n\t\t\t\tDiskEncryptionKey Uri: ")
+                    .append(resource.storageProfile().osDisk().encryptionSettings().diskEncryptionKey().secretUrl());
+                storageProfile
+                    .append("\n\t\t\t\tKeyEncryptionKey Uri: ")
+                    .append(resource.storageProfile().osDisk().encryptionSettings().keyEncryptionKey().keyUrl());
             }
         }
 
@@ -78,7 +72,7 @@ public final class TestUtils {
                 storageProfile.append("\n\t\t\tLun: ").append(disk.lun());
                 if (resource.isManagedDiskEnabled()) {
                     if (disk.managedDisk() != null) {
-                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().getId());
+                        storageProfile.append("\n\t\t\tManaged Disk Id: ").append(disk.managedDisk().id());
                     }
                 } else {
                     if (disk.vhd().uri() != null) {
@@ -95,18 +89,20 @@ public final class TestUtils {
         osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
         if (resource.osProfile().windowsConfiguration() != null) {
             osProfile.append("\n\t\t\tWindowsConfiguration: ");
-            osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
-                    .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
-            osProfile.append("\n\t\t\t\tEnableAutomaticUpdates: ")
-                    .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
-            osProfile.append("\n\t\t\t\tTimeZone: ")
-                    .append(resource.osProfile().windowsConfiguration().timeZone());
+            osProfile
+                .append("\n\t\t\t\tProvisionVMAgent: ")
+                .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
+            osProfile
+                .append("\n\t\t\t\tEnableAutomaticUpdates: ")
+                .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
+            osProfile.append("\n\t\t\t\tTimeZone: ").append(resource.osProfile().windowsConfiguration().timeZone());
         }
 
         if (resource.osProfile().linuxConfiguration() != null) {
             osProfile.append("\n\t\t\tLinuxConfiguration: ");
-            osProfile.append("\n\t\t\t\tDisablePasswordAuthentication: ")
-                    .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
+            osProfile
+                .append("\n\t\t\t\tDisablePasswordAuthentication: ")
+                .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
         }
 
         StringBuilder networkProfile = new StringBuilder().append("\n\tNetworkProfile: ");
@@ -114,16 +110,26 @@ public final class TestUtils {
             networkProfile.append("\n\t\tId:").append(networkInterfaceId);
         }
 
-        System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
-                .append("Name: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tTags: ").append(resource.tags())
-                .append("\n\tHardwareProfile: ")
-                .append("\n\t\tSize: ").append(resource.size())
-                .append(storageProfile)
-                .append(osProfile)
-                .append(networkProfile)
-                .toString());
+        System
+            .out
+            .println(
+                new StringBuilder()
+                    .append("Virtual Machine: ")
+                    .append(resource.id())
+                    .append("Name: ")
+                    .append(resource.name())
+                    .append("\n\tResource group: ")
+                    .append(resource.resourceGroupName())
+                    .append("\n\tRegion: ")
+                    .append(resource.region())
+                    .append("\n\tTags: ")
+                    .append(resource.tags())
+                    .append("\n\tHardwareProfile: ")
+                    .append("\n\t\tSize: ")
+                    .append(resource.size())
+                    .append(storageProfile)
+                    .append(osProfile)
+                    .append(networkProfile)
+                    .toString());
     }
 }

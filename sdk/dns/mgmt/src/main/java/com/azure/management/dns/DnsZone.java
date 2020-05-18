@@ -4,6 +4,7 @@ package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.management.dns.implementation.DnsZoneManager;
 import com.azure.management.dns.models.ZoneInner;
 import com.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.management.resources.fluentcore.arm.models.Resource;
@@ -11,36 +12,22 @@ import com.azure.management.resources.fluentcore.model.Appliable;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.model.Refreshable;
 import com.azure.management.resources.fluentcore.model.Updatable;
-import com.azure.management.dns.implementation.DnsZoneManager;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of an Azure DNS Zone.
- */
+/** An immutable client-side representation of an Azure DNS Zone. */
 @Fluent
-public interface DnsZone extends
-        GroupableResource<DnsZoneManager, ZoneInner>,
-        Refreshable<DnsZone>,
-        Updatable<DnsZone.Update> {
-    /**
-     * @return the maximum number of record sets that can be created in this zone.
-     */
+public interface DnsZone
+    extends GroupableResource<DnsZoneManager, ZoneInner>, Refreshable<DnsZone>, Updatable<DnsZone.Update> {
+    /** @return the maximum number of record sets that can be created in this zone. */
     long maxNumberOfRecordSets();
 
-    /**
-     * @return the current number of record sets in this zone.
-     */
+    /** @return the current number of record sets in this zone. */
     long numberOfRecordSets();
 
-    /**
-     * @return the etag associated with this zone.
-     */
-    String eTag();
+    /** @return the etag associated with this zone. */
+    String etag();
 
-    /**
-     * @return the access type of this zone (Private or Public).
-     */
+    /** @return the access type of this zone (Private or Public). */
     ZoneType accessType();
 
     /**
@@ -48,14 +35,10 @@ public interface DnsZone extends
      */
     List<String> registrationVirtualNetworkIds();
 
-    /**
-     * @return a list of references to virtual networks that resolve records in this DNS zone for Private DNS zone.
-     */
+    /** @return a list of references to virtual networks that resolve records in this DNS zone for Private DNS zone. */
     List<String> resolutionVirtualNetworkIds();
 
-    /**
-     * @return the record sets in this zone.
-     */
+    /** @return the record sets in this zone. */
     PagedIterable<DnsRecordSet> listRecordSets();
 
     /**
@@ -67,8 +50,7 @@ public interface DnsZone extends
     PagedIterable<DnsRecordSet> listRecordSets(String recordSetNameSuffix);
 
     /**
-     * Lists all the record sets in this zone with each entries in each page
-     * limited to the given size.
+     * Lists all the record sets in this zone with each entries in each page limited to the given size.
      *
      * @param pageSize the maximum number of record sets in a page
      * @return the record sets
@@ -76,8 +58,8 @@ public interface DnsZone extends
     PagedIterable<DnsRecordSet> listRecordSets(int pageSize);
 
     /**
-     * Lists all the record sets in this zone with the given suffix, also limits
-     * the number of entries per page to the given page size.
+     * Lists all the record sets in this zone with the given suffix, also limits the number of entries per page to the
+     * given page size.
      *
      * @param recordSetNameSuffix the record set name suffix
      * @param pageSize the maximum number of record sets in a page
@@ -85,82 +67,50 @@ public interface DnsZone extends
      */
     PagedIterable<DnsRecordSet> listRecordSets(String recordSetNameSuffix, int pageSize);
 
-    /**
-     * @return name servers assigned for this zone.
-     */
+    /** @return name servers assigned for this zone. */
     List<String> nameServers();
 
-    /**
-     * @return entry point to manage record sets in this zone containing A (IPv4 address) records
-     */
+    /** @return entry point to manage record sets in this zone containing A (IPv4 address) records */
     ARecordSets aRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records
-     */
+    /** @return entry point to manage record sets in this zone containing AAAA (IPv6 address) records */
     AaaaRecordSets aaaaRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing Caa (canonical name) records
-     */
+    /** @return entry point to manage record sets in this zone containing Caa (canonical name) records */
     CaaRecordSets caaRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing CNAME (canonical name) records
-     */
+    /** @return entry point to manage record sets in this zone containing CNAME (canonical name) records */
     CNameRecordSets cNameRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing MX (mail exchange) records
-     */
+    /** @return entry point to manage record sets in this zone containing MX (mail exchange) records */
     MXRecordSets mxRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing NS (name server) records
-     */
+    /** @return entry point to manage record sets in this zone containing NS (name server) records */
     NSRecordSets nsRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing PTR (pointer) records
-     */
+    /** @return entry point to manage record sets in this zone containing PTR (pointer) records */
     PtrRecordSets ptrRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing SRV (service) records
-     */
+    /** @return entry point to manage record sets in this zone containing SRV (service) records */
     SrvRecordSets srvRecordSets();
 
-    /**
-     * @return entry point to manage record sets in this zone containing TXT (text) records
-     */
+    /** @return entry point to manage record sets in this zone containing TXT (text) records */
     TxtRecordSets txtRecordSets();
 
-    /**
-     * @return the record set containing SOA (start of authority) record associated with this DNS zone
-     */
+    /** @return the record set containing SOA (start of authority) record associated with this DNS zone */
     SoaRecordSet getSoaRecordSet();
 
-    /**
-     * The entirety of the DNS zone definition.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
-            DefinitionStages.WithCreate {
+    /** The entirety of the DNS zone definition. */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
 
-    /**
-     * Grouping of DNS zone definition stages.
-     */
+    /** Grouping of DNS zone definition stages. */
     interface DefinitionStages {
-        /**
-         * The stage of the DNS zone definition allowing to specify the resource group.
-         */
+        /** The stage of the DNS zone definition allowing to specify the resource group. */
         interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithCreate> {
         }
 
-        /**
-         * The stage of the DNS zone definition allowing to specify record set.
-         */
+        /** The stage of the DNS zone definition allowing to specify record set. */
         interface WithRecordSet {
             /**
              * Specifies definition of an A record set.
@@ -244,9 +194,7 @@ public interface DnsZone extends
             DnsRecordSet.DefinitionStages.TxtRecordSetBlank<WithCreate> defineTxtRecordSet(String name);
         }
 
-        /**
-         * The stage of the DNS zone definition allowing to enable ETag validation.
-         */
+        /** The stage of the DNS zone definition allowing to enable ETag validation. */
         interface WithETagCheck {
             /**
              * Specifies that If-None-Match header needs to set to * to prevent updating an existing DNS zone.
@@ -256,9 +204,7 @@ public interface DnsZone extends
             WithCreate withETagCheck();
         }
 
-        /**
-         * The stage of the DNS zone definition allowing to specify Zone access type.
-         */
+        /** The stage of the DNS zone definition allowing to specify Zone access type. */
         interface WithZoneType {
             /**
              * Sets the type of this zone to Public (default behavior).
@@ -277,19 +223,22 @@ public interface DnsZone extends
             /**
              * Sets the type of this zone to Private.
              *
-             * @param registrationVirtualNetworkIds a list of references to virtual networks that register hostnames in this DNS zone.
-             * @param resolutionVirtualNetworkIds a list of references to virtual networks that resolve records in this DNS zone.
+             * @param registrationVirtualNetworkIds a list of references to virtual networks that register hostnames in
+             *     this DNS zone.
+             * @param resolutionVirtualNetworkIds a list of references to virtual networks that resolve records in this
+             *     DNS zone.
              * @return the next stage of the definition
              */
-            WithCreate withPrivateAccess(List<String> registrationVirtualNetworkIds,  List<String> resolutionVirtualNetworkIds);
+            WithCreate withPrivateAccess(
+                List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds);
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends
-                Creatable<DnsZone>,
+        interface WithCreate
+            extends Creatable<DnsZone>,
                 DefinitionStages.WithRecordSet,
                 DefinitionStages.WithETagCheck,
                 DefinitionStages.WithZoneType,
@@ -297,13 +246,9 @@ public interface DnsZone extends
         }
     }
 
-    /**
-     * Grouping of DNS zone update stages.
-     */
+    /** Grouping of DNS zone update stages. */
     interface UpdateStages {
-        /**
-         * The stage of the DNS zone update allowing to specify record set.
-         */
+        /** The stage of the DNS zone update allowing to specify record set. */
         interface WithRecordSet {
             /**
              * Specifies definition of an A record set to be attached to the DNS zone.
@@ -477,10 +422,10 @@ public interface DnsZone extends
              * Removes a A record set in the DNS zone.
              *
              * @param name name of the A record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutARecordSet(String name, String eTagValue);
+            Update withoutARecordSet(String name, String etagValue);
 
             /**
              * Removes a AAAA record set in the DNS zone.
@@ -494,10 +439,10 @@ public interface DnsZone extends
              * Removes a AAAA record set in the DNS zone.
              *
              * @param name name of the AAAA record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutAaaaRecordSet(String name, String eTagValue);
+            Update withoutAaaaRecordSet(String name, String etagValue);
 
             /**
              * Removes a Caa record set in the DNS zone.
@@ -511,10 +456,10 @@ public interface DnsZone extends
              * Removes a Caa record set in the DNS zone.
              *
              * @param name name of the Caa record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutCaaRecordSet(String name, String eTagValue);
+            Update withoutCaaRecordSet(String name, String etagValue);
 
             /**
              * Removes a CNAME record set in the DNS zone.
@@ -528,10 +473,10 @@ public interface DnsZone extends
              * Removes a CNAME record set in the DNS zone.
              *
              * @param name name of the CNAME record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutCNameRecordSet(String name, String eTagValue);
+            Update withoutCNameRecordSet(String name, String etagValue);
 
             /**
              * Removes a MX record set in the DNS zone.
@@ -545,10 +490,10 @@ public interface DnsZone extends
              * Removes a MX record set in the DNS zone.
              *
              * @param name name of the MX record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutMXRecordSet(String name, String eTagValue);
+            Update withoutMXRecordSet(String name, String etagValue);
 
             /**
              * Removes a NS record set in the DNS zone.
@@ -562,10 +507,10 @@ public interface DnsZone extends
              * Removes a NS record set in the DNS zone.
              *
              * @param name name of the NS record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutNSRecordSet(String name, String eTagValue);
+            Update withoutNSRecordSet(String name, String etagValue);
 
             /**
              * Removes a PTR record set in the DNS zone.
@@ -579,10 +524,10 @@ public interface DnsZone extends
              * Removes a PTR record set in the DNS zone.
              *
              * @param name name of the PTR record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutPtrRecordSet(String name, String eTagValue);
+            Update withoutPtrRecordSet(String name, String etagValue);
 
             /**
              * Removes a SRV record set in the DNS zone.
@@ -596,10 +541,10 @@ public interface DnsZone extends
              * Removes a SRV record set in the DNS zone.
              *
              * @param name name of the SRV record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutSrvRecordSet(String name, String eTagValue);
+            Update withoutSrvRecordSet(String name, String etagValue);
 
             /**
              * Removes a TXT record set in the DNS zone.
@@ -613,36 +558,31 @@ public interface DnsZone extends
              * Removes a TXT record set in the DNS zone.
              *
              * @param name name of the TXT record set
-             * @param eTagValue the etag to use for concurrent protection
+             * @param etagValue the etag to use for concurrent protection
              * @return the next stage of DNS zone update
              */
-            Update withoutTxtRecordSet(String name, String eTagValue);
+            Update withoutTxtRecordSet(String name, String etagValue);
         }
 
-        /**
-         * The stage of the DNS zone update allowing to enable ETag validation.
-         */
+        /** The stage of the DNS zone update allowing to enable ETag validation. */
         interface WithETagCheck {
             /**
-             * Specifies that If-Match header needs to set to the current eTag value associated
-             * with the DNS Zone.
+             * Specifies that If-Match header needs to set to the current etag value associated with the DNS Zone.
              *
              * @return the next stage of the update
              */
             Update withETagCheck();
 
             /**
-             * Specifies that if-Match header needs to set to the given eTag value.
+             * Specifies that if-Match header needs to set to the given etag value.
              *
-             * @param eTagValue the eTag value
+             * @param etagValue the etag value
              * @return the next stage of the update
              */
-            Update withETagCheck(String eTagValue);
+            Update withETagCheck(String etagValue);
         }
 
-        /**
-         * The stage of the DNS zone update allowing to specify Zone access type.
-         */
+        /** The stage of the DNS zone update allowing to specify Zone access type. */
         interface WithZoneType {
             /**
              * Sets the type of this zone to Public (default behavior).
@@ -662,21 +602,24 @@ public interface DnsZone extends
             /**
              * Sets the type of this zone to Private.
              *
-             * @param registrationVirtualNetworkIds a list of references to virtual networks that register hostnames in this DNS zone.
-             * @param resolutionVirtualNetworkIds a list of references to virtual networks that resolve records in this DNS zone.
+             * @param registrationVirtualNetworkIds a list of references to virtual networks that register hostnames in
+             *     this DNS zone.
+             * @param resolutionVirtualNetworkIds a list of references to virtual networks that resolve records in this
+             *     DNS zone.
              * @return the next stage of the definition
              */
-            Update withPrivateAccess(List<String> registrationVirtualNetworkIds,  List<String> resolutionVirtualNetworkIds);
+            Update withPrivateAccess(
+                List<String> registrationVirtualNetworkIds, List<String> resolutionVirtualNetworkIds);
         }
     }
 
     /**
      * The template for an update operation, containing all the settings that can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     *
+     * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update extends
-            Appliable<DnsZone>,
+    interface Update
+        extends Appliable<DnsZone>,
             UpdateStages.WithRecordSet,
             UpdateStages.WithETagCheck,
             UpdateStages.WithZoneType,

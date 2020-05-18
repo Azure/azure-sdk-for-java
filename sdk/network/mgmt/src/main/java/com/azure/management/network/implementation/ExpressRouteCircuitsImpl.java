@@ -8,13 +8,14 @@ import com.azure.management.network.models.ExpressRouteCircuitInner;
 import com.azure.management.network.models.ExpressRouteCircuitsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-class ExpressRouteCircuitsImpl extends TopLevelModifiableResourcesImpl<
+class ExpressRouteCircuitsImpl
+    extends TopLevelModifiableResourcesImpl<
         ExpressRouteCircuit,
         ExpressRouteCircuitImpl,
         ExpressRouteCircuitInner,
         ExpressRouteCircuitsInner,
         NetworkManager>
-        implements ExpressRouteCircuits {
+    implements ExpressRouteCircuits {
 
     ExpressRouteCircuitsImpl(NetworkManager manager) {
         super(manager.inner().expressRouteCircuits(), manager);
@@ -32,7 +33,7 @@ class ExpressRouteCircuitsImpl extends TopLevelModifiableResourcesImpl<
         if (inner == null) {
             return null;
         }
-        return new ExpressRouteCircuitImpl(inner.getName(), inner, this.manager());
+        return new ExpressRouteCircuitImpl(inner.name(), inner, this.manager());
     }
 
     @Override

@@ -5,7 +5,6 @@ package com.azure.management;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.implementation.polling.PollerFactory;
 import com.azure.core.management.polling.PollResult;
@@ -23,6 +22,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
@@ -138,7 +138,7 @@ public abstract class AzureServiceClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResultAsync(Mono<SimpleResponse<Flux<ByteBuffer>>> lroInit,
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResultAsync(Mono<? extends Response<Flux<ByteBuffer>>> lroInit,
                                                                  HttpPipeline httpPipeline,
                                                                  Type pollResultType, Type finalResultType) {
         return PollerFactory.create(
@@ -151,7 +151,7 @@ public abstract class AzureServiceClient {
         );
     }
 
-    private Mono<Response<Flux<ByteBuffer>>> activationOperation(Mono<SimpleResponse<Flux<ByteBuffer>>> lroInit) {
+    private Mono<Response<Flux<ByteBuffer>>> activationOperation(Mono<? extends Response<Flux<ByteBuffer>>> lroInit) {
         return lroInit.flatMap(fluxSimpleResponse -> Mono.just(fluxSimpleResponse));
     }
 
@@ -159,8 +159,7 @@ public abstract class AzureServiceClient {
         MessageDigest messageDigest;
         try {
             messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(bytes);
-            messageDigest.digest(bytes).toString();
+            return new HexBinaryAdapter().marshal(messageDigest.digest(bytes));
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }

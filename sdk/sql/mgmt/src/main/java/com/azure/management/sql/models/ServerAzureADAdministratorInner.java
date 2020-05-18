@@ -7,7 +7,9 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.management.sql.AdministratorType;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.sql.ManagedInstanceAdministratorType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
@@ -15,11 +17,13 @@ import java.util.UUID;
 @JsonFlatten
 @Fluent
 public class ServerAzureADAdministratorInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAzureADAdministratorInner.class);
+
     /*
      * Type of the sever administrator.
      */
     @JsonProperty(value = "properties.administratorType")
-    private AdministratorType administratorType;
+    private ManagedInstanceAdministratorType administratorType;
 
     /*
      * Login name of the server administrator.
@@ -50,7 +54,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      *
      * @return the administratorType value.
      */
-    public AdministratorType administratorType() {
+    public ManagedInstanceAdministratorType administratorType() {
         return this.administratorType;
     }
 
@@ -60,7 +64,7 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
      * @param administratorType the administratorType value to set.
      * @return the ServerAzureADAdministratorInner object itself.
      */
-    public ServerAzureADAdministratorInner withAdministratorType(AdministratorType administratorType) {
+    public ServerAzureADAdministratorInner withAdministratorType(ManagedInstanceAdministratorType administratorType) {
         this.administratorType = administratorType;
         return this;
     }
@@ -143,5 +147,13 @@ public class ServerAzureADAdministratorInner extends ProxyResource {
     public ServerAzureADAdministratorInner withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
         this.azureADOnlyAuthentication = azureADOnlyAuthentication;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

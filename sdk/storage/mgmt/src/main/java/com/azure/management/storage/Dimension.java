@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Dimension model.
- */
+/** The Dimension model. */
 @Fluent
 public final class Dimension {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
+
     /*
      * Display name of dimension.
      */
@@ -26,7 +28,7 @@ public final class Dimension {
 
     /**
      * Get the name property: Display name of dimension.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -35,7 +37,7 @@ public final class Dimension {
 
     /**
      * Set the name property: Display name of dimension.
-     * 
+     *
      * @param name the name value to set.
      * @return the Dimension object itself.
      */
@@ -46,7 +48,7 @@ public final class Dimension {
 
     /**
      * Get the displayName property: Display name of dimension.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -55,12 +57,20 @@ public final class Dimension {
 
     /**
      * Set the displayName property: Display name of dimension.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the Dimension object itself.
      */
     public Dimension withDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

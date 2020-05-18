@@ -7,63 +7,39 @@ import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.model.Attachable;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.model.Settable;
-
 import java.util.List;
 
-/**
- * An immutable client-side representation of a rule in an Azure Management Policy.
- */
+/** An immutable client-side representation of a rule in an Azure Management Policy. */
 @Fluent
-public interface PolicyRule extends
-        HasInner<ManagementPolicyRule> {
-    /**
-     * @return the name of the rule
-     */
+public interface PolicyRule extends HasInner<ManagementPolicyRule> {
+    /** @return the name of the rule */
     String name();
 
-    /**
-     * @return the type of the rule
-     */
+    /** @return the type of the rule */
     String type();
 
-    /**
-     * @return an unmodifiable list of the blob types this rule will apply for
-     */
+    /** @return an unmodifiable list of the blob types this rule will apply for */
     List<BlobTypes> blobTypesToFilterFor();
 
-    /**
-     * @return an unmodifiable list of the prefixes of the blob types this rule will apply for
-     */
+    /** @return an unmodifiable list of the prefixes of the blob types this rule will apply for */
     List<String> prefixesToFilterFor();
 
-    /**
-     * @return an object describing the actions to take on the filtered base blobs in this rule
-     */
+    /** @return an object describing the actions to take on the filtered base blobs in this rule */
     ManagementPolicyBaseBlob actionsOnBaseBlob();
 
-    /**
-     * @return an object describing the actions to take on the filtered snapshot in this rule
-     */
+    /** @return an object describing the actions to take on the filtered snapshot in this rule */
     ManagementPolicySnapShot actionsOnSnapShot();
 
-    /**
-     * @return whether there is a tier to cool action specified for the filtered base blobs in this rule
-     */
+    /** @return whether there is a tier to cool action specified for the filtered base blobs in this rule */
     boolean tierToCoolActionOnBaseBlobEnabled();
 
-    /**
-     * @return whether there is a tier to archive action specified for the filtered base blobs in this rule
-     */
+    /** @return whether there is a tier to archive action specified for the filtered base blobs in this rule */
     boolean tierToArchiveActionOnBaseBlobEnabled();
 
-    /**
-     * @return whether there is a delete action specified for the filtered base blobs in this rule
-     */
+    /** @return whether there is a delete action specified for the filtered base blobs in this rule */
     boolean deleteActionOnBaseBlobEnabled();
 
-    /**
-     * @return whether there is a delete action specified for the filtered snapshots in this rule
-     */
+    /** @return whether there is a delete action specified for the filtered snapshots in this rule */
     boolean deleteActionOnSnapShotEnabled();
 
     /**
@@ -76,21 +52,15 @@ public interface PolicyRule extends
      */
     Float daysAfterBaseBlobModificationUntilArchiving();
 
-    /**
-     * @return the number of days after a filtered base blob is last modified when the delete action is enacted
-     */
+    /** @return the number of days after a filtered base blob is last modified when the delete action is enacted */
     Float daysAfterBaseBlobModificationUntilDeleting();
 
-    /**
-     * @return the number of days after a filtered snapshot is created when the delete action is enacted
-     */
+    /** @return the number of days after a filtered snapshot is created when the delete action is enacted */
     Float daysAfterSnapShotCreationUntilDeleting();
 
-    /**
-     * Container interface for all of the definitions related to a rule in a management policy.
-     */
-    interface Definition extends
-            DefinitionStages.Blank,
+    /** Container interface for all of the definitions related to a rule in a management policy. */
+    interface Definition
+        extends DefinitionStages.Blank,
             DefinitionStages.WithPolicyRuleType,
             DefinitionStages.WithBlobTypesToFilterFor,
             DefinitionStages.PrefixActionFork,
@@ -99,29 +69,21 @@ public interface PolicyRule extends
             DefinitionStages.WithPolicyRuleAttachable {
     }
 
-    /**
-     * Container interface for all of the updates related to a rule in a management policy.
-     */
-    interface Update extends
-            UpdateStages.WithBlobTypesToFilterFor,
+    /** Container interface for all of the updates related to a rule in a management policy. */
+    interface Update
+        extends UpdateStages.WithBlobTypesToFilterFor,
             UpdateStages.WithPrefixesToFilterFor,
             UpdateStages.WithActions,
             Settable<ManagementPolicy.Update> {
     }
 
-    /**
-     * Grouping of management policy rule definition stages.
-     */
+    /** Grouping of management policy rule definition stages. */
     interface DefinitionStages {
-        /**
-         * The first stage of a management policy rule definition.
-         */
+        /** The first stage of a management policy rule definition. */
         interface Blank extends WithPolicyRuleType {
         }
 
-        /**
-         * The stage of the management policy rule definition allowing to specify the type of the rule.
-         */
+        /** The stage of the management policy rule definition allowing to specify the type of the rule. */
         interface WithPolicyRuleType {
             /**
              * The function that specifies Lifecycle as the type of the management policy rule.
@@ -132,7 +94,8 @@ public interface PolicyRule extends
         }
 
         /**
-         * The stage of the management policy rule definition allowing to specify the blob types that the rule will apply to.
+         * The stage of the management policy rule definition allowing to specify the blob types that the rule will
+         * apply to.
          */
         interface WithBlobTypesToFilterFor {
             /**
@@ -153,14 +116,15 @@ public interface PolicyRule extends
         }
 
         /**
-         * The stage of the management policy rule definition allowing input an optional blob prefix to filter for before
-         * specifying the actions.
+         * The stage of the management policy rule definition allowing input an optional blob prefix to filter for
+         * before specifying the actions.
          */
         interface PrefixActionFork extends WithPrefixesToFilterFor, WithRuleActions {
         }
 
         /**
-         * The stage of the management policy rule definition allowing the specify the prefixes for the blobs that the rule will apply to.
+         * The stage of the management policy rule definition allowing the specify the prefixes for the blobs that the
+         * rule will apply to.
          */
         interface WithPrefixesToFilterFor {
             /**
@@ -181,13 +145,15 @@ public interface PolicyRule extends
         }
 
         /**
-         * The stage of the management policy rule definition allowing to specify the actions to perform on the selected blobs.
+         * The stage of the management policy rule definition allowing to specify the actions to perform on the selected
+         * blobs.
          */
         interface WithRuleActions {
             /**
              * The function that specifies a tier to cool action on the selected base blobs.
              *
-             * @param daysAfterBaseBlobModificationUntilCooling the number of days after a base blob is last modified until it is cooled.
+             * @param daysAfterBaseBlobModificationUntilCooling the number of days after a base blob is last modified
+             *     until it is cooled.
              * @return the next stage of the management policy rule definition.
              */
             WithPolicyRuleAttachable withTierToCoolActionOnBaseBlob(float daysAfterBaseBlobModificationUntilCooling);
@@ -195,15 +161,18 @@ public interface PolicyRule extends
             /**
              * The function that specifies a tier to archive action on the selected base blobs.
              *
-             * @param daysAfterBaseBlobModificationUntilArchiving the number of days after a base blob is last modified until it is archived.
+             * @param daysAfterBaseBlobModificationUntilArchiving the number of days after a base blob is last modified
+             *     until it is archived.
              * @return the next stage of the management policy rule definition.
              */
-            WithPolicyRuleAttachable withTierToArchiveActionOnBaseBlob(float daysAfterBaseBlobModificationUntilArchiving);
+            WithPolicyRuleAttachable withTierToArchiveActionOnBaseBlob(
+                float daysAfterBaseBlobModificationUntilArchiving);
 
             /**
              * The function that specifies a delete action on the selected base blobs.
              *
-             * @param daysAfterBaseBlobModificationUntilDeleting the number of days after a base blob is last modified until it is deleted.
+             * @param daysAfterBaseBlobModificationUntilDeleting the number of days after a base blob is last modified
+             *     until it is deleted.
              * @return the next stage of the management policy rule definition.
              */
             WithPolicyRuleAttachable withDeleteActionOnBaseBlob(float daysAfterBaseBlobModificationUntilDeleting);
@@ -211,7 +180,8 @@ public interface PolicyRule extends
             /**
              * The function that specifies a delete action on the selected snapshots.
              *
-             * @param daysAfterSnapShotCreationUntilDeleting the number of days after a snapshot is created until it is deleted.
+             * @param daysAfterSnapShotCreationUntilDeleting the number of days after a snapshot is created until it is
+             *     deleted.
              * @return the next stage of the management policy rule definition
              */
             WithPolicyRuleAttachable withDeleteActionOnSnapShot(float daysAfterSnapShotCreationUntilDeleting);
@@ -234,22 +204,21 @@ public interface PolicyRule extends
         }
 
         /**
-         * The stage of the definition which contains all of the minimum required inputs for the resource to be attached,
-         * but also allows for any other optional settings to be specified.
+         * The stage of the definition which contains all of the minimum required inputs for the resource to be
+         * attached, but also allows for any other optional settings to be specified.
          */
-        interface WithPolicyRuleAttachable extends PolicyRule.DefinitionStages.WithRuleActions,
+        interface WithPolicyRuleAttachable
+            extends PolicyRule.DefinitionStages.WithRuleActions,
                 PolicyRule.DefinitionStages.WithPrefixesToFilterFor,
                 Attachable<ManagementPolicy.DefinitionStages.WithCreate> {
-
         }
     }
 
-    /**
-     * Grouping of management policy rule update stages.
-     */
+    /** Grouping of management policy rule update stages. */
     interface UpdateStages {
         /**
-         * The stage of the management policy rule update allowing to specify the blob types that the rule will apply to.
+         * The stage of the management policy rule update allowing to specify the blob types that the rule will apply
+         * to.
          */
         interface WithBlobTypesToFilterFor {
             /**
@@ -278,7 +247,8 @@ public interface PolicyRule extends
         }
 
         /**
-         * THe stage of the management policy rule update allowing to specify the prefixes for the blobs that the rule will apply to.
+         * THe stage of the management policy rule update allowing to specify the prefixes for the blobs that the rule
+         * will apply to.
          */
         interface WithPrefixesToFilterFor {
             /**
@@ -306,13 +276,15 @@ public interface PolicyRule extends
         }
 
         /**
-         * The stage of the management policy rule update allowing to specify the actions to perform on the selected blobs.
+         * The stage of the management policy rule update allowing to specify the actions to perform on the selected
+         * blobs.
          */
         interface WithActions {
             /**
              * The function that specifies a tier to cool action on the selected base blobs.
              *
-             * @param daysAfterBaseBlobModificationUntilCooling the number of days after a base blob is last modified until it is cooled.
+             * @param daysAfterBaseBlobModificationUntilCooling the number of days after a base blob is last modified
+             *     until it is cooled.
              * @return the next stage of the management policy rule update.
              */
             Update withTierToCoolActionOnBaseBlob(float daysAfterBaseBlobModificationUntilCooling);
@@ -320,7 +292,8 @@ public interface PolicyRule extends
             /**
              * The function that specifies a tier to archive action on the selected base blobs.
              *
-             * @param daysAfterBaseBlobModificationUntilArchiving the number of days after a base blob is last modified until it is archived.
+             * @param daysAfterBaseBlobModificationUntilArchiving the number of days after a base blob is last modified
+             *     until it is archived.
              * @return the next stage of the management policy rule update.
              */
             Update withTierToArchiveActionOnBaseBlob(float daysAfterBaseBlobModificationUntilArchiving);
@@ -328,7 +301,8 @@ public interface PolicyRule extends
             /**
              * The function that specifies a delete action on the selected base blobs.
              *
-             * @param daysAfterBaseBlobModificationUntilDeleting the number of days after a base blob is last modified until it is deleted.
+             * @param daysAfterBaseBlobModificationUntilDeleting the number of days after a base blob is last modified
+             *     until it is deleted.
              * @return the next stage of the management policy rule update.
              */
             Update withDeleteActionOnBaseBlob(float daysAfterBaseBlobModificationUntilDeleting);
@@ -336,7 +310,8 @@ public interface PolicyRule extends
             /**
              * The function that specifies a delete action on the selected snapshots.
              *
-             * @param daysAfterSnapShotCreationUntilDeleting the number of days after a snapshot is created until it is deleted.
+             * @param daysAfterSnapShotCreationUntilDeleting the number of days after a snapshot is created until it is
+             *     deleted.
              * @return the next stage of the management policy rule update
              */
             Update withDeleteActionOnSnapShot(float daysAfterSnapShotCreationUntilDeleting);

@@ -2,8 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.management.network.implementation;
 
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.DdosProtectionPlan;
 import com.azure.management.network.DhcpOptions;
@@ -11,41 +12,29 @@ import com.azure.management.network.Network;
 import com.azure.management.network.NetworkPeerings;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.models.GroupableParentResourceWithTagsImpl;
-import com.azure.management.network.models.IPAddressAvailabilityResultInner;
+import com.azure.management.network.models.IpAddressAvailabilityResultInner;
 import com.azure.management.network.models.SubnetInner;
 import com.azure.management.network.models.VirtualNetworkInner;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import reactor.core.publisher.Mono;
 
-/**
- * Implementation for Network and its create and update interfaces.
- */
-class NetworkImpl
-        extends GroupableParentResourceWithTagsImpl<
-        Network,
-        VirtualNetworkInner,
-        NetworkImpl,
-        NetworkManager>
-        implements
-        Network,
-        Network.Definition,
-        Network.Update {
+/** Implementation for Network and its create and update interfaces. */
+class NetworkImpl extends GroupableParentResourceWithTagsImpl<Network, VirtualNetworkInner, NetworkImpl, NetworkManager>
+    implements Network, Network.Definition, Network.Update {
 
+    private final ClientLogger logger = new ClientLogger(getClass());
     private Map<String, Subnet> subnets;
     private NetworkPeeringsImpl peerings;
     private Creatable<DdosProtectionPlan> ddosProtectionPlanCreatable;
 
-    NetworkImpl(String name,
-                final VirtualNetworkInner innerModel,
-                final NetworkManager networkManager) {
+    NetworkImpl(String name, final VirtualNetworkInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
     }
 
@@ -68,51 +57,60 @@ class NetworkImpl
 
     @Override
     public Mono<Network> refreshAsync() {
-        return super.refreshAsync().map(network -> {
-            NetworkImpl impl = (NetworkImpl) network;
-            impl.initializeChildrenFromInner();
-            return impl;
-        });
+        return super
+            .refreshAsync()
+            .map(
+                network -> {
+                    NetworkImpl impl = (NetworkImpl) network;
+                    impl.initializeChildrenFromInner();
+                    return impl;
+                });
     }
 
     @Override
     protected Mono<VirtualNetworkInner> getInnerAsync() {
-        // FIXME: parameter - expand
-        return this.manager().inner().virtualNetworks().getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .virtualNetworks()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
     protected Mono<VirtualNetworkInner> applyTagsToInnerAsync() {
-        return this.manager().inner().virtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().getTags());
+        return this.manager().inner().virtualNetworks().updateTagsAsync(resourceGroupName(), name(), inner().tags());
     }
 
     @Override
     public boolean isPrivateIPAddressAvailable(String ipAddress) {
-        IPAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
+        IpAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
         return (result != null) ? result.available() : false;
     }
 
     @Override
     public boolean isPrivateIPAddressInNetwork(String ipAddress) {
-        IPAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
+        IpAddressAvailabilityResultInner result = checkIPAvailability(ipAddress);
         return (result != null) ? true : false;
     }
 
     // Helpers
 
-    private IPAddressAvailabilityResultInner checkIPAvailability(String ipAddress) {
+    private IpAddressAvailabilityResultInner checkIPAvailability(String ipAddress) {
         if (ipAddress == null) {
             return null;
         }
-        IPAddressAvailabilityResultInner result = null;
+        IpAddressAvailabilityResultInner result = null;
         try {
-            result = this.manager().networks().inner().checkIPAddressAvailability(
-                    this.resourceGroupName(),
-                    this.name(),
-                    ipAddress);
-        } catch (CloudException e) {
+            result =
+                this
+                    .manager()
+                    .networks()
+                    .inner()
+                    .checkIpAddressAvailability(this.resourceGroupName(), this.name(), ipAddress);
+        } catch (ManagementException e) {
             if (!e.getValue().getCode().equalsIgnoreCase("PrivateIPAddressNotInAnySubnet")) {
-                throw e; // Rethrow if the exception reason is anything other than IP address not found
+                throw logger.logExceptionAsError(e);
+                // Rethrow if the exception reason is anything other than IP address not found
             }
         }
         return result;
@@ -141,9 +139,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withSubnet(String name, String cidr) {
-        return this.defineSubnet(name)
-                .withAddressPrefix(cidr)
-                .attach();
+        return this.defineSubnet(name).withAddressPrefix(cidr).attach();
     }
 
     @Override
@@ -177,20 +173,14 @@ class NetworkImpl
 
     @Override
     public SubnetImpl defineSubnet(String name) {
-        SubnetInner inner = new SubnetInner()
-                .withName(name);
+        SubnetInner inner = new SubnetInner().withName(name);
         return new SubnetImpl(inner, this);
     }
 
     @Override
     public NetworkImpl withoutAddressSpace(String cidr) {
-        if (cidr == null) {
-            // Skip
-        } else if (this.inner().addressSpace() == null) {
-            // Skip
-        } else if (this.inner().addressSpace().addressPrefixes() == null) {
-            // Skip
-        } else {
+        if (cidr != null && this.inner().addressSpace() != null
+            && this.inner().addressSpace().addressPrefixes() != null) {
             this.inner().addressSpace().addressPrefixes().remove(cidr);
         }
         return this;
@@ -244,6 +234,7 @@ class NetworkImpl
         // Reset and update subnets
         this.inner().withSubnets(innersFromWrappers(this.subnets.values()));
     }
+
     @Override
     public SubnetImpl updateSubnet(String name) {
         return (SubnetImpl) this.subnets.get(name);
@@ -252,11 +243,17 @@ class NetworkImpl
     @Override
     protected Mono<VirtualNetworkInner> createInner() {
         if (ddosProtectionPlanCreatable != null && this.taskResult(ddosProtectionPlanCreatable.key()) != null) {
-            DdosProtectionPlan ddosProtectionPlan = this.<DdosProtectionPlan>taskResult(ddosProtectionPlanCreatable.key());
+            DdosProtectionPlan ddosProtectionPlan =
+                this.<DdosProtectionPlan>taskResult(ddosProtectionPlanCreatable.key());
             withExistingDdosProtectionPlan(ddosProtectionPlan.id());
         }
-        return this.manager().inner().virtualNetworks().createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(virtualNetworkInner -> {
+        return this
+            .manager()
+            .inner()
+            .virtualNetworks()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+            .map(
+                virtualNetworkInner -> {
                     NetworkImpl.this.ddosProtectionPlanCreatable = null;
                     return virtualNetworkInner;
                 });
@@ -279,13 +276,15 @@ class NetworkImpl
 
     @Override
     public String ddosProtectionPlanId() {
-        return inner().ddosProtectionPlan() == null ? null : inner().ddosProtectionPlan().getId();
+        return inner().ddosProtectionPlan() == null ? null : inner().ddosProtectionPlan().id();
     }
 
     @Override
     public NetworkImpl withNewDdosProtectionPlan() {
         inner().withEnableDdosProtection(true);
-        DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup = manager().ddosProtectionPlans()
+        DdosProtectionPlan.DefinitionStages.WithGroup ddosProtectionPlanWithGroup =
+            manager()
+                .ddosProtectionPlans()
                 .define(this.manager().getSdkContext().randomResourceName(name(), 20))
                 .withRegion(region());
         if (super.creatableGroup != null && isInCreateMode()) {
@@ -299,7 +298,7 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withExistingDdosProtectionPlan(String planId) {
-        inner().withEnableDdosProtection(true).withDdosProtectionPlan(new SubResource().setId(planId));
+        inner().withEnableDdosProtection(true).withDdosProtectionPlan(new SubResource().withId(planId));
         return this;
     }
 

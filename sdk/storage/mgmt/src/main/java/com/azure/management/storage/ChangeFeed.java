@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ChangeFeed model.
- */
+/** The ChangeFeed model. */
 @Fluent
 public final class ChangeFeed {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChangeFeed.class);
+
     /*
      * Indicates whether change feed event logging is enabled for the Blob
      * service.
@@ -20,9 +22,8 @@ public final class ChangeFeed {
     private Boolean enabled;
 
     /**
-     * Get the enabled property: Indicates whether change feed event logging is
-     * enabled for the Blob service.
-     * 
+     * Get the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -30,14 +31,21 @@ public final class ChangeFeed {
     }
 
     /**
-     * Set the enabled property: Indicates whether change feed event logging is
-     * enabled for the Blob service.
-     * 
+     * Set the enabled property: Indicates whether change feed event logging is enabled for the Blob service.
+     *
      * @param enabled the enabled value to set.
      * @return the ChangeFeed object itself.
      */
     public ChangeFeed withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

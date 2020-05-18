@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Encryption model.
- */
+/** The Encryption model. */
 @Fluent
 public final class Encryption {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
+
     /*
      * List of services which support encryption.
      */
@@ -33,7 +35,7 @@ public final class Encryption {
 
     /**
      * Get the services property: List of services which support encryption.
-     * 
+     *
      * @return the services value.
      */
     public EncryptionServices services() {
@@ -42,7 +44,7 @@ public final class Encryption {
 
     /**
      * Set the services property: List of services which support encryption.
-     * 
+     *
      * @param services the services value to set.
      * @return the Encryption object itself.
      */
@@ -52,10 +54,9 @@ public final class Encryption {
     }
 
     /**
-     * Get the keySource property: The encryption keySource (provider).
-     * Possible values (case-insensitive):  Microsoft.Storage,
-     * Microsoft.Keyvault.
-     * 
+     * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.Storage, Microsoft.Keyvault.
+     *
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -63,10 +64,9 @@ public final class Encryption {
     }
 
     /**
-     * Set the keySource property: The encryption keySource (provider).
-     * Possible values (case-insensitive):  Microsoft.Storage,
-     * Microsoft.Keyvault.
-     * 
+     * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
+     * Microsoft.Storage, Microsoft.Keyvault.
+     *
      * @param keySource the keySource value to set.
      * @return the Encryption object itself.
      */
@@ -77,7 +77,7 @@ public final class Encryption {
 
     /**
      * Get the keyVaultProperties property: Properties provided by key vault.
-     * 
+     *
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -86,12 +86,31 @@ public final class Encryption {
 
     /**
      * Set the keyVaultProperties property: Properties provided by key vault.
-     * 
+     *
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the Encryption object itself.
      */
     public Encryption withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (services() != null) {
+            services().validate();
+        }
+        if (keySource() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property keySource in model Encryption"));
+        }
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
     }
 }

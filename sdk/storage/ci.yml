@@ -85,3 +85,8 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
+      AdditionalModules:
+        - name: azure-storage-perf
+          groupId: com.azure
+        - name: azure-messaging-eventhubs
+          groupId: com.azure

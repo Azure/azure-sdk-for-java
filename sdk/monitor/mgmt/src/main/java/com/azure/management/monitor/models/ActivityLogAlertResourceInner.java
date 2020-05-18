@@ -7,17 +7,19 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.ActivityLogAlertActionList;
 import com.azure.management.monitor.ActivityLogAlertAllOfCondition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActivityLogAlertResource model.
- */
+/** The ActivityLogAlertResource model. */
 @JsonFlatten
 @Fluent
 public class ActivityLogAlertResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertResourceInner.class);
+
     /*
      * A list of resourceIds that will be used as prefixes. The alert will only
      * apply to activityLogs with resourceIds that fall under one of these
@@ -52,11 +54,9 @@ public class ActivityLogAlertResourceInner extends Resource {
     private String description;
 
     /**
-     * Get the scopes property: A list of resourceIds that will be used as
-     * prefixes. The alert will only apply to activityLogs with resourceIds
-     * that fall under one of these prefixes. This list must include at least
-     * one item.
-     * 
+     * Get the scopes property: A list of resourceIds that will be used as prefixes. The alert will only apply to
+     * activityLogs with resourceIds that fall under one of these prefixes. This list must include at least one item.
+     *
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -64,11 +64,9 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the scopes property: A list of resourceIds that will be used as
-     * prefixes. The alert will only apply to activityLogs with resourceIds
-     * that fall under one of these prefixes. This list must include at least
-     * one item.
-     * 
+     * Set the scopes property: A list of resourceIds that will be used as prefixes. The alert will only apply to
+     * activityLogs with resourceIds that fall under one of these prefixes. This list must include at least one item.
+     *
      * @param scopes the scopes value to set.
      * @return the ActivityLogAlertResourceInner object itself.
      */
@@ -78,10 +76,9 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Get the enabled property: Indicates whether this activity log alert is
-     * enabled. If an activity log alert is not enabled, then none of its
-     * actions will be activated.
-     * 
+     * Get the enabled property: Indicates whether this activity log alert is enabled. If an activity log alert is not
+     * enabled, then none of its actions will be activated.
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -89,10 +86,9 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the enabled property: Indicates whether this activity log alert is
-     * enabled. If an activity log alert is not enabled, then none of its
-     * actions will be activated.
-     * 
+     * Set the enabled property: Indicates whether this activity log alert is enabled. If an activity log alert is not
+     * enabled, then none of its actions will be activated.
+     *
      * @param enabled the enabled value to set.
      * @return the ActivityLogAlertResourceInner object itself.
      */
@@ -102,9 +98,8 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Get the condition property: The condition that will cause this alert to
-     * activate.
-     * 
+     * Get the condition property: The condition that will cause this alert to activate.
+     *
      * @return the condition value.
      */
     public ActivityLogAlertAllOfCondition condition() {
@@ -112,9 +107,8 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the condition property: The condition that will cause this alert to
-     * activate.
-     * 
+     * Set the condition property: The condition that will cause this alert to activate.
+     *
      * @param condition the condition value to set.
      * @return the ActivityLogAlertResourceInner object itself.
      */
@@ -124,9 +118,8 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Get the actions property: The actions that will activate when the
-     * condition is met.
-     * 
+     * Get the actions property: The actions that will activate when the condition is met.
+     *
      * @return the actions value.
      */
     public ActivityLogAlertActionList actions() {
@@ -134,9 +127,8 @@ public class ActivityLogAlertResourceInner extends Resource {
     }
 
     /**
-     * Set the actions property: The actions that will activate when the
-     * condition is met.
-     * 
+     * Set the actions property: The actions that will activate when the condition is met.
+     *
      * @param actions the actions value to set.
      * @return the ActivityLogAlertResourceInner object itself.
      */
@@ -147,7 +139,7 @@ public class ActivityLogAlertResourceInner extends Resource {
 
     /**
      * Get the description property: A description of this activity log alert.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -156,12 +148,26 @@ public class ActivityLogAlertResourceInner extends Resource {
 
     /**
      * Set the description property: A description of this activity log alert.
-     * 
+     *
      * @param description the description value to set.
      * @return the ActivityLogAlertResourceInner object itself.
      */
     public ActivityLogAlertResourceInner withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (condition() != null) {
+            condition().validate();
+        }
+        if (actions() != null) {
+            actions().validate();
+        }
     }
 }

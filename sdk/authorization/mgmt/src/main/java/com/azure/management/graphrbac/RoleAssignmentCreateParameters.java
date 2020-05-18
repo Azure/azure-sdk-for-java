@@ -6,14 +6,16 @@ package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoleAssignmentCreateParameters model.
- */
+/** The RoleAssignmentCreateParameters model. */
 @JsonFlatten
 @Fluent
 public class RoleAssignmentCreateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentCreateParameters.class);
+
     /*
      * The role definition ID used in the role assignment.
      */
@@ -35,9 +37,8 @@ public class RoleAssignmentCreateParameters {
     private Boolean canDelegate;
 
     /**
-     * Get the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Get the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -45,9 +46,8 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Set the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -57,10 +57,9 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Get the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -68,10 +67,9 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Set the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -81,9 +79,8 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the canDelegate property: The delegation flag used for creating a
-     * role assignment.
-     * 
+     * Get the canDelegate property: The delegation flag used for creating a role assignment.
+     *
      * @return the canDelegate value.
      */
     public Boolean canDelegate() {
@@ -91,14 +88,33 @@ public class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the canDelegate property: The delegation flag used for creating a
-     * role assignment.
-     * 
+     * Set the canDelegate property: The delegation flag used for creating a role assignment.
+     *
      * @param canDelegate the canDelegate value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
     public RoleAssignmentCreateParameters withCanDelegate(Boolean canDelegate) {
         this.canDelegate = canDelegate;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (roleDefinitionId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property roleDefinitionId in model RoleAssignmentCreateParameters"));
+        }
+        if (principalId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property principalId in model RoleAssignmentCreateParameters"));
+        }
     }
 }

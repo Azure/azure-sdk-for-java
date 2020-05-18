@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 
 import reactor.core.publisher.Mono;
 
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -31,22 +32,19 @@ public class AuthenticationPolicy implements HttpPipelinePolicy {
      * Creates AuthenticationPolicy.
      *
      * @param credential the token credential to authenticate the request
+     * @param environment the environment with endpoints for authentication
      * @param scopes the scopes used in credential, using default scopes when empty
      */
-    public AuthenticationPolicy(TokenCredential credential, String... scopes) {
+    public AuthenticationPolicy(TokenCredential credential, AzureEnvironment environment, String... scopes) {
         Objects.requireNonNull(credential);
         this.credential = credential;
+        this.environment = environment;
         this.scopes = scopes;
-        if (credential instanceof AzureTokenCredential) {
-            this.environment = ((AzureTokenCredential) credential).getEnvironment();
-        } else {
-            this.environment = AzureEnvironment.AZURE;
-        }
     }
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol().toLowerCase())) {
+        if ("http".equals(context.getHttpRequest().getUrl().getProtocol().toLowerCase(Locale.ROOT))) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
 

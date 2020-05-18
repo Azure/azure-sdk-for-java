@@ -3,19 +3,21 @@
 
 package com.azure.storage.blob.models;
 
-import com.azure.storage.common.ErrorReceiver;
-import com.azure.storage.common.ProgressReceiver;
+import com.azure.core.annotation.Fluent;
+
+import java.util.function.Consumer;
 
 /**
  * Optional parameters for Blob Query.
  */
+@Fluent
 public class BlobQueryOptions {
 
     private BlobQuerySerialization inputSerialization;
     private BlobQuerySerialization outputSerialization;
     private BlobRequestConditions requestConditions;
-    private ErrorReceiver<BlobQueryError> errorReceiver;
-    private ProgressReceiver progressReceiver;
+    private Consumer<BlobQueryError> errorConsumer;
+    private Consumer<BlobQueryProgress> progressConsumer;
 
     /**
      * Constructs a {@link BlobQueryOptions}.
@@ -84,42 +86,42 @@ public class BlobQueryOptions {
     }
 
     /**
-     * Gets the error receiver.
+     * Gets the error consumer.
      *
-     * @return the error receiver.
+     * @return the error consumer.
      */
-    public ErrorReceiver<BlobQueryError> getErrorReceiver() {
-        return errorReceiver;
+    public Consumer<BlobQueryError> getErrorConsumer() {
+        return errorConsumer;
     }
 
     /**
-     * Sets the error receiver.
+     * Sets the error consumer.
      *
-     * @param errorReceiver The error receiver.
+     * @param errorConsumer The error consumer.
      * @return the updated BlobQueryOptions object.
      */
-    public BlobQueryOptions setErrorReceiver(ErrorReceiver<BlobQueryError> errorReceiver) {
-        this.errorReceiver = errorReceiver;
+    public BlobQueryOptions setErrorConsumer(Consumer<BlobQueryError> errorConsumer) {
+        this.errorConsumer = errorConsumer;
         return this;
     }
 
     /**
-     * Gets the progress receiver.
+     * Gets the progress consumer.
      *
-     * @return the progress receiver.
+     * @return the progress consumer.
      */
-    public ProgressReceiver getProgressReceiver() {
-        return progressReceiver;
+    public Consumer<BlobQueryProgress> getProgressConsumer() {
+        return progressConsumer;
     }
 
     /**
-     * Sets the progress receiver.
+     * Sets the progress consumer.
      *
-     * @param progressReceiver The progress receiver.
+     * @param progressConsumer The progress consumer.
      * @return the updated BlobQueryOptions object.
      */
-    public BlobQueryOptions setProgressReceiver(ProgressReceiver progressReceiver) {
-        this.progressReceiver = progressReceiver;
+    public BlobQueryOptions setProgressConsumer(Consumer<BlobQueryProgress> progressConsumer) {
+        this.progressConsumer = progressConsumer;
         return this;
     }
 }

@@ -5,13 +5,15 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RoleDefinitionFilter model.
- */
+/** The RoleDefinitionFilter model. */
 @Fluent
 public final class RoleDefinitionFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionFilter.class);
+
     /*
      * Returns role definition with the specific name.
      */
@@ -25,9 +27,8 @@ public final class RoleDefinitionFilter {
     private String type;
 
     /**
-     * Get the roleName property: Returns role definition with the specific
-     * name.
-     * 
+     * Get the roleName property: Returns role definition with the specific name.
+     *
      * @return the roleName value.
      */
     public String roleName() {
@@ -35,9 +36,8 @@ public final class RoleDefinitionFilter {
     }
 
     /**
-     * Set the roleName property: Returns role definition with the specific
-     * name.
-     * 
+     * Set the roleName property: Returns role definition with the specific name.
+     *
      * @param roleName the roleName value to set.
      * @return the RoleDefinitionFilter object itself.
      */
@@ -48,7 +48,7 @@ public final class RoleDefinitionFilter {
 
     /**
      * Get the type property: Returns role definition with the specific type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -57,12 +57,20 @@ public final class RoleDefinitionFilter {
 
     /**
      * Set the type property: Returns role definition with the specific type.
-     * 
+     *
      * @param type the type value to set.
      * @return the RoleDefinitionFilter object itself.
      */
     public RoleDefinitionFilter withType(String type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

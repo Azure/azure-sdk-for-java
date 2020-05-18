@@ -3,8 +3,10 @@
 
 package com.azure.management.compute.implementation;
 
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.AdditionalCapabilities;
 import com.azure.management.compute.ApiEntityReference;
 import com.azure.management.compute.BillingProfile;
@@ -36,14 +38,14 @@ import com.azure.management.compute.VirtualMachineScaleSet;
 import com.azure.management.compute.VirtualMachineScaleSetDataDisk;
 import com.azure.management.compute.VirtualMachineScaleSetExtension;
 import com.azure.management.compute.VirtualMachineScaleSetExtensionProfile;
-import com.azure.management.compute.VirtualMachineScaleSetIPConfiguration;
+import com.azure.management.compute.VirtualMachineScaleSetIpConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetManagedDiskParameters;
 import com.azure.management.compute.VirtualMachineScaleSetNetworkConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetNetworkProfile;
 import com.azure.management.compute.VirtualMachineScaleSetOSDisk;
 import com.azure.management.compute.VirtualMachineScaleSetOSProfile;
-import com.azure.management.compute.VirtualMachineScaleSetPublicIPAddressConfiguration;
-import com.azure.management.compute.VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings;
+import com.azure.management.compute.VirtualMachineScaleSetPublicIpAddressConfiguration;
+import com.azure.management.compute.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
 import com.azure.management.compute.VirtualMachineScaleSetSku;
 import com.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.azure.management.compute.VirtualMachineScaleSetStorageProfile;
@@ -87,21 +89,16 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
 
-/**
- * Implementation of VirtualMachineScaleSet.
- */
+/** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
-        extends GroupableParentResourceImpl<
-        VirtualMachineScaleSet,
-        VirtualMachineScaleSetInner,
-        VirtualMachineScaleSetImpl,
-        ComputeManager>
-        implements
-        VirtualMachineScaleSet,
+    extends GroupableParentResourceImpl<
+        VirtualMachineScaleSet, VirtualMachineScaleSetInner, VirtualMachineScaleSetImpl, ComputeManager>
+    implements VirtualMachineScaleSet,
         VirtualMachineScaleSet.DefinitionManagedOrUnmanaged,
         VirtualMachineScaleSet.DefinitionManaged,
         VirtualMachineScaleSet.DefinitionUnmanaged,
@@ -154,15 +151,15 @@ public class VirtualMachineScaleSetImpl
     private String newProximityPlacementGroupName;
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
-
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetImpl.class);
 
     VirtualMachineScaleSetImpl(
-            String name,
-            VirtualMachineScaleSetInner innerModel,
-            final ComputeManager computeManager,
-            final StorageManager storageManager,
-            final NetworkManager networkManager,
-            final GraphRbacManager rbacManager) {
+        String name,
+        VirtualMachineScaleSetInner innerModel,
+        final ComputeManager computeManager,
+        final StorageManager storageManager,
+        final NetworkManager networkManager,
+        final GraphRbacManager rbacManager) {
         super(name, innerModel, computeManager);
         this.storageManager = storageManager;
         this.networkManager = networkManager;
@@ -179,7 +176,8 @@ public class VirtualMachineScaleSetImpl
         this.extensions = new HashMap<>();
         if (this.inner().virtualMachineProfile().extensionProfile() != null) {
             if (this.inner().virtualMachineProfile().extensionProfile().extensions() != null) {
-                for (VirtualMachineScaleSetExtensionInner inner : this.inner().virtualMachineProfile().extensionProfile().extensions()) {
+                for (VirtualMachineScaleSetExtensionInner inner
+                    : this.inner().virtualMachineProfile().extensionProfile().extensions()) {
                     this.extensions.put(inner.name(), new VirtualMachineScaleSetExtensionImpl(inner, this));
                 }
             }
@@ -188,13 +186,18 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetVMs virtualMachines() {
-        return new VirtualMachineScaleSetVMsImpl(this, this.manager().inner().virtualMachineScaleSetVMs(), this.myManager);
+        return new VirtualMachineScaleSetVMsImpl(
+            this, this.manager().inner().virtualMachineScaleSetVMs(), this.myManager);
     }
 
     @Override
     public PagedIterable<VirtualMachineScaleSetSku> listAvailableSkus() {
-        return this.manager().inner().virtualMachineScaleSets().listSkus(this.resourceGroupName(), this.name())
-                .mapPage(VirtualMachineScaleSetSkuImpl::new);
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSets()
+            .listSkus(this.resourceGroupName(), this.name())
+            .mapPage(VirtualMachineScaleSetSkuImpl::new);
     }
 
     @Override
@@ -204,8 +207,13 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> deallocateAsync() {
-        return this.manager().inner().virtualMachineScaleSets().deallocateAsync(this.resourceGroupName(), this.name(), null)
-                .map(aVoid -> this.refreshAsync()).then();
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSets()
+            .deallocateAsync(this.resourceGroupName(), this.name(), null)
+            .map(aVoid -> this.refreshAsync())
+            .then();
     }
 
     @Override
@@ -215,7 +223,11 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> powerOffAsync() {
-        return this.manager().inner().virtualMachineScaleSets().powerOffAsync(this.resourceGroupName(), this.name(), null, null);
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSets()
+            .powerOffAsync(this.resourceGroupName(), this.name(), null, null);
     }
 
     @Override
@@ -225,7 +237,11 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> restartAsync() {
-        return this.manager().inner().virtualMachineScaleSets().restartAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSets()
+            .restartAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
@@ -245,37 +261,66 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Mono<Void> reimageAsync() {
-        return this.manager().inner().virtualMachineScaleSets().reimageAsync(this.resourceGroupName(), this.name(), null);
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSets()
+            .reimageAsync(this.resourceGroupName(), this.name(), null);
     }
 
     @Override
-    public RunCommandResult runPowerShellScriptInVMInstance(String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
-        return this.manager().virtualMachineScaleSets().runPowerShellScriptInVMInstance(this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
+    public RunCommandResult runPowerShellScriptInVMInstance(
+        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        return this
+            .manager()
+            .virtualMachineScaleSets()
+            .runPowerShellScriptInVMInstance(
+                this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
     }
 
     @Override
-    public Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
-        return this.manager().virtualMachineScaleSets().runPowerShellScriptInVMInstanceAsync(this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
+    public Mono<RunCommandResult> runPowerShellScriptInVMInstanceAsync(
+        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        return this
+            .manager()
+            .virtualMachineScaleSets()
+            .runPowerShellScriptInVMInstanceAsync(
+                this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
     }
 
     @Override
-    public RunCommandResult runShellScriptInVMInstance(String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
-        return this.manager().virtualMachineScaleSets().runShellScriptInVMInstance(this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
+    public RunCommandResult runShellScriptInVMInstance(
+        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        return this
+            .manager()
+            .virtualMachineScaleSets()
+            .runShellScriptInVMInstance(this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
     }
 
     @Override
-    public Mono<RunCommandResult> runShellScriptInVMInstanceAsync(String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
-        return this.manager().virtualMachineScaleSets().runShellScriptInVMInstanceAsync(this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
+    public Mono<RunCommandResult> runShellScriptInVMInstanceAsync(
+        String vmId, List<String> scriptLines, List<RunCommandInputParameter> scriptParameters) {
+        return this
+            .manager()
+            .virtualMachineScaleSets()
+            .runShellScriptInVMInstanceAsync(
+                this.resourceGroupName(), this.name(), vmId, scriptLines, scriptParameters);
     }
 
     @Override
     public RunCommandResult runCommandInVMInstance(String vmId, RunCommandInput inputCommand) {
-        return this.manager().virtualMachineScaleSets().runCommandInVMInstance(this.resourceGroupName(), this.name(), vmId, inputCommand);
+        return this
+            .manager()
+            .virtualMachineScaleSets()
+            .runCommandInVMInstance(this.resourceGroupName(), this.name(), vmId, inputCommand);
     }
 
     @Override
     public Mono<RunCommandResult> runCommandVMInstanceAsync(String vmId, RunCommandInput inputCommand) {
-        return this.manager().virtualMachineScaleSets().runCommandVMInstanceAsync(this.resourceGroupName(), this.name(), vmId, inputCommand);
+        return this
+            .manager()
+            .virtualMachineScaleSets()
+            .runCommandVMInstanceAsync(this.resourceGroupName(), this.name(), vmId, inputCommand);
     }
 
     @Override
@@ -321,11 +366,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public Network getPrimaryNetwork() throws IOException {
-        String subnetId = primaryNicDefaultIPConfiguration().subnet().getId();
+        String subnetId = primaryNicDefaultIpConfiguration().subnet().id();
         String virtualNetworkId = ResourceUtils.parentResourceIdFromResourceId(subnetId);
-        return this.networkManager
-                .networks()
-                .getById(virtualNetworkId);
+        return this.networkManager.networks().getById(virtualNetworkId);
     }
 
     @Override
@@ -339,17 +382,18 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException {
         if (this.getPrimaryInternetFacingLoadBalancer() != null) {
-            return getBackendsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
-                    primaryNicDefaultIPConfiguration());
+            return getBackendsAssociatedWithIpConfiguration(
+                this.primaryInternetFacingLoadBalancer, primaryNicDefaultIpConfiguration());
         }
         return new HashMap<>();
     }
 
     @Override
-    public Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
+    public Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools()
+        throws IOException {
         if (this.getPrimaryInternetFacingLoadBalancer() != null) {
-            return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
-                    primaryNicDefaultIPConfiguration());
+            return getInboundNatPoolsAssociatedWithIpConfiguration(
+                this.primaryInternetFacingLoadBalancer, primaryNicDefaultIpConfiguration());
         }
         return new HashMap<>();
     }
@@ -365,8 +409,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Map<String, LoadBalancerBackend> listPrimaryInternalLoadBalancerBackends() throws IOException {
         if (this.getPrimaryInternalLoadBalancer() != null) {
-            return getBackendsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
-                    primaryNicDefaultIPConfiguration());
+            return getBackendsAssociatedWithIpConfiguration(
+                this.primaryInternalLoadBalancer, primaryNicDefaultIpConfiguration());
         }
         return new HashMap<>();
     }
@@ -374,17 +418,17 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Map<String, LoadBalancerInboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException {
         if (this.getPrimaryInternalLoadBalancer() != null) {
-            return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
-                    primaryNicDefaultIPConfiguration());
+            return getInboundNatPoolsAssociatedWithIpConfiguration(
+                this.primaryInternalLoadBalancer, primaryNicDefaultIpConfiguration());
         }
         return new HashMap<>();
     }
 
     @Override
-    public List<String> primaryPublicIPAddressIds() throws IOException {
+    public List<String> primaryPublicIpAddressIds() throws IOException {
         LoadBalancer loadBalancer = this.getPrimaryInternetFacingLoadBalancer();
         if (loadBalancer != null) {
-            return loadBalancer.publicIPAddressIds();
+            return loadBalancer.publicIpAddressIds();
         }
         return new ArrayList<>();
     }
@@ -392,8 +436,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public List<String> vhdContainers() {
         if (this.storageProfile() != null
-                && this.storageProfile().osDisk() != null
-                && this.storageProfile().osDisk().vhdContainers() != null) {
+            && this.storageProfile().osDisk() != null
+            && this.storageProfile().osDisk().vhdContainers() != null) {
             return this.storageProfile().osDisk().vhdContainers();
         }
         return new ArrayList<>();
@@ -433,30 +477,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetPublicIPAddressConfiguration virtualMachinePublicIpConfig() {
-        VirtualMachineScaleSetIPConfiguration nicConfig = this.primaryNicDefaultIPConfiguration();
-        if (nicConfig != null) {
-            return nicConfig.publicIPAddressConfiguration();
-        } else {
-            return null;
-        }
+    public VirtualMachineScaleSetPublicIpAddressConfiguration virtualMachinePublicIpConfig() {
+        VirtualMachineScaleSetIpConfiguration nicConfig = this.primaryNicDefaultIpConfiguration();
+        return nicConfig.publicIpAddressConfiguration();
     }
 
     @Override
     public VirtualMachineEvictionPolicyTypes virtualMachineEvictionPolicy() {
-        if (this.inner().virtualMachineProfile() != null) {
+        if (this.inner() != null &&  this.inner().virtualMachineProfile() != null) {
             return this.inner().virtualMachineProfile().evictionPolicy();
         } else {
             return null;
         }
     }
 
-
     @Override
     public boolean isIpForwardingEnabled() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
-        if (nicConfig.enableIPForwarding() != null) {
-            return nicConfig.enableIPForwarding();
+        if (nicConfig.enableIpForwarding() != null) {
+            return nicConfig.enableIpForwarding();
         } else {
             return false;
         }
@@ -476,7 +515,7 @@ public class VirtualMachineScaleSetImpl
     public String networkSecurityGroupId() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = primaryNicConfiguration();
         if (nicConfig.networkSecurityGroup() != null) {
-            return nicConfig.networkSecurityGroup().getId();
+            return nicConfig.networkSecurityGroup().id();
         } else {
             return null;
         }
@@ -493,12 +532,12 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public List<String> applicationGatewayBackendAddressPoolsIds() {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = this.primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         List<SubResource> backendPools = nicIpConfig.applicationGatewayBackendAddressPools();
         List<String> result = new ArrayList<>();
         if (backendPools != null) {
             for (SubResource backendPool : backendPools) {
-                result.add(backendPool.getId());
+                result.add(backendPool.id());
             }
         }
         return result;
@@ -506,11 +545,11 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public List<String> applicationSecurityGroupIds() {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = this.primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
         List<String> asgIds = new ArrayList<>();
         if (nicIpConfig.applicationSecurityGroups() != null) {
             for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
-                asgIds.add(asg.getId());
+                asgIds.add(asg.id());
             }
         }
         return asgIds;
@@ -523,8 +562,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ProximityPlacementGroup proximityPlacementGroup() {
-        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().getId());
-        ProximityPlacementGroupInner plgInner = manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
+        ResourceId id = ResourceId.fromString(inner().proximityPlacementGroup().id());
+        ProximityPlacementGroupInner plgInner =
+            manager().inner().proximityPlacementGroups().getByResourceGroup(id.resourceGroupName(), id.name());
         if (plgInner == null) {
             return null;
         } else {
@@ -539,32 +579,44 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name) {
-        return this.networkManager.networkInterfaces().getByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
-                this.name(),
-                instanceId,
-                name);
+        return this
+            .networkManager
+            .networkInterfaces()
+            .getByVirtualMachineScaleSetInstanceId(this.resourceGroupName(), this.name(), instanceId, name);
     }
 
     @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
-        return this.networkManager.networkInterfaces()
-                .listByVirtualMachineScaleSet(this.resourceGroupName(), this.name());
+        return this
+            .networkManager
+            .networkInterfaces()
+            .listByVirtualMachineScaleSet(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId) {
-        return this.networkManager.networkInterfaces()
-                .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
-                        this.name(),
-                        virtualMachineInstanceId);
+    public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(
+        String virtualMachineInstanceId) {
+        return this
+            .networkManager
+            .networkInterfaces()
+            .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(), this.name(), virtualMachineInstanceId);
+    }
+
+    @Override
+    public PagedFlux<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceIdAsync(
+        String virtualMachineInstanceId) {
+        return this.
+            networkManager
+            .networkInterfaces()
+            .listByVirtualMachineScaleSetInstanceIdAsync(
+                this.resourceGroupName(), this.name(), virtualMachineInstanceId);
     }
 
     // Fluent setters
 
     @Override
     public VirtualMachineScaleSetImpl withSku(VirtualMachineScaleSetSkuTypes skuType) {
-        this.inner()
-                .withSku(skuType.sku());
+        this.inner().withSku(skuType.sku());
         return this;
     }
 
@@ -581,14 +633,15 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
-        if (loadBalancer.publicIPAddressIds().isEmpty()) {
-            throw new IllegalArgumentException("Parameter loadBalancer must be an Internet facing load balancer");
+        if (loadBalancer.publicIpAddressIds().isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Parameter loadBalancer must be an Internet facing load balancer"));
         }
 
         if (isInCreateMode()) {
             this.primaryInternetFacingLoadBalancer = loadBalancer;
-            associateLoadBalancerToIpConfiguration(this.primaryInternetFacingLoadBalancer,
-                    this.primaryNicDefaultIPConfiguration());
+            associateLoadBalancerToIpConfiguration(
+                this.primaryInternetFacingLoadBalancer, this.primaryNicDefaultIpConfiguration());
         } else {
             this.primaryInternetFacingLoadBalancerToAttachOnUpdate = loadBalancer;
         }
@@ -598,11 +651,11 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerBackends(String... backendNames) {
         if (this.isInCreateMode()) {
-            VirtualMachineScaleSetIPConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
-            removeAllBackendAssociationFromIpConfiguration(this.primaryInternetFacingLoadBalancer, defaultPrimaryIpConfig);
-            associateBackEndsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
-                    defaultPrimaryIpConfig,
-                    backendNames);
+            VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
+            removeAllBackendAssociationFromIpConfiguration(
+                this.primaryInternetFacingLoadBalancer, defaultPrimaryIpConfig);
+            associateBackEndsToIpConfiguration(
+                this.primaryInternetFacingLoadBalancer.id(), defaultPrimaryIpConfig, backendNames);
         } else {
             addToList(this.primaryInternetFacingLBBackendsToAddOnUpdate, backendNames);
         }
@@ -612,12 +665,11 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancerInboundNatPools(String... natPoolNames) {
         if (this.isInCreateMode()) {
-            VirtualMachineScaleSetIPConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
-            removeAllInboundNatPoolAssociationFromIpConfiguration(this.primaryInternetFacingLoadBalancer,
-                    defaultPrimaryIpConfig);
-            associateInboundNATPoolsToIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
-                    defaultPrimaryIpConfig,
-                    natPoolNames);
+            VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
+            removeAllInboundNatPoolAssociationFromIpConfiguration(
+                this.primaryInternetFacingLoadBalancer, defaultPrimaryIpConfig);
+            associateInboundNATPoolsToIpConfiguration(
+                this.primaryInternetFacingLoadBalancer.id(), defaultPrimaryIpConfig, natPoolNames);
         } else {
             addToList(this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate, natPoolNames);
         }
@@ -626,8 +678,9 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
-        if (!loadBalancer.publicIPAddressIds().isEmpty()) {
-            throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
+        if (!loadBalancer.publicIpAddressIds().isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Parameter loadBalancer must be an internal load balancer"));
         }
         String lbNetworkId = null;
         for (LoadBalancerPrivateFrontend frontEnd : loadBalancer.privateFrontends().values()) {
@@ -637,31 +690,39 @@ public class VirtualMachineScaleSetImpl
         }
 
         if (isInCreateMode()) {
-            String vmNICNetworkId = ResourceUtils.parentResourceIdFromResourceId(this.existingPrimaryNetworkSubnetNameToAssociate);
+            String vmNICNetworkId =
+                ResourceUtils.parentResourceIdFromResourceId(this.existingPrimaryNetworkSubnetNameToAssociate);
             // Azure has a really wired BUG that - it throws exception when vnet of VMSS and LB are not same
             // (code: NetworkInterfaceAndInternalLoadBalancerMustUseSameVnet) but at the same time Azure update
             // the VMSS's network section to refer this invalid internal LB. This makes VMSS un-usable and portal
             // will show a error above VMSS profile page.
             //
             if (!vmNICNetworkId.equalsIgnoreCase(lbNetworkId)) {
-                throw new IllegalArgumentException("Virtual network associated with scale set virtual machines"
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Virtual network associated with scale set virtual machines"
                         + " and internal load balancer must be same. "
-                        + "'" + vmNICNetworkId + "'"
-                        + "'" + lbNetworkId);
+                        + "'"
+                        + vmNICNetworkId
+                        + "'"
+                        + "'"
+                        + lbNetworkId));
             }
 
             this.primaryInternalLoadBalancer = loadBalancer;
-            associateLoadBalancerToIpConfiguration(this.primaryInternalLoadBalancer,
-                    this.primaryNicDefaultIPConfiguration());
+            associateLoadBalancerToIpConfiguration(
+                this.primaryInternalLoadBalancer, this.primaryNicDefaultIpConfiguration());
         } else {
-            String vmNicVnetId = ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIPConfiguration()
-                    .subnet()
-                    .getId());
+            String vmNicVnetId =
+                ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIpConfiguration().subnet().id());
             if (!vmNicVnetId.equalsIgnoreCase(lbNetworkId)) {
-                throw new IllegalArgumentException("Virtual network associated with scale set virtual machines"
+                throw logger.logExceptionAsError(new IllegalArgumentException(
+                    "Virtual network associated with scale set virtual machines"
                         + " and internal load balancer must be same. "
-                        + "'" + vmNicVnetId + "'"
-                        + "'" + lbNetworkId);
+                        + "'"
+                        + vmNicVnetId
+                        + "'"
+                        + "'"
+                        + lbNetworkId));
             }
             this.primaryInternalLoadBalancerToAttachOnUpdate = loadBalancer;
         }
@@ -671,12 +732,10 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerBackends(String... backendNames) {
         if (this.isInCreateMode()) {
-            VirtualMachineScaleSetIPConfiguration defaultPrimaryIpConfig = primaryNicDefaultIPConfiguration();
-            removeAllBackendAssociationFromIpConfiguration(this.primaryInternalLoadBalancer,
-                    defaultPrimaryIpConfig);
-            associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
-                    defaultPrimaryIpConfig,
-                    backendNames);
+            VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = primaryNicDefaultIpConfiguration();
+            removeAllBackendAssociationFromIpConfiguration(this.primaryInternalLoadBalancer, defaultPrimaryIpConfig);
+            associateBackEndsToIpConfiguration(
+                this.primaryInternalLoadBalancer.id(), defaultPrimaryIpConfig, backendNames);
         } else {
             addToList(this.primaryInternalLBBackendsToAddOnUpdate, backendNames);
         }
@@ -686,12 +745,11 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerInboundNatPools(String... natPoolNames) {
         if (this.isInCreateMode()) {
-            VirtualMachineScaleSetIPConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
-            removeAllInboundNatPoolAssociationFromIpConfiguration(this.primaryInternalLoadBalancer,
-                    defaultPrimaryIpConfig);
-            associateInboundNATPoolsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
-                    defaultPrimaryIpConfig,
-                    natPoolNames);
+            VirtualMachineScaleSetIpConfiguration defaultPrimaryIpConfig = this.primaryNicDefaultIpConfiguration();
+            removeAllInboundNatPoolAssociationFromIpConfiguration(
+                this.primaryInternalLoadBalancer, defaultPrimaryIpConfig);
+            associateInboundNATPoolsToIpConfiguration(
+                this.primaryInternalLoadBalancer.id(), defaultPrimaryIpConfig, natPoolNames);
         } else {
             addToList(this.primaryInternalLBInboundNatPoolsToAddOnUpdate, natPoolNames);
         }
@@ -715,25 +773,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String...backendNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerBackends(String... backendNames) {
         addToList(this.primaryInternetFacingLBBackendsToRemoveOnUpdate, backendNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String...backendNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerBackends(String... backendNames) {
         addToList(this.primaryInternalLBBackendsToRemoveOnUpdate, backendNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String...natPoolNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternetFacingLoadBalancerNatPools(String... natPoolNames) {
         addToList(this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String...natPoolNames) {
+    public VirtualMachineScaleSetImpl withoutPrimaryInternalLoadBalancerNatPools(String... natPoolNames) {
         addToList(this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate, natPoolNames);
         return this;
     }
@@ -745,56 +803,42 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withLatestWindowsImage(String publisher, String offer, String sku) {
-        ImageReference imageReference = new ImageReference()
-                .withPublisher(publisher)
-                .withOffer(offer)
-                .withSku(sku)
-                .withVersion("latest");
+        ImageReference imageReference =
+            new ImageReference().withPublisher(publisher).withOffer(offer).withSku(sku).withVersion("latest");
         return withSpecificWindowsImageVersion(imageReference);
     }
 
     @Override
     public VirtualMachineScaleSetImpl withSpecificWindowsImageVersion(ImageReference imageReference) {
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReference);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().virtualMachineProfile().storageProfile().withImageReference(imageReference);
+        this.inner().virtualMachineProfile().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(Custom)Image" or "VM(Platform)Image"
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
-
 
     @Override
     public VirtualMachineScaleSetImpl withWindowsCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
-        imageReferenceInner.setId(customImageId);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReferenceInner);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        imageReferenceInner.withId(customImageId);
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().virtualMachineProfile().storageProfile().withImageReference(imageReferenceInner);
+        this.inner().virtualMachineProfile().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(Custom)Image" or "VM(Platform)Image"
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
@@ -802,26 +846,19 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withStoredWindowsImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withImage(userImageVhd);
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().virtualMachineProfile().storageProfile().osDisk().withImage(userImageVhd);
         // For platform image osType will be null, azure will pick it from the image metadata.
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withOsType(OperatingSystemTypes.WINDOWS);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().withWindowsConfiguration(new WindowsConfiguration());
+        this.inner().virtualMachineProfile().storageProfile().osDisk().withOsType(OperatingSystemTypes.WINDOWS);
+        this.inner().virtualMachineProfile().osProfile().withWindowsConfiguration(new WindowsConfiguration());
         // sets defaults for "Stored(Custom)Image" or "VM(Platform)Image"
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
@@ -832,25 +869,21 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withLatestLinuxImage(String publisher, String offer, String sku) {
-        ImageReference imageReference = new ImageReference()
-                .withPublisher(publisher)
-                .withOffer(offer)
-                .withSku(sku)
-                .withVersion("latest");
+        ImageReference imageReference =
+            new ImageReference().withPublisher(publisher).withOffer(offer).withSku(sku).withVersion("latest");
         return withSpecificLinuxImageVersion(imageReference);
     }
 
     @Override
     public VirtualMachineScaleSetImpl withSpecificLinuxImageVersion(ImageReference imageReference) {
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReference);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().virtualMachineProfile().storageProfile().withImageReference(imageReference);
+        this.inner().virtualMachineProfile().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         this.isMarketplaceLinuxImage = true;
         return this;
     }
@@ -858,16 +891,15 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withLinuxCustomImage(String customImageId) {
         ImageReference imageReferenceInner = new ImageReference();
-        imageReferenceInner.setId(customImageId);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().withImageReference(imageReferenceInner);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        imageReferenceInner.withId(customImageId);
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().virtualMachineProfile().storageProfile().withImageReference(imageReferenceInner);
+        this.inner().virtualMachineProfile().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         this.isMarketplaceLinuxImage = true;
         return this;
     }
@@ -876,63 +908,46 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withStoredLinuxImage(String imageUrl) {
         VirtualHardDisk userImageVhd = new VirtualHardDisk();
         userImageVhd.withUri(imageUrl);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withImage(userImageVhd);
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
+        this.inner().virtualMachineProfile().storageProfile().osDisk().withImage(userImageVhd);
         // For platform image osType will be null, azure will pick it from the image metadata.
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withOsType(OperatingSystemTypes.LINUX);
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().withLinuxConfiguration(new LinuxConfiguration());
+        this.inner().virtualMachineProfile().storageProfile().osDisk().withOsType(OperatingSystemTypes.LINUX);
+        this.inner().virtualMachineProfile().osProfile().withLinuxConfiguration(new LinuxConfiguration());
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withAdminUsername(String adminUserName) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withAdminUsername(adminUserName);
+        this.inner().virtualMachineProfile().osProfile().withAdminUsername(adminUserName);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withRootUsername(String adminUserName) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withAdminUsername(adminUserName);
+        this.inner().virtualMachineProfile().osProfile().withAdminUsername(adminUserName);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withAdminPassword(String password) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withAdminPassword(password);
+        this.inner().virtualMachineProfile().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withRootPassword(String password) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withAdminPassword(password);
+        this.inner().virtualMachineProfile().osProfile().withAdminPassword(password);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withSsh(String publicKeyData) {
-        VirtualMachineScaleSetOSProfile osProfile = this.inner()
-                .virtualMachineProfile()
-                .osProfile();
+        VirtualMachineScaleSetOSProfile osProfile = this.inner().virtualMachineProfile().osProfile();
         if (osProfile.linuxConfiguration().ssh() == null) {
             SshConfiguration sshConfiguration = new SshConfiguration();
             sshConfiguration.withPublicKeys(new ArrayList<SshPublicKey>());
@@ -947,41 +962,31 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withVMAgent() {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withProvisionVMAgent(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(true);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutVMAgent() {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withProvisionVMAgent(false);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withAutoUpdate() {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(true);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutAutoUpdate() {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withTimeZone(String timeZone) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile().windowsConfiguration().withTimeZone(timeZone);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withTimeZone(timeZone);
         return this;
     }
 
@@ -989,42 +994,27 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withWinRM(WinRMListener listener) {
         if (this.inner().virtualMachineProfile().osProfile().windowsConfiguration().winRM() == null) {
             WinRMConfiguration winRMConfiguration = new WinRMConfiguration();
-            this.inner()
-                    .virtualMachineProfile()
-                    .osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
+            this.inner().virtualMachineProfile().osProfile().windowsConfiguration().withWinRM(winRMConfiguration);
         }
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .windowsConfiguration()
-                .winRM()
-                .listeners()
-                .add(listener);
+        this.inner().virtualMachineProfile().osProfile().windowsConfiguration().winRM().listeners().add(listener);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskCaching(CachingTypes cachingType) {
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withCaching(cachingType);
+        this.inner().virtualMachineProfile().storageProfile().osDisk().withCaching(cachingType);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskName(String name) {
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile().osDisk().withName(name);
+        this.inner().virtualMachineProfile().storageProfile().osDisk().withName(name);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withComputerNamePrefix(String namePrefix) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withComputerNamePrefix(namePrefix);
+        this.inner().virtualMachineProfile().osProfile().withComputerNamePrefix(namePrefix);
         return this;
     }
 
@@ -1033,16 +1023,13 @@ public class VirtualMachineScaleSetImpl
         if (this.inner().upgradePolicy() == null) {
             this.inner().withUpgradePolicy(new UpgradePolicy());
         }
-        this.inner()
-                .upgradePolicy()
-                .withMode(upgradeMode);
+        this.inner().upgradePolicy().withMode(upgradeMode);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withOverProvision(boolean enabled) {
-        this.inner()
-                .withOverprovision(enabled);
+        this.inner().withOverprovision(enabled);
         return this;
     }
 
@@ -1057,18 +1044,15 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withCapacity(int capacity) {
-        this.inner()
-                .sku().withCapacity(new Long(capacity));
+    public VirtualMachineScaleSetImpl withCapacity(long capacity) {
+        this.inner().sku().withCapacity(capacity);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withNewStorageAccount(String name) {
-        StorageAccount.DefinitionStages.WithGroup definitionWithGroup = this.storageManager
-                .storageAccounts()
-                .define(name)
-                .withRegion(this.regionName());
+        StorageAccount.DefinitionStages.WithGroup definitionWithGroup =
+            this.storageManager.storageAccounts().define(name).withRegion(this.regionName());
         Creatable<StorageAccount> definitionAfterGroup;
         if (this.creatableGroup != null) {
             definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
@@ -1092,28 +1076,19 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withCustomData(String base64EncodedCustomData) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withCustomData(base64EncodedCustomData);
+        this.inner().virtualMachineProfile().osProfile().withCustomData(base64EncodedCustomData);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withSecrets(List<VaultSecretGroup> secrets) {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withSecrets(secrets);
+        this.inner().virtualMachineProfile().osProfile().withSecrets(secrets);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutSecrets() {
-        this.inner()
-                .virtualMachineProfile()
-                .osProfile()
-                .withSecrets(new ArrayList<VaultSecretGroup>());
+        this.inner().virtualMachineProfile().osProfile().withSecrets(new ArrayList<VaultSecretGroup>());
         return this;
     }
 
@@ -1157,9 +1132,7 @@ public class VirtualMachineScaleSetImpl
         if (isInCreateMode()) {
             return true;
         } else {
-            List<String> vhdContainers = storageProfile
-                    .osDisk()
-                    .vhdContainers();
+            List<String> vhdContainers = storageProfile.osDisk().vhdContainers();
             return vhdContainers == null || vhdContainers.size() == 0;
         }
     }
@@ -1167,8 +1140,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public boolean isManagedServiceIdentityEnabled() {
         ResourceIdentityType type = this.managedServiceIdentityType();
-        return type != null
-                && !type.equals(ResourceIdentityType.NONE);
+        return type != null && !type.equals(ResourceIdentityType.NONE);
     }
 
     @Override
@@ -1198,7 +1170,8 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Set<String> userAssignedManagedServiceIdentityIds() {
         if (this.inner().identity() != null && this.inner().identity().userAssignedIdentities() != null) {
-            return Collections.unmodifiableSet(new HashSet<String>(this.inner().identity().userAssignedIdentities().keySet()));
+            return Collections
+                .unmodifiableSet(new HashSet<String>(this.inner().identity().userAssignedIdentities().keySet()));
         }
         return Collections.unmodifiableSet(new HashSet<String>());
     }
@@ -1227,15 +1200,10 @@ public class VirtualMachineScaleSetImpl
     @Override
     public StorageAccountTypes managedOSDiskStorageAccountType() {
         if (this.inner().virtualMachineProfile() != null
-                && this.inner().virtualMachineProfile().storageProfile() != null
-                && this.inner().virtualMachineProfile().storageProfile().osDisk() != null
-                && this.inner().virtualMachineProfile().storageProfile().osDisk().managedDisk() != null) {
-            return this.inner()
-                    .virtualMachineProfile()
-                    .storageProfile()
-                    .osDisk()
-                    .managedDisk()
-                    .storageAccountType();
+            && this.inner().virtualMachineProfile().storageProfile() != null
+            && this.inner().virtualMachineProfile().storageProfile().osDisk() != null
+            && this.inner().virtualMachineProfile().storageProfile().osDisk().managedDisk() != null) {
+            return this.inner().virtualMachineProfile().storageProfile().osDisk().managedDisk().storageAccountType();
         }
         return null;
     }
@@ -1249,37 +1217,39 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
-        this.managedDataDisks.implicitDisksToAssociate.add(new VirtualMachineScaleSetDataDisk()
-                .withLun(-1)
-                .withDiskSizeGB(sizeInGB));
+        this
+            .managedDataDisks
+            .implicitDisksToAssociate
+            .add(new VirtualMachineScaleSetDataDisk().withLun(-1).withDiskSizeGB(sizeInGB));
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB,
-                                                      int lun,
-                                                      CachingTypes cachingType) {
+    public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB, int lun, CachingTypes cachingType) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
-        this.managedDataDisks.implicitDisksToAssociate.add(new VirtualMachineScaleSetDataDisk()
-                .withLun(lun)
-                .withDiskSizeGB(sizeInGB)
-                .withCaching(cachingType));
+        this
+            .managedDataDisks
+            .implicitDisksToAssociate
+            .add(new VirtualMachineScaleSetDataDisk().withLun(lun).withDiskSizeGB(sizeInGB).withCaching(cachingType));
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withNewDataDisk(int sizeInGB,
-                                                      int lun,
-                                                      CachingTypes cachingType,
-                                                      StorageAccountTypes storageAccountType) {
+    public VirtualMachineScaleSetImpl withNewDataDisk(
+        int sizeInGB, int lun, CachingTypes cachingType, StorageAccountTypes storageAccountType) {
         throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_BOTH_UNMANAGED_AND_MANAGED_DISK_NOT_ALLOWED);
-        VirtualMachineScaleSetManagedDiskParameters managedDiskParameters = new VirtualMachineScaleSetManagedDiskParameters();
+        VirtualMachineScaleSetManagedDiskParameters managedDiskParameters =
+            new VirtualMachineScaleSetManagedDiskParameters();
         managedDiskParameters.withStorageAccountType(storageAccountType);
-        this.managedDataDisks.implicitDisksToAssociate.add(new VirtualMachineScaleSetDataDisk()
-                .withLun(lun)
-                .withDiskSizeGB(sizeInGB)
-                .withCaching(cachingType)
-                .withManagedDisk(managedDiskParameters));
+        this
+            .managedDataDisks
+            .implicitDisksToAssociate
+            .add(
+                new VirtualMachineScaleSetDataDisk()
+                    .withLun(lun)
+                    .withDiskSizeGB(sizeInGB)
+                    .withCaching(cachingType)
+                    .withManagedDisk(managedDiskParameters));
         return this;
     }
 
@@ -1319,18 +1289,21 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType) {
-        throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
-        VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
-        if (dataDisk == null) {
-            throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
-        }
-        dataDisk
-            .withDiskSizeGB(newSizeInGB)
-            .withCaching(cachingType)
-            .managedDisk()
-            .withStorageAccountType(storageAccountType);
-        return this;
+    public VirtualMachineScaleSetImpl withDataDiskUpdated(int lun,
+        int newSizeInGB,
+        CachingTypes cachingType,
+        StorageAccountTypes storageAccountType) {
+            throwIfManagedDiskDisabled(ManagedUnmanagedDiskErrors.VMSS_NO_MANAGED_DISK_TO_UPDATE);
+            VirtualMachineScaleSetDataDisk dataDisk = getDataDiskInner(lun);
+            if (dataDisk == null) {
+                throw new RuntimeException(String.format("A data disk with lun '%d' not found", lun));
+            }
+            dataDisk
+                .withDiskSizeGB(newSizeInGB)
+                .withCaching(cachingType)
+                .managedDisk()
+                .withStorageAccountType(storageAccountType);
+            return this;
     }
 
     private VirtualMachineScaleSetDataDisk getDataDiskInner(int lun) {
@@ -1354,45 +1327,51 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun) {
-        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk()
-                .withLun(imageLun));
+        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk().withLun(imageLun));
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun,
-                                                               int newSizeInGB,
-                                                               CachingTypes cachingType) {
-        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk()
-                .withLun(imageLun)
-                .withDiskSizeGB(newSizeInGB)
-                .withCaching(cachingType));
+    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(
+        int imageLun, int newSizeInGB, CachingTypes cachingType) {
+        this
+            .managedDataDisks
+            .newDisksFromImage
+            .add(
+                new VirtualMachineScaleSetDataDisk()
+                    .withLun(imageLun)
+                    .withDiskSizeGB(newSizeInGB)
+                    .withCaching(cachingType));
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(int imageLun,
-                                                               int newSizeInGB,
-                                                               CachingTypes cachingType,
-                                                               StorageAccountTypes storageAccountType) {
-        VirtualMachineScaleSetManagedDiskParameters managedDiskParameters = new VirtualMachineScaleSetManagedDiskParameters();
+    public VirtualMachineScaleSetImpl withNewDataDiskFromImage(
+        int imageLun, int newSizeInGB, CachingTypes cachingType, StorageAccountTypes storageAccountType) {
+        VirtualMachineScaleSetManagedDiskParameters managedDiskParameters =
+            new VirtualMachineScaleSetManagedDiskParameters();
         managedDiskParameters.withStorageAccountType(storageAccountType);
-        this.managedDataDisks.newDisksFromImage.add(new VirtualMachineScaleSetDataDisk()
-                .withLun(imageLun)
-                .withDiskSizeGB(newSizeInGB)
-                .withManagedDisk(managedDiskParameters)
-                .withCaching(cachingType));
+        this
+            .managedDataDisks
+            .newDisksFromImage
+            .add(
+                new VirtualMachineScaleSetDataDisk()
+                    .withLun(imageLun)
+                    .withDiskSizeGB(newSizeInGB)
+                    .withManagedDisk(managedDiskParameters)
+                    .withCaching(cachingType));
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
         // withers is limited to VMSS based on ManagedDisk.
-        this.inner()
-                .virtualMachineProfile()
-                .storageProfile()
-                .osDisk()
-                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters().withStorageAccountType(accountType));
+        this
+            .inner()
+            .virtualMachineProfile()
+            .storageProfile()
+            .osDisk()
+            .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters().withStorageAccountType(accountType));
         return this;
     }
 
@@ -1439,7 +1418,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(String roleDefinitionId) {
+    public VirtualMachineScaleSetImpl withSystemAssignedIdentityBasedAccessToCurrentResourceGroup(
+        String roleDefinitionId) {
         this.virtualMachineScaleSetMsiHandler.withAccessToCurrentResourceGroup(roleDefinitionId);
         return this;
     }
@@ -1467,11 +1447,12 @@ public class VirtualMachineScaleSetImpl
     @Override
     protected void beforeCreating() {
         if (this.extensions.size() > 0) {
-            this.inner()
-                    .virtualMachineProfile()
-                    .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
-                    .extensionProfile()
-                    .withExtensions(innersFromWrappers(this.extensions.values()));
+            this
+                .inner()
+                .virtualMachineProfile()
+                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
+                .extensionProfile()
+                .withExtensions(innersFromWrappers(this.extensions.values()));
         }
     }
 
@@ -1482,24 +1463,28 @@ public class VirtualMachineScaleSetImpl
             this.setOSDiskDefault();
         }
         this.setPrimaryIpConfigurationSubnet();
-        return this.setPrimaryIpConfigurationBackendsAndInboundNatPoolsAsync().flatMap(virtualMachineScaleSet -> {
-            if (isManagedDiskEnabled()) {
-                this.managedDataDisks.setDataDisksDefaults();
-            } else {
-                List<VirtualMachineScaleSetDataDisk> dataDisks = this.inner()
-                        .virtualMachineProfile()
-                        .storageProfile()
-                        .dataDisks();
-                VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
-            }
-            this.handleUnManagedOSDiskContainers();
-            this.bootDiagnosticsHandler.handleDiagnosticsSettings();
-            this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
-            this.virtualMachineScaleSetMsiHandler.handleExternalIdentities();
-            this.createNewProximityPlacementGroup();
-            return this.manager().inner().virtualMachineScaleSets()
-                    .createOrUpdateAsync(resourceGroupName(), name(), inner());
-        });
+        return this
+            .setPrimaryIpConfigurationBackendsAndInboundNatPoolsAsync()
+            .flatMap(
+                virtualMachineScaleSet -> {
+                    if (isManagedDiskEnabled()) {
+                        this.managedDataDisks.setDataDisksDefaults();
+                    } else {
+                        List<VirtualMachineScaleSetDataDisk> dataDisks =
+                            this.inner().virtualMachineProfile().storageProfile().dataDisks();
+                        VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
+                    }
+                    this.handleUnManagedOSDiskContainers();
+                    this.bootDiagnosticsHandler.handleDiagnosticsSettings();
+                    this.virtualMachineScaleSetMsiHandler.processCreatedExternalIdentities();
+                    this.virtualMachineScaleSetMsiHandler.handleExternalIdentities();
+                    this.createNewProximityPlacementGroup();
+                    return this
+                        .manager()
+                        .inner()
+                        .virtualMachineScaleSets()
+                        .createOrUpdateAsync(resourceGroupName(), name(), inner());
+                });
     }
 
     @Override
@@ -1511,23 +1496,24 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Mono<VirtualMachineScaleSet> updateResourceAsync() {
         if (this.extensions.size() > 0) {
-            this.inner()
-                    .virtualMachineProfile()
-                    .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
-                    .extensionProfile()
-                    .withExtensions(innersFromWrappers(this.extensions.values()));
+            this
+                .inner()
+                .virtualMachineProfile()
+                .withExtensionProfile(new VirtualMachineScaleSetExtensionProfile())
+                .extensionProfile()
+                .withExtensions(innersFromWrappers(this.extensions.values()));
         }
         this.setPrimaryIpConfigurationSubnet();
         final VirtualMachineScaleSetImpl self = this;
-        return this.setPrimaryIpConfigurationBackendsAndInboundNatPoolsAsync()
-                .map(virtualMachineScaleSet -> {
+        return this
+            .setPrimaryIpConfigurationBackendsAndInboundNatPoolsAsync()
+            .map(
+                virtualMachineScaleSet -> {
                     if (isManagedDiskEnabled()) {
                         this.managedDataDisks.setDataDisksDefaults();
                     } else {
-                        List<VirtualMachineScaleSetDataDisk> dataDisks = this.inner()
-                                .virtualMachineProfile()
-                                .storageProfile()
-                                .dataDisks();
+                        List<VirtualMachineScaleSetDataDisk> dataDisks =
+                            this.inner().virtualMachineProfile().storageProfile().dataDisks();
                         VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
                     }
                     this.handleUnManagedOSDiskContainers();
@@ -1538,21 +1524,30 @@ public class VirtualMachineScaleSetImpl
                     //
                     this.virtualMachineScaleSetMsiHandler.handleExternalIdentities(updateParameter);
                     return updateParameter;
-                }).flatMap(updateParameter -> this.manager().inner().virtualMachineScaleSets()
+                })
+            .flatMap(
+                updateParameter ->
+                    this
+                        .manager()
+                        .inner()
+                        .virtualMachineScaleSets()
                         .updateAsync(resourceGroupName(), name(), updateParameter)
-                        .map(vmssInner -> {
-                            setInner(vmssInner);
-                            self.clearCachedProperties();
-                            self.initializeChildrenFromInner();
-                            self.virtualMachineScaleSetMsiHandler.clear();
-                            return self;
-                        }));
+                        .map(
+                            vmssInner -> {
+                                setInner(vmssInner);
+                                self.clearCachedProperties();
+                                self.initializeChildrenFromInner();
+                                self.virtualMachineScaleSetMsiHandler.clear();
+                                return self;
+                            }));
     }
 
     @Override
     public Mono<VirtualMachineScaleSet> refreshAsync() {
-        return super.refreshAsync()
-                .map(scaleSet -> {
+        return super
+            .refreshAsync()
+            .map(
+                scaleSet -> {
                     VirtualMachineScaleSetImpl impl = (VirtualMachineScaleSetImpl) scaleSet;
                     impl.clearCachedProperties();
                     impl.initializeChildrenFromInner();
@@ -1562,7 +1557,11 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     protected Mono<VirtualMachineScaleSetInner> getInnerAsync() {
-        return this.manager().inner().virtualMachineScaleSets().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this
+            .manager()
+            .inner()
+            .virtualMachineScaleSets()
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Helpers
@@ -1579,15 +1578,10 @@ public class VirtualMachineScaleSetImpl
         if (this.inner().sku().capacity() == null) {
             this.withCapacity(2);
         }
-        if (this.inner().upgradePolicy() == null
-                || this.inner().upgradePolicy().mode() == null) {
-            this.inner()
-                    .withUpgradePolicy(new UpgradePolicy()
-                            .withMode(UpgradeMode.AUTOMATIC));
+        if (this.inner().upgradePolicy() == null || this.inner().upgradePolicy().mode() == null) {
+            this.inner().withUpgradePolicy(new UpgradePolicy().withMode(UpgradeMode.AUTOMATIC));
         }
-        VirtualMachineScaleSetOSProfile osProfile = this.inner()
-                .virtualMachineProfile()
-                .osProfile();
+        VirtualMachineScaleSetOSProfile osProfile = this.inner().virtualMachineProfile().osProfile();
         VirtualMachineScaleSetOSDisk osDisk = this.inner().virtualMachineProfile().storageProfile().osDisk();
         if (isOSDiskFromImage(osDisk)) {
             // ODDisk CreateOption: FROM_IMAGE
@@ -1596,9 +1590,7 @@ public class VirtualMachineScaleSetImpl
                 if (osProfile.linuxConfiguration() == null) {
                     osProfile.withLinuxConfiguration(new LinuxConfiguration());
                 }
-                osProfile
-                        .linuxConfiguration()
-                        .withDisablePasswordAuthentication(osProfile.adminPassword() == null);
+                osProfile.linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
             }
             if (this.computerNamePrefix() == null) {
                 // VM name cannot contain only numeric values and cannot exceed 15 chars
@@ -1612,9 +1604,7 @@ public class VirtualMachineScaleSetImpl
             }
         } else {
             // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
-            this.inner()
-                    .virtualMachineProfile()
-                    .withOsProfile(null);
+            this.inner().virtualMachineProfile().withOsProfile(null);
         }
     }
 
@@ -1622,7 +1612,7 @@ public class VirtualMachineScaleSetImpl
         if (isInUpdateMode()) {
             return;
         }
-        VirtualMachineScaleSetStorageProfile storageProfile =  this.inner().virtualMachineProfile().storageProfile();
+        VirtualMachineScaleSetStorageProfile storageProfile = this.inner().virtualMachineProfile().storageProfile();
         VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
         if (isOSDiskFromImage(osDisk)) {
             // ODDisk CreateOption: FROM_IMAGE
@@ -1637,8 +1627,7 @@ public class VirtualMachineScaleSetImpl
                     osDisk.withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters());
                 }
                 if (osDisk.managedDisk().storageAccountType() == null) {
-                    osDisk.managedDisk()
-                            .withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
+                    osDisk.managedDisk().withStorageAccountType(StorageAccountTypes.STANDARD_LRS);
                 }
                 osDisk.withVhdContainers(null);
                 // We won't set osDisk.name() explicitly for managed disk, if it is null CRP generates unique
@@ -1654,8 +1643,6 @@ public class VirtualMachineScaleSetImpl
                     withOSDiskName(this.name() + "-os-disk");
                 }
             }
-        } else {
-            // NOP [ODDisk CreateOption: ATTACH, ATTACH is not supported for VMSS]
         }
         if (this.osDiskCachingType() == null) {
             withOSDiskCaching(CachingTypes.READ_WRITE);
@@ -1674,9 +1661,7 @@ public class VirtualMachineScaleSetImpl
         if (isManagedDiskEnabled()) {
             return;
         }
-        final VirtualMachineScaleSetStorageProfile storageProfile = inner()
-                .virtualMachineProfile()
-                .storageProfile();
+        final VirtualMachineScaleSetStorageProfile storageProfile = inner().virtualMachineProfile().storageProfile();
         if (isOSDiskFromStoredImage(storageProfile)) {
             // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage
             // accounts if scale set is based on stored image. Remove this check once azure start supporting it.
@@ -1684,17 +1669,23 @@ public class VirtualMachineScaleSetImpl
             return;
         }
         if (this.isInCreateMode()
-                && this.creatableStorageAccountKeys.isEmpty()
-                && this.existingStorageAccountsToAssociate.isEmpty()) {
+            && this.creatableStorageAccountKeys.isEmpty()
+            && this.existingStorageAccountsToAssociate.isEmpty()) {
             String accountName = this.namer.randomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.creatableGroup != null) {
-                storageAccountCreatable = this.storageManager.storageAccounts()
+                storageAccountCreatable =
+                    this
+                        .storageManager
+                        .storageAccounts()
                         .define(accountName)
                         .withRegion(this.regionName())
                         .withNewResourceGroup(this.creatableGroup);
             } else {
-                storageAccountCreatable = this.storageManager.storageAccounts()
+                storageAccountCreatable =
+                    this
+                        .storageManager
+                        .storageAccounts()
                         .define(accountName)
                         .withRegion(this.regionName())
                         .withExistingResourceGroup(this.resourceGroupName());
@@ -1704,21 +1695,16 @@ public class VirtualMachineScaleSetImpl
     }
 
     private void handleUnManagedOSDiskContainers() {
-        final VirtualMachineScaleSetStorageProfile storageProfile = inner()
-                .virtualMachineProfile()
-                .storageProfile();
+        final VirtualMachineScaleSetStorageProfile storageProfile = inner().virtualMachineProfile().storageProfile();
         if (isManagedDiskEnabled()) {
-            storageProfile.osDisk()
-                    .withVhdContainers(null);
+            storageProfile.osDisk().withVhdContainers(null);
             return;
         }
         if (isOSDiskFromStoredImage(storageProfile)) {
             // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage
             // accounts if scale set is based on stored image. Remove this check once azure start supporting it.
             //
-            storageProfile.osDisk()
-                    .vhdContainers()
-                    .clear();
+            storageProfile.osDisk().vhdContainers().clear();
             return;
         }
 
@@ -1733,22 +1719,25 @@ public class VirtualMachineScaleSetImpl
         }
 
         if (isInCreateMode()
-                && this.creatableStorageAccountKeys.isEmpty()
-                && this.existingStorageAccountsToAssociate.isEmpty()) {
-            throw new IllegalStateException("Expected storage account(s) for VMSS OS disk containers not found");
+            && this.creatableStorageAccountKeys.isEmpty()
+            && this.existingStorageAccountsToAssociate.isEmpty()) {
+            throw logger.logExceptionAsError(new IllegalStateException(
+                "Expected storage account(s) for VMSS OS disk containers not found"));
         }
 
         for (String storageAccountKey : this.creatableStorageAccountKeys) {
             StorageAccount storageAccount = this.<StorageAccount>taskResult(storageAccountKey);
-            storageProfile.osDisk()
-                    .vhdContainers()
-                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
+            storageProfile
+                .osDisk()
+                .vhdContainers()
+                .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
         }
 
         for (StorageAccount storageAccount : this.existingStorageAccountsToAssociate) {
-            storageProfile.osDisk()
-                    .vhdContainers()
-                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
+            storageProfile
+                .osDisk()
+                .vhdContainers()
+                .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
         }
         this.creatableStorageAccountKeys.clear();
         this.existingStorageAccountsToAssociate.clear();
@@ -1759,7 +1748,7 @@ public class VirtualMachineScaleSetImpl
             return;
         }
 
-        VirtualMachineScaleSetIPConfiguration ipConfig = this.primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration ipConfig = this.primaryNicDefaultIpConfiguration();
         ipConfig.withSubnet(new ApiEntityReference().withId(this.existingPrimaryNetworkSubnetNameToAssociate));
         this.existingPrimaryNetworkSubnetNameToAssociate = null;
     }
@@ -1770,111 +1759,136 @@ public class VirtualMachineScaleSetImpl
         }
 
         try {
-            return this.loadCurrentPrimaryLoadBalancersIfAvailableAsync().map(virtualMachineScaleSet -> {
-                VirtualMachineScaleSetIPConfiguration primaryIpConfig = primaryNicDefaultIPConfiguration();
-                if (this.primaryInternetFacingLoadBalancer != null) {
-                    removeBackendsFromIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternetFacingLBBackendsToRemoveOnUpdate.toArray(new String[0]));
+            return this
+                .loadCurrentPrimaryLoadBalancersIfAvailableAsync()
+                .map(
+                    virtualMachineScaleSet -> {
+                        VirtualMachineScaleSetIpConfiguration primaryIpConfig = primaryNicDefaultIpConfiguration();
+                        if (this.primaryInternetFacingLoadBalancer != null) {
+                            removeBackendsFromIpConfiguration(
+                                this.primaryInternetFacingLoadBalancer.id(),
+                                primaryIpConfig,
+                                this.primaryInternetFacingLBBackendsToRemoveOnUpdate.toArray(new String[0]));
 
-                    associateBackEndsToIpConfiguration(primaryInternetFacingLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternetFacingLBBackendsToAddOnUpdate.toArray(new String[0]));
-
-                    removeInboundNatPoolsFromIpConfiguration(this.primaryInternetFacingLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate.toArray(new String[0]));
-
-                    associateInboundNATPoolsToIpConfiguration(primaryInternetFacingLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.toArray(new String[0]));
-                }
-
-                if (this.primaryInternalLoadBalancer != null) {
-                    removeBackendsFromIpConfiguration(this.primaryInternalLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternalLBBackendsToRemoveOnUpdate.toArray(new String[0]));
-
-                    associateBackEndsToIpConfiguration(primaryInternalLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternalLBBackendsToAddOnUpdate.toArray(new String[0]));
-
-                    removeInboundNatPoolsFromIpConfiguration(this.primaryInternalLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate.toArray(new String[0]));
-
-                    associateInboundNATPoolsToIpConfiguration(primaryInternalLoadBalancer.id(),
-                            primaryIpConfig,
-                            this.primaryInternalLBInboundNatPoolsToAddOnUpdate.toArray(new String[0]));
-                }
-
-                if (this.removePrimaryInternetFacingLoadBalancerOnUpdate) {
-                    if (this.primaryInternetFacingLoadBalancer != null) {
-                        removeLoadBalancerAssociationFromIpConfiguration(this.primaryInternetFacingLoadBalancer, primaryIpConfig);
-                    }
-                }
-
-                if (this.removePrimaryInternalLoadBalancerOnUpdate) {
-                    if (this.primaryInternalLoadBalancer != null) {
-                        removeLoadBalancerAssociationFromIpConfiguration(this.primaryInternalLoadBalancer, primaryIpConfig);
-                    }
-                }
-
-                if (this.primaryInternetFacingLoadBalancerToAttachOnUpdate != null) {
-                    if (this.primaryInternetFacingLoadBalancer != null) {
-                        removeLoadBalancerAssociationFromIpConfiguration(this.primaryInternetFacingLoadBalancer, primaryIpConfig);
-                    }
-                    associateLoadBalancerToIpConfiguration(this.primaryInternetFacingLoadBalancerToAttachOnUpdate, primaryIpConfig);
-                    if (!this.primaryInternetFacingLBBackendsToAddOnUpdate.isEmpty()) {
-                        removeAllBackendAssociationFromIpConfiguration(this.primaryInternetFacingLoadBalancerToAttachOnUpdate, primaryIpConfig);
-                        associateBackEndsToIpConfiguration(this.primaryInternetFacingLoadBalancerToAttachOnUpdate.id(),
+                            associateBackEndsToIpConfiguration(
+                                primaryInternetFacingLoadBalancer.id(),
                                 primaryIpConfig,
                                 this.primaryInternetFacingLBBackendsToAddOnUpdate.toArray(new String[0]));
-                    }
-                    if (!this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.isEmpty()) {
-                        removeAllInboundNatPoolAssociationFromIpConfiguration(this.primaryInternetFacingLoadBalancerToAttachOnUpdate, primaryIpConfig);
-                        associateInboundNATPoolsToIpConfiguration(this.primaryInternetFacingLoadBalancerToAttachOnUpdate.id(),
+
+                            removeInboundNatPoolsFromIpConfiguration(
+                                this.primaryInternetFacingLoadBalancer.id(),
+                                primaryIpConfig,
+                                this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate.toArray(new String[0]));
+
+                            associateInboundNATPoolsToIpConfiguration(
+                                primaryInternetFacingLoadBalancer.id(),
                                 primaryIpConfig,
                                 this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.toArray(new String[0]));
-                    }
-                }
+                        }
 
-                if (this.primaryInternalLoadBalancerToAttachOnUpdate != null) {
-                    if (this.primaryInternalLoadBalancer != null) {
-                        removeLoadBalancerAssociationFromIpConfiguration(this.primaryInternalLoadBalancer, primaryIpConfig);
-                    }
-                    associateLoadBalancerToIpConfiguration(this.primaryInternalLoadBalancerToAttachOnUpdate, primaryIpConfig);
-                    if (!this.primaryInternalLBBackendsToAddOnUpdate.isEmpty()) {
-                        removeAllBackendAssociationFromIpConfiguration(this.primaryInternalLoadBalancerToAttachOnUpdate, primaryIpConfig);
-                        associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancerToAttachOnUpdate.id(),
+                        if (this.primaryInternalLoadBalancer != null) {
+                            removeBackendsFromIpConfiguration(
+                                this.primaryInternalLoadBalancer.id(),
+                                primaryIpConfig,
+                                this.primaryInternalLBBackendsToRemoveOnUpdate.toArray(new String[0]));
+
+                            associateBackEndsToIpConfiguration(
+                                primaryInternalLoadBalancer.id(),
                                 primaryIpConfig,
                                 this.primaryInternalLBBackendsToAddOnUpdate.toArray(new String[0]));
-                    }
 
-                    if (!this.primaryInternalLBInboundNatPoolsToAddOnUpdate.isEmpty()) {
-                        removeAllInboundNatPoolAssociationFromIpConfiguration(this.primaryInternalLoadBalancerToAttachOnUpdate, primaryIpConfig);
-                        associateInboundNATPoolsToIpConfiguration(this.primaryInternalLoadBalancerToAttachOnUpdate.id(),
+                            removeInboundNatPoolsFromIpConfiguration(
+                                this.primaryInternalLoadBalancer.id(),
+                                primaryIpConfig,
+                                this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate.toArray(new String[0]));
+
+                            associateInboundNATPoolsToIpConfiguration(
+                                primaryInternalLoadBalancer.id(),
                                 primaryIpConfig,
                                 this.primaryInternalLBInboundNatPoolsToAddOnUpdate.toArray(new String[0]));
-                    }
-                }
+                        }
 
-                this.removePrimaryInternetFacingLoadBalancerOnUpdate = false;
-                this.removePrimaryInternalLoadBalancerOnUpdate = false;
-                this.primaryInternetFacingLoadBalancerToAttachOnUpdate = null;
-                this.primaryInternalLoadBalancerToAttachOnUpdate = null;
-                this.primaryInternetFacingLBBackendsToRemoveOnUpdate.clear();
-                this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate.clear();
-                this.primaryInternalLBBackendsToRemoveOnUpdate.clear();
-                this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate.clear();
-                this.primaryInternetFacingLBBackendsToAddOnUpdate.clear();
-                this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.clear();
-                this.primaryInternalLBBackendsToAddOnUpdate.clear();
-                this.primaryInternalLBInboundNatPoolsToAddOnUpdate.clear();
-                return this;
-            });
+                        if (this.removePrimaryInternetFacingLoadBalancerOnUpdate) {
+                            if (this.primaryInternetFacingLoadBalancer != null) {
+                                removeLoadBalancerAssociationFromIpConfiguration(
+                                    this.primaryInternetFacingLoadBalancer, primaryIpConfig);
+                            }
+                        }
+
+                        if (this.removePrimaryInternalLoadBalancerOnUpdate) {
+                            if (this.primaryInternalLoadBalancer != null) {
+                                removeLoadBalancerAssociationFromIpConfiguration(
+                                    this.primaryInternalLoadBalancer, primaryIpConfig);
+                            }
+                        }
+
+                        if (this.primaryInternetFacingLoadBalancerToAttachOnUpdate != null) {
+                            if (this.primaryInternetFacingLoadBalancer != null) {
+                                removeLoadBalancerAssociationFromIpConfiguration(
+                                    this.primaryInternetFacingLoadBalancer, primaryIpConfig);
+                            }
+                            associateLoadBalancerToIpConfiguration(
+                                this.primaryInternetFacingLoadBalancerToAttachOnUpdate, primaryIpConfig);
+                            if (!this.primaryInternetFacingLBBackendsToAddOnUpdate.isEmpty()) {
+                                removeAllBackendAssociationFromIpConfiguration(
+                                    this.primaryInternetFacingLoadBalancerToAttachOnUpdate, primaryIpConfig);
+                                associateBackEndsToIpConfiguration(
+                                    this.primaryInternetFacingLoadBalancerToAttachOnUpdate.id(),
+                                    primaryIpConfig,
+                                    this.primaryInternetFacingLBBackendsToAddOnUpdate.toArray(new String[0]));
+                            }
+                            if (!this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.isEmpty()) {
+                                removeAllInboundNatPoolAssociationFromIpConfiguration(
+                                    this.primaryInternetFacingLoadBalancerToAttachOnUpdate, primaryIpConfig);
+                                associateInboundNATPoolsToIpConfiguration(
+                                    this.primaryInternetFacingLoadBalancerToAttachOnUpdate.id(),
+                                    primaryIpConfig,
+                                    this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.toArray(new String[0]));
+                            }
+                        }
+
+                        if (this.primaryInternalLoadBalancerToAttachOnUpdate != null) {
+                            if (this.primaryInternalLoadBalancer != null) {
+                                removeLoadBalancerAssociationFromIpConfiguration(
+                                    this.primaryInternalLoadBalancer, primaryIpConfig);
+                            }
+                            associateLoadBalancerToIpConfiguration(
+                                this.primaryInternalLoadBalancerToAttachOnUpdate, primaryIpConfig);
+                            if (!this.primaryInternalLBBackendsToAddOnUpdate.isEmpty()) {
+                                removeAllBackendAssociationFromIpConfiguration(
+                                    this.primaryInternalLoadBalancerToAttachOnUpdate, primaryIpConfig);
+                                associateBackEndsToIpConfiguration(
+                                    this.primaryInternalLoadBalancerToAttachOnUpdate.id(),
+                                    primaryIpConfig,
+                                    this.primaryInternalLBBackendsToAddOnUpdate.toArray(new String[0]));
+                            }
+
+                            if (!this.primaryInternalLBInboundNatPoolsToAddOnUpdate.isEmpty()) {
+                                removeAllInboundNatPoolAssociationFromIpConfiguration(
+                                    this.primaryInternalLoadBalancerToAttachOnUpdate, primaryIpConfig);
+                                associateInboundNATPoolsToIpConfiguration(
+                                    this.primaryInternalLoadBalancerToAttachOnUpdate.id(),
+                                    primaryIpConfig,
+                                    this.primaryInternalLBInboundNatPoolsToAddOnUpdate.toArray(new String[0]));
+                            }
+                        }
+
+                        this.removePrimaryInternetFacingLoadBalancerOnUpdate = false;
+                        this.removePrimaryInternalLoadBalancerOnUpdate = false;
+                        this.primaryInternetFacingLoadBalancerToAttachOnUpdate = null;
+                        this.primaryInternalLoadBalancerToAttachOnUpdate = null;
+                        this.primaryInternetFacingLBBackendsToRemoveOnUpdate.clear();
+                        this.primaryInternetFacingLBInboundNatPoolsToRemoveOnUpdate.clear();
+                        this.primaryInternalLBBackendsToRemoveOnUpdate.clear();
+                        this.primaryInternalLBInboundNatPoolsToRemoveOnUpdate.clear();
+                        this.primaryInternetFacingLBBackendsToAddOnUpdate.clear();
+                        this.primaryInternetFacingLBInboundNatPoolsToAddOnUpdate.clear();
+                        this.primaryInternalLBBackendsToAddOnUpdate.clear();
+                        this.primaryInternalLBInboundNatPoolsToAddOnUpdate.clear();
+                        return this;
+                    });
         } catch (IOException ioException) {
-            throw new RuntimeException(ioException);
+            throw logger.logExceptionAsError(new RuntimeException(ioException));
         }
     }
 
@@ -1890,45 +1904,58 @@ public class VirtualMachineScaleSetImpl
         }
 
         String firstLoadBalancerId = null;
-        VirtualMachineScaleSetIPConfiguration ipConfig = primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration ipConfig = primaryNicDefaultIpConfiguration();
         if (!ipConfig.loadBalancerBackendAddressPools().isEmpty()) {
-            firstLoadBalancerId = ResourceUtils
-                    .parentResourceIdFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).getId());
+            firstLoadBalancerId =
+                ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).id());
         }
 
         if (firstLoadBalancerId == null && !ipConfig.loadBalancerInboundNatPools().isEmpty()) {
-            firstLoadBalancerId = ResourceUtils
-                    .parentResourceIdFromResourceId(ipConfig.loadBalancerInboundNatPools().get(0).getId());
+            firstLoadBalancerId =
+                ResourceUtils.parentResourceIdFromResourceId(ipConfig.loadBalancerInboundNatPools().get(0).id());
         }
 
         if (firstLoadBalancerId == null) {
             return self;
         }
 
-        self = self.concatWith(Mono.just(firstLoadBalancerId).flatMap(id -> this.networkManager.loadBalancers().getByIdAsync(id)
-                .map(loadBalancer1 -> {
-                    if (loadBalancer1.publicIPAddressIds() != null && loadBalancer1.publicIPAddressIds().size() > 0) {
-                        this.primaryInternetFacingLoadBalancer = loadBalancer1;
-                    } else {
-                        this.primaryInternalLoadBalancer = loadBalancer1;
-                    }
-                    return this;
-                }))).last();
+        self =
+            self
+                .concatWith(
+                    Mono
+                        .just(firstLoadBalancerId)
+                        .flatMap(
+                            id ->
+                                this
+                                    .networkManager
+                                    .loadBalancers()
+                                    .getByIdAsync(id)
+                                    .map(
+                                        loadBalancer1 -> {
+                                            if (loadBalancer1.publicIpAddressIds() != null
+                                                && loadBalancer1.publicIpAddressIds().size() > 0) {
+                                                this.primaryInternetFacingLoadBalancer = loadBalancer1;
+                                            } else {
+                                                this.primaryInternalLoadBalancer = loadBalancer1;
+                                            }
+                                            return this;
+                                        })))
+                .last();
 
         String secondLoadBalancerId = null;
-        for (SubResource subResource: ipConfig.loadBalancerBackendAddressPools()) {
-            if (!subResource.getId().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
-                secondLoadBalancerId = ResourceUtils
-                        .parentResourceIdFromResourceId(subResource.getId());
+        for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
+            if (!subResource.id().toLowerCase(Locale.ROOT)
+                    .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
+                secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.id());
                 break;
             }
         }
 
         if (secondLoadBalancerId == null) {
-            for (SubResource subResource: ipConfig.loadBalancerInboundNatPools()) {
-                if (!subResource.getId().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
-                    secondLoadBalancerId = ResourceUtils
-                            .parentResourceIdFromResourceId(subResource.getId());
+            for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
+                if (!subResource.id().toLowerCase(Locale.ROOT)
+                        .startsWith(firstLoadBalancerId.toLowerCase(Locale.ROOT))) {
+                    secondLoadBalancerId = ResourceUtils.parentResourceIdFromResourceId(subResource.id());
                     break;
                 }
             }
@@ -1938,27 +1965,36 @@ public class VirtualMachineScaleSetImpl
             return self;
         }
 
-        return self.concatWith(Mono.just(secondLoadBalancerId).flatMap(id -> networkManager.loadBalancers().getByIdAsync(id)
-                .map(loadBalancer2 -> {
-                    if (loadBalancer2.publicIPAddressIds() != null && loadBalancer2.publicIPAddressIds().size() > 0) {
-                        this.primaryInternetFacingLoadBalancer = loadBalancer2;
-                    } else {
-                        this.primaryInternalLoadBalancer = loadBalancer2;
-                    }
-                    return this;
-                }))).last();
+        return self
+            .concatWith(
+                Mono
+                    .just(secondLoadBalancerId)
+                    .flatMap(
+                        id ->
+                            networkManager
+                                .loadBalancers()
+                                .getByIdAsync(id)
+                                .map(
+                                    loadBalancer2 -> {
+                                        if (loadBalancer2.publicIpAddressIds() != null
+                                            && loadBalancer2.publicIpAddressIds().size() > 0) {
+                                            this.primaryInternetFacingLoadBalancer = loadBalancer2;
+                                        } else {
+                                            this.primaryInternalLoadBalancer = loadBalancer2;
+                                        }
+                                        return this;
+                                    })))
+            .last();
     }
 
-    private VirtualMachineScaleSetIPConfiguration primaryNicDefaultIPConfiguration() {
-        List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations = this.inner()
-                .virtualMachineProfile()
-                .networkProfile()
-                .networkInterfaceConfigurations();
+    private VirtualMachineScaleSetIpConfiguration primaryNicDefaultIpConfiguration() {
+        List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
+            this.inner().virtualMachineProfile().networkProfile().networkInterfaceConfigurations();
 
         for (VirtualMachineScaleSetNetworkConfiguration nicConfiguration : nicConfigurations) {
             if (nicConfiguration.primary()) {
                 if (nicConfiguration.ipConfigurations().size() > 0) {
-                    VirtualMachineScaleSetIPConfiguration ipConfig = nicConfiguration.ipConfigurations().get(0);
+                    VirtualMachineScaleSetIpConfiguration ipConfig = nicConfiguration.ipConfigurations().get(0);
                     if (ipConfig.loadBalancerBackendAddressPools() == null) {
                         ipConfig.withLoadBalancerBackendAddressPools(new ArrayList<>());
                     }
@@ -1969,38 +2005,36 @@ public class VirtualMachineScaleSetImpl
                 }
             }
         }
-        throw new RuntimeException("Could not find the primary nic configuration or an IP configuration in it");
+        throw logger.logExceptionAsError(new RuntimeException(
+            "Could not find the primary nic configuration or an IP configuration in it"));
     }
 
     private VirtualMachineScaleSetNetworkConfiguration primaryNicConfiguration() {
-        List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations = this.inner()
-                .virtualMachineProfile()
-                .networkProfile()
-                .networkInterfaceConfigurations();
+        List<VirtualMachineScaleSetNetworkConfiguration> nicConfigurations =
+            this.inner().virtualMachineProfile().networkProfile().networkInterfaceConfigurations();
 
         for (VirtualMachineScaleSetNetworkConfiguration nicConfiguration : nicConfigurations) {
             if (nicConfiguration.primary()) {
                 return nicConfiguration;
             }
         }
-        throw new RuntimeException("Could not find the primary nic configuration");
+        throw logger.logExceptionAsError(new RuntimeException("Could not find the primary nic configuration"));
     }
 
-    private static void associateBackEndsToIpConfiguration(String loadBalancerId,
-                                                           VirtualMachineScaleSetIPConfiguration ipConfig,
-                                                           String... backendNames) {
+    private static void associateBackEndsToIpConfiguration(
+        String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
         List<SubResource> backendSubResourcesToAssociate = new ArrayList<>();
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             boolean found = false;
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-                if (subResource.getId().equalsIgnoreCase(backendPoolId)) {
+                if (subResource.id().equalsIgnoreCase(backendPoolId)) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                backendSubResourcesToAssociate.add(new SubResource().setId(backendPoolId));
+                backendSubResourcesToAssociate.add(new SubResource().withId(backendPoolId));
             }
         }
 
@@ -2009,21 +2043,20 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static void associateInboundNATPoolsToIpConfiguration(String loadBalancerId,
-                                                                  VirtualMachineScaleSetIPConfiguration ipConfig,
-                                                                  String... inboundNatPools) {
+    private static void associateInboundNATPoolsToIpConfiguration(
+        String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... inboundNatPools) {
         List<SubResource> inboundNatPoolSubResourcesToAssociate = new ArrayList<>();
         for (String inboundNatPool : inboundNatPools) {
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", inboundNatPool);
             boolean found = false;
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (subResource.getId().equalsIgnoreCase(inboundNatPoolId)) {
+                if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                inboundNatPoolSubResourcesToAssociate.add(new SubResource().setId(inboundNatPoolId));
+                inboundNatPoolSubResourcesToAssociate.add(new SubResource().withId(inboundNatPoolId));
             }
         }
 
@@ -2032,15 +2065,15 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static Map<String, LoadBalancerBackend> getBackendsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
-                                                                                             VirtualMachineScaleSetIPConfiguration ipConfig) {
+    private static Map<String, LoadBalancerBackend> getBackendsAssociatedWithIpConfiguration(
+        LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         String loadBalancerId = loadBalancer.id();
         Map<String, LoadBalancerBackend> attachedBackends = new HashMap<>();
         Map<String, LoadBalancerBackend> lbBackends = loadBalancer.backends();
         for (LoadBalancerBackend lbBackend : lbBackends.values()) {
-            String backendId =  mergePath(loadBalancerId, "backendAddressPools", lbBackend.name());
+            String backendId = mergePath(loadBalancerId, "backendAddressPools", lbBackend.name());
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-                if (subResource.getId().equalsIgnoreCase(backendId)) {
+                if (subResource.id().equalsIgnoreCase(backendId)) {
                     attachedBackends.put(lbBackend.name(), lbBackend);
                 }
             }
@@ -2048,15 +2081,15 @@ public class VirtualMachineScaleSetImpl
         return attachedBackends;
     }
 
-    private static Map<String, LoadBalancerInboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
-                                                                                                           VirtualMachineScaleSetIPConfiguration ipConfig) {
+    private static Map<String, LoadBalancerInboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(
+        LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         String loadBalancerId = loadBalancer.id();
         Map<String, LoadBalancerInboundNatPool> attachedInboundNatPools = new HashMap<>();
         Map<String, LoadBalancerInboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
         for (LoadBalancerInboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
-            String inboundNatPoolId =  mergePath(loadBalancerId, "inboundNatPools", lbInboundNatPool.name());
+            String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", lbInboundNatPool.name());
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (subResource.getId().equalsIgnoreCase(inboundNatPoolId)) {
+                if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     attachedInboundNatPools.put(lbInboundNatPool.name(), lbInboundNatPool);
                 }
             }
@@ -2064,8 +2097,8 @@ public class VirtualMachineScaleSetImpl
         return attachedInboundNatPools;
     }
 
-    private static void associateLoadBalancerToIpConfiguration(LoadBalancer loadBalancer,
-                                                               VirtualMachineScaleSetIPConfiguration ipConfig) {
+    private static void associateLoadBalancerToIpConfiguration(
+        LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         Collection<LoadBalancerBackend> backends = loadBalancer.backends().values();
         String[] backendNames = new String[backends.size()];
         int i = 0;
@@ -2074,9 +2107,7 @@ public class VirtualMachineScaleSetImpl
             i++;
         }
 
-        associateBackEndsToIpConfiguration(loadBalancer.id(),
-                ipConfig,
-                backendNames);
+        associateBackEndsToIpConfiguration(loadBalancer.id(), ipConfig, backendNames);
 
         Collection<LoadBalancerInboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
         String[] natPoolNames = new String[inboundNatPools.size()];
@@ -2086,22 +2117,21 @@ public class VirtualMachineScaleSetImpl
             i++;
         }
 
-        associateInboundNATPoolsToIpConfiguration(loadBalancer.id(),
-                ipConfig,
-                natPoolNames);
+        associateInboundNATPoolsToIpConfiguration(loadBalancer.id(), ipConfig, natPoolNames);
     }
 
-    private static void removeLoadBalancerAssociationFromIpConfiguration(LoadBalancer loadBalancer,
-                                                                         VirtualMachineScaleSetIPConfiguration ipConfig) {
+    private static void removeLoadBalancerAssociationFromIpConfiguration(
+        LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         removeAllBackendAssociationFromIpConfiguration(loadBalancer, ipConfig);
         removeAllInboundNatPoolAssociationFromIpConfiguration(loadBalancer, ipConfig);
     }
 
-    private static void removeAllBackendAssociationFromIpConfiguration(LoadBalancer loadBalancer,
-                                                                       VirtualMachineScaleSetIPConfiguration ipConfig) {
+    private static void removeAllBackendAssociationFromIpConfiguration(
+        LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-            if (subResource.getId().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+            if (subResource.id().toLowerCase(Locale.ROOT)
+                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2111,11 +2141,12 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static void removeAllInboundNatPoolAssociationFromIpConfiguration(LoadBalancer loadBalancer,
-                                                                              VirtualMachineScaleSetIPConfiguration ipConfig) {
+    private static void removeAllInboundNatPoolAssociationFromIpConfiguration(
+        LoadBalancer loadBalancer, VirtualMachineScaleSetIpConfiguration ipConfig) {
         List<SubResource> toRemove = new ArrayList<>();
         for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-            if (subResource.getId().toLowerCase().startsWith(loadBalancer.id().toLowerCase() + "/")) {
+            if (subResource.id().toLowerCase(Locale.ROOT)
+                    .startsWith(loadBalancer.id().toLowerCase(Locale.ROOT) + "/")) {
                 toRemove.add(subResource);
             }
         }
@@ -2125,14 +2156,13 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static void removeBackendsFromIpConfiguration(String loadBalancerId,
-                                                          VirtualMachineScaleSetIPConfiguration ipConfig,
-                                                          String... backendNames) {
+    private static void removeBackendsFromIpConfiguration(
+        String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... backendNames) {
         List<SubResource> toRemove = new ArrayList<>();
         for (String backendName : backendNames) {
             String backendPoolId = mergePath(loadBalancerId, "backendAddressPools", backendName);
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
-                if (subResource.getId().equalsIgnoreCase(backendPoolId)) {
+                if (subResource.id().equalsIgnoreCase(backendPoolId)) {
                     toRemove.add(subResource);
                     break;
                 }
@@ -2144,14 +2174,13 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static void removeInboundNatPoolsFromIpConfiguration(String loadBalancerId,
-                                                                 VirtualMachineScaleSetIPConfiguration ipConfig,
-                                                                 String... inboundNatPoolNames) {
+    private static void removeInboundNatPoolsFromIpConfiguration(
+        String loadBalancerId, VirtualMachineScaleSetIpConfiguration ipConfig, String... inboundNatPoolNames) {
         List<SubResource> toRemove = new ArrayList<>();
         for (String natPoolName : inboundNatPoolNames) {
             String inboundNatPoolId = mergePath(loadBalancerId, "inboundNatPools", natPoolName);
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
-                if (subResource.getId().equalsIgnoreCase(inboundNatPoolId)) {
+                if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
                     toRemove.add(subResource);
                     break;
                 }
@@ -2163,7 +2192,7 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static <T> void addToList(List<T> list, T...items) {
+    private static <T> void addToList(List<T> list, T... items) {
         for (T item : items) {
             list.add(item);
         }
@@ -2203,7 +2232,7 @@ public class VirtualMachineScaleSetImpl
             @Override
             public String resourceId() {
                 if (inner() != null) {
-                    return inner().getId();
+                    return inner().id();
                 } else {
                     return null;
                 }
@@ -2211,20 +2240,17 @@ public class VirtualMachineScaleSetImpl
         };
     }
 
-    protected VirtualMachineScaleSetImpl withUnmanagedDataDisk(VirtualMachineScaleSetUnmanagedDataDiskImpl unmanagedDisk) {
-        if (this.inner()
+    protected VirtualMachineScaleSetImpl withUnmanagedDataDisk(
+        VirtualMachineScaleSetUnmanagedDataDiskImpl unmanagedDisk) {
+        if (this.inner().virtualMachineProfile().storageProfile().dataDisks() == null) {
+            this
+                .inner()
                 .virtualMachineProfile()
                 .storageProfile()
-                .dataDisks() == null) {
-            this.inner()
-                    .virtualMachineProfile()
-                    .storageProfile()
-                    .withDataDisks(new ArrayList<VirtualMachineScaleSetDataDisk>());
+                .withDataDisks(new ArrayList<VirtualMachineScaleSetDataDisk>());
         }
-        List<VirtualMachineScaleSetDataDisk> dataDisks = this.inner()
-                .virtualMachineProfile()
-                .storageProfile()
-                .dataDisks();
+        List<VirtualMachineScaleSetDataDisk> dataDisks =
+            this.inner().virtualMachineProfile().storageProfile().dataDisks();
         dataDisks.add(unmanagedDisk.inner());
         return this;
     }
@@ -2254,17 +2280,15 @@ public class VirtualMachineScaleSetImpl
 
     /**
      * Checks whether the OS disk is based on a CustomImage.
-     * <p>
-     * A custom image is represented by {@link com.azure.management.compute.VirtualMachineCustomImage}.
+     *
+     * <p>A custom image is represented by {@link com.azure.management.compute.VirtualMachineCustomImage}.
      *
      * @param storageProfile the storage profile
      * @return true if the OS disk is configured to be based on custom image.
      */
     private boolean isOsDiskFromCustomImage(VirtualMachineScaleSetStorageProfile storageProfile) {
-        ImageReference imageReference  = storageProfile.imageReference();
-        return isOSDiskFromImage(storageProfile.osDisk())
-                && imageReference != null
-                && imageReference.getId() != null;
+        ImageReference imageReference = storageProfile.imageReference();
+        return isOSDiskFromImage(storageProfile.osDisk()) && imageReference != null && imageReference.id() != null;
     }
 
     /**
@@ -2274,13 +2298,13 @@ public class VirtualMachineScaleSetImpl
      * @return true if the OS disk is configured to be based on platform image.
      */
     private boolean isOSDiskFromPlatformImage(VirtualMachineScaleSetStorageProfile storageProfile) {
-        ImageReference imageReference  = storageProfile.imageReference();
+        ImageReference imageReference = storageProfile.imageReference();
         return isOSDiskFromImage(storageProfile.osDisk())
-                && imageReference != null
-                && imageReference.publisher() != null
-                && imageReference.offer() != null
-                && imageReference.sku() != null
-                && imageReference.version() != null;
+            && imageReference != null
+            && imageReference.publisher() != null
+            && imageReference.offer() != null
+            && imageReference.sku() != null
+            && imageReference.version() != null;
     }
 
     /**
@@ -2291,14 +2315,12 @@ public class VirtualMachineScaleSetImpl
      */
     private boolean isOSDiskFromStoredImage(VirtualMachineScaleSetStorageProfile storageProfile) {
         VirtualMachineScaleSetOSDisk osDisk = storageProfile.osDisk();
-        return isOSDiskFromImage(osDisk)
-                && osDisk.image() != null
-                && osDisk.image().uri() != null;
+        return isOSDiskFromImage(osDisk) && osDisk.image() != null && osDisk.image().uri() != null;
     }
 
     private void throwIfManagedDiskDisabled(String message) {
         if (!this.isManagedDiskEnabled()) {
-            throw new UnsupportedOperationException(message);
+            throw logger.logExceptionAsError(new UnsupportedOperationException(message));
         }
     }
 
@@ -2359,44 +2381,49 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withVirtualMachinePublicIp() {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = this.primaryNicDefaultIPConfiguration();
-        if (nicIpConfig.publicIPAddressConfiguration() != null) {
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
+        if (nicIpConfig.publicIpAddressConfiguration() != null) {
             return this;
         } else {
-            VirtualMachineScaleSetPublicIPAddressConfiguration pipConfig = new VirtualMachineScaleSetPublicIPAddressConfiguration();
+            VirtualMachineScaleSetPublicIpAddressConfiguration pipConfig =
+                new VirtualMachineScaleSetPublicIpAddressConfiguration();
             pipConfig.withName("pip1");
             pipConfig.withIdleTimeoutInMinutes(15);
             //
-            nicIpConfig.withPublicIPAddressConfiguration(pipConfig);
+            nicIpConfig.withPublicIpAddressConfiguration(pipConfig);
             return this;
         }
     }
 
     @Override
-    public  VirtualMachineScaleSetImpl withVirtualMachinePublicIp(String leafDomainLabel) {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = this.primaryNicDefaultIPConfiguration();
-        if (nicIpConfig.publicIPAddressConfiguration() != null) {
-            if (nicIpConfig.publicIPAddressConfiguration().dnsSettings() != null) {
-                nicIpConfig.publicIPAddressConfiguration().dnsSettings().withDomainNameLabel(leafDomainLabel);
+    public VirtualMachineScaleSetImpl withVirtualMachinePublicIp(String leafDomainLabel) {
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
+        if (nicIpConfig.publicIpAddressConfiguration() != null) {
+            if (nicIpConfig.publicIpAddressConfiguration().dnsSettings() != null) {
+                nicIpConfig.publicIpAddressConfiguration().dnsSettings().withDomainNameLabel(leafDomainLabel);
             } else {
-                nicIpConfig.publicIPAddressConfiguration().withDnsSettings(new VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings());
-                nicIpConfig.publicIPAddressConfiguration().dnsSettings().withDomainNameLabel(leafDomainLabel);
+                nicIpConfig
+                    .publicIpAddressConfiguration()
+                    .withDnsSettings(new VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings());
+                nicIpConfig.publicIpAddressConfiguration().dnsSettings().withDomainNameLabel(leafDomainLabel);
             }
         } else {
-            VirtualMachineScaleSetPublicIPAddressConfiguration pipConfig = new VirtualMachineScaleSetPublicIPAddressConfiguration();
+            VirtualMachineScaleSetPublicIpAddressConfiguration pipConfig =
+                new VirtualMachineScaleSetPublicIpAddressConfiguration();
             pipConfig.withName("pip1");
             pipConfig.withIdleTimeoutInMinutes(15);
-            pipConfig.withDnsSettings(new VirtualMachineScaleSetPublicIPAddressConfigurationDnsSettings());
+            pipConfig.withDnsSettings(new VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings());
             pipConfig.dnsSettings().withDomainNameLabel(leafDomainLabel);
-            nicIpConfig.withPublicIPAddressConfiguration(pipConfig);
+            nicIpConfig.withPublicIpAddressConfiguration(pipConfig);
         }
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIPAddressConfiguration pipConfig) {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = this.primaryNicDefaultIPConfiguration();
-        nicIpConfig.withPublicIPAddressConfiguration(pipConfig);
+    public VirtualMachineScaleSetImpl withVirtualMachinePublicIp(
+        VirtualMachineScaleSetPublicIpAddressConfiguration pipConfig) {
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = this.primaryNicDefaultIpConfiguration();
+        nicIpConfig.withPublicIpAddressConfiguration(pipConfig);
         return this;
     }
 
@@ -2417,28 +2444,28 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withIpForwarding() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
-        nicConfig.withEnableIPForwarding(true);
+        nicConfig.withEnableIpForwarding(true);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutIpForwarding() {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
-        nicConfig.withEnableIPForwarding(false);
+        nicConfig.withEnableIpForwarding(false);
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup networkSecurityGroup) {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
-        nicConfig.withNetworkSecurityGroup(new SubResource().setId(networkSecurityGroup.id()));
+        nicConfig.withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroup.id()));
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withExistingNetworkSecurityGroupId(String networkSecurityGroupId) {
         VirtualMachineScaleSetNetworkConfiguration nicConfig = this.primaryNicConfiguration();
-        nicConfig.withNetworkSecurityGroup(new SubResource().setId(networkSecurityGroupId));
+        nicConfig.withNetworkSecurityGroup(new SubResource().withId(networkSecurityGroupId));
         return this;
     }
 
@@ -2463,26 +2490,26 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withExistingApplicationGatewayBackendPool(String backendPoolId) {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
         if (nicIpConfig.applicationGatewayBackendAddressPools() == null) {
             nicIpConfig.withApplicationGatewayBackendAddressPools(new ArrayList<>());
         }
         boolean found = false;
         for (SubResource backendPool : nicIpConfig.applicationGatewayBackendAddressPools()) {
-            if (backendPool.getId().equalsIgnoreCase(backendPoolId)) {
+            if (backendPool.id().equalsIgnoreCase(backendPoolId)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            nicIpConfig.applicationGatewayBackendAddressPools().add(new SubResource().setId(backendPoolId));
+            nicIpConfig.applicationGatewayBackendAddressPools().add(new SubResource().withId(backendPoolId));
         }
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutApplicationGatewayBackendPool(String backendPoolId) {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
         if (nicIpConfig.applicationGatewayBackendAddressPools() == null) {
             return this;
         } else {
@@ -2490,7 +2517,7 @@ public class VirtualMachineScaleSetImpl
             int index = -1;
             for (SubResource backendPool : nicIpConfig.applicationGatewayBackendAddressPools()) {
                 index = index + 1;
-                if (backendPool.getId().equalsIgnoreCase(backendPoolId)) {
+                if (backendPool.id().equalsIgnoreCase(backendPoolId)) {
                     foundIndex = index;
                     break;
                 }
@@ -2503,32 +2530,33 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withExistingApplicationSecurityGroup(ApplicationSecurityGroup applicationSecurityGroup) {
+    public VirtualMachineScaleSetImpl withExistingApplicationSecurityGroup(
+        ApplicationSecurityGroup applicationSecurityGroup) {
         return withExistingApplicationSecurityGroupId(applicationSecurityGroup.id());
     }
 
     @Override
     public VirtualMachineScaleSetImpl withExistingApplicationSecurityGroupId(String applicationSecurityGroupId) {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
         if (nicIpConfig.applicationSecurityGroups() == null) {
             nicIpConfig.withApplicationSecurityGroups(new ArrayList<>());
         }
         boolean found = false;
         for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
-            if (asg.getId().equalsIgnoreCase(applicationSecurityGroupId)) {
+            if (asg.id().equalsIgnoreCase(applicationSecurityGroupId)) {
                 found = true;
                 break;
             }
         }
         if (!found) {
-            nicIpConfig.applicationSecurityGroups().add(new SubResource().setId(applicationSecurityGroupId));
+            nicIpConfig.applicationSecurityGroups().add(new SubResource().withId(applicationSecurityGroupId));
         }
         return this;
     }
 
     @Override
     public VirtualMachineScaleSetImpl withoutApplicationSecurityGroup(String applicationSecurityGroupId) {
-        VirtualMachineScaleSetIPConfiguration nicIpConfig = primaryNicDefaultIPConfiguration();
+        VirtualMachineScaleSetIpConfiguration nicIpConfig = primaryNicDefaultIpConfiguration();
         if (nicIpConfig.applicationSecurityGroups() == null) {
             return this;
         } else {
@@ -2536,7 +2564,7 @@ public class VirtualMachineScaleSetImpl
             int index = -1;
             for (SubResource asg : nicIpConfig.applicationSecurityGroups()) {
                 index = index + 1;
-                if (asg.getId().equalsIgnoreCase(applicationSecurityGroupId)) {
+                if (asg.id().equalsIgnoreCase(applicationSecurityGroupId)) {
                     foundIndex = index;
                     break;
                 }
@@ -2550,13 +2578,14 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withProximityPlacementGroup(String proximityPlacementGroupId) {
-        this.inner().withProximityPlacementGroup(new SubResource().setId(proximityPlacementGroupId));
+        this.inner().withProximityPlacementGroup(new SubResource().withId(proximityPlacementGroupId));
         this.newProximityPlacementGroupName = null;
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withNewProximityPlacementGroup(String proximityPlacementGroupName, ProximityPlacementGroupType type) {
+    public VirtualMachineScaleSetImpl withNewProximityPlacementGroup(
+        String proximityPlacementGroupName, ProximityPlacementGroupType type) {
         this.newProximityPlacementGroupName = proximityPlacementGroupName;
         this.newProximityPlacementGroupType = type;
 
@@ -2566,7 +2595,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withDoNotRunExtensionsOnOverprovisionedVMs(Boolean doNotRunExtensionsOnOverprovisionedVMs) {
+    public VirtualMachineScaleSetImpl withDoNotRunExtensionsOnOverprovisionedVMs(
+        Boolean doNotRunExtensionsOnOverprovisionedVMs) {
         this.inner().withDoNotRunExtensionsOnOverprovisionedVMs(doNotRunExtensionsOnOverprovisionedVMs);
         return this;
     }
@@ -2582,18 +2612,20 @@ public class VirtualMachineScaleSetImpl
             if (this.newProximityPlacementGroupName != null && !this.newProximityPlacementGroupName.isEmpty()) {
                 ProximityPlacementGroupInner plgInner = new ProximityPlacementGroupInner();
                 plgInner.withProximityPlacementGroupType(this.newProximityPlacementGroupType);
-                plgInner.setLocation(this.inner().getLocation());
-                plgInner = this.manager().inner().proximityPlacementGroups().createOrUpdate(this.resourceGroupName(),
-                        this.newProximityPlacementGroupName, plgInner);
+                plgInner.withLocation(this.inner().location());
+                plgInner =
+                    this
+                        .manager()
+                        .inner()
+                        .proximityPlacementGroups()
+                        .createOrUpdate(this.resourceGroupName(), this.newProximityPlacementGroupName, plgInner);
 
-                this.inner().withProximityPlacementGroup((new SubResource().setId(plgInner.getId())));
+                this.inner().withProximityPlacementGroup((new SubResource().withId(plgInner.id())));
             }
         }
     }
 
-    /**
-     * Class to manage Data Disk collection.
-     */
+    /** Class to manage Data Disk collection. */
     private class ManagedDataDiskCollection {
         private final List<VirtualMachineScaleSetDataDisk> implicitDisksToAssociate = new ArrayList<>();
         private final List<Integer> diskLunsToRemove = new ArrayList<>();
@@ -2615,10 +2647,8 @@ public class VirtualMachineScaleSetImpl
         }
 
         void setDataDisksDefaults() {
-            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
-                    .inner()
-                    .virtualMachineProfile()
-                    .storageProfile();
+            VirtualMachineScaleSetStorageProfile storageProfile =
+                this.vmss.inner().virtualMachineProfile().storageProfile();
             if (isPending()) {
                 if (storageProfile.dataDisks() == null) {
                     storageProfile.withDataDisks(new ArrayList<>());
@@ -2644,24 +2674,24 @@ public class VirtualMachineScaleSetImpl
                 }
                 // Func to get the next available lun
                 //
-                Callable<Integer> nextLun = () -> {
-                    Integer lun = 0;
-                    while (usedLuns.contains(lun)) {
-                        lun++;
-                    }
-                    usedLuns.add(lun);
-                    return lun;
-                };
+                Callable<Integer> nextLun =
+                    () -> {
+                        Integer lun = 0;
+                        while (usedLuns.contains(lun)) {
+                            lun++;
+                        }
+                        usedLuns.add(lun);
+                        return lun;
+                    };
                 try {
                     setImplicitDataDisks(nextLun);
                 } catch (Exception ex) {
-                    throw Exceptions.propagate(ex);
+                    throw logger.logExceptionAsError(Exceptions.propagate(ex));
                 }
                 setImageBasedDataDisks();
                 removeDataDisks();
             }
-            if (storageProfile.dataDisks() != null
-                    && storageProfile.dataDisks().size() == 0) {
+            if (storageProfile.dataDisks() != null && storageProfile.dataDisks().size() == 0) {
                 if (vmss.isInCreateMode()) {
                     // If there is no data disks at all, then setting it to null rather than [] is necessary.
                     // This is for take advantage of CRP's implicit creation of the data disks if the image has
@@ -2680,16 +2710,12 @@ public class VirtualMachineScaleSetImpl
         }
 
         private boolean isPending() {
-            return implicitDisksToAssociate.size() > 0
-                    || diskLunsToRemove.size() > 0
-                    || newDisksFromImage.size() > 0;
+            return implicitDisksToAssociate.size() > 0 || diskLunsToRemove.size() > 0 || newDisksFromImage.size() > 0;
         }
 
         private void setImplicitDataDisks(Callable<Integer> nextLun) throws Exception {
-            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
-                    .inner()
-                    .virtualMachineProfile()
-                    .storageProfile();
+            VirtualMachineScaleSetStorageProfile storageProfile =
+                this.vmss.inner().virtualMachineProfile().storageProfile();
             List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
             for (VirtualMachineScaleSetDataDisk dataDisk : this.implicitDisksToAssociate) {
                 dataDisk.withCreateOption(DiskCreateOptionTypes.EMPTY);
@@ -2711,10 +2737,8 @@ public class VirtualMachineScaleSetImpl
         }
 
         private void setImageBasedDataDisks() {
-            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
-                    .inner()
-                    .virtualMachineProfile()
-                    .storageProfile();
+            VirtualMachineScaleSetStorageProfile storageProfile =
+                this.vmss.inner().virtualMachineProfile().storageProfile();
             List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
             for (VirtualMachineScaleSetDataDisk dataDisk : this.newDisksFromImage) {
                 dataDisk.withCreateOption(DiskCreateOptionTypes.FROM_IMAGE);
@@ -2726,10 +2750,8 @@ public class VirtualMachineScaleSetImpl
         }
 
         private void removeDataDisks() {
-            VirtualMachineScaleSetStorageProfile storageProfile = this.vmss
-                    .inner()
-                    .virtualMachineProfile()
-                    .storageProfile();
+            VirtualMachineScaleSetStorageProfile storageProfile =
+                this.vmss.inner().virtualMachineProfile().storageProfile();
             List<VirtualMachineScaleSetDataDisk> dataDisks = storageProfile.dataDisks();
             for (Integer lun : this.diskLunsToRemove) {
                 int indexToRemove = 0;
@@ -2758,9 +2780,7 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    /**
-     * Class to manage VMSS boot diagnostics settings.
-     */
+    /** Class to manage VMSS boot diagnostics settings. */
     private class BootDiagnosticsHandler {
         private final VirtualMachineScaleSetImpl vmssImpl;
         private String creatableDiagnosticsStorageAccountKey;
@@ -2774,8 +2794,8 @@ public class VirtualMachineScaleSetImpl
         public boolean isBootDiagnosticsEnabled() {
             DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
             if (diagnosticsProfile != null
-                    && diagnosticsProfile.bootDiagnostics() != null
-                    && diagnosticsProfile.bootDiagnostics().enabled() != null) {
+                && diagnosticsProfile.bootDiagnostics() != null
+                && diagnosticsProfile.bootDiagnostics().enabled() != null) {
                 return diagnosticsProfile.bootDiagnostics().enabled();
             }
             return false;
@@ -2784,8 +2804,7 @@ public class VirtualMachineScaleSetImpl
         public String bootDiagnosticsStorageUri() {
             DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
             // Even though diagnostics can disabled azure still keep the storage uri
-            if (diagnosticsProfile != null
-                    && diagnosticsProfile.bootDiagnostics() != null) {
+            if (diagnosticsProfile != null && diagnosticsProfile.bootDiagnostics() != null) {
                 return diagnosticsProfile.bootDiagnostics().storageUri();
             }
             return null;
@@ -2808,11 +2827,12 @@ public class VirtualMachineScaleSetImpl
 
         BootDiagnosticsHandler withBootDiagnostics(String storageAccountBlobEndpointUri) {
             this.enableDisable(true);
-            this.vmssInner()
-                    .virtualMachineProfile()
-                    .diagnosticsProfile()
-                    .bootDiagnostics()
-                    .withStorageUri(storageAccountBlobEndpointUri);
+            this
+                .vmssInner()
+                .virtualMachineProfile()
+                .diagnosticsProfile()
+                .bootDiagnostics()
+                .withStorageUri(storageAccountBlobEndpointUri);
             return this;
         }
 
@@ -2831,8 +2851,8 @@ public class VirtualMachineScaleSetImpl
 
             DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
             if (diagnosticsProfile == null
-                    || diagnosticsProfile.bootDiagnostics() == null
-                    || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
+                || diagnosticsProfile.bootDiagnostics() == null
+                || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
             boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
@@ -2855,12 +2875,20 @@ public class VirtualMachineScaleSetImpl
             String accountName = this.vmssImpl.namer.randomName("stg", 24).replace("-", "");
             Creatable<StorageAccount> storageAccountCreatable;
             if (this.vmssImpl.creatableGroup != null) {
-                storageAccountCreatable = this.vmssImpl.storageManager.storageAccounts()
+                storageAccountCreatable =
+                    this
+                        .vmssImpl
+                        .storageManager
+                        .storageAccounts()
                         .define(accountName)
                         .withRegion(this.vmssImpl.regionName())
                         .withNewResourceGroup(this.vmssImpl.creatableGroup);
             } else {
-                storageAccountCreatable = this.vmssImpl.storageManager.storageAccounts()
+                storageAccountCreatable =
+                    this
+                        .vmssImpl
+                        .storageManager
+                        .storageAccounts()
                         .define(accountName)
                         .withRegion(this.vmssImpl.regionName())
                         .withExistingResourceGroup(this.vmssImpl.resourceGroupName());
@@ -2871,8 +2899,8 @@ public class VirtualMachineScaleSetImpl
         void handleDiagnosticsSettings() {
             DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
             if (diagnosticsProfile == null
-                    || diagnosticsProfile.bootDiagnostics() == null
-                    || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
+                || diagnosticsProfile.bootDiagnostics() == null
+                || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
                 return;
             }
             boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
@@ -2888,13 +2916,14 @@ public class VirtualMachineScaleSetImpl
                 storageAccount = this.existingStorageAccountToAssociate;
             }
             if (storageAccount == null) {
-                throw new IllegalStateException("Unable to retrieve expected storageAccount instance for BootDiagnostics");
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Unable to retrieve expected storageAccount instance for BootDiagnostics"));
             }
             vmssInner()
-                    .virtualMachineProfile()
-                    .diagnosticsProfile()
-                    .bootDiagnostics()
-                    .withStorageUri(storageAccount.endPoints().primary().blob());
+                .virtualMachineProfile()
+                .diagnosticsProfile()
+                .bootDiagnostics()
+                .withStorageUri(storageAccount.endPoints().primary().blob());
         }
 
         private VirtualMachineScaleSetInner vmssInner() {
@@ -2908,7 +2937,11 @@ public class VirtualMachineScaleSetImpl
                 this.vmssInner().virtualMachineProfile().withDiagnosticsProfile(new DiagnosticsProfile());
             }
             if (this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics() == null) {
-                this.vmssInner().virtualMachineProfile().diagnosticsProfile().withBootDiagnostics(new BootDiagnostics());
+                this
+                    .vmssInner()
+                    .virtualMachineProfile()
+                    .diagnosticsProfile()
+                    .withBootDiagnostics(new BootDiagnostics());
             }
             if (enable) {
                 this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics().withEnabled(true);

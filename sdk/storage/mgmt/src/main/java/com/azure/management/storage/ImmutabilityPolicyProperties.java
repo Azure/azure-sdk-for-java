@@ -6,15 +6,17 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ImmutabilityPolicyProperties model.
- */
+/** The ImmutabilityPolicyProperties model. */
 @JsonFlatten
 @Fluent
 public class ImmutabilityPolicyProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyProperties.class);
+
     /*
      * ImmutabilityPolicy Etag.
      */
@@ -54,7 +56,7 @@ public class ImmutabilityPolicyProperties {
 
     /**
      * Get the etag property: ImmutabilityPolicy Etag.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -62,9 +64,8 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Get the updateHistory property: The ImmutabilityPolicy update history of
-     * the blob container.
-     * 
+     * Get the updateHistory property: The ImmutabilityPolicy update history of the blob container.
+     *
      * @return the updateHistory value.
      */
     public List<UpdateHistoryProperty> updateHistory() {
@@ -72,10 +73,9 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Get the immutabilityPeriodSinceCreationInDays property: The immutability
-     * period for the blobs in the container since the policy creation, in
-     * days.
-     * 
+     * Get the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
+     * since the policy creation, in days.
+     *
      * @return the immutabilityPeriodSinceCreationInDays value.
      */
     public Integer immutabilityPeriodSinceCreationInDays() {
@@ -83,23 +83,22 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Set the immutabilityPeriodSinceCreationInDays property: The immutability
-     * period for the blobs in the container since the policy creation, in
-     * days.
-     * 
-     * @param immutabilityPeriodSinceCreationInDays the
-     * immutabilityPeriodSinceCreationInDays value to set.
+     * Set the immutabilityPeriodSinceCreationInDays property: The immutability period for the blobs in the container
+     * since the policy creation, in days.
+     *
+     * @param immutabilityPeriodSinceCreationInDays the immutabilityPeriodSinceCreationInDays value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
-    public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(Integer immutabilityPeriodSinceCreationInDays) {
+    public ImmutabilityPolicyProperties withImmutabilityPeriodSinceCreationInDays(
+        Integer immutabilityPeriodSinceCreationInDays) {
         this.immutabilityPeriodSinceCreationInDays = immutabilityPeriodSinceCreationInDays;
         return this;
     }
 
     /**
-     * Get the state property: The ImmutabilityPolicy state of a blob
-     * container, possible values include: Locked and Unlocked.
-     * 
+     * Get the state property: The ImmutabilityPolicy state of a blob container, possible values include: Locked and
+     * Unlocked.
+     *
      * @return the state value.
      */
     public ImmutabilityPolicyState state() {
@@ -107,13 +106,11 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Get the allowProtectedAppendWrites property: This property can only be
-     * changed for unlocked time-based retention policies. When enabled, new
-     * blocks can be written to an append blob while maintaining immutability
-     * protection and compliance. Only new blocks can be added and any existing
-     * blocks cannot be modified or deleted. This property cannot be changed
-     * with ExtendImmutabilityPolicy API.
-     * 
+     * Get the allowProtectedAppendWrites property: This property can only be changed for unlocked time-based retention
+     * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
+     * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
+     * cannot be changed with ExtendImmutabilityPolicy API.
+     *
      * @return the allowProtectedAppendWrites value.
      */
     public Boolean allowProtectedAppendWrites() {
@@ -121,19 +118,27 @@ public class ImmutabilityPolicyProperties {
     }
 
     /**
-     * Set the allowProtectedAppendWrites property: This property can only be
-     * changed for unlocked time-based retention policies. When enabled, new
-     * blocks can be written to an append blob while maintaining immutability
-     * protection and compliance. Only new blocks can be added and any existing
-     * blocks cannot be modified or deleted. This property cannot be changed
-     * with ExtendImmutabilityPolicy API.
-     * 
-     * @param allowProtectedAppendWrites the allowProtectedAppendWrites value
-     * to set.
+     * Set the allowProtectedAppendWrites property: This property can only be changed for unlocked time-based retention
+     * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
+     * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
+     * cannot be changed with ExtendImmutabilityPolicy API.
+     *
+     * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
      * @return the ImmutabilityPolicyProperties object itself.
      */
     public ImmutabilityPolicyProperties withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
         this.allowProtectedAppendWrites = allowProtectedAppendWrites;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (updateHistory() != null) {
+            updateHistory().forEach(e -> e.validate());
+        }
     }
 }

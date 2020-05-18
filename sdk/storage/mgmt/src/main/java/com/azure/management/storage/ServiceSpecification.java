@@ -5,14 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ServiceSpecification model.
- */
+/** The ServiceSpecification model. */
 @Fluent
 public final class ServiceSpecification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSpecification.class);
+
     /*
      * Metric specifications of operation.
      */
@@ -20,9 +22,8 @@ public final class ServiceSpecification {
     private List<MetricSpecification> metricSpecifications;
 
     /**
-     * Get the metricSpecifications property: Metric specifications of
-     * operation.
-     * 
+     * Get the metricSpecifications property: Metric specifications of operation.
+     *
      * @return the metricSpecifications value.
      */
     public List<MetricSpecification> metricSpecifications() {
@@ -30,14 +31,24 @@ public final class ServiceSpecification {
     }
 
     /**
-     * Set the metricSpecifications property: Metric specifications of
-     * operation.
-     * 
+     * Set the metricSpecifications property: Metric specifications of operation.
+     *
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the ServiceSpecification object itself.
      */
     public ServiceSpecification withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metricSpecifications() != null) {
+            metricSpecifications().forEach(e -> e.validate());
+        }
     }
 }

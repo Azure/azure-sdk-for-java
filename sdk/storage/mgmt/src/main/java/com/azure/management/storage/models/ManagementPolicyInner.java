@@ -7,16 +7,18 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.ManagementPolicySchema;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * The ManagementPolicy model.
- */
+/** The ManagementPolicy model. */
 @JsonFlatten
 @Fluent
 public class ManagementPolicyInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyInner.class);
+
     /*
      * Returns the date and time the ManagementPolicies was last modified.
      */
@@ -32,9 +34,8 @@ public class ManagementPolicyInner extends ProxyResource {
     private ManagementPolicySchema policy;
 
     /**
-     * Get the lastModifiedTime property: Returns the date and time the
-     * ManagementPolicies was last modified.
-     * 
+     * Get the lastModifiedTime property: Returns the date and time the ManagementPolicies was last modified.
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -42,10 +43,9 @@ public class ManagementPolicyInner extends ProxyResource {
     }
 
     /**
-     * Get the policy property: The Storage Account ManagementPolicy, in JSON
-     * format. See more details in:
+     * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     * 
+     *
      * @return the policy value.
      */
     public ManagementPolicySchema policy() {
@@ -53,15 +53,25 @@ public class ManagementPolicyInner extends ProxyResource {
     }
 
     /**
-     * Set the policy property: The Storage Account ManagementPolicy, in JSON
-     * format. See more details in:
+     * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
      * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
-     * 
+     *
      * @param policy the policy value to set.
      * @return the ManagementPolicyInner object itself.
      */
     public ManagementPolicyInner withPolicy(ManagementPolicySchema policy) {
         this.policy = policy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (policy() != null) {
+            policy().validate();
+        }
     }
 }

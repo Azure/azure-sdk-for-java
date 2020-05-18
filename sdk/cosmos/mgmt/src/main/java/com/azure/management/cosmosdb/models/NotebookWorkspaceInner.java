@@ -6,13 +6,17 @@ package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
-import com.azure.management.cosmosdb.ARMProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.cosmosdb.ArmProxyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NotebookWorkspace model. */
 @JsonFlatten
 @Immutable
-public class NotebookWorkspaceInner extends ARMProxyResource {
+public class NotebookWorkspaceInner extends ArmProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotebookWorkspaceInner.class);
+
     /*
      * Specifies the endpoint of Notebook server.
      */
@@ -43,5 +47,15 @@ public class NotebookWorkspaceInner extends ARMProxyResource {
      */
     public String status() {
         return this.status;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

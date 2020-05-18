@@ -5,7 +5,7 @@ package com.azure.management.sql.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
@@ -86,7 +86,6 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
 
     @Override
     public Mono<SqlServer> createResourceAsync() {
-        final SqlServer self = this;
         return this
             .manager()
             .inner()
@@ -106,8 +105,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                 this
                     .sqlFirewallRules
                     .defineInlineFirewallRule("AllowAllWindowsAzureIps")
-                    .withStartIPAddress("0.0.0.0")
-                    .withEndIPAddress("0.0.0.0");
+                    .withStartIpAddress("0.0.0.0")
+                    .withEndIpAddress("0.0.0.0");
             }
             if (sqlADAdminCreator != null) {
                 this.addPostRunDependent(sqlADAdminCreator);
@@ -195,10 +194,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         List<ServerMetric> serverMetrics = new ArrayList<>();
         PagedIterable<ServerUsageInner> serverUsageInners =
             this.manager().inner().serverUsages().listByServer(this.resourceGroupName(), this.name());
-        if (serverUsageInners != null) {
-            for (ServerUsageInner serverUsageInner : serverUsageInners) {
-                serverMetrics.add(new ServerMetricImpl(serverUsageInner));
-            }
+        for (ServerUsageInner serverUsageInner : serverUsageInners) {
+            serverMetrics.add(new ServerMetricImpl(serverUsageInner));
         }
         return Collections.unmodifiableList(serverMetrics);
     }
@@ -208,10 +205,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         List<ServiceObjective> serviceObjectives = new ArrayList<>();
         PagedIterable<ServiceObjectiveInner> serviceObjectiveInners =
             this.manager().inner().serviceObjectives().listByServer(this.resourceGroupName(), this.name());
-        if (serviceObjectiveInners != null) {
-            for (ServiceObjectiveInner inner : serviceObjectiveInners) {
-                serviceObjectives.add(new ServiceObjectiveImpl(inner, this));
-            }
+        for (ServiceObjectiveInner inner : serviceObjectiveInners) {
+            serviceObjectives.add(new ServiceObjectiveImpl(inner, this));
         }
         return Collections.unmodifiableList(serviceObjectives);
     }
@@ -228,10 +223,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         Map<String, RecommendedElasticPool> recommendedElasticPoolMap = new HashMap<>();
         PagedIterable<RecommendedElasticPoolInner> recommendedElasticPoolInners =
             this.manager().inner().recommendedElasticPools().listByServer(this.resourceGroupName(), this.name());
-        if (recommendedElasticPoolInners != null) {
-            for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
-                recommendedElasticPoolMap.put(inner.getName(), new RecommendedElasticPoolImpl(inner, this));
-            }
+        for (RecommendedElasticPoolInner inner : recommendedElasticPoolInners) {
+            recommendedElasticPoolMap.put(inner.name(), new RecommendedElasticPoolImpl(inner, this));
         }
 
         return Collections.unmodifiableMap(recommendedElasticPoolMap);
@@ -242,13 +235,11 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         List<SqlRestorableDroppedDatabase> sqlRestorableDroppedDatabases = new ArrayList<>();
         PagedIterable<RestorableDroppedDatabaseInner> restorableDroppedDatabasesInners =
             this.manager().inner().restorableDroppedDatabases().listByServer(this.resourceGroupName(), this.name());
-        if (restorableDroppedDatabasesInners != null) {
-            for (RestorableDroppedDatabaseInner restorableDroppedDatabaseInner : restorableDroppedDatabasesInners) {
-                sqlRestorableDroppedDatabases
-                    .add(
-                        new SqlRestorableDroppedDatabaseImpl(
-                            this.resourceGroupName(), this.name(), restorableDroppedDatabaseInner, this.manager()));
-            }
+        for (RestorableDroppedDatabaseInner restorableDroppedDatabaseInner : restorableDroppedDatabasesInners) {
+            sqlRestorableDroppedDatabases
+                .add(
+                    new SqlRestorableDroppedDatabaseImpl(
+                        this.resourceGroupName(), this.name(), restorableDroppedDatabaseInner, this.manager()));
         }
         return Collections.unmodifiableList(sqlRestorableDroppedDatabases);
     }
@@ -282,7 +273,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .sqlServers()
                     .firewallRules()
                     .getBySqlServer(this.resourceGroupName(), this.name(), "AllowAllWindowsAzureIps");
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() != 404) {
                 throw logger.logExceptionAsError(e);
             }
@@ -296,7 +287,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .firewallRules()
                     .define("AllowAllWindowsAzureIps")
                     .withExistingSqlServer(this.resourceGroupName(), this.name())
-                    .withIPAddress("0.0.0.0")
+                    .withIpAddress("0.0.0.0")
                     .create();
         }
 
@@ -411,8 +402,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
                     .inner()
                     .serverAzureADAdministrators()
                     .createOrUpdateAsync(self.resourceGroupName(), self.name(), serverAzureADAdministratorInner)
-                    .flatMap(
-                        serverAzureADAdministratorInner1 -> context.voidMono());
+                    .flatMap(serverAzureADAdministratorInner1 -> context.voidMono());
             };
         return this;
     }
@@ -439,8 +429,8 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         return this
             .sqlFirewallRules
             .defineInlineFirewallRule(firewallRuleName)
-            .withStartIPAddress(startIPAddress)
-            .withEndIPAddress(endIPAddress)
+            .withStartIpAddress(startIPAddress)
+            .withEndIpAddress(endIPAddress)
             .attach();
     }
 
@@ -535,7 +525,7 @@ public class SqlServerImpl extends GroupableResourceImpl<SqlServer, ServerInner,
         String elasticPoolName, ElasticPoolEdition elasticPoolEdition, String... databaseNames) {
         this.withNewElasticPool(elasticPoolName, elasticPoolEdition);
         for (String dbName : databaseNames) {
-            this.defineDatabase(dbName).withExistingElasticPool(elasticPoolName).attach();
+            this.defineDatabase(dbName).withExistingElasticPool(elasticPoolName);
         }
         return this;
     }

@@ -5,10 +5,7 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 
-/**
- * Entry point to virtual machine image publishers.
- */
+/** Entry point to virtual machine image publishers. */
 @Fluent
 public interface VirtualMachinePublishers extends SupportsListingByRegion<VirtualMachinePublisher> {
 }
-

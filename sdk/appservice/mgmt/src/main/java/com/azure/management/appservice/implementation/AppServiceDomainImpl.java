@@ -7,7 +7,7 @@ import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.Contact;
 import com.azure.management.appservice.DomainPurchaseConsent;
 import com.azure.management.appservice.DomainStatus;
-import com.azure.management.appservice.HostName;
+import com.azure.management.appservice.Hostname;
 import com.azure.management.appservice.TopLevelDomainAgreementOption;
 import com.azure.management.appservice.models.DomainInner;
 import com.azure.management.appservice.models.DomainOwnershipIdentifierInner;
@@ -15,8 +15,6 @@ import com.azure.management.appservice.models.DomainsInner;
 import com.azure.management.appservice.models.TldLegalAgreementInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
-import reactor.core.publisher.Mono;
-
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
@@ -25,30 +23,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import reactor.core.publisher.Mono;
 
-/**
- * The implementation for AppServiceDomain.
- */
+/** The implementation for AppServiceDomain. */
 class AppServiceDomainImpl
-        extends
-        GroupableResourceImpl<
-                AppServiceDomain,
-                DomainInner,
-                AppServiceDomainImpl,
-                AppServiceManager>
-        implements
-        AppServiceDomain,
-        AppServiceDomain.Definition,
-        AppServiceDomain.Update {
+    extends GroupableResourceImpl<AppServiceDomain, DomainInner, AppServiceDomainImpl, AppServiceManager>
+    implements AppServiceDomain, AppServiceDomain.Definition, AppServiceDomain.Update {
 
-    private Map<String, HostName> hostNameMap;
+    private Map<String, Hostname> hostNameMap;
 
     AppServiceDomainImpl(String name, DomainInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
-        inner().setLocation("global");
+        inner().withLocation("global");
         if (inner().managedHostNames() != null) {
-            this.hostNameMap = inner().managedHostNames().stream()
-                    .collect(Collectors.toMap(HostName::name, Function.identity()));
+            this.hostNameMap =
+                inner().managedHostNames().stream().collect(Collectors.toMap(Hostname::name, Function.identity()));
         }
     }
 
@@ -57,23 +46,30 @@ class AppServiceDomainImpl
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
         final DomainsInner client = this.manager().inner().domains();
-        return this.manager().inner().topLevelDomains().listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
-                // Step 1: Consent to agreements
-                .mapPage(TldLegalAgreementInner::agreementKey)
-                .collectList()
-                // Step 2: Create domain
-                .flatMap(keys -> {
+        return this
+            .manager()
+            .inner()
+            .topLevelDomains()
+            .listAgreementsAsync(topLevel, new TopLevelDomainAgreementOption())
+            // Step 1: Consent to agreements
+            .mapPage(TldLegalAgreementInner::agreementKey)
+            .collectList()
+            // Step 2: Create domain
+            .flatMap(
+                keys -> {
                     try {
-                        inner().withConsent(new DomainPurchaseConsent()
-                                .withAgreedAt(OffsetDateTime.now())
-                                .withAgreedBy(Inet4Address.getLocalHost().getHostAddress())
-                                .withAgreementKeys(keys));
+                        inner()
+                            .withConsent(
+                                new DomainPurchaseConsent()
+                                    .withAgreedAt(OffsetDateTime.now())
+                                    .withAgreedBy(Inet4Address.getLocalHost().getHostAddress())
+                                    .withAgreementKeys(keys));
                     } catch (UnknownHostException e) {
                         return Mono.error(e);
                     }
                     return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
                 })
-                .map(innerToFluentMap(this));
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -142,7 +138,7 @@ class AppServiceDomainImpl
     }
 
     @Override
-    public Map<String, HostName> managedHostNames() {
+    public Map<String, Hostname> managedHostNames() {
         if (hostNameMap == null) {
             return null;
         }
@@ -161,9 +157,14 @@ class AppServiceDomainImpl
 
     @Override
     public Mono<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
-        DomainOwnershipIdentifierInner identifierInner = new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
-        return this.manager().inner().domains().createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
-                .then(Mono.empty());
+        DomainOwnershipIdentifierInner identifierInner =
+            new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
+        return this
+            .manager()
+            .inner()
+            .domains()
+            .createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
+            .then(Mono.empty());
     }
 
     @Override

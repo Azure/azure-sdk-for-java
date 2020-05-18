@@ -5,14 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The Criteria model.
- */
+/** The Criteria model. */
 @Fluent
 public final class Criteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Criteria.class);
+
     /*
      * Name of the metric
      */
@@ -27,7 +29,7 @@ public final class Criteria {
 
     /**
      * Get the metricName property: Name of the metric.
-     * 
+     *
      * @return the metricName value.
      */
     public String metricName() {
@@ -36,7 +38,7 @@ public final class Criteria {
 
     /**
      * Set the metricName property: Name of the metric.
-     * 
+     *
      * @param metricName the metricName value to set.
      * @return the Criteria object itself.
      */
@@ -47,7 +49,7 @@ public final class Criteria {
 
     /**
      * Get the dimensions property: List of Dimensions for creating metric.
-     * 
+     *
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -56,12 +58,28 @@ public final class Criteria {
 
     /**
      * Set the dimensions property: List of Dimensions for creating metric.
-     * 
+     *
      * @param dimensions the dimensions value to set.
      * @return the Criteria object itself.
      */
     public Criteria withDimensions(List<Dimension> dimensions) {
         this.dimensions = dimensions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metricName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property metricName in model Criteria"));
+        }
+        if (dimensions() != null) {
+            dimensions().forEach(e -> e.validate());
+        }
     }
 }

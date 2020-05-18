@@ -7,6 +7,7 @@ package com.azure.management.dns.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.dns.AaaaRecord;
 import com.azure.management.dns.ARecord;
 import com.azure.management.dns.CaaRecord;
@@ -17,16 +18,17 @@ import com.azure.management.dns.PtrRecord;
 import com.azure.management.dns.SoaRecord;
 import com.azure.management.dns.SrvRecord;
 import com.azure.management.dns.TxtRecord;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * The RecordSet model.
- */
+/** The RecordSet model. */
 @JsonFlatten
 @Fluent
 public class RecordSetInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSetInner.class);
+
     /*
      * The etag of the record set.
      */
@@ -43,7 +45,7 @@ public class RecordSetInner extends ProxyResource {
      * The TTL (time-to-live) of the records in the record set.
      */
     @JsonProperty(value = "properties.TTL")
-    private Long tTL;
+    private Long ttl;
 
     /*
      * Fully qualified domain name of the record set.
@@ -113,7 +115,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the etag property: The etag of the record set.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -122,7 +124,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the etag property: The etag of the record set.
-     * 
+     *
      * @param etag the etag value to set.
      * @return the RecordSetInner object itself.
      */
@@ -133,7 +135,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the metadata property: The metadata attached to the record set.
-     * 
+     *
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -142,7 +144,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the metadata property: The metadata attached to the record set.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the RecordSetInner object itself.
      */
@@ -152,30 +154,28 @@ public class RecordSetInner extends ProxyResource {
     }
 
     /**
-     * Get the tTL property: The TTL (time-to-live) of the records in the
-     * record set.
-     * 
-     * @return the tTL value.
+     * Get the ttl property: The TTL (time-to-live) of the records in the record set.
+     *
+     * @return the ttl value.
      */
-    public Long tTL() {
-        return this.tTL;
+    public Long ttl() {
+        return this.ttl;
     }
 
     /**
-     * Set the tTL property: The TTL (time-to-live) of the records in the
-     * record set.
-     * 
-     * @param tTL the tTL value to set.
+     * Set the ttl property: The TTL (time-to-live) of the records in the record set.
+     *
+     * @param ttl the ttl value to set.
      * @return the RecordSetInner object itself.
      */
-    public RecordSetInner withTTL(Long tTL) {
-        this.tTL = tTL;
+    public RecordSetInner withTtl(Long ttl) {
+        this.ttl = ttl;
         return this;
     }
 
     /**
      * Get the fqdn property: Fully qualified domain name of the record set.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -184,7 +184,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the aRecords property: The list of A records in the record set.
-     * 
+     *
      * @return the aRecords value.
      */
     public List<ARecord> aRecords() {
@@ -193,7 +193,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the aRecords property: The list of A records in the record set.
-     * 
+     *
      * @param aRecords the aRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -203,9 +203,8 @@ public class RecordSetInner extends ProxyResource {
     }
 
     /**
-     * Get the aaaaRecords property: The list of AAAA records in the record
-     * set.
-     * 
+     * Get the aaaaRecords property: The list of AAAA records in the record set.
+     *
      * @return the aaaaRecords value.
      */
     public List<AaaaRecord> aaaaRecords() {
@@ -213,9 +212,8 @@ public class RecordSetInner extends ProxyResource {
     }
 
     /**
-     * Set the aaaaRecords property: The list of AAAA records in the record
-     * set.
-     * 
+     * Set the aaaaRecords property: The list of AAAA records in the record set.
+     *
      * @param aaaaRecords the aaaaRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -226,7 +224,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the mxRecords property: The list of MX records in the record set.
-     * 
+     *
      * @return the mxRecords value.
      */
     public List<MxRecord> mxRecords() {
@@ -235,7 +233,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the mxRecords property: The list of MX records in the record set.
-     * 
+     *
      * @param mxRecords the mxRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -246,7 +244,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the nsRecords property: The list of NS records in the record set.
-     * 
+     *
      * @return the nsRecords value.
      */
     public List<NsRecord> nsRecords() {
@@ -255,7 +253,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the nsRecords property: The list of NS records in the record set.
-     * 
+     *
      * @param nsRecords the nsRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -266,7 +264,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the ptrRecords property: The list of PTR records in the record set.
-     * 
+     *
      * @return the ptrRecords value.
      */
     public List<PtrRecord> ptrRecords() {
@@ -275,7 +273,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the ptrRecords property: The list of PTR records in the record set.
-     * 
+     *
      * @param ptrRecords the ptrRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -286,7 +284,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the srvRecords property: The list of SRV records in the record set.
-     * 
+     *
      * @return the srvRecords value.
      */
     public List<SrvRecord> srvRecords() {
@@ -295,7 +293,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the srvRecords property: The list of SRV records in the record set.
-     * 
+     *
      * @param srvRecords the srvRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -306,7 +304,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the txtRecords property: The list of TXT records in the record set.
-     * 
+     *
      * @return the txtRecords value.
      */
     public List<TxtRecord> txtRecords() {
@@ -315,7 +313,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the txtRecords property: The list of TXT records in the record set.
-     * 
+     *
      * @param txtRecords the txtRecords value to set.
      * @return the RecordSetInner object itself.
      */
@@ -325,8 +323,8 @@ public class RecordSetInner extends ProxyResource {
     }
 
     /**
-     * Get the cnameRecord property: The CNAME record in the  record set.
-     * 
+     * Get the cnameRecord property: The CNAME record in the record set.
+     *
      * @return the cnameRecord value.
      */
     public CnameRecord cnameRecord() {
@@ -334,8 +332,8 @@ public class RecordSetInner extends ProxyResource {
     }
 
     /**
-     * Set the cnameRecord property: The CNAME record in the  record set.
-     * 
+     * Set the cnameRecord property: The CNAME record in the record set.
+     *
      * @param cnameRecord the cnameRecord value to set.
      * @return the RecordSetInner object itself.
      */
@@ -346,7 +344,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the soaRecord property: The SOA record in the record set.
-     * 
+     *
      * @return the soaRecord value.
      */
     public SoaRecord soaRecord() {
@@ -355,7 +353,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the soaRecord property: The SOA record in the record set.
-     * 
+     *
      * @param soaRecord the soaRecord value to set.
      * @return the RecordSetInner object itself.
      */
@@ -366,7 +364,7 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Get the caaRecords property: The list of CAA records in the record set.
-     * 
+     *
      * @return the caaRecords value.
      */
     public List<CaaRecord> caaRecords() {
@@ -375,12 +373,50 @@ public class RecordSetInner extends ProxyResource {
 
     /**
      * Set the caaRecords property: The list of CAA records in the record set.
-     * 
+     *
      * @param caaRecords the caaRecords value to set.
      * @return the RecordSetInner object itself.
      */
     public RecordSetInner withCaaRecords(List<CaaRecord> caaRecords) {
         this.caaRecords = caaRecords;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (aRecords() != null) {
+            aRecords().forEach(e -> e.validate());
+        }
+        if (aaaaRecords() != null) {
+            aaaaRecords().forEach(e -> e.validate());
+        }
+        if (mxRecords() != null) {
+            mxRecords().forEach(e -> e.validate());
+        }
+        if (nsRecords() != null) {
+            nsRecords().forEach(e -> e.validate());
+        }
+        if (ptrRecords() != null) {
+            ptrRecords().forEach(e -> e.validate());
+        }
+        if (srvRecords() != null) {
+            srvRecords().forEach(e -> e.validate());
+        }
+        if (txtRecords() != null) {
+            txtRecords().forEach(e -> e.validate());
+        }
+        if (cnameRecord() != null) {
+            cnameRecord().validate();
+        }
+        if (soaRecord() != null) {
+            soaRecord().validate();
+        }
+        if (caaRecords() != null) {
+            caaRecords().forEach(e -> e.validate());
+        }
     }
 }

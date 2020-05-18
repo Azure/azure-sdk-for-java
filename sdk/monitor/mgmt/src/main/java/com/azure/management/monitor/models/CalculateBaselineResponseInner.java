@@ -5,16 +5,18 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.Baseline;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * The CalculateBaselineResponse model.
- */
+/** The CalculateBaselineResponse model. */
 @Fluent
 public final class CalculateBaselineResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CalculateBaselineResponseInner.class);
+
     /*
      * the resource type of the baseline resource.
      */
@@ -35,7 +37,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Get the type property: the resource type of the baseline resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -44,7 +46,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Set the type property: the resource type of the baseline resource.
-     * 
+     *
      * @param type the type value to set.
      * @return the CalculateBaselineResponseInner object itself.
      */
@@ -55,7 +57,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Get the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @return the timestamps value.
      */
     public List<OffsetDateTime> timestamps() {
@@ -64,7 +66,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Set the timestamps property: the array of timestamps of the baselines.
-     * 
+     *
      * @param timestamps the timestamps value to set.
      * @return the CalculateBaselineResponseInner object itself.
      */
@@ -75,7 +77,7 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Get the baseline property: the baseline values for each sensitivity.
-     * 
+     *
      * @return the baseline value.
      */
     public List<Baseline> baseline() {
@@ -84,12 +86,34 @@ public final class CalculateBaselineResponseInner {
 
     /**
      * Set the baseline property: the baseline values for each sensitivity.
-     * 
+     *
      * @param baseline the baseline value to set.
      * @return the CalculateBaselineResponseInner object itself.
      */
     public CalculateBaselineResponseInner withBaseline(List<Baseline> baseline) {
         this.baseline = baseline;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property type in model CalculateBaselineResponseInner"));
+        }
+        if (baseline() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property baseline in model CalculateBaselineResponseInner"));
+        } else {
+            baseline().forEach(e -> e.validate());
+        }
     }
 }

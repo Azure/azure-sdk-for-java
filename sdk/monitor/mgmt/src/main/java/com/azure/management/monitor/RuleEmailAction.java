@@ -5,21 +5,22 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
-
 import java.util.List;
 
-/**
- * The RuleEmailAction model.
- */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+/** The RuleEmailAction model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
+@JsonFlatten
 @Fluent
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
-public final class RuleEmailAction extends RuleAction {
+public class RuleEmailAction extends RuleAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleEmailAction.class);
+
     /*
      * Whether the administrators (service and co-administrators) of the
      * service should be notified when the alert is activated.
@@ -35,10 +36,9 @@ public final class RuleEmailAction extends RuleAction {
     private List<String> customEmails;
 
     /**
-     * Get the sendToServiceOwners property: Whether the administrators
-     * (service and co-administrators) of the service should be notified when
-     * the alert is activated.
-     * 
+     * Get the sendToServiceOwners property: Whether the administrators (service and co-administrators) of the service
+     * should be notified when the alert is activated.
+     *
      * @return the sendToServiceOwners value.
      */
     public Boolean sendToServiceOwners() {
@@ -46,10 +46,9 @@ public final class RuleEmailAction extends RuleAction {
     }
 
     /**
-     * Set the sendToServiceOwners property: Whether the administrators
-     * (service and co-administrators) of the service should be notified when
-     * the alert is activated.
-     * 
+     * Set the sendToServiceOwners property: Whether the administrators (service and co-administrators) of the service
+     * should be notified when the alert is activated.
+     *
      * @param sendToServiceOwners the sendToServiceOwners value to set.
      * @return the RuleEmailAction object itself.
      */
@@ -59,9 +58,9 @@ public final class RuleEmailAction extends RuleAction {
     }
 
     /**
-     * Get the customEmails property: the list of administrator's custom email
-     * addresses to notify of the activation of the alert.
-     * 
+     * Get the customEmails property: the list of administrator's custom email addresses to notify of the activation of
+     * the alert.
+     *
      * @return the customEmails value.
      */
     public List<String> customEmails() {
@@ -69,14 +68,24 @@ public final class RuleEmailAction extends RuleAction {
     }
 
     /**
-     * Set the customEmails property: the list of administrator's custom email
-     * addresses to notify of the activation of the alert.
-     * 
+     * Set the customEmails property: the list of administrator's custom email addresses to notify of the activation of
+     * the alert.
+     *
      * @param customEmails the customEmails value to set.
      * @return the RuleEmailAction object itself.
      */
     public RuleEmailAction withCustomEmails(List<String> customEmails) {
         this.customEmails = customEmails;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

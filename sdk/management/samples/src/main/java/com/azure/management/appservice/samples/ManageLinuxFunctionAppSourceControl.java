@@ -3,20 +3,20 @@
 
 package com.azure.management.appservice.samples;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.management.AzureEnvironment;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.management.Azure;
 import com.azure.management.appservice.FunctionApp;
 import com.azure.management.appservice.FunctionRuntimeStack;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.resources.fluentcore.arm.Region;
+import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.azure.management.samples.Utils;
 import com.azure.management.storage.StorageAccountSkuType;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import org.apache.commons.lang.time.StopWatch;
-
-import java.io.File;
-
 
 /**
  * Azure App Service basic sample for managing function apps.
@@ -26,7 +26,7 @@ import java.io.File;
  */
 public class ManageLinuxFunctionAppSourceControl {
 
-    private static final String FUNCTION_APP_PACKAGE_URL = "https://raw.github.com/Azure/azure-libraries-for-java/master/azure-mgmt-appservice/src/test/resources/java-functions.zip";
+    private static final String FUNCTION_APP_PACKAGE_URL = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/appservice/mgmt/src/test/resources/java-functions.zip";
     private static final long TIMEOUT_IN_SECONDS = 5 * 60;
 
     /**
@@ -52,7 +52,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             System.out.println("Creating function app " + app1Name + " in resource group " + rgName + "...");
 
-            FunctionApp app1 = azure.appServices().functionApps().define(app1Name)
+            FunctionApp app1 = azure.functionApps().define(app1Name)
                     .withRegion(Region.US_WEST)
                     .withNewResourceGroup(rgName)
                     .withNewLinuxAppServicePlan(plan1Name, PricingTier.STANDARD_S1)
@@ -89,7 +89,7 @@ public class ManageLinuxFunctionAppSourceControl {
 
             System.out.println("Creating function app " + app2Name + " in resource group " + rgName + "...");
 
-            FunctionApp app2 = azure.appServices().functionApps().define(app2Name)
+            FunctionApp app2 = azure.functionApps().define(app2Name)
                     .withRegion(Region.US_EAST)
                     .withExistingResourceGroup(rgName)
                     .withNewLinuxConsumptionPlan(plan2Name)
@@ -148,13 +148,16 @@ public class ManageLinuxFunctionAppSourceControl {
             //=============================================================
             // Authenticate
 
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE, true);
+            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+                .authorityHost(profile.environment().getActiveDirectoryEndpoint())
+                .build();
 
             Azure azure = Azure
-                    .configure()
-                    .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-                    .authenticate(credFile)
-                    .withDefaultSubscription();
+                .configure()
+                .withLogLevel(HttpLogDetailLevel.BASIC)
+                .authenticate(credential, profile)
+                .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());

@@ -4,11 +4,10 @@ package com.azure.management.network;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.resources.fluentcore.arm.Region;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import java.time.OffsetDateTime;
 
 public class NetworkWatcherTests extends NetworkManagementTest {
 
@@ -25,26 +24,30 @@ public class NetworkWatcherTests extends NetworkManagementTest {
             }
         }
         // create Network Watcher
-        NetworkWatcher nw = networkManager.networkWatchers().define(nwName)
-                .withRegion(region)
-                .withNewResourceGroup(rgName)
-                .create();
-        AvailableProviders providers = nw.availableProviders()
-                .execute();
+        NetworkWatcher nw =
+            networkManager.networkWatchers().define(nwName).withRegion(region).withNewResourceGroup(rgName).create();
+        AvailableProviders providers = nw.availableProviders().execute();
         Assertions.assertTrue(providers.providersByCountry().size() > 1);
         Assertions.assertNotNull(providers.providersByCountry().get("United States"));
 
-        providers = nw.availableProviders()
+        providers =
+            nw
+                .availableProviders()
                 .withAzureLocation("West US")
                 .withCountry("United States")
                 .withState("washington")
                 .execute();
         Assertions.assertEquals(1, providers.providersByCountry().size());
-        Assertions.assertEquals("washington", providers.providersByCountry().get("United States").states().get(0).stateName());
-        Assertions.assertTrue(providers.providersByCountry().get("United States").states().get(0).providers().size() > 0);
+        Assertions
+            .assertEquals(
+                "washington", providers.providersByCountry().get("United States").states().get(0).stateName());
+        Assertions
+            .assertTrue(providers.providersByCountry().get("United States").states().get(0).providers().size() > 0);
 
         String localProvider = providers.providersByCountry().get("United States").states().get(0).providers().get(0);
-        AzureReachabilityReport report = nw.azureReachabilityReport()
+        AzureReachabilityReport report =
+            nw
+                .azureReachabilityReport()
                 .withProviderLocation("United States", "washington")
                 .withStartTime(OffsetDateTime.parse("2018-04-10"))
                 .withEndTime(OffsetDateTime.parse("2018-04-12"))

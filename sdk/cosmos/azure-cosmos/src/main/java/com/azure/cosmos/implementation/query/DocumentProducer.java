@@ -6,9 +6,8 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -145,7 +144,7 @@ class DocumentProducer<T extends Resource> {
         this.correlatedActivityId = correlatedActivityId;
 
         this.feedOptions = feedOptions != null ? feedOptions : new FeedOptions();
-        this.feedOptions.setRequestContinuation(initialContinuationToken);
+        ModelBridgeInternal.setFeedOptionsContinuationToken(this.feedOptions, initialContinuationToken);
         this.lastResponseContinuationToken = initialContinuationToken;
         this.resourceType = resourceType;
         this.targetRange = targetRange;
@@ -244,7 +243,7 @@ class DocumentProducer<T extends Resource> {
     }
 
     private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
-        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(collectionRid, range, true, feedOptions.getProperties());
+        return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(null, collectionRid, range, true, feedOptions.getProperties());
     }
 
     private boolean isSplit(CosmosClientException e) {

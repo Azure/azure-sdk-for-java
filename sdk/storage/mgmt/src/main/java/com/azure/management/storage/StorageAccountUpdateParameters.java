@@ -6,15 +6,17 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The StorageAccountUpdateParameters model.
- */
+/** The StorageAccountUpdateParameters model. */
 @JsonFlatten
 @Fluent
 public class StorageAccountUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountUpdateParameters.class);
+
     /*
      * Gets or sets the SKU name. Note that the SKU name cannot be updated to
      * Standard_ZRS, Premium_LRS or Premium_ZRS, nor can accounts of those SKU
@@ -102,10 +104,9 @@ public class StorageAccountUpdateParameters {
     private RoutingPreference routingPreference;
 
     /**
-     * Get the sku property: Gets or sets the SKU name. Note that the SKU name
-     * cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can
-     * accounts of those SKU names be updated to any other value.
-     * 
+     * Get the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
+     * Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -113,10 +114,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the sku property: Gets or sets the SKU name. Note that the SKU name
-     * cannot be updated to Standard_ZRS, Premium_LRS or Premium_ZRS, nor can
-     * accounts of those SKU names be updated to any other value.
-     * 
+     * Set the sku property: Gets or sets the SKU name. Note that the SKU name cannot be updated to Standard_ZRS,
+     * Premium_LRS or Premium_ZRS, nor can accounts of those SKU names be updated to any other value.
+     *
      * @param sku the sku value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -126,13 +126,11 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the tags property: Gets or sets a list of key value pairs that
-     * describe the resource. These tags can be used in viewing and grouping
-     * this resource (across resource groups). A maximum of 15 tags can be
-     * provided for a resource. Each tag must have a key no greater in length
-     * than 128 characters and a value no greater in length than 256
-     * characters.
-     * 
+     * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
+     * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
+     * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than
+     * 256 characters.
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -140,13 +138,11 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the tags property: Gets or sets a list of key value pairs that
-     * describe the resource. These tags can be used in viewing and grouping
-     * this resource (across resource groups). A maximum of 15 tags can be
-     * provided for a resource. Each tag must have a key no greater in length
-     * than 128 characters and a value no greater in length than 256
-     * characters.
-     * 
+     * Set the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
+     * in viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
+     * resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than
+     * 256 characters.
+     *
      * @param tags the tags value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -157,7 +153,7 @@ public class StorageAccountUpdateParameters {
 
     /**
      * Get the identity property: The identity of the resource.
-     * 
+     *
      * @return the identity value.
      */
     public Identity identity() {
@@ -166,7 +162,7 @@ public class StorageAccountUpdateParameters {
 
     /**
      * Set the identity property: The identity of the resource.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -176,9 +172,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the kind property: Optional. Indicates the type of storage account.
-     * Currently only StorageV2 value supported by server.
-     * 
+     * Get the kind property: Optional. Indicates the type of storage account. Currently only StorageV2 value supported
+     * by server.
+     *
      * @return the kind value.
      */
     public Kind kind() {
@@ -186,9 +182,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the kind property: Optional. Indicates the type of storage account.
-     * Currently only StorageV2 value supported by server.
-     * 
+     * Set the kind property: Optional. Indicates the type of storage account. Currently only StorageV2 value supported
+     * by server.
+     *
      * @param kind the kind value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -198,11 +194,10 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the customDomain property: Custom domain assigned to the storage
-     * account by the user. Name is the CNAME source. Only one custom domain is
-     * supported per storage account at this time. To clear the existing custom
+     * Get the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
+     * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
      * domain, use an empty string for the custom domain name property.
-     * 
+     *
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -210,11 +205,10 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the customDomain property: Custom domain assigned to the storage
-     * account by the user. Name is the CNAME source. Only one custom domain is
-     * supported per storage account at this time. To clear the existing custom
+     * Set the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
+     * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
      * domain, use an empty string for the custom domain name property.
-     * 
+     *
      * @param customDomain the customDomain value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -224,9 +218,8 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the encryption property: Provides the encryption settings on the
-     * account. The default setting is unencrypted.
-     * 
+     * Get the encryption property: Provides the encryption settings on the account. The default setting is unencrypted.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -234,9 +227,8 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the encryption property: Provides the encryption settings on the
-     * account. The default setting is unencrypted.
-     * 
+     * Set the encryption property: Provides the encryption settings on the account. The default setting is unencrypted.
+     *
      * @param encryption the encryption value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -246,9 +238,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind =
-     * BlobStorage. The access tier used for billing.
-     * 
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
+     * billing.
+     *
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -256,9 +248,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind =
-     * BlobStorage. The access tier used for billing.
-     * 
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
+     * billing.
+     *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -268,9 +260,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the azureFilesIdentityBasedAuthentication property: Provides the
-     * identity based authentication settings for Azure Files.
-     * 
+     * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
+     * Azure Files.
+     *
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -278,22 +270,21 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the azureFilesIdentityBasedAuthentication property: Provides the
-     * identity based authentication settings for Azure Files.
-     * 
-     * @param azureFilesIdentityBasedAuthentication the
-     * azureFilesIdentityBasedAuthentication value to set.
+     * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
+     * Azure Files.
+     *
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
-    public StorageAccountUpdateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountUpdateParameters withAzureFilesIdentityBasedAuthentication(
+        AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 
     /**
-     * Get the enableHttpsTrafficOnly property: Allows https traffic only to
-     * storage service if sets to true.
-     * 
+     * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
+     *
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -301,9 +292,8 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the enableHttpsTrafficOnly property: Allows https traffic only to
-     * storage service if sets to true.
-     * 
+     * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
+     *
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -314,7 +304,7 @@ public class StorageAccountUpdateParameters {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     * 
+     *
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -323,7 +313,7 @@ public class StorageAccountUpdateParameters {
 
     /**
      * Set the networkRuleSet property: Network rule set.
-     * 
+     *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -333,9 +323,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the largeFileSharesState property: Allow large file shares if sets
-     * to Enabled. It cannot be disabled once it is enabled.
-     * 
+     * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
+     * is enabled.
+     *
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -343,9 +333,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the largeFileSharesState property: Allow large file shares if sets
-     * to Enabled. It cannot be disabled once it is enabled.
-     * 
+     * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
+     * is enabled.
+     *
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
@@ -355,9 +345,9 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Get the routingPreference property: Maintains information about the
-     * network routing choice opted by the user for data transfer.
-     * 
+     * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
+     * data transfer.
+     *
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -365,14 +355,43 @@ public class StorageAccountUpdateParameters {
     }
 
     /**
-     * Set the routingPreference property: Maintains information about the
-     * network routing choice opted by the user for data transfer.
-     * 
+     * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
+     * data transfer.
+     *
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountUpdateParameters object itself.
      */
     public StorageAccountUpdateParameters withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (customDomain() != null) {
+            customDomain().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (azureFilesIdentityBasedAuthentication() != null) {
+            azureFilesIdentityBasedAuthentication().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
+        if (routingPreference() != null) {
+            routingPreference().validate();
+        }
     }
 }

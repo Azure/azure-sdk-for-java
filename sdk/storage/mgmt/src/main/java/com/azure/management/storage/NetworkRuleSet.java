@@ -5,14 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The NetworkRuleSet model.
- */
+/** The NetworkRuleSet model. */
 @Fluent
 public final class NetworkRuleSet {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
+
     /*
      * Specifies whether traffic is bypassed for Logging/Metrics/AzureServices.
      * Possible values are any combination of Logging|Metrics|AzureServices
@@ -32,7 +34,7 @@ public final class NetworkRuleSet {
      * Sets the IP ACL rules
      */
     @JsonProperty(value = "ipRules")
-    private List<IPRule> ipRules;
+    private List<IpRule> ipRules;
 
     /*
      * Specifies the default action of allow or deny when no other rules match.
@@ -41,11 +43,10 @@ public final class NetworkRuleSet {
     private DefaultAction defaultAction;
 
     /**
-     * Get the bypass property: Specifies whether traffic is bypassed for
-     * Logging/Metrics/AzureServices. Possible values are any combination of
-     * Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None
-     * to bypass none of those traffics.
-     * 
+     * Get the bypass property: Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values
+     * are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of
+     * those traffics.
+     *
      * @return the bypass value.
      */
     public Bypass bypass() {
@@ -53,11 +54,10 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Set the bypass property: Specifies whether traffic is bypassed for
-     * Logging/Metrics/AzureServices. Possible values are any combination of
-     * Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None
-     * to bypass none of those traffics.
-     * 
+     * Set the bypass property: Specifies whether traffic is bypassed for Logging/Metrics/AzureServices. Possible values
+     * are any combination of Logging|Metrics|AzureServices (For example, "Logging, Metrics"), or None to bypass none of
+     * those traffics.
+     *
      * @param bypass the bypass value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -68,7 +68,7 @@ public final class NetworkRuleSet {
 
     /**
      * Get the virtualNetworkRules property: Sets the virtual network rules.
-     * 
+     *
      * @return the virtualNetworkRules value.
      */
     public List<VirtualNetworkRule> virtualNetworkRules() {
@@ -77,7 +77,7 @@ public final class NetworkRuleSet {
 
     /**
      * Set the virtualNetworkRules property: Sets the virtual network rules.
-     * 
+     *
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSet object itself.
      */
@@ -88,28 +88,27 @@ public final class NetworkRuleSet {
 
     /**
      * Get the ipRules property: Sets the IP ACL rules.
-     * 
+     *
      * @return the ipRules value.
      */
-    public List<IPRule> ipRules() {
+    public List<IpRule> ipRules() {
         return this.ipRules;
     }
 
     /**
      * Set the ipRules property: Sets the IP ACL rules.
-     * 
+     *
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet withIpRules(List<IPRule> ipRules) {
+    public NetworkRuleSet withIpRules(List<IpRule> ipRules) {
         this.ipRules = ipRules;
         return this;
     }
 
     /**
-     * Get the defaultAction property: Specifies the default action of allow or
-     * deny when no other rules match.
-     * 
+     * Get the defaultAction property: Specifies the default action of allow or deny when no other rules match.
+     *
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -117,14 +116,32 @@ public final class NetworkRuleSet {
     }
 
     /**
-     * Set the defaultAction property: Specifies the default action of allow or
-     * deny when no other rules match.
-     * 
+     * Set the defaultAction property: Specifies the default action of allow or deny when no other rules match.
+     *
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSet object itself.
      */
     public NetworkRuleSet withDefaultAction(DefaultAction defaultAction) {
         this.defaultAction = defaultAction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (virtualNetworkRules() != null) {
+            virtualNetworkRules().forEach(e -> e.validate());
+        }
+        if (ipRules() != null) {
+            ipRules().forEach(e -> e.validate());
+        }
+        if (defaultAction() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property defaultAction in model NetworkRuleSet"));
+        }
     }
 }

@@ -465,32 +465,36 @@ class APISpec extends Specification {
      * @return Whether the files have equivalent content based on offset and read count
      */
     def compareFiles(File file1, File file2, long offset, long count) {
+        def stream1 = new FileInputStream(file1)
+        stream1.skip(offset)
+        def stream2 = new FileInputStream(file2)
+
+        return compareInputStreams(stream1, stream2, count)
+    }
+
+    def compareInputStreams(InputStream stream1, InputStream stream2, long count) {
         def pos = 0L
         def readBuffer = 8 * Constants.KB
-        def fileChannel1 = AsynchronousFileChannel.open(file1.toPath())
-        def fileChannel2 = AsynchronousFileChannel.open(file2.toPath())
+        try {
+            while (pos < count) {
+                def bufferSize = (int) Math.min(readBuffer, count - pos)
+                def buffer1 = new byte[bufferSize]
+                def buffer2 = new byte[bufferSize]
 
-        while (pos < count) {
-            def bufferSize = (int) Math.min(readBuffer, count - pos)
-            def buffer1 = ByteBuffer.allocate(bufferSize)
-            def buffer2 = ByteBuffer.allocate(bufferSize)
+                def readCount1 = stream1.read(buffer1)
+                def readCount2 = stream2.read(buffer2)
 
-            def readCount1 = fileChannel1.read(buffer1, offset + pos).get()
-            def readCount2 = fileChannel2.read(buffer2, pos).get()
+                assert readCount1 == readCount2 && buffer1 == buffer2
 
-            if (readCount1 != readCount2 || buffer1 != buffer2) {
-                return false
+                pos += bufferSize
             }
 
-            pos += bufferSize
+            def verificationRead = stream2.read()
+            return pos == count && verificationRead == -1
+        } finally {
+            stream1.close()
+            stream2.close()
         }
-
-        def verificationRead = fileChannel2.read(ByteBuffer.allocate(1), pos).get()
-
-        fileChannel1.close()
-        fileChannel2.close()
-
-        return pos == count && verificationRead == -1
     }
 
     // Only sleep if test is running in live mode

@@ -4,12 +4,12 @@
 package com.azure.management.monitor;
 
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.resources.core.TestUtilities;
+import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.time.OffsetDateTime;
 
 public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     @Test
@@ -27,7 +27,9 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Assertions.assertNotNull(mDef.supportedAggregationTypes());
 
         // Metric
-        MetricCollection metrics = mDef.defineQuery()
+        MetricCollection metrics =
+            mDef
+                .defineQuery()
                 .startingFrom(recordDateTime.minusDays(30))
                 .endsBefore(recordDateTime)
                 .withResultType(ResultType.DATA)
@@ -39,15 +41,17 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
         Assertions.assertEquals("Microsoft.Compute/virtualMachines", metrics.namespace());
 
         // Activity Logs
-        PagedIterable<EventData> retVal = monitorManager.activityLogs()
+        PagedIterable<EventData> retVal =
+            monitorManager
+                .activityLogs()
                 .defineQuery()
                 .startingFrom(recordDateTime.minusDays(30))
                 .endsBefore(recordDateTime)
                 .withResponseProperties(
-                        EventDataPropertyName.RESOURCEID,
-                        EventDataPropertyName.EVENTTIMESTAMP,
-                        EventDataPropertyName.OPERATIONNAME,
-                        EventDataPropertyName.EVENTNAME)
+                    EventDataPropertyName.RESOURCEID,
+                    EventDataPropertyName.EVENTTIMESTAMP,
+                    EventDataPropertyName.OPERATIONNAME,
+                    EventDataPropertyName.EVENTNAME)
                 .filterByResource(vm.id())
                 .execute();
 
@@ -75,21 +79,23 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
 
         // List Activity logs at tenant level is not allowed for the current tenant
         try {
-            monitorManager.activityLogs()
-                    .defineQuery()
-                    .startingFrom(recordDateTime.minusDays(30))
-                    .endsBefore(recordDateTime)
-                    .withResponseProperties(
-                            EventDataPropertyName.RESOURCEID,
-                            EventDataPropertyName.EVENTTIMESTAMP,
-                            EventDataPropertyName.OPERATIONNAME,
-                            EventDataPropertyName.EVENTNAME)
-                    .filterByResource(vm.id())
-                    .filterAtTenantLevel()
-                    .execute();
-        } catch (ErrorResponseException er) {
+            monitorManager
+                .activityLogs()
+                .defineQuery()
+                .startingFrom(recordDateTime.minusDays(30))
+                .endsBefore(recordDateTime)
+                .withResponseProperties(
+                    EventDataPropertyName.RESOURCEID,
+                    EventDataPropertyName.EVENTTIMESTAMP,
+                    EventDataPropertyName.OPERATIONNAME,
+                    EventDataPropertyName.EVENTNAME)
+                .filterByResource(vm.id())
+                .filterAtTenantLevel()
+                .execute();
+        } catch (ManagementException er) {
             // should throw "The client '...' with object id '...' does not have authorization to perform action
-            // 'microsoft.insights/eventtypes/values/read' over scope '/providers/microsoft.insights/eventtypes/management'.
+            // 'microsoft.insights/eventtypes/values/read' over scope
+            // '/providers/microsoft.insights/eventtypes/management'.
             Assertions.assertEquals(403, er.getResponse().getStatusCode());
         }
     }

@@ -6,6 +6,7 @@ package com.azure.management.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.AzureEntityResource;
 import com.azure.management.storage.ImmutabilityPolicyProperties;
 import com.azure.management.storage.LeaseDuration;
@@ -13,16 +14,29 @@ import com.azure.management.storage.LeaseState;
 import com.azure.management.storage.LeaseStatus;
 import com.azure.management.storage.LegalHoldProperties;
 import com.azure.management.storage.PublicAccess;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * The BlobContainer model.
- */
+/** The BlobContainer model. */
 @JsonFlatten
 @Fluent
 public class BlobContainerInner extends AzureEntityResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobContainerInner.class);
+
+    /*
+     * Default the container to use specified encryption scope for all writes.
+     */
+    @JsonProperty(value = "properties.defaultEncryptionScope")
+    private String defaultEncryptionScope;
+
+    /*
+     * Block override of encryption scope from the container default.
+     */
+    @JsonProperty(value = "properties.denyEncryptionScopeOverride")
+    private Boolean denyEncryptionScopeOverride;
+
     /*
      * Specifies whether data in the container may be accessed publicly and the
      * level of access.
@@ -93,9 +107,49 @@ public class BlobContainerInner extends AzureEntityResource {
     private Boolean hasImmutabilityPolicy;
 
     /**
-     * Get the publicAccess property: Specifies whether data in the container
-     * may be accessed publicly and the level of access.
-     * 
+     * Get the defaultEncryptionScope property: Default the container to use specified encryption scope for all writes.
+     *
+     * @return the defaultEncryptionScope value.
+     */
+    public String defaultEncryptionScope() {
+        return this.defaultEncryptionScope;
+    }
+
+    /**
+     * Set the defaultEncryptionScope property: Default the container to use specified encryption scope for all writes.
+     *
+     * @param defaultEncryptionScope the defaultEncryptionScope value to set.
+     * @return the BlobContainerInner object itself.
+     */
+    public BlobContainerInner withDefaultEncryptionScope(String defaultEncryptionScope) {
+        this.defaultEncryptionScope = defaultEncryptionScope;
+        return this;
+    }
+
+    /**
+     * Get the denyEncryptionScopeOverride property: Block override of encryption scope from the container default.
+     *
+     * @return the denyEncryptionScopeOverride value.
+     */
+    public Boolean denyEncryptionScopeOverride() {
+        return this.denyEncryptionScopeOverride;
+    }
+
+    /**
+     * Set the denyEncryptionScopeOverride property: Block override of encryption scope from the container default.
+     *
+     * @param denyEncryptionScopeOverride the denyEncryptionScopeOverride value to set.
+     * @return the BlobContainerInner object itself.
+     */
+    public BlobContainerInner withDenyEncryptionScopeOverride(Boolean denyEncryptionScopeOverride) {
+        this.denyEncryptionScopeOverride = denyEncryptionScopeOverride;
+        return this;
+    }
+
+    /**
+     * Get the publicAccess property: Specifies whether data in the container may be accessed publicly and the level of
+     * access.
+     *
      * @return the publicAccess value.
      */
     public PublicAccess publicAccess() {
@@ -103,9 +157,9 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Set the publicAccess property: Specifies whether data in the container
-     * may be accessed publicly and the level of access.
-     * 
+     * Set the publicAccess property: Specifies whether data in the container may be accessed publicly and the level of
+     * access.
+     *
      * @param publicAccess the publicAccess value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -115,9 +169,8 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Get the lastModifiedTime property: Returns the date and time the
-     * container was last modified.
-     * 
+     * Get the lastModifiedTime property: Returns the date and time the container was last modified.
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -126,7 +179,7 @@ public class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the leaseStatus property: The lease status of the container.
-     * 
+     *
      * @return the leaseStatus value.
      */
     public LeaseStatus leaseStatus() {
@@ -135,7 +188,7 @@ public class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the leaseState property: Lease state of the container.
-     * 
+     *
      * @return the leaseState value.
      */
     public LeaseState leaseState() {
@@ -143,10 +196,9 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Get the leaseDuration property: Specifies whether the lease on a
-     * container is of infinite or fixed duration, only when the container is
-     * leased.
-     * 
+     * Get the leaseDuration property: Specifies whether the lease on a container is of infinite or fixed duration, only
+     * when the container is leased.
+     *
      * @return the leaseDuration value.
      */
     public LeaseDuration leaseDuration() {
@@ -154,9 +206,8 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Get the metadata property: A name-value pair to associate with the
-     * container as metadata.
-     * 
+     * Get the metadata property: A name-value pair to associate with the container as metadata.
+     *
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -164,9 +215,8 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Set the metadata property: A name-value pair to associate with the
-     * container as metadata.
-     * 
+     * Set the metadata property: A name-value pair to associate with the container as metadata.
+     *
      * @param metadata the metadata value to set.
      * @return the BlobContainerInner object itself.
      */
@@ -176,9 +226,8 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Get the immutabilityPolicy property: The ImmutabilityPolicy property of
-     * the container.
-     * 
+     * Get the immutabilityPolicy property: The ImmutabilityPolicy property of the container.
+     *
      * @return the immutabilityPolicy value.
      */
     public ImmutabilityPolicyProperties immutabilityPolicy() {
@@ -187,7 +236,7 @@ public class BlobContainerInner extends AzureEntityResource {
 
     /**
      * Get the legalHold property: The LegalHold property of the container.
-     * 
+     *
      * @return the legalHold value.
      */
     public LegalHoldProperties legalHold() {
@@ -195,12 +244,10 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Get the hasLegalHold property: The hasLegalHold public property is set
-     * to true by SRP if there are at least one existing tag. The hasLegalHold
-     * public property is set to false by SRP if all existing legal hold tags
-     * are cleared out. There can be a maximum of 1000 blob containers with
-     * hasLegalHold=true for a given account.
-     * 
+     * Get the hasLegalHold property: The hasLegalHold public property is set to true by SRP if there are at least one
+     * existing tag. The hasLegalHold public property is set to false by SRP if all existing legal hold tags are cleared
+     * out. There can be a maximum of 1000 blob containers with hasLegalHold=true for a given account.
+     *
      * @return the hasLegalHold value.
      */
     public Boolean hasLegalHold() {
@@ -208,15 +255,29 @@ public class BlobContainerInner extends AzureEntityResource {
     }
 
     /**
-     * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy public
-     * property is set to true by SRP if ImmutabilityPolicy has been created
-     * for this container. The hasImmutabilityPolicy public property is set to
-     * false by SRP if ImmutabilityPolicy has not been created for this
-     * container.
-     * 
+     * Get the hasImmutabilityPolicy property: The hasImmutabilityPolicy public property is set to true by SRP if
+     * ImmutabilityPolicy has been created for this container. The hasImmutabilityPolicy public property is set to false
+     * by SRP if ImmutabilityPolicy has not been created for this container.
+     *
      * @return the hasImmutabilityPolicy value.
      */
     public Boolean hasImmutabilityPolicy() {
         return this.hasImmutabilityPolicy;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (immutabilityPolicy() != null) {
+            immutabilityPolicy().validate();
+        }
+        if (legalHold() != null) {
+            legalHold().validate();
+        }
     }
 }

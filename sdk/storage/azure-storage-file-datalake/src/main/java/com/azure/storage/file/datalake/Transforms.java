@@ -17,9 +17,10 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
-import com.azure.storage.blob.models.BlobQueryOptions;
-import com.azure.storage.blob.models.BlobQuickQueryHeaders;
+import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
+import com.azure.storage.blob.models.BlobQueryOptions;
+import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
 import com.azure.storage.blob.models.BlobRange;
@@ -28,7 +29,6 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.ErrorReceiver;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.ProgressReceiver;
 import com.azure.storage.file.datalake.implementation.models.Path;
@@ -45,6 +45,7 @@ import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryHeaders;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
 import com.azure.storage.file.datalake.models.FileQueryOptions;
+import com.azure.storage.file.datalake.models.FileQueryProgress;
 import com.azure.storage.file.datalake.models.FileQueryResponse;
 import com.azure.storage.file.datalake.models.FileQuerySerialization;
 import com.azure.storage.file.datalake.models.FileRange;
@@ -71,6 +72,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 class Transforms {
 
@@ -492,11 +494,18 @@ class Transforms {
         }
     }
 
-    static ErrorReceiver<BlobQueryError> toBlobQueryErrorReceiver(ErrorReceiver<FileQueryError> er) {
+    static Consumer<BlobQueryError> toBlobQueryErrorConsumer(Consumer<FileQueryError> er) {
         if (er == null) {
             return null;
         }
-        return error -> er.reportError(toFileQueryError(error));
+        return error -> er.accept(toFileQueryError(error));
+    }
+
+    static Consumer<BlobQueryProgress> toBlobQueryProgressConsumer(Consumer<FileQueryProgress> pr) {
+        if (pr == null) {
+            return null;
+        }
+        return progress -> pr.accept(toFileQueryProgress(progress));
     }
 
     private static FileQueryError toFileQueryError(BlobQueryError error) {
@@ -504,6 +513,13 @@ class Transforms {
             return null;
         }
         return new FileQueryError(error.isFatal(), error.getName(), error.getDescription(), error.getPosition());
+    }
+
+    private static FileQueryProgress toFileQueryProgress(BlobQueryProgress progress) {
+        if (progress == null) {
+            return null;
+        }
+        return new FileQueryProgress(progress.getBytesScanned(), progress.getTotalBytes());
     }
 
     static FileQueryResponse toFileQueryResponse(BlobQueryResponse r) {
@@ -522,7 +538,7 @@ class Transforms {
             Transforms.toFileQueryHeaders(r.getDeserializedHeaders()));
     }
 
-    private static FileQueryHeaders toFileQueryHeaders(BlobQuickQueryHeaders h) {
+    private static FileQueryHeaders toFileQueryHeaders(BlobQueryHeaders h) {
         if (h == null) {
             return null;
         }
@@ -567,7 +583,7 @@ class Transforms {
             .setInputSerialization(Transforms.toBlobQuerySerialization(options.getInputSerialization()))
             .setOutputSerialization(Transforms.toBlobQuerySerialization(options.getOutputSerialization()))
             .setRequestConditions(Transforms.toBlobRequestConditions(options.getRequestConditions()))
-            .setErrorReceiver(Transforms.toBlobQueryErrorReceiver(options.getErrorReceiver()))
-            .setProgressReceiver(options.getProgressReceiver());
+            .setErrorConsumer(Transforms.toBlobQueryErrorConsumer(options.getErrorConsumer()))
+            .setProgressConsumer(Transforms.toBlobQueryProgressConsumer(options.getProgressConsumer()));
     }
 }

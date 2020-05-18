@@ -10,6 +10,7 @@ import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -25,12 +26,14 @@ import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_TRACKING_ID;
+import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
 
+@Tag(TestUtils.INTEGRATION)
 public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_KEY = "PartitionIDCopyFromProducerOption";
 
+    private final TracerProvider tracerProvider = new TracerProvider(Collections.emptyList());
     private EventHubProducerAsyncClient producer;
     private EventHubClientBuilder builder;
 
@@ -86,8 +89,8 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
     @Test
     public void sendSmallEventsFullBatchPartitionKey() {
         // Arrange
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null,
+            PARTITION_KEY, contextProvider, tracerProvider, getFullyQualifiedDomainName(), getEventHubName());
         int count = 0;
         while (batch.tryAdd(createData())) {
             // We only print every 100th item or it'll be really spammy.
@@ -112,12 +115,12 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         final String messageValue = UUID.randomUUID().toString();
 
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
-        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
+        final EventDataBatch batch = new EventDataBatch(ClientConstants.MAX_MESSAGE_LENGTH_BYTES, null,
+            PARTITION_KEY, contextProvider, tracerProvider, getFullyQualifiedDomainName(), getEventHubName());
         int count = 0;
         while (count < 10) {
             final EventData data = createData();
-            data.getProperties().put(MESSAGE_TRACKING_ID, messageValue);
+            data.getProperties().put(MESSAGE_ID, messageValue);
 
             if (!batch.tryAdd(data)) {
                 break;
@@ -148,7 +151,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
                         countDownLatch.countDown();
                     } else {
                         logger.warning(String.format("Event[%s] matched partition key, but not GUID. Expected: %s. Actual: %s",
-                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_TRACKING_ID)));
+                            event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID)));
                     }
                 }, error -> {
                         Assertions.fail("An error should not have occurred:" + error.toString());
@@ -180,7 +183,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         // Arrange
         final int maxMessageSize = 1024;
         final EventDataBatch batch = new EventDataBatch(maxMessageSize, null, PARTITION_KEY, contextProvider,
-            new TracerProvider(Collections.emptyList()), getFullyQualifiedDomainName(), getEventHubName());
+            tracerProvider, getFullyQualifiedDomainName(), getEventHubName());
         final Random random = new Random();
         final SendOptions sendOptions = new SendOptions().setPartitionKey(PARTITION_KEY);
         int count = 0;

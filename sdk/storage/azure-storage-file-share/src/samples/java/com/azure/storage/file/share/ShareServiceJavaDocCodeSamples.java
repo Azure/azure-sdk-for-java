@@ -276,4 +276,40 @@ public class ShareServiceJavaDocCodeSamples {
         String sas = fileServiceClient.generateAccountSas(sasValues);
         // END: com.azure.storage.file.share.ShareServiceClient.generateAccountSas#AccountSasSignatureValues
     }
+
+    /**
+     * Code snippet for {@link ShareServiceClient#undeleteShare(String, String)}.
+     */
+    public void undeleteShare() {
+        ShareServiceClient fileServiceClient = createClientWithSASToken();
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.undeleteShare#String-String
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceClient.listShares(listSharesOptions, Duration.ofSeconds(1), context).forEach(
+            deletedShare -> {
+                ShareClient shareClient = fileServiceClient.undeleteShare(
+                    deletedShare.getName(), deletedShare.getVersion());
+            }
+        );
+        // END: com.azure.storage.file.share.ShareServiceClient.undeleteShare#String-String
+    }
+
+    /**
+     * Code snippet for {@link ShareServiceClient#undeleteShareWithResponse(String, String, Duration, Context)}.
+     */
+    public void undeleteShareWithResponse() {
+        ShareServiceClient fileServiceClient = createClientWithSASToken();
+        Context context = new Context("Key", "Value");
+        // BEGIN: com.azure.storage.file.share.ShareServiceClient.undeleteShareWithResponse#String-String-Duration-Context
+        ListSharesOptions listSharesOptions = new ListSharesOptions();
+        listSharesOptions.setIncludeDeleted(true);
+        fileServiceClient.listShares(listSharesOptions, Duration.ofSeconds(1), context).forEach(
+            deletedShare -> {
+                ShareClient shareClient = fileServiceClient.undeleteShareWithResponse(
+                    deletedShare.getName(), deletedShare.getVersion(), Duration.ofSeconds(1), context).getValue();
+            }
+        );
+        // END: com.azure.storage.file.share.ShareServiceClient.undeleteShareWithResponse#String-String-Duration-Context
+    }
 }

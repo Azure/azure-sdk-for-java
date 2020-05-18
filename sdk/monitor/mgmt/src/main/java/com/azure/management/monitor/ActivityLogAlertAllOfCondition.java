@@ -5,14 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ActivityLogAlertAllOfCondition model.
- */
+/** The ActivityLogAlertAllOfCondition model. */
 @Fluent
 public final class ActivityLogAlertAllOfCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertAllOfCondition.class);
+
     /*
      * The list of activity log alert conditions.
      */
@@ -21,7 +23,7 @@ public final class ActivityLogAlertAllOfCondition {
 
     /**
      * Get the allOf property: The list of activity log alert conditions.
-     * 
+     *
      * @return the allOf value.
      */
     public List<ActivityLogAlertLeafCondition> allOf() {
@@ -30,12 +32,28 @@ public final class ActivityLogAlertAllOfCondition {
 
     /**
      * Set the allOf property: The list of activity log alert conditions.
-     * 
+     *
      * @param allOf the allOf value to set.
      * @return the ActivityLogAlertAllOfCondition object itself.
      */
     public ActivityLogAlertAllOfCondition withAllOf(List<ActivityLogAlertLeafCondition> allOf) {
         this.allOf = allOf;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (allOf() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property allOf in model ActivityLogAlertAllOfCondition"));
+        } else {
+            allOf().forEach(e -> e.validate());
+        }
     }
 }

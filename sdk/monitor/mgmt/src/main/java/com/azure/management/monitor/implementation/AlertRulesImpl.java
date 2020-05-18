@@ -7,11 +7,8 @@ import com.azure.management.monitor.ActivityLogAlerts;
 import com.azure.management.monitor.AlertRules;
 import com.azure.management.monitor.MetricAlerts;
 
-/**
- * Implementation for {@link MetricAlerts}.
- */
-class AlertRulesImpl
-        implements AlertRules {
+/** Implementation for {@link MetricAlerts}. */
+class AlertRulesImpl implements AlertRules {
 
     private final MetricAlerts metricAlerts;
     private final ActivityLogAlerts activityLogAlerts;

@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
@@ -12,7 +11,6 @@ import reactor.core.publisher.Flux;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -88,12 +86,13 @@ public class FluxInputStream extends InputStream {
            was emitted by the Flux. */
         if (this.buffer == null) { // Only executed on first subscription.
             if (this.lastError != null) {
-                throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+                throw logger.logThrowableAsError(this.lastError);
             }
             if (this.fluxComplete) {
                 return -1;
             }
-            this.buffer = new ByteArrayInputStream(new byte[0]);
+            throw logger.logExceptionAsError(new IllegalStateException("An unexpected error occurred. No data was "
+                + "read from the stream but the stream did not indicate completion."));
         }
 
         /* Now we are guaranteed that buffer is SOMETHING. */
@@ -129,7 +128,7 @@ public class FluxInputStream extends InputStream {
         }
         super.close();
         if (this.lastError != null) {
-            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            throw logger.logThrowableAsError(this.lastError);
         }
     }
 
@@ -167,7 +166,7 @@ public class FluxInputStream extends InputStream {
      */
     private void subscribeToData() {
         this.data
-            .onBackpressureBuffer(Constants.GB)
+            .onBackpressureBuffer()
             .subscribe(
                 // ByteBuffer consumer
                 byteBuffer -> {
@@ -184,14 +183,12 @@ public class FluxInputStream extends InputStream {
                 // Error consumer
                 throwable -> {
                     // Signal the consumer in case an error occurs (indicates we completed without data).
-                    signalOnCompleteOrError();
-                    if (throwable instanceof HttpResponseException) {
+                    if (throwable instanceof IOException) {
+                        this.lastError = (IOException) throwable;
+                    } else {
                         this.lastError = new IOException(throwable);
-                    } else if (throwable instanceof IllegalArgumentException) {
-                        this.lastError = new IOException(throwable);
-                    } else if (throwable instanceof UncheckedIOException) {
-                        this.lastError = ((UncheckedIOException) throwable).getCause();
                     }
+                    signalOnCompleteOrError();
                 },
                 // Complete consumer
                 // Signal the consumer in case we completed without data.

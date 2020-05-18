@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The StorageAccountMicrosoftEndpoints model.
- */
+/** The StorageAccountMicrosoftEndpoints model. */
 @Immutable
 public final class StorageAccountMicrosoftEndpoints {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountMicrosoftEndpoints.class);
+
     /*
      * Gets the blob endpoint.
      */
@@ -50,7 +52,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the blob property: Gets the blob endpoint.
-     * 
+     *
      * @return the blob value.
      */
     public String blob() {
@@ -59,7 +61,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the queue property: Gets the queue endpoint.
-     * 
+     *
      * @return the queue value.
      */
     public String queue() {
@@ -68,7 +70,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the table property: Gets the table endpoint.
-     * 
+     *
      * @return the table value.
      */
     public String table() {
@@ -77,7 +79,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the file property: Gets the file endpoint.
-     * 
+     *
      * @return the file value.
      */
     public String file() {
@@ -86,7 +88,7 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the web property: Gets the web endpoint.
-     * 
+     *
      * @return the web value.
      */
     public String web() {
@@ -95,10 +97,18 @@ public final class StorageAccountMicrosoftEndpoints {
 
     /**
      * Get the dfs property: Gets the dfs endpoint.
-     * 
+     *
      * @return the dfs value.
      */
     public String dfs() {
         return this.dfs;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

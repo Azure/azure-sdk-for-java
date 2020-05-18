@@ -5,14 +5,16 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AutoscaleSettingResourceCollection model.
- */
+/** The AutoscaleSettingResourceCollection model. */
 @Fluent
 public final class AutoscaleSettingResourceCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoscaleSettingResourceCollectionInner.class);
+
     /*
      * the values for the autoscale setting resources.
      */
@@ -27,7 +29,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Get the value property: the values for the autoscale setting resources.
-     * 
+     *
      * @return the value value.
      */
     public List<AutoscaleSettingResourceInner> value() {
@@ -36,7 +38,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Set the value property: the values for the autoscale setting resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the AutoscaleSettingResourceCollectionInner object itself.
      */
@@ -47,7 +49,7 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,12 +58,28 @@ public final class AutoscaleSettingResourceCollectionInner {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the AutoscaleSettingResourceCollectionInner object itself.
      */
     public AutoscaleSettingResourceCollectionInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model AutoscaleSettingResourceCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

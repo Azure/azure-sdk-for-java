@@ -6,15 +6,17 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The RoleDefinition model.
- */
+/** The RoleDefinition model. */
 @JsonFlatten
 @Fluent
 public class RoleDefinitionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
+
     /*
      * The role definition ID.
      */
@@ -65,16 +67,16 @@ public class RoleDefinitionInner {
 
     /**
      * Get the id property: The role definition ID.
-     * 
+     *
      * @return the id value.
      */
-    public String getId() {
+    public String id() {
         return this.id;
     }
 
     /**
      * Get the name property: The role definition name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -83,7 +85,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the type property: The role definition type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -92,7 +94,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the roleName property: The role name.
-     * 
+     *
      * @return the roleName value.
      */
     public String roleName() {
@@ -101,7 +103,7 @@ public class RoleDefinitionInner {
 
     /**
      * Set the roleName property: The role name.
-     * 
+     *
      * @param roleName the roleName value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -112,7 +114,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the description property: The role definition description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -121,7 +123,7 @@ public class RoleDefinitionInner {
 
     /**
      * Set the description property: The role definition description.
-     * 
+     *
      * @param description the description value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -132,7 +134,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the roleType property: The role type.
-     * 
+     *
      * @return the roleType value.
      */
     public String roleType() {
@@ -141,7 +143,7 @@ public class RoleDefinitionInner {
 
     /**
      * Set the roleType property: The role type.
-     * 
+     *
      * @param roleType the roleType value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -152,7 +154,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the permissions property: Role definition permissions.
-     * 
+     *
      * @return the permissions value.
      */
     public List<PermissionInner> permissions() {
@@ -161,7 +163,7 @@ public class RoleDefinitionInner {
 
     /**
      * Set the permissions property: Role definition permissions.
-     * 
+     *
      * @param permissions the permissions value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -172,7 +174,7 @@ public class RoleDefinitionInner {
 
     /**
      * Get the assignableScopes property: Role definition assignable scopes.
-     * 
+     *
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
@@ -181,12 +183,23 @@ public class RoleDefinitionInner {
 
     /**
      * Set the assignableScopes property: Role definition assignable scopes.
-     * 
+     *
      * @param assignableScopes the assignableScopes value to set.
      * @return the RoleDefinitionInner object itself.
      */
     public RoleDefinitionInner withAssignableScopes(List<String> assignableScopes) {
         this.assignableScopes = assignableScopes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (permissions() != null) {
+            permissions().forEach(e -> e.validate());
+        }
     }
 }

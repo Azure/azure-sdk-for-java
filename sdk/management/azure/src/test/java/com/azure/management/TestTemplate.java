@@ -3,7 +3,7 @@
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.ResourceGroups;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -14,9 +14,8 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
-import org.junit.jupiter.api.Assertions;
-
 import java.io.IOException;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * Base class for CRUD test cases for top level Azure resource models.
@@ -25,14 +24,10 @@ import java.io.IOException;
  * @param <CollectionT> Type representing the collection of the top level resources
  */
 public abstract class TestTemplate<
-        ResourceT extends GroupableResource<? extends ManagerBase, ?>,
-        CollectionT extends
-                SupportsListing<ResourceT>
-                & SupportsGettingByResourceGroup<ResourceT>
-                & SupportsDeletingById
-                & SupportsGettingById<ResourceT>
-                & HasInner<?>
-                & HasManager<? extends ManagerBase>> {
+    ResourceT extends GroupableResource<? extends ManagerBase, ?>,
+    CollectionT extends
+        SupportsListing<ResourceT> & SupportsGettingByResourceGroup<ResourceT> & SupportsDeletingById
+            & SupportsGettingById<ResourceT> & HasInner<?> & HasManager<? extends ManagerBase>> {
 
     private ResourceT resource;
     private CollectionT collection;
@@ -63,10 +58,10 @@ public abstract class TestTemplate<
      * Tests the listing logic.
      *
      * @return number of resources in the list
-     * @throws CloudException if anything goes wrong
-     * @throws IOException    if anything goes wrong
+     * @throws ManagementException if anything goes wrong
+     * @throws IOException if anything goes wrong
      */
-    public int verifyListing() throws CloudException, IOException {
+    public int verifyListing() throws ManagementException, IOException {
         PagedIterable<ResourceT> resources = this.collection.list();
         for (ResourceT r : resources) {
             System.out.println("resource id: " + r.id());
@@ -78,11 +73,12 @@ public abstract class TestTemplate<
      * Tests the getting logic.
      *
      * @return the gotten resource
-     * @throws CloudException if anything goes wrong
-     * @throws IOException    if anything goes wrong
+     * @throws ManagementException if anything goes wrong
+     * @throws IOException if anything goes wrong
      */
-    public ResourceT verifyGetting() throws CloudException, IOException {
-        ResourceT resourceByGroup = this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
+    public ResourceT verifyGetting() throws ManagementException, IOException {
+        ResourceT resourceByGroup =
+            this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
         ResourceT resourceById = this.collection.getById(resourceByGroup.id());
         Assertions.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
         return resourceById;

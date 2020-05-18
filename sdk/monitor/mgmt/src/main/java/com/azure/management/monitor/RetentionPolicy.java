@@ -5,13 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RetentionPolicy model.
- */
+/** The RetentionPolicy model. */
 @Fluent
 public final class RetentionPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicy.class);
+
     /*
      * a value indicating whether the retention policy is enabled.
      */
@@ -26,9 +28,8 @@ public final class RetentionPolicy {
     private int days;
 
     /**
-     * Get the enabled property: a value indicating whether the retention
-     * policy is enabled.
-     * 
+     * Get the enabled property: a value indicating whether the retention policy is enabled.
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -36,9 +37,8 @@ public final class RetentionPolicy {
     }
 
     /**
-     * Set the enabled property: a value indicating whether the retention
-     * policy is enabled.
-     * 
+     * Set the enabled property: a value indicating whether the retention policy is enabled.
+     *
      * @param enabled the enabled value to set.
      * @return the RetentionPolicy object itself.
      */
@@ -48,9 +48,9 @@ public final class RetentionPolicy {
     }
 
     /**
-     * Get the days property: the number of days for the retention in days. A
-     * value of 0 will retain the events indefinitely.
-     * 
+     * Get the days property: the number of days for the retention in days. A value of 0 will retain the events
+     * indefinitely.
+     *
      * @return the days value.
      */
     public int days() {
@@ -58,14 +58,22 @@ public final class RetentionPolicy {
     }
 
     /**
-     * Set the days property: the number of days for the retention in days. A
-     * value of 0 will retain the events indefinitely.
-     * 
+     * Set the days property: the number of days for the retention in days. A value of 0 will retain the events
+     * indefinitely.
+     *
      * @param days the days value to set.
      * @return the RetentionPolicy object itself.
      */
     public RetentionPolicy withDays(int days) {
         this.days = days;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

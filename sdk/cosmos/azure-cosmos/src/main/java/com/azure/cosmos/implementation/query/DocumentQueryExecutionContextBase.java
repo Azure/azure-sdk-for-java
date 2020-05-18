@@ -9,7 +9,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -115,8 +115,7 @@ implements IDocumentQueryExecutionContext<T> {
 
     public FeedOptions getFeedOptions(String continuationToken, Integer maxPageSize) {
         FeedOptions options = new FeedOptions(this.feedOptions);
-        options.setRequestContinuation(continuationToken);
-        options.setMaxItemCount(maxPageSize);
+        ModelBridgeInternal.setFeedOptionsContinuationTokenAndMaxItemCount(options, continuationToken, maxPageSize);
         return options;
     }
 

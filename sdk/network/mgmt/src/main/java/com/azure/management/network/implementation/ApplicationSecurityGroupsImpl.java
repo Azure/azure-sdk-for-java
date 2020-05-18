@@ -8,17 +8,15 @@ import com.azure.management.network.models.ApplicationSecurityGroupInner;
 import com.azure.management.network.models.ApplicationSecurityGroupsInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for ApplicationSecurityGroups.
- */
+/** Implementation for ApplicationSecurityGroups. */
 class ApplicationSecurityGroupsImpl
-        extends TopLevelModifiableResourcesImpl<
-                ApplicationSecurityGroup,
-                ApplicationSecurityGroupImpl,
-                ApplicationSecurityGroupInner,
-                ApplicationSecurityGroupsInner,
-                NetworkManager>
-        implements ApplicationSecurityGroups {
+    extends TopLevelModifiableResourcesImpl<
+        ApplicationSecurityGroup,
+        ApplicationSecurityGroupImpl,
+        ApplicationSecurityGroupInner,
+        ApplicationSecurityGroupsInner,
+        NetworkManager>
+    implements ApplicationSecurityGroups {
 
     ApplicationSecurityGroupsImpl(final NetworkManager networkManager) {
         super(networkManager.inner().applicationSecurityGroups(), networkManager);
@@ -40,7 +38,6 @@ class ApplicationSecurityGroupsImpl
         if (inner == null) {
             return null;
         }
-        return new ApplicationSecurityGroupImpl(inner.getName(), inner, this.manager());
+        return new ApplicationSecurityGroupImpl(inner.name(), inner, this.manager());
     }
 }
-

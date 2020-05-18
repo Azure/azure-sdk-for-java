@@ -7,7 +7,7 @@ import com.azure.management.network.LoadBalancer;
 import com.azure.management.network.LoadBalancerFrontend;
 import com.azure.management.network.LoadBalancerInboundNatRule;
 import com.azure.management.network.Network;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.Subnet;
 import com.azure.management.network.TransportProtocol;
 import com.azure.management.network.models.InboundNatRuleInner;
@@ -16,13 +16,9 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Child
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.Utils;
 
-/**
- * Implementation for LoadBalancerInboundNatRule.
- */
-class LoadBalancerInboundNatRuleImpl
-        extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl, LoadBalancer>
-        implements
-        LoadBalancerInboundNatRule,
+/** Implementation for LoadBalancerInboundNatRule. */
+class LoadBalancerInboundNatRuleImpl extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl, LoadBalancer>
+    implements LoadBalancerInboundNatRule,
         LoadBalancerInboundNatRule.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatRule>,
         LoadBalancerInboundNatRule.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerInboundNatRule.Update {
@@ -39,11 +35,11 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public String backendNicIPConfigurationName() {
-        if (this.inner().backendIPConfiguration() == null) {
+    public String backendNicIpConfigurationName() {
+        if (this.inner().backendIpConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.nameFromResourceId(this.inner().backendIPConfiguration().getId());
+            return ResourceUtils.nameFromResourceId(this.inner().backendIpConfiguration().id());
         }
     }
 
@@ -54,10 +50,10 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public String backendNetworkInterfaceId() {
-        if (this.inner().backendIPConfiguration() == null) {
+        if (this.inner().backendIpConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.parentResourceIdFromResourceId(this.inner().backendIPConfiguration().getId());
+            return ResourceUtils.parentResourceIdFromResourceId(this.inner().backendIpConfiguration().id());
         }
     }
 
@@ -73,14 +69,15 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public boolean floatingIPEnabled() {
-        return this.inner().enableFloatingIP().booleanValue();
+        return this.inner().enableFloatingIp().booleanValue();
     }
 
     @Override
     public LoadBalancerFrontend frontend() {
-        return this.parent().frontends().get(
-                ResourceUtils.nameFromResourceId(
-                        this.inner().frontendIPConfiguration().getId()));
+        return this
+            .parent()
+            .frontends()
+            .get(ResourceUtils.nameFromResourceId(this.inner().frontendIpConfiguration().id()));
     }
 
     @Override
@@ -108,7 +105,7 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public LoadBalancerInboundNatRuleImpl withFloatingIP(boolean enabled) {
-        this.inner().withEnableFloatingIP(enabled);
+        this.inner().withEnableFloatingIp(enabled);
         return this;
     }
 
@@ -139,7 +136,7 @@ class LoadBalancerInboundNatRuleImpl
     public LoadBalancerInboundNatRuleImpl fromFrontend(String frontendName) {
         SubResource frontendRef = this.parent().ensureFrontendRef(frontendName);
         if (frontendRef != null) {
-            this.inner().withFrontendIPConfiguration(frontendRef);
+            this.inner().withFrontendIpConfiguration(frontendRef);
         }
         return this;
     }
@@ -152,13 +149,15 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
+    public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(PublicIpAddress publicIPAddress) {
         return (publicIPAddress != null) ? this.fromExistingPublicIPAddress(publicIPAddress.id()) : this;
     }
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromExistingPublicIPAddress(String resourceId) {
-        return (null != resourceId) ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name()) : this;
+        return (null != resourceId)
+            ? this.fromFrontend(this.parent().ensurePublicFrontendWithPip(resourceId).name())
+            : this;
     }
 
     @Override
@@ -170,7 +169,7 @@ class LoadBalancerInboundNatRuleImpl
     }
 
     @Override
-    public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition) {
+    public LoadBalancerInboundNatRuleImpl fromNewPublicIPAddress(Creatable<PublicIpAddress> pipDefinition) {
         String frontendName = this.parent().manager().getSdkContext().randomResourceName("fe", 20);
         this.parent().withNewPublicIPAddress(pipDefinition, frontendName);
         this.fromFrontend(frontendName);
@@ -186,21 +185,17 @@ class LoadBalancerInboundNatRuleImpl
     @Override
     public LoadBalancerInboundNatRuleImpl fromExistingSubnet(String networkResourceId, String subnetName) {
         return (null != networkResourceId && null != subnetName)
-                ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
-                : this;
+            ? this.fromFrontend(this.parent().ensurePrivateFrontendWithSubnet(networkResourceId, subnetName).name())
+            : this;
     }
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromExistingSubnet(Network network, String subnetName) {
-        return (null != network && null != subnetName)
-                ? this.fromExistingSubnet(network.id(), subnetName)
-                : this;
+        return (null != network && null != subnetName) ? this.fromExistingSubnet(network.id(), subnetName) : this;
     }
 
     @Override
     public LoadBalancerInboundNatRuleImpl fromExistingSubnet(Subnet subnet) {
-        return (null != subnet)
-                ? this.fromExistingSubnet(subnet.parent().id(), subnet.name())
-                : this;
+        return (null != subnet) ? this.fromExistingSubnet(subnet.parent().id(), subnet.name()) : this;
     }
 }

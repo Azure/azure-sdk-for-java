@@ -8,17 +8,11 @@ import com.azure.management.network.models.NetworkWatcherInner;
 import com.azure.management.network.models.NetworkWatchersInner;
 import com.azure.management.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
-/**
- * Implementation for Network Watchers.
- */
+/** Implementation for Network Watchers. */
 class NetworkWatchersImpl
-        extends TopLevelModifiableResourcesImpl<
-        NetworkWatcher,
-        NetworkWatcherImpl,
-        NetworkWatcherInner,
-        NetworkWatchersInner,
-        NetworkManager>
-        implements NetworkWatchers {
+    extends TopLevelModifiableResourcesImpl<
+        NetworkWatcher, NetworkWatcherImpl, NetworkWatcherInner, NetworkWatchersInner, NetworkManager>
+    implements NetworkWatchers {
 
     NetworkWatchersImpl(final NetworkManager networkManager) {
         super(networkManager.inner().networkWatchers(), networkManager);
@@ -41,7 +35,6 @@ class NetworkWatchersImpl
         if (inner == null) {
             return null;
         }
-        return new NetworkWatcherImpl(inner.getName(), inner, this.manager());
+        return new NetworkWatcherImpl(inner.name(), inner, this.manager());
     }
 }
-

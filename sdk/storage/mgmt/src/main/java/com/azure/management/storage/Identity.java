@@ -5,13 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The Identity model.
- */
+/** The Identity model. */
 @Fluent
 public final class Identity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
+
     /*
      * The principal ID of resource identity.
      */
@@ -30,16 +32,14 @@ public final class Identity {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /**
-     * Creates an instance of Identity class.
-     */
+    /** Creates an instance of Identity class. */
     public Identity() {
         type = "SystemAssigned";
     }
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -48,7 +48,7 @@ public final class Identity {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -57,7 +57,7 @@ public final class Identity {
 
     /**
      * Get the type property: The identity type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -66,12 +66,20 @@ public final class Identity {
 
     /**
      * Set the type property: The identity type.
-     * 
+     *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
     public Identity withType(String type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

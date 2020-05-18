@@ -5,13 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The EnableRequest model.
- */
+/** The EnableRequest model. */
 @Fluent
 public final class EnableRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnableRequest.class);
+
     /*
      * The name of the receiver to resubscribe.
      */
@@ -20,7 +22,7 @@ public final class EnableRequest {
 
     /**
      * Get the receiverName property: The name of the receiver to resubscribe.
-     * 
+     *
      * @return the receiverName value.
      */
     public String receiverName() {
@@ -29,12 +31,25 @@ public final class EnableRequest {
 
     /**
      * Set the receiverName property: The name of the receiver to resubscribe.
-     * 
+     *
      * @param receiverName the receiverName value to set.
      * @return the EnableRequest object itself.
      */
     public EnableRequest withReceiverName(String receiverName) {
         this.receiverName = receiverName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (receiverName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property receiverName in model EnableRequest"));
+        }
     }
 }

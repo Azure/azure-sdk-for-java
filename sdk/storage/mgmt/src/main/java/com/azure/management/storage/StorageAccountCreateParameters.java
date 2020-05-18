@@ -6,15 +6,17 @@ package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The StorageAccountCreateParameters model.
- */
+/** The StorageAccountCreateParameters model. */
 @JsonFlatten
 @Fluent
 public class StorageAccountCreateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountCreateParameters.class);
+
     /*
      * Required. Gets or sets the SKU name.
      */
@@ -117,7 +119,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Get the sku property: Required. Gets or sets the SKU name.
-     * 
+     *
      * @return the sku value.
      */
     public Sku sku() {
@@ -126,7 +128,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Set the sku property: Required. Gets or sets the SKU name.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -137,7 +139,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Get the kind property: Required. Indicates the type of storage account.
-     * 
+     *
      * @return the kind value.
      */
     public Kind kind() {
@@ -146,7 +148,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Set the kind property: Required. Indicates the type of storage account.
-     * 
+     *
      * @param kind the kind value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -156,12 +158,11 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the location property: Required. Gets or sets the location of the
-     * resource. This will be one of the supported and registered Azure Geo
-     * Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of
-     * a resource cannot be changed once it is created, but if an identical geo
-     * region is specified on update, the request will succeed.
-     * 
+     * Get the location property: Required. Gets or sets the location of the resource. This will be one of the supported
+     * and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
+     * cannot be changed once it is created, but if an identical geo region is specified on update, the request will
+     * succeed.
+     *
      * @return the location value.
      */
     public String location() {
@@ -169,12 +170,11 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the location property: Required. Gets or sets the location of the
-     * resource. This will be one of the supported and registered Azure Geo
-     * Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of
-     * a resource cannot be changed once it is created, but if an identical geo
-     * region is specified on update, the request will succeed.
-     * 
+     * Set the location property: Required. Gets or sets the location of the resource. This will be one of the supported
+     * and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
+     * cannot be changed once it is created, but if an identical geo region is specified on update, the request will
+     * succeed.
+     *
      * @param location the location value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -184,13 +184,11 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the tags property: Gets or sets a list of key value pairs that
-     * describe the resource. These tags can be used for viewing and grouping
-     * this resource (across resource groups). A maximum of 15 tags can be
-     * provided for a resource. Each tag must have a key with a length no
-     * greater than 128 characters and a value with a length no greater than
-     * 256 characters.
-     * 
+     * Get the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
+     * for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
+     * resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no
+     * greater than 256 characters.
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -198,13 +196,11 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the tags property: Gets or sets a list of key value pairs that
-     * describe the resource. These tags can be used for viewing and grouping
-     * this resource (across resource groups). A maximum of 15 tags can be
-     * provided for a resource. Each tag must have a key with a length no
-     * greater than 128 characters and a value with a length no greater than
-     * 256 characters.
-     * 
+     * Set the tags property: Gets or sets a list of key value pairs that describe the resource. These tags can be used
+     * for viewing and grouping this resource (across resource groups). A maximum of 15 tags can be provided for a
+     * resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no
+     * greater than 256 characters.
+     *
      * @param tags the tags value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -215,7 +211,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Get the identity property: The identity of the resource.
-     * 
+     *
      * @return the identity value.
      */
     public Identity identity() {
@@ -224,7 +220,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Set the identity property: The identity of the resource.
-     * 
+     *
      * @param identity the identity value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -234,11 +230,10 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the customDomain property: User domain assigned to the storage
-     * account. Name is the CNAME source. Only one custom domain is supported
-     * per storage account at this time. To clear the existing custom domain,
-     * use an empty string for the custom domain name property.
-     * 
+     * Get the customDomain property: User domain assigned to the storage account. Name is the CNAME source. Only one
+     * custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty
+     * string for the custom domain name property.
+     *
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -246,11 +241,10 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the customDomain property: User domain assigned to the storage
-     * account. Name is the CNAME source. Only one custom domain is supported
-     * per storage account at this time. To clear the existing custom domain,
-     * use an empty string for the custom domain name property.
-     * 
+     * Set the customDomain property: User domain assigned to the storage account. Name is the CNAME source. Only one
+     * custom domain is supported per storage account at this time. To clear the existing custom domain, use an empty
+     * string for the custom domain name property.
+     *
      * @param customDomain the customDomain value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -260,9 +254,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the encryption property: Not applicable. Azure Storage encryption is
-     * enabled for all storage accounts and cannot be disabled.
-     * 
+     * Get the encryption property: Not applicable. Azure Storage encryption is enabled for all storage accounts and
+     * cannot be disabled.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -270,9 +264,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the encryption property: Not applicable. Azure Storage encryption is
-     * enabled for all storage accounts and cannot be disabled.
-     * 
+     * Set the encryption property: Not applicable. Azure Storage encryption is enabled for all storage accounts and
+     * cannot be disabled.
+     *
      * @param encryption the encryption value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -283,7 +277,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     * 
+     *
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -292,7 +286,7 @@ public class StorageAccountCreateParameters {
 
     /**
      * Set the networkRuleSet property: Network rule set.
-     * 
+     *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -302,9 +296,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind =
-     * BlobStorage. The access tier used for billing.
-     * 
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
+     * billing.
+     *
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -312,9 +306,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind =
-     * BlobStorage. The access tier used for billing.
-     * 
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
+     * billing.
+     *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -324,9 +318,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the azureFilesIdentityBasedAuthentication property: Provides the
-     * identity based authentication settings for Azure Files.
-     * 
+     * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
+     * Azure Files.
+     *
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -334,23 +328,22 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the azureFilesIdentityBasedAuthentication property: Provides the
-     * identity based authentication settings for Azure Files.
-     * 
-     * @param azureFilesIdentityBasedAuthentication the
-     * azureFilesIdentityBasedAuthentication value to set.
+     * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
+     * Azure Files.
+     *
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
-    public StorageAccountCreateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountCreateParameters withAzureFilesIdentityBasedAuthentication(
+        AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 
     /**
-     * Get the enableHttpsTrafficOnly property: Allows https traffic only to
-     * storage service if sets to true. The default value is true since API
-     * version 2019-04-01.
-     * 
+     * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true. The
+     * default value is true since API version 2019-04-01.
+     *
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -358,10 +351,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the enableHttpsTrafficOnly property: Allows https traffic only to
-     * storage service if sets to true. The default value is true since API
-     * version 2019-04-01.
-     * 
+     * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true. The
+     * default value is true since API version 2019-04-01.
+     *
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -371,9 +363,8 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if
-     * sets to true.
-     * 
+     * Get the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
+     *
      * @return the isHnsEnabled value.
      */
     public Boolean isHnsEnabled() {
@@ -381,9 +372,8 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the isHnsEnabled property: Account HierarchicalNamespace enabled if
-     * sets to true.
-     * 
+     * Set the isHnsEnabled property: Account HierarchicalNamespace enabled if sets to true.
+     *
      * @param isHnsEnabled the isHnsEnabled value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -393,9 +383,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the largeFileSharesState property: Allow large file shares if sets
-     * to Enabled. It cannot be disabled once it is enabled.
-     * 
+     * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
+     * is enabled.
+     *
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -403,9 +393,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the largeFileSharesState property: Allow large file shares if sets
-     * to Enabled. It cannot be disabled once it is enabled.
-     * 
+     * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
+     * is enabled.
+     *
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
@@ -415,9 +405,9 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Get the routingPreference property: Maintains information about the
-     * network routing choice opted by the user for data transfer.
-     * 
+     * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
+     * data transfer.
+     *
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -425,14 +415,60 @@ public class StorageAccountCreateParameters {
     }
 
     /**
-     * Set the routingPreference property: Maintains information about the
-     * network routing choice opted by the user for data transfer.
-     * 
+     * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
+     * data transfer.
+     *
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountCreateParameters object itself.
      */
     public StorageAccountCreateParameters withRoutingPreference(RoutingPreference routingPreference) {
         this.routingPreference = routingPreference;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sku in model StorageAccountCreateParameters"));
+        } else {
+            sku().validate();
+        }
+        if (kind() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property kind in model StorageAccountCreateParameters"));
+        }
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property location in model StorageAccountCreateParameters"));
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (customDomain() != null) {
+            customDomain().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
+        if (azureFilesIdentityBasedAuthentication() != null) {
+            azureFilesIdentityBasedAuthentication().validate();
+        }
+        if (routingPreference() != null) {
+            routingPreference().validate();
+        }
     }
 }

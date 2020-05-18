@@ -10,13 +10,7 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.arm.models.HasName;
 import com.azure.management.resources.fluentcore.model.Indexable;
 
-/**
- * An immutable client-side representation of an Azure AD object.
- */
+/** An immutable client-side representation of an Azure AD object. */
 @Fluent
-public interface ActiveDirectoryObject extends
-        Indexable,
-        HasId,
-        HasName,
-        HasManager<GraphRbacManager> {
+public interface ActiveDirectoryObject extends Indexable, HasId, HasName, HasManager<GraphRbacManager> {
 }

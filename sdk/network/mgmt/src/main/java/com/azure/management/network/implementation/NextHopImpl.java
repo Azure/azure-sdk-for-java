@@ -9,11 +9,8 @@ import com.azure.management.network.models.NextHopResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Implementation of NextHop.
- */
-public class NextHopImpl extends ExecutableImpl<NextHop>
-        implements NextHop, NextHop.Definition {
+/** Implementation of NextHop. */
+public class NextHopImpl extends ExecutableImpl<NextHop> implements NextHop, NextHop.Definition {
     private final NetworkWatcherImpl parent;
     private NextHopParameters parameters = new NextHopParameters();
     private NextHopResultInner result;
@@ -29,14 +26,14 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
     }
 
     @Override
-    public NextHopImpl withSourceIPAddress(String sourceIPAddress) {
-        this.parameters.withSourceIPAddress(sourceIPAddress);
+    public NextHopImpl withSourceIpAddress(String sourceIpAddress) {
+        this.parameters.withSourceIpAddress(sourceIpAddress);
         return this;
     }
 
     @Override
-    public NextHopImpl withDestinationIPAddress(String destinationIPAddress) {
-        this.parameters.withDestinationIPAddress(destinationIPAddress);
+    public NextHopImpl withDestinationIpAddress(String destinationIpAddress) {
+        this.parameters.withDestinationIpAddress(destinationIpAddress);
         return this;
     }
 
@@ -57,18 +54,18 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
     }
 
     @Override
-    public String sourceIPAddress() {
-        return parameters.sourceIPAddress();
+    public String sourceIpAddress() {
+        return parameters.sourceIpAddress();
     }
 
     @Override
-    public String destinationIPAddress() {
-        return parameters.destinationIPAddress();
+    public String destinationIpAddress() {
+        return parameters.destinationIpAddress();
     }
 
     @Override
     public String targetNetworkInterfaceId() {
-        return parameters.destinationIPAddress();
+        return parameters.destinationIpAddress();
     }
 
     @Override
@@ -88,9 +85,14 @@ public class NextHopImpl extends ExecutableImpl<NextHop>
 
     @Override
     public Mono<NextHop> executeWorkAsync() {
-        return this.parent().manager().inner().networkWatchers()
-                .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
-                .map(nextHopResultInner -> {
+        return this
+            .parent()
+            .manager()
+            .inner()
+            .networkWatchers()
+            .getNextHopAsync(parent.resourceGroupName(), parent.name(), parameters)
+            .map(
+                nextHopResultInner -> {
                     NextHopImpl.this.result = nextHopResultInner;
                     return NextHopImpl.this;
                 });

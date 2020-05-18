@@ -2,13 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosResponseDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
+import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
 
 import java.time.Duration;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Map;
 
 /**
@@ -40,15 +44,32 @@ public class CosmosAsyncItemResponse<T> {
             return item;
         }
 
-        if (this.itemClassType == CosmosItemProperties.class) {
-            item = (T) getProperties();
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
+        if (item == null && this.itemClassType == CosmosItemProperties.class) {
+            ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
+            item =(T) getProperties();
+            ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                serializationStartTime,
+                serializationEndTime,
+                SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+            );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
             return item;
         }
 
         if (item == null) {
             synchronized (this) {
                 if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
+                    ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
                     item = Utils.parse(responseBodyAsByteArray, itemClassType);
+                    ZonedDateTime serializationEndTime = ZonedDateTime.now(ZoneOffset.UTC);
+                    SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                        serializationStartTime,
+                        serializationEndTime,
+                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                    );
+                    serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
                 }
             }
         }
@@ -157,5 +178,16 @@ public class CosmosAsyncItemResponse<T> {
      */
     public Duration getRequestLatency() {
         return resourceResponse.getRequestLatency();
+    }
+
+    /**
+     * Gets the ETag from the response headers.
+     *
+     * Null in case of delete operation.
+     *
+     * @return ETag
+     */
+    public String getETag() {
+        return resourceResponse.getETag();
     }
 }
