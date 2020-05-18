@@ -97,8 +97,8 @@ Sample code to create a `HttpPipeline`:
 ```java
 HttpPipeline httpPipeline = new HttpPipelineBuilder()
     .policies(httpPipelinePolicies)
-	.httpClient(httpClient)
-	.build();
+    .httpClient(httpClient)
+    .build();
 ```
 
 ### Authenticating with custom HttpPipeline
