@@ -18,14 +18,14 @@ import com.microsoft.azure.management.appplatform.v2019_05_01_preview.implementa
  */
 public interface OperationDetail extends HasInner<OperationDetailInner>, HasManager<AppPlatformManager> {
     /**
-     * @return the dataAction value.
-     */
-    Boolean dataAction();
-
-    /**
      * @return the display value.
      */
     OperationDisplay display();
+
+    /**
+     * @return the isDataAction value.
+     */
+    Boolean isDataAction();
 
     /**
      * @return the name value.

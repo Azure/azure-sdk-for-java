@@ -29,7 +29,7 @@ public class AppResourceProperties {
 
     /**
      * Provisioning state of the App. Possible values include: 'Succeeded',
-     * 'Failed'.
+     * 'Failed', 'Creating', 'Updating'.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private AppResourceProvisioningState provisioningState;
@@ -39,6 +39,18 @@ public class AppResourceProperties {
      */
     @JsonProperty(value = "activeDeploymentName")
     private String activeDeploymentName;
+
+    /**
+     * Fully qualified dns Name.
+     */
+    @JsonProperty(value = "fqdn")
+    private String fqdn;
+
+    /**
+     * Indicate if only https is allowed.
+     */
+    @JsonProperty(value = "httpsOnly")
+    private Boolean httpsOnly;
 
     /**
      * Date time when the resource is created.
@@ -88,7 +100,7 @@ public class AppResourceProperties {
     }
 
     /**
-     * Get provisioning state of the App. Possible values include: 'Succeeded', 'Failed'.
+     * Get provisioning state of the App. Possible values include: 'Succeeded', 'Failed', 'Creating', 'Updating'.
      *
      * @return the provisioningState value
      */
@@ -113,6 +125,46 @@ public class AppResourceProperties {
      */
     public AppResourceProperties withActiveDeploymentName(String activeDeploymentName) {
         this.activeDeploymentName = activeDeploymentName;
+        return this;
+    }
+
+    /**
+     * Get fully qualified dns Name.
+     *
+     * @return the fqdn value
+     */
+    public String fqdn() {
+        return this.fqdn;
+    }
+
+    /**
+     * Set fully qualified dns Name.
+     *
+     * @param fqdn the fqdn value to set
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withFqdn(String fqdn) {
+        this.fqdn = fqdn;
+        return this;
+    }
+
+    /**
+     * Get indicate if only https is allowed.
+     *
+     * @return the httpsOnly value
+     */
+    public Boolean httpsOnly() {
+        return this.httpsOnly;
+    }
+
+    /**
+     * Set indicate if only https is allowed.
+     *
+     * @param httpsOnly the httpsOnly value to set
+     * @return the AppResourceProperties object itself.
+     */
+    public AppResourceProperties withHttpsOnly(Boolean httpsOnly) {
+        this.httpsOnly = httpsOnly;
         return this;
     }
 
