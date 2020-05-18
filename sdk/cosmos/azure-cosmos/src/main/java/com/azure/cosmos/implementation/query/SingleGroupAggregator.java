@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.query.aggregation.Aggregator;
@@ -13,7 +14,9 @@ import com.azure.cosmos.implementation.query.aggregation.CountAggregator;
 import com.azure.cosmos.implementation.query.aggregation.MaxAggregator;
 import com.azure.cosmos.implementation.query.aggregation.MinAggregator;
 import com.azure.cosmos.implementation.query.aggregation.SumAggregator;
-import com.azure.cosmos.models.Resource;
+import com.azure.cosmos.implementation.Resource;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,12 +28,11 @@ import java.util.Map;
 /// </summary>
 public abstract class SingleGroupAggregator {
 
-    public static SingleGroupAggregator create(
-        List<AggregateOperator> aggregates,
-        Map<String, AggregateOperator> aggregateAliasToAggregateType,
-        List<String> orderedAliases,
-        boolean hasSelectValue,
-        Resource continuationToken) {
+    public static SingleGroupAggregator create(List<AggregateOperator> aggregates,
+                                               Map<String, AggregateOperator> aggregateAliasToAggregateType,
+                                               List<String> orderedAliases,
+                                               boolean hasSelectValue,
+                                               String continuationToken) {
 
         if (aggregates == null) {
             throw new IllegalArgumentException("aggregates");
@@ -88,7 +90,7 @@ public abstract class SingleGroupAggregator {
             this.aggregateValue = aggregateValue;
         }
 
-        public static SingleGroupAggregator create(AggregateOperator aggregateOperator, Resource continuationToken) {
+        public static SingleGroupAggregator create(AggregateOperator aggregateOperator, String continuationToken) {
             AggregateValue aggregateValue = AggregateValue.create(aggregateOperator, continuationToken);
             return new SelectValueAggregateValues(aggregateValue);
         }
@@ -100,7 +102,20 @@ public abstract class SingleGroupAggregator {
 
         @Override
         public Document getResult() {
-            return (Document) aggregateValue.getResult();
+            Document document;
+            Object result = aggregateValue.getResult();
+            if (result instanceof Document) {
+                document = (Document) aggregateValue.getResult();
+            } else {
+                // This is for value queries.Need to append value property for scalar values (non key value pairs)
+                // to make them a key value pair document
+                document = new Document();
+                if (result instanceof Undefined) {
+                    result = null;
+                }
+                document.set(Constants.Properties.VALUE, result);
+            }
+            return document;
         }
 
         @Override
@@ -128,7 +143,7 @@ public abstract class SingleGroupAggregator {
 
         public static SingleGroupAggregator create(
             Map<String, AggregateOperator> aggregateAliasToAggregateType, List<String> orderedAliases,
-            Resource continuationToken) {
+            String continuationToken) {
             if (aggregateAliasToAggregateType == null) {
                 throw new IllegalArgumentException("aggregateAliasToAggregateType cannot be null");
             }
@@ -137,7 +152,7 @@ public abstract class SingleGroupAggregator {
                 throw new IllegalArgumentException("orderedAliases cannot be null");
             }
 
-            Map<String, AggregateValue> aliasToValue = new HashMap<>();
+            Map<String, AggregateValue> groupingTable = new HashMap<>();
 
             for (Map.Entry<String, AggregateOperator> aliasToAggregate : aggregateAliasToAggregateType.entrySet()) {
                 String alias = aliasToAggregate.getKey();
@@ -146,10 +161,10 @@ public abstract class SingleGroupAggregator {
                     aggregateOperator = AggregateOperator.valueOf(String.valueOf(aliasToAggregate.getValue()));
                 }
                 AggregateValue aggregateValue = AggregateValue.create(aggregateOperator, continuationToken);
-                aliasToValue.put(alias, aggregateValue);
+                groupingTable.put(alias, aggregateValue);
 
             }
-            return new SelectListAggregateValues(aliasToValue, orderedAliases);
+            return new SelectListAggregateValues(groupingTable, orderedAliases);
         }
 
         @Override
@@ -166,13 +181,17 @@ public abstract class SingleGroupAggregator {
         @Override
         public Document getResult() {
             Document aggregateDocument = new Document();
+            List<Map<String, Object>> aliasToElement = new ArrayList<Map<String, Object>>();
             for (String alias : this.orderedAliases) {
                 AggregateValue aggregateValue = this.aliasToValue.get(alias);
                 if (aggregateValue.getResult() != null) {
-                    BridgeInternal
-                        .setProperty(aggregateDocument, alias, aggregateValue.getResult());
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(alias,  aggregateValue.getResult());
+                    aggregateDocument.set(alias, aggregateValue.getResult());
+                    aliasToElement.add(map);
                 }
             }
+//            aggregateDocument = Document.fromObject(aliasToElement.get(0), Utils.getSimpleObjectMapper());
             return aggregateDocument;
         }
 
@@ -188,10 +207,11 @@ public abstract class SingleGroupAggregator {
     /// 2) scalar group by values.
     /// </summary>
     private abstract static class AggregateValue {
-        public static AggregateValue create(AggregateOperator aggregateOperator, Resource continuationToken) {
+        public static AggregateValue create(AggregateOperator aggregateOperator, String continuationToken) {
             AggregateValue value;
             if (aggregateOperator != null) {
-                value = AggregateAggregateValue.create(aggregateOperator, continuationToken);
+                value = AggregateAggregateValue.createAggregateValue(aggregateOperator,
+                                                                     continuationToken);
             } else {
                 value = ScalarAggregateValue.create(continuationToken);
             }
@@ -213,7 +233,8 @@ public abstract class SingleGroupAggregator {
             this.aggregator = aggregator;
         }
 
-        public static AggregateValue create(AggregateOperator aggregateOperator, Resource continuationToken) {
+        public static AggregateAggregateValue createAggregateValue(AggregateOperator aggregateOperator,
+                                                                   String continuationToken) {
             Aggregator aggregator = null;
             switch (aggregateOperator) {
                 case Average:
@@ -265,7 +286,7 @@ public abstract class SingleGroupAggregator {
             this.initialized = initialized;
         }
 
-        public static ScalarAggregateValue create(Resource continuationToken) {
+        public static ScalarAggregateValue create(String continuationToken) {
             // Intialize these values using continuationToken when its support added.
             Document value = null;
             boolean initialized = false;

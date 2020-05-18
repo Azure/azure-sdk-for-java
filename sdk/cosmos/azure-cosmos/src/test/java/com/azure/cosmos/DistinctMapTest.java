@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.query.DistinctHash;
 import com.azure.cosmos.implementation.query.DistinctMap;
 import com.azure.cosmos.implementation.query.DistinctQueryType;
 import com.azure.cosmos.implementation.routing.UInt128;
-import com.azure.cosmos.models.JsonSerializable;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;

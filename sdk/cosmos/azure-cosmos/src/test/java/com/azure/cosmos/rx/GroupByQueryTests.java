@@ -6,16 +6,10 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.implementation.FeedResponseListValidator;
-import com.azure.cosmos.implementation.FeedResponseValidator;
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.query.UnorderedDistinctMap;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,17 +17,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class GroupByQueryTests extends TestSuiteBase {
     private final String FIELD = "city";
@@ -81,7 +70,7 @@ public class GroupByQueryTests extends TestSuiteBase {
     public void queryDocuments() {
         boolean qmEnabled = true;
 
-        String query = "SELECT count(c.age) FROM c ";
+        String query = "SELECT count(c.age), c.country FROM c group by c.country ";
         FeedOptions options = new FeedOptions();
         ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 35);
         options.setPopulateQueryMetrics(qmEnabled);

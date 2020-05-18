@@ -18,6 +18,7 @@ import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 
 import java.util.ArrayList;
@@ -31,16 +32,32 @@ import java.util.function.Function;
 
 public class AggregateDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T>{
 
+    private final boolean isValueAggregateQuery;
     private IDocumentQueryExecutionComponent<T> component;
-    private Aggregator aggregator;
+//    private Aggregator aggregator;
     private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
+    private SingleGroupAggregator singleGroupAggregator;
 
     //QueryInfo class used in PipelinedDocumentQueryExecutionContext returns a Collection of AggregateOperators
     //while Multiple aggregates are allowed in queries targeted at a single partition, only a single aggregate is allowed in x-partition queries (currently)
-    public AggregateDocumentQueryExecutionContext (IDocumentQueryExecutionComponent<T> component, Collection<AggregateOperator> aggregateOperators) {
+    public AggregateDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component,
+                                                  List<AggregateOperator> aggregateOperators,
+                                                  Map<String, AggregateOperator> groupByAliasToAggregateType,
+                                                  List<String> orderedAliases,
+                                                  boolean hasSelectValue,
+                                                  String continuationToken) {
 
         this.component = component;
-        AggregateOperator aggregateOperator = aggregateOperators.iterator().next();
+        this.isValueAggregateQuery = hasSelectValue;
+
+        this.singleGroupAggregator = SingleGroupAggregator.create(aggregateOperators,
+                                                                                   groupByAliasToAggregateType,
+                                                                                   orderedAliases,
+                                                                                   hasSelectValue,
+                                                                                   continuationToken);
+        /*
+
+        AggregateOperator aggregateOperator = AggregateOperator.Max;
 
         switch (aggregateOperator) {
             case Average:
@@ -60,8 +77,9 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + aggregateOperator.toString());
-            }
         }
+        */
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -85,8 +103,18 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
                         Document doc = ((Document)page.getResults().get(0));
                         requestCharge += page.getRequestCharge();
+
+                        for (T d : page.getResults()) {
+                            RewrittenAggregateProjections rewrittenAggregateProjections =
+                                new RewrittenAggregateProjections(this.isValueAggregateQuery,
+                                                                  (Document)d);
+                            this.singleGroupAggregator.addValues(rewrittenAggregateProjections.getPayload());
+                        }
+
+//                        Document result = this.singleGroupAggregator.getResult();
+
                         QueryItem values = new QueryItem(doc.toJson());
-                        this.aggregator.aggregate(values.getItem());
+//                        this.aggregator.aggregate(values.getItem());
                         for(String key : BridgeInternal.queryMetricsFromFeedResponse(page).keySet()) {
                             if (queryMetricsMap.containsKey(key)) {
                                 QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(page).get(key);
@@ -97,9 +125,9 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         }
                     }
 
-                    if (this.aggregator.getResult() == null || !this.aggregator.getResult().equals(Undefined.value())) {
-                        Document aggregateDocument = new Document();
-                        BridgeInternal.setProperty(aggregateDocument, Constants.Properties.VALUE, this.aggregator.getResult());
+                    if (this.singleGroupAggregator.getResult() == null || !this.singleGroupAggregator.getResult().equals(Undefined.value())) {
+                        Document aggregateDocument = this.singleGroupAggregator.getResult();
+//                        BridgeInternal.setProperty(aggregateDocument, Constants.Properties.VALUE, this.aggregator.getResult());
                         aggregateResults.add(aggregateDocument);
                     }
 
@@ -114,18 +142,52 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                 }).flux();
     }
 
-    public static <T extends Resource>  Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-            Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
-            Collection<AggregateOperator> aggregates,
-            String continuationToken) {
+    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+        Function<String, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+        Collection<AggregateOperator> aggregates,
+        Map<String, AggregateOperator> groupByAliasToAggregateType,
+        List<String> groupByAliases,
+        boolean hasSelectValue,
+        String continuationToken) {
 
         return createSourceComponentFunction
-                .apply(continuationToken)
-                .map( component -> { return new AggregateDocumentQueryExecutionContext<T>(component, aggregates);});
+                   .apply(continuationToken)
+                   .map(component -> {
+                       return new AggregateDocumentQueryExecutionContext<T>(component,
+                                                                            new ArrayList<>(aggregates),
+                                                                            groupByAliasToAggregateType,
+                                                                            groupByAliases,
+                                                                            hasSelectValue,
+                                                                            continuationToken);
+                   });
     }
 
     public IDocumentQueryExecutionComponent<T> getComponent() {
         return this.component;
+    }
+
+    class RewrittenAggregateProjections {
+        private Document payload;
+
+        public RewrittenAggregateProjections(boolean isValueAggregateQuery, Document document) {
+            if (document == null) {
+                throw new IllegalArgumentException("document cannot be null");
+            }
+            if (isValueAggregateQuery) {
+                if (document != null) {
+
+                }
+                this.payload = new Document(document.getPropertyBag());
+            } else {
+                if (document.get("payload") instanceof ObjectNode) {
+                    this.payload = new Document((ObjectNode) document.get("payload"));
+                }
+            }
+        }
+
+        public Document getPayload() {
+            return payload;
+        }
     }
 
 }

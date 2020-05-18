@@ -16,8 +16,13 @@ public class AggregateItem {
 
     public Object getItem() {
         Object object = null;
-        if (document instanceof ObjectNode) {
-            ObjectNode documentNode = (ObjectNode) document;
+        if (document instanceof Document || document instanceof ObjectNode) {
+            ObjectNode documentNode = null;
+            if (document instanceof Document) {
+                documentNode = ((Document)document).getPropertyBag();
+            } else{
+                documentNode = (ObjectNode) document;
+            }
             if (documentNode.hasNonNull(ITEM_NAME_2)) {
                 object = documentNode.get(ITEM_NAME_2);
             } else if (documentNode.hasNonNull(ITEM_NAME_1)) {

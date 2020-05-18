@@ -1,9 +1,9 @@
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.MurmurHash3_128;
 import com.azure.cosmos.implementation.routing.UInt128;
-import com.azure.cosmos.models.JsonSerializable;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;

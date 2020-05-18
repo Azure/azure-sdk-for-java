@@ -166,6 +166,7 @@ class DocumentProducer<T extends Resource> {
                         top,
                         pageSize)
                 .map(rsp -> {
+                    System.out.println("rsp.getResults() = " + rsp.getResults());
                     lastResponseContinuationToken = rsp.getContinuationToken();
                     this.fetchExecutionRangeAccumulator.endFetchRange(rsp.getActivityId(),
                             rsp.getResults().size(),

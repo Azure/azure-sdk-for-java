@@ -54,8 +54,6 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
 
         QueryInfo queryInfo = partitionedQueryExecutionInfo.getQueryInfo();
 
-        System.out.println("queryInfo.hasGroupBy() = " + queryInfo.hasGroupBy());
-
         if (queryInfo.hasOrderBy()) {
             createBaseComponentFunction = (continuationToken) -> {
                 FeedOptions orderByFeedOptions = new FeedOptions(feedOptions);
@@ -80,7 +78,11 @@ public class PipelinedDocumentQueryExecutionContext<T extends Resource> implemen
         if (queryInfo.hasAggregates() && !queryInfo.hasGroupBy()) {
             createAggregateComponentFunction = (continuationToken) -> {
                 return AggregateDocumentQueryExecutionContext.createAsync(createBaseComponentFunction,
-                        queryInfo.getAggregates(), continuationToken);
+                                                                          queryInfo.getAggregates(),
+                                                                          queryInfo.getGroupByAliasToAggregateType(),
+                                                                          queryInfo.getGroupByAliases(),
+                                                                          queryInfo.hasSelectValue(),
+                                                                          continuationToken);
             };
         } else {
             createAggregateComponentFunction = createBaseComponentFunction;

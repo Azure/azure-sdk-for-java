@@ -23,6 +23,7 @@ class QueryPlanRetriever {
     private static final String SUPPORTED_QUERY_FEATURES = QueryFeature.Aggregate.name() + ", " +
                                                                QueryFeature.CompositeAggregate.name() + ", " +
                                                                QueryFeature.MultipleOrderBy.name() + ", " +
+                                                               QueryFeature.MultipleAggregates.name() + ", " +
                                                                QueryFeature.OrderBy.name() + ", " +
                                                                QueryFeature.OffsetAndLimit.name() + ", " +
                                                                QueryFeature.Distinct.name() + ", " +
