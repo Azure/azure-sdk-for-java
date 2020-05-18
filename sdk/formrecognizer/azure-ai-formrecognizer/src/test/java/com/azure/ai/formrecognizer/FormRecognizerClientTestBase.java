@@ -49,9 +49,6 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.EXPECTED_MULTIPAGE_ADDRESS_VALUE;
-import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE;
-import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.ITEMIZED_RECEIPT_VALUE;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_ENDPOINT;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL;

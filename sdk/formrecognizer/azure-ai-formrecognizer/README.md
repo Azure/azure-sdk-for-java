@@ -23,13 +23,13 @@ from form documents. It includes the following main functionalities:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-formrecognizer</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Create a Form Recognizer resource
-Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Services 
+Form Recognizer supports both [multi-service and single-service access][service_access]. Create a Cognitive Service's 
 resource if you plan to access multiple cognitive services under a single endpoint/key. For Form Recognizer access only,
 create a Form Recognizer resource.
 
