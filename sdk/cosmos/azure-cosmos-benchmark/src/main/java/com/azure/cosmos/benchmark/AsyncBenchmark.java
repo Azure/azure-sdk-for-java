@@ -101,7 +101,7 @@ abstract class AsyncBenchmark<T> {
             cosmosAsyncContainer = cosmosAsyncDatabase.getContainer(
                 this.configuration.getCollectionId()
             ).read().doOnError(error ->
-                logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
+                logger.error("Container {} creation failed due to ", this.configuration.getDatabaseId(), error)
             ).block().getContainer();
         } catch (CosmosClientException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
@@ -110,7 +110,7 @@ abstract class AsyncBenchmark<T> {
                     Configuration.DEFAULT_PARTITION_KEY_PATH,
                     this.configuration.getThroughput()
                 ).block().getContainer();
-                logger.info("Collection {} is created for this test", this.configuration.getCollectionId());
+                logger.info("Container {} is created for this test", this.configuration.getCollectionId());
                 collectionCreated = true;
             } else {
                 throw e;
