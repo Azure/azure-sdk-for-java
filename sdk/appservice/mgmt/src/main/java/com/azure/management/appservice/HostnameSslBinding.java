@@ -16,7 +16,7 @@ public interface HostnameSslBinding extends HasInner<HostnameSslState>, ChildRes
     SslState sslState();
 
     /** @return the virtual IP address assigned to the host name if IP based SSL is enabled */
-    String virtualIP();
+    String virtualIp();
 
     /** @return the SSL cert thumbprint. */
     String thumbprint();

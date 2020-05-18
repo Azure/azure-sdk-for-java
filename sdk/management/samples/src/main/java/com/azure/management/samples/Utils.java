@@ -1807,7 +1807,7 @@ public final class Utils {
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
-                    .append("\n\t\t\tHost name: ").append(listener.hostName())
+                    .append("\n\t\t\tHost name: ").append(listener.hostname())
                     .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
                     .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
                     .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
@@ -1839,7 +1839,7 @@ public final class Utils {
             info.append("\n\t\tName: ").append(rule.name())
                     .append("\n\t\tType: ").append(rule.ruleType())
                     .append("\n\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
-                    .append("\n\t\tHost name: ").append(rule.hostName())
+                    .append("\n\t\tHost name: ").append(rule.hostname())
                     .append("\n\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
                     .append("\n\t\tFrontend port: ").append(rule.frontendPort())
                     .append("\n\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())

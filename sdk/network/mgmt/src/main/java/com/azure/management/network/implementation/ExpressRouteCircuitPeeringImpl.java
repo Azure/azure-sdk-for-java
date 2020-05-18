@@ -118,12 +118,12 @@ class ExpressRouteCircuitPeeringImpl
     }
 
     @Override
-    public int azureASN() {
+    public int azureAsn() {
         return Utils.toPrimitiveInt(inner().azureAsn());
     }
 
     @Override
-    public long peerASN() {
+    public long peerAsn() {
         return Utils.toPrimitiveLong(inner().peerAsn());
     }
 
