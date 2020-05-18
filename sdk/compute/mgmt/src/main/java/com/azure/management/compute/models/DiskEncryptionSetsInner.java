@@ -31,159 +31,167 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.compute.ApiErrorException;
-import com.azure.management.compute.GalleryApplicationUpdate;
+import com.azure.management.compute.DiskEncryptionSetUpdate;
+import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.azure.management.resources.fluentcore.collection.InnerSupportsGet;
+import com.azure.management.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GalleryApplications. */
-public final class GalleryApplicationsInner {
-    private final ClientLogger logger = new ClientLogger(GalleryApplicationsInner.class);
+/** An instance of this class provides access to all the operations defined in DiskEncryptionSets. */
+public final class DiskEncryptionSetsInner
+    implements InnerSupportsGet<DiskEncryptionSetInner>,
+        InnerSupportsListing<DiskEncryptionSetInner>,
+        InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(DiskEncryptionSetsInner.class);
 
     /** The proxy service used to perform REST calls. */
-    private final GalleryApplicationsService service;
+    private final DiskEncryptionSetsService service;
 
     /** The service client containing this operation class. */
     private final ComputeManagementClientImpl client;
 
     /**
-     * Initializes an instance of GalleryApplicationsInner.
+     * Initializes an instance of DiskEncryptionSetsInner.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    GalleryApplicationsInner(ComputeManagementClientImpl client) {
+    DiskEncryptionSetsInner(ComputeManagementClientImpl client) {
         this.service =
-            RestProxy.create(GalleryApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy.create(DiskEncryptionSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ComputeManagementClientGalleryApplications to be used by the proxy
+     * The interface defining all the services for ComputeManagementClientDiskEncryptionSets to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
-    private interface GalleryApplicationsService {
+    private interface DiskEncryptionSetsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
-        @ExpectedResponses({200, 201, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GalleryApplicationInner galleryApplication,
+            @BodyParam("application/json") DiskEncryptionSetInner diskEncryptionSet,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> update(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GalleryApplicationUpdate galleryApplication,
+            @BodyParam("application/json") DiskEncryptionSetUpdate diskEncryptionSet,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<SimpleResponse<GalleryApplicationInner>> get(
+        Mono<SimpleResponse<DiskEncryptionSetInner>> getByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<SimpleResponse<GalleryApplicationListInner>> listByGallery(
+        Mono<SimpleResponse<DiskEncryptionSetListInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
+            @QueryParam("api-version") String apiVersion,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/diskEncryptionSets")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<SimpleResponse<DiskEncryptionSetListInner>> list(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
-        @ExpectedResponses({200, 201, 202})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<SimpleResponse<GalleryApplicationInner>> beginCreateOrUpdate(
+        Mono<SimpleResponse<DiskEncryptionSetInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GalleryApplicationInner galleryApplication,
+            @BodyParam("application/json") DiskEncryptionSetInner diskEncryptionSet,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
-        @ExpectedResponses({200})
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
+        @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<SimpleResponse<GalleryApplicationInner>> beginUpdate(
+        Mono<SimpleResponse<DiskEncryptionSetInner>> beginUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GalleryApplicationUpdate galleryApplication,
+            @BodyParam("application/json") DiskEncryptionSetUpdate diskEncryptionSet,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
-                + "/{galleryName}/applications/{galleryApplicationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/diskEncryptionSets/{diskEncryptionSetName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("galleryName") String galleryName,
-            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("diskEncryptionSetName") String diskEncryptionSetName,
             @QueryParam("api-version") String apiVersion,
             Context context);
 
@@ -191,32 +199,33 @@ public final class GalleryApplicationsInner {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<SimpleResponse<GalleryApplicationListInner>> listByGalleryNext(
+        Mono<SimpleResponse<DiskEncryptionSetListInner>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get("{nextLink}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<SimpleResponse<DiskEncryptionSetListInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Creates or updates a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication) {
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -231,19 +240,15 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        if (galleryApplication == null) {
+        if (diskEncryptionSet == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter galleryApplication is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSet is required and cannot be null."));
         } else {
-            galleryApplication.validate();
+            diskEncryptionSet.validate();
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
@@ -254,92 +259,74 @@ public final class GalleryApplicationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
-                            galleryApplication,
+                            diskEncryptionSet,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Creates or updates a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GalleryApplicationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication) {
+    public Mono<DiskEncryptionSetInner> createOrUpdateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication);
+            createOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
         return this
             .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class)
+            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Creates or updates a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationInner createOrUpdate(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication) {
-        return createOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication).block();
+    public DiskEncryptionSetInner createOrUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
+        return createOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).block();
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication) {
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -354,19 +341,15 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        if (galleryApplication == null) {
+        if (diskEncryptionSet == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter galleryApplication is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSet is required and cannot be null."));
         } else {
-            galleryApplication.validate();
+            diskEncryptionSet.validate();
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
@@ -377,84 +360,73 @@ public final class GalleryApplicationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
-                            galleryApplication,
+                            diskEncryptionSet,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GalleryApplicationInner> updateAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication) {
+    public Mono<DiskEncryptionSetInner> updateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication);
+            updateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet);
         return this
             .client
-            .<GalleryApplicationInner, GalleryApplicationInner>getLroResultAsync(
-                mono, this.client.getHttpPipeline(), GalleryApplicationInner.class, GalleryApplicationInner.class)
+            .<DiskEncryptionSetInner, DiskEncryptionSetInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), DiskEncryptionSetInner.class, DiskEncryptionSetInner.class)
             .last()
             .flatMap(AsyncPollResponse::getFinalResult);
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationInner update(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication) {
-        return updateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication).block();
+    public DiskEncryptionSetInner update(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
+        return updateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).block();
     }
 
     /**
-     * Retrieves information about a gallery Application Definition.
+     * Gets information about a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     *     retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return information about a disk encryption set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GalleryApplicationInner>> getWithResponseAsync(
-        String resourceGroupName, String galleryName, String galleryApplicationName) {
+    public Mono<SimpleResponse<DiskEncryptionSetInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -469,46 +441,41 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .get(
+                        .getByResourceGroup(
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Retrieves information about a gallery Application Definition.
+     * Gets information about a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     *     retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return information about a disk encryption set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GalleryApplicationInner>> getWithResponseAsync(
-        String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
+    public Mono<SimpleResponse<DiskEncryptionSetInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName, Context context) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -523,44 +490,39 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
         final String apiVersion = "2019-07-01";
         return service
-            .get(
+            .getByResourceGroup(
                 this.client.getHost(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                galleryName,
-                galleryApplicationName,
+                diskEncryptionSetName,
                 apiVersion,
                 context);
     }
 
     /**
-     * Retrieves information about a gallery Application Definition.
+     * Gets information about a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     *     retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return information about a disk encryption set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GalleryApplicationInner> getAsync(
-        String resourceGroupName, String galleryName, String galleryApplicationName) {
-        return getWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName)
+    public Mono<DiskEncryptionSetInner> getByResourceGroupAsync(
+        String resourceGroupName, String diskEncryptionSetName) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, diskEncryptionSetName)
             .flatMap(
-                (SimpleResponse<GalleryApplicationInner> res) -> {
+                (SimpleResponse<DiskEncryptionSetInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -570,29 +532,29 @@ public final class GalleryApplicationsInner {
     }
 
     /**
-     * Retrieves information about a gallery Application Definition.
+     * Gets information about a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which the Application Definitions are to be
-     *     retrieved.
-     * @param galleryApplicationName The name of the gallery Application Definition to be retrieved.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return information about a disk encryption set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationInner get(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        return getAsync(resourceGroupName, galleryName, galleryApplicationName).block();
+    public DiskEncryptionSetInner getByResourceGroup(String resourceGroupName, String diskEncryptionSetName) {
+        return getByResourceGroupAsync(resourceGroupName, diskEncryptionSetName).block();
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -600,7 +562,7 @@ public final class GalleryApplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String galleryName, String galleryApplicationName) {
+        String resourceGroupName, String diskEncryptionSetName) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -615,13 +577,9 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
@@ -632,29 +590,27 @@ public final class GalleryApplicationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName);
+    public Mono<Void> deleteAsync(String resourceGroupName, String diskEncryptionSetName) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, diskEncryptionSetName);
         return this
             .client
             .<Void, Void>getLroResultAsync(mono, this.client.getHttpPipeline(), Void.class, Void.class)
@@ -663,35 +619,32 @@ public final class GalleryApplicationsInner {
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        deleteAsync(resourceGroupName, galleryName, galleryApplicationName).block();
+    public void delete(String resourceGroupName, String diskEncryptionSetName) {
+        deleteAsync(resourceGroupName, diskEncryptionSetName).block();
     }
 
     /**
-     * List gallery Application Definitions in a gallery.
+     * Lists all the disk encryption sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     *     listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(
-        String resourceGroupName, String galleryName) {
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -706,22 +659,18 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
         final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
                     service
-                        .listByGallery(
+                        .listByResourceGroup(
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
                             apiVersion,
                             context))
-            .<PagedResponse<GalleryApplicationInner>>map(
+            .<PagedResponse<DiskEncryptionSetInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -734,20 +683,18 @@ public final class GalleryApplicationsInner {
     }
 
     /**
-     * List gallery Application Definitions in a gallery.
+     * Lists all the disk encryption sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     *     listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GalleryApplicationInner>> listByGallerySinglePageAsync(
-        String resourceGroupName, String galleryName, Context context) {
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -762,18 +709,10 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
         final String apiVersion = "2019-07-01";
         return service
-            .listByGallery(
-                this.client.getHost(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                galleryName,
-                apiVersion,
-                context)
+            .listByResourceGroup(
+                this.client.getHost(), this.client.getSubscriptionId(), resourceGroupName, apiVersion, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -786,81 +725,176 @@ public final class GalleryApplicationsInner {
     }
 
     /**
-     * List gallery Application Definitions in a gallery.
+     * Lists all the disk encryption sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     *     listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GalleryApplicationInner> listByGalleryAsync(String resourceGroupName, String galleryName) {
+    public PagedFlux<DiskEncryptionSetInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
-            () -> listByGallerySinglePageAsync(resourceGroupName, galleryName),
-            nextLink -> listByGalleryNextSinglePageAsync(nextLink));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List gallery Application Definitions in a gallery.
+     * Lists all the disk encryption sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     *     listed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GalleryApplicationInner> listByGalleryAsync(
-        String resourceGroupName, String galleryName, Context context) {
+    public PagedFlux<DiskEncryptionSetInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
         return new PagedFlux<>(
-            () -> listByGallerySinglePageAsync(resourceGroupName, galleryName, context),
-            nextLink -> listByGalleryNextSinglePageAsync(nextLink));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
-     * List gallery Application Definitions in a gallery.
+     * Lists all the disk encryption sets under a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery from which Application Definitions are to be
-     *     listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GalleryApplicationInner> listByGallery(String resourceGroupName, String galleryName) {
-        return new PagedIterable<>(listByGalleryAsync(resourceGroupName, galleryName));
+    public PagedIterable<DiskEncryptionSetInner> listByResourceGroup(String resourceGroupName) {
+        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Lists all the disk encryption sets under a subscription.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GalleryApplicationInner>> beginCreateOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication) {
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return FluxUtil
+            .withContext(
+                context -> service.list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context))
+            .<PagedResponse<DiskEncryptionSetInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Lists all the disk encryption sets under a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List disk encryption set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .list(this.client.getHost(), this.client.getSubscriptionId(), apiVersion, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Lists all the disk encryption sets under a subscription.
+     *
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List disk encryption set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DiskEncryptionSetInner> listAsync() {
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the disk encryption sets under a subscription.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List disk encryption set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<DiskEncryptionSetInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Lists all the disk encryption sets under a subscription.
+     *
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List disk encryption set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DiskEncryptionSetInner> list() {
+        return new PagedIterable<>(listAsync());
+    }
+
+    /**
+     * Creates or updates a disk encryption set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return disk encryption set resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DiskEncryptionSetInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -875,19 +909,15 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        if (galleryApplication == null) {
+        if (diskEncryptionSet == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter galleryApplication is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSet is required and cannot be null."));
         } else {
-            galleryApplication.validate();
+            diskEncryptionSet.validate();
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
@@ -898,37 +928,32 @@ public final class GalleryApplicationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
-                            galleryApplication,
+                            diskEncryptionSet,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Creates or updates a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GalleryApplicationInner>> beginCreateOrUpdateWithResponseAsync(
+    public Mono<SimpleResponse<DiskEncryptionSetInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication,
+        String diskEncryptionSetName,
+        DiskEncryptionSetInner diskEncryptionSet,
         Context context) {
         if (this.client.getHost() == null) {
             return Mono
@@ -944,19 +969,15 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        if (galleryApplication == null) {
+        if (diskEncryptionSet == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter galleryApplication is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSet is required and cannot be null."));
         } else {
-            galleryApplication.validate();
+            diskEncryptionSet.validate();
         }
         final String apiVersion = "2019-07-01";
         return service
@@ -964,39 +985,31 @@ public final class GalleryApplicationsInner {
                 this.client.getHost(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                galleryName,
-                galleryApplicationName,
+                diskEncryptionSetName,
                 apiVersion,
-                galleryApplication,
+                diskEncryptionSet,
                 context);
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Creates or updates a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GalleryApplicationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication) {
-        return beginCreateOrUpdateWithResponseAsync(
-                resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
+    public Mono<DiskEncryptionSetInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
+        return beginCreateOrUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
             .flatMap(
-                (SimpleResponse<GalleryApplicationInner> res) -> {
+                (SimpleResponse<DiskEncryptionSetInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1006,52 +1019,40 @@ public final class GalleryApplicationsInner {
     }
 
     /**
-     * Create or update a gallery Application Definition.
+     * Creates or updates a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     created.
-     * @param galleryApplicationName The name of the gallery Application Definition to be created or updated. The
-     *     allowed characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The
-     *     maximum length is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to create
-     *     or update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationInner beginCreateOrUpdate(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationInner galleryApplication) {
-        return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
-            .block();
+    public DiskEncryptionSetInner beginCreateOrUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet) {
+        return beginCreateOrUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).block();
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GalleryApplicationInner>> beginUpdateWithResponseAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication) {
+    public Mono<SimpleResponse<DiskEncryptionSetInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1066,19 +1067,15 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        if (galleryApplication == null) {
+        if (diskEncryptionSet == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter galleryApplication is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSet is required and cannot be null."));
         } else {
-            galleryApplication.validate();
+            diskEncryptionSet.validate();
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
@@ -1089,36 +1086,32 @@ public final class GalleryApplicationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
-                            galleryApplication,
+                            diskEncryptionSet,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<GalleryApplicationInner>> beginUpdateWithResponseAsync(
+    public Mono<SimpleResponse<DiskEncryptionSetInner>> beginUpdateWithResponseAsync(
         String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication,
+        String diskEncryptionSetName,
+        DiskEncryptionSetUpdate diskEncryptionSet,
         Context context) {
         if (this.client.getHost() == null) {
             return Mono
@@ -1134,19 +1127,15 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
-        if (galleryApplication == null) {
+        if (diskEncryptionSet == null) {
             return Mono
-                .error(new IllegalArgumentException("Parameter galleryApplication is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSet is required and cannot be null."));
         } else {
-            galleryApplication.validate();
+            diskEncryptionSet.validate();
         }
         final String apiVersion = "2019-07-01";
         return service
@@ -1154,37 +1143,31 @@ public final class GalleryApplicationsInner {
                 this.client.getHost(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                galleryName,
-                galleryApplicationName,
+                diskEncryptionSetName,
                 apiVersion,
-                galleryApplication,
+                diskEncryptionSet,
                 context);
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GalleryApplicationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication) {
-        return beginUpdateWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication)
+    public Mono<DiskEncryptionSetInner> beginUpdateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
+        return beginUpdateWithResponseAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet)
             .flatMap(
-                (SimpleResponse<GalleryApplicationInner> res) -> {
+                (SimpleResponse<DiskEncryptionSetInner> res) -> {
                     if (res.getValue() != null) {
                         return Mono.just(res.getValue());
                     } else {
@@ -1194,44 +1177,38 @@ public final class GalleryApplicationsInner {
     }
 
     /**
-     * Update a gallery Application Definition.
+     * Updates (patches) a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     updated.
-     * @param galleryApplicationName The name of the gallery Application Definition to be updated. The allowed
-     *     characters are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length
-     *     is 80 characters.
-     * @param galleryApplication Specifies information about the gallery Application Definition that you want to update.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set update resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the gallery Application Definition that you want to create or update.
+     * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GalleryApplicationInner beginUpdate(
-        String resourceGroupName,
-        String galleryName,
-        String galleryApplicationName,
-        GalleryApplicationUpdate galleryApplication) {
-        return beginUpdateAsync(resourceGroupName, galleryName, galleryApplicationName, galleryApplication).block();
+    public DiskEncryptionSetInner beginUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet) {
+        return beginUpdateAsync(resourceGroupName, diskEncryptionSetName, diskEncryptionSet).block();
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> beginDeleteWithResponseAsync(
-        String resourceGroupName, String galleryName, String galleryApplicationName) {
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(String resourceGroupName, String diskEncryptionSetName) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1246,13 +1223,9 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
         final String apiVersion = "2019-07-01";
         return FluxUtil
@@ -1263,20 +1236,19 @@ public final class GalleryApplicationsInner {
                             this.client.getHost(),
                             this.client.getSubscriptionId(),
                             resourceGroupName,
-                            galleryName,
-                            galleryApplicationName,
+                            diskEncryptionSetName,
                             apiVersion,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1285,7 +1257,7 @@ public final class GalleryApplicationsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
-        String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
+        String resourceGroupName, String diskEncryptionSetName, Context context) {
         if (this.client.getHost() == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
@@ -1300,13 +1272,9 @@ public final class GalleryApplicationsInner {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (galleryName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
-        }
-        if (galleryApplicationName == null) {
+        if (diskEncryptionSetName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter diskEncryptionSetName is required and cannot be null."));
         }
         final String apiVersion = "2019-07-01";
         return service
@@ -1314,44 +1282,43 @@ public final class GalleryApplicationsInner {
                 this.client.getHost(),
                 this.client.getSubscriptionId(),
                 resourceGroupName,
-                galleryName,
-                galleryApplicationName,
+                diskEncryptionSetName,
                 apiVersion,
                 context);
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> beginDeleteAsync(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        return beginDeleteWithResponseAsync(resourceGroupName, galleryName, galleryApplicationName)
+    public Mono<Void> beginDeleteAsync(String resourceGroupName, String diskEncryptionSetName) {
+        return beginDeleteWithResponseAsync(resourceGroupName, diskEncryptionSetName)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
-     * Delete a gallery Application.
+     * Deletes a disk encryption set.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param galleryName The name of the Shared Application Gallery in which the Application Definition is to be
-     *     deleted.
-     * @param galleryApplicationName The name of the gallery Application Definition to be deleted.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void beginDelete(String resourceGroupName, String galleryName, String galleryApplicationName) {
-        beginDeleteAsync(resourceGroupName, galleryName, galleryApplicationName).block();
+    public void beginDelete(String resourceGroupName, String diskEncryptionSetName) {
+        beginDeleteAsync(resourceGroupName, diskEncryptionSetName).block();
     }
 
     /**
@@ -1361,16 +1328,16 @@ public final class GalleryApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GalleryApplicationInner>> listByGalleryNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.listByGalleryNext(nextLink, context))
-            .<PagedResponse<GalleryApplicationInner>>map(
+            .withContext(context -> service.listByResourceGroupNext(nextLink, context))
+            .<PagedResponse<DiskEncryptionSetInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -1390,16 +1357,72 @@ public final class GalleryApplicationsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Gallery Applications operation response.
+     * @return the List disk encryption set operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<GalleryApplicationInner>> listByGalleryNextSinglePageAsync(
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listByResourceGroupNextSinglePageAsync(
         String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         return service
-            .listByGalleryNext(nextLink, context)
+            .listByResourceGroupNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List disk encryption set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, context))
+            .<PagedResponse<DiskEncryptionSetInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List disk encryption set operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<DiskEncryptionSetInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

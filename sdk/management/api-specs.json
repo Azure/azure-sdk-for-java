@@ -76,7 +76,7 @@
     "dir": "../compute/mgmt",
     "source": "specification/compute/resource-manager/readme.md",
     "package": "com.azure.management.compute",
-    "args": "--payload-flattening-threshold=1 --tag=package-2019-03-01"
+    "args": "--payload-flattening-threshold=1 --tag=package-2019-07-01"
   },
   "consumption": {
     "dir": "../consumption/mgmt",
