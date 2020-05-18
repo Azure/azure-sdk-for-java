@@ -28,6 +28,7 @@ import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.Skill;
 import com.azure.search.documents.models.Skillset;
 import com.azure.search.documents.test.CustomQueryPipelinePolicy;
+import com.azure.search.documents.util.IndexingParameterExtension;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Test;
 
@@ -616,6 +617,23 @@ public class IndexersManagementSyncTests extends SearchTestBase {
 
         Indexer indexer = createIndexerWithDifferentSkillset(createIndex(), createDataSource(), skillset.getName());
 
+        createAndValidateIndexer(indexer);
+        runAndValidateIndexer(indexer);
+    }
+
+    private void runAndValidateIndexer(Indexer indexer) {
+        client.runIndexer(indexer.getName());
+
+    }
+
+    @Test
+    public void canRunIndexerWithExtensionFiles() {
+        Indexer indexer = createBaseTestIndexerObject(createIndex(), createBlobDataSource().getName());
+        IndexingParameters parameters = new IndexingParameters();
+        indexer.setParameters(IndexingParameterExtension.indexFileNameExtensions(parameters,
+            new String[] {"pdf", "csv"}));
+        indexer.setParameters(IndexingParameterExtension.excludeFileNameExtensions(parameters,
+            new String[] {"pdf", "jpg"}));
         createAndValidateIndexer(indexer);
     }
 
