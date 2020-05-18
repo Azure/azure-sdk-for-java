@@ -6,11 +6,13 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.DetectorAbnormalTimePeriod;
 import com.azure.management.appservice.DiagnosticMetricSet;
 import com.azure.management.appservice.NameValuePair;
 import com.azure.management.appservice.ProxyOnlyResource;
-import com.azure.management.appservice.ResponseMetaData;
+import com.azure.management.appservice.ResponseMetadata;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticDetectorResponseInner.class);
+
     /*
      * Start time of the period
      */
@@ -65,7 +69,7 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
      * Meta Data
      */
     @JsonProperty(value = "properties.responseMetaData")
-    private ResponseMetaData responseMetaData;
+    private ResponseMetadata responseMetadata;
 
     /**
      * Get the startTime property: Start time of the period.
@@ -209,22 +213,47 @@ public class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the responseMetaData property: Meta Data.
+     * Get the responseMetadata property: Meta Data.
      *
-     * @return the responseMetaData value.
+     * @return the responseMetadata value.
      */
-    public ResponseMetaData responseMetaData() {
-        return this.responseMetaData;
+    public ResponseMetadata responseMetadata() {
+        return this.responseMetadata;
     }
 
     /**
-     * Set the responseMetaData property: Meta Data.
+     * Set the responseMetadata property: Meta Data.
      *
-     * @param responseMetaData the responseMetaData value to set.
+     * @param responseMetadata the responseMetadata value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
-    public DiagnosticDetectorResponseInner withResponseMetaData(ResponseMetaData responseMetaData) {
-        this.responseMetaData = responseMetaData;
+    public DiagnosticDetectorResponseInner withResponseMetadata(ResponseMetadata responseMetadata) {
+        this.responseMetadata = responseMetadata;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (detectorDefinition() != null) {
+            detectorDefinition().validate();
+        }
+        if (metrics() != null) {
+            metrics().forEach(e -> e.validate());
+        }
+        if (abnormalTimePeriods() != null) {
+            abnormalTimePeriods().forEach(e -> e.validate());
+        }
+        if (data() != null) {
+            data().forEach(e -> e.forEach(e1 -> e1.validate()));
+        }
+        if (responseMetadata() != null) {
+            responseMetadata().validate();
+        }
     }
 }

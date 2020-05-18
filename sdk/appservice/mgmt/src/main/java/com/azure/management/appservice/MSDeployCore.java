@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The MSDeployCore model. */
 @Fluent
 public class MSDeployCore {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployCore.class);
+
     /*
      * Package URI
      */
@@ -206,5 +210,13 @@ public class MSDeployCore {
     public MSDeployCore withAppOffline(Boolean appOffline) {
         this.appOffline = appOffline;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

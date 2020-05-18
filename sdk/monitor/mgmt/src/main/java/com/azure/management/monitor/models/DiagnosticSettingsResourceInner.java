@@ -6,9 +6,11 @@ package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.LogSettings;
 import com.azure.management.monitor.MetricSettings;
 import com.azure.management.monitor.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticSettingsResourceInner.class);
+
     /*
      * The resource ID of the storage account to which you would like to send
      * Diagnostic Logs.
@@ -247,5 +251,21 @@ public class DiagnosticSettingsResourceInner extends ProxyOnlyResource {
     public DiagnosticSettingsResourceInner withLogAnalyticsDestinationType(String logAnalyticsDestinationType) {
         this.logAnalyticsDestinationType = logAnalyticsDestinationType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (metrics() != null) {
+            metrics().forEach(e -> e.validate());
+        }
+        if (logs() != null) {
+            logs().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Encryption model. */
 @Fluent
 public final class Encryption {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
+
     /*
      * List of services which support encryption.
      */
@@ -89,5 +93,24 @@ public final class Encryption {
     public Encryption withKeyVaultProperties(KeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (services() != null) {
+            services().validate();
+        }
+        if (keySource() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property keySource in model Encryption"));
+        }
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
     }
 }

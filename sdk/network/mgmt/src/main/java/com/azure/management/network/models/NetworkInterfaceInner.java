@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.NetworkInterfaceDnsSettings;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class NetworkInterfaceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -45,7 +49,7 @@ public class NetworkInterfaceInner extends Resource {
      * A list of IPConfigurations of the network interface.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<NetworkInterfaceIPConfigurationInner> ipConfigurations;
+    private List<NetworkInterfaceIpConfigurationInner> ipConfigurations;
 
     /*
      * A list of TapConfigurations of the network interface.
@@ -81,7 +85,7 @@ public class NetworkInterfaceInner extends Resource {
      * Indicates whether IP forwarding is enabled on this network interface.
      */
     @JsonProperty(value = "properties.enableIPForwarding")
-    private Boolean enableIPForwarding;
+    private Boolean enableIpForwarding;
 
     /*
      * A list of references to linked BareMetal resources.
@@ -171,7 +175,7 @@ public class NetworkInterfaceInner extends Resource {
      *
      * @return the ipConfigurations value.
      */
-    public List<NetworkInterfaceIPConfigurationInner> ipConfigurations() {
+    public List<NetworkInterfaceIpConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -181,7 +185,7 @@ public class NetworkInterfaceInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the NetworkInterfaceInner object itself.
      */
-    public NetworkInterfaceInner withIpConfigurations(List<NetworkInterfaceIPConfigurationInner> ipConfigurations) {
+    public NetworkInterfaceInner withIpConfigurations(List<NetworkInterfaceIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -287,22 +291,22 @@ public class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the enableIPForwarding property: Indicates whether IP forwarding is enabled on this network interface.
+     * Get the enableIpForwarding property: Indicates whether IP forwarding is enabled on this network interface.
      *
-     * @return the enableIPForwarding value.
+     * @return the enableIpForwarding value.
      */
-    public Boolean enableIPForwarding() {
-        return this.enableIPForwarding;
+    public Boolean enableIpForwarding() {
+        return this.enableIpForwarding;
     }
 
     /**
-     * Set the enableIPForwarding property: Indicates whether IP forwarding is enabled on this network interface.
+     * Set the enableIpForwarding property: Indicates whether IP forwarding is enabled on this network interface.
      *
-     * @param enableIPForwarding the enableIPForwarding value to set.
+     * @param enableIpForwarding the enableIpForwarding value to set.
      * @return the NetworkInterfaceInner object itself.
      */
-    public NetworkInterfaceInner withEnableIPForwarding(Boolean enableIPForwarding) {
-        this.enableIPForwarding = enableIPForwarding;
+    public NetworkInterfaceInner withEnableIpForwarding(Boolean enableIpForwarding) {
+        this.enableIpForwarding = enableIpForwarding;
         return this;
     }
 
@@ -375,5 +379,28 @@ public class NetworkInterfaceInner extends Resource {
     public NetworkInterfaceInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkSecurityGroup() != null) {
+            networkSecurityGroup().validate();
+        }
+        if (privateEndpoint() != null) {
+            privateEndpoint().validate();
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
+        if (tapConfigurations() != null) {
+            tapConfigurations().forEach(e -> e.validate());
+        }
+        if (dnsSettings() != null) {
+            dnsSettings().validate();
+        }
     }
 }

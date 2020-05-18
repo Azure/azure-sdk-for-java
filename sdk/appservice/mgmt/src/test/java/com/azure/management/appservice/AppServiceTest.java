@@ -35,6 +35,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
+
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.junit.jupiter.api.Assertions;
@@ -221,7 +223,7 @@ public class AppServiceTest extends TestBase {
                 new HttpPipelineBuilder()
                     .policies(
                         new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)),
-                        new RetryPolicy())
+                        new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")

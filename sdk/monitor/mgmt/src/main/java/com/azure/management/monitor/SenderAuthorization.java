@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SenderAuthorization model. */
 @Fluent
 public final class SenderAuthorization {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SenderAuthorization.class);
+
     /*
      * the permissible actions. For instance:
      * microsoft.support/supporttickets/write
@@ -87,5 +91,13 @@ public final class SenderAuthorization {
     public SenderAuthorization withScope(String scope) {
         this.scope = scope;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

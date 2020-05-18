@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SlowRequestsBasedTrigger model. */
 @Fluent
 public final class SlowRequestsBasedTrigger {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlowRequestsBasedTrigger.class);
+
     /*
      * Time taken.
      */
@@ -86,5 +90,13 @@ public final class SlowRequestsBasedTrigger {
     public SlowRequestsBasedTrigger withTimeInterval(String timeInterval) {
         this.timeInterval = timeInterval;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Usages. */
 public final class UsagesInner {
+    private final ClientLogger logger = new ClientLogger(UsagesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final UsagesService service;
 
@@ -56,7 +59,7 @@ public final class UsagesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql"
                 + "/instancePools/{instancePoolName}/usages")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UsageListResultInner>> listByInstancePool(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -69,7 +72,7 @@ public final class UsagesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<UsageListResultInner>> listByInstancePoolNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -82,13 +85,31 @@ public final class UsagesInner {
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all instance pool usage metrics.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByInstancePoolSinglePageAsync(
         String resourceGroupName, String instancePoolName, Boolean expandChildren) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instancePoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter instancePoolName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2018-06-01-preview";
         return FluxUtil
             .withContext(
@@ -121,8 +142,63 @@ public final class UsagesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<UsageInner>> listByInstancePoolSinglePageAsync(
+        String resourceGroupName, String instancePoolName, Boolean expandChildren, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (instancePoolName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter instancePoolName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2018-06-01-preview";
+        return service
+            .listByInstancePool(
+                this.client.getHost(),
+                resourceGroupName,
+                instancePoolName,
+                expandChildren,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all instance pool usage metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all instance pool usage metrics.
      */
@@ -140,8 +216,29 @@ public final class UsagesInner {
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
      *     from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
+     * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all instance pool usage metrics.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<UsageInner> listByInstancePoolAsync(
+        String resourceGroupName, String instancePoolName, Boolean expandChildren, Context context) {
+        return new PagedFlux<>(
+            () -> listByInstancePoolSinglePageAsync(resourceGroupName, instancePoolName, expandChildren, context),
+            nextLink -> listByInstancePoolNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all instance pool usage metrics.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     *     from the Azure Resource Manager API or the portal.
+     * @param instancePoolName The name of the instance pool to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all instance pool usage metrics.
      */
@@ -162,7 +259,7 @@ public final class UsagesInner {
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @param expandChildren Optional request parameter to include managed instance usages within the instance pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all instance pool usage metrics.
      */
@@ -179,7 +276,7 @@ public final class UsagesInner {
      *     from the Azure Resource Manager API or the portal.
      * @param instancePoolName The name of the instance pool to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all instance pool usage metrics.
      */
@@ -195,12 +292,15 @@ public final class UsagesInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of usages.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<UsageInner>> listByInstancePoolNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByInstancePoolNext(nextLink, context))
             .<PagedResponse<UsageInner>>map(
@@ -213,5 +313,33 @@ public final class UsagesInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of usages.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<UsageInner>> listByInstancePoolNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByInstancePoolNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

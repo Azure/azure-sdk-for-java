@@ -5,13 +5,13 @@ package com.azure.management.network.implementation;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkSecurityGroup;
-import com.azure.management.network.NicIPConfiguration;
+import com.azure.management.network.NicIpConfiguration;
 import com.azure.management.network.RouteTable;
 import com.azure.management.network.ServiceEndpointPropertiesFormat;
 import com.azure.management.network.ServiceEndpointType;
 import com.azure.management.network.Subnet;
-import com.azure.management.network.models.IPAddressAvailabilityResultInner;
-import com.azure.management.network.models.IPConfigurationInner;
+import com.azure.management.network.models.IpAddressAvailabilityResultInner;
+import com.azure.management.network.models.IpConfigurationInner;
 import com.azure.management.network.models.NetworkSecurityGroupInner;
 import com.azure.management.network.models.RouteTableInner;
 import com.azure.management.network.models.SubnetInner;
@@ -43,7 +43,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     // Getters
     @Override
     public int networkInterfaceIPConfigurationCount() {
-        List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        List<IpConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
         if (ipConfigRefs != null) {
             return ipConfigRefs.size();
         } else {
@@ -202,20 +202,20 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     }
 
     @Override
-    public Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations() {
-        return Collections.unmodifiableSet(new TreeSet<NicIPConfiguration>(listNetworkInterfaceIPConfigurations()));
+    public Set<NicIpConfiguration> getNetworkInterfaceIPConfigurations() {
+        return Collections.unmodifiableSet(new TreeSet<NicIpConfiguration>(listNetworkInterfaceIPConfigurations()));
     }
 
     @Override
-    public Collection<NicIPConfiguration> listNetworkInterfaceIPConfigurations() {
-        Collection<NicIPConfiguration> ipConfigs = new ArrayList<>();
+    public Collection<NicIpConfiguration> listNetworkInterfaceIPConfigurations() {
+        Collection<NicIpConfiguration> ipConfigs = new ArrayList<>();
         Map<String, NetworkInterface> nics = new TreeMap<>();
-        List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
+        List<IpConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
         if (ipConfigRefs == null) {
             return ipConfigs;
         }
 
-        for (IPConfigurationInner ipConfigRef : ipConfigRefs) {
+        for (IpConfigurationInner ipConfigRef : ipConfigRefs) {
             String nicID = ResourceUtils.parentResourceIdFromResourceId(ipConfigRef.id());
             String ipConfigName = ResourceUtils.nameFromResourceId(ipConfigRef.id());
             // Check if NIC already cached
@@ -234,7 +234,7 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
             nics.put(nic.id().toLowerCase(Locale.ROOT), nic);
 
             // Get the IP config
-            NicIPConfiguration ipConfig = nic.ipConfigurations().get(ipConfigName);
+            NicIpConfiguration ipConfig = nic.ipConfigurations().get(ipConfigName);
             if (ipConfig == null) {
                 // IP config not found, so ignore this bad reference
                 continue;
@@ -256,18 +256,18 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
         }
         String takenIPAddress = cidr.split("/")[0];
 
-        IPAddressAvailabilityResultInner result =
+        IpAddressAvailabilityResultInner result =
             this
                 .parent()
                 .manager()
                 .networks()
                 .inner()
-                .checkIPAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
+                .checkIpAddressAvailability(this.parent().resourceGroupName(), this.parent().name(), takenIPAddress);
         if (result == null) {
             return ipAddresses;
         }
 
-        ipAddresses.addAll(result.availableIPAddresses());
+        ipAddresses.addAll(result.availableIpAddresses());
         return ipAddresses;
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineScaleSetDataDisk model. */
 @Fluent
 public final class VirtualMachineScaleSetDataDisk {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetDataDisk.class);
+
     /*
      * The disk name.
      */
@@ -209,5 +213,22 @@ public final class VirtualMachineScaleSetDataDisk {
     public VirtualMachineScaleSetDataDisk withManagedDisk(VirtualMachineScaleSetManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (createOption() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
+        }
+        if (managedDisk() != null) {
+            managedDisk().validate();
+        }
     }
 }

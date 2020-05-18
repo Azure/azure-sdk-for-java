@@ -25,11 +25,14 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.appservice.DefaultErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.appservice.DefaultErrorResponseErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Recommendations. */
 public final class RecommendationsInner {
+    private final ClientLogger logger = new ClientLogger(RecommendationsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final RecommendationsService service;
 
@@ -57,7 +60,7 @@ public final class RecommendationsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> list(
             @HostParam("$host") String host,
             @QueryParam("featured") Boolean featured,
@@ -69,7 +72,7 @@ public final class RecommendationsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetAllFilters(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -79,7 +82,7 @@ public final class RecommendationsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableRecommendationForSubscription(
             @HostParam("$host") String host,
             @PathParam("name") String name,
@@ -92,7 +95,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listHistoryForHostingEnvironment(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -108,7 +111,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listRecommendedRulesForHostingEnvironment(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -124,7 +127,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableAllForHostingEnvironment(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -139,7 +142,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetAllFiltersForHostingEnvironment(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -154,7 +157,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationRuleInner>> getRuleDetailsByHostingEnvironment(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -171,7 +174,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web"
                 + "/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableRecommendationForHostingEnvironment(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -187,7 +190,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendationHistory")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listHistoryForWebApp(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -203,7 +206,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listRecommendedRulesForWebApp(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -219,7 +222,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/disable")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableAllForWebApp(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -233,7 +236,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/reset")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetAllFiltersForWebApp(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -247,7 +250,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationRuleInner>> getRuleDetailsByWebApp(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -264,7 +267,7 @@ public final class RecommendationsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites"
                 + "/{siteName}/recommendations/{name}/disable")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableRecommendationForSite(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -277,35 +280,35 @@ public final class RecommendationsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listHistoryForHostingEnvironmentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listRecommendedRulesForHostingEnvironmentNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listHistoryForWebAppNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(DefaultErrorResponseException.class)
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<SimpleResponse<RecommendationCollectionInner>> listRecommendedRulesForWebAppNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -319,12 +322,22 @@ public final class RecommendationsInner {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(Boolean featured, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -356,8 +369,54 @@ public final class RecommendationsInner {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(
+        Boolean featured, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(
+                this.client.getHost(),
+                featured,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for List all recommendations for a subscription.
+     *
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     *     duration'[PT1H|PT1M|P1D].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -370,7 +429,27 @@ public final class RecommendationsInner {
     /**
      * Description for List all recommendations for a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     *     duration'[PT1H|PT1M|P1D].
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(featured, filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for List all recommendations for a subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -392,7 +471,7 @@ public final class RecommendationsInner {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -404,7 +483,7 @@ public final class RecommendationsInner {
     /**
      * Description for List all recommendations for a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -419,12 +498,22 @@ public final class RecommendationsInner {
     /**
      * Description for Reset all recommendation opt-out settings for a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetAllFiltersWithResponseAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -440,7 +529,33 @@ public final class RecommendationsInner {
     /**
      * Description for Reset all recommendation opt-out settings for a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetAllFiltersWithResponseAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .resetAllFilters(
+                this.client.getHost(), this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Reset all recommendation opt-out settings for a subscription.
+     *
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -452,7 +567,7 @@ public final class RecommendationsInner {
     /**
      * Description for Reset all recommendation opt-out settings for a subscription.
      *
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -465,12 +580,25 @@ public final class RecommendationsInner {
      *
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -488,8 +616,38 @@ public final class RecommendationsInner {
      * Description for Disables the specified rule so it will not apply to a subscription in the future.
      *
      * @param name Rule name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .disableRecommendationForSubscription(
+                this.client.getHost(), name, this.client.getSubscriptionId(), this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Description for Disables the specified rule so it will not apply to a subscription in the future.
+     *
+     * @param name Rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -504,7 +662,7 @@ public final class RecommendationsInner {
      *
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -523,13 +681,32 @@ public final class RecommendationsInner {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
         String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -565,8 +742,67 @@ public final class RecommendationsInner {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
+        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listHistoryForHostingEnvironment(
+                this.client.getHost(),
+                resourceGroupName,
+                hostingEnvironmentName,
+                expiredOnly,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
+     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     *     duration'[PT1H|PT1M|P1D].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -585,8 +821,34 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
+     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     *     duration'[PT1H|PT1M|P1D].
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listHistoryForHostingEnvironmentSinglePageAsync(
+                    resourceGroupName, hostingEnvironmentName, expiredOnly, filter, context),
+            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -614,7 +876,7 @@ public final class RecommendationsInner {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -631,7 +893,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -655,13 +917,32 @@ public final class RecommendationsInner {
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
         String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -696,8 +977,66 @@ public final class RecommendationsInner {
      *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
+        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listRecommendedRulesForHostingEnvironment(
+                this.client.getHost(),
+                resourceGroupName,
+                hostingEnvironmentName,
+                featured,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
+     *     $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -716,8 +1055,33 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
+     *     $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
+        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listRecommendedRulesForHostingEnvironmentSinglePageAsync(
+                    resourceGroupName, hostingEnvironmentName, featured, filter, context),
+            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -744,7 +1108,7 @@ public final class RecommendationsInner {
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -762,7 +1126,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -784,13 +1148,36 @@ public final class RecommendationsInner {
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
         String resourceGroupName, String environmentName, String hostingEnvironmentName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -812,8 +1199,57 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .disableAllForHostingEnvironment(
+                this.client.getHost(),
+                resourceGroupName,
+                environmentName,
+                hostingEnvironmentName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Name of the app.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -832,7 +1268,7 @@ public final class RecommendationsInner {
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -848,13 +1284,36 @@ public final class RecommendationsInner {
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
         String resourceGroupName, String environmentName, String hostingEnvironmentName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -876,8 +1335,57 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
+        String resourceGroupName, String environmentName, String hostingEnvironmentName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .resetAllFiltersForHostingEnvironment(
+                this.client.getHost(),
+                resourceGroupName,
+                environmentName,
+                hostingEnvironmentName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Name of the app.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -896,7 +1404,7 @@ public final class RecommendationsInner {
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -916,7 +1424,7 @@ public final class RecommendationsInner {
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -927,6 +1435,28 @@ public final class RecommendationsInner {
         String name,
         Boolean updateSeen,
         String recommendationId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -954,8 +1484,67 @@ public final class RecommendationsInner {
      *     object.
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
+        String resourceGroupName,
+        String hostingEnvironmentName,
+        String name,
+        Boolean updateSeen,
+        String recommendationId,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .getRuleDetailsByHostingEnvironment(
+                this.client.getHost(),
+                resourceGroupName,
+                hostingEnvironmentName,
+                name,
+                updateSeen,
+                recommendationId,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
+     *     object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
+     *     specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -985,7 +1574,7 @@ public final class RecommendationsInner {
      * @param hostingEnvironmentName Name of the hosting environment.
      * @param name Name of the recommendation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1018,7 +1607,7 @@ public final class RecommendationsInner {
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1041,7 +1630,7 @@ public final class RecommendationsInner {
      * @param hostingEnvironmentName Name of the hosting environment.
      * @param name Name of the recommendation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1064,13 +1653,39 @@ public final class RecommendationsInner {
      * @param name Rule name.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
         String resourceGroupName, String environmentName, String name, String hostingEnvironmentName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1094,8 +1709,62 @@ public final class RecommendationsInner {
      * @param environmentName Site name.
      * @param name Rule name.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
+        String resourceGroupName, String environmentName, String name, String hostingEnvironmentName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .disableRecommendationForHostingEnvironment(
+                this.client.getHost(),
+                resourceGroupName,
+                environmentName,
+                name,
+                hostingEnvironmentName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param environmentName Site name.
+     * @param name Rule name.
+     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1115,7 +1784,7 @@ public final class RecommendationsInner {
      * @param name Rule name.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1137,13 +1806,30 @@ public final class RecommendationsInner {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(
         String resourceGroupName, String siteName, Boolean expiredOnly, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1179,8 +1865,65 @@ public final class RecommendationsInner {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(
+        String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listHistoryForWebApp(
+                this.client.getHost(),
+                resourceGroupName,
+                siteName,
+                expiredOnly,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
+     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     *     duration'[PT1H|PT1M|P1D].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1197,8 +1940,32 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
+     *     &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     *     duration'[PT1H|PT1M|P1D].
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecommendationInner> listHistoryForWebAppAsync(
+        String resourceGroupName, String siteName, Boolean expiredOnly, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter, context),
+            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1223,7 +1990,7 @@ public final class RecommendationsInner {
      *     'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      *     duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1239,7 +2006,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1261,13 +2028,30 @@ public final class RecommendationsInner {
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
         String resourceGroupName, String siteName, Boolean featured, String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1302,8 +2086,64 @@ public final class RecommendationsInner {
      *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
+        String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .listRecommendedRulesForWebApp(
+                this.client.getHost(),
+                resourceGroupName,
+                siteName,
+                featured,
+                filter,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
+     *     $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1320,8 +2160,31 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     *     default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
+     *     $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
+        String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter, context),
+            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Description for Get all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1346,7 +2209,7 @@ public final class RecommendationsInner {
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      *     $filter=channel eq 'Api' or channel eq 'Notification'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1362,7 +2225,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
@@ -1380,12 +2243,29 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableAllForWebAppWithResponseAsync(String resourceGroupName, String siteName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1405,8 +2285,49 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableAllForWebAppWithResponseAsync(
+        String resourceGroupName, String siteName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .disableAllForWebApp(
+                this.client.getHost(),
+                resourceGroupName,
+                siteName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1422,7 +2343,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1436,12 +2357,29 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(String resourceGroupName, String siteName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1461,8 +2399,49 @@ public final class RecommendationsInner {
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(
+        String resourceGroupName, String siteName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .resetAllFiltersForWebApp(
+                this.client.getHost(),
+                resourceGroupName,
+                siteName,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1478,7 +2457,7 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1497,13 +2476,33 @@ public final class RecommendationsInner {
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
         String resourceGroupName, String siteName, String name, Boolean updateSeen, String recommendationId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1531,8 +2530,65 @@ public final class RecommendationsInner {
      *     object.
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents a recommendation rule that the recommendation engine can perform.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
+        String resourceGroupName,
+        String siteName,
+        String name,
+        Boolean updateSeen,
+        String recommendationId,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .getRuleDetailsByWebApp(
+                this.client.getHost(),
+                resourceGroupName,
+                siteName,
+                name,
+                updateSeen,
+                recommendationId,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
+     *     object.
+     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
+     *     specify it to query an active entry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1557,7 +2613,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1589,7 +2645,7 @@ public final class RecommendationsInner {
      * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
      *     specify it to query an active entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1606,7 +2662,7 @@ public final class RecommendationsInner {
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a recommendation rule that the recommendation engine can perform.
      */
@@ -1625,13 +2681,33 @@ public final class RecommendationsInner {
      * @param siteName Site name.
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
         String resourceGroupName, String siteName, String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -1653,8 +2729,54 @@ public final class RecommendationsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site name.
      * @param name Rule name.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
+        String resourceGroupName, String siteName, String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .disableRecommendationForSite(
+                this.client.getHost(),
+                resourceGroupName,
+                siteName,
+                name,
+                this.client.getSubscriptionId(),
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Description for Disables the specific rule for a web site permanently.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site name.
+     * @param name Rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1671,7 +2793,7 @@ public final class RecommendationsInner {
      * @param siteName Site name.
      * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1684,12 +2806,15 @@ public final class RecommendationsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<RecommendationInner>>map(
@@ -1708,14 +2833,45 @@ public final class RecommendationsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listHistoryForHostingEnvironmentNext(nextLink, context))
             .<PagedResponse<RecommendationInner>>map(
@@ -1734,14 +2890,46 @@ public final class RecommendationsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listHistoryForHostingEnvironmentNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listRecommendedRulesForHostingEnvironmentNext(nextLink, context))
             .<PagedResponse<RecommendationInner>>map(
@@ -1760,13 +2948,45 @@ public final class RecommendationsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listRecommendedRulesForHostingEnvironmentNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listHistoryForWebAppNext(nextLink, context))
             .<PagedResponse<RecommendationInner>>map(
@@ -1785,13 +3005,45 @@ public final class RecommendationsInner {
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseException thrown if the request is rejected by server.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listHistoryForWebAppNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of recommendations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listRecommendedRulesForWebAppNext(nextLink, context))
             .<PagedResponse<RecommendationInner>>map(
@@ -1804,5 +3056,34 @@ public final class RecommendationsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listRecommendedRulesForWebAppNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

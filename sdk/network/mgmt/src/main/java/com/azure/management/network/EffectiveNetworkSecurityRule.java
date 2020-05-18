@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The EffectiveNetworkSecurityRule model. */
 @Fluent
 public final class EffectiveNetworkSecurityRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityRule.class);
+
     /*
      * The name of the security rule specified by the user (if created by the
      * user).
@@ -417,5 +421,13 @@ public final class EffectiveNetworkSecurityRule {
     public EffectiveNetworkSecurityRule withDirection(SecurityRuleDirection direction) {
         this.direction = direction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

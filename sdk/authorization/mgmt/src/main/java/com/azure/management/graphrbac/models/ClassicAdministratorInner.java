@@ -6,12 +6,16 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ClassicAdministrator model. */
 @JsonFlatten
 @Fluent
 public class ClassicAdministratorInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClassicAdministratorInner.class);
+
     /*
      * The ID of the administrator.
      */
@@ -140,5 +144,13 @@ public class ClassicAdministratorInner {
     public ClassicAdministratorInner withRole(String role) {
         this.role = role;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

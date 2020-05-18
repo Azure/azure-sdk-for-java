@@ -7,12 +7,16 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApplicationGatewaySslCertificate model. */
 @JsonFlatten
 @Fluent
 public class ApplicationGatewaySslCertificateInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslCertificateInner.class);
+
     /*
      * Name of the SSL certificate that is unique within an Application
      * Gateway.
@@ -230,5 +234,13 @@ public class ApplicationGatewaySslCertificateInner extends SubResource {
     public ApplicationGatewaySslCertificateInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

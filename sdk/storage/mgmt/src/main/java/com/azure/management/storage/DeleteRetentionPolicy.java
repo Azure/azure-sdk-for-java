@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DeleteRetentionPolicy model. */
 @Fluent
 public final class DeleteRetentionPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteRetentionPolicy.class);
+
     /*
      * Indicates whether DeleteRetentionPolicy is enabled.
      */
@@ -63,5 +67,13 @@ public final class DeleteRetentionPolicy {
     public DeleteRetentionPolicy withDays(Integer days) {
         this.days = days;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

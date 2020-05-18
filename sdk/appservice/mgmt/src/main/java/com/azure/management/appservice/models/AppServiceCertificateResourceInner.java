@@ -7,13 +7,17 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.KeyVaultSecretStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AppServiceCertificateResource model. */
 @JsonFlatten
 @Fluent
 public class AppServiceCertificateResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateResourceInner.class);
+
     /*
      * Key Vault resource Id.
      */
@@ -105,5 +109,13 @@ public class AppServiceCertificateResourceInner extends Resource {
     public AppServiceCertificateResourceInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

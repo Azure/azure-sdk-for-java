@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Status model. */
 @Immutable
 public final class Status {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Status.class);
+
     /*
      * The short label for the status.
      */
@@ -55,5 +59,13 @@ public final class Status {
      */
     public OffsetDateTime timestamp() {
         return this.timestamp;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -6,12 +6,16 @@ package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImportExtensionRequest model. */
 @JsonFlatten
 @Fluent
 public class ImportExtensionRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportExtensionRequest.class);
+
     /*
      * The name of the extension.
      */
@@ -247,5 +251,13 @@ public class ImportExtensionRequest {
     public ImportExtensionRequest withOperationMode(ImportOperationMode operationMode) {
         this.operationMode = operationMode;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

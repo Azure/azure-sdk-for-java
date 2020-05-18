@@ -7,6 +7,8 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayHttpListener extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayHttpListener.class);
+
     /*
      * Name of the HTTP listener that is unique within an Application Gateway.
      */
@@ -36,7 +40,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * Frontend IP configuration resource of an application gateway.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
-    private SubResource frontendIPConfiguration;
+    private SubResource frontendIpConfiguration;
 
     /*
      * Frontend port resource of an application gateway.
@@ -54,7 +58,7 @@ public class ApplicationGatewayHttpListener extends SubResource {
      * Host name of HTTP listener.
      */
     @JsonProperty(value = "properties.hostName")
-    private String hostName;
+    private String hostname;
 
     /*
      * SSL certificate resource of an application gateway.
@@ -142,22 +146,22 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the frontendIPConfiguration property: Frontend IP configuration resource of an application gateway.
+     * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
      *
-     * @return the frontendIPConfiguration value.
+     * @return the frontendIpConfiguration value.
      */
-    public SubResource frontendIPConfiguration() {
-        return this.frontendIPConfiguration;
+    public SubResource frontendIpConfiguration() {
+        return this.frontendIpConfiguration;
     }
 
     /**
-     * Set the frontendIPConfiguration property: Frontend IP configuration resource of an application gateway.
+     * Set the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
      *
-     * @param frontendIPConfiguration the frontendIPConfiguration value to set.
+     * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener withFrontendIPConfiguration(SubResource frontendIPConfiguration) {
-        this.frontendIPConfiguration = frontendIPConfiguration;
+    public ApplicationGatewayHttpListener withFrontendIpConfiguration(SubResource frontendIpConfiguration) {
+        this.frontendIpConfiguration = frontendIpConfiguration;
         return this;
     }
 
@@ -202,22 +206,22 @@ public class ApplicationGatewayHttpListener extends SubResource {
     }
 
     /**
-     * Get the hostName property: Host name of HTTP listener.
+     * Get the hostname property: Host name of HTTP listener.
      *
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
-     * Set the hostName property: Host name of HTTP listener.
+     * Set the hostname property: Host name of HTTP listener.
      *
-     * @param hostName the hostName value to set.
+     * @param hostname the hostname value to set.
      * @return the ApplicationGatewayHttpListener object itself.
      */
-    public ApplicationGatewayHttpListener withHostName(String hostName) {
-        this.hostName = hostName;
+    public ApplicationGatewayHttpListener withHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 
@@ -304,5 +308,16 @@ public class ApplicationGatewayHttpListener extends SubResource {
         List<ApplicationGatewayCustomError> customErrorConfigurations) {
         this.customErrorConfigurations = customErrorConfigurations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (customErrorConfigurations() != null) {
+            customErrorConfigurations().forEach(e -> e.validate());
+        }
     }
 }

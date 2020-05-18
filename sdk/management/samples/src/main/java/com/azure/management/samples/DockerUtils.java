@@ -7,8 +7,8 @@ import com.azure.management.Azure;
 import com.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.azure.management.compute.VirtualMachine;
 import com.azure.management.compute.VirtualMachineSizeTypes;
-import com.azure.management.network.NicIPConfiguration;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.NicIpConfiguration;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
 import com.github.dockerjava.api.DockerClient;
@@ -219,8 +219,8 @@ public class DockerUtils {
         // Wait for a minute for PIP to be available
         SdkContext.sleep(60 * 1000);
         // Get the IP of the Docker host
-        NicIPConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
-        PublicIPAddress publicIp = nicIPConfiguration.getPublicIPAddress();
+        NicIpConfiguration nicIPConfiguration = dockerVM.getPrimaryNetworkInterface().primaryIPConfiguration();
+        PublicIpAddress publicIp = nicIPConfiguration.getPublicIpAddress();
         String dockerHostIP = publicIp.ipAddress();
 
         DockerClient dockerClient = installDocker(dockerHostIP, vmUserName, vmPassword, registryServerUrl, username, password);

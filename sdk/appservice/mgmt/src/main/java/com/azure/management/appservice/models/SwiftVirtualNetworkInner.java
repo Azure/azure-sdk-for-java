@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SwiftVirtualNetwork model. */
 @JsonFlatten
 @Fluent
 public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwiftVirtualNetworkInner.class);
+
     /*
      * The Virtual Network subnet's resource ID. This is the subnet that this
      * Web App will join. This subnet must have a delegation to
@@ -70,5 +74,15 @@ public class SwiftVirtualNetworkInner extends ProxyOnlyResource {
     public SwiftVirtualNetworkInner withSwiftSupported(Boolean swiftSupported) {
         this.swiftSupported = swiftSupported;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

@@ -7,7 +7,9 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.management.network.BGPCommunity;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.BgpCommunity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class BgpServiceCommunityInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpServiceCommunityInner.class);
+
     /*
      * The name of the bgp community. e.g. Skype.
      */
@@ -25,7 +29,7 @@ public class BgpServiceCommunityInner extends Resource {
      * Get a list of bgp communities.
      */
     @JsonProperty(value = "properties.bgpCommunities")
-    private List<BGPCommunity> bgpCommunities;
+    private List<BgpCommunity> bgpCommunities;
 
     /*
      * Resource ID.
@@ -58,7 +62,7 @@ public class BgpServiceCommunityInner extends Resource {
      *
      * @return the bgpCommunities value.
      */
-    public List<BGPCommunity> bgpCommunities() {
+    public List<BgpCommunity> bgpCommunities() {
         return this.bgpCommunities;
     }
 
@@ -68,7 +72,7 @@ public class BgpServiceCommunityInner extends Resource {
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityInner object itself.
      */
-    public BgpServiceCommunityInner withBgpCommunities(List<BGPCommunity> bgpCommunities) {
+    public BgpServiceCommunityInner withBgpCommunities(List<BgpCommunity> bgpCommunities) {
         this.bgpCommunities = bgpCommunities;
         return this;
     }
@@ -91,5 +95,16 @@ public class BgpServiceCommunityInner extends Resource {
     public BgpServiceCommunityInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (bgpCommunities() != null) {
+            bgpCommunities().forEach(e -> e.validate());
+        }
     }
 }

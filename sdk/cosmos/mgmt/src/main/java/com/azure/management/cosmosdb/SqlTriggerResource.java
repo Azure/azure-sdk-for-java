@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SqlTriggerResource model. */
 @Fluent
 public class SqlTriggerResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlTriggerResource.class);
+
     /*
      * Name of the Cosmos DB SQL trigger
      */
@@ -112,5 +116,18 @@ public class SqlTriggerResource {
     public SqlTriggerResource withTriggerOperation(TriggerOperation triggerOperation) {
         this.triggerOperation = triggerOperation;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model SqlTriggerResource"));
+        }
     }
 }

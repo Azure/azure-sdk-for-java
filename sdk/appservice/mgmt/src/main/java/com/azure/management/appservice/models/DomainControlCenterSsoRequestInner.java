@@ -5,11 +5,15 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DomainControlCenterSsoRequest model. */
 @Immutable
 public final class DomainControlCenterSsoRequestInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainControlCenterSsoRequestInner.class);
+
     /*
      * URL where the single sign-on request is to be made.
      */
@@ -55,5 +59,13 @@ public final class DomainControlCenterSsoRequestInner {
      */
     public String postParameterValue() {
         return this.postParameterValue;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

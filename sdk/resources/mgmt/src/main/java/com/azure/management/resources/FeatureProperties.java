@@ -5,11 +5,15 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The FeatureProperties model. */
 @Fluent
 public final class FeatureProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FeatureProperties.class);
+
     /*
      * The registration state of the feature for the subscription.
      */
@@ -34,5 +38,13 @@ public final class FeatureProperties {
     public FeatureProperties withState(String state) {
         this.state = state;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MaxSizeRangeCapability model. */
 @Fluent
 public final class MaxSizeRangeCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaxSizeRangeCapability.class);
+
     /*
      * Minimum value.
      */
@@ -110,5 +114,25 @@ public final class MaxSizeRangeCapability {
     public MaxSizeRangeCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (minValue() != null) {
+            minValue().validate();
+        }
+        if (maxValue() != null) {
+            maxValue().validate();
+        }
+        if (scaleSize() != null) {
+            scaleSize().validate();
+        }
+        if (logSize() != null) {
+            logSize().validate();
+        }
     }
 }

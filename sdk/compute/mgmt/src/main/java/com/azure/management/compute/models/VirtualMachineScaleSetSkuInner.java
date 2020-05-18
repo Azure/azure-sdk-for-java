@@ -5,13 +5,17 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.Sku;
 import com.azure.management.compute.VirtualMachineScaleSetSkuCapacity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineScaleSetSku model. */
 @Immutable
 public final class VirtualMachineScaleSetSkuInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetSkuInner.class);
+
     /*
      * The type of resource the sku applies to.
      */
@@ -55,5 +59,19 @@ public final class VirtualMachineScaleSetSkuInner {
      */
     public VirtualMachineScaleSetSkuCapacity capacity() {
         return this.capacity;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (capacity() != null) {
+            capacity().validate();
+        }
     }
 }

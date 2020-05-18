@@ -10,7 +10,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.management.CloudError;
+import com.azure.core.management.exception.ManagementError;
 import com.azure.core.management.serializer.AzureJacksonAdapter;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -62,10 +62,10 @@ public class AuxiliaryAuthenticationPolicy implements HttpPipelinePolicy {
                             String bodyStr = new String(body, StandardCharsets.UTF_8);
 
                             AzureJacksonAdapter jacksonAdapter = new AzureJacksonAdapter();
-                            CloudError cloudError;
+                            ManagementError cloudError;
                             try {
                                 cloudError = jacksonAdapter.deserialize(
-                                    bodyStr, CloudError.class, SerializerEncoding.JSON);
+                                    bodyStr, ManagementError.class, SerializerEncoding.JSON);
                             } catch (IOException e) {
                                 return Mono.just(bufferedResponse);
                             }

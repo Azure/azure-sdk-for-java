@@ -10,30 +10,33 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.AzureEnvironment;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.AzureServiceClient;
 
 /** Initializes a new instance of the GraphRbacManagementClientImpl type. */
 public final class GraphRbacManagementClientImpl extends AzureServiceClient {
+    private final ClientLogger logger = new ClientLogger(GraphRbacManagementClientImpl.class);
+
     /** The tenant ID. */
-    private String tenantID;
+    private String tenantId;
 
     /**
      * Gets The tenant ID.
      *
-     * @return the tenantID value.
+     * @return the tenantId value.
      */
-    public String getTenantID() {
-        return this.tenantID;
+    public String getTenantId() {
+        return this.tenantId;
     }
 
     /**
      * Sets The tenant ID.
      *
-     * @param tenantID the tenantID value.
+     * @param tenantId the tenantId value.
      * @return the service client itself.
      */
-    public GraphRbacManagementClientImpl setTenantID(String tenantID) {
-        this.tenantID = tenantID;
+    public GraphRbacManagementClientImpl setTenantId(String tenantId) {
+        this.tenantId = tenantId;
         return this;
     }
 

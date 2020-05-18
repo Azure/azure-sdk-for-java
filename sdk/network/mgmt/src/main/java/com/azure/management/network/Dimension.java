@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Dimension model. */
 @Fluent
 public final class Dimension {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
+
     /*
      * The name of the dimension.
      */
@@ -86,5 +90,13 @@ public final class Dimension {
     public Dimension withInternalName(String internalName) {
         this.internalName = internalName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,13 +5,17 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.MetricTrigger;
 import com.azure.management.monitor.ScaleAction;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ScaleRule model. */
 @Fluent
 public final class ScaleRuleInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleRuleInner.class);
+
     /*
      * the trigger that results in a scaling action.
      */
@@ -62,5 +66,27 @@ public final class ScaleRuleInner {
     public ScaleRuleInner withScaleAction(ScaleAction scaleAction) {
         this.scaleAction = scaleAction;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (metricTrigger() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property metricTrigger in model ScaleRuleInner"));
+        } else {
+            metricTrigger().validate();
+        }
+        if (scaleAction() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property scaleAction in model ScaleRuleInner"));
+        } else {
+            scaleAction().validate();
+        }
     }
 }

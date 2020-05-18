@@ -217,9 +217,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void recognizeCustomFormInvalidSourceUrl(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                client.getFormTrainingClient().beginTraining(trainingFilesUrl, useTrainingLabels);
             syncPoller.waitForCompletion();
             CustomFormModel createdModel = syncPoller.getFinalResult();
 
@@ -239,9 +239,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      public void recognizeCustomFormLabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         customFormDataRunner(data ->
-            beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                    client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                    client.getFormTrainingClient().beginTraining(trainingFilesUrl, useTrainingLabels);
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
@@ -260,9 +260,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      public void recognizeCustomFormLabeledDataWithNullValues(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         customFormDataRunner(data ->
-            beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+            beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> syncPoller =
-                    client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                    client.getFormTrainingClient().beginTraining(trainingFilesUrl, useTrainingLabels);
                 syncPoller.waitForCompletion();
 
                 assertThrows(RuntimeException.class, () ->
@@ -283,9 +283,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
      public void recognizeCustomFormLabeledDataWithContentTypeAutoDetection(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        beginTrainingLabeledRunner((storageSASUrl, useLabelFile) -> {
+        beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                client.getFormTrainingClient().beginTraining(trainingFilesUrl, useTrainingLabels);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
@@ -305,9 +305,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
      public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         customFormDataRunner(data ->
-            beginTrainingUnlabeledRunner((storageSASUrl, useLabelFile) -> {
+            beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                    client.getFormTrainingClient().beginTraining(storageSASUrl, useLabelFile);
+                    client.getFormTrainingClient().beginTraining(trainingFilesUrl, useTrainingLabels);
                 trainingPoller.waitForCompletion();
 
                 SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller
