@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.management.storage.implementation;
+package com.azure.management.storage.models;
 
 import com.azure.management.storage.models.AccountStatus;
 

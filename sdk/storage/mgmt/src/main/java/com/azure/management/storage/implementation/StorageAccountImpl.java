@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.models.AccessTier;
+import com.azure.management.storage.models.AccountStatuses;
 import com.azure.management.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.management.storage.models.CustomDomain;
 import com.azure.management.storage.models.DirectoryServiceOptions;
