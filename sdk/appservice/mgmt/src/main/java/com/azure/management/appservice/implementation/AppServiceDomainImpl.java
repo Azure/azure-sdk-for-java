@@ -7,7 +7,7 @@ import com.azure.management.appservice.AppServiceDomain;
 import com.azure.management.appservice.Contact;
 import com.azure.management.appservice.DomainPurchaseConsent;
 import com.azure.management.appservice.DomainStatus;
-import com.azure.management.appservice.HostName;
+import com.azure.management.appservice.Hostname;
 import com.azure.management.appservice.TopLevelDomainAgreementOption;
 import com.azure.management.appservice.models.DomainInner;
 import com.azure.management.appservice.models.DomainOwnershipIdentifierInner;
@@ -30,14 +30,14 @@ class AppServiceDomainImpl
     extends GroupableResourceImpl<AppServiceDomain, DomainInner, AppServiceDomainImpl, AppServiceManager>
     implements AppServiceDomain, AppServiceDomain.Definition, AppServiceDomain.Update {
 
-    private Map<String, HostName> hostNameMap;
+    private Map<String, Hostname> hostNameMap;
 
     AppServiceDomainImpl(String name, DomainInner innerObject, AppServiceManager manager) {
         super(name, innerObject, manager);
         inner().withLocation("global");
         if (inner().managedHostNames() != null) {
             this.hostNameMap =
-                inner().managedHostNames().stream().collect(Collectors.toMap(HostName::name, Function.identity()));
+                inner().managedHostNames().stream().collect(Collectors.toMap(Hostname::name, Function.identity()));
         }
     }
 
@@ -138,7 +138,7 @@ class AppServiceDomainImpl
     }
 
     @Override
-    public Map<String, HostName> managedHostNames() {
+    public Map<String, Hostname> managedHostNames() {
         if (hostNameMap == null) {
             return null;
         }

@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CsmSlotEntity model. */
 @Fluent
 public final class CsmSlotEntity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmSlotEntity.class);
+
     /*
      * Destination deployment slot during swap operation.
      */
@@ -63,5 +67,18 @@ public final class CsmSlotEntity {
     public CsmSlotEntity withPreserveVnet(boolean preserveVnet) {
         this.preserveVnet = preserveVnet;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetSlot() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property targetSlot in model CsmSlotEntity"));
+        }
     }
 }

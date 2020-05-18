@@ -5,12 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OrchestratorVersionProfile model. */
 @Fluent
 public final class OrchestratorVersionProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfile.class);
+
     /*
      * Orchestrator type.
      */
@@ -139,5 +143,28 @@ public final class OrchestratorVersionProfile {
     public OrchestratorVersionProfile withUpgrades(List<OrchestratorProfile> upgrades) {
         this.upgrades = upgrades;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (orchestratorType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property orchestratorType in model OrchestratorVersionProfile"));
+        }
+        if (orchestratorVersion() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property orchestratorVersion in model OrchestratorVersionProfile"));
+        }
+        if (upgrades() != null) {
+            upgrades().forEach(e -> e.validate());
+        }
     }
 }

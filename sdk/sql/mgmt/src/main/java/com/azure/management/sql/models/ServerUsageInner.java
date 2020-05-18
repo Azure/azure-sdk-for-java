@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The ServerUsage model. */
 @Immutable
 public final class ServerUsageInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUsageInner.class);
+
     /*
      * Name of the server usage metric.
      */
@@ -114,5 +118,13 @@ public final class ServerUsageInner {
      */
     public OffsetDateTime nextResetTime() {
         return this.nextResetTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

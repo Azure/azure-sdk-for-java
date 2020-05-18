@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ScaleInPolicy model. */
 @Fluent
 public final class ScaleInPolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleInPolicy.class);
+
     /*
      * The rules to be followed when scaling-in a virtual machine scale set.
      * <br><br> Possible values are: <br><br> **Default** When a virtual
@@ -73,5 +77,13 @@ public final class ScaleInPolicy {
     public ScaleInPolicy withRules(List<VirtualMachineScaleSetScaleInRules> rules) {
         this.rules = rules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

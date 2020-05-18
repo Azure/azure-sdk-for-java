@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The JobAgentUpdate model. */
 @Fluent
 public final class JobAgentUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobAgentUpdate.class);
+
     /*
      * Resource tags.
      */
@@ -35,5 +39,13 @@ public final class JobAgentUpdate {
     public JobAgentUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.SkuCapacity;
 import com.azure.management.appservice.SkuDescription;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SkuInfo model. */
 @Fluent
 public final class SkuInfoInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInfoInner.class);
+
     /*
      * Resource type that this SKU applies to.
      */
@@ -88,5 +92,19 @@ public final class SkuInfoInner {
     public SkuInfoInner withCapacity(SkuCapacity capacity) {
         this.capacity = capacity;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (capacity() != null) {
+            capacity().validate();
+        }
     }
 }

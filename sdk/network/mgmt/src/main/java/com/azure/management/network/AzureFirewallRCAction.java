@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureFirewallRCAction model. */
 @Fluent
 public final class AzureFirewallRCAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallRCAction.class);
+
     /*
      * The type of action.
      */
@@ -34,5 +38,13 @@ public final class AzureFirewallRCAction {
     public AzureFirewallRCAction withType(AzureFirewallRCActionType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

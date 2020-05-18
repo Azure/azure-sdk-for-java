@@ -5,21 +5,21 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The GalleryImageVersionStorageProfile model. */
 @Immutable
 public final class GalleryImageVersionStorageProfile {
-    /** The source property. */
-    @JsonProperty(value = "source")
-    private GalleryArtifactVersionSource source;
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionStorageProfile.class);
 
     /*
-     * This is the OS disk image.
+     * This is the disk image base class.
      */
     @JsonProperty(value = "osDiskImage", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryOSDiskImage osDiskImage;
+    private GalleryDiskImage osDiskImage;
 
     /*
      * A list of data disk images.
@@ -28,31 +28,11 @@ public final class GalleryImageVersionStorageProfile {
     private List<GalleryDataDiskImage> dataDiskImages;
 
     /**
-     * Get the source value.
-     *
-     * @return the source value
-     */
-    public GalleryArtifactVersionSource source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source value.
-     *
-     * @param source the source value to set
-     * @return the GalleryImageVersionStorageProfile object itself.
-     */
-    public GalleryImageVersionStorageProfile withSource(GalleryArtifactVersionSource source) {
-        this.source = source;
-        return this;
-    }
-
-    /**
-     * Get the osDiskImage property: This is the OS disk image.
+     * Get the osDiskImage property: This is the disk image base class.
      *
      * @return the osDiskImage value.
      */
-    public GalleryOSDiskImage osDiskImage() {
+    public GalleryDiskImage osDiskImage() {
         return this.osDiskImage;
     }
 
@@ -63,5 +43,19 @@ public final class GalleryImageVersionStorageProfile {
      */
     public List<GalleryDataDiskImage> dataDiskImages() {
         return this.dataDiskImages;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (osDiskImage() != null) {
+            osDiskImage().validate();
+        }
+        if (dataDiskImages() != null) {
+            dataDiskImages().forEach(e -> e.validate());
+        }
     }
 }

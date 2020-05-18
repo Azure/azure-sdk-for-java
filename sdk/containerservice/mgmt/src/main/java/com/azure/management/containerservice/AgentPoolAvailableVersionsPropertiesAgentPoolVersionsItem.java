@@ -5,11 +5,17 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem model. */
 @Fluent
 public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
+    @JsonIgnore
+    private final ClientLogger logger =
+        new ClientLogger(AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem.class);
+
     /*
      * Whether this version is the default agent pool version.
      */
@@ -86,5 +92,13 @@ public final class AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem {
     public AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem withIsPreview(Boolean isPreview) {
         this.isPreview = isPreview;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

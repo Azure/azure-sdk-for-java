@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SiteLimits model. */
 @Fluent
 public final class SiteLimits {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteLimits.class);
+
     /*
      * Maximum allowed CPU usage percentage.
      */
@@ -86,5 +90,13 @@ public final class SiteLimits {
     public SiteLimits withMaxDiskSizeInMb(Long maxDiskSizeInMb) {
         this.maxDiskSizeInMb = maxDiskSizeInMb;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

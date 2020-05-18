@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SourceTriggerDescriptor model. */
 @Fluent
 public final class SourceTriggerDescriptor {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceTriggerDescriptor.class);
+
     /*
      * The unique ID of the trigger.
      */
@@ -190,5 +194,13 @@ public final class SourceTriggerDescriptor {
     public SourceTriggerDescriptor withProviderType(String providerType) {
         this.providerType = providerType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

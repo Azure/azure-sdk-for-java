@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationDisplay model. */
 @Immutable
 public final class OperationDisplay {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
+
     /*
      * The localized friendly form of the resource provider name.
      */
@@ -69,5 +73,13 @@ public final class OperationDisplay {
      */
     public String description() {
         return this.description;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

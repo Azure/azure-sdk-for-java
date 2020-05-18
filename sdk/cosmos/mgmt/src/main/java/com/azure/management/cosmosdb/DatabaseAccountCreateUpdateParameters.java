@@ -6,13 +6,17 @@ package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DatabaseAccountCreateUpdateParameters model. */
 @JsonFlatten
 @Fluent
-public class DatabaseAccountCreateUpdateParameters extends ARMResourceProperties {
+public class DatabaseAccountCreateUpdateParameters extends ArmResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountCreateUpdateParameters.class);
+
     /*
      * Indicates the type of database account. This can only be set at database
      * account creation.
@@ -381,5 +385,32 @@ public class DatabaseAccountCreateUpdateParameters extends ARMResourceProperties
         Boolean disableKeyBasedMetadataWriteAccess) {
         this.disableKeyBasedMetadataWriteAccess = disableKeyBasedMetadataWriteAccess;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (consistencyPolicy() != null) {
+            consistencyPolicy().validate();
+        }
+        if (locations() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property locations in model DatabaseAccountCreateUpdateParameters"));
+        } else {
+            locations().forEach(e -> e.validate());
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
+        if (virtualNetworkRules() != null) {
+            virtualNetworkRules().forEach(e -> e.validate());
+        }
     }
 }

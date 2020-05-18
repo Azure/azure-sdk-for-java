@@ -19,9 +19,9 @@ import com.azure.core.util.Configuration;
 import com.azure.management.AuthenticationPolicy;
 import com.azure.management.UserAgentPolicy;
 import com.azure.management.resources.fluentcore.policy.ProviderRegistrationPolicy;
-import com.azure.management.resources.fluentcore.policy.ResourceManagerThrottlingPolicy;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +42,7 @@ public final class HttpPipelineProvider {
      */
     public static HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
         return buildHttpPipeline(credential, profile, null, new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE),
-            null, new RetryPolicy(), null, null);
+            null, new RetryPolicy("Retry-After", ChronoUnit.SECONDS), null, null);
     }
 
     /**
@@ -68,17 +68,10 @@ public final class HttpPipelineProvider {
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
         policies.add(new AddDatePolicy());
-        AuthenticationPolicy authenticationPolicy;
         if (credential != null) {
-            authenticationPolicy = new AuthenticationPolicy(credential, profile.environment(), scopes);
-        } else {
-            authenticationPolicy = null;
-        }
-        if (authenticationPolicy != null) {
-            policies.add(authenticationPolicy);
+            policies.add(new AuthenticationPolicy(credential, profile.environment(), scopes));
         }
         policies.add(new ProviderRegistrationPolicy(credential, profile));
-        policies.add(new ResourceManagerThrottlingPolicy());
         if (additionalPolicies != null && !additionalPolicies.isEmpty()) {
             policies.addAll(additionalPolicies);
         }

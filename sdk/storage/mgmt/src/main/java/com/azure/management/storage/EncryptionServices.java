@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EncryptionServices model. */
 @Fluent
 public final class EncryptionServices {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionServices.class);
+
     /*
      * The encryption function of the blob storage service.
      */
@@ -112,5 +116,25 @@ public final class EncryptionServices {
     public EncryptionServices withQueue(EncryptionService queue) {
         this.queue = queue;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (blob() != null) {
+            blob().validate();
+        }
+        if (file() != null) {
+            file().validate();
+        }
+        if (table() != null) {
+            table().validate();
+        }
+        if (queue() != null) {
+            queue().validate();
+        }
     }
 }

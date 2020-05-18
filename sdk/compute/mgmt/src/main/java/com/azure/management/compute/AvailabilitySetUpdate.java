@@ -7,6 +7,8 @@ package com.azure.management.compute;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AvailabilitySetUpdate extends UpdateResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetUpdate.class);
+
     /*
      * Sku of the availability set
      */
@@ -161,5 +165,21 @@ public class AvailabilitySetUpdate extends UpdateResource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (statuses() != null) {
+            statuses().forEach(e -> e.validate());
+        }
     }
 }

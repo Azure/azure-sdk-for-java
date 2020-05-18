@@ -7,10 +7,12 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.IpsecPolicy;
 import com.azure.management.network.ProvisioningState;
 import com.azure.management.network.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.management.network.VpnConnectionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VpnConnectionInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnConnectionInner.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -434,5 +438,19 @@ public class VpnConnectionInner extends SubResource {
     public VpnConnectionInner withVpnLinkConnections(List<VpnSiteLinkConnectionInner> vpnLinkConnections) {
         this.vpnLinkConnections = vpnLinkConnections;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipsecPolicies() != null) {
+            ipsecPolicies().forEach(e -> e.validate());
+        }
+        if (vpnLinkConnections() != null) {
+            vpnLinkConnections().forEach(e -> e.validate());
+        }
     }
 }

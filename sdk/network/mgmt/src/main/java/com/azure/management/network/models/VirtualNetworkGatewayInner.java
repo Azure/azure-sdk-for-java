@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.BgpSettings;
 import com.azure.management.network.VirtualNetworkGatewaySku;
 import com.azure.management.network.VirtualNetworkGatewayType;
 import com.azure.management.network.VpnClientConfiguration;
 import com.azure.management.network.VpnType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,6 +23,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualNetworkGatewayInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -32,7 +36,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * IP configurations for virtual network gateway.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations;
+    private List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations;
 
     /*
      * The type of this virtual network gateway.
@@ -138,7 +142,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the ipConfigurations value.
      */
-    public List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations() {
+    public List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -149,7 +153,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @return the VirtualNetworkGatewayInner object itself.
      */
     public VirtualNetworkGatewayInner withIpConfigurations(
-        List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations) {
+        List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -390,5 +394,28 @@ public class VirtualNetworkGatewayInner extends Resource {
     public VirtualNetworkGatewayInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (vpnClientConfiguration() != null) {
+            vpnClientConfiguration().validate();
+        }
+        if (bgpSettings() != null) {
+            bgpSettings().validate();
+        }
+        if (customRoutes() != null) {
+            customRoutes().validate();
+        }
     }
 }

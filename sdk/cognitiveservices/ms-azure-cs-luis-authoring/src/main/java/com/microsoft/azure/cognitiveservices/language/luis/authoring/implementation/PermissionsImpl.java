@@ -469,7 +469,7 @@ public class PermissionsImpl implements Permissions {
 
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
      * @param appId The application ID.
      * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -483,7 +483,7 @@ public class PermissionsImpl implements Permissions {
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
      * @param appId The application ID.
      * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -496,7 +496,7 @@ public class PermissionsImpl implements Permissions {
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
      * @param appId The application ID.
      * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -513,7 +513,7 @@ public class PermissionsImpl implements Permissions {
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
      * @param appId The application ID.
      * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -533,7 +533,7 @@ public class PermissionsImpl implements Permissions {
     }
 
     /**
-     * Replaces the current users access list with the one sent in the body. If an empty list is sent, all access to other users will be removed.
+     * Replaces the current user access list with the new list sent in the body. If an empty list is sent, all access to other users will be removed.
      *
      * @param appId The application ID.
      * @param emails The email address of the users.

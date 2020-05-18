@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The MSDeployLogEntry model. */
 @Immutable
 public final class MSDeployLogEntry {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployLogEntry.class);
+
     /*
      * Timestamp of log entry
      */
@@ -54,5 +58,13 @@ public final class MSDeployLogEntry {
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

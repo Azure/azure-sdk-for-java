@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PublishSettingUpdateObject {
     /**
      * Setting sentiment analysis as true returns the Sentiment of the input
-     * utterance along with the resopnse.
+     * utterance along with the response.
      */
     @JsonProperty(value = "sentimentAnalysis")
     private boolean sentimentAnalysis;

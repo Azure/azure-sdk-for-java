@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 
-import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.microsoft.rest.ExpandableStringEnum;
+
+import java.util.Collection;
 
 /**
  * Defines values for OperationStatusType.
@@ -18,6 +19,9 @@ import com.microsoft.rest.ExpandableStringEnum;
 public final class OperationStatusType extends ExpandableStringEnum<OperationStatusType> {
     /** Static value Failed for OperationStatusType. */
     public static final OperationStatusType FAILED = fromString("Failed");
+
+    /** Static value FAILED for OperationStatusType. */
+    public static final OperationStatusType FAILED_1 = fromString("FAILED");
 
     /** Static value Success for OperationStatusType. */
     public static final OperationStatusType SUCCESS = fromString("Success");

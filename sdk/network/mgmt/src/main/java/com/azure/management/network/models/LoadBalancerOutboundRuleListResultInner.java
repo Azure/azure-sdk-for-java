@@ -5,12 +5,16 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The LoadBalancerOutboundRuleListResult model. */
 @Fluent
 public final class LoadBalancerOutboundRuleListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerOutboundRuleListResultInner.class);
+
     /*
      * A list of outbound rules in a load balancer.
      */
@@ -50,5 +54,16 @@ public final class LoadBalancerOutboundRuleListResultInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

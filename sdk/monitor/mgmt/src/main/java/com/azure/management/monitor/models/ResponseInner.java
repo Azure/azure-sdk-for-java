@@ -5,6 +5,8 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The Response model. */
 @Fluent
 public final class ResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponseInner.class);
+
     /*
      * The integer value representing the cost of the query, for data case.
      */
@@ -45,7 +49,7 @@ public final class ResponseInner {
      * The region of the resource been queried for metrics.
      */
     @JsonProperty(value = "resourceregion")
-    private String resourceregion;
+    private String resourceRegion;
 
     /*
      * the value of the collection.
@@ -142,22 +146,22 @@ public final class ResponseInner {
     }
 
     /**
-     * Get the resourceregion property: The region of the resource been queried for metrics.
+     * Get the resourceRegion property: The region of the resource been queried for metrics.
      *
-     * @return the resourceregion value.
+     * @return the resourceRegion value.
      */
-    public String resourceregion() {
-        return this.resourceregion;
+    public String resourceRegion() {
+        return this.resourceRegion;
     }
 
     /**
-     * Set the resourceregion property: The region of the resource been queried for metrics.
+     * Set the resourceRegion property: The region of the resource been queried for metrics.
      *
-     * @param resourceregion the resourceregion value to set.
+     * @param resourceRegion the resourceRegion value to set.
      * @return the ResponseInner object itself.
      */
-    public ResponseInner withResourceregion(String resourceregion) {
-        this.resourceregion = resourceregion;
+    public ResponseInner withResourceRegion(String resourceRegion) {
+        this.resourceRegion = resourceRegion;
         return this;
     }
 
@@ -179,5 +183,25 @@ public final class ResponseInner {
     public ResponseInner withValue(List<MetricInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (timespan() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property timespan in model ResponseInner"));
+        }
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model ResponseInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

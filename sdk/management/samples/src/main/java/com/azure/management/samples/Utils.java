@@ -20,7 +20,7 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.FluxUtil;
 import com.azure.management.appservice.AppServiceCertificateOrder;
 import com.azure.management.appservice.AppServiceDomain;
@@ -28,8 +28,8 @@ import com.azure.management.appservice.AppServicePlan;
 import com.azure.management.appservice.AppSetting;
 import com.azure.management.appservice.ConnectionString;
 import com.azure.management.appservice.Contact;
-import com.azure.management.appservice.HostNameBinding;
-import com.azure.management.appservice.HostNameSslState;
+import com.azure.management.appservice.HostnameBinding;
+import com.azure.management.appservice.HostnameSslState;
 import com.azure.management.appservice.PublishingProfile;
 import com.azure.management.appservice.SslState;
 import com.azure.management.appservice.WebAppBase;
@@ -95,7 +95,7 @@ import com.azure.management.network.ApplicationGatewayBackend;
 import com.azure.management.network.ApplicationGatewayBackendAddress;
 import com.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.azure.management.network.ApplicationGatewayFrontend;
-import com.azure.management.network.ApplicationGatewayIPConfiguration;
+import com.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.azure.management.network.ApplicationGatewayListener;
 import com.azure.management.network.ApplicationGatewayProbe;
 import com.azure.management.network.ApplicationGatewayRedirectConfiguration;
@@ -123,7 +123,7 @@ import com.azure.management.network.NetworkWatcher;
 import com.azure.management.network.NextHop;
 import com.azure.management.network.PacketCapture;
 import com.azure.management.network.PacketCaptureFilter;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.RouteTable;
 import com.azure.management.network.SecurityGroupNetworkInterface;
 import com.azure.management.network.SecurityGroupView;
@@ -170,6 +170,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -211,8 +212,7 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tService Principal Id: ").append(resource.principalId())
                 .append("\n\tClient Id: ").append(resource.clientId())
-                .append("\n\tTenant Id: ").append(resource.tenantId())
-                .append("\n\tClient Secret Url: ").append(resource.clientSecretUrl());
+                .append("\n\tTenant Id: ").append(resource.tenantId());
         System.out.println(info.toString());
     }
 
@@ -373,7 +373,7 @@ public final class Utils {
      * Print network info.
      *
      * @param resource a network
-     * @throws CloudException Cloud errors
+     * @throws ManagementException Cloud errors
      */
     public static void print(Network resource) {
         StringBuilder info = new StringBuilder();
@@ -453,7 +453,7 @@ public final class Utils {
                 .append("\n\tAccelerated networking enabled? ").append(resource.isAcceleratedNetworkingEnabled())
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIP())
-                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIPAllocationMethod())
+                .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
                 .append("\n\tPrimary virtual network ID: ").append(resource.primaryIPConfiguration().networkId())
                 .append("\n\tPrimary subnet name:").append(resource.primaryIPConfiguration().subnetName());
 
@@ -494,7 +494,7 @@ public final class Utils {
      *
      * @param resource a public IP address
      */
-    public static void print(PublicIPAddress resource) {
+    public static void print(PublicIpAddress resource) {
         System.out.println(new StringBuilder().append("Public IP Address: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -677,8 +677,8 @@ public final class Utils {
 
         // Show public IP addresses
         info.append("\n\tPublic IP address IDs: ")
-                .append(resource.publicIPAddressIds().size());
-        for (String pipId : resource.publicIPAddressIds()) {
+                .append(resource.publicIpAddressIds().size());
+        for (String pipId : resource.publicIpAddressIds()) {
             info.append("\n\t\tPIP id: ").append(pipId);
         }
 
@@ -781,12 +781,12 @@ public final class Utils {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIPAddressId());
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
             } else {
                 info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
                         .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
-                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIPAllocationMethod());
+                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
             }
 
             // Inbound NAT pool references
@@ -821,7 +821,7 @@ public final class Utils {
                     .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
                     .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
                     .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
-                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIPConfigurationName())
+                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIpConfigurationName())
                     .append("\n\t\t\tFloating IP? ").append(natRule.floatingIPEnabled())
                     .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
         }
@@ -994,14 +994,14 @@ public final class Utils {
                 .append("\n\tState: ").append(resource.state())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
-                .append("\n\tDefault hostname: ").append(resource.defaultHostName())
+                .append("\n\tDefault hostname: ").append(resource.defaultHostname())
                 .append("\n\tApp service plan: ").append(resource.appServicePlanId())
                 .append("\n\tHost name bindings: ");
-        for (HostNameBinding binding : resource.getHostNameBindings().values()) {
+        for (HostnameBinding binding : resource.getHostnameBindings().values()) {
             builder = builder.append("\n\t\t" + binding.toString());
         }
         builder = builder.append("\n\tSSL bindings: ");
-        for (HostNameSslState binding : resource.hostNameSslStates().values()) {
+        for (HostnameSslState binding : resource.hostnameSslStates().values()) {
             builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
             if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
                 builder = builder.append(" - " + binding.thumbprint());
@@ -1710,14 +1710,14 @@ public final class Utils {
                 .append("\n\tOperational state: ").append(resource.operationalState())
                 .append("\n\tInternet-facing? ").append(resource.isPublic())
                 .append("\n\tInternal? ").append(resource.isPrivate())
-                .append("\n\tDefault private IP address: ").append(resource.privateIPAddress())
-                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIPAllocationMethod())
+                .append("\n\tDefault private IP address: ").append(resource.privateIpAddress())
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIpAllocationMethod())
                 .append("\n\tDisabled SSL protocols: ").append(resource.disabledSslProtocols().toString());
 
         // Show IP configs
-        Map<String, ApplicationGatewayIPConfiguration> ipConfigs = resource.ipConfigurations();
+        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
         info.append("\n\tIP configurations: ").append(ipConfigs.size());
-        for (ApplicationGatewayIPConfiguration ipConfig : ipConfigs.values()) {
+        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
             info.append("\n\t\tName: ").append(ipConfig.name())
                     .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
                     .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
@@ -1732,13 +1732,13 @@ public final class Utils {
 
             if (frontend.isPublic()) {
                 // Show public frontend info
-                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIPAddressId());
+                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIpAddressId());
             }
 
             if (frontend.isPrivate()) {
                 // Show private frontend info
-                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIPAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIPAllocationMethod())
+                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIpAllocationMethod())
                         .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
                         .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
             }
@@ -1807,7 +1807,7 @@ public final class Utils {
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
-                    .append("\n\t\t\tHost name: ").append(listener.hostName())
+                    .append("\n\t\t\tHost name: ").append(listener.hostname())
                     .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
                     .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
                     .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
@@ -1838,8 +1838,8 @@ public final class Utils {
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
                     .append("\n\t\tType: ").append(rule.ruleType())
-                    .append("\n\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                    .append("\n\t\tHost name: ").append(rule.hostName())
+                    .append("\n\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
+                    .append("\n\t\tHost name: ").append(rule.hostname())
                     .append("\n\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
                     .append("\n\t\tFrontend port: ").append(rule.frontendPort())
                     .append("\n\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
@@ -2456,8 +2456,8 @@ public final class Utils {
                 .append("\n\t Packet capture filters: ").append(resource.filters().size());
         for (PacketCaptureFilter filter : resource.filters()) {
             sb.append("\n\t\tProtocol: ").append(filter.protocol());
-            sb.append("\n\t\tLocal IP address: ").append(filter.localIPAddress());
-            sb.append("\n\t\tRemote IP address: ").append(filter.remoteIPAddress());
+            sb.append("\n\t\tLocal IP address: ").append(filter.localIpAddress());
+            sb.append("\n\t\tRemote IP address: ").append(filter.remoteIpAddress());
             sb.append("\n\t\tLocal port: ").append(filter.localPort());
             sb.append("\n\t\tRemote port: ").append(filter.remotePort());
         }
@@ -3070,7 +3070,7 @@ public final class Utils {
     private static WebAppTestClient httpClient = RestProxy.create(
             WebAppTestClient.class,
             new HttpPipelineBuilder()
-                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy())
+                    .policies(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC)), new RetryPolicy("Retry-After", ChronoUnit.SECONDS))
                     .build());
 
     @Host("{$host}")

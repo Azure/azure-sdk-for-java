@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The ConnectionMonitorResultProperties model. */
 @Fluent
 public final class ConnectionMonitorResultProperties extends ConnectionMonitorParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorResultProperties.class);
+
     /*
      * The provisioning state of the connection monitor.
      */
@@ -76,5 +80,15 @@ public final class ConnectionMonitorResultProperties extends ConnectionMonitorPa
     public ConnectionMonitorResultProperties withMonitoringStatus(String monitoringStatus) {
         this.monitoringStatus = monitoringStatus;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

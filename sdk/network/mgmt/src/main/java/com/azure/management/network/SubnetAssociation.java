@@ -5,13 +5,17 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.models.SecurityRuleInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SubnetAssociation model. */
 @Fluent
 public final class SubnetAssociation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetAssociation.class);
+
     /*
      * Subnet ID.
      */
@@ -51,5 +55,16 @@ public final class SubnetAssociation {
     public SubnetAssociation withSecurityRules(List<SecurityRuleInner> securityRules) {
         this.securityRules = securityRules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (securityRules() != null) {
+            securityRules().forEach(e -> e.validate());
+        }
     }
 }

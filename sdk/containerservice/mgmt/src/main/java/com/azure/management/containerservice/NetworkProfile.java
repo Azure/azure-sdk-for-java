@@ -5,11 +5,15 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkProfile model. */
 @Fluent
 public final class NetworkProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
+
     /*
      * CIDR for the OpenShift Vnet.
      */
@@ -86,5 +90,13 @@ public final class NetworkProfile {
     public NetworkProfile withVnetId(String vnetId) {
         this.vnetId = vnetId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

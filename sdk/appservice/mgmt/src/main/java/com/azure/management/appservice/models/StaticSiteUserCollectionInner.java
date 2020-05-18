@@ -5,17 +5,21 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The StaticSiteUserCollection model. */
 @Fluent
 public final class StaticSiteUserCollectionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserCollectionInner.class);
+
     /*
      * Collection of resources.
      */
     @JsonProperty(value = "value", required = true)
-    private List<StaticSiteUserARMResourceInner> value;
+    private List<StaticSiteUserArmResourceInner> value;
 
     /*
      * Link to next page of resources.
@@ -28,7 +32,7 @@ public final class StaticSiteUserCollectionInner {
      *
      * @return the value value.
      */
-    public List<StaticSiteUserARMResourceInner> value() {
+    public List<StaticSiteUserArmResourceInner> value() {
         return this.value;
     }
 
@@ -38,7 +42,7 @@ public final class StaticSiteUserCollectionInner {
      * @param value the value value to set.
      * @return the StaticSiteUserCollectionInner object itself.
      */
-    public StaticSiteUserCollectionInner withValue(List<StaticSiteUserARMResourceInner> value) {
+    public StaticSiteUserCollectionInner withValue(List<StaticSiteUserArmResourceInner> value) {
         this.value = value;
         return this;
     }
@@ -50,5 +54,21 @@ public final class StaticSiteUserCollectionInner {
      */
     public String nextLink() {
         return this.nextLink;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model StaticSiteUserCollectionInner"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

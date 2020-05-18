@@ -25,7 +25,7 @@ class MetricCollectionImpl extends WrapperImpl<ResponseInner> implements MetricC
 
     @Override
     public String resourceRegion() {
-        return this.inner().resourceregion();
+        return this.inner().resourceRegion();
     }
 
     @Override

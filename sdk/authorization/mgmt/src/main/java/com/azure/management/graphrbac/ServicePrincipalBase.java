@@ -5,14 +5,18 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.models.KeyCredentialInner;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ServicePrincipalBase model. */
 @Fluent
 public class ServicePrincipalBase {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalBase.class);
+
     /*
      * whether or not the service principal account is enabled
      */
@@ -174,5 +178,19 @@ public class ServicePrincipalBase {
     public ServicePrincipalBase withTags(List<String> tags) {
         this.tags = tags;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keyCredentials() != null) {
+            keyCredentials().forEach(e -> e.validate());
+        }
+        if (passwordCredentials() != null) {
+            passwordCredentials().forEach(e -> e.validate());
+        }
     }
 }

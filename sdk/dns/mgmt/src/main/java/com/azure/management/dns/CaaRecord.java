@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CaaRecord model. */
 @Fluent
 public final class CaaRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CaaRecord.class);
+
     /*
      * The flags for this CAA record as an integer between 0 and 255.
      */
@@ -86,5 +90,13 @@ public final class CaaRecord {
     public CaaRecord withValue(String value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

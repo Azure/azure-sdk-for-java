@@ -5,6 +5,8 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 /** The ConnectivityIssue model. */
 @Immutable
 public final class ConnectivityIssue {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityIssue.class);
+
     /*
      * The origin of the issue.
      */
@@ -70,5 +74,13 @@ public final class ConnectivityIssue {
      */
     public List<Map<String, String>> context() {
         return this.context;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

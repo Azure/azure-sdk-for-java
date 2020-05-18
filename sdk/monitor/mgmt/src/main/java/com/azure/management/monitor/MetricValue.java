@@ -5,17 +5,21 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The MetricValue model. */
 @Fluent
 public final class MetricValue {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricValue.class);
+
     /*
      * the timestamp for the metric value in ISO 8601 format.
      */
     @JsonProperty(value = "timeStamp", required = true)
-    private OffsetDateTime timeStamp;
+    private OffsetDateTime timestamp;
 
     /*
      * the average value in the time range.
@@ -49,22 +53,22 @@ public final class MetricValue {
     private Double count;
 
     /**
-     * Get the timeStamp property: the timestamp for the metric value in ISO 8601 format.
+     * Get the timestamp property: the timestamp for the metric value in ISO 8601 format.
      *
-     * @return the timeStamp value.
+     * @return the timestamp value.
      */
-    public OffsetDateTime timeStamp() {
-        return this.timeStamp;
+    public OffsetDateTime timestamp() {
+        return this.timestamp;
     }
 
     /**
-     * Set the timeStamp property: the timestamp for the metric value in ISO 8601 format.
+     * Set the timestamp property: the timestamp for the metric value in ISO 8601 format.
      *
-     * @param timeStamp the timeStamp value to set.
+     * @param timestamp the timestamp value to set.
      * @return the MetricValue object itself.
      */
-    public MetricValue withTimeStamp(OffsetDateTime timeStamp) {
-        this.timeStamp = timeStamp;
+    public MetricValue withTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
         return this;
     }
 
@@ -168,5 +172,18 @@ public final class MetricValue {
     public MetricValue withCount(Double count) {
         this.count = count;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (timestamp() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property timestamp in model MetricValue"));
+        }
     }
 }

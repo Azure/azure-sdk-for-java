@@ -10,12 +10,12 @@ import com.azure.management.appservice.OperatingSystem;
 import com.azure.management.appservice.PricingTier;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
-import java.time.Duration;
-import java.time.OffsetDateTime;
-
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.time.OffsetDateTime;
 
 public class AutoscaleTests extends MonitorManagementTest {
     private static String rgName = "";
@@ -163,7 +163,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.INCREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.EXACT_COUNT, rule.scaleType());
             Assertions.assertEquals(10, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(12), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(12), rule.cooldown());
 
             tempProfile = setting.profiles().get("AutoScaleProfile2");
             Assertions.assertNotNull(tempProfile);
@@ -196,7 +196,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.DECREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.EXACT_COUNT, rule.scaleType());
             Assertions.assertEquals(1, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(3), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(3), rule.cooldown());
 
             // GET Autoscale settings and compare
             AutoscaleSetting settingFromGet = monitorManager.autoscaleSettings().getById(setting.id());
@@ -265,7 +265,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.INCREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.EXACT_COUNT, rule.scaleType());
             Assertions.assertEquals(10, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(12), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(12), rule.cooldown());
 
             tempProfile = settingFromGet.profiles().get("AutoScaleProfile2");
             Assertions.assertNotNull(tempProfile);
@@ -298,7 +298,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.DECREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.EXACT_COUNT, rule.scaleType());
             Assertions.assertEquals(1, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(3), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(3), rule.cooldown());
 
             // Update
             setting
@@ -414,7 +414,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.DECREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.PERCENT_CHANGE_COUNT, rule.scaleType());
             Assertions.assertEquals(10, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(10), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(10), rule.cooldown());
 
             tempProfile = setting.profiles().get("AutoScaleProfile2");
             Assertions.assertNotNull(tempProfile);
@@ -444,7 +444,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.DECREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.EXACT_COUNT, rule.scaleType());
             Assertions.assertEquals(1, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(3), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(3), rule.cooldown());
 
             // List
             settingFromGet = monitorManager.autoscaleSettings().listByResourceGroup(rgName).iterator().next();
@@ -525,7 +525,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.DECREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.PERCENT_CHANGE_COUNT, rule.scaleType());
             Assertions.assertEquals(10, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(10), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(10), rule.cooldown());
 
             tempProfile = settingFromGet.profiles().get("AutoScaleProfile2");
             Assertions.assertNotNull(tempProfile);
@@ -555,7 +555,7 @@ public class AutoscaleTests extends MonitorManagementTest {
             Assertions.assertEquals(ScaleDirection.DECREASE, rule.scaleDirection());
             Assertions.assertEquals(ScaleType.EXACT_COUNT, rule.scaleType());
             Assertions.assertEquals(1, rule.scaleInstanceCount());
-            Assertions.assertEquals(Duration.ofHours(3), rule.coolDown());
+            Assertions.assertEquals(Duration.ofHours(3), rule.cooldown());
 
             // Delete
             monitorManager.autoscaleSettings().deleteById(settingFromGet.id());

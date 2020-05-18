@@ -7,8 +7,10 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.RuleAction;
 import com.azure.management.monitor.RuleCondition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AlertRuleResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleResourceInner.class);
+
     /*
      * the name of the alert rule.
      */
@@ -164,5 +168,30 @@ public class AlertRuleResourceInner extends Resource {
      */
     public OffsetDateTime lastUpdatedTime() {
         return this.lastUpdatedTime;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (namePropertiesName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property namePropertiesName in model AlertRuleResourceInner"));
+        }
+        if (condition() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property condition in model AlertRuleResourceInner"));
+        } else {
+            condition().validate();
+        }
+        if (actions() != null) {
+            actions().forEach(e -> e.validate());
+        }
     }
 }

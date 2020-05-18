@@ -21,7 +21,7 @@ import com.azure.management.network.NetworkSecurityGroups;
 import com.azure.management.network.NetworkUsages;
 import com.azure.management.network.NetworkWatchers;
 import com.azure.management.network.Networks;
-import com.azure.management.network.PublicIPAddresses;
+import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.network.RouteFilters;
 import com.azure.management.network.RouteTables;
 import com.azure.management.network.Subnet;
@@ -48,7 +48,7 @@ import java.util.Map;
 public final class NetworkManager extends Manager<NetworkManager, NetworkManagementClientImpl> {
 
     // Collections
-    private PublicIPAddresses publicIPAddresses;
+    private PublicIpAddresses publicIPAddresses;
     private Networks networks;
     private NetworkSecurityGroups networkSecurityGroups;
     private NetworkInterfaces networkInterfaces;
@@ -157,9 +157,9 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     }
 
     /** @return entry point to public IP address management */
-    public PublicIPAddresses publicIPAddresses() {
+    public PublicIpAddresses publicIpAddresses() {
         if (this.publicIPAddresses == null) {
-            this.publicIPAddresses = new PublicIPAddressesImpl(this);
+            this.publicIPAddresses = new PublicIpAddressesImpl(this);
         }
         return this.publicIPAddresses;
     }

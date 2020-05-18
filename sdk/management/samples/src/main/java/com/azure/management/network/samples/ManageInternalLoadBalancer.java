@@ -194,7 +194,7 @@ public final class ManageInternalLoadBalancer {
                     // Explicitly define the frontend
                     .definePrivateFrontend(privateFrontEndName)
                     .withExistingSubnet(network, "Back-end")
-                    .withPrivateIPAddressStatic("172.16.3.5")
+                    .withPrivateIpAddressStatic("172.16.3.5")
                     .attach()
 
                     // Add one probes - one per rule
@@ -375,7 +375,7 @@ public final class ManageInternalLoadBalancer {
                     // Explicitly define the frontend
                     .definePrivateFrontend(privateFrontEndName)
                     .withExistingSubnet(network, "Back-end")
-                    .withPrivateIPAddressStatic("172.16.3.15")
+                    .withPrivateIpAddressStatic("172.16.3.15")
                     .attach()
 
                     // Add one probes - one per rule

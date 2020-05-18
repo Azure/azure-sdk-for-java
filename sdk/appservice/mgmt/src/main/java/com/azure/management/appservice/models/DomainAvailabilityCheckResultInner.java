@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.DomainType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DomainAvailabilityCheckResult model. */
 @Fluent
 public final class DomainAvailabilityCheckResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainAvailabilityCheckResultInner.class);
+
     /*
      * Name of the domain.
      */
@@ -96,5 +100,13 @@ public final class DomainAvailabilityCheckResultInner {
     public DomainAvailabilityCheckResultInner withDomainType(DomainType domainType) {
         this.domainType = domainType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

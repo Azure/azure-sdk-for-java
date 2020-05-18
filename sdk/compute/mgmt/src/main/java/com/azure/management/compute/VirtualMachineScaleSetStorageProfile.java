@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetStorageProfile model. */
 @Fluent
 public final class VirtualMachineScaleSetStorageProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetStorageProfile.class);
+
     /*
      * Specifies information about the image to use. You can specify
      * information about platform images, marketplace images, or virtual
@@ -109,5 +113,22 @@ public final class VirtualMachineScaleSetStorageProfile {
     public VirtualMachineScaleSetStorageProfile withDataDisks(List<VirtualMachineScaleSetDataDisk> dataDisks) {
         this.dataDisks = dataDisks;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (imageReference() != null) {
+            imageReference().validate();
+        }
+        if (osDisk() != null) {
+            osDisk().validate();
+        }
+        if (dataDisks() != null) {
+            dataDisks().forEach(e -> e.validate());
+        }
     }
 }

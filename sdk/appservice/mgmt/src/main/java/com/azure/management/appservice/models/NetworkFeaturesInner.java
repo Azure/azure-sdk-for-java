@@ -6,7 +6,9 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class NetworkFeaturesInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFeaturesInner.class);
+
     /*
      * The Virtual Network name.
      */
@@ -72,5 +76,24 @@ public class NetworkFeaturesInner extends ProxyOnlyResource {
      */
     public List<HybridConnectionInner> hybridConnectionsV2() {
         return this.hybridConnectionsV2;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (virtualNetworkConnection() != null) {
+            virtualNetworkConnection().validate();
+        }
+        if (hybridConnections() != null) {
+            hybridConnections().forEach(e -> e.validate());
+        }
+        if (hybridConnectionsV2() != null) {
+            hybridConnectionsV2().forEach(e -> e.validate());
+        }
     }
 }

@@ -7,14 +7,18 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.PrivateEndpointProperty;
 import com.azure.management.sql.PrivateLinkServiceConnectionStateProperty;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointConnection model. */
 @JsonFlatten
 @Fluent
 public class PrivateEndpointConnectionInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+
     /*
      * Private endpoint which the connection belongs to.
      */
@@ -81,5 +85,19 @@ public class PrivateEndpointConnectionInner extends ProxyResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (privateEndpoint() != null) {
+            privateEndpoint().validate();
+        }
+        if (privateLinkServiceConnectionState() != null) {
+            privateLinkServiceConnectionState().validate();
+        }
     }
 }

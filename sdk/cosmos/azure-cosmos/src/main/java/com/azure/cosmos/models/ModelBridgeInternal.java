@@ -386,10 +386,6 @@ public final class ModelBridgeInternal {
         resource.setTimestamp(date);
     }
 
-    public static void validateResource(Resource resource) {
-        Resource.validateResource(resource);
-    }
-
     public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
         jsonSerializable.set(propertyName, value);
     }
@@ -414,9 +410,6 @@ public final class ModelBridgeInternal {
         return new CosmosError(jsonString);
     }
 
-    public static void populatePropertyBagJsonSerializable(JsonSerializable jsonSerializable) {
-        jsonSerializable.populatePropertyBag();
-    }
 
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
@@ -502,36 +495,117 @@ public final class ModelBridgeInternal {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(JsonSerializableWrapper jsonSerializableWrapper) {
-        jsonSerializableWrapper.populatePropertyBag();
-        return jsonSerializableWrapper.jsonSerializable.serializeJsonToByteBuffer();
+    public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
+        sqlQuerySpec.populatePropertyBag();
+        return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer();
     }
 
-    public static JsonSerializableWrapper instantiateJsonSerializableWrapper(ObjectNode objectNode, Class<?> klassType) {
+    public static <T> T instantiateByObjectNode(ObjectNode objectNode, Class<T> c) {
         try {
-            return (JsonSerializableWrapper) klassType.getDeclaredConstructor(String.class).newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+            return c.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
         } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException | IllegalArgumentException e) {
             throw new IllegalArgumentException(e);
         }
     }
 
-    public static void populatePropertyBagJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
-        jsonSerializableWrapper.populatePropertyBag();
-    }
-
-    public static Resource getResourceFromResourceWrapper(ResourceWrapper resourceWrapper) {
-        if (resourceWrapper == null) {
-            return null;
+    public static <T> void populatePropertyBag(T t) {
+        if (t instanceof JsonSerializable) {
+            ((JsonSerializable) t).populatePropertyBag();
+        } else if (t instanceof CompositePath) {
+            ((CompositePath) t).populatePropertyBag();
+        } else if (t instanceof ConflictResolutionPolicy) {
+            ((ConflictResolutionPolicy) t).populatePropertyBag();
+        } else if (t instanceof ConsistencyPolicy) {
+            ((ConsistencyPolicy) t).populatePropertyBag();
+        } else if (t instanceof DatabaseAccountLocation) {
+            ((DatabaseAccountLocation) t).populatePropertyBag();
+        } else if (t instanceof ExcludedPath) {
+            ((ExcludedPath) t).populatePropertyBag();
+        } else if (t instanceof IncludedPath) {
+            ((IncludedPath) t).populatePropertyBag();
+        } else if (t instanceof IndexingPolicy) {
+            ((IndexingPolicy) t).populatePropertyBag();
+        } else if (t instanceof PartitionKeyDefinition) {
+            ((PartitionKeyDefinition) t).populatePropertyBag();
+        } else if (t instanceof SpatialSpec) {
+            ((SpatialSpec) t).populatePropertyBag();
+        } else if (t instanceof SqlParameter) {
+            ((SqlParameter) t).populatePropertyBag();
+        } else if (t instanceof SqlQuerySpec) {
+            ((SqlQuerySpec) t).populatePropertyBag();
+        } else if (t instanceof UniqueKey) {
+            ((UniqueKey) t).populatePropertyBag();
+        } else if (t instanceof UniqueKeyPolicy) {
+            ((UniqueKeyPolicy) t).populatePropertyBag();
+        } else if (t instanceof Index) {
+            ((Index) t).populatePropertyBag();
+        } else if (t instanceof CosmosError) {
+            ((CosmosError) t).populatePropertyBag();
+        } else {
+            throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
-        return resourceWrapper.getResource();
     }
 
-    public static JsonSerializable getJsonSerializableFromIndex(Index index) {
-        return index.getJsonSerializable();
+    public static <T> JsonSerializable getJsonSerializable(T t) {
+        if (t instanceof CompositePath) {
+            return ((CompositePath) t).getJsonSerializable();
+        } else if (t instanceof ConflictResolutionPolicy) {
+            return ((ConflictResolutionPolicy) t).getJsonSerializable();
+        } else if (t instanceof ConsistencyPolicy) {
+            return ((ConsistencyPolicy) t).getJsonSerializable();
+        } else if (t instanceof DatabaseAccountLocation) {
+            return ((DatabaseAccountLocation) t).getJsonSerializable();
+        } else if (t instanceof ExcludedPath) {
+            return ((ExcludedPath) t).getJsonSerializable();
+        } else if (t instanceof IncludedPath) {
+            return ((IncludedPath) t).getJsonSerializable();
+        } else if (t instanceof IndexingPolicy) {
+            return ((IndexingPolicy) t).getJsonSerializable();
+        } else if (t instanceof PartitionKeyDefinition) {
+            return ((PartitionKeyDefinition) t).getJsonSerializable();
+        } else if (t instanceof SpatialSpec) {
+            return ((SpatialSpec) t).getJsonSerializable();
+        } else if (t instanceof SqlParameter) {
+            return ((SqlParameter) t).getJsonSerializable();
+        } else if (t instanceof SqlQuerySpec) {
+            return ((SqlQuerySpec) t).getJsonSerializable();
+        } else if (t instanceof UniqueKey) {
+            return ((UniqueKey) t).getJsonSerializable();
+        } else if (t instanceof UniqueKeyPolicy) {
+            return ((UniqueKeyPolicy) t).getJsonSerializable();
+        } else if (t instanceof Index) {
+            return ((Index) t).getJsonSerializable();
+        } else if (t instanceof CosmosError) {
+            return ((CosmosError) t).getJsonSerializable();
+        } else {
+            throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
+        }
     }
 
-    public static JsonSerializable getJsonSerializableFromJsonSerializableWrapper(JsonSerializableWrapper jsonSerializableWrapper) {
-        return jsonSerializableWrapper.getJsonSerializable();
+    public static <T> Resource getResource(T t) {
+        if (t == null) {
+            return null;
+        } else if (t instanceof Resource) {
+            return (Resource) t;
+        } else if (t instanceof CosmosConflictProperties) {
+            return ((CosmosConflictProperties) t).getResource();
+        } else if (t instanceof CosmosContainerProperties) {
+            return ((CosmosContainerProperties) t).getResource();
+        } else if (t instanceof CosmosDatabaseProperties) {
+            return ((CosmosDatabaseProperties) t).getResource();
+        } else if (t instanceof CosmosPermissionProperties) {
+            return ((CosmosPermissionProperties) t).getResource();
+        } else if (t instanceof CosmosStoredProcedureProperties) {
+            return ((CosmosStoredProcedureProperties) t).getResource();
+        } else if (t instanceof CosmosTriggerProperties) {
+            return ((CosmosTriggerProperties) t).getResource();
+        } else if (t instanceof CosmosUserDefinedFunctionProperties) {
+            return ((CosmosUserDefinedFunctionProperties) t).getResource();
+        } else if (t instanceof CosmosUserProperties) {
+            return ((CosmosUserProperties) t).getResource();
+        } else {
+            throw new IllegalArgumentException("getResource method does not exists in class " + t.getClass());
+        }
     }
 
     public static Offer getOfferFromThroughputProperties(ThroughputProperties properties) {

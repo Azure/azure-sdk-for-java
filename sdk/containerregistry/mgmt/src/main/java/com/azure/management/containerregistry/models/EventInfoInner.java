@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EventInfo model. */
 @Fluent
 public class EventInfoInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventInfoInner.class);
+
     /*
      * The event ID.
      */
@@ -34,5 +38,13 @@ public class EventInfoInner {
     public EventInfoInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }
