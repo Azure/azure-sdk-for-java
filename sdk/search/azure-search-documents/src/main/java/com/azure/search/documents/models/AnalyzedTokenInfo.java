@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Information about a token returned by an analyzer.
  */
 @Fluent
-public final class TokenInfo {
+public final class AnalyzedTokenInfo {
     /*
      * The token returned by the analyzer.
      */

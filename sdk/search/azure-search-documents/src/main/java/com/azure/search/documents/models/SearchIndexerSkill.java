@@ -16,8 +16,8 @@ import java.util.List;
 /**
  * Base type for skills.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = Skill.class)
-@JsonTypeName("Skill")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = SearchIndexerSkill.class)
+@JsonTypeName("SearchIndexerSkill")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Util.ConditionalSkill", value = ConditionalSkill.class),
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Text.KeyPhraseExtractionSkill", value = KeyPhraseExtractionSkill.class),
@@ -33,7 +33,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
 })
 @Fluent
-public abstract class Skill {
+public class SearchIndexerSkill {
     /*
      * The name of the skill which uniquely identifies it within the skillset.
      * A skill with no name defined will be given a default name of its 1-based
@@ -90,9 +90,9 @@ public abstract class Skill {
      * character '#'.
      *
      * @param name the name value to set.
-     * @return the Skill object itself.
+     * @return the SearchIndexerSkill object itself.
      */
-    public Skill setName(String name) {
+    public SearchIndexerSkill setName(String name) {
         this.name = name;
         return this;
     }
@@ -112,9 +112,9 @@ public abstract class Skill {
      * describes the inputs, outputs, and usage of the skill.
      *
      * @param description the description value to set.
-     * @return the Skill object itself.
+     * @return the SearchIndexerSkill object itself.
      */
-    public Skill setDescription(String description) {
+    public SearchIndexerSkill setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -136,9 +136,9 @@ public abstract class Skill {
      * /document or /document/content). The default is /document.
      *
      * @param context the context value to set.
-     * @return the Skill object itself.
+     * @return the SearchIndexerSkill object itself.
      */
-    public Skill setContext(String context) {
+    public SearchIndexerSkill setContext(String context) {
         this.context = context;
         return this;
     }
@@ -158,9 +158,9 @@ public abstract class Skill {
      * source data set, or the output of an upstream skill.
      *
      * @param inputs the inputs value to set.
-     * @return the Skill object itself.
+     * @return the SearchIndexerSkill object itself.
      */
-    public Skill setInputs(List<InputFieldMappingEntry> inputs) {
+    public SearchIndexerSkill setInputs(List<InputFieldMappingEntry> inputs) {
         this.inputs = inputs;
         return this;
     }
@@ -182,9 +182,9 @@ public abstract class Skill {
      * skill.
      *
      * @param outputs the outputs value to set.
-     * @return the Skill object itself.
+     * @return the SearchIndexerSkill object itself.
      */
-    public Skill setOutputs(List<OutputFieldMappingEntry> outputs) {
+    public SearchIndexerSkill setOutputs(List<OutputFieldMappingEntry> outputs) {
         this.outputs = outputs;
         return this;
     }

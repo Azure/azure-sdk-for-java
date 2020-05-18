@@ -14,7 +14,7 @@ import java.util.List;
  * A list of skills.
  */
 @Fluent
-public final class Skillset {
+public final class SearchIndexerSkillset {
     /*
      * The name of the skillset.
      */
@@ -31,7 +31,7 @@ public final class Skillset {
      * A list of skills in the skillset.
      */
     @JsonProperty(value = "skills", required = true)
-    private List<Skill> skills;
+    private List<SearchIndexerSkill> skills;
 
     /*
      * Details about cognitive services to be used when running skills.
@@ -58,9 +58,9 @@ public final class Skillset {
      * Set the name property: The name of the skillset.
      *
      * @param name the name value to set.
-     * @return the Skillset object itself.
+     * @return the SearchIndexerSkillset object itself.
      */
-    public Skillset setName(String name) {
+    public SearchIndexerSkillset setName(String name) {
         this.name = name;
         return this;
     }
@@ -78,9 +78,9 @@ public final class Skillset {
      * Set the description property: The description of the skillset.
      *
      * @param description the description value to set.
-     * @return the Skillset object itself.
+     * @return the SearchIndexerSkillset object itself.
      */
-    public Skillset setDescription(String description) {
+    public SearchIndexerSkillset setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -90,7 +90,7 @@ public final class Skillset {
      *
      * @return the skills value.
      */
-    public List<Skill> getSkills() {
+    public List<SearchIndexerSkill> getSkills() {
         return this.skills;
     }
 
@@ -98,9 +98,9 @@ public final class Skillset {
      * Set the skills property: A list of skills in the skillset.
      *
      * @param skills the skills value to set.
-     * @return the Skillset object itself.
+     * @return the SearchIndexerSkillset object itself.
      */
-    public Skillset setSkills(List<Skill> skills) {
+    public SearchIndexerSkillset setSkills(List<SearchIndexerSkill> skills) {
         this.skills = skills;
         return this;
     }
@@ -121,9 +121,9 @@ public final class Skillset {
      *
      * @param cognitiveServicesAccount the cognitiveServicesAccount value to
      * set.
-     * @return the Skillset object itself.
+     * @return the SearchIndexerSkillset object itself.
      */
-    public Skillset setCognitiveServicesAccount(CognitiveServicesAccount cognitiveServicesAccount) {
+    public SearchIndexerSkillset setCognitiveServicesAccount(CognitiveServicesAccount cognitiveServicesAccount) {
         this.cognitiveServicesAccount = cognitiveServicesAccount;
         return this;
     }
@@ -141,9 +141,9 @@ public final class Skillset {
      * Set the eTag property: The ETag of the skillset.
      *
      * @param eTag the eTag value to set.
-     * @return the Skillset object itself.
+     * @return the SearchIndexerSkillset object itself.
      */
-    public Skillset setETag(String eTag) {
+    public SearchIndexerSkillset setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

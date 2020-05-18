@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for tokenizers.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = Tokenizer.class)
-@JsonTypeName("Tokenizer")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = LexicalTokenizer.class)
+@JsonTypeName("LexicalTokenizer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.ClassicTokenizer", value = ClassicTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.EdgeNGramTokenizer", value = EdgeNGramTokenizer.class),
@@ -27,12 +27,12 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.NGramTokenizer", value = NGramTokenizer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PathHierarchyTokenizerV2", value = PathHierarchyTokenizerV2.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternTokenizer", value = PatternTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizer", value = StandardTokenizer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizerV2", value = StandardTokenizerV2.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizer", value = LuceneStandardTokenizer.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardTokenizerV2", value = LuceneStandardTokenizerV2.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer", value = UaxUrlEmailTokenizer.class)
 })
 @Fluent
-public abstract class Tokenizer {
+public class LexicalTokenizer {
     /*
      * The name of the tokenizer. It must only contain letters, digits, spaces,
      * dashes or underscores, can only start and end with alphanumeric
@@ -58,9 +58,9 @@ public abstract class Tokenizer {
      * with alphanumeric characters, and is limited to 128 characters.
      *
      * @param name the name value to set.
-     * @return the Tokenizer object itself.
+     * @return the LexicalTokenizer object itself.
      */
-    public Tokenizer setName(String name) {
+    public LexicalTokenizer setName(String name) {
         this.name = name;
         return this;
     }

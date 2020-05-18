@@ -29,9 +29,9 @@ import com.azure.search.documents.implementation.models.AnalyzeResult;
 import com.azure.search.documents.implementation.models.ListIndexesResult;
 import com.azure.search.documents.models.AnalyzeRequest;
 import com.azure.search.documents.models.GetIndexStatisticsResult;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.SearchErrorException;
+import com.azure.search.documents.models.SearchIndex;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -71,7 +71,7 @@ public final class IndexesImpl {
         @Post("indexes")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Index>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Index index, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchIndex>> create(@HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndex index, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("indexes")
         @ExpectedResponses({200})
@@ -81,7 +81,7 @@ public final class IndexesImpl {
         @Put("indexes('{indexName}')")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Index>> createOrUpdate(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") Index index, @QueryParam("allowIndexDowntime") Boolean allowIndexDowntime, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchIndex>> createOrUpdate(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @BodyParam("application/json; charset=utf-8") SearchIndex index, @QueryParam("allowIndexDowntime") Boolean allowIndexDowntime, @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Delete("indexes('{indexName}')")
         @ExpectedResponses({204, 404})
@@ -91,7 +91,7 @@ public final class IndexesImpl {
         @Get("indexes('{indexName}')")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<SimpleResponse<Index>> get(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
+        Mono<SimpleResponse<SearchIndex>> get(@PathParam("indexName") String indexName, @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion, @HeaderParam("accept") String accept, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, Context context);
 
         @Get("indexes('{indexName}')/search.stats")
         @ExpectedResponses({200})
@@ -113,7 +113,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> createWithRestResponseAsync(Index index, Context context) {
+    public Mono<SimpleResponse<SearchIndex>> createWithRestResponseAsync(SearchIndex index, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final UUID xMsClientRequestId = null;
@@ -130,7 +130,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> createWithRestResponseAsync(Index index, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchIndex>> createWithRestResponseAsync(SearchIndex index, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         UUID xMsClientRequestId = null;
@@ -186,7 +186,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Context context) {
+    public Mono<SimpleResponse<SearchIndex>> createOrUpdateWithRestResponseAsync(String indexName, SearchIndex index, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final Boolean allowIndexDowntime = null;
@@ -211,7 +211,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> createOrUpdateWithRestResponseAsync(String indexName, Index index, Boolean allowIndexDowntime, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchIndex>> createOrUpdateWithRestResponseAsync(String indexName, SearchIndex index, Boolean allowIndexDowntime, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final String prefer = "return=representation";
@@ -223,7 +223,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Deletes a search index and all the documents it contains.
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option. Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data source in case you need to re-build the index.
      *
      * @param indexName The name of the index to delete.
      * @param context The context to associate with this operation.
@@ -241,7 +241,7 @@ public final class IndexesImpl {
     }
 
     /**
-     * Deletes a search index and all the documents it contains.
+     * Deletes a search index and all the documents it contains. This operation is permanent, with no recovery option. Make sure you have a master copy of your index definition, data ingestion code, and a backup of the primary data source in case you need to re-build the index.
      *
      * @param indexName The name of the index to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server matches this value.
@@ -271,7 +271,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> getWithRestResponseAsync(String indexName, Context context) {
+    public Mono<SimpleResponse<SearchIndex>> getWithRestResponseAsync(String indexName, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         final UUID xMsClientRequestId = null;
@@ -288,7 +288,7 @@ public final class IndexesImpl {
      * @return a Mono which performs the network request upon subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SimpleResponse<Index>> getWithRestResponseAsync(String indexName, RequestOptions requestOptions, Context context) {
+    public Mono<SimpleResponse<SearchIndex>> getWithRestResponseAsync(String indexName, RequestOptions requestOptions, Context context) {
 		final String accept = "application/json;odata.metadata=minimal";
 
         UUID xMsClientRequestId = null;

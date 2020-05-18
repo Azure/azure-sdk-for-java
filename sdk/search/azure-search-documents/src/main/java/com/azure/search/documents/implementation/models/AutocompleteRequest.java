@@ -4,9 +4,10 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.documents.models;
+package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.search.documents.models.AutocompleteMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,7 +25,7 @@ public final class AutocompleteRequest {
      * Specifies the mode for Autocomplete. The default is 'oneTerm'. Use
      * 'twoTerms' to get shingles and 'oneTermWithContext' to use the current
      * context while producing auto-completed terms. Possible values include:
-     * 'oneTerm', 'twoTerms', 'oneTermWithContext'
+     * 'OneTerm', 'TwoTerms', 'OneTermWithContext'
      */
     @JsonProperty(value = "autocompleteMode")
     private AutocompleteMode autocompleteMode;
@@ -118,8 +119,8 @@ public final class AutocompleteRequest {
      * Get the autocompleteMode property: Specifies the mode for Autocomplete.
      * The default is 'oneTerm'. Use 'twoTerms' to get shingles and
      * 'oneTermWithContext' to use the current context while producing
-     * auto-completed terms. Possible values include: 'oneTerm', 'twoTerms',
-     * 'oneTermWithContext'.
+     * auto-completed terms. Possible values include: 'OneTerm', 'TwoTerms',
+     * 'OneTermWithContext'.
      *
      * @return the autocompleteMode value.
      */
@@ -131,8 +132,8 @@ public final class AutocompleteRequest {
      * Set the autocompleteMode property: Specifies the mode for Autocomplete.
      * The default is 'oneTerm'. Use 'twoTerms' to get shingles and
      * 'oneTermWithContext' to use the current context while producing
-     * auto-completed terms. Possible values include: 'oneTerm', 'twoTerms',
-     * 'oneTermWithContext'.
+     * auto-completed terms. Possible values include: 'OneTerm', 'TwoTerms',
+     * 'OneTermWithContext'.
      *
      * @param autocompleteMode the autocompleteMode value to set.
      * @return the AutocompleteRequest object itself.

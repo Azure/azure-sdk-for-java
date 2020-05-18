@@ -14,10 +14,10 @@ import java.util.List;
  * Represents the current status and execution history of an indexer.
  */
 @Fluent
-public final class IndexerExecutionInfo {
+public final class SearchIndexerStatus {
     /*
-     * Overall indexer status. Possible values include: 'unknown', 'error',
-     * 'running'
+     * Overall indexer status. Possible values include: 'Unknown', 'Error',
+     * 'Running'
      */
     @JsonProperty(value = "status", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private IndexerStatus status;
@@ -39,11 +39,11 @@ public final class IndexerExecutionInfo {
      * The execution limits for the indexer.
      */
     @JsonProperty(value = "limits", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private IndexerLimits limits;
+    private SearchIndexerLimits limits;
 
     /**
      * Get the status property: Overall indexer status. Possible values
-     * include: 'unknown', 'error', 'running'.
+     * include: 'Unknown', 'Error', 'Running'.
      *
      * @return the status value.
      */
@@ -76,7 +76,7 @@ public final class IndexerExecutionInfo {
      *
      * @return the limits value.
      */
-    public IndexerLimits getLimits() {
+    public SearchIndexerLimits getLimits() {
         return this.limits;
     }
 }
