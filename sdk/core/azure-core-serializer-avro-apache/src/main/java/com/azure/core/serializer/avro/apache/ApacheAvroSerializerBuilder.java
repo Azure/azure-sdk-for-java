@@ -76,6 +76,15 @@ public class ApacheAvroSerializerBuilder {
         return this;
     }
 
+    /**
+     * Configures the {@link GenericData} that will be used during serialization and deserialization of Avro.
+     * <p>
+     * If {@code genericData} is {@code null} when {@link #build()} is called {@link GenericData#get()
+     * GenericData.get()} will be used as the generic data.
+     *
+     * @param genericData The {@link GenericData} used during serialization and deserialization of Avro.
+     * @return The updated ApacheAvroSerializerBuilder object.
+     */
     public ApacheAvroSerializerBuilder genericData(GenericData genericData) {
         this.genericData = genericData;
         return this;
