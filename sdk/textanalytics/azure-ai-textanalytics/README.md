@@ -10,30 +10,6 @@ and includes six main functions:
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][api_reference_doc] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
-## Table of contents
-- [Table of contents](#table-of-contents)
-- [Getting started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Including the package](#include-the-package)
-  - [Authenticate the client](#authenticate-the-client)
-    - [Looking up the endpoint](#looking-up-the-endpoint)
-    - [Create a Cognitive Services or Text Analytics resource](#create-a-cognitive-services-or-text-analytics-resource)
-    - [Create a Text Analytics client using Microsoft identity platform (formerly Azure Active Directory)](#create-a-text-analytics-client-using-microsoft-identity-platform-formerly-azure-active-directory)
-- [Key concepts](#key-concepts)
-    - [Client](#client)
-    - [Input](#input)
-    - [Operation on multiple documents](#operation-on-multiple-documents)
-    - [Return value](#return-value)
-    - [Return value collection](#return-value-collection)
-- [Examples](#examples)
-- [Troubleshooting](#troubleshooting)
-  - [General](#general)
-  - [Enable client logging](#enable-client-logging)
-  - [Default HTTP Client](#default-http-client)
-  - [Default SSL library](#default-ssl-library)
-- [Next steps](#next-steps)
-- [Contributing](#contributing)
-
 ## Getting started
 
 ### Prerequisites
@@ -125,7 +101,7 @@ TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
 
 credential.update("{new_key}");
 ```
-##### Create a Text Analytics client using Microsoft identity platform (formerly Azure Active Directory)
+##### Create a Text Analytics client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform. 
 
@@ -387,7 +363,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
 [aad_credential]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
-[api_reference_doc]: https://aka.ms/azsdk-java-textanalytics-ref-docs
+[api_reference_doc]: https://docs.microsoft.com/java/api/overview/azure/textanalytics?view=azure-java-preview
 [authentication]: https://docs.microsoft.com/azure/cognitive-services/authentication
 [azure_cli]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account-cli?tabs=windows
 [azure_cli_endpoint]: https://docs.microsoft.com/cli/azure/cognitiveservices/account?view=azure-cli-latest#az-cognitiveservices-account-show
