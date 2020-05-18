@@ -1,7 +1,10 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.models;
 
 /**
- * Defines a blob query error that can be returned on parsing a blob  query request.
+ * Defines a blob query error that can be returned on parsing a blob query request.
  */
 public class BlobQueryProgress {
 
