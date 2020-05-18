@@ -88,10 +88,20 @@ public class FormTrainingAsyncClient {
         return new FormRecognizerClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline()).buildAsyncClient();
     }
 
+    /**
+     * Gets the pipeline the client is using.
+     *
+     * @return the pipeline the client is using.
+     */
     HttpPipeline getHttpPipeline() {
         return service.getHttpPipeline();
     }
 
+    /**
+     * Gets the endpoint the client is using.
+     *
+     * @return the endpoint the client is using.
+     */
     String getEndpoint() {
         return service.getEndpoint();
     }

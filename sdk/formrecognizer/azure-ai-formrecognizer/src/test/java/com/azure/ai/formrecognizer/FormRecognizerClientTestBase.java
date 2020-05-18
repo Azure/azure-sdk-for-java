@@ -55,6 +55,7 @@ import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGN
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.deserializeRawResponse;
+import static com.azure.ai.formrecognizer.TestUtils.FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.getFileData;
 import static com.azure.ai.formrecognizer.TestUtils.getSerializerAdapter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -63,7 +64,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String RECEIPT_CONTOSO_JPG = "contoso-allinone.jpg";
-    private static final String FORM_JPG = "Form_1.jpg";
     private static final String INVOICE_PDF = "Invoice_6.pdf";
     private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");

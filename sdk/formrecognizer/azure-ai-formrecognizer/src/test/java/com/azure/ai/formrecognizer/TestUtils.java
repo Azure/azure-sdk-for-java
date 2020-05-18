@@ -58,6 +58,9 @@ final class TestUtils {
     static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
     private static final String AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS =
         "AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS";
+    static final String FORM_JPG = "Form_1.jpg";
+    private static final String AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS =
+        "AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS";
 
     private TestUtils() {
     }
