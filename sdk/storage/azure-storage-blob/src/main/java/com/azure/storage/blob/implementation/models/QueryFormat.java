@@ -9,16 +9,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The QuickQueryFormat model.
+ * The QueryFormat model.
  */
-@JacksonXmlRootElement(localName = "QuickQueryFormat")
+@JacksonXmlRootElement(localName = "QueryFormat")
 @Fluent
-public final class QuickQueryFormat {
+public final class QueryFormat {
     /*
      * Possible values include: 'delimited', 'json'
      */
     @JsonProperty(value = "Type")
-    private QuickQueryFormatType type;
+    private QueryFormatType type;
 
     /*
      * The delimitedTextConfiguration property.
@@ -37,7 +37,7 @@ public final class QuickQueryFormat {
      *
      * @return the type value.
      */
-    public QuickQueryFormatType getType() {
+    public QueryFormatType getType() {
         return this.type;
     }
 
@@ -45,9 +45,9 @@ public final class QuickQueryFormat {
      * Set the type property: Possible values include: 'delimited', 'json'.
      *
      * @param type the type value to set.
-     * @return the QuickQueryFormat object itself.
+     * @return the QueryFormat object itself.
      */
-    public QuickQueryFormat setType(QuickQueryFormatType type) {
+    public QueryFormat setType(QueryFormatType type) {
         this.type = type;
         return this;
     }
@@ -68,9 +68,9 @@ public final class QuickQueryFormat {
      *
      * @param delimitedTextConfiguration the delimitedTextConfiguration value
      * to set.
-     * @return the QuickQueryFormat object itself.
+     * @return the QueryFormat object itself.
      */
-    public QuickQueryFormat setDelimitedTextConfiguration(DelimitedTextConfiguration delimitedTextConfiguration) {
+    public QueryFormat setDelimitedTextConfiguration(DelimitedTextConfiguration delimitedTextConfiguration) {
         this.delimitedTextConfiguration = delimitedTextConfiguration;
         return this;
     }
@@ -90,9 +90,9 @@ public final class QuickQueryFormat {
      * property.
      *
      * @param jsonTextConfiguration the jsonTextConfiguration value to set.
-     * @return the QuickQueryFormat object itself.
+     * @return the QueryFormat object itself.
      */
-    public QuickQueryFormat setJsonTextConfiguration(JsonTextConfiguration jsonTextConfiguration) {
+    public QueryFormat setJsonTextConfiguration(JsonTextConfiguration jsonTextConfiguration) {
         this.jsonTextConfiguration = jsonTextConfiguration;
         return this;
     }

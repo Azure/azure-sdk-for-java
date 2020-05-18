@@ -30,13 +30,13 @@ public final class QueryRequest {
      * The inputSerialization property.
      */
     @JsonProperty(value = "InputSerialization")
-    private QuickQuerySerialization inputSerialization;
+    private QuerySerialization inputSerialization;
 
     /*
      * The outputSerialization property.
      */
     @JsonProperty(value = "OutputSerialization")
-    private QuickQuerySerialization outputSerialization;
+    private QuerySerialization outputSerialization;
 
     /**
      * Creates an instance of QueryRequest class.
@@ -90,7 +90,7 @@ public final class QueryRequest {
      *
      * @return the inputSerialization value.
      */
-    public QuickQuerySerialization getInputSerialization() {
+    public QuerySerialization getInputSerialization() {
         return this.inputSerialization;
     }
 
@@ -100,7 +100,7 @@ public final class QueryRequest {
      * @param inputSerialization the inputSerialization value to set.
      * @return the QueryRequest object itself.
      */
-    public QueryRequest setInputSerialization(QuickQuerySerialization inputSerialization) {
+    public QueryRequest setInputSerialization(QuerySerialization inputSerialization) {
         this.inputSerialization = inputSerialization;
         return this;
     }
@@ -110,7 +110,7 @@ public final class QueryRequest {
      *
      * @return the outputSerialization value.
      */
-    public QuickQuerySerialization getOutputSerialization() {
+    public QuerySerialization getOutputSerialization() {
         return this.outputSerialization;
     }
 
@@ -120,7 +120,7 @@ public final class QueryRequest {
      * @param outputSerialization the outputSerialization value to set.
      * @return the QueryRequest object itself.
      */
-    public QueryRequest setOutputSerialization(QuickQuerySerialization outputSerialization) {
+    public QueryRequest setOutputSerialization(QuerySerialization outputSerialization) {
         this.outputSerialization = outputSerialization;
         return this;
     }

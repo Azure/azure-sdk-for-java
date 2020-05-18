@@ -231,7 +231,7 @@ public class EncryptedBlobClient extends BlobClient {
     @Override
     public void query(OutputStream stream, String expression) {
         throw logger.logExceptionAsError(new UnsupportedOperationException(
-            "Cannot query a client side encrypted client"));
+            "Cannot query data encrypted on client side."));
     }
 
     /**

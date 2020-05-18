@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for QuickQueryFormatType.
+ * Defines values for QueryFormatType.
  */
-public enum QuickQueryFormatType {
+public enum QueryFormatType {
     /**
      * Enum value delimited.
      */
@@ -22,24 +22,24 @@ public enum QuickQueryFormatType {
     JSON("json");
 
     /**
-     * The actual serialized value for a QuickQueryFormatType instance.
+     * The actual serialized value for a QueryFormatType instance.
      */
     private final String value;
 
-    QuickQueryFormatType(String value) {
+    QueryFormatType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a QuickQueryFormatType instance.
+     * Parses a serialized value to a QueryFormatType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed QuickQueryFormatType object, or null if unable to parse.
+     * @return the parsed QueryFormatType object, or null if unable to parse.
      */
     @JsonCreator
-    public static QuickQueryFormatType fromString(String value) {
-        QuickQueryFormatType[] items = QuickQueryFormatType.values();
-        for (QuickQueryFormatType item : items) {
+    public static QueryFormatType fromString(String value) {
+        QueryFormatType[] items = QueryFormatType.values();
+        for (QueryFormatType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

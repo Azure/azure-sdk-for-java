@@ -6,9 +6,9 @@ package com.azure.storage.blob.implementation.util;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.implementation.models.DelimitedTextConfiguration;
 import com.azure.storage.blob.implementation.models.JsonTextConfiguration;
-import com.azure.storage.blob.implementation.models.QuickQueryFormat;
-import com.azure.storage.blob.implementation.models.QuickQueryFormatType;
-import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
+import com.azure.storage.blob.implementation.models.QueryFormat;
+import com.azure.storage.blob.implementation.models.QueryFormatType;
+import com.azure.storage.blob.implementation.models.QuerySerialization;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
@@ -205,24 +205,24 @@ public class BlobQueryReader {
      * Transforms a generic BlobQuickQuerySerialization into a QuickQuerySerialization.
      * @param userSerialization {@link BlobQuerySerialization}
      * @param logger {@link ClientLogger}
-     * @return {@link QuickQuerySerialization}
+     * @return {@link QuerySerialization}
      */
-    public static QuickQuerySerialization transformSerialization(BlobQuerySerialization userSerialization,
+    public static QuerySerialization transformSerialization(BlobQuerySerialization userSerialization,
         ClientLogger logger) {
         if (userSerialization == null) {
             return null;
         }
 
-        QuickQueryFormat generatedFormat = new QuickQueryFormat();
+        QueryFormat generatedFormat = new QueryFormat();
         if (userSerialization instanceof BlobQueryDelimitedSerialization) {
 
-            generatedFormat.setType(QuickQueryFormatType.DELIMITED);
+            generatedFormat.setType(QueryFormatType.DELIMITED);
             generatedFormat.setDelimitedTextConfiguration(transformDelimited(
                 (BlobQueryDelimitedSerialization) userSerialization));
 
         } else if (userSerialization instanceof BlobQueryJsonSerialization) {
 
-            generatedFormat.setType(QuickQueryFormatType.JSON);
+            generatedFormat.setType(QueryFormatType.JSON);
             generatedFormat.setJsonTextConfiguration(transformJson(
                 (BlobQueryJsonSerialization) userSerialization));
 
@@ -231,7 +231,7 @@ public class BlobQueryReader {
                 String.format("'input' must be one of %s or %s", BlobQueryJsonSerialization.class.getSimpleName(),
                     BlobQueryDelimitedSerialization.class.getSimpleName())));
         }
-        return new QuickQuerySerialization().setFormat(generatedFormat);
+        return new QuerySerialization().setFormat(generatedFormat);
     }
 
     /**

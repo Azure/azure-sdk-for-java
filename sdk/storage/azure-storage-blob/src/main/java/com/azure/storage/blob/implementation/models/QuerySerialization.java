@@ -9,23 +9,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The QuickQuerySerialization model.
+ * The QuerySerialization model.
  */
-@JacksonXmlRootElement(localName = "QuickQuerySerialization")
+@JacksonXmlRootElement(localName = "QuerySerialization")
 @Fluent
-public final class QuickQuerySerialization {
+public final class QuerySerialization {
     /*
      * The format property.
      */
     @JsonProperty(value = "Format", required = true)
-    private QuickQueryFormat format;
+    private QueryFormat format;
 
     /**
      * Get the format property: The format property.
      *
      * @return the format value.
      */
-    public QuickQueryFormat getFormat() {
+    public QueryFormat getFormat() {
         return this.format;
     }
 
@@ -33,9 +33,9 @@ public final class QuickQuerySerialization {
      * Set the format property: The format property.
      *
      * @param format the format value to set.
-     * @return the QuickQuerySerialization object itself.
+     * @return the QuerySerialization object itself.
      */
-    public QuickQuerySerialization setFormat(QuickQueryFormat format) {
+    public QuerySerialization setFormat(QueryFormat format) {
         this.format = format;
         return this;
     }

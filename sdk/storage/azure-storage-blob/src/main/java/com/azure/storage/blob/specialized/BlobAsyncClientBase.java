@@ -26,7 +26,7 @@ import com.azure.storage.blob.implementation.models.BlobGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobStartCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.QueryRequest;
-import com.azure.storage.blob.implementation.models.QuickQuerySerialization;
+import com.azure.storage.blob.implementation.models.QuerySerialization;
 import com.azure.storage.blob.implementation.util.BlobQueryReader;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
@@ -1659,9 +1659,9 @@ public class BlobAsyncClientBase {
         BlobRequestConditions requestConditions = finalQueryOptions.getRequestConditions() == null
             ? new BlobRequestConditions() : finalQueryOptions.getRequestConditions();
 
-        QuickQuerySerialization in = BlobQueryReader.transformSerialization(finalQueryOptions.getInputSerialization(),
+        QuerySerialization in = BlobQueryReader.transformSerialization(finalQueryOptions.getInputSerialization(),
             logger);
-        QuickQuerySerialization out = BlobQueryReader.transformSerialization(finalQueryOptions.getOutputSerialization(),
+        QuerySerialization out = BlobQueryReader.transformSerialization(finalQueryOptions.getOutputSerialization(),
             logger);
 
         QueryRequest qr = new QueryRequest()
@@ -1669,7 +1669,7 @@ public class BlobAsyncClientBase {
             .setInputSerialization(in)
             .setOutputSerialization(out);
 
-        return this.azureBlobStorage.blobs().quickQueryWithRestResponseAsync(null, null, qr,
+        return this.azureBlobStorage.blobs().queryWithRestResponseAsync(null, null, qr,
             getSnapshotId(), null, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), null, getCustomerProvidedKey(), context)

@@ -17,12 +17,12 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
 import com.azure.storage.blob.models.BlobQueryDelimitedSerialization;
 import com.azure.storage.blob.models.BlobQueryError;
+import com.azure.storage.blob.models.BlobQueryHeaders;
 import com.azure.storage.blob.models.BlobQueryJsonSerialization;
 import com.azure.storage.blob.models.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryProgress;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobQuerySerialization;
-import com.azure.storage.blob.models.BlobQuickQueryHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobSignedIdentifier;
@@ -538,7 +538,7 @@ class Transforms {
             Transforms.toFileQueryHeaders(r.getDeserializedHeaders()));
     }
 
-    private static FileQueryHeaders toFileQueryHeaders(BlobQuickQueryHeaders h) {
+    private static FileQueryHeaders toFileQueryHeaders(BlobQueryHeaders h) {
         if (h == null) {
             return null;
         }
