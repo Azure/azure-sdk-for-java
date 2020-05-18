@@ -9,7 +9,7 @@ package com.azure.storage.file.datalake.models;
  */
 public abstract class FileQuerySerialization {
 
-    protected char recordSeparator;
+    private char recordSeparator;
 
     /**
      * Gets the record separator.
@@ -25,5 +25,8 @@ public abstract class FileQuerySerialization {
      * @param recordSeparator the record separator.
      * @return the updated FileQuerySerialization object.
      */
-    public abstract FileQuerySerialization setRecordSeparator(char recordSeparator);
+    public FileQuerySerialization setRecordSeparator(char recordSeparator) {
+        this.recordSeparator = recordSeparator;
+        return this;
+    }
 }

@@ -10,7 +10,7 @@ public class BlobQueryJsonSerialization extends BlobQuerySerialization {
 
     @Override
     public BlobQueryJsonSerialization setRecordSeparator(char recordSeparator) {
-        this.recordSeparator = recordSeparator;
+        super.setRecordSeparator(recordSeparator);
         return this;
     }
 }

@@ -6,10 +6,8 @@ package com.azure.storage.file.datalake.models;
 /**
  * Defines the input or output delimited (CSV) serialization for a blob quick query request.
  */
-public class FileQueryDelimitedSerialization extends
-    FileQuerySerialization {
+public class FileQueryDelimitedSerialization extends FileQuerySerialization {
 
-    /* TODO(gapra) : Consider diff datatype in case future break. */
     private char columnSeparator;
     private char fieldQuote;
     private char escapeChar;
@@ -89,7 +87,7 @@ public class FileQueryDelimitedSerialization extends
 
     @Override
     public FileQueryDelimitedSerialization setRecordSeparator(char recordSeparator) {
-        this.recordSeparator = recordSeparator;
+        super.setRecordSeparator(recordSeparator);
         return this;
     }
 }

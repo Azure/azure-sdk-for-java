@@ -10,7 +10,7 @@ public class FileQueryJsonSerialization extends FileQuerySerialization {
 
     @Override
     public FileQueryJsonSerialization setRecordSeparator(char recordSeparator) {
-        this.recordSeparator = recordSeparator;
+        super.setRecordSeparator(recordSeparator);
         return this;
     }
 }
