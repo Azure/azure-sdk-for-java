@@ -1,6 +1,7 @@
 # Release History
 
 ## 12.7.0-beta.1 (Unreleased)
+- Fixed a bug that caused auth failures when constructing a client to a secondary endpoint using token auth.
 - Added support for restoring blob container.
 
 ## 12.6.1 (2020-05-06)

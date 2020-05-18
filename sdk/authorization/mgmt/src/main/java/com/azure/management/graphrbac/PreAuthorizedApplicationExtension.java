@@ -5,12 +5,16 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PreAuthorizedApplicationExtension model. */
 @Fluent
 public final class PreAuthorizedApplicationExtension {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationExtension.class);
+
     /*
      * The extension's conditions.
      */
@@ -35,5 +39,13 @@ public final class PreAuthorizedApplicationExtension {
     public PreAuthorizedApplicationExtension withConditions(List<String> conditions) {
         this.conditions = conditions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

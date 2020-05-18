@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SrvRecord model. */
 @Fluent
 public final class SrvRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SrvRecord.class);
+
     /*
      * The priority value for this SRV record.
      */
@@ -112,5 +116,13 @@ public final class SrvRecord {
     public SrvRecord withTarget(String target) {
         this.target = target;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

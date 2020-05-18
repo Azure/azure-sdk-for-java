@@ -7,6 +7,8 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ServiceAssociationLink extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAssociationLink.class);
+
     /*
      * Name of the resource that is unique within a resource group. This name
      * can be used to access the resource.
@@ -201,5 +205,13 @@ public class ServiceAssociationLink extends SubResource {
     public ServiceAssociationLink withLocations(List<String> locations) {
         this.locations = locations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

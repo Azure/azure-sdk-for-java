@@ -28,7 +28,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -70,7 +70,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroup(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -84,7 +84,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> moveResources(
             @HostParam("$host") String host,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
@@ -96,7 +96,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> validateMoveResources(
             @HostParam("$host") String host,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
@@ -108,7 +108,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/resources")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ResourceListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("$filter") String filter,
@@ -123,7 +123,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistence(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -140,7 +140,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -157,7 +157,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -175,7 +175,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> update(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -193,7 +193,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GenericResourceInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -208,7 +208,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Head("/{resourceId}")
         @ExpectedResponses({204, 404})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Boolean>> checkExistenceById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -218,7 +218,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> deleteById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -228,7 +228,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -239,7 +239,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> updateById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -250,7 +250,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GenericResourceInner>> getById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -260,7 +260,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/moveResources")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginMoveResources(
             @HostParam("$host") String host,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
@@ -272,7 +272,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{sourceResourceGroupName}/validateMoveResources")
         @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginValidateMoveResources(
             @HostParam("$host") String host,
             @PathParam("sourceResourceGroupName") String sourceResourceGroupName,
@@ -286,7 +286,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -303,7 +303,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -321,7 +321,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
                 + "/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GenericResourceInner>> beginUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -337,7 +337,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{resourceId}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDeleteById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -347,7 +347,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{resourceId}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GenericResourceInner>> beginCreateOrUpdateById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -358,7 +358,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Patch("/{resourceId}")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<GenericResourceInner>> beginUpdateById(
             @HostParam("$host") String host,
             @PathParam(value = "resourceId", encoded = true) String resourceId,
@@ -369,14 +369,14 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ResourceListResultInner>> listByResourceGroupNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<ResourceListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -402,7 +402,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -470,7 +470,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -533,7 +533,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -567,7 +567,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param top The number of results to return. If null is passed, returns all resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -584,7 +584,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *
      * @param resourceGroupName The resource group with the resources to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -620,7 +620,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -635,7 +635,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *
      * @param resourceGroupName The resource group with the resources to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources for a resource group.
      */
@@ -656,7 +656,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -705,7 +705,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -728,7 +728,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -746,7 +746,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -797,7 +797,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -822,7 +822,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -850,7 +850,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -912,7 +912,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -969,7 +969,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -1000,7 +1000,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -1014,7 +1014,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     /**
      * Get all the resources in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -1048,7 +1048,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     `createdTime`, `changedTime` and `provisioningState`. For example, `$expand=createdTime,changedTime`.
      * @param top The number of results to return. If null is passed, returns all resource groups.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -1060,7 +1060,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
     /**
      * Get all the resources in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the resources in a subscription.
      */
@@ -1084,7 +1084,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1158,7 +1158,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1228,7 +1228,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1268,7 +1268,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to check whether it exists.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -1307,7 +1307,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1380,7 +1380,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -1418,7 +1418,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1450,7 +1450,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -1530,7 +1530,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -1571,7 +1571,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -1606,7 +1606,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -1686,7 +1686,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -1727,7 +1727,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -1762,7 +1762,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource.
      */
@@ -1836,7 +1836,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource.
      */
@@ -1906,7 +1906,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource.
      */
@@ -1946,7 +1946,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to get.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource.
      */
@@ -1976,7 +1976,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2006,7 +2006,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2034,7 +2034,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2059,7 +2059,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
@@ -2081,7 +2081,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2110,7 +2110,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2132,7 +2132,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2149,7 +2149,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2187,7 +2187,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2213,7 +2213,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2232,7 +2232,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2269,7 +2269,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2294,7 +2294,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2311,7 +2311,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource by ID.
      */
@@ -2341,7 +2341,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource by ID.
      */
@@ -2369,7 +2369,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource by ID.
      */
@@ -2394,7 +2394,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a resource by ID.
      */
@@ -2411,7 +2411,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2461,7 +2461,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param parameters Parameters of move resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2506,7 +2506,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2524,7 +2524,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2542,7 +2542,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2594,7 +2594,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param parameters Parameters of move resources.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2641,7 +2641,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2661,7 +2661,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param sourceResourceGroupName The name of the resource group containing the resources to validate for move.
      * @param parameters Parameters of move resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2680,7 +2680,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2754,7 +2754,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2824,7 +2824,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -2857,7 +2857,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param resourceName The name of the resource to delete.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2889,7 +2889,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -2970,7 +2970,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param parameters Resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3047,7 +3047,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3089,7 +3089,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3124,7 +3124,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3205,7 +3205,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param parameters Resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3282,7 +3282,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3324,7 +3324,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3356,7 +3356,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3386,7 +3386,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3414,7 +3414,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -3431,7 +3431,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/{resource-provider-namespace}/{resource-type}/{resource-name}.
      * @param apiVersion The API version to use for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3448,7 +3448,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3487,7 +3487,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param parameters Resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3521,7 +3521,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3548,7 +3548,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3567,7 +3567,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3605,7 +3605,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param parameters Resource information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3639,7 +3639,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3666,7 +3666,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param apiVersion The API version to use for the operation.
      * @param parameters Resource information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resource information.
      */
@@ -3680,7 +3680,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource groups.
      */
@@ -3709,7 +3709,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource groups.
      */
@@ -3737,7 +3737,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource groups.
      */
@@ -3766,7 +3766,7 @@ public final class ResourcesInner implements InnerSupportsListing<GenericResourc
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of resource groups.
      */

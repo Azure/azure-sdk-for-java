@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VpnSiteId model. */
 @Immutable
 public final class VpnSiteId {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteId.class);
+
     /*
      * The resource-uri of the vpn-site for which config is to be fetched.
      */
@@ -23,5 +27,13 @@ public final class VpnSiteId {
      */
     public String vpnSite() {
         return this.vpnSite;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

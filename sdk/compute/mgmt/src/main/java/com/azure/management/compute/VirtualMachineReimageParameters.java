@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineReimageParameters model. */
 @Fluent
 public class VirtualMachineReimageParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineReimageParameters.class);
+
     /*
      * Specifies whether to reimage temp disk. Default value: false. Note: This
      * temp disk reimage parameter is only supported for VM/VMSS with Ephemeral
@@ -38,5 +42,13 @@ public class VirtualMachineReimageParameters {
     public VirtualMachineReimageParameters withTempDisk(Boolean tempDisk) {
         this.tempDisk = tempDisk;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

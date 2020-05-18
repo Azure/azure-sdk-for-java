@@ -5,6 +5,7 @@ package com.azure.storage.blob
 
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
@@ -577,7 +578,6 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-
     def "Restore Container"() {
         given:
         def cc1 = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -759,5 +759,18 @@ class ServiceAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException.class)
+    }
+
+    def "OAuth on secondary"() {
+        setup:
+        def secondaryEndpoint = String.format(defaultEndpointTemplate,
+            primaryCredential.getAccountName() + "-secondary")
+        def serviceClient = setOauthCredentials(getServiceClientBuilder(null, secondaryEndpoint)).buildClient()
+
+        when:
+        serviceClient.getProperties()
+
+        then:
+        notThrown(Exception)
     }
 }

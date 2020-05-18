@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StorageCapability model. */
 @Fluent
 public final class StorageCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageCapability.class);
+
     /*
      * The storage account type for the database's backups.
      */
@@ -64,5 +68,13 @@ public final class StorageCapability {
     public StorageCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

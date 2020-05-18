@@ -5,7 +5,9 @@
 package com.azure.management.monitor.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.Baseline;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -13,6 +15,8 @@ import java.util.List;
 /** The CalculateBaselineResponse model. */
 @Fluent
 public final class CalculateBaselineResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CalculateBaselineResponseInner.class);
+
     /*
      * the resource type of the baseline resource.
      */
@@ -89,5 +93,27 @@ public final class CalculateBaselineResponseInner {
     public CalculateBaselineResponseInner withBaseline(List<Baseline> baseline) {
         this.baseline = baseline;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (type() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property type in model CalculateBaselineResponseInner"));
+        }
+        if (baseline() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property baseline in model CalculateBaselineResponseInner"));
+        } else {
+            baseline().forEach(e -> e.validate());
+        }
     }
 }

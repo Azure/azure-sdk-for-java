@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OperationListResult model. */
 @Fluent
 public final class OperationListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResultInner.class);
+
     /*
      * The list of container registry operations. Since this list may be
      * incomplete, the nextLink field should be used to request the next list
@@ -66,5 +70,16 @@ public final class OperationListResultInner {
     public OperationListResultInner withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

@@ -3,7 +3,7 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.models.HasPrivateIPAddress;
+import com.azure.management.network.models.HasPrivateIpAddress;
 import com.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.azure.management.resources.fluentcore.model.Attachable;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 /** A client-side representation of a private frontend of an internal load balancer. */
 @Fluent()
-public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPrivateIPAddress, HasSubnet {
+public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPrivateIpAddress, HasSubnet {
 
     /**
      * @return associated subnet
@@ -74,7 +74,7 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
          */
         interface WithAttach<ParentT>
             extends Attachable.InDefinitionAlt<ParentT>,
-                HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+                HasPrivateIpAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
                 DefinitionStages.WithAvailabilityZone<ParentT> {
         }
     }
@@ -109,7 +109,7 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
     interface Update
         extends Settable<LoadBalancer.Update>,
             UpdateStages.WithSubnet,
-            HasPrivateIPAddress.UpdateStages.WithPrivateIPAddress<Update> {
+            HasPrivateIpAddress.UpdateStages.WithPrivateIPAddress<Update> {
     }
 
     /** Grouping of private frontend definition stages applicable as part of a load balancer update. */
@@ -163,7 +163,7 @@ public interface LoadBalancerPrivateFrontend extends LoadBalancerFrontend, HasPr
          */
         interface WithAttach<ParentT>
             extends Attachable.InUpdateAlt<ParentT>,
-                HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+                HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
                 WithAvailabilityZone<ParentT> {
         }
     }

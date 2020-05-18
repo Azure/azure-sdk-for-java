@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UpgradePolicy model. */
 @Fluent
 public final class UpgradePolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradePolicy.class);
+
     /*
      * Specifies the mode of an upgrade to virtual machines in the scale
      * set.<br /><br /> Possible values are:<br /><br /> **Manual** - You
@@ -97,5 +101,19 @@ public final class UpgradePolicy {
     public UpgradePolicy withAutomaticOSUpgradePolicy(AutomaticOSUpgradePolicy automaticOSUpgradePolicy) {
         this.automaticOSUpgradePolicy = automaticOSUpgradePolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (rollingUpgradePolicy() != null) {
+            rollingUpgradePolicy().validate();
+        }
+        if (automaticOSUpgradePolicy() != null) {
+            automaticOSUpgradePolicy().validate();
+        }
     }
 }

@@ -5,13 +5,17 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.models.CapabilityInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The GlobalCsmSkuDescription model. */
 @Fluent
 public final class GlobalCsmSkuDescription {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalCsmSkuDescription.class);
+
     /*
      * Name of the resource SKU.
      */
@@ -192,5 +196,19 @@ public final class GlobalCsmSkuDescription {
     public GlobalCsmSkuDescription withCapabilities(List<CapabilityInner> capabilities) {
         this.capabilities = capabilities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (capacity() != null) {
+            capacity().validate();
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
     }
 }

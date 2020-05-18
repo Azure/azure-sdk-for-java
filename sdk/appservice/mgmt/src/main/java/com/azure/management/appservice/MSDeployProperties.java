@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The MSDeployProperties model. */
 @Fluent
 public final class MSDeployProperties extends MSDeployCore {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployProperties.class);
+
     /*
      * List of Add-On packages. Add-On packages implicitly enable the Do Not
      * Delete MSDeploy rule.
@@ -38,5 +42,18 @@ public final class MSDeployProperties extends MSDeployCore {
     public MSDeployProperties withAddOnPackages(List<MSDeployCore> addOnPackages) {
         this.addOnPackages = addOnPackages;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (addOnPackages() != null) {
+            addOnPackages().forEach(e -> e.validate());
+        }
     }
 }

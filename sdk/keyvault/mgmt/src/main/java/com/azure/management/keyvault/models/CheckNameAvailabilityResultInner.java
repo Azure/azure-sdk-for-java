@@ -5,12 +5,16 @@
 package com.azure.management.keyvault.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.keyvault.Reason;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CheckNameAvailabilityResult model. */
 @Immutable
 public final class CheckNameAvailabilityResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResultInner.class);
+
     /*
      * A boolean value that indicates whether the name is available for you to
      * use. If true, the name is available. If false, the name has already been
@@ -59,5 +63,13 @@ public final class CheckNameAvailabilityResultInner {
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

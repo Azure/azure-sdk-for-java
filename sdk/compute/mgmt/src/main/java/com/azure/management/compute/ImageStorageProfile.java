@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ImageStorageProfile model. */
 @Fluent
 public final class ImageStorageProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageStorageProfile.class);
+
     /*
      * Specifies information about the operating system disk used by the
      * virtual machine. <br><br> For more information about disks, see [About
@@ -105,5 +109,19 @@ public final class ImageStorageProfile {
     public ImageStorageProfile withZoneResilient(Boolean zoneResilient) {
         this.zoneResilient = zoneResilient;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (osDisk() != null) {
+            osDisk().validate();
+        }
+        if (dataDisks() != null) {
+            dataDisks().forEach(e -> e.validate());
+        }
     }
 }

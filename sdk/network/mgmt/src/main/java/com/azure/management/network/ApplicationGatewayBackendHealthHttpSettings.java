@@ -5,13 +5,17 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.models.ApplicationGatewayBackendHealthServerInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationGatewayBackendHealthHttpSettings model. */
 @Fluent
 public final class ApplicationGatewayBackendHealthHttpSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHealthHttpSettings.class);
+
     /*
      * Reference of an ApplicationGatewayBackendHttpSettings resource.
      */
@@ -64,5 +68,19 @@ public final class ApplicationGatewayBackendHealthHttpSettings {
         List<ApplicationGatewayBackendHealthServerInner> servers) {
         this.servers = servers;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backendHttpSettings() != null) {
+            backendHttpSettings().validate();
+        }
+        if (servers() != null) {
+            servers().forEach(e -> e.validate());
+        }
     }
 }

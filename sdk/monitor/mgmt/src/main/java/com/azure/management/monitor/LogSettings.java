@@ -5,11 +5,15 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LogSettings model. */
 @Fluent
 public final class LogSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSettings.class);
+
     /*
      * Name of a Diagnostic Log category for a resource type this setting is
      * applied to. To obtain the list of Diagnostic Log categories for a
@@ -90,5 +94,16 @@ public final class LogSettings {
     public LogSettings withRetentionPolicy(RetentionPolicy retentionPolicy) {
         this.retentionPolicy = retentionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (retentionPolicy() != null) {
+            retentionPolicy().validate();
+        }
     }
 }

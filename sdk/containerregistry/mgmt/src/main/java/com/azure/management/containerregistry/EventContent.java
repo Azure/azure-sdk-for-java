@@ -5,12 +5,16 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The EventContent model. */
 @Fluent
 public final class EventContent {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventContent.class);
+
     /*
      * The event ID.
      */
@@ -197,5 +201,25 @@ public final class EventContent {
     public EventContent withSource(Source source) {
         this.source = source;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (target() != null) {
+            target().validate();
+        }
+        if (request() != null) {
+            request().validate();
+        }
+        if (actor() != null) {
+            actor().validate();
+        }
+        if (source() != null) {
+            source().validate();
+        }
     }
 }

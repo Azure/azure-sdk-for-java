@@ -242,7 +242,7 @@ public interface VirtualMachineScaleSet
      *     the scale set
      * @throws IOException the IO exception
      */
-    List<String> primaryPublicIPAddressIds() throws IOException;
+    List<String> primaryPublicIpAddressIds() throws IOException;
 
     /** @return the URL to storage containers that store the VHDs of the virtual machines in the scale set */
     List<String> vhdContainers();
@@ -338,7 +338,7 @@ public interface VirtualMachineScaleSet
     StorageAccountTypes managedOSDiskStorageAccountType();
 
     /** @return the public ip configuration of virtual machines in the scale set. */
-    VirtualMachineScaleSetPublicIPAddressConfiguration virtualMachinePublicIpConfig();
+    VirtualMachineScaleSetPublicIpAddressConfiguration virtualMachinePublicIpConfig();
 
     /** @return true if ip forwarding is enabled for the virtual machine scale set. */
     boolean isIpForwardingEnabled();
@@ -1559,7 +1559,7 @@ public interface VirtualMachineScaleSet
              * @param ipConfig the public ip address configuration
              * @return the next stage of the definition
              */
-            WithCreate withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIPAddressConfiguration ipConfig);
+            WithCreate withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIpAddressConfiguration ipConfig);
         }
 
         /** The stage of the virtual machine scale set definition allowing to configure accelerated networking. */
@@ -2262,7 +2262,7 @@ public interface VirtualMachineScaleSet
              * @param ipConfig the public ip address configuration
              * @return the next stage of the update
              */
-            WithApply withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIPAddressConfiguration ipConfig);
+            WithApply withVirtualMachinePublicIp(VirtualMachineScaleSetPublicIpAddressConfiguration ipConfig);
         }
 
         /** The stage of the virtual machine scale set update allowing to configure accelerated networking. */

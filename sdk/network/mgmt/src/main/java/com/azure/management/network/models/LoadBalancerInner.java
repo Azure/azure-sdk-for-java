@@ -7,8 +7,10 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.InboundNatPool;
 import com.azure.management.network.LoadBalancerSku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class LoadBalancerInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerInner.class);
+
     /*
      * The load balancer SKU.
      */
@@ -32,7 +36,7 @@ public class LoadBalancerInner extends Resource {
      * Object representing the frontend IPs to be used for the load balancer.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
-    private List<FrontendIPConfigurationInner> frontendIPConfigurations;
+    private List<FrontendIpConfigurationInner> frontendIpConfigurations;
 
     /*
      * Collection of backend address pools used by a load balancer.
@@ -143,22 +147,22 @@ public class LoadBalancerInner extends Resource {
     }
 
     /**
-     * Get the frontendIPConfigurations property: Object representing the frontend IPs to be used for the load balancer.
+     * Get the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
      *
-     * @return the frontendIPConfigurations value.
+     * @return the frontendIpConfigurations value.
      */
-    public List<FrontendIPConfigurationInner> frontendIPConfigurations() {
-        return this.frontendIPConfigurations;
+    public List<FrontendIpConfigurationInner> frontendIpConfigurations() {
+        return this.frontendIpConfigurations;
     }
 
     /**
-     * Set the frontendIPConfigurations property: Object representing the frontend IPs to be used for the load balancer.
+     * Set the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
      *
-     * @param frontendIPConfigurations the frontendIPConfigurations value to set.
+     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withFrontendIPConfigurations(List<FrontendIPConfigurationInner> frontendIPConfigurations) {
-        this.frontendIPConfigurations = frontendIPConfigurations;
+    public LoadBalancerInner withFrontendIpConfigurations(List<FrontendIpConfigurationInner> frontendIpConfigurations) {
+        this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
 
@@ -360,5 +364,37 @@ public class LoadBalancerInner extends Resource {
     public LoadBalancerInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (frontendIpConfigurations() != null) {
+            frontendIpConfigurations().forEach(e -> e.validate());
+        }
+        if (backendAddressPools() != null) {
+            backendAddressPools().forEach(e -> e.validate());
+        }
+        if (loadBalancingRules() != null) {
+            loadBalancingRules().forEach(e -> e.validate());
+        }
+        if (probes() != null) {
+            probes().forEach(e -> e.validate());
+        }
+        if (inboundNatRules() != null) {
+            inboundNatRules().forEach(e -> e.validate());
+        }
+        if (inboundNatPools() != null) {
+            inboundNatPools().forEach(e -> e.validate());
+        }
+        if (outboundRules() != null) {
+            outboundRules().forEach(e -> e.validate());
+        }
     }
 }

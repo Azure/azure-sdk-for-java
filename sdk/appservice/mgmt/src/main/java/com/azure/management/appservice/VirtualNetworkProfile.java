@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualNetworkProfile model. */
 @Fluent
 public final class VirtualNetworkProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkProfile.class);
+
     /*
      * Resource id of the Virtual Network.
      */
@@ -90,5 +94,13 @@ public final class VirtualNetworkProfile {
     public VirtualNetworkProfile withSubnet(String subnet) {
         this.subnet = subnet;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

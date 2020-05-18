@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Request model. */
 @Fluent
 public final class Request {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Request.class);
+
     /*
      * The ID of the request that initiated the event.
      */
@@ -145,5 +149,13 @@ public final class Request {
     public Request withUseragent(String useragent) {
         this.useragent = useragent;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

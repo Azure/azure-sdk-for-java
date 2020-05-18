@@ -7,9 +7,11 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.EncryptionScopeKeyVaultProperties;
 import com.azure.management.storage.EncryptionScopeSource;
 import com.azure.management.storage.EncryptionScopeState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -17,6 +19,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class EncryptionScopeInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeInner.class);
+
     /*
      * The provider for the encryption scope. Possible values
      * (case-insensitive):  Microsoft.Storage, Microsoft.KeyVault.
@@ -131,5 +135,16 @@ public class EncryptionScopeInner extends ProxyResource {
     public EncryptionScopeInner withKeyVaultProperties(EncryptionScopeKeyVaultProperties keyVaultProperties) {
         this.keyVaultProperties = keyVaultProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (keyVaultProperties() != null) {
+            keyVaultProperties().validate();
+        }
     }
 }

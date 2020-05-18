@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerNetworkInterfaceStatistics model. */
 @Fluent
 public final class ContainerNetworkInterfaceStatistics {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceStatistics.class);
+
     /*
      * The rxBytes property.
      */
@@ -216,5 +220,13 @@ public final class ContainerNetworkInterfaceStatistics {
     public ContainerNetworkInterfaceStatistics withTxDropped(Long txDropped) {
         this.txDropped = txDropped;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

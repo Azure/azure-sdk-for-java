@@ -5,13 +5,17 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.models.StampCapacityInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AppServiceEnvironment model. */
 @Fluent
 public final class AppServiceEnvironment {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceEnvironment.class);
+
     /*
      * Name of the App Service Environment.
      */
@@ -160,7 +164,7 @@ public final class AppServiceEnvironment {
      * Description of IP SSL mapping for the App Service Environment.
      */
     @JsonProperty(value = "vipMappings", access = JsonProperty.Access.WRITE_ONLY)
-    private List<VirtualIPMapping> vipMappings;
+    private List<VirtualIpMapping> vipMappings;
 
     /*
      * Current total, used, and available worker capacities.
@@ -614,7 +618,7 @@ public final class AppServiceEnvironment {
      *
      * @return the vipMappings value.
      */
-    public List<VirtualIPMapping> vipMappings() {
+    public List<VirtualIpMapping> vipMappings() {
         return this.vipMappings;
     }
 
@@ -875,5 +879,51 @@ public final class AppServiceEnvironment {
     public AppServiceEnvironment withSslCertKeyVaultSecretName(String sslCertKeyVaultSecretName) {
         this.sslCertKeyVaultSecretName = sslCertKeyVaultSecretName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model AppServiceEnvironment"));
+        }
+        if (location() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property location in model AppServiceEnvironment"));
+        }
+        if (virtualNetwork() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property virtualNetwork in model AppServiceEnvironment"));
+        } else {
+            virtualNetwork().validate();
+        }
+        if (workerPools() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property workerPools in model AppServiceEnvironment"));
+        } else {
+            workerPools().forEach(e -> e.validate());
+        }
+        if (vipMappings() != null) {
+            vipMappings().forEach(e -> e.validate());
+        }
+        if (environmentCapacities() != null) {
+            environmentCapacities().forEach(e -> e.validate());
+        }
+        if (networkAccessControlList() != null) {
+            networkAccessControlList().forEach(e -> e.validate());
+        }
+        if (clusterSettings() != null) {
+            clusterSettings().forEach(e -> e.validate());
+        }
     }
 }

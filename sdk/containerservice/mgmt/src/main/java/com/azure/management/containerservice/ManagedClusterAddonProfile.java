@@ -5,12 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ManagedClusterAddonProfile model. */
 @Fluent
 public final class ManagedClusterAddonProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfile.class);
+
     /*
      * Whether the add-on is enabled or not.
      */
@@ -61,5 +65,13 @@ public final class ManagedClusterAddonProfile {
     public ManagedClusterAddonProfile withConfig(Map<String, String> config) {
         this.config = config;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

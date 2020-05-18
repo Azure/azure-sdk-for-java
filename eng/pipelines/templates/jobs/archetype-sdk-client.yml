@@ -130,11 +130,15 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      - name: OSVmImage
+        value: 'windows-2019'
 
     pool:
-      vmImage: 'windows-2019'
+      vmImage: $(OSVmImage)
 
     steps:
+      - template: ../steps/update-version-fix.yml
+
       - pwsh: |
           $(Build.SourcesDirectory)/eng/versioning/pom_file_version_scanner.ps1
         displayName: "Verify versions in POM files"
@@ -207,6 +211,8 @@ jobs:
 
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
+
+      - template: ../steps/update-version-fix.yml
 
       - template: ../steps/cache-maven-repository.yml
 
