@@ -70,18 +70,18 @@ public class CosmosAsyncPermission {
      * The {@link Mono} upon successful completion will contain a single resource response with the replaced permission.
      * In case of failure the {@link Mono} will error.
      *
-     * @param permissionSettings the permission properties to use.
+     * @param permissionProperties the permission properties to use.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the replaced permission or an error.
      */
-    public Mono<CosmosAsyncPermissionResponse> replace(CosmosPermissionProperties permissionSettings,
+    public Mono<CosmosAsyncPermissionResponse> replace(CosmosPermissionProperties permissionProperties,
                                                        CosmosPermissionRequestOptions options) {
         if (options == null) {
             options = new CosmosPermissionRequestOptions();
         }
         return cosmosUser.getDatabase()
                    .getDocClientWrapper()
-                   .replacePermission(ModelBridgeInternal.getV2Permissions(permissionSettings),
+                   .replacePermission(ModelBridgeInternal.getV2Permissions(permissionProperties),
                        ModelBridgeInternal.toRequestOptions(options))
                    .map(response -> ModelBridgeInternal.createCosmosAsyncPermissionResponse(response, cosmosUser))
                    .single();

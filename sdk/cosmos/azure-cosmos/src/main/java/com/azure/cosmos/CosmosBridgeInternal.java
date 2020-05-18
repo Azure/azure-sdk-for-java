@@ -5,29 +5,38 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ConnectionPolicy;
+import com.azure.cosmos.implementation.Warning;
 
 /**
  * DO NOT USE. For internal use only by the SDK. These methods might break at any time. No support will be provided.
  */
+@Warning(value = "Internal use only, not meant for public usage")
 public final class CosmosBridgeInternal {
 
+    private CosmosBridgeInternal() {}
+
+    @Warning(value = "Internal use only, not meant for public usage")
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosClient client) {
         return client.asyncClient().getDocClientWrapper();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncClient client) {
         return client.getDocClientWrapper();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static AsyncDocumentClient getAsyncDocumentClient(CosmosAsyncDatabase cosmosAsyncDatabase) {
         return cosmosAsyncDatabase.getDocClientWrapper();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncDatabase getCosmosDatabaseWithNewClient(CosmosAsyncDatabase cosmosDatabase,
                                                                      CosmosAsyncClient client) {
         return new CosmosAsyncDatabase(cosmosDatabase.getId(), client);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncContainer getCosmosContainerWithNewClient(CosmosAsyncContainer cosmosContainer,
                                                                        CosmosAsyncDatabase cosmosDatabase,
                                                                        CosmosAsyncClient client) {
@@ -35,26 +44,32 @@ public final class CosmosBridgeInternal {
             CosmosBridgeInternal.getCosmosDatabaseWithNewClient(cosmosDatabase, client));
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static AsyncDocumentClient getContextClient(CosmosAsyncDatabase database) {
         return database.getClient().getContextClient();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static AsyncDocumentClient getContextClient(CosmosAsyncContainer container) {
         return container.getDatabase().getClient().getContextClient();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncContainer getCosmosAsyncContainer(CosmosContainer container) {
         return container.asyncContainer;
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ConsistencyLevel getConsistencyLevel(CosmosClientBuilder cosmosClientBuilder) {
         return cosmosClientBuilder.getConsistencyLevel();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
         return cosmosClientBuilder.getConnectionPolicy();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosClientBuilder cloneCosmosClientBuilder(CosmosClientBuilder builder) {
         CosmosClientBuilder copy = new CosmosClientBuilder();
 

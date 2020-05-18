@@ -331,13 +331,13 @@ public class CollectionCrudTest extends TestSuiteBase {
             CosmosItemRequestOptions options = new CosmosItemRequestOptions();
             CosmosAsyncItemResponse<CosmosItemProperties> readDocumentResponse =
                 collection.readItem(document.getId(), new PartitionKey("mypkValue"), options, CosmosItemProperties.class).block();
-            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 1 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 1 READ Document Latency {}", readDocumentResponse.getDuration());
 
             BridgeInternal.setProperty(document, "name", "New Updated Document");
             CosmosAsyncItemResponse<CosmosItemProperties> upsertDocumentResponse = collection.upsertItem(document).block();
-            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getRequestLatency());
+            logger.info("Client 1 Upsert Document Client Side Request Statistics {}", upsertDocumentResponse.getDiagnostics());
+            logger.info("Client 1 Upsert Document Latency {}", upsertDocumentResponse.getDuration());
 
             //  DELETE the existing collection
             deleteCollection(client2, dbId, collectionId);
@@ -356,8 +356,8 @@ public class CollectionCrudTest extends TestSuiteBase {
                                                  new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newDocument, "mypk")),
                                                  CosmosItemProperties.class)
                                        .block();
-            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getResponseDiagnostics());
-            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getRequestLatency());
+            logger.info("Client 2 READ Document Client Side Request Statistics {}", readDocumentResponse.getDiagnostics());
+            logger.info("Client 2 READ Document Latency {}", readDocumentResponse.getDuration());
 
             CosmosItemProperties readDocument = BridgeInternal.getProperties(readDocumentResponse);
 

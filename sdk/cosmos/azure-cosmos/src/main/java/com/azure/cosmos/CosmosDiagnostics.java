@@ -13,13 +13,13 @@ import java.time.Duration;
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
-public final class CosmosResponseDiagnostics {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosResponseDiagnostics.class);
+public final class CosmosDiagnostics {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
 
-    CosmosResponseDiagnostics() {
+    CosmosDiagnostics() {
         this.clientSideRequestStatistics = new ClientSideRequestStatistics();
     }
 
@@ -27,7 +27,7 @@ public final class CosmosResponseDiagnostics {
         return clientSideRequestStatistics;
     }
 
-    CosmosResponseDiagnostics clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
+    CosmosDiagnostics clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
         this.clientSideRequestStatistics = clientSideRequestStatistics;
         return this;
     }
@@ -48,11 +48,12 @@ public final class CosmosResponseDiagnostics {
     }
 
     /**
-     * Retrieves latency related to the completion of the request
+     * Retrieves duration related to the completion of the request
+     * This represents end to end duration of an operation including all the retries
      *
-     * @return request completion latency
+     * @return request completion duration
      */
-    public Duration getRequestLatency() {
-        return this.clientSideRequestStatistics.getRequestLatency();
+    public Duration getDuration() {
+        return this.clientSideRequestStatistics.getDuration();
     }
 }

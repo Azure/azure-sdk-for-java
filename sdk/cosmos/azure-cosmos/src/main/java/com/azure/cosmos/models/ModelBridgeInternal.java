@@ -37,6 +37,7 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
@@ -60,212 +61,262 @@ import java.util.concurrent.ConcurrentMap;
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos.model package
  **/
+@Warning(value = "Internal use only, not meant for public usage")
 public final class ModelBridgeInternal {
 
+    private ModelBridgeInternal() {}
+
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncConflictResponse createCosmosAsyncConflictResponse(ResourceResponse<Conflict> response,
                                                                                 CosmosAsyncContainer container) {
         return new CosmosAsyncConflictResponse(response, container);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncContainerResponse createCosmosAsyncContainerResponse(ResourceResponse<DocumentCollection> response,
                                                                                   CosmosAsyncDatabase database) {
         return new CosmosAsyncContainerResponse(response, database);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncDatabaseResponse createCosmosAsyncDatabaseResponse(ResourceResponse<Database> response,
                                                                                  CosmosAsyncClient client) {
         return new CosmosAsyncDatabaseResponse(response, client);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> CosmosAsyncItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType) {
         return new CosmosAsyncItemResponse<>(response, classType);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
         return new CosmosAsyncItemResponse<>(response, Object.class);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncPermissionResponse createCosmosAsyncPermissionResponse(ResourceResponse<Permission> response,
                                                                                     CosmosAsyncUser cosmosUser) {
         return new CosmosAsyncPermissionResponse(response, cosmosUser);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncStoredProcedureResponse createCosmosAsyncStoredProcedureResponse(ResourceResponse<StoredProcedure> response,
                                                                                               CosmosAsyncContainer cosmosContainer) {
         return new CosmosAsyncStoredProcedureResponse(response, cosmosContainer);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncStoredProcedureResponse createCosmosAsyncStoredProcedureResponse(StoredProcedureResponse response,
                                                                                               CosmosAsyncContainer cosmosContainer,
                                                                                               String storedProcedureId) {
         return new CosmosAsyncStoredProcedureResponse(response, cosmosContainer, storedProcedureId);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
         return new CosmosStoredProcedureProperties(jsonString);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
         return new CosmosPermissionProperties(jsonString);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncTriggerResponse createCosmosAsyncTriggerResponse(ResourceResponse<Trigger> response,
                                                                               CosmosAsyncContainer container) {
         return new CosmosAsyncTriggerResponse(response, container);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncUserDefinedFunctionResponse createCosmosAsyncUserDefinedFunctionResponse(ResourceResponse<UserDefinedFunction> response,
                                                                                                       CosmosAsyncContainer container) {
         return new CosmosAsyncUserDefinedFunctionResponse(response, container);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosAsyncUserResponse createCosmosAsyncUserResponse(ResourceResponse<User> response, CosmosAsyncDatabase database) {
         return new CosmosAsyncUserResponse(response, database);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosContainerResponse createCosmosContainerResponse(CosmosAsyncContainerResponse response,
                                                                         CosmosDatabase database, CosmosClient client) {
         return new CosmosContainerResponse(response, database, client);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosUserResponse createCosmosUserResponse(CosmosAsyncUserResponse response, CosmosDatabase database) {
         return new CosmosUserResponse(response, database);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosAsyncItemResponse<T> response) {
         return new CosmosItemResponse<>(response);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosDatabaseResponse createCosmosDatabaseResponse(CosmosAsyncDatabaseResponse response, CosmosClient client) {
         return new CosmosDatabaseResponse(response, client);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosStoredProcedureResponse createCosmosStoredProcedureResponse(CosmosAsyncStoredProcedureResponse resourceResponse,
                                                 CosmosStoredProcedure storedProcedure) {
         return new CosmosStoredProcedureResponse(resourceResponse, storedProcedure);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosUserDefinedFunctionResponse createCosmosUserDefinedFunctionResponse(CosmosAsyncUserDefinedFunctionResponse resourceResponse,
                                                     CosmosUserDefinedFunction userDefinedFunction) {
         return new CosmosUserDefinedFunctionResponse(resourceResponse, userDefinedFunction);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosTriggerResponse createCosmosTriggerResponse(CosmosAsyncTriggerResponse asyncResponse,
                                         CosmosTrigger syncTrigger) {
         return new CosmosTriggerResponse(asyncResponse, syncTrigger);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosConflictProperties> getCosmosConflictPropertiesFromV2Results(List<Conflict> results) {
         return CosmosConflictProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static DocumentCollection getV2Collection(CosmosContainerProperties containerProperties) {
         return containerProperties.getV2Collection();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosContainerProperties> getCosmosContainerPropertiesFromV2Results(List<DocumentCollection> results) {
         return CosmosContainerProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosDatabaseProperties> getCosmosDatabasePropertiesFromV2Results(List<Database> results) {
         return CosmosDatabaseProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> CosmosItemProperties getCosmosItemProperties(CosmosAsyncItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> CosmosItemProperties getCosmosItemProperties(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.getProperties();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Permission getV2Permissions(CosmosPermissionProperties permissionSettings) {
         return permissionSettings.getV2Permissions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosPermissionProperties> getCosmosPermissionPropertiesFromV2Results(List<Permission> results) {
         return CosmosPermissionProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosStoredProcedureProperties> getCosmosStoredProcedurePropertiesFromV2Results(List<StoredProcedure> results) {
         return CosmosStoredProcedureProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosTriggerProperties> getCosmosTriggerPropertiesFromV2Results(List<Trigger> results) {
         return CosmosTriggerProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosUserDefinedFunctionProperties> getCosmosUserDefinedFunctionPropertiesFromV2Results(List<UserDefinedFunction> results) {
         return CosmosUserDefinedFunctionProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static User getV2User(CosmosUserProperties cosmosUserProperties) {
         return cosmosUserProperties.getV2User();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static List<CosmosUserProperties> getCosmosUserPropertiesFromV2Results(List<User> results) {
         return CosmosUserProperties.getFromV2Results(results);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static RequestOptions toRequestOptions(CosmosConflictRequestOptions cosmosConflictRequestOptions) {
         return cosmosConflictRequestOptions.toRequestOptions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static RequestOptions toRequestOptions(CosmosContainerRequestOptions cosmosContainerRequestOptions) {
         return cosmosContainerRequestOptions.toRequestOptions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosContainerRequestOptions setOfferThroughput(CosmosContainerRequestOptions cosmosContainerRequestOptions,
                                                                    Integer offerThroughput) {
         return cosmosContainerRequestOptions.setOfferThroughput(offerThroughput);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static RequestOptions toRequestOptions(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions) {
         return cosmosDatabaseRequestOptions.toRequestOptions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosDatabaseRequestOptions setOfferThroughput(CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
                                                                    Integer offerThroughput) {
         return cosmosDatabaseRequestOptions.setOfferThroughput(offerThroughput);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosDatabaseRequestOptions setOfferProperties(
         CosmosDatabaseRequestOptions cosmosDatabaseRequestOptions,
         ThroughputProperties throughputProperties) {
         return cosmosDatabaseRequestOptions.setThroughputProperties(throughputProperties);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosContainerRequestOptions setOfferProperties(
         CosmosContainerRequestOptions containerRequestOptions,
         ThroughputProperties throughputProperties) {
         return containerRequestOptions.setThroughputProperties(throughputProperties);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Offer updateOfferFromProperties(Offer offer, ThroughputProperties properties) {
         return properties.updateOfferFromProperties(offer);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosItemRequestOptions setPartitionKey(CosmosItemRequestOptions cosmosItemRequestOptions,
                                                            PartitionKey partitionKey) {
         return cosmosItemRequestOptions.setPartitionKey(partitionKey);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static RequestOptions toRequestOptions(CosmosItemRequestOptions cosmosItemRequestOptions) {
         return cosmosItemRequestOptions.toRequestOptions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosItemRequestOptions createCosmosItemRequestOptions(PartitionKey partitionKey) {
         return new CosmosItemRequestOptions(partitionKey);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static RequestOptions toRequestOptions(CosmosPermissionRequestOptions cosmosPermissionRequestOptions) {
         return cosmosPermissionRequestOptions.toRequestOptions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static RequestOptions toRequestOptions(CosmosStoredProcedureRequestOptions cosmosStoredProcedureRequestOptions) {
         return cosmosStoredProcedureRequestOptions.toRequestOptions();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
         DatabaseAccount account = response.getResource(DatabaseAccount.class);
 
@@ -286,6 +337,7 @@ public final class ModelBridgeInternal {
      * @param options the feed options
      * @return the partitionKeyRangeId.
      */
+    @Warning(value = "Internal use only, not meant for public usage")
     public static String partitionKeyRangeIdInternal(FeedOptions options) {
         return options.getPartitionKeyRangeIdInternal();
     }
@@ -297,120 +349,148 @@ public final class ModelBridgeInternal {
      * @param partitionKeyRangeId the partition key range id
      * @return the partitionKeyRangeId.
      */
+    @Warning(value = "Internal use only, not meant for public usage")
     public static FeedOptions partitionKeyRangeIdInternal(FeedOptions options, String partitionKeyRangeId) {
         return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
                                                                           Class<T> cls) {
         return new FeedResponse<T>(response.getQueryResponse(cls), response.getResponseHeaders());
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> FeedResponse<T> toFeedResponsePage(List<T> results, Map<String, String> headers, boolean noChanges) {
         return new FeedResponse<>(results, headers, noChanges);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
                                                                                Class<T> cls) {
         return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
             response.getResponseHeaders(), noChanges(response));
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T extends Resource> boolean noChanges(FeedResponse<T> page) {
         return page.nochanges;
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T extends Resource> boolean noChanges(RxDocumentServiceResponse rsp) {
         return rsp.getStatusCode() == HttpConstants.StatusCodes.NOT_MODIFIED;
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
                                                          Map<String, String> headers) {
         return new FeedResponse<>(results, headers);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> FeedResponse<T> createFeedResponseWithQueryMetrics(List<T> results,
                                                                          Map<String, String> headers, ConcurrentMap<String, QueryMetrics> queryMetricsMap) {
         return new FeedResponse<>(results, headers, queryMetricsMap);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetricsMap(FeedResponse<T> feedResponse) {
         return feedResponse.queryMetricsMap();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> ConcurrentMap<String, QueryMetrics> queryMetrics(FeedResponse<T> feedResponse) {
         return feedResponse.queryMetrics();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static String toLower(RequestVerb verb) {
         return verb.toLowerCase();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static boolean isV2(PartitionKeyDefinition pkd) {
         return pkd.getVersion() != null && PartitionKeyDefinitionVersion.V2.val == pkd.getVersion().val;
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static PartitionKeyInternal getNonePartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
         return partitionKeyDefinition.getNonePartitionKeyValue();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static PartitionKeyInternal getPartitionKeyInternal(PartitionKey partitionKey) {
         return partitionKey.getInternalPartitionKey();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static PartitionKey partitionKeyfromJsonString(String jsonString) {
         return PartitionKey.fromJsonString(jsonString);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Object getPartitionKeyObject(PartitionKey right) {
         return right.getKeyObject();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static String getAltLink(Resource resource) {
         return resource.getAltLink();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setAltLink(Resource resource, String altLink) {
         resource.setAltLink(altLink);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setResourceId(Resource resource, String resourceId) {
         resource.setResourceId(resourceId);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setResourceSelfLink(Resource resource, String selfLink) {
         resource.setSelfLink(selfLink);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setTimestamp(Resource resource, OffsetDateTime date) {
         resource.setTimestamp(date);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> void setProperty(JsonSerializable jsonSerializable, String propertyName, T value) {
         jsonSerializable.set(propertyName, value);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ObjectNode getObjectNodeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getObject(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void removeFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         jsonSerializable.remove(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Object getValue(JsonNode value) {
         return JsonSerializable.getValue(value);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosError createCosmosError(ObjectNode objectNode) {
         return new CosmosError(objectNode);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosError createCosmosError(String jsonString) {
         return new CosmosError(jsonString);
     }
 
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
@@ -431,50 +511,62 @@ public final class ModelBridgeInternal {
         }
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Map<String, Object> getMapFromJsonSerializable(JsonSerializable jsonSerializable) {
         return jsonSerializable.getMap();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static CosmosResourceType fromServiceSerializedFormat(String cosmosResourceType) {
         return CosmosResourceType.fromServiceSerializedFormat(cosmosResourceType);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Boolean getBooleanFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getBoolean(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Double getDoubleFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getDouble(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Object getObjectByPathFromJsonSerializable(JsonSerializable jsonSerializable, List<String> propertyNames) {
         return jsonSerializable.getObjectByPath(propertyNames);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ByteBuffer serializeJsonToByteBuffer(JsonSerializable jsonSerializable) {
         return jsonSerializable.serializeJsonToByteBuffer();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> T toObjectFromJsonSerializable(JsonSerializable jsonSerializable, Class<T> c) {
         return jsonSerializable.toObject(c);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Object getObjectFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.get(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static String getStringFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getString(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Integer getIntFromJsonSerializable(JsonSerializable jsonSerializable, String propertyName) {
         return jsonSerializable.getInt(propertyName);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static String toJsonFromJsonSerializable(JsonSerializable jsonSerializable) {
         return jsonSerializable.toJson();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ObjectNode getPropertyBagFromJsonSerializable(JsonSerializable jsonSerializable) {
         if (jsonSerializable == null) {
             return null;
@@ -482,24 +574,29 @@ public final class ModelBridgeInternal {
         return jsonSerializable.getPropertyBag();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setFeedOptionsContinuationTokenAndMaxItemCount(FeedOptions feedOptions, String continuationToken, Integer maxItemCount) {
         feedOptions.setRequestContinuation(continuationToken);
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setFeedOptionsContinuationToken(FeedOptions feedOptions, String continuationToken) {
         feedOptions.setRequestContinuation(continuationToken);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static void setFeedOptionsMaxItemCount(FeedOptions feedOptions, Integer maxItemCount) {
         feedOptions.setMaxItemCount(maxItemCount);
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ByteBuffer serializeJsonToByteBuffer(SqlQuerySpec sqlQuerySpec) {
         sqlQuerySpec.populatePropertyBag();
         return sqlQuerySpec.getJsonSerializable().serializeJsonToByteBuffer();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> T instantiateByObjectNode(ObjectNode objectNode, Class<T> c) {
         try {
             return c.getDeclaredConstructor(ObjectNode.class).newInstance(objectNode);
@@ -508,6 +605,7 @@ public final class ModelBridgeInternal {
         }
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> void populatePropertyBag(T t) {
         if (t instanceof JsonSerializable) {
             ((JsonSerializable) t).populatePropertyBag();
@@ -546,6 +644,7 @@ public final class ModelBridgeInternal {
         }
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> JsonSerializable getJsonSerializable(T t) {
         if (t instanceof CompositePath) {
             return ((CompositePath) t).getJsonSerializable();
@@ -582,6 +681,7 @@ public final class ModelBridgeInternal {
         }
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static <T> Resource getResource(T t) {
         if (t == null) {
             return null;
@@ -608,10 +708,12 @@ public final class ModelBridgeInternal {
         }
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static Offer getOfferFromThroughputProperties(ThroughputProperties properties) {
         return properties.getOffer();
     }
 
+    @Warning(value = "Internal use only, not meant for public usage")
     public static ThroughputResponse createThroughputRespose(ResourceResponse<Offer> offerResourceResponse) {
         return new ThroughputResponse(offerResourceResponse);
     }
