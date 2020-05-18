@@ -15,6 +15,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageLockContainer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -51,10 +52,27 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
  * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiateWithDefaultCredential}
  *
  * <p><strong>Receive all messages from Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all }
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all}
  *
  * <p><strong>Receive messages in {@link ReceiveMode#RECEIVE_AND_DELETE} mode from Service Bus resource</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode }
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.receiveWithReceiveAndDeleteMode}
+ *
+ * <p><strong>Receive messages from a specific session</strong></p>
+ * <p>To fetch messages from a specific session, set {@link ServiceBusSessionReceiverClientBuilder#sessionId(String)}.
+ * </p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId}
+ *
+ * <p><strong>Process messages from multiple sessions</strong></p>
+ * <p>To process messages from multiple sessions, set
+ * {@link ServiceBusSessionReceiverClientBuilder#maxConcurrentSessions(int)}. This will process in parallel at most
+ * {@code maxConcurrentSessions}. In addition, when all the messages in a session have been consumed, it will find the
+ * next available session to process.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions}
+ *
+ * <p><strong>Process messages from the first available session</strong></p>
+ * <p>To process messages from the first available session, switch to {@link ServiceBusSessionReceiverClientBuilder} and
+ * build the receiver client. It will find the first available session to process messages from.</p>
+ * {@codesnippet com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession}
  *
  * <p><strong>Rate limiting consumption of messages from Service Bus resource</strong></p>
  * <p>For message receivers that need to limit the number of messages they receive at a given time, they can use
@@ -236,7 +254,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@link MessageLockToken#getLockToken()} returns a null lock token.
      */
     public Mono<Void> complete(MessageLockToken lockToken) {
-        return complete(lockToken, receiverOptions.getSessionId());
+        if (lockToken instanceof ServiceBusReceivedMessage) {
+            return complete(lockToken, ((ServiceBusReceivedMessage) lockToken).getSessionId());
+        } else {
+            return complete(lockToken, null);
+        }
     }
 
     /**
@@ -872,12 +894,27 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         final String lockToken = message.getLockToken();
-        logger.info("{}: Update started. Disposition: {}. Lock: {}.", entityPath, dispositionStatus, lockToken);
+        final String sessionIdToUse;
+        if (message instanceof ServiceBusReceivedMessage) {
+            sessionIdToUse = ((ServiceBusReceivedMessage) message).getSessionId();
+            if (!CoreUtils.isNullOrEmpty(sessionIdToUse) && !CoreUtils.isNullOrEmpty(sessionId)
+                && !sessionIdToUse.equals(sessionId)) {
+                logger.warning("Given sessionId '{}' does not match message's sessionId '{}'",
+                    sessionId, sessionIdToUse);
+            }
+        } else if (sessionId == null && !CoreUtils.isNullOrEmpty(receiverOptions.getSessionId())) {
+            sessionIdToUse = receiverOptions.getSessionId();
+        } else {
+            sessionIdToUse = sessionId;
+        }
+
+        logger.info("{}: Update started. Disposition: {}. Lock: {}. SessionId {}.", entityPath, dispositionStatus,
+            lockToken, sessionIdToUse);
 
         final Mono<Void> performOnManagement = connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId)))
+                deadLetterErrorDescription, propertiesToModify, sessionIdToUse, getLinkName(sessionIdToUse)))
             .then(Mono.fromRunnable(() -> {
                 logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
@@ -886,8 +923,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             }));
 
         if (unnamedSessionManager != null) {
-            return unnamedSessionManager.updateDisposition(message, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription)
+            return unnamedSessionManager.updateDisposition(message, sessionIdToUse, dispositionStatus,
+                propertiesToModify, deadLetterReason, deadLetterErrorDescription)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
                         return Mono.empty();
@@ -956,12 +993,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     *
      * @return receiver options set by user;
      */
     ReceiverOptions getReceiverOptions() {
         return receiverOptions;
     }
+
     /**
      * Renews the message lock, and updates its value in the container.
      */
