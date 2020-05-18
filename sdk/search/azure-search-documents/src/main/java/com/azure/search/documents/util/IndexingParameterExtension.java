@@ -183,7 +183,7 @@ public class IndexingParameterExtension {
      * @return The {@link IndexingParameters} instance.
      */
     public static IndexingParameters parseText(IndexingParameters parameters, Charset encoding) {
-        Objects.requireNonNull(encoding, "'Encoding' cannot be null");
+        Objects.requireNonNull(encoding, "'encoding' cannot be null.");
         configure(parameters, PARSING_MODE_KEY, "text");
         configure(parameters, "encoding", encoding.name());
         return parameters;
