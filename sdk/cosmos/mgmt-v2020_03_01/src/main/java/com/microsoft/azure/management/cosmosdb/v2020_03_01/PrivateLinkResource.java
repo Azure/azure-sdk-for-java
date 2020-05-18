@@ -41,6 +41,11 @@ public interface PrivateLinkResource extends HasInner<PrivateLinkResourceInner>,
     List<String> requiredMembers();
 
     /**
+     * @return the requiredZoneNames value.
+     */
+    List<String> requiredZoneNames();
+
+    /**
      * @return the type value.
      */
     String type();
