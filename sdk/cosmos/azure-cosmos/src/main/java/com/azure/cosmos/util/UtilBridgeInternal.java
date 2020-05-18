@@ -11,22 +11,24 @@ import reactor.core.publisher.Flux;
 
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+
 /**
  * DO NOT USE.
  * This is meant to be used only internally as a bridge access to classes in
  * com.azure.cosmos.util package
  **/
-@Warning(value = "Internal use only, not meant for public usage")
+@Warning(value = INTERNAL_USE_ONLY_WARNING)
 public final class UtilBridgeInternal {
 
     private UtilBridgeInternal() {}
 
-    @Warning(value = "Internal use only, not meant for public usage")
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosPagedFlux<T> createCosmosPagedFlux(Function<CosmosPagedFluxOptions, Flux<FeedResponse<T>>> pagedFluxOptionsFluxFunction) {
         return new CosmosPagedFlux<>(pagedFluxOptionsFluxFunction);
     }
 
-    @Warning(value = "Internal use only, not meant for public usage")
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(ContinuablePagedFlux<String, T, FeedResponse<T>> pagedFlux) {
         return new CosmosPagedIterable<>(pagedFlux);
     }

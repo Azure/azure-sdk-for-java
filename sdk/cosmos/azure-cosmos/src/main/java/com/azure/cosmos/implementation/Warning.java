@@ -13,6 +13,10 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.SOURCE)
 @Target({ ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.FIELD, ElementType.LOCAL_VARIABLE, ElementType.METHOD, ElementType.PACKAGE, ElementType.PARAMETER, ElementType.TYPE})
 public @interface Warning {
+
+    //  Common warnings
+    String INTERNAL_USE_ONLY_WARNING = "Internal use only, not meant for public usage as this API may change in future";
+
     /**
      * Text of warning message
      * @return warning message value
