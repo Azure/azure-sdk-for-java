@@ -49,7 +49,7 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.EXPECTED_MULTIPAGE_ADDREESS_VALUE;
+import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.EXPECTED_MULTIPAGE_ADDRESS_VALUE;
 import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE;
 import static com.azure.ai.formrecognizer.FormRecognizerAsyncClientTest.ITEMIZED_RECEIPT_VALUE;
 import static com.azure.ai.formrecognizer.FormTrainingClientTestBase.AZURE_FORM_RECOGNIZER_API_KEY;
@@ -70,6 +70,9 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     private static final String INVOICE_PDF = "Invoice_6.pdf";
     private static final String MULTIPAGE_INVOICE_PDF = "multipage_invoice1.pdf";
     private static final Pattern NON_DIGIT_PATTERN = Pattern.compile("[^0-9]+");
+    private static final String EXPECTED_MULTIPAGE_ADDRESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
+    private static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
+    private static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
 
     private static void validateReferenceElementsData(List<String> expectedElements,
         IterableStream<FormContent> actualFormContents, List<ReadResult> readResults) {
@@ -555,7 +558,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         assertEquals(1, receiptPage1.getRecognizedForm().getPageRange().getStartPageNumber());
         assertEquals(1, receiptPage1.getRecognizedForm().getPageRange().getEndPageNumber());
-        assertEquals(EXPECTED_MULTIPAGE_ADDREESS_VALUE, receiptPage1.getMerchantAddress().getFieldValue());
+        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage1.getMerchantAddress().getFieldValue());
         assertEquals("Bilbo Baggins", receiptPage1.getMerchantName().getFieldValue());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage1.getMerchantPhoneNumber().getFieldValue());
         assertNotNull(receiptPage1.getTotal().getFieldValue());
@@ -573,7 +576,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
 
         assertEquals(3, receiptPage3.getRecognizedForm().getPageRange().getStartPageNumber());
         assertEquals(3, receiptPage3.getRecognizedForm().getPageRange().getEndPageNumber());
-        assertEquals(EXPECTED_MULTIPAGE_ADDREESS_VALUE, receiptPage3.getMerchantAddress().getFieldValue());
+        assertEquals(EXPECTED_MULTIPAGE_ADDRESS_VALUE, receiptPage3.getMerchantAddress().getFieldValue());
         assertEquals("Frodo Baggins", receiptPage3.getMerchantName().getFieldValue());
         assertEquals(EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE, receiptPage3.getMerchantPhoneNumber().getFieldValue());
         assertNotNull(receiptPage3.getTotal().getFieldValue());

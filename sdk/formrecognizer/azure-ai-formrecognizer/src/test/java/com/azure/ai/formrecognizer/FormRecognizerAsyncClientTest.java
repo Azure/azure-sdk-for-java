@@ -43,9 +43,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase {
 
-    public static final String EXPECTED_MULTIPAGE_ADDREESS_VALUE = "123 Hobbit Lane 567 Main St. Redmond, WA Redmond, WA";
-    public static final String EXPECTED_MULTIPAGE_PHONE_NUMBER_VALUE = "+15555555555";
-    public static final String ITEMIZED_RECEIPT_VALUE = "Itemized";
     private FormRecognizerAsyncClient client;
 
     @BeforeAll
@@ -367,9 +364,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        multipageFromDataRunner(data -> beginTrainingMultipageRunner((storageSASUrl) -> {
+        multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, false).getSyncPoller();
+                client.getFormTrainingAsyncClient().beginTraining(trainingFilesUrl, false).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller =
@@ -384,9 +381,9 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((storageSASUrl) -> {
+        multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingAsyncClient().beginTraining(storageSASUrl, true).getSyncPoller();
+                client.getFormTrainingAsyncClient().beginTraining(trainingFilesUrl, true).getSyncPoller();
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller =

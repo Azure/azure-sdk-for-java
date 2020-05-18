@@ -337,9 +337,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((storageSASUrl) -> {
+        multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingClient().beginTraining(storageSASUrl, true);
+                client.getFormTrainingClient().beginTraining(trainingFilesUrl, true);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller =
@@ -354,9 +354,9 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClient(httpClient, serviceVersion);
-        multipageFromDataRunner(data -> beginTrainingMultipageRunner((storageSASUrl) -> {
+        multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingClient().beginTraining(storageSASUrl, false);
+                client.getFormTrainingClient().beginTraining(trainingFilesUrl, false);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller =
