@@ -6,7 +6,7 @@ variables:
     value: ''
   # Setting a global $(SubscriptionConfiguration) for Cosmos
   - name: SubscriptionConfiguration
-    value: ''
+    value: $(sub-config-azure-cloud-test-resources)
 
 jobs:
   - template: ../../eng/pipelines/templates/jobs/archetype-sdk-tests.yml
