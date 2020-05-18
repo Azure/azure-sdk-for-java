@@ -3,11 +3,14 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.core.annotation.Fluent;
+
 import java.util.function.Consumer;
 
 /**
  * Optional parameters for File Query.
  */
+@Fluent
 public class FileQueryOptions {
 
     private FileQuerySerialization inputSerialization;

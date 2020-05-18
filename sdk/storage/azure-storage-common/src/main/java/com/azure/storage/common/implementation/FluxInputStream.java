@@ -3,7 +3,6 @@
 
 package com.azure.storage.common.implementation;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import org.reactivestreams.Subscription;
@@ -167,13 +166,13 @@ public class FluxInputStream extends InputStream {
      */
     private void subscribeToData() {
         this.data
-            .onBackpressureBuffer(Constants.GB)
+            .onBackpressureBuffer()
             .subscribe(
                 // ByteBuffer consumer
                 byteBuffer -> {
-                    this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                     lock.lock();
                     try {
+                        this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                         this.waitingForData = false;
                         // Signal the consumer when data is available.
                         dataAvailable.signal();
@@ -184,12 +183,10 @@ public class FluxInputStream extends InputStream {
                 // Error consumer
                 throwable -> {
                     // Signal the consumer in case an error occurs (indicates we completed without data).
-                    if (throwable instanceof HttpResponseException) {
-                        this.lastError = new IOException(throwable);
-                    } else if (throwable instanceof IllegalArgumentException) {
-                        this.lastError = new IOException(throwable);
-                    } else if (throwable instanceof IOException) {
+                    if (throwable instanceof IOException) {
                         this.lastError = (IOException) throwable;
+                    } else {
+                        this.lastError = new IOException(throwable);
                     }
                     signalOnCompleteOrError();
                 },
@@ -209,9 +206,9 @@ public class FluxInputStream extends InputStream {
      * Signals to the subscriber when the flux completes without data (onCompletion or onError)
      */
     private void signalOnCompleteOrError() {
-        this.fluxComplete = true;
         lock.lock();
         try {
+            this.fluxComplete = true;
             this.waitingForData = false;
             dataAvailable.signal();
         } finally {

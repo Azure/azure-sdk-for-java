@@ -52,13 +52,13 @@ public class BlobQueryReader {
     }
 
     /**
-     * Avro parses a quick query reactive stream.
+     * Avro parses a query reactive stream.
      *
      * The Avro stream is formatted as the Avro Header (that specifies the schema) and the Avro Body (that contains
      * a series of blocks of data). The Query Avro schema indicates that the objects being emitted from the parser can
      * either be a result data record, an end record, a progress record or an error record.
      *
-     * @return The parsed quick query reactive stream.
+     * @return The parsed query reactive stream.
      */
     public Flux<ByteBuffer> read() {
         return avro
@@ -67,9 +67,9 @@ public class BlobQueryReader {
     }
 
     /**
-     * Parses a quick query record.
+     * Parses a query record.
      *
-     * @param quickQueryRecord The quick query record.
+     * @param quickQueryRecord The query record.
      * @return The optional data in the record.
      */
     private Mono<ByteBuffer> parseRecord(Object quickQueryRecord) {
@@ -95,8 +95,8 @@ public class BlobQueryReader {
     }
 
     /**
-     * Parses a quick query result data record.
-     * @param dataRecord The quick query result data record.
+     * Parses a query result data record.
+     * @param dataRecord The query result data record.
      * @return The data in the record.
      */
     private Mono<ByteBuffer> parseResultData(Map<?, ?> dataRecord) {
@@ -112,8 +112,8 @@ public class BlobQueryReader {
     }
 
     /**
-     * Parses a quick query end record.
-     * @param endRecord The quick query end record.
+     * Parses a query end record.
+     * @param endRecord The query end record.
      * @return Mono.empty or Mono.error
      */
     private Mono<ByteBuffer> parseEnd(Map<?, ?> endRecord) {
@@ -132,8 +132,8 @@ public class BlobQueryReader {
     }
 
     /**
-     * Parses a quick query progress record.
-     * @param progressRecord The quick query progress record.
+     * Parses a query progress record.
+     * @param progressRecord The query progress record.
      * @return Mono.empty or Mono.error
      */
     private Mono<ByteBuffer> parseProgress(Map<?, ?> progressRecord) {
@@ -154,8 +154,8 @@ public class BlobQueryReader {
     }
 
     /**
-     * Parses a quick query error record.
-     * @param errorRecord The quick query error record.
+     * Parses a query error record.
+     * @param errorRecord The query error record.
      * @return Mono.empty or Mono.error
      */
     private Mono<ByteBuffer> parseError(Map<?, ?> errorRecord) {
