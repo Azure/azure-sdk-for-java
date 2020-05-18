@@ -13,6 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlUserDefinedFunctionCreateUpdateParameters;
 import java.util.Map;
+import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlUserDefinedFunctionGetPropertiesResource;
 import com.microsoft.azure.management.cosmosdb.v2019_08_01.SqlUserDefinedFunctionResource;
 import rx.functions.Func1;
 
@@ -98,26 +99,6 @@ class SqlUserDefinedFunctionGetResultsImpl extends CreatableUpdatableImpl<SqlUse
     }
 
     @Override
-    public String _etag() {
-        return this.inner()._etag();
-    }
-
-    @Override
-    public String _rid() {
-        return this.inner()._rid();
-    }
-
-    @Override
-    public Object _ts() {
-        return this.inner()._ts();
-    }
-
-    @Override
-    public String body() {
-        return this.inner().body();
-    }
-
-    @Override
     public String id() {
         return this.inner().id();
     }
@@ -133,8 +114,8 @@ class SqlUserDefinedFunctionGetResultsImpl extends CreatableUpdatableImpl<SqlUse
     }
 
     @Override
-    public String sqlUserDefinedFunctionGetResultsId() {
-        return this.inner().sqlUserDefinedFunctionGetResultsId();
+    public SqlUserDefinedFunctionGetPropertiesResource resource() {
+        return this.inner().resource();
     }
 
     @Override
