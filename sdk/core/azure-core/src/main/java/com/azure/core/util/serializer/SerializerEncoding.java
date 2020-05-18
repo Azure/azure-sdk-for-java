@@ -6,10 +6,8 @@ package com.azure.core.util.serializer;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.util.Comparator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
 
 /**
  * Supported serialization encoding formats.
