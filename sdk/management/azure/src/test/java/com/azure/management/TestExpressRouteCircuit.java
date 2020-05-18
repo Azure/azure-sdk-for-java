@@ -119,7 +119,7 @@ public class TestExpressRouteCircuit {
                     .withSecondaryPeerAddressPrefix("123.0.0.8/30")
                     .apply();
             Assertions.assertEquals(300, peering.vlanId());
-            Assertions.assertEquals(101, peering.peerASN());
+            Assertions.assertEquals(101, peering.peerAsn());
             Assertions.assertEquals("123.0.0.8/30", peering.secondaryPeerAddressPrefix());
             return resource;
         }

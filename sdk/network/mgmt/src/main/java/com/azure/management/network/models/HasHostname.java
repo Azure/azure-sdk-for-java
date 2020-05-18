@@ -6,9 +6,9 @@ import com.azure.core.annotation.Fluent;
 
 /** An interface representing a model's ability to reference a host name. */
 @Fluent
-public interface HasHostName {
+public interface HasHostname {
     /** @return the associated host name */
-    String hostName();
+    String hostname();
 
     /** Grouping of definition stages involving specifying the host name. */
     interface DefinitionStages {
@@ -17,14 +17,14 @@ public interface HasHostName {
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithHostName<ReturnT> {
+        interface WithHostname<ReturnT> {
             /**
              * Specifies the hostname to reference.
              *
-             * @param hostName an existing frontend name on this load balancer
+             * @param hostname an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            ReturnT withHostName(String hostName);
+            ReturnT withHostname(String hostname);
         }
     }
 
@@ -35,14 +35,14 @@ public interface HasHostName {
          *
          * @param <ReturnT> the next stage of the update
          */
-        interface WithHostName<ReturnT> {
+        interface WithHostname<ReturnT> {
             /**
              * Specifies the host name.
              *
-             * @param hostName an existing host name
+             * @param hostname an existing host name
              * @return the next stage of the update
              */
-            ReturnT withHostName(String hostName);
+            ReturnT withHostname(String hostname);
         }
     }
 
@@ -53,14 +53,14 @@ public interface HasHostName {
          *
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithHostName<ReturnT> {
+        interface WithHostname<ReturnT> {
             /**
              * Specifies the host name to reference.
              *
-             * @param hostName an existing host name
+             * @param hostname an existing host name
              * @return the next stage of the definition
              */
-            ReturnT withHostName(String hostName);
+            ReturnT withHostname(String hostname);
         }
     }
 }

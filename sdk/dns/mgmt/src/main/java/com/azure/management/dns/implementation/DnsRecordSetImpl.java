@@ -17,12 +17,13 @@ import com.azure.management.dns.TxtRecord;
 import com.azure.management.dns.models.RecordSetInner;
 import com.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.azure.management.resources.fluentcore.utils.ETagState;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import reactor.core.publisher.Mono;
 
 /** Implementation of DnsRecordSet. */
 class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSetInner, DnsZoneImpl, DnsZone>
@@ -32,7 +33,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
         DnsRecordSet.UpdateCombined {
     protected final RecordSetInner recordSetRemoveInfo;
     protected final String type;
-    private final ETagState eTagState = new ETagState();
+    private final ETagState etagState = new ETagState();
 
     protected DnsRecordSetImpl(String name, String type, final DnsZoneImpl parent, final RecordSetInner innerModel) {
         super(name, parent, innerModel);
@@ -82,7 +83,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
     }
 
     @Override
-    public String eTag() {
+    public String etag() {
         return this.inner().etag();
     }
 
@@ -275,13 +276,13 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
 
     @Override
     public DnsRecordSetImpl withETagCheck() {
-        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
+        this.etagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
         return this;
     }
 
     @Override
-    public DnsRecordSetImpl withETagCheck(String eTagValue) {
-        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
+    public DnsRecordSetImpl withETagCheck(String etagValue) {
+        this.etagState.withExplicitETagCheckOnUpdate(etagValue);
         return this;
     }
 
@@ -316,7 +317,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
                 this.parent().name(),
                 this.name(),
                 this.recordType(),
-                this.eTagState.ifMatchValueOnDelete());
+                this.etagState.ifMatchValueOnDelete());
     }
 
     @Override
@@ -352,12 +353,12 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
                 this.name(),
                 this.recordType(),
                 resource,
-                eTagState.ifMatchValueOnUpdate(resource.etag()),
-                eTagState.ifNonMatchValueOnCreate())
+                etagState.ifMatchValueOnUpdate(resource.etag()),
+                etagState.ifNonMatchValueOnCreate())
             .map(
                 recordSetInner -> {
                     setInner(recordSetInner);
-                    self.eTagState.clear();
+                    self.etagState.clear();
                     return self;
                 });
     }
@@ -393,8 +394,8 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
         return resource;
     }
 
-    DnsRecordSetImpl withETagOnDelete(String eTagValue) {
-        this.eTagState.withExplicitETagCheckOnDelete(eTagValue);
+    DnsRecordSetImpl withETagOnDelete(String etagValue) {
+        this.etagState.withExplicitETagCheckOnDelete(etagValue);
         return this;
     }
 
