@@ -16,7 +16,7 @@ import java.util.List;
  * type, and search behavior of a field.
  */
 @Fluent
-public final class Field {
+public final class SearchField {
     /*
      * The name of the field, which must be unique within the fields collection
      * of the index or parent field.
@@ -25,12 +25,12 @@ public final class Field {
     private String name;
 
     /*
-     * The data type of the field. Possible values include: 'Edm.String',
-     * 'Edm.Int32', 'Edm.Int64', 'Edm.Double', 'Edm.Boolean',
-     * 'Edm.DateTimeOffset', 'Edm.GeographyPoint', 'Edm.ComplexType'
+     * The data type of the field. Possible values include: 'String', 'Int32',
+     * 'Int64', 'Double', 'Boolean', 'DateTimeOffset', 'GeographyPoint',
+     * 'Complex'
      */
     @JsonProperty(value = "type", required = true)
-    private DataType type;
+    private SearchFieldDataType type;
 
     /*
      * A value indicating whether the field uniquely identifies documents in
@@ -142,7 +142,7 @@ public final class Field {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "analyzer")
-    private AnalyzerName analyzer;
+    private LexicalAnalyzerName analyzer;
 
     /*
      * The name of the analyzer used at search time for the field. This option
@@ -173,7 +173,7 @@ public final class Field {
      * 'Simple', 'Stop', 'Whitespace'
      */
     @JsonProperty(value = "searchAnalyzer")
-    private AnalyzerName searchAnalyzer;
+    private LexicalAnalyzerName searchAnalyzer;
 
     /*
      * The name of the analyzer used at indexing time for the field. This
@@ -205,7 +205,7 @@ public final class Field {
      * 'Whitespace'
      */
     @JsonProperty(value = "indexAnalyzer")
-    private AnalyzerName indexAnalyzer;
+    private LexicalAnalyzerName indexAnalyzer;
 
     /*
      * A list of the names of synonym maps to associate with this field. This
@@ -223,7 +223,7 @@ public final class Field {
      * Collection(Edm.ComplexType). Must be null or empty for simple fields.
      */
     @JsonProperty(value = "fields")
-    private List<Field> fields;
+    private List<SearchField> fields;
 
     /*
      * A value indicating whether the field will be returned in a search
@@ -251,35 +251,33 @@ public final class Field {
      * within the fields collection of the index or parent field.
      *
      * @param name the name value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setName(String name) {
+    public SearchField setName(String name) {
         this.name = name;
         return this;
     }
 
     /**
      * Get the type property: The data type of the field. Possible values
-     * include: 'Edm.String', 'Edm.Int32', 'Edm.Int64', 'Edm.Double',
-     * 'Edm.Boolean', 'Edm.DateTimeOffset', 'Edm.GeographyPoint',
-     * 'Edm.ComplexType'.
+     * include: 'String', 'Int32', 'Int64', 'Double', 'Boolean',
+     * 'DateTimeOffset', 'GeographyPoint', 'Complex'.
      *
      * @return the type value.
      */
-    public DataType getType() {
+    public SearchFieldDataType getType() {
         return this.type;
     }
 
     /**
      * Set the type property: The data type of the field. Possible values
-     * include: 'Edm.String', 'Edm.Int32', 'Edm.Int64', 'Edm.Double',
-     * 'Edm.Boolean', 'Edm.DateTimeOffset', 'Edm.GeographyPoint',
-     * 'Edm.ComplexType'.
+     * include: 'String', 'Int32', 'Int64', 'Double', 'Boolean',
+     * 'DateTimeOffset', 'GeographyPoint', 'Complex'.
      *
      * @param type the type value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setType(DataType type) {
+    public SearchField setType(SearchFieldDataType type) {
         this.type = type;
         return this;
     }
@@ -307,9 +305,9 @@ public final class Field {
      * for complex fields.
      *
      * @param key the key value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setKey(Boolean key) {
+    public SearchField setKey(Boolean key) {
         this.key = key;
         return this;
     }
@@ -341,9 +339,9 @@ public final class Field {
      * Default is true for simple fields and null for complex fields.
      *
      * @param retrievable the retrievable value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    private Field setRetrievable(Boolean retrievable) {
+    private SearchField setRetrievable(Boolean retrievable) {
         this.retrievable = retrievable;
         return this;
     }
@@ -385,9 +383,9 @@ public final class Field {
      * false.
      *
      * @param searchable the searchable value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setSearchable(Boolean searchable) {
+    public SearchField setSearchable(Boolean searchable) {
         this.searchable = searchable;
         return this;
     }
@@ -419,9 +417,9 @@ public final class Field {
      * fields. Default is true for simple fields and null for complex fields.
      *
      * @param filterable the filterable value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setFilterable(Boolean filterable) {
+    public SearchField setFilterable(Boolean filterable) {
         this.filterable = filterable;
         return this;
     }
@@ -463,9 +461,9 @@ public final class Field {
      * and null for complex fields.
      *
      * @param sortable the sortable value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setSortable(Boolean sortable) {
+    public SearchField setSortable(Boolean sortable) {
         this.sortable = sortable;
         return this;
     }
@@ -497,9 +495,9 @@ public final class Field {
      * all other simple fields.
      *
      * @param facetable the facetable value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setFacetable(Boolean facetable) {
+    public SearchField setFacetable(Boolean facetable) {
         this.facetable = facetable;
         return this;
     }
@@ -533,7 +531,7 @@ public final class Field {
      *
      * @return the analyzer value.
      */
-    public AnalyzerName getAnalyzer() {
+    public LexicalAnalyzerName getAnalyzer() {
         return this.analyzer;
     }
 
@@ -565,9 +563,9 @@ public final class Field {
      * 'Whitespace'.
      *
      * @param analyzer the analyzer value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setAnalyzer(AnalyzerName analyzer) {
+    public SearchField setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -603,7 +601,7 @@ public final class Field {
      *
      * @return the searchAnalyzer value.
      */
-    public AnalyzerName getSearchAnalyzer() {
+    public LexicalAnalyzerName getSearchAnalyzer() {
         return this.searchAnalyzer;
     }
 
@@ -637,9 +635,9 @@ public final class Field {
      * 'Simple', 'Stop', 'Whitespace'.
      *
      * @param searchAnalyzer the searchAnalyzer value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setSearchAnalyzer(AnalyzerName searchAnalyzer) {
+    public SearchField setSearchAnalyzer(LexicalAnalyzerName searchAnalyzer) {
         this.searchAnalyzer = searchAnalyzer;
         return this;
     }
@@ -675,7 +673,7 @@ public final class Field {
      *
      * @return the indexAnalyzer value.
      */
-    public AnalyzerName getIndexAnalyzer() {
+    public LexicalAnalyzerName getIndexAnalyzer() {
         return this.indexAnalyzer;
     }
 
@@ -709,9 +707,9 @@ public final class Field {
      * 'Simple', 'Stop', 'Whitespace'.
      *
      * @param indexAnalyzer the indexAnalyzer value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setIndexAnalyzer(AnalyzerName indexAnalyzer) {
+    public SearchField setIndexAnalyzer(LexicalAnalyzerName indexAnalyzer) {
         this.indexAnalyzer = indexAnalyzer;
         return this;
     }
@@ -741,9 +739,9 @@ public final class Field {
      * collection for complex fields.
      *
      * @param synonymMaps the synonymMaps value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setSynonymMaps(List<String> synonymMaps) {
+    public SearchField setSynonymMaps(List<String> synonymMaps) {
         this.synonymMaps = synonymMaps;
         return this;
     }
@@ -755,7 +753,7 @@ public final class Field {
      *
      * @return the fields value.
      */
-    public List<Field> getFields() {
+    public List<SearchField> getFields() {
         return this.fields;
     }
 
@@ -765,9 +763,9 @@ public final class Field {
      * for simple fields.
      *
      * @param fields the fields value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setFields(List<Field> fields) {
+    public SearchField setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
     }
@@ -795,9 +793,9 @@ public final class Field {
      * enabling it does not cause an increase in index storage requirements.
      *
      * @param hidden the hidden value to set.
-     * @return the Field object itself.
+     * @return the SearchField object itself.
      */
-    public Field setHidden(Boolean hidden) {
+    public SearchField setHidden(Boolean hidden) {
         this.hidden = hidden;
         retrievable = this.hidden == null ? null : !this.hidden;
         return this;

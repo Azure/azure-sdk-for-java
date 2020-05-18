@@ -14,7 +14,7 @@ import java.util.List;
  * Represents an indexer.
  */
 @Fluent
-public final class Indexer {
+public final class SearchIndexer {
     /*
      * The name of the indexer.
      */
@@ -78,7 +78,7 @@ public final class Indexer {
     private Boolean isDisabled;
 
     /*
-     * The ETag of the Indexer.
+     * The ETag of the indexer.
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
@@ -96,9 +96,9 @@ public final class Indexer {
      * Set the name property: The name of the indexer.
      *
      * @param name the name value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setName(String name) {
+    public SearchIndexer setName(String name) {
         this.name = name;
         return this;
     }
@@ -116,9 +116,9 @@ public final class Indexer {
      * Set the description property: The description of the indexer.
      *
      * @param description the description value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setDescription(String description) {
+    public SearchIndexer setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -138,9 +138,9 @@ public final class Indexer {
      * this indexer reads data.
      *
      * @param dataSourceName the dataSourceName value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setDataSourceName(String dataSourceName) {
+    public SearchIndexer setDataSourceName(String dataSourceName) {
         this.dataSourceName = dataSourceName;
         return this;
     }
@@ -160,9 +160,9 @@ public final class Indexer {
      * this indexer.
      *
      * @param skillsetName the skillsetName value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setSkillsetName(String skillsetName) {
+    public SearchIndexer setSkillsetName(String skillsetName) {
         this.skillsetName = skillsetName;
         return this;
     }
@@ -182,9 +182,9 @@ public final class Indexer {
      * indexer writes data.
      *
      * @param targetIndexName the targetIndexName value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setTargetIndexName(String targetIndexName) {
+    public SearchIndexer setTargetIndexName(String targetIndexName) {
         this.targetIndexName = targetIndexName;
         return this;
     }
@@ -202,9 +202,9 @@ public final class Indexer {
      * Set the schedule property: The schedule for this indexer.
      *
      * @param schedule the schedule value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setSchedule(IndexingSchedule schedule) {
+    public SearchIndexer setSchedule(IndexingSchedule schedule) {
         this.schedule = schedule;
         return this;
     }
@@ -222,9 +222,9 @@ public final class Indexer {
      * Set the parameters property: Parameters for indexer execution.
      *
      * @param parameters the parameters value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setParameters(IndexingParameters parameters) {
+    public SearchIndexer setParameters(IndexingParameters parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -244,9 +244,9 @@ public final class Indexer {
      * data source and corresponding target fields in the index.
      *
      * @param fieldMappings the fieldMappings value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setFieldMappings(List<FieldMapping> fieldMappings) {
+    public SearchIndexer setFieldMappings(List<FieldMapping> fieldMappings) {
         this.fieldMappings = fieldMappings;
         return this;
     }
@@ -266,9 +266,9 @@ public final class Indexer {
      * after enrichment and immediately before indexing.
      *
      * @param outputFieldMappings the outputFieldMappings value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setOutputFieldMappings(List<FieldMapping> outputFieldMappings) {
+    public SearchIndexer setOutputFieldMappings(List<FieldMapping> outputFieldMappings) {
         this.outputFieldMappings = outputFieldMappings;
         return this;
     }
@@ -288,15 +288,15 @@ public final class Indexer {
      * disabled. Default is false.
      *
      * @param isDisabled the isDisabled value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setIsDisabled(Boolean isDisabled) {
+    public SearchIndexer setIsDisabled(Boolean isDisabled) {
         this.isDisabled = isDisabled;
         return this;
     }
 
     /**
-     * Get the eTag property: The ETag of the Indexer.
+     * Get the eTag property: The ETag of the indexer.
      *
      * @return the eTag value.
      */
@@ -305,12 +305,12 @@ public final class Indexer {
     }
 
     /**
-     * Set the eTag property: The ETag of the Indexer.
+     * Set the eTag property: The ETag of the indexer.
      *
      * @param eTag the eTag value to set.
-     * @return the Indexer object itself.
+     * @return the SearchIndexer object itself.
      */
-    public Indexer setETag(String eTag) {
+    public SearchIndexer setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

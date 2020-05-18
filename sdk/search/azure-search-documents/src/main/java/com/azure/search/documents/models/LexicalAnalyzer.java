@@ -15,16 +15,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Base type for analyzers.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = Analyzer.class)
-@JsonTypeName("Analyzer")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type", defaultImpl = LexicalAnalyzer.class)
+@JsonTypeName("LexicalAnalyzer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.CustomAnalyzer", value = CustomAnalyzer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.PatternAnalyzer", value = PatternAnalyzer.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardAnalyzer", value = StandardAnalyzer.class),
+    @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StandardAnalyzer", value = LuceneStandardAnalyzer.class),
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.StopAnalyzer", value = StopAnalyzer.class)
 })
 @Fluent
-public abstract class Analyzer {
+public class LexicalAnalyzer {
     /*
      * The name of the analyzer. It must only contain letters, digits, spaces,
      * dashes or underscores, can only start and end with alphanumeric
@@ -50,9 +50,9 @@ public abstract class Analyzer {
      * with alphanumeric characters, and is limited to 128 characters.
      *
      * @param name the name value to set.
-     * @return the Analyzer object itself.
+     * @return the LexicalAnalyzer object itself.
      */
-    public Analyzer setName(String name) {
+    public LexicalAnalyzer setName(String name) {
         this.name = name;
         return this;
     }

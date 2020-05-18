@@ -15,7 +15,7 @@ import java.util.List;
  * behavior of an index.
  */
 @Fluent
-public final class Index {
+public final class SearchIndex {
     /*
      * The name of the index.
      */
@@ -26,7 +26,7 @@ public final class Index {
      * The fields of the index.
      */
     @JsonProperty(value = "fields", required = true)
-    private List<Field> fields;
+    private List<SearchField> fields;
 
     /*
      * The scoring profiles for the index.
@@ -58,13 +58,13 @@ public final class Index {
      * The analyzers for the index.
      */
     @JsonProperty(value = "analyzers")
-    private List<Analyzer> analyzers;
+    private List<LexicalAnalyzer> analyzers;
 
     /*
      * The tokenizers for the index.
      */
     @JsonProperty(value = "tokenizers")
-    private List<Tokenizer> tokenizers;
+    private List<LexicalTokenizer> tokenizers;
 
     /*
      * The token filters for the index.
@@ -91,7 +91,7 @@ public final class Index {
      * paid services created on or after January 1, 2019.
      */
     @JsonProperty(value = "encryptionKey")
-    private EncryptionKey encryptionKey;
+    private SearchResourceEncryptionKey encryptionKey;
 
     /*
      * The type of similarity algorithm to be used when scoring and ranking the
@@ -121,9 +121,9 @@ public final class Index {
      * Set the name property: The name of the index.
      *
      * @param name the name value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setName(String name) {
+    public SearchIndex setName(String name) {
         this.name = name;
         return this;
     }
@@ -133,7 +133,7 @@ public final class Index {
      *
      * @return the fields value.
      */
-    public List<Field> getFields() {
+    public List<SearchField> getFields() {
         return this.fields;
     }
 
@@ -141,9 +141,9 @@ public final class Index {
      * Set the fields property: The fields of the index.
      *
      * @param fields the fields value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setFields(List<Field> fields) {
+    public SearchIndex setFields(List<SearchField> fields) {
         this.fields = fields;
         return this;
     }
@@ -161,9 +161,9 @@ public final class Index {
      * Set the scoringProfiles property: The scoring profiles for the index.
      *
      * @param scoringProfiles the scoringProfiles value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setScoringProfiles(List<ScoringProfile> scoringProfiles) {
+    public SearchIndex setScoringProfiles(List<ScoringProfile> scoringProfiles) {
         this.scoringProfiles = scoringProfiles;
         return this;
     }
@@ -187,9 +187,9 @@ public final class Index {
      * (tf-idf) will be used.
      *
      * @param defaultScoringProfile the defaultScoringProfile value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setDefaultScoringProfile(String defaultScoringProfile) {
+    public SearchIndex setDefaultScoringProfile(String defaultScoringProfile) {
         this.defaultScoringProfile = defaultScoringProfile;
         return this;
     }
@@ -209,9 +209,9 @@ public final class Index {
      * Sharing (CORS) for the index.
      *
      * @param corsOptions the corsOptions value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setCorsOptions(CorsOptions corsOptions) {
+    public SearchIndex setCorsOptions(CorsOptions corsOptions) {
         this.corsOptions = corsOptions;
         return this;
     }
@@ -229,9 +229,9 @@ public final class Index {
      * Set the suggesters property: The suggesters for the index.
      *
      * @param suggesters the suggesters value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setSuggesters(List<Suggester> suggesters) {
+    public SearchIndex setSuggesters(List<Suggester> suggesters) {
         this.suggesters = suggesters;
         return this;
     }
@@ -241,7 +241,7 @@ public final class Index {
      *
      * @return the analyzers value.
      */
-    public List<Analyzer> getAnalyzers() {
+    public List<LexicalAnalyzer> getAnalyzers() {
         return this.analyzers;
     }
 
@@ -249,9 +249,9 @@ public final class Index {
      * Set the analyzers property: The analyzers for the index.
      *
      * @param analyzers the analyzers value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setAnalyzers(List<Analyzer> analyzers) {
+    public SearchIndex setAnalyzers(List<LexicalAnalyzer> analyzers) {
         this.analyzers = analyzers;
         return this;
     }
@@ -261,7 +261,7 @@ public final class Index {
      *
      * @return the tokenizers value.
      */
-    public List<Tokenizer> getTokenizers() {
+    public List<LexicalTokenizer> getTokenizers() {
         return this.tokenizers;
     }
 
@@ -269,9 +269,9 @@ public final class Index {
      * Set the tokenizers property: The tokenizers for the index.
      *
      * @param tokenizers the tokenizers value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setTokenizers(List<Tokenizer> tokenizers) {
+    public SearchIndex setTokenizers(List<LexicalTokenizer> tokenizers) {
         this.tokenizers = tokenizers;
         return this;
     }
@@ -289,9 +289,9 @@ public final class Index {
      * Set the tokenFilters property: The token filters for the index.
      *
      * @param tokenFilters the tokenFilters value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setTokenFilters(List<TokenFilter> tokenFilters) {
+    public SearchIndex setTokenFilters(List<TokenFilter> tokenFilters) {
         this.tokenFilters = tokenFilters;
         return this;
     }
@@ -309,9 +309,9 @@ public final class Index {
      * Set the charFilters property: The character filters for the index.
      *
      * @param charFilters the charFilters value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setCharFilters(List<CharFilter> charFilters) {
+    public SearchIndex setCharFilters(List<CharFilter> charFilters) {
         this.charFilters = charFilters;
         return this;
     }
@@ -331,7 +331,7 @@ public final class Index {
      *
      * @return the encryptionKey value.
      */
-    public EncryptionKey getEncryptionKey() {
+    public SearchResourceEncryptionKey getEncryptionKey() {
         return this.encryptionKey;
     }
 
@@ -349,9 +349,9 @@ public final class Index {
      * January 1, 2019.
      *
      * @param encryptionKey the encryptionKey value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setEncryptionKey(EncryptionKey encryptionKey) {
+    public SearchIndex setEncryptionKey(SearchResourceEncryptionKey encryptionKey) {
         this.encryptionKey = encryptionKey;
         return this;
     }
@@ -377,9 +377,9 @@ public final class Index {
      * algorithm is used.
      *
      * @param similarity the similarity value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setSimilarity(Similarity similarity) {
+    public SearchIndex setSimilarity(Similarity similarity) {
         this.similarity = similarity;
         return this;
     }
@@ -397,9 +397,9 @@ public final class Index {
      * Set the eTag property: The ETag of the index.
      *
      * @param eTag the eTag value to set.
-     * @return the Index object itself.
+     * @return the SearchIndex object itself.
      */
-    public Index setETag(String eTag) {
+    public SearchIndex setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

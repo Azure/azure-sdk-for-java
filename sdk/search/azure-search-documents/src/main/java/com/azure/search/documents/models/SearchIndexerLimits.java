@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /**
- * The IndexerLimits model.
+ * The SearchIndexerLimits model.
  */
 @Fluent
-public final class IndexerLimits {
+public final class SearchIndexerLimits {
     /*
      * The maximum duration that the indexer is permitted to run for one
      * execution.

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * indexer.
  */
 @Fluent
-public final class DataSource {
+public final class SearchIndexerDataSource {
     /*
      * The name of the datasource.
      */
@@ -32,7 +32,7 @@ public final class DataSource {
      * 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'
      */
     @JsonProperty(value = "type", required = true)
-    private DataSourceType type;
+    private SearchIndexerDataSourceType type;
 
     /*
      * Credentials for the datasource.
@@ -44,7 +44,7 @@ public final class DataSource {
      * The data container for the datasource.
      */
     @JsonProperty(value = "container", required = true)
-    private DataContainer container;
+    private SearchIndexerDataContainer container;
 
     /*
      * The data change detection policy for the datasource.
@@ -59,7 +59,7 @@ public final class DataSource {
     private DataDeletionDetectionPolicy dataDeletionDetectionPolicy;
 
     /*
-     * The ETag of the DataSource.
+     * The ETag of the data source.
      */
     @JsonProperty(value = "@odata.etag")
     private String eTag;
@@ -77,9 +77,9 @@ public final class DataSource {
      * Set the name property: The name of the datasource.
      *
      * @param name the name value to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setName(String name) {
+    public SearchIndexerDataSource setName(String name) {
         this.name = name;
         return this;
     }
@@ -97,9 +97,9 @@ public final class DataSource {
      * Set the description property: The description of the datasource.
      *
      * @param description the description value to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setDescription(String description) {
+    public SearchIndexerDataSource setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -110,7 +110,7 @@ public final class DataSource {
      *
      * @return the type value.
      */
-    public DataSourceType getType() {
+    public SearchIndexerDataSourceType getType() {
         return this.type;
     }
 
@@ -119,9 +119,9 @@ public final class DataSource {
      * include: 'AzureSql', 'CosmosDb', 'AzureBlob', 'AzureTable', 'MySql'.
      *
      * @param type the type value to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setType(DataSourceType type) {
+    public SearchIndexerDataSource setType(SearchIndexerDataSourceType type) {
         this.type = type;
         return this;
     }
@@ -139,9 +139,9 @@ public final class DataSource {
      * Set the credentials property: Credentials for the datasource.
      *
      * @param credentials the credentials value to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setCredentials(DataSourceCredentials credentials) {
+    public SearchIndexerDataSource setCredentials(DataSourceCredentials credentials) {
         this.credentials = credentials;
         return this;
     }
@@ -151,7 +151,7 @@ public final class DataSource {
      *
      * @return the container value.
      */
-    public DataContainer getContainer() {
+    public SearchIndexerDataContainer getContainer() {
         return this.container;
     }
 
@@ -159,9 +159,9 @@ public final class DataSource {
      * Set the container property: The data container for the datasource.
      *
      * @param container the container value to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setContainer(DataContainer container) {
+    public SearchIndexerDataSource setContainer(SearchIndexerDataContainer container) {
         this.container = container;
         return this;
     }
@@ -182,9 +182,9 @@ public final class DataSource {
      *
      * @param dataChangeDetectionPolicy the dataChangeDetectionPolicy value to
      * set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+    public SearchIndexerDataSource setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
         return this;
     }
@@ -205,15 +205,15 @@ public final class DataSource {
      *
      * @param dataDeletionDetectionPolicy the dataDeletionDetectionPolicy value
      * to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
+    public SearchIndexerDataSource setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
         return this;
     }
 
     /**
-     * Get the eTag property: The ETag of the DataSource.
+     * Get the eTag property: The ETag of the data source.
      *
      * @return the eTag value.
      */
@@ -222,12 +222,12 @@ public final class DataSource {
     }
 
     /**
-     * Set the eTag property: The ETag of the DataSource.
+     * Set the eTag property: The ETag of the data source.
      *
      * @param eTag the eTag value to set.
-     * @return the DataSource object itself.
+     * @return the SearchIndexerDataSource object itself.
      */
-    public DataSource setETag(String eTag) {
+    public SearchIndexerDataSource setETag(String eTag) {
         this.eTag = eTag;
         return this;
     }

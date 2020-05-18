@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents an item-level warning.
  */
 @Fluent
-public final class ItemWarning {
+public final class SearchIndexerWarning {
     /*
      * The key of the item which generated a warning.
      */

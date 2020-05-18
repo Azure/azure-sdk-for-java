@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Represents an item- or document-level indexing error.
  */
 @Fluent
-public final class ItemError {
+public final class SearchIndexerError {
     /*
      * The key of the item for which indexing failed.
      */

@@ -4,14 +4,14 @@ package com.azure.search.documents;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.IndexingResult;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
 import com.azure.search.documents.test.environment.models.Author;
 import com.azure.search.documents.test.environment.models.Book;
 import com.azure.search.documents.test.environment.models.Hotel;
@@ -288,11 +288,11 @@ public class IndexingSyncTests extends SearchTestBase {
     @Test
     public void canUseIndexWithReservedName() {
         String indexName = "prototype";
-        Index indexWithReservedName = new Index()
+        SearchIndex indexWithReservedName = new SearchIndex()
             .setName(indexName)
-            .setFields(Collections.singletonList(new Field()
+            .setFields(Collections.singletonList(new SearchField()
                 .setName("ID")
-                .setType(DataType.EDM_STRING)
+                .setType(SearchFieldDataType.STRING)
                 .setKey(Boolean.TRUE)
             ));
 

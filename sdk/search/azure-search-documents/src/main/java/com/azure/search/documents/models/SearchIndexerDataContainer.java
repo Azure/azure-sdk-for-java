@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * collection) that will be indexed.
  */
 @Fluent
-public final class DataContainer {
+public final class SearchIndexerDataContainer {
     /*
      * The name of the table or view (for Azure SQL data source) or collection
      * (for CosmosDB data source) that will be indexed.
@@ -45,9 +45,9 @@ public final class DataContainer {
      * source) or collection (for CosmosDB data source) that will be indexed.
      *
      * @param name the name value to set.
-     * @return the DataContainer object itself.
+     * @return the SearchIndexerDataContainer object itself.
      */
-    public DataContainer setName(String name) {
+    public SearchIndexerDataContainer setName(String name) {
         this.name = name;
         return this;
     }
@@ -69,9 +69,9 @@ public final class DataContainer {
      * supported by Azure SQL datasources.
      *
      * @param query the query value to set.
-     * @return the DataContainer object itself.
+     * @return the SearchIndexerDataContainer object itself.
      */
-    public DataContainer setQuery(String query) {
+    public SearchIndexerDataContainer setQuery(String query) {
         this.query = query;
         return this;
     }

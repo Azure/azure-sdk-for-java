@@ -15,20 +15,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Search, such as indexes and synonym maps.
  */
 @Fluent
-public final class EncryptionKey {
+public final class SearchResourceEncryptionKey {
     /*
      * The name of your Azure Key Vault key to be used to encrypt your data at
      * rest.
      */
     @JsonProperty(value = "keyVaultKeyName", required = true)
-    private String keyVaultKeyName;
+    private String keyName;
 
     /*
      * The version of your Azure Key Vault key to be used to encrypt your data
      * at rest.
      */
     @JsonProperty(value = "keyVaultKeyVersion", required = true)
-    private String keyVaultKeyVersion;
+    private String keyVersion;
 
     /*
      * The URI of your Azure Key Vault, also referred to as DNS name, that
@@ -36,7 +36,7 @@ public final class EncryptionKey {
      * might be https://my-keyvault-name.vault.azure.net.
      */
     @JsonProperty(value = "keyVaultUri", required = true)
-    private String keyVaultUri;
+    private String vaultUri;
 
     /*
      * Optional Azure Active Directory credentials used for accessing your
@@ -46,72 +46,72 @@ public final class EncryptionKey {
     private AzureActiveDirectoryApplicationCredentials accessCredentials;
 
     /**
-     * Get the keyVaultKeyName property: The name of your Azure Key Vault key
-     * to be used to encrypt your data at rest.
+     * Get the keyName property: The name of your Azure Key Vault key to be
+     * used to encrypt your data at rest.
      *
-     * @return the keyVaultKeyName value.
+     * @return the keyName value.
      */
-    public String getKeyVaultKeyName() {
-        return this.keyVaultKeyName;
+    public String getKeyName() {
+        return this.keyName;
     }
 
     /**
-     * Set the keyVaultKeyName property: The name of your Azure Key Vault key
-     * to be used to encrypt your data at rest.
+     * Set the keyName property: The name of your Azure Key Vault key to be
+     * used to encrypt your data at rest.
      *
-     * @param keyVaultKeyName the keyVaultKeyName value to set.
-     * @return the EncryptionKey object itself.
+     * @param keyName the keyName value to set.
+     * @return the SearchResourceEncryptionKey object itself.
      */
-    public EncryptionKey setKeyVaultKeyName(String keyVaultKeyName) {
-        this.keyVaultKeyName = keyVaultKeyName;
+    public SearchResourceEncryptionKey setKeyName(String keyName) {
+        this.keyName = keyName;
         return this;
     }
 
     /**
-     * Get the keyVaultKeyVersion property: The version of your Azure Key Vault
-     * key to be used to encrypt your data at rest.
+     * Get the keyVersion property: The version of your Azure Key Vault key to
+     * be used to encrypt your data at rest.
      *
-     * @return the keyVaultKeyVersion value.
+     * @return the keyVersion value.
      */
-    public String getKeyVaultKeyVersion() {
-        return this.keyVaultKeyVersion;
+    public String getKeyVersion() {
+        return this.keyVersion;
     }
 
     /**
-     * Set the keyVaultKeyVersion property: The version of your Azure Key Vault
-     * key to be used to encrypt your data at rest.
+     * Set the keyVersion property: The version of your Azure Key Vault key to
+     * be used to encrypt your data at rest.
      *
-     * @param keyVaultKeyVersion the keyVaultKeyVersion value to set.
-     * @return the EncryptionKey object itself.
+     * @param keyVersion the keyVersion value to set.
+     * @return the SearchResourceEncryptionKey object itself.
      */
-    public EncryptionKey setKeyVaultKeyVersion(String keyVaultKeyVersion) {
-        this.keyVaultKeyVersion = keyVaultKeyVersion;
+    public SearchResourceEncryptionKey setKeyVersion(String keyVersion) {
+        this.keyVersion = keyVersion;
         return this;
     }
 
     /**
-     * Get the keyVaultUri property: The URI of your Azure Key Vault, also
+     * Get the vaultUri property: The URI of your Azure Key Vault, also
      * referred to as DNS name, that contains the key to be used to encrypt
      * your data at rest. An example URI might be
      * https://my-keyvault-name.vault.azure.net.
      *
-     * @return the keyVaultUri value.
+     * @return the vaultUri value.
      */
-    public String getKeyVaultUri() {
-        return this.keyVaultUri;
+    public String getVaultUri() {
+        return this.vaultUri;
     }
 
     /**
-     * Set the keyVaultUri property: The URI of your Azure Key Vault, also
+     * Set the vaultUri property: The URI of your Azure Key Vault, also
      * referred to as DNS name, that contains the key to be used to encrypt
      * your data at rest. An example URI might be
      * https://my-keyvault-name.vault.azure.net.
      *
-     * @param keyVaultUri the keyVaultUri value to set.
-     * @return the EncryptionKey object itself.
+     * @param vaultUri the vaultUri value to set.
+     * @return the SearchResourceEncryptionKey object itself.
      */
-    public EncryptionKey setKeyVaultUri(String keyVaultUri) {
-        this.keyVaultUri = keyVaultUri;
+    public SearchResourceEncryptionKey setVaultUri(String vaultUri) {
+        this.vaultUri = vaultUri;
         return this;
     }
 
@@ -132,9 +132,9 @@ public final class EncryptionKey {
      * using managed identity instead.
      *
      * @param accessCredentials the accessCredentials value to set.
-     * @return the EncryptionKey object itself.
+     * @return the SearchResourceEncryptionKey object itself.
      */
-    public EncryptionKey setAccessCredentials(AzureActiveDirectoryApplicationCredentials accessCredentials) {
+    public SearchResourceEncryptionKey setAccessCredentials(AzureActiveDirectoryApplicationCredentials accessCredentials) {
         this.accessCredentials = accessCredentials;
         return this;
     }

@@ -10,16 +10,15 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.util.List;
 
 /**
- * Standard Apache Lucene analyzer; Composed of the standard tokenizer,
- * lowercase filter and stop filter.
+ * Breaks text following the Unicode Text Segmentation rules. This tokenizer is
+ * implemented using Apache Lucene.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Azure.Search.StandardAnalyzer")
+@JsonTypeName("#Microsoft.Azure.Search.StandardTokenizerV2")
 @Fluent
-public final class StandardAnalyzer extends Analyzer {
+public final class LuceneStandardTokenizerV2 extends LexicalTokenizer {
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split. The maximum token length that can be used is 300
@@ -27,12 +26,6 @@ public final class StandardAnalyzer extends Analyzer {
      */
     @JsonProperty(value = "maxTokenLength")
     private Integer maxTokenLength;
-
-    /*
-     * A list of stopwords.
-     */
-    @JsonProperty(value = "stopwords")
-    private List<String> stopwords;
 
     /**
      * Get the maxTokenLength property: The maximum token length. Default is
@@ -51,30 +44,10 @@ public final class StandardAnalyzer extends Analyzer {
      * length that can be used is 300 characters.
      *
      * @param maxTokenLength the maxTokenLength value to set.
-     * @return the StandardAnalyzer object itself.
+     * @return the LuceneStandardTokenizerV2 object itself.
      */
-    public StandardAnalyzer setMaxTokenLength(Integer maxTokenLength) {
+    public LuceneStandardTokenizerV2 setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
-        return this;
-    }
-
-    /**
-     * Get the stopwords property: A list of stopwords.
-     *
-     * @return the stopwords value.
-     */
-    public List<String> getStopwords() {
-        return this.stopwords;
-    }
-
-    /**
-     * Set the stopwords property: A list of stopwords.
-     *
-     * @param stopwords the stopwords value to set.
-     * @return the StandardAnalyzer object itself.
-     */
-    public StandardAnalyzer setStopwords(List<String> stopwords) {
-        this.stopwords = stopwords;
         return this;
     }
 }

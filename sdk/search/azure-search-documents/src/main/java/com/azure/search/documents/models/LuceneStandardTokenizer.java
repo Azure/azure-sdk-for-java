@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.StandardTokenizer")
 @Fluent
-public final class StandardTokenizer extends Tokenizer {
+public final class LuceneStandardTokenizer extends LexicalTokenizer {
     /*
      * The maximum token length. Default is 255. Tokens longer than the maximum
      * length are split.
@@ -41,9 +41,9 @@ public final class StandardTokenizer extends Tokenizer {
      * 255. Tokens longer than the maximum length are split.
      *
      * @param maxTokenLength the maxTokenLength value to set.
-     * @return the StandardTokenizer object itself.
+     * @return the LuceneStandardTokenizer object itself.
      */
-    public StandardTokenizer setMaxTokenLength(Integer maxTokenLength) {
+    public LuceneStandardTokenizer setMaxTokenLength(Integer maxTokenLength) {
         this.maxTokenLength = maxTokenLength;
         return this;
     }
