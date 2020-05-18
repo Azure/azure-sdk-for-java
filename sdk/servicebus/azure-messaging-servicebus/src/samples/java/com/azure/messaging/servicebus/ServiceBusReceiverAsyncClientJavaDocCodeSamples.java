@@ -123,11 +123,13 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receive().subscribe(context -> {
+        Disposable subscription = receiver.receive().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Received message id: %s%n", message.getMessageId());
             System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
-        });
+            return receiver.complete(message);
+        }).subscribe(aVoid -> {},
+            error -> System.out.println("Error occurred: " + error));
 
         // When program ends, or you're done receiving all messages.
         receiver.close();
