@@ -17,7 +17,7 @@ public class IncludedPathTest {
 
         List<Index> indexes = new ArrayList<>();
         indexes.add(Index.range(DataType.STRING, -1));
-        indexes.add(Index.range(DataType.STRING.NUMBER, -1));
+        indexes.add(Index.range(DataType.NUMBER, -1));
         includedPath.setIndexes(indexes);
 
         List<Index> includedPathIndexes = new ArrayList<>(includedPath.getIndexes());
