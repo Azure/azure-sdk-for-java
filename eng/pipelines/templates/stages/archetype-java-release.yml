@@ -87,12 +87,11 @@ stages:
                 deploy:
                   steps:
                     - checkout: self
-                    - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
+                    - template: /eng/pipelines/templates/steps/stage-artifacts.yml
                       parameters:
                         SourceFolder: ${{parameters.ArtifactName}}-signed
                         TargetFolder: ${{artifact.safeName}}
                         PackageName: ${{artifact.name}}
-                      displayName: Stage artifacts
                     - template: /eng/common/pipelines/templates/steps/create-tags-and-git-release.yml
                       parameters:
                         ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
@@ -117,13 +116,11 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
                         parameters:
                           SourceFolder: ${{parameters.ArtifactName}}-signed
                           TargetFolder: ${{artifact.safeName}}
                           PackageName: ${{artifact.name}}
-                        displayName: Stage artifacts
-                        timeoutInMinutes: 5
                       - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
                         parameters:
                           ArtifactLocation: $(Pipeline.Workspace)/${{artifact.safeName}}
@@ -193,12 +190,11 @@ stages:
                   deploy:
                     steps:
                       - checkout: self
-                      - template: /eng/pipelines/templates/steps/stage-filtered-artifacts.yml
+                      - template: /eng/pipelines/templates/steps/stage-artifacts.yml
                         parameters:
                           SourceFolder: ${{parameters.ArtifactName}}-signed
                           TargetFolder: ${{artifact.safeName}}
                           PackageName: ${{artifact.name}}
-                        displayName: Stage artifacts
                       - pwsh: |
                           Get-ChildItem -Recurse $(Pipeline.Workspace)/${{artifact.safeName}}
                         workingDirectory: $(Pipeline.Workspace)
