@@ -5,11 +5,12 @@ package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
+import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.Exceptions;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Objects;
 
 /**
@@ -38,7 +39,14 @@ public final class JacksonAvroSerializer implements AvroSerializer {
         }
 
         try {
-            return avroMapper.reader().with(avroMapper.schemaFrom(schema)).readValue(input);
+            AvroSchema jacksonAvroSchema = avroMapper.schemaFrom(schema);
+
+            if ("null".equalsIgnoreCase(jacksonAvroSchema.getAvroSchema().getType().getName())) {
+                return null;
+            }
+
+            ObjectReader reader = avroMapper.readerFor(getReaderClass(jacksonAvroSchema.getAvroSchema().getFullName()));
+            return reader.with(jacksonAvroSchema).readValue(input);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
         }
@@ -55,15 +63,30 @@ public final class JacksonAvroSerializer implements AvroSerializer {
         }
     }
 
-    @Override
-    public void write(Object value, String schema, OutputStream stream) {
-        Objects.requireNonNull(schema, "'schema' cannot be null.");
-        Objects.requireNonNull(stream, "'stream' cannot be null.");
-
-        try {
-            avroMapper.writer().with(avroMapper.schemaFrom(schema)).writeValue(stream, value);
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+    private static Class<?> getReaderClass(String typeFullName) {
+        switch (typeFullName) {
+            case "null":
+                return void.class;
+            case "boolean":
+                return boolean.class;
+            case "int":
+                return int.class;
+            case "long":
+                return long.class;
+            case "float":
+                return float.class;
+            case "double":
+                return double.class;
+            case "string":
+                return String.class;
+            case "bytes":
+                return byte[].class;
+            default:
+                try {
+                    return Class.forName(typeFullName);
+                } catch (ClassNotFoundException ex) {
+                    return Object.class;
+                }
         }
     }
 }

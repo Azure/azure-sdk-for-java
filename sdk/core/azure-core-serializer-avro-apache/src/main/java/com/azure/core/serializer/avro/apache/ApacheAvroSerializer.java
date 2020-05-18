@@ -6,17 +6,18 @@ package com.azure.core.serializer.avro.apache;
 import com.azure.core.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.DecoderFactory;
+import org.apache.avro.io.Encoder;
 import org.apache.avro.io.EncoderFactory;
 import reactor.core.Exceptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Objects;
 
 /**
@@ -27,12 +28,15 @@ public class ApacheAvroSerializer implements AvroSerializer {
 
     private final Schema.Parser parser;
     private final DecoderFactory decoderFactory;
-    private final  EncoderFactory encoderFactory;
+    private final EncoderFactory encoderFactory;
+    private final GenericData genericData;
 
-    ApacheAvroSerializer(Schema.Parser parser, DecoderFactory decoderFactory, EncoderFactory encoderFactory) {
+    ApacheAvroSerializer(Schema.Parser parser, DecoderFactory decoderFactory, EncoderFactory encoderFactory,
+        GenericData genericData) {
         this.parser = parser;
         this.decoderFactory = decoderFactory;
         this.encoderFactory = encoderFactory;
+        this.genericData = genericData;
     }
 
     @Override
@@ -43,7 +47,8 @@ public class ApacheAvroSerializer implements AvroSerializer {
         }
 
         try {
-            DatumReader<T> reader = new GenericDatumReader<>(parser.parse(schema));
+            Schema avroSchema = parser.parse(schema);
+            DatumReader<T> reader = new GenericDatumReader<>(avroSchema, avroSchema, genericData);
             return reader.read(null, decoderFactory.binaryDecoder(input, null));
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
@@ -54,25 +59,15 @@ public class ApacheAvroSerializer implements AvroSerializer {
     public byte[] write(Object value, String schema) {
         Objects.requireNonNull(schema, "'schema' cannot be null.");
 
-        DatumWriter<Object> writer = new GenericDatumWriter<>(parser.parse(schema));
+        Schema avroSchema = parser.parse(schema);
+        DatumWriter<Object> writer = new GenericDatumWriter<>(avroSchema, genericData);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         try {
-            writer.write(value, encoderFactory.binaryEncoder(stream, null));
+            Encoder encoder = encoderFactory.binaryEncoder(stream, null);
+            writer.write(value, encoder);
+            encoder.flush();
             return stream.toByteArray();
-        } catch (IOException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(ex));
-        }
-    }
-
-    @Override
-    public void write(Object value, String schema, OutputStream stream) {
-        Objects.requireNonNull(schema, "'schema' cannot be null.");
-        Objects.requireNonNull(stream, "'stream' cannot be null.");
-
-        try {
-            DatumWriter<Object> writer = new GenericDatumWriter<>(parser.parse(schema));
-            writer.write(value, encoderFactory.binaryEncoder(stream, null));
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
         }

@@ -3,8 +3,6 @@
 
 package com.azure.core.serializer;
 
-import java.io.OutputStream;
-
 /**
  * Generic interface covering basic Avro serialization and deserialization methods.
  */
@@ -27,13 +25,4 @@ public interface AvroSerializer {
      * @return The Avro stream representing the object.
      */
     byte[] write(Object value, String schema);
-
-    /**
-     * Converts the object into an Avro stream and writes it to the {@link OutputStream}.
-     *
-     * @param value The object.
-     * @param schema JSON string representing the Avro schema.
-     * @param stream The {@link OutputStream} where the Avro stream will be written.
-     */
-    void write(Object value, String schema, OutputStream stream);
 }

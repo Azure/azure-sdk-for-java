@@ -4,6 +4,7 @@
 package com.azure.core.serializer.avro.apache;
 
 import org.apache.avro.Schema;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.EncoderFactory;
 
@@ -16,6 +17,7 @@ public class ApacheAvroSerializerBuilder {
     private Schema.Parser parser;
     private DecoderFactory decoderFactory;
     private EncoderFactory encoderFactory;
+    private GenericData genericData;
 
     /**
      * Instantiates a new instance of {@link ApacheAvroSerializer} based on the configurations set on the builder.
@@ -26,8 +28,9 @@ public class ApacheAvroSerializerBuilder {
         Schema.Parser buildParser = (parser == null) ? new Schema.Parser() : parser;
         DecoderFactory buildDecoderFactory = (decoderFactory == null) ? DecoderFactory.get() : decoderFactory;
         EncoderFactory buildEncoderFactory = (encoderFactory == null) ? EncoderFactory.get() : encoderFactory;
+        GenericData buildGenericData = (genericData == null) ? GenericData.get() : genericData;
 
-        return new ApacheAvroSerializer(buildParser, buildDecoderFactory, buildEncoderFactory);
+        return new ApacheAvroSerializer(buildParser, buildDecoderFactory, buildEncoderFactory, buildGenericData);
     }
 
     /**
@@ -70,6 +73,11 @@ public class ApacheAvroSerializerBuilder {
      */
     public ApacheAvroSerializerBuilder encoderFactory(EncoderFactory encoderFactory) {
         this.encoderFactory = encoderFactory;
+        return this;
+    }
+
+    public ApacheAvroSerializerBuilder genericData(GenericData genericData) {
+        this.genericData = genericData;
         return this;
     }
 }
