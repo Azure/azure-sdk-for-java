@@ -101,6 +101,11 @@ public interface DatabaseAccountGetResults extends HasInner<DatabaseAccountGetRe
     List<Location> locations();
 
     /**
+     * @return the privateEndpointConnections value.
+     */
+    List<PrivateEndpointConnection> privateEndpointConnections();
+
+    /**
      * @return the provisioningState value.
      */
     String provisioningState();

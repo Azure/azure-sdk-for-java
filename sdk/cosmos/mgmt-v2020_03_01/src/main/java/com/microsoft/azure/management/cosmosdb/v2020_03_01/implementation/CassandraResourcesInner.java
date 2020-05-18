@@ -136,7 +136,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -150,7 +150,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -163,7 +163,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CassandraKeyspaceGetResultsInner&gt; object
@@ -180,7 +180,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra keyspaces under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CassandraKeyspaceGetResultsInner&gt; object
@@ -225,7 +225,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -240,7 +240,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -254,7 +254,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -272,7 +272,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra keyspaces under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -316,7 +316,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -332,7 +332,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -347,7 +347,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -366,7 +366,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -398,7 +398,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -414,7 +414,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -429,7 +429,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -448,7 +448,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param createUpdateCassandraKeyspaceParameters The parameters to provide for the current Cassandra keyspace.
@@ -498,7 +498,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -512,7 +512,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -526,7 +526,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -544,7 +544,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -571,7 +571,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -585,7 +585,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -599,7 +599,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -617,7 +617,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -662,7 +662,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -677,7 +677,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -691,7 +691,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -709,7 +709,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra Keyspace under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -753,7 +753,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -769,7 +769,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -784,7 +784,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -803,7 +803,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -835,7 +835,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -851,7 +851,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -866,7 +866,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -885,7 +885,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra Keyspace.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param updateThroughputParameters The RUs per second of the parameters to provide for the current Cassandra Keyspace.
@@ -935,7 +935,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -950,7 +950,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -964,7 +964,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -982,7 +982,7 @@ public class CassandraResourcesInner {
     /**
      * Lists the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1031,7 +1031,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1047,7 +1047,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1062,7 +1062,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1081,7 +1081,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the Cassandra table under an existing Azure Cosmos DB database account.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1129,7 +1129,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1146,7 +1146,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1162,7 +1162,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1182,7 +1182,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1218,7 +1218,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1235,7 +1235,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1251,7 +1251,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1271,7 +1271,7 @@ public class CassandraResourcesInner {
     /**
      * Create or update an Azure Cosmos DB Cassandra Table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1325,7 +1325,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1340,7 +1340,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1355,7 +1355,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1374,7 +1374,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1405,7 +1405,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1420,7 +1420,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1435,7 +1435,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1454,7 +1454,7 @@ public class CassandraResourcesInner {
     /**
      * Deletes an existing Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1503,7 +1503,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1519,7 +1519,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1534,7 +1534,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1553,7 +1553,7 @@ public class CassandraResourcesInner {
     /**
      * Gets the RUs per second of the Cassandra table under an existing Azure Cosmos DB database account with the provided name.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1601,7 +1601,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1618,7 +1618,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1634,7 +1634,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1654,7 +1654,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1690,7 +1690,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1707,7 +1707,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1723,7 +1723,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
@@ -1743,7 +1743,7 @@ public class CassandraResourcesInner {
     /**
      * Update RUs per second of an Azure Cosmos DB Cassandra table.
      *
-     * @param resourceGroupName Name of an Azure resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param keyspaceName Cosmos DB keyspace name.
      * @param tableName Cosmos DB table name.
