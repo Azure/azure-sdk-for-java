@@ -5,14 +5,18 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ConnStringValueTypePair;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ConnectionStringDictionary model. */
 @Fluent
 public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionStringDictionaryInner.class);
+
     /*
      * Connection strings.
      */
@@ -37,5 +41,18 @@ public final class ConnectionStringDictionaryInner extends ProxyOnlyResource {
     public ConnectionStringDictionaryInner withProperties(Map<String, ConnStringValueTypePair> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (properties() != null) {
+            properties().values().forEach(e -> e.validate());
+        }
     }
 }

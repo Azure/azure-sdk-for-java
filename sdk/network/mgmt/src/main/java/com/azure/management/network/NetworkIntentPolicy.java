@@ -6,11 +6,15 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The NetworkIntentPolicy model. */
 @Fluent
 public final class NetworkIntentPolicy extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkIntentPolicy.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -62,5 +66,13 @@ public final class NetworkIntentPolicy extends Resource {
     public NetworkIntentPolicy withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

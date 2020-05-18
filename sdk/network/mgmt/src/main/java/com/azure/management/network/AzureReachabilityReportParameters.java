@@ -5,6 +5,8 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -12,6 +14,8 @@ import java.util.List;
 /** The AzureReachabilityReportParameters model. */
 @Fluent
 public final class AzureReachabilityReportParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportParameters.class);
+
     /*
      * Parameters that define a geographic location.
      */
@@ -140,5 +144,33 @@ public final class AzureReachabilityReportParameters {
     public AzureReachabilityReportParameters withEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (providerLocation() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property providerLocation in model AzureReachabilityReportParameters"));
+        } else {
+            providerLocation().validate();
+        }
+        if (startTime() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property startTime in model AzureReachabilityReportParameters"));
+        }
+        if (endTime() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property endTime in model AzureReachabilityReportParameters"));
+        }
     }
 }

@@ -32,34 +32,29 @@ final class IdentityImpl
 
     @Override
     public String tenantId() {
-        if (this.inner().getTenantId() == null) {
+        if (this.inner().tenantId() == null) {
             return null;
         } else {
-            return this.inner().getTenantId().toString();
+            return this.inner().tenantId().toString();
         }
     }
 
     @Override
     public String principalId() {
-        if (this.inner().getPrincipalId() == null) {
+        if (this.inner().principalId() == null) {
             return null;
         } else {
-            return this.inner().getPrincipalId().toString();
+            return this.inner().principalId().toString();
         }
     }
 
     @Override
     public String clientId() {
-        if (this.inner().getClientId() == null) {
+        if (this.inner().clientId() == null) {
             return null;
         } else {
-            return this.inner().getClientId().toString();
+            return this.inner().clientId().toString();
         }
-    }
-
-    @Override
-    public String clientSecretUrl() {
-        return this.inner().getClientSecretUrl();
     }
 
     @Override
@@ -130,8 +125,8 @@ final class IdentityImpl
             @Override
             public String principalId() {
                 Objects.requireNonNull(inner());
-                Objects.requireNonNull(inner().getPrincipalId());
-                return inner().getPrincipalId().toString();
+                Objects.requireNonNull(inner().principalId());
+                return inner().principalId().toString();
             }
             @Override
             public String resourceId() {

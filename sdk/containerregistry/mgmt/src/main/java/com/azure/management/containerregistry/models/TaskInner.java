@@ -7,6 +7,7 @@ package com.azure.management.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.containerregistry.AgentProperties;
 import com.azure.management.containerregistry.Credentials;
 import com.azure.management.containerregistry.PlatformProperties;
@@ -14,6 +15,7 @@ import com.azure.management.containerregistry.ProvisioningState;
 import com.azure.management.containerregistry.TaskStatus;
 import com.azure.management.containerregistry.TaskStepProperties;
 import com.azure.management.containerregistry.TriggerProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -21,6 +23,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class TaskInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskInner.class);
+
     /*
      * The provisioning state of the task.
      */
@@ -234,5 +238,28 @@ public class TaskInner extends Resource {
     public TaskInner withCredentials(Credentials credentials) {
         this.credentials = credentials;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (platform() != null) {
+            platform().validate();
+        }
+        if (agentConfiguration() != null) {
+            agentConfiguration().validate();
+        }
+        if (step() != null) {
+            step().validate();
+        }
+        if (trigger() != null) {
+            trigger().validate();
+        }
+        if (credentials() != null) {
+            credentials().validate();
+        }
     }
 }

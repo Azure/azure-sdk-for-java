@@ -6,12 +6,16 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RoleAssignment model. */
 @JsonFlatten
 @Fluent
 public class RoleAssignmentInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentInner.class);
+
     /*
      * The role assignment ID.
      */
@@ -159,5 +163,13 @@ public class RoleAssignmentInner {
     public RoleAssignmentInner withCanDelegate(Boolean canDelegate) {
         this.canDelegate = canDelegate;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualMachineScaleSetVMProfile model. */
 @Fluent
 public final class VirtualMachineScaleSetVMProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProfile.class);
+
     /*
      * Specifies the operating system settings for the virtual machines in the
      * scale set.
@@ -308,5 +312,34 @@ public final class VirtualMachineScaleSetVMProfile {
     public VirtualMachineScaleSetVMProfile withScheduledEventsProfile(ScheduledEventsProfile scheduledEventsProfile) {
         this.scheduledEventsProfile = scheduledEventsProfile;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
+        if (diagnosticsProfile() != null) {
+            diagnosticsProfile().validate();
+        }
+        if (extensionProfile() != null) {
+            extensionProfile().validate();
+        }
+        if (billingProfile() != null) {
+            billingProfile().validate();
+        }
+        if (scheduledEventsProfile() != null) {
+            scheduledEventsProfile().validate();
+        }
     }
 }

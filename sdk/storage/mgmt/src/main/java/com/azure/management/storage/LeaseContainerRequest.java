@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LeaseContainerRequest model. */
 @Fluent
 public final class LeaseContainerRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LeaseContainerRequest.class);
+
     /*
      * Specifies the lease action. Can be one of the available actions.
      */
@@ -147,5 +151,18 @@ public final class LeaseContainerRequest {
     public LeaseContainerRequest withProposedLeaseId(String proposedLeaseId) {
         this.proposedLeaseId = proposedLeaseId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (action() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property action in model LeaseContainerRequest"));
+        }
     }
 }

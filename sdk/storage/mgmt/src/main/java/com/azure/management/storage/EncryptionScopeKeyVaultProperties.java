@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EncryptionScopeKeyVaultProperties model. */
 @Fluent
 public final class EncryptionScopeKeyVaultProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeKeyVaultProperties.class);
+
     /*
      * The object identifier for a key vault key object. When applied, the
      * encryption scope will use the key referenced by the identifier to enable
@@ -38,5 +42,13 @@ public final class EncryptionScopeKeyVaultProperties {
     public EncryptionScopeKeyVaultProperties withKeyUri(String keyUri) {
         this.keyUri = keyUri;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

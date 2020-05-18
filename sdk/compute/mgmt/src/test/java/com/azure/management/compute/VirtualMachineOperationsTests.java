@@ -5,12 +5,12 @@ package com.azure.management.compute;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
 import com.azure.management.network.NetworkSecurityGroup;
-import com.azure.management.network.NicIPConfiguration;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.NicIpConfiguration;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.SecurityRuleProtocol;
 import com.azure.management.network.Subnet;
 import com.azure.management.resources.ResourceGroup;
@@ -105,7 +105,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         NetworkInterface primaryNic = vm.getPrimaryNetworkInterface();
         Assertions.assertNotNull(primaryNic);
-        NicIPConfiguration primaryIpConfig = primaryNic.primaryIPConfiguration();
+        NicIpConfiguration primaryIpConfig = primaryNic.primaryIPConfiguration();
         Assertions.assertNotNull(primaryIpConfig);
 
         // Fetch the NSG the way before v1.2
@@ -219,7 +219,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // not run to assert
             Assertions.assertEquals((Double) 1500.0, foundVM.billingProfile().maxPrice());
             Assertions.fail();
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
         } // cannot change max price when vm is running
 
         foundVM.deallocate();
@@ -241,7 +241,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // not run to assert
             Assertions.assertEquals(VirtualMachinePriorityTypes.REGULAR, foundVM.priority());
             Assertions.fail();
-        } catch (CloudException e) {
+        } catch (ManagementException e) {
         } // cannot change priority from low to regular
 
         // Delete VM
@@ -347,7 +347,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             // Update Vm to remove it from proximity placement group
             VirtualMachine updatedVm =
                 foundVM.update().withProximityPlacementGroup(setCreated2.proximityPlacementGroup().id()).apply();
-        } catch (CloudException clEx) {
+        } catch (ManagementException clEx) {
             Assertions
                 .assertTrue(
                     clEx
@@ -498,10 +498,10 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             publicIPAddressNames.add(String.format("%s-%d", publicIpNamePrefix, i));
         }
         for (String publicIpCreatableKey : publicIpCreatableKeys) {
-            PublicIPAddress createdPublicIPAddress =
-                (PublicIPAddress) createdVirtualMachines.createdRelatedResource(publicIpCreatableKey);
-            Assertions.assertNotNull(createdPublicIPAddress);
-            Assertions.assertTrue(publicIPAddressNames.contains(createdPublicIPAddress.name()));
+            PublicIpAddress createdPublicIpAddress =
+                (PublicIpAddress) createdVirtualMachines.createdRelatedResource(publicIpCreatableKey);
+            Assertions.assertNotNull(createdPublicIpAddress);
+            Assertions.assertTrue(publicIPAddressNames.contains(createdPublicIpAddress.name()));
         }
     }
 
@@ -547,8 +547,8 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                             Network network = (Network) resource;
                             Assertions.assertTrue(networkNames.contains(network.name()));
                             Assertions.assertNotNull(network.id());
-                        } else if (resource instanceof PublicIPAddress) {
-                            PublicIPAddress publicIPAddress = (PublicIPAddress) resource;
+                        } else if (resource instanceof PublicIpAddress) {
+                            PublicIpAddress publicIPAddress = (PublicIpAddress) resource;
                             Assertions.assertTrue(publicIPAddressNames.contains(publicIPAddress.name()));
                             Assertions.assertNotNull(publicIPAddress.id());
                         }
@@ -757,9 +757,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
                     .withAddressSpace("10.0.0.0/28");
             networkCreatableKeys.add(networkCreatable.key());
 
-            Creatable<PublicIPAddress> publicIPAddressCreatable =
+            Creatable<PublicIpAddress> publicIPAddressCreatable =
                 networkManager
-                    .publicIPAddresses()
+                    .publicIpAddresses()
                     .define(String.format("%s-%d", publicIpNamePrefix, i))
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupCreatable);

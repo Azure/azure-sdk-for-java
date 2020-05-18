@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The HostingEnvironmentProfile model. */
 @Fluent
 public final class HostingEnvironmentProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostingEnvironmentProfile.class);
+
     /*
      * Resource ID of the App Service Environment.
      */
@@ -64,5 +68,13 @@ public final class HostingEnvironmentProfile {
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

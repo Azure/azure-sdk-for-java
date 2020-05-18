@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AvailableProvidersListParameters model. */
 @Fluent
 public final class AvailableProvidersListParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListParameters.class);
+
     /*
      * A list of Azure regions.
      */
@@ -113,5 +117,13 @@ public final class AvailableProvidersListParameters {
     public AvailableProvidersListParameters withCity(String city) {
         this.city = city;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

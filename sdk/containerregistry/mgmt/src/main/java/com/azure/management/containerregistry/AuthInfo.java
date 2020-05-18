@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AuthInfo model. */
 @Fluent
 public final class AuthInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthInfo.class);
+
     /*
      * The type of Auth token.
      */
@@ -138,5 +142,22 @@ public final class AuthInfo {
     public AuthInfo withExpiresIn(Integer expiresIn) {
         this.expiresIn = expiresIn;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (tokenType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property tokenType in model AuthInfo"));
+        }
+        if (token() == null) {
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property token in model AuthInfo"));
+        }
     }
 }

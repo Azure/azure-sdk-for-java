@@ -5,12 +5,16 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagementPolicyFilter model. */
 @Fluent
 public final class ManagementPolicyFilter {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyFilter.class);
+
     /*
      * An array of strings for prefixes to be match.
      */
@@ -22,6 +26,13 @@ public final class ManagementPolicyFilter {
      */
     @JsonProperty(value = "blobTypes", required = true)
     private List<String> blobTypes;
+
+    /*
+     * An array of blob index tag based filters, there can be at most 10 tag
+     * filters
+     */
+    @JsonProperty(value = "blobIndexMatch")
+    private List<TagFilter> blobIndexMatch;
 
     /**
      * Get the prefixMatch property: An array of strings for prefixes to be match.
@@ -61,5 +72,42 @@ public final class ManagementPolicyFilter {
     public ManagementPolicyFilter withBlobTypes(List<String> blobTypes) {
         this.blobTypes = blobTypes;
         return this;
+    }
+
+    /**
+     * Get the blobIndexMatch property: An array of blob index tag based filters, there can be at most 10 tag filters.
+     *
+     * @return the blobIndexMatch value.
+     */
+    public List<TagFilter> blobIndexMatch() {
+        return this.blobIndexMatch;
+    }
+
+    /**
+     * Set the blobIndexMatch property: An array of blob index tag based filters, there can be at most 10 tag filters.
+     *
+     * @param blobIndexMatch the blobIndexMatch value to set.
+     * @return the ManagementPolicyFilter object itself.
+     */
+    public ManagementPolicyFilter withBlobIndexMatch(List<TagFilter> blobIndexMatch) {
+        this.blobIndexMatch = blobIndexMatch;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (blobTypes() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property blobTypes in model ManagementPolicyFilter"));
+        }
+        if (blobIndexMatch() != null) {
+            blobIndexMatch().forEach(e -> e.validate());
+        }
     }
 }

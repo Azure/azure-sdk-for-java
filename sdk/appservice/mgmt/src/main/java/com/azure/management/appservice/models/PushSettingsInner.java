@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PushSettings model. */
 @JsonFlatten
 @Fluent
 public class PushSettingsInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PushSettingsInner.class);
+
     /*
      * Gets or sets a flag indicating whether the Push endpoint is enabled.
      */
@@ -129,5 +133,15 @@ public class PushSettingsInner extends ProxyOnlyResource {
     public PushSettingsInner withDynamicTagsJson(String dynamicTagsJson) {
         this.dynamicTagsJson = dynamicTagsJson;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

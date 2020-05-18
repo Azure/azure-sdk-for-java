@@ -5,13 +5,17 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.models.CapabilityInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SkuDescription model. */
 @Fluent
 public final class SkuDescription {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuDescription.class);
+
     /*
      * Name of the resource SKU.
      */
@@ -218,5 +222,19 @@ public final class SkuDescription {
     public SkuDescription withCapabilities(List<CapabilityInner> capabilities) {
         this.capabilities = capabilities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (skuCapacity() != null) {
+            skuCapacity().validate();
+        }
+        if (capabilities() != null) {
+            capabilities().forEach(e -> e.validate());
+        }
     }
 }

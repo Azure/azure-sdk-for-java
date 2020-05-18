@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SkuCapacity model. */
 @Fluent
 public final class SkuCapacity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapacity.class);
+
     /*
      * Minimum number of workers for this App Service plan SKU.
      */
@@ -112,5 +116,13 @@ public final class SkuCapacity {
     public SkuCapacity withScaleType(String scaleType) {
         this.scaleType = scaleType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

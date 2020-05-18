@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SiteSealRequest model. */
 @Fluent
 public final class SiteSealRequest {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteSealRequest.class);
+
     /*
      * If <code>true</code> use the light color theme for site seal; otherwise,
      * use the default color theme.
@@ -63,5 +67,13 @@ public final class SiteSealRequest {
     public SiteSealRequest withLocale(String locale) {
         this.locale = locale;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

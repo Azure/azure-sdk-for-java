@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ReplicationStatus model. */
 @Immutable
 public final class ReplicationStatus {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationStatus.class);
+
     /*
      * This is the aggregated replication status based on all the regional
      * replication status flags.
@@ -41,5 +45,16 @@ public final class ReplicationStatus {
      */
     public List<RegionalReplicationStatus> summary() {
         return this.summary;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (summary() != null) {
+            summary().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GatewayRoute model. */
 @Immutable
 public final class GatewayRoute {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRoute.class);
+
     /*
      * The gateway's local address.
      */
@@ -113,5 +117,13 @@ public final class GatewayRoute {
      */
     public Integer weight() {
         return this.weight;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

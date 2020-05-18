@@ -5,17 +5,21 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ManagedClusterApiServerAccessProfile model. */
 @Fluent
 public final class ManagedClusterApiServerAccessProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
+
     /*
      * Authorized IP Ranges to kubernetes API server.
      */
     @JsonProperty(value = "authorizedIPRanges")
-    private List<String> authorizedIPRanges;
+    private List<String> authorizedIpRanges;
 
     /*
      * Whether to create the cluster as a private cluster or not.
@@ -24,22 +28,22 @@ public final class ManagedClusterApiServerAccessProfile {
     private Boolean enablePrivateCluster;
 
     /**
-     * Get the authorizedIPRanges property: Authorized IP Ranges to kubernetes API server.
+     * Get the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
      *
-     * @return the authorizedIPRanges value.
+     * @return the authorizedIpRanges value.
      */
-    public List<String> authorizedIPRanges() {
-        return this.authorizedIPRanges;
+    public List<String> authorizedIpRanges() {
+        return this.authorizedIpRanges;
     }
 
     /**
-     * Set the authorizedIPRanges property: Authorized IP Ranges to kubernetes API server.
+     * Set the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
      *
-     * @param authorizedIPRanges the authorizedIPRanges value to set.
+     * @param authorizedIpRanges the authorizedIpRanges value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
-    public ManagedClusterApiServerAccessProfile withAuthorizedIPRanges(List<String> authorizedIPRanges) {
-        this.authorizedIPRanges = authorizedIPRanges;
+    public ManagedClusterApiServerAccessProfile withAuthorizedIpRanges(List<String> authorizedIpRanges) {
+        this.authorizedIpRanges = authorizedIpRanges;
         return this;
     }
 
@@ -61,5 +65,13 @@ public final class ManagedClusterApiServerAccessProfile {
     public ManagedClusterApiServerAccessProfile withEnablePrivateCluster(Boolean enablePrivateCluster) {
         this.enablePrivateCluster = enablePrivateCluster;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

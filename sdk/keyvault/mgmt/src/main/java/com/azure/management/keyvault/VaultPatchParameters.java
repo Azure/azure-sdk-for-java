@@ -5,12 +5,16 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The VaultPatchParameters model. */
 @Fluent
 public final class VaultPatchParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultPatchParameters.class);
+
     /*
      * The tags that will be assigned to the key vault.
      */
@@ -61,5 +65,16 @@ public final class VaultPatchParameters {
     public VaultPatchParameters withProperties(VaultPatchProperties properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (properties() != null) {
+            properties().validate();
+        }
     }
 }

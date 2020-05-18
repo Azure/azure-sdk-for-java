@@ -7,6 +7,8 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ApplicationGatewayBackendHttpSettings extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHttpSettings.class);
+
     /*
      * Name of the backend http settings that is unique within an Application
      * Gateway.
@@ -87,14 +91,14 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
      * Host header to be sent to the backend servers.
      */
     @JsonProperty(value = "properties.hostName")
-    private String hostName;
+    private String hostname;
 
     /*
      * Whether to pick host header should be picked from the host name of the
      * backend server. Default value is false.
      */
     @JsonProperty(value = "properties.pickHostNameFromBackendAddress")
-    private Boolean pickHostNameFromBackendAddress;
+    private Boolean pickHostnameFromBackendAddress;
 
     /*
      * Cookie name to use for the affinity cookie.
@@ -351,45 +355,45 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
     }
 
     /**
-     * Get the hostName property: Host header to be sent to the backend servers.
+     * Get the hostname property: Host header to be sent to the backend servers.
      *
-     * @return the hostName value.
+     * @return the hostname value.
      */
-    public String hostName() {
-        return this.hostName;
+    public String hostname() {
+        return this.hostname;
     }
 
     /**
-     * Set the hostName property: Host header to be sent to the backend servers.
+     * Set the hostname property: Host header to be sent to the backend servers.
      *
-     * @param hostName the hostName value to set.
+     * @param hostname the hostname value to set.
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
-    public ApplicationGatewayBackendHttpSettings withHostName(String hostName) {
-        this.hostName = hostName;
+    public ApplicationGatewayBackendHttpSettings withHostname(String hostname) {
+        this.hostname = hostname;
         return this;
     }
 
     /**
-     * Get the pickHostNameFromBackendAddress property: Whether to pick host header should be picked from the host name
+     * Get the pickHostnameFromBackendAddress property: Whether to pick host header should be picked from the host name
      * of the backend server. Default value is false.
      *
-     * @return the pickHostNameFromBackendAddress value.
+     * @return the pickHostnameFromBackendAddress value.
      */
-    public Boolean pickHostNameFromBackendAddress() {
-        return this.pickHostNameFromBackendAddress;
+    public Boolean pickHostnameFromBackendAddress() {
+        return this.pickHostnameFromBackendAddress;
     }
 
     /**
-     * Set the pickHostNameFromBackendAddress property: Whether to pick host header should be picked from the host name
+     * Set the pickHostnameFromBackendAddress property: Whether to pick host header should be picked from the host name
      * of the backend server. Default value is false.
      *
-     * @param pickHostNameFromBackendAddress the pickHostNameFromBackendAddress value to set.
+     * @param pickHostnameFromBackendAddress the pickHostnameFromBackendAddress value to set.
      * @return the ApplicationGatewayBackendHttpSettings object itself.
      */
-    public ApplicationGatewayBackendHttpSettings withPickHostNameFromBackendAddress(
-        Boolean pickHostNameFromBackendAddress) {
-        this.pickHostNameFromBackendAddress = pickHostNameFromBackendAddress;
+    public ApplicationGatewayBackendHttpSettings withPickHostnameFromBackendAddress(
+        Boolean pickHostnameFromBackendAddress) {
+        this.pickHostnameFromBackendAddress = pickHostnameFromBackendAddress;
         return this;
     }
 
@@ -475,5 +479,16 @@ public class ApplicationGatewayBackendHttpSettings extends SubResource {
     public ApplicationGatewayBackendHttpSettings withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (connectionDraining() != null) {
+            connectionDraining().validate();
+        }
     }
 }

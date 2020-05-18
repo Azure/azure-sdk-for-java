@@ -6,12 +6,16 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TroubleshootingParameters model. */
 @JsonFlatten
 @Fluent
 public class TroubleshootingParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingParameters.class);
+
     /*
      * The target resource to troubleshoot.
      */
@@ -88,5 +92,31 @@ public class TroubleshootingParameters {
     public TroubleshootingParameters withStoragePath(String storagePath) {
         this.storagePath = storagePath;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (targetResourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model TroubleshootingParameters"));
+        }
+        if (storageId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property storageId in model TroubleshootingParameters"));
+        }
+        if (storagePath() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property storagePath in model TroubleshootingParameters"));
+        }
     }
 }

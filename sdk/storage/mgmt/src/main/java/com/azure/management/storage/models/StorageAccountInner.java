@@ -7,6 +7,7 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.AccessTier;
 import com.azure.management.storage.AccountStatus;
 import com.azure.management.storage.AzureFilesIdentityBasedAuthentication;
@@ -21,6 +22,7 @@ import com.azure.management.storage.NetworkRuleSet;
 import com.azure.management.storage.ProvisioningState;
 import com.azure.management.storage.RoutingPreference;
 import com.azure.management.storage.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -29,6 +31,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class StorageAccountInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInner.class);
+
     /*
      * Gets the SKU.
      */
@@ -506,5 +510,49 @@ public class StorageAccountInner extends Resource {
      */
     public BlobRestoreStatusInner blobRestoreStatus() {
         return this.blobRestoreStatus;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (primaryEndpoints() != null) {
+            primaryEndpoints().validate();
+        }
+        if (customDomain() != null) {
+            customDomain().validate();
+        }
+        if (secondaryEndpoints() != null) {
+            secondaryEndpoints().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
+        if (azureFilesIdentityBasedAuthentication() != null) {
+            azureFilesIdentityBasedAuthentication().validate();
+        }
+        if (networkRuleSet() != null) {
+            networkRuleSet().validate();
+        }
+        if (geoReplicationStats() != null) {
+            geoReplicationStats().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (routingPreference() != null) {
+            routingPreference().validate();
+        }
+        if (blobRestoreStatus() != null) {
+            blobRestoreStatus().validate();
+        }
     }
 }

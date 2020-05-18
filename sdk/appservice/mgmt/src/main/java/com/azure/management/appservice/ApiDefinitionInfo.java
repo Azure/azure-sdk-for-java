@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApiDefinitionInfo model. */
 @Fluent
 public final class ApiDefinitionInfo {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiDefinitionInfo.class);
+
     /*
      * The URL of the API definition.
      */
@@ -34,5 +38,13 @@ public final class ApiDefinitionInfo {
     public ApiDefinitionInfo withUrl(String url) {
         this.url = url;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

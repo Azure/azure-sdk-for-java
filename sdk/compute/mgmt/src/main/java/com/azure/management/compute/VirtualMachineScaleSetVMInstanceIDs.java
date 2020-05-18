@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetVMInstanceIDs model. */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceIDs {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceIDs.class);
+
     /*
      * The virtual machine scale set instance ids. Omitting the virtual machine
      * scale set instance ids will result in the operation being performed on
@@ -41,5 +45,13 @@ public final class VirtualMachineScaleSetVMInstanceIDs {
     public VirtualMachineScaleSetVMInstanceIDs withInstanceIds(List<String> instanceIds) {
         this.instanceIds = instanceIds;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -8,13 +8,15 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AzureFirewallApplicationRuleCollection;
-import com.azure.management.network.AzureFirewallIPConfiguration;
+import com.azure.management.network.AzureFirewallIpConfiguration;
 import com.azure.management.network.AzureFirewallNatRuleCollection;
 import com.azure.management.network.AzureFirewallNetworkRuleCollection;
 import com.azure.management.network.AzureFirewallThreatIntelMode;
-import com.azure.management.network.HubIPAddresses;
+import com.azure.management.network.HubIpAddresses;
 import com.azure.management.network.ProvisioningState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -22,6 +24,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class AzureFirewallInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallInner.class);
+
     /*
      * A list of availability zones denoting where the resource needs to come
      * from.
@@ -58,7 +62,7 @@ public class AzureFirewallInner extends Resource {
      * IP configuration of the Azure Firewall resource.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<AzureFirewallIPConfiguration> ipConfigurations;
+    private List<AzureFirewallIpConfiguration> ipConfigurations;
 
     /*
      * The provisioning state of the resource.
@@ -88,7 +92,7 @@ public class AzureFirewallInner extends Resource {
      * IP addresses associated with AzureFirewall.
      */
     @JsonProperty(value = "properties.hubIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private HubIPAddresses hubIpAddresses;
+    private HubIpAddresses hubIpAddresses;
 
     /*
      * Resource ID.
@@ -192,7 +196,7 @@ public class AzureFirewallInner extends Resource {
      *
      * @return the ipConfigurations value.
      */
-    public List<AzureFirewallIPConfiguration> ipConfigurations() {
+    public List<AzureFirewallIpConfiguration> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -202,7 +206,7 @@ public class AzureFirewallInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the AzureFirewallInner object itself.
      */
-    public AzureFirewallInner withIpConfigurations(List<AzureFirewallIPConfiguration> ipConfigurations) {
+    public AzureFirewallInner withIpConfigurations(List<AzureFirewallIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -281,7 +285,7 @@ public class AzureFirewallInner extends Resource {
      *
      * @return the hubIpAddresses value.
      */
-    public HubIPAddresses hubIpAddresses() {
+    public HubIpAddresses hubIpAddresses() {
         return this.hubIpAddresses;
     }
 
@@ -303,5 +307,28 @@ public class AzureFirewallInner extends Resource {
     public AzureFirewallInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (applicationRuleCollections() != null) {
+            applicationRuleCollections().forEach(e -> e.validate());
+        }
+        if (natRuleCollections() != null) {
+            natRuleCollections().forEach(e -> e.validate());
+        }
+        if (networkRuleCollections() != null) {
+            networkRuleCollections().forEach(e -> e.validate());
+        }
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
+        if (hubIpAddresses() != null) {
+            hubIpAddresses().validate();
+        }
     }
 }

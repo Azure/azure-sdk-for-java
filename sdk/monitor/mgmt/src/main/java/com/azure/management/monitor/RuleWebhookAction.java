@@ -6,6 +6,8 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,7 +18,9 @@ import java.util.Map;
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleWebhookAction")
 @JsonFlatten
 @Fluent
-public final class RuleWebhookAction extends RuleAction {
+public class RuleWebhookAction extends RuleAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleWebhookAction.class);
+
     /*
      * the service uri to Post the notification when the alert activates or
      * resolves.
@@ -71,5 +75,15 @@ public final class RuleWebhookAction extends RuleAction {
     public RuleWebhookAction withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

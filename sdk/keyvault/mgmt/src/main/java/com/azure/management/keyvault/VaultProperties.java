@@ -5,6 +5,8 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -12,6 +14,8 @@ import java.util.UUID;
 /** The VaultProperties model. */
 @Fluent
 public final class VaultProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VaultProperties.class);
+
     /*
      * The Azure Active Directory tenant ID that should be used for
      * authenticating requests to the key vault.
@@ -26,7 +30,7 @@ public final class VaultProperties {
     private Sku sku;
 
     /*
-     * An array of 0 to 16 identities that have access to the key vault. All
+     * An array of 0 to 1024 identities that have access to the key vault. All
      * identities in the array must use the same tenant ID as the key vault's
      * tenant ID. When `createMode` is set to `recover`, access policies are
      * not required. Otherwise, access policies are required.
@@ -142,9 +146,9 @@ public final class VaultProperties {
     }
 
     /**
-     * Get the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
-     * in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`,
-     * access policies are not required. Otherwise, access policies are required.
+     * Get the accessPolicies property: An array of 0 to 1024 identities that have access to the key vault. All
+     * identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to
+     * `recover`, access policies are not required. Otherwise, access policies are required.
      *
      * @return the accessPolicies value.
      */
@@ -153,9 +157,9 @@ public final class VaultProperties {
     }
 
     /**
-     * Set the accessPolicies property: An array of 0 to 16 identities that have access to the key vault. All identities
-     * in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to `recover`,
-     * access policies are not required. Otherwise, access policies are required.
+     * Set the accessPolicies property: An array of 0 to 1024 identities that have access to the key vault. All
+     * identities in the array must use the same tenant ID as the key vault's tenant ID. When `createMode` is set to
+     * `recover`, access policies are not required. Otherwise, access policies are required.
      *
      * @param accessPolicies the accessPolicies value to set.
      * @return the VaultProperties object itself.
@@ -348,5 +352,34 @@ public final class VaultProperties {
      */
     public List<PrivateEndpointConnectionItem> privateEndpointConnections() {
         return this.privateEndpointConnections;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (tenantId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property tenantId in model VaultProperties"));
+        }
+        if (sku() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property sku in model VaultProperties"));
+        } else {
+            sku().validate();
+        }
+        if (accessPolicies() != null) {
+            accessPolicies().forEach(e -> e.validate());
+        }
+        if (networkAcls() != null) {
+            networkAcls().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TrafficAnalyticsProperties model. */
 @Fluent
 public final class TrafficAnalyticsProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficAnalyticsProperties.class);
+
     /*
      * Parameters that define the configuration of traffic analytics.
      */
@@ -37,5 +41,22 @@ public final class TrafficAnalyticsProperties {
         TrafficAnalyticsConfigurationProperties networkWatcherFlowAnalyticsConfiguration) {
         this.networkWatcherFlowAnalyticsConfiguration = networkWatcherFlowAnalyticsConfiguration;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkWatcherFlowAnalyticsConfiguration() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property networkWatcherFlowAnalyticsConfiguration in model"
+                            + " TrafficAnalyticsProperties"));
+        } else {
+            networkWatcherFlowAnalyticsConfiguration().validate();
+        }
     }
 }

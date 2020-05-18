@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BaseImageDependency model. */
 @Fluent
 public final class BaseImageDependency {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaseImageDependency.class);
+
     /*
      * The type of the base image dependency.
      */
@@ -138,5 +142,13 @@ public final class BaseImageDependency {
     public BaseImageDependency withDigest(String digest) {
         this.digest = digest;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

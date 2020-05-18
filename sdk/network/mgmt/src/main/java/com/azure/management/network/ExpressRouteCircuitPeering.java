@@ -33,10 +33,10 @@ public interface ExpressRouteCircuitPeering
     ExpressRoutePeeringState state();
 
     /** @return the Azure ASN */
-    int azureASN();
+    int azureAsn();
 
     /** @return the peer ASN */
-    long peerASN();
+    long peerAsn();
 
     /** @return the primary address prefix */
     String primaryPeerAddressPrefix();
@@ -82,7 +82,7 @@ public interface ExpressRouteCircuitPeering
             DefinitionStages.WithPrimaryPeerAddressPrefix,
             DefinitionStages.WithSecondaryPeerAddressPrefix,
             DefinitionStages.WithVlanId,
-            DefinitionStages.WithPeerASN,
+            DefinitionStages.WithPeerAsn,
             DefinitionStages.WithCreate {
     }
 
@@ -121,16 +121,16 @@ public interface ExpressRouteCircuitPeering
              *     same VLAN ID
              * @return next stage of definition
              */
-            WithPeerASN withVlanId(int vlanId);
+            WithPeerAsn withVlanId(int vlanId);
         }
 
         /** The stage of Express Route Circuit Peering definition allowing to specify AS number for peering. */
-        interface WithPeerASN {
+        interface WithPeerAsn {
             /**
-             * @param peerASN AS number for peering. Both 2-byte and 4-byte AS numbers can be used
+             * @param peerAsn AS number for peering. Both 2-byte and 4-byte AS numbers can be used
              * @return next stage of definition
              */
-            WithCreate withPeerASN(long peerASN);
+            WithCreate withPeerAsn(long peerAsn);
         }
 
         interface WithCreate extends Creatable<ExpressRouteCircuitPeering> {
@@ -144,7 +144,7 @@ public interface ExpressRouteCircuitPeering
             UpdateStages.WithPrimaryPeerAddressPrefix,
             UpdateStages.WithSecondaryPeerAddressPrefix,
             UpdateStages.WithVlanId,
-            UpdateStages.WithPeerASN {
+            UpdateStages.WithPeerAsn {
     }
 
     /**
@@ -173,8 +173,8 @@ public interface ExpressRouteCircuitPeering
         }
 
         /** The stage of Express Route Circuit Peering update allowing to specify AS number for peering. */
-        interface WithPeerASN {
-            Update withPeerASN(long peerASN);
+        interface WithPeerAsn {
+            Update withPeerAsn(long peerAsn);
         }
     }
 }

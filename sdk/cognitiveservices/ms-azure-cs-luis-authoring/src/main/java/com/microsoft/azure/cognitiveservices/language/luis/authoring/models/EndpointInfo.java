@@ -52,6 +52,12 @@ public class EndpointInfo {
     private String endpointRegion;
 
     /**
+     * Regions where publishing failed.
+     */
+    @JsonProperty(value = "failedRegions")
+    private String failedRegions;
+
+    /**
      * Timestamp when was last published.
      */
     @JsonProperty(value = "publishedDateTime")
@@ -174,6 +180,26 @@ public class EndpointInfo {
      */
     public EndpointInfo withEndpointRegion(String endpointRegion) {
         this.endpointRegion = endpointRegion;
+        return this;
+    }
+
+    /**
+     * Get the failedRegions value.
+     *
+     * @return the failedRegions value
+     */
+    public String failedRegions() {
+        return this.failedRegions;
+    }
+
+    /**
+     * Set the failedRegions value.
+     *
+     * @param failedRegions the failedRegions value to set
+     * @return the EndpointInfo object itself.
+     */
+    public EndpointInfo withFailedRegions(String failedRegions) {
+        this.failedRegions = failedRegions;
         return this;
     }
 
