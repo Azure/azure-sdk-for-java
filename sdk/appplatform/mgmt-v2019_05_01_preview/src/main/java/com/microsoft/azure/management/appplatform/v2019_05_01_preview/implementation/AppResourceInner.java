@@ -23,6 +23,13 @@ public class AppResourceInner extends ProxyResource {
     private AppResourceProperties properties;
 
     /**
+     * The GEO location of the application, always the same with its parent
+     * resource.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /**
      * Get properties of the App resource.
      *
      * @return the properties value
@@ -39,6 +46,26 @@ public class AppResourceInner extends ProxyResource {
      */
     public AppResourceInner withProperties(AppResourceProperties properties) {
         this.properties = properties;
+        return this;
+    }
+
+    /**
+     * Get the GEO location of the application, always the same with its parent resource.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the GEO location of the application, always the same with its parent resource.
+     *
+     * @param location the location value to set
+     * @return the AppResourceInner object itself.
+     */
+    public AppResourceInner withLocation(String location) {
+        this.location = location;
         return this;
     }
 
