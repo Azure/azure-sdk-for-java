@@ -256,7 +256,6 @@ secretAsyncClient.beginDeleteSecret("secretName")
 ```
 
 ### List Secrets Asynchronously
-
 List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
