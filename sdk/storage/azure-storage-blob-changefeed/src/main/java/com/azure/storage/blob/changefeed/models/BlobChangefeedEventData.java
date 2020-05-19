@@ -26,7 +26,7 @@ public class BlobChangefeedEventData {
     private final String destinationUrl;
     private final String sourceUrl;
     private final String blobUrl;
-    private final Boolean recursive;
+    private final boolean recursive;
     private final String sequencer;
 
     /**
@@ -48,7 +48,7 @@ public class BlobChangefeedEventData {
      */
     public BlobChangefeedEventData(String api, String clientRequestId, String requestId, String eTag,
         String contentType, Long contentLength, BlobType blobType, Long contentOffset, String destinationUrl,
-        String sourceUrl, String blobUrl, Boolean recursive, String sequencer) {
+        String sourceUrl, String blobUrl, boolean recursive, String sequencer) {
         this.api = api;
         this.clientRequestId = clientRequestId;
         this.requestId = requestId;

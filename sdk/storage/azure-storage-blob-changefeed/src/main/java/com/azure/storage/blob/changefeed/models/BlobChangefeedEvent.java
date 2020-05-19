@@ -119,12 +119,12 @@ public class BlobChangefeedEvent {
     /**
      * Returns either null or a Boolean.
      */
-    static Boolean nullOrBoolean(String name, Object o) {
+    static boolean nullOrBoolean(String name, Object o) {
         if (isNull(o)) {
-            return null;
+            return false;
         }
         AvroSchema.checkType(name, o, Boolean.class);
-        return (Boolean) o;
+        return (boolean) o;
     }
 
     /**

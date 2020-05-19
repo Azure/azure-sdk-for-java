@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.changefeed;
 
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
@@ -88,10 +87,8 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     @Override
     public void subscribe(CoreSubscriber<? super BlobChangefeedEvent> coreSubscriber) {
-        byPage(null, this.defaultPageSize).
-            flatMap((page) -> {
-                IterableStream<BlobChangefeedEvent> iterableStream = page.getElements();
-                return iterableStream == null ? Flux.empty() : Flux.fromIterable(page.getElements());
-            }).subscribe(coreSubscriber);
+        byPage(null, this.defaultPageSize)
+            .flatMap((page) -> Flux.fromIterable(page.getElements()))
+            .subscribe(coreSubscriber);
     }
 }

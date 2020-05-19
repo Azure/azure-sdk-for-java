@@ -91,7 +91,7 @@ class ChunkFactory {
             avroReader = avroReaderFactory.getAvroReader(avroHeader, avroBody, blockOffset, objectBlockIndex);
         }
 
-        return new Chunk(chunkPath, shardCursor, avroReader);
+        return new Chunk(shardCursor, avroReader);
     }
 
 }
