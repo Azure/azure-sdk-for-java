@@ -9,7 +9,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -87,7 +87,7 @@ abstract class AsyncBenchmark<T> {
             ).read().doOnError(error ->
                 logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
             ).block().getDatabase();
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosAsyncDatabase = cosmosClient.createDatabase(cfg.getDatabaseId()).block().getDatabase();
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
@@ -103,7 +103,7 @@ abstract class AsyncBenchmark<T> {
             ).read().doOnError(error ->
                 logger.error("Database {} creation failed due to ", this.configuration.getDatabaseId(), error)
             ).block().getContainer();
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                 cosmosAsyncContainer = cosmosAsyncDatabase.createContainer(
                     this.configuration.getCollectionId(),

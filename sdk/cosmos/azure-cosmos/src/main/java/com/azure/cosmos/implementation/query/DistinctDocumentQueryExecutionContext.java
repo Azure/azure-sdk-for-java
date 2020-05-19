@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
@@ -56,7 +56,7 @@ public class DistinctDocumentQueryExecutionContext<T extends Resource> implement
             } else {
                 distinctContinuationToken = outDistinctcontinuationtoken.v;
                 if (distinctQueryType != DistinctQueryType.ORDERED && distinctContinuationToken.getLastHash() != null) {
-                    CosmosClientException dce = new BadRequestException("DistinctContinuationToken is malformed." +
+                    CosmosException dce = new BadRequestException("DistinctContinuationToken is malformed." +
                                                                               " DistinctContinuationToken can not" +
                                                                               " have a 'lastHash', when the query" +
                                                                               " type is not ordered (ex SELECT " +

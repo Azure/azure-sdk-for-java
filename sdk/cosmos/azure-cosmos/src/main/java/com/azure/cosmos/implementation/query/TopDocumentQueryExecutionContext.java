@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -41,7 +41,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             if (!TakeContinuationToken.tryParse(topContinuationToken, outTakeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Top~Context",
                         topContinuationToken);
-                CosmosClientException dce = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                CosmosException dce = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                         message);
                 return Flux.error(dce);
             }
@@ -53,7 +53,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             String message = String.format(
                     "top count in continuation token: %d can not be greater than the top count in the query: %d.",
                     takeContinuationToken.getTakeCount(), topCount);
-            CosmosClientException dce = BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST, message);
+            CosmosException dce = BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST, message);
             return Flux.error(dce);
         }
 

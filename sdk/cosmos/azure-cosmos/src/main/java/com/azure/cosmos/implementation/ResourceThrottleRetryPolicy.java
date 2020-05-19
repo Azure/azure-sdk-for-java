@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -55,7 +55,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
             this.currentAttemptCount++;
             logger.warn(
                     "Operation will be retried after {} milliseconds. Current attempt {}, Cumulative delay {}",
-                    retryDelay.toMillis(), 
+                    retryDelay.toMillis(),
                     this.currentAttemptCount,
                     this.cumulativeRetryDelay,
                     exception);
@@ -63,7 +63,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
         } else {
             logger.debug(
                     "Operation will NOT be retried. Current attempt {}",
-                    this.currentAttemptCount, 
+                    this.currentAttemptCount,
                     exception);
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -84,7 +84,7 @@ public class ResourceThrottleRetryPolicy extends DocumentClientRetryPolicy {
     private Duration checkIfRetryNeeded(Exception exception) {
         Duration retryDelay = Duration.ZERO;
 
-        CosmosClientException dce = Utils.as(exception, CosmosClientException.class);
+        CosmosException dce = Utils.as(exception, CosmosException.class);
 
         if (dce != null){
 

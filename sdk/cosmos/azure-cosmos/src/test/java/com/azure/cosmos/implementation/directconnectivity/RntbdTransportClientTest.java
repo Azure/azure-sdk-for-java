@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
@@ -675,7 +675,7 @@ public final class RntbdTransportClientTest {
     public void verifyNetworkFailure(
         final FailureValidator.Builder builder,
         final RxDocumentServiceRequest request,
-        final CosmosClientException exception
+        final CosmosException exception
     ) {
         // TODO: DANOBLE: Implement RntbdTransportClientTest.verifyNetworkFailure
         //  Links:

@@ -4,11 +4,10 @@
 package com.azure.cosmos.rx.examples.multimaster;
 
 import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.ResourceResponse;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public class Helpers {
@@ -26,8 +25,8 @@ public class Helpers {
         return client.readDatabase("/dbs/" + databaseName, null)
                 .onErrorResume(
                         e -> {
-                            if (e instanceof CosmosClientException) {
-                                CosmosClientException dce = (CosmosClientException) e;
+                            if (e instanceof CosmosException) {
+                                CosmosException dce = (CosmosException) e;
                                 if (dce.getStatusCode() ==  404) {
                                     // if doesn't exist create it
 
@@ -47,8 +46,8 @@ public class Helpers {
         return client.readCollection(createDocumentCollectionUri(databaseName, collectionName), null)
                 .onErrorResume(
                         e -> {
-                            if (e instanceof CosmosClientException) {
-                                CosmosClientException dce = (CosmosClientException) e;
+                            if (e instanceof CosmosException) {
+                                CosmosException dce = (CosmosException) e;
                                 if (dce.getStatusCode() ==  404) {
                                     // if doesn't exist create it
 
@@ -68,8 +67,8 @@ public class Helpers {
         return client.readCollection(createDocumentCollectionUri(databaseName, collection.getId()), null)
                 .onErrorResume(
                         e -> {
-                            if (e instanceof CosmosClientException) {
-                                CosmosClientException dce = (CosmosClientException) e;
+                            if (e instanceof CosmosException) {
+                                CosmosException dce = (CosmosException) e;
                                 if (dce.getStatusCode() ==  404) {
                                     // if doesn't exist create it
 

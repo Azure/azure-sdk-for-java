@@ -9,7 +9,6 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.rx.TestSuiteBase;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -51,7 +50,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void createDatabase_withContentResponseOnWriteDisabled() throws CosmosClientException {
+    public void createDatabase_withContentResponseOnWriteDisabled() {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
 

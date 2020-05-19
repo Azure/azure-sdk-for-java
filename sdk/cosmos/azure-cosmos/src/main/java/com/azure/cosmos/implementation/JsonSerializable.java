@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.models.ConsistencyPolicy;
-import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.models.DatabaseAccountLocation;
 import com.azure.cosmos.models.ExcludedPath;
 import com.azure.cosmos.models.IncludedPath;
@@ -699,7 +698,6 @@ public class JsonSerializable {
             || SqlQuerySpec.class.equals(c)
             || UniqueKey.class.equals(c)
             || UniqueKeyPolicy.class.equals(c)
-            || Index.class.isAssignableFrom(c)
-            || CosmosError.class.equals(c);
+            || Index.class.isAssignableFrom(c);
     }
 }

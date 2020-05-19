@@ -4,9 +4,8 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.CosmosError;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
@@ -15,7 +14,6 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -297,17 +295,17 @@ class RxGatewayStoreModel implements RxStoreModel {
                        }
 
                        Exception exception = (Exception) unwrappedException;
-                       if (!(exception instanceof CosmosClientException)) {
-                           // wrap in CosmosClientException
+                       if (!(exception instanceof CosmosException)) {
+                           // wrap in CosmosException
                            logger.error("Network failure", exception);
-                           CosmosClientException dce = BridgeInternal.createCosmosClientException(0, exception);
+                           CosmosException dce = BridgeInternal.createCosmosException(0, exception);
                            BridgeInternal.setRequestHeaders(dce, request.getHeaders());
                            return Mono.error(dce);
                        }
 
                        if (request.requestContext.cosmosDiagnostics != null) {
-                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosClientException)exception);
-                           BridgeInternal.setCosmosDiagnostics((CosmosClientException)exception, request.requestContext.cosmosDiagnostics);
+                           BridgeInternal.recordGatewayResponse(request.requestContext.cosmosDiagnostics, request, null, (CosmosException)exception);
+                           BridgeInternal.setCosmosDiagnostics((CosmosException)exception, request.requestContext.cosmosDiagnostics);
                        }
 
                        return Mono.error(exception);
@@ -317,7 +315,7 @@ class RxGatewayStoreModel implements RxStoreModel {
     private void validateOrThrow(RxDocumentServiceRequest request,
                                  HttpResponseStatus status,
                                  HttpHeaders headers,
-                                 byte[] bodyAsBytes) throws CosmosClientException {
+                                 byte[] bodyAsBytes) {
 
         int statusCode = status.code();
 
@@ -328,12 +326,12 @@ class RxGatewayStoreModel implements RxStoreModel {
 
             String body = bodyAsBytes != null ? new String(bodyAsBytes) : null;
             CosmosError cosmosError;
-            cosmosError = (StringUtils.isNotEmpty(body)) ? ModelBridgeInternal.createCosmosError(body) : new CosmosError();
+            cosmosError = (StringUtils.isNotEmpty(body)) ? new CosmosError(body) : new CosmosError();
             cosmosError = new CosmosError(statusCodeString,
                     String.format("%s, StatusCode: %s", cosmosError.getMessage(), statusCodeString),
                     cosmosError.getPartitionedQueryExecutionInfo());
 
-            CosmosClientException dce = BridgeInternal.createCosmosClientException(statusCode, cosmosError, headers.toMap());
+            CosmosException dce = BridgeInternal.createCosmosException(statusCode, cosmosError, headers.toMap());
             BridgeInternal.setRequestHeaders(dce, request.getHeaders());
             throw dce;
         }
@@ -377,7 +375,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         return responseObs.onErrorResume(
                 e -> {
-                    CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+                    CosmosException dce = Utils.as(e, CosmosException.class);
 
                     if (dce == null) {
                         logger.error("unexpected failure {}", e.getMessage(), e);

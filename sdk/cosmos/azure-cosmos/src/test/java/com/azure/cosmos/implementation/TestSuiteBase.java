@@ -2,14 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.DataType;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.models.FeedOptions;
@@ -48,7 +46,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -522,7 +519,7 @@ public class TestSuiteBase extends DocumentClientTest {
             try {
                 client.deleteDocument(documentLink, options).single().block();
             } catch (Exception e) {
-                CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+                CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
                     throw e;
                 }

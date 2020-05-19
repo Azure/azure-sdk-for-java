@@ -2,11 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.rx.examples;
 
-import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DocumentClientTest;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -183,7 +182,7 @@ public class DatabaseCRUDAsyncAPITest extends DocumentClientTest {
             databaseForTestObservable.single() // Single
                     .block(); // Blocks to get the result
             assertThat("Should not reach here", false);
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             assertThat("Database already exists.", e.getStatusCode(),
                        equalTo(409));
         }

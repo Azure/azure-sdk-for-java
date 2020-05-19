@@ -350,9 +350,9 @@ public class CosmosAsyncDatabase {
         CosmosContainerRequestOptions options) {
         return container.read(options).onErrorResume(exception -> {
             final Throwable unwrappedException = Exceptions.unwrap(exception);
-            if (unwrappedException instanceof CosmosClientException) {
-                final CosmosClientException cosmosClientException = (CosmosClientException) unwrappedException;
-                if (cosmosClientException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+            if (unwrappedException instanceof CosmosException) {
+                final CosmosException cosmosException = (CosmosException) unwrappedException;
+                if (cosmosException.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
                     return createContainer(containerProperties, options);
                 }
             }
@@ -636,7 +636,7 @@ public class CosmosAsyncDatabase {
                                                           .flatMap(offerFeedResponse -> {
                                                               if (offerFeedResponse.getResults().isEmpty()) {
                                                                   return Mono.error(BridgeInternal
-                                                                            .createCosmosClientException(
+                                                                            .createCosmosException(
                                                                                 HttpConstants.StatusCodes.BADREQUEST,
                                                                                 "No offers found for the resource"));
                                                               }
@@ -669,7 +669,7 @@ public class CosmosAsyncDatabase {
                                                           .flatMap(offerFeedResponse -> {
                                                               if (offerFeedResponse.getResults().isEmpty()) {
                                                                   return Mono.error(BridgeInternal
-                                                                            .createCosmosClientException(
+                                                                            .createCosmosException(
                                                                                 HttpConstants.StatusCodes.BADREQUEST,
                                                                                 "No offers found for the resource"));
                                                               }
@@ -698,7 +698,7 @@ public class CosmosAsyncDatabase {
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
                                                     return Mono.error(BridgeInternal
-                                                                          .createCosmosClientException(
+                                                                          .createCosmosException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
                                                                                   "resource " + this.getId()));
@@ -730,7 +730,7 @@ public class CosmosAsyncDatabase {
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
                                                     return Mono.error(BridgeInternal
-                                                                          .createCosmosClientException(
+                                                                          .createCosmosException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
                                                                                   "resource " + this.getId()));

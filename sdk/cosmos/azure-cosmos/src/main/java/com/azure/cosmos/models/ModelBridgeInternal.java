@@ -482,17 +482,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosError createCosmosError(ObjectNode objectNode) {
-        return new CosmosError(objectNode);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosError createCosmosError(String jsonString) {
-        return new CosmosError(jsonString);
-    }
-
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
@@ -639,8 +628,6 @@ public final class ModelBridgeInternal {
             ((UniqueKeyPolicy) t).populatePropertyBag();
         } else if (t instanceof Index) {
             ((Index) t).populatePropertyBag();
-        } else if (t instanceof CosmosError) {
-            ((CosmosError) t).populatePropertyBag();
         } else {
             throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
@@ -676,8 +663,6 @@ public final class ModelBridgeInternal {
             return ((UniqueKeyPolicy) t).getJsonSerializable();
         } else if (t instanceof Index) {
             return ((Index) t).getJsonSerializable();
-        } else if (t instanceof CosmosError) {
-            return ((CosmosError) t).getJsonSerializable();
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }

@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -10,20 +10,20 @@ import com.azure.cosmos.CosmosClientException;
  */
 public class Exceptions {
 
-    public static boolean isStatusCode(CosmosClientException e, int status) {
+    public static boolean isStatusCode(CosmosException e, int status) {
         return status == e.getStatusCode();
     }
 
-    public static boolean isSubStatusCode(CosmosClientException e, int subStatus) {
+    public static boolean isSubStatusCode(CosmosException e, int subStatus) {
         return subStatus == e.getSubStatusCode();
     }
 
-    public static boolean isPartitionSplit(CosmosClientException e) {
+    public static boolean isPartitionSplit(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
     }
 
-    public static boolean isNameCacheStale(CosmosClientException e) {
+    public static boolean isNameCacheStale(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE);
     }

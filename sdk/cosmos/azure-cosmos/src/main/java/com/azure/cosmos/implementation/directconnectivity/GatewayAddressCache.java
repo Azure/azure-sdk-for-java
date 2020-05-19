@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -219,7 +219,7 @@ public class GatewayAddressCache implements IAddressCache {
                     return addressesValueHolder;
                     }).onErrorResume(ex -> {
                         Throwable unwrappedException = reactor.core.Exceptions.unwrap(ex);
-                        CosmosClientException dce = Utils.as(unwrappedException, CosmosClientException.class);
+                        CosmosException dce = Utils.as(unwrappedException, CosmosException.class);
                         if (dce == null) {
                             logger.error("unexpected failure", ex);
                             if (forceRefreshPartitionAddressesModified) {

@@ -625,7 +625,7 @@ public class CosmosAsyncContainer {
                    .flatMap(offerFeedResponse -> {
                        if (offerFeedResponse.getResults().isEmpty()) {
                            return Mono.error(
-                               BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                               BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                                                                           "No offers found for the resource"));
                        }
                        return database.getDocClientWrapper()
@@ -653,7 +653,7 @@ public class CosmosAsyncContainer {
                    .flatMap(offerFeedResponse -> {
                        if (offerFeedResponse.getResults().isEmpty()) {
                            return Mono.error(
-                               BridgeInternal.createCosmosClientException(HttpConstants.StatusCodes.BADREQUEST,
+                               BridgeInternal.createCosmosException(HttpConstants.StatusCodes.BADREQUEST,
                                                                           "No offers found for the resource"));
                        }
                        Offer offer = offerFeedResponse.getResults().get(0);
@@ -678,7 +678,7 @@ public class CosmosAsyncContainer {
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
                                                     return Mono.error(BridgeInternal
-                                                                          .createCosmosClientException(
+                                                                          .createCosmosException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the " +
                                                                                   "resource " + this.getId()));
@@ -709,7 +709,7 @@ public class CosmosAsyncContainer {
                                             .flatMap(offerFeedResponse -> {
                                                 if (offerFeedResponse.getResults().isEmpty()) {
                                                     return Mono.error(BridgeInternal
-                                                                          .createCosmosClientException(
+                                                                          .createCosmosException(
                                                                               HttpConstants.StatusCodes.BADREQUEST,
                                                                               "No offers found for the resource "
                                                                                   + this.getId()));
