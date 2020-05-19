@@ -41,7 +41,7 @@ class Changefeed {
                                               read from.*/
     private OffsetDateTime safeEndTime; /* Soonest time between lastConsumable and endTime. */
     private final ChangefeedCursor cfCursor; /* Cursor associated with changefeed. */
-    private ChangefeedCursor userCursor; /* User provided cursor. */
+    private final ChangefeedCursor userCursor; /* User provided cursor. */
     private final SegmentFactory segmentFactory; /* Segment factory. */
 
     /**

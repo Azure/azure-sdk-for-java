@@ -54,6 +54,7 @@ public class BlobChangefeedEvent {
      *
      * @param record The record.
      * @return The {@link BlobChangefeedEvent} representing the record.
+     * @throws IllegalArgumentException if the record is not valid.
      */
     public static BlobChangefeedEvent fromRecord(Object record) {
         AvroSchema.checkType("r", record, Map.class);
@@ -184,17 +185,21 @@ public class BlobChangefeedEvent {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BlobChangefeedEvent)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BlobChangefeedEvent)) {
+            return false;
+        }
         BlobChangefeedEvent event = (BlobChangefeedEvent) o;
-        return Objects.equals(getTopic(), event.getTopic()) &&
-            Objects.equals(getSubject(), event.getSubject()) &&
-            Objects.equals(getEventType(), event.getEventType()) &&
-            Objects.equals(getEventTime(), event.getEventTime()) &&
-            Objects.equals(getId(), event.getId()) &&
-            Objects.equals(getData(), event.getData()) &&
-            Objects.equals(getDataVersion(), event.getDataVersion()) &&
-            Objects.equals(getMetadataVersion(), event.getMetadataVersion());
+        return Objects.equals(getTopic(), event.getTopic())
+            && Objects.equals(getSubject(), event.getSubject())
+            && Objects.equals(getEventType(), event.getEventType())
+            && Objects.equals(getEventTime(), event.getEventTime())
+            && Objects.equals(getId(), event.getId())
+            && Objects.equals(getData(), event.getData())
+            && Objects.equals(getDataVersion(), event.getDataVersion())
+            && Objects.equals(getMetadataVersion(), event.getMetadataVersion());
     }
 
     @Override

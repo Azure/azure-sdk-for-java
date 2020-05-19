@@ -197,22 +197,26 @@ public class BlobChangefeedEventData {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BlobChangefeedEventData)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof BlobChangefeedEventData)) {
+            return false;
+        }
         BlobChangefeedEventData that = (BlobChangefeedEventData) o;
-        return Objects.equals(getApi(), that.getApi()) &&
-            Objects.equals(getClientRequestId(), that.getClientRequestId()) &&
-            Objects.equals(getRequestId(), that.getRequestId()) &&
-            Objects.equals(getETag(), that.getETag()) &&
-            Objects.equals(getContentType(), that.getContentType()) &&
-            Objects.equals(getContentLength(), that.getContentLength()) &&
-            getBlobType() == that.getBlobType() &&
-            Objects.equals(getContentOffset(), that.getContentOffset()) &&
-            Objects.equals(getDestinationUrl(), that.getDestinationUrl()) &&
-            Objects.equals(getSourceUrl(), that.getSourceUrl()) &&
-            Objects.equals(getBlobUrl(), that.getBlobUrl()) &&
-            Objects.equals(getRecursive(), that.getRecursive()) &&
-            Objects.equals(getSequencer(), that.getSequencer());
+        return Objects.equals(getApi(), that.getApi())
+            && Objects.equals(getClientRequestId(), that.getClientRequestId())
+            && Objects.equals(getRequestId(), that.getRequestId())
+            && Objects.equals(getETag(), that.getETag())
+            && Objects.equals(getContentType(), that.getContentType())
+            && Objects.equals(getContentLength(), that.getContentLength())
+            && getBlobType() == that.getBlobType()
+            && Objects.equals(getContentOffset(), that.getContentOffset())
+            && Objects.equals(getDestinationUrl(), that.getDestinationUrl())
+            && Objects.equals(getSourceUrl(), that.getSourceUrl())
+            && Objects.equals(getBlobUrl(), that.getBlobUrl())
+            && Objects.equals(getRecursive(), that.getRecursive())
+            && Objects.equals(getSequencer(), that.getSequencer());
     }
 
     @Override

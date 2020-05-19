@@ -20,7 +20,7 @@ import java.util.Objects;
 @Fluent
 public class ChangefeedCursor {
 
-    private static final ClientLogger logger = new ClientLogger(ChangefeedCursor.class);
+    private ClientLogger logger = new ClientLogger(ChangefeedCursor.class);
 
     private String endTime;
     private String segmentTime;
@@ -214,18 +214,22 @@ public class ChangefeedCursor {
      * @param cursor The cursor to deserialize.
      * @return The resulting {@link ChangefeedCursor cursor}.
      */
-    public static ChangefeedCursor deserialize(String cursor) {
+    public static ChangefeedCursor deserialize(String cursor) throws JsonProcessingException {
         try {
             return new ObjectMapper().readValue(cursor, ChangefeedCursor.class);
         } catch (IOException e) {
-            throw logger.logExceptionAsError(new UncheckedIOException(e));
+            throw e;
         }
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ChangefeedCursor)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ChangefeedCursor)) {
+            return false;
+        }
         ChangefeedCursor that = (ChangefeedCursor) o;
         return Objects.equals(getEndTime(), that.getEndTime())
             && Objects.equals(getSegmentTime(), that.getSegmentTime())

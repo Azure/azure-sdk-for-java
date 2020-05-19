@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.blob.changefeed;
 
 import com.azure.core.http.rest.ResponseBase;
@@ -22,7 +25,7 @@ class BlobLazyDownloader {
 
     private final BlobAsyncClient client; /* Client to download from. */
     private final long blockSize; /* The block size. */
-    private BlobRange range;
+    private final BlobRange range;
 
     /**
      * Creates a new BlobLazyDownloader to download the rest of a blob at a certain offset.
@@ -42,7 +45,8 @@ class BlobLazyDownloader {
         this.range = new BlobRange(0, totalSize);
     }
 
-    /*TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but wasnt immediately obvious to me */
+    /*TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but
+       wasnt immediately obvious to me */
     public Flux<ByteBuffer> download() {
         ParallelTransferOptions options = new ParallelTransferOptions()
             .setBlockSizeLong(blockSize);
