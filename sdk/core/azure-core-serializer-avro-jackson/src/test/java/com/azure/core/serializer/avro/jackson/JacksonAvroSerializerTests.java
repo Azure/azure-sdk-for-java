@@ -44,8 +44,8 @@ public class JacksonAvroSerializerTests {
             Arguments.of(schemaCreator("string"), new byte[] { 0x06, 0x66, 0x6F, 0x6F }, "foo"),
 
             // BYTES deserializes into ByteBuffers.
-            Arguments.of(schemaCreator("bytes"), new byte[] { 0 }, new byte[0]),
-            Arguments.of(schemaCreator("bytes"), new byte[] { 4, 42, 42 }, new byte[] { 42, 42 })
+            Arguments.of(schemaCreator("bytes"), new byte[] { 0 }, ByteBuffer.wrap(new byte[0])),
+            Arguments.of(schemaCreator("bytes"), new byte[] { 4, 42, 42 }, ByteBuffer.wrap(new byte[] { 42, 42 }))
         );
     }
 

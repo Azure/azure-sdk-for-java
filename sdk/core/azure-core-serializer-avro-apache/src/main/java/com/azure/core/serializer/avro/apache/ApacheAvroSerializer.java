@@ -9,7 +9,6 @@ import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
-import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
@@ -42,14 +41,26 @@ public class ApacheAvroSerializer implements AvroSerializer {
     @Override
     public <T> T read(byte[] input, String schema) {
         Objects.requireNonNull(schema, "'schema' cannot be null.");
+
+        return readInternal(input, schema, schema);
+    }
+
+    @Override
+    public <T> T read(byte[] input, String readerSchema, String writerSchema) {
+        Objects.requireNonNull(readerSchema, "'readerSchema' cannot be null.");
+        Objects.requireNonNull(writerSchema, "'writerSchema' cannot be null.");
+
+        return readInternal(input, readerSchema, writerSchema);
+    }
+
+    private <T> T readInternal(byte[] input, String readerSchema, String writerSchema) {
         if (input == null) {
             return null;
         }
 
         try {
-            Schema avroSchema = parser.parse(schema);
-            DatumReader<T> reader = new GenericDatumReader<>(avroSchema, avroSchema, genericData);
-            return reader.read(null, decoderFactory.binaryDecoder(input, null));
+            return new GenericDatumReader<T>(parser.parse(writerSchema), parser.parse(readerSchema), genericData)
+                .read(null, decoderFactory.binaryDecoder(input, null));
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
         }

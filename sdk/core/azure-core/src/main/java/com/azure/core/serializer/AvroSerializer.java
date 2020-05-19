@@ -18,6 +18,18 @@ public interface AvroSerializer {
     <T> T read(byte[] input, String schema);
 
     /**
+     * Reads the Avro stream into its object representation.
+     *
+     * @param input Incoming Avro stream.
+     * @param readerSchema JSON string representing the Avro schema that will be used to deserialize the incoming Avro
+     * stream.
+     * @param writerSchema JSON string representing the Avro schema that was used to generate the incoming Avro stream.
+     * @param <T> Type of the object.
+     * @return The object representing the Avro stream.
+     */
+    <T> T read(byte[] input, String readerSchema, String writerSchema);
+
+    /**
      * Writes the object into its Avro stream.
      *
      * @param value The object.

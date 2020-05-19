@@ -5,12 +5,12 @@ package com.azure.core.serializer.avro.jackson;
 
 import com.azure.core.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.dataformat.avro.AvroMapper;
 import com.fasterxml.jackson.dataformat.avro.AvroSchema;
 import reactor.core.Exceptions;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 
 /**
@@ -34,19 +34,35 @@ public final class JacksonAvroSerializer implements AvroSerializer {
     public <T> T read(byte[] input, String schema) {
         Objects.requireNonNull(schema, "'schema' cannot be null.");
 
+        return readInternal(input, schema, schema);
+    }
+
+    @Override
+    public <T> T read(byte[] input, String readerSchema, String writerSchema) {
+        Objects.requireNonNull(readerSchema, "'readerSchema' cannot be null.");
+        Objects.requireNonNull(writerSchema, "'writerSchema' cannot be null.");
+
+        return readInternal(input, readerSchema, writerSchema);
+    }
+
+    private <T> T readInternal(byte[] input, String readerSchema, String writerSchema) {
         if (input == null) {
             return null;
         }
 
         try {
-            AvroSchema jacksonAvroSchema = avroMapper.schemaFrom(schema);
+            AvroSchema avroSchema = avroMapper.schemaFrom(writerSchema);
+            AvroSchema avroReaderSchema = avroMapper.schemaFrom(readerSchema);
 
-            if ("null".equalsIgnoreCase(jacksonAvroSchema.getAvroSchema().getType().getName())) {
+            avroSchema = avroSchema.withReaderSchema(avroReaderSchema);
+
+            if ("null".equalsIgnoreCase(avroReaderSchema.getAvroSchema().getType().getName())) {
                 return null;
             }
 
-            ObjectReader reader = avroMapper.readerFor(getReaderClass(jacksonAvroSchema.getAvroSchema().getFullName()));
-            return reader.with(jacksonAvroSchema).readValue(input);
+            return avroMapper.readerFor(getReaderClass(avroReaderSchema.getAvroSchema().getFullName()))
+                .with(avroSchema)
+                .readValue(input);
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
         }
@@ -64,29 +80,6 @@ public final class JacksonAvroSerializer implements AvroSerializer {
     }
 
     private static Class<?> getReaderClass(String typeFullName) {
-        switch (typeFullName) {
-            case "null":
-                return void.class;
-            case "boolean":
-                return boolean.class;
-            case "int":
-                return int.class;
-            case "long":
-                return long.class;
-            case "float":
-                return float.class;
-            case "double":
-                return double.class;
-            case "string":
-                return String.class;
-            case "bytes":
-                return byte[].class;
-            default:
-                try {
-                    return Class.forName(typeFullName);
-                } catch (ClassNotFoundException ex) {
-                    return Object.class;
-                }
-        }
+        return typeFullName.equalsIgnoreCase("bytes") ? ByteBuffer.class : Object.class;
     }
 }
