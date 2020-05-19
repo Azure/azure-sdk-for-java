@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 - Fix bug in FormRecognizer API's to support multipage document recognition.
-- Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingAsyncClient and FormTrainingClient
+- Add `getFormRecognizerClient()` and `getFormRecognizerAsyncClient()` in FormTrainingClient and FormTrainingAsyncClient
 - Add `FormTrainingClientBuilder` to build `FormTrainingAsyncClient` and `FormTrainingClient`
 - Adopt the `training` namespace for Form Recognizer Training Clients
 - Rename parameter `fileSourceUrl` to `trainingFilesUrl` on `beginTraining` method in FormTrainingClients

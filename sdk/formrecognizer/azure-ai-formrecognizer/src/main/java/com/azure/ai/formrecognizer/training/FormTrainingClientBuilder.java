@@ -37,15 +37,22 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link FormTrainingClient FormRecognizerClients}
- * and {@link FormTrainingAsyncClient FormTrainingAsyncClients}, call {@link #buildClient()} buildClient} and
+ * This class provides a fluent builder API to help instantiation of {@link FormTrainingClient FormTrainingClient}
+ * and {@link FormTrainingAsyncClient FormTrainingAsyncClient}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #credential(AzureKeyCredential)} gives
- * the builder access credential.
+ * {@link #credential(AzureKeyCredential)} gives the builder access credential.
  * </p>
+ *
+ * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization}
+ *
+ * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.initialization}
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -54,6 +61,8 @@ import java.util.Objects;
  * pipeline requires additional setup but allows for finer control on how the {@link FormTrainingClient} and
  * {@link FormTrainingAsyncClient} is built.
  * </p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.pipeline.instantiation}
  *
  * @see FormTrainingAsyncClient
  * @see FormTrainingClient
@@ -197,7 +206,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param endpoint The URL of the Azure Form Recognizer instance service requests to and receive responses from.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      * @throws NullPointerException if {@code endpoint} is null
      * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
      */
@@ -221,11 +230,11 @@ public final class FormTrainingClientBuilder {
 
     /**
      * Sets the {@link AzureKeyCredential} to use when authenticating HTTP requests for this
-     * FormRecognizerClientBuilder.
+     * FormTrainingClientBuilder.
      *
      * @param apiKeyCredential {@link AzureKeyCredential} API key credential
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      * @throws NullPointerException If {@code apiKeyCredential} is {@code null}
      */
     public FormTrainingClientBuilder credential(AzureKeyCredential apiKeyCredential) {
@@ -241,7 +250,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param logOptions The logging configuration to use when sending and receiving HTTP requests/responses.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      */
     public FormTrainingClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
@@ -253,7 +262,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param policy The retry policy for service requests.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      * @throws NullPointerException If {@code policy} is {@code null}.
      */
     public FormTrainingClientBuilder addPolicy(HttpPipelinePolicy policy) {
@@ -266,7 +275,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param client The HTTP client to use for requests.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      */
     public FormTrainingClientBuilder httpClient(HttpClient client) {
         if (this.httpClient != null && client == null) {
@@ -286,7 +295,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param httpPipeline The HTTP pipeline to use for sending service requests and receiving responses.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      */
     public FormTrainingClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
@@ -305,7 +314,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param configuration The configuration store used to
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      */
     public FormTrainingClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
@@ -320,7 +329,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param retryPolicy user's retry policy applied to each request.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      */
     public FormTrainingClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
@@ -336,7 +345,7 @@ public final class FormTrainingClientBuilder {
      *
      * @param version {@link FormRecognizerServiceVersion} of the service to be used when making requests.
      *
-     * @return The updated FormRecognizerClientBuilder object.
+     * @return The updated FormTrainingClientBuilder object.
      */
     public FormTrainingClientBuilder serviceVersion(FormRecognizerServiceVersion version) {
         this.version = version;

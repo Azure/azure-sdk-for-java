@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.training;
 
-import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -34,15 +33,15 @@ import java.time.Duration;
  * @see FormRecognizerClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class)
-public class FormTrainingClient {
+public final class FormTrainingClient {
 
     private final FormTrainingAsyncClient client;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
-     * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
+     * Each service call goes through the {@link FormTrainingClientBuilder#pipeline http pipeline}.
      *
-     * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
+     * @param formTrainingAsyncClient The {@link FormTrainingAsyncClient} that the client routes its request through.
      */
     FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
         this.client = formTrainingAsyncClient;

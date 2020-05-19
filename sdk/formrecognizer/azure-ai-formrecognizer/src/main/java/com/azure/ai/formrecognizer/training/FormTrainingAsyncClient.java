@@ -60,7 +60,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * @see FormRecognizerAsyncClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
-public class FormTrainingAsyncClient {
+public final class FormTrainingAsyncClient {
 
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
     private final FormRecognizerClientImpl service;
@@ -68,7 +68,7 @@ public class FormTrainingAsyncClient {
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
-     * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
+     * Each service call goes through the {@link FormTrainingClientBuilder#pipeline http pipeline}.
      *
      * @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
