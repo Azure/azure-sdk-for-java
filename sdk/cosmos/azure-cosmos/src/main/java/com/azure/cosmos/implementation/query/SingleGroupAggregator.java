@@ -172,9 +172,7 @@ public abstract class SingleGroupAggregator {
             for (Map.Entry<String, AggregateValue> aliasAndValue : this.aliasToValue.entrySet()) {
                 String alias = aliasAndValue.getKey();
                 AggregateValue aggregateValue = aliasAndValue.getValue();
-                System.out.println("values.get(alias) = " + values.get(alias));
                 aggregateValue.addValue(values.get(alias));
-                System.out.println("SelectListAggregateValues.addValues");
             }
         }
 

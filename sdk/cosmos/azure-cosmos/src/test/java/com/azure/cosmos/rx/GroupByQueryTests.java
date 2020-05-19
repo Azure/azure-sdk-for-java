@@ -6,6 +6,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.CosmosItemProperties;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -20,15 +21,17 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class GroupByQueryTests extends TestSuiteBase {
-    private final String FIELD = "city";
     private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<>();
-
+    List<Person> personList;
     private CosmosAsyncClient client;
 
     @Factory(dataProvider = "clientBuilders")
@@ -70,41 +73,40 @@ public class GroupByQueryTests extends TestSuiteBase {
     public void queryDocuments() {
         boolean qmEnabled = true;
 
-        String query = "SELECT count(c.age), c.country FROM c group by c.country ";
+        String query = "SELECT sum(c.age), c.city FROM c group by c.city";
         FeedOptions options = new FeedOptions();
         ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 35);
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
-        CosmosPagedFlux<JsonNode> queryObservable =
-            createdCollection.queryItems(query,
-                                         options,
-                                         JsonNode.class);
-        List<Object> cityList = docs.stream()
-                                    .map(d -> ModelBridgeInternal.getObjectFromJsonSerializable(d, FIELD))
-                                    .collect(Collectors.toList());
+        CosmosPagedFlux<JsonNode> queryObservable = createdCollection.queryItems(query,
+                                                                                 options,
+                                                                                 JsonNode.class);
+        Map<City, Integer> resultMap = personList.stream()
+                                         .collect(Collectors.groupingBy(Person::getCity,
+                                                                        Collectors.summingInt(Person::getAge)));
 
-        docs.stream().collect(Collectors.groupingBy(cosmosItemProperties -> cosmosItemProperties.getId()));
-
-        List<FeedResponse<JsonNode>> queryResults = queryObservable.byPage().collectList().block();
-
-        queryResults
-            .forEach(feedResponse -> System
-                                         .out
-                                         .println("cosmosItemPropertiesFeedResponse" +
-                                                      ".getResults() = " + feedResponse
-                                                                               .getResults()));
+        List<Document> expectedDocumentsList = new ArrayList<>();
+        resultMap.forEach((city, sum) ->
+                          {
+                              Document d = new Document();
+                              d.set("$1", sum);
+                              d.set("city", city);
+                              expectedDocumentsList.add(d);
+                          });
 
 
-/*        FeedResponseListValidator<CosmosItemProperties> validator =
-            new FeedResponseListValidator.Builder<CosmosItemProperties>()
-//                .totalSize(distinctNameList.size())
-                .allPagesSatisfy(new FeedResponseValidator.Builder<CosmosItemProperties>()
-                                     .requestChargeGreaterThanOrEqualTo(1.0)
-                                     .build())
-                .hasValidQueryMetrics(qmEnabled)
-                .build();
+        List<FeedResponse<JsonNode>> queryResultPages = queryObservable.byPage().collectList().block();
 
-        validateQuerySuccess(queryObservable.byPage(), validator, TIMEOUT);*/
+        List<JsonNode> queryResults = new ArrayList<>();
+        queryResultPages
+            .forEach(feedResponse -> queryResults.addAll(feedResponse.getResults()));
+
+        assertThat(expectedDocumentsList.size()).isEqualTo(queryResults.size());
+
+        for (int i = 0; i < expectedDocumentsList.size(); i++) {
+            assertThat(expectedDocumentsList.get(i).toString().equals(queryResults.get(i).toString()));
+        }
+
     }
 
     public void bulkInsert() {
@@ -113,25 +115,18 @@ public class GroupByQueryTests extends TestSuiteBase {
     }
 
     public void generateTestData() {
-
+        personList = new ArrayList<>();
         Random rand = new Random();
         ObjectMapper mapper = new ObjectMapper();
         for (int i = 0; i < 40; i++) {
             Person person = getRandomPerson(rand);
             try {
                 docs.add(new CosmosItemProperties(mapper.writeValueAsString(person)));
+                personList.add(person);
             } catch (JsonProcessingException e) {
                 logger.error(e.getMessage());
             }
         }
-        String resourceJson = String.format("{ " + "\"id\": \"%s\", \"intprop\": %d }", UUID.randomUUID().toString(),
-                                            5);
-        String resourceJson2 = String.format("{ " + "\"id\": \"%s\", \"intprop\": %f }", UUID.randomUUID().toString(),
-                                             5.0f);
-
-        docs.add(new CosmosItemProperties(resourceJson));
-        docs.add(new CosmosItemProperties(resourceJson2));
-
     }
 
     private Pet getRandomPet(Random rand) {

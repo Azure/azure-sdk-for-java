@@ -389,7 +389,6 @@ public class CosmosAsyncContainer {
     }
 
     private <T> FeedResponse<T> prepareFeedResponse(FeedResponse<Document> response, Class<T> classType) {
-        System.out.println("response.getResults() = " + response.getResults());
         return BridgeInternal.createFeedResponseWithQueryMetrics(
             (response.getResults()
                  .stream()

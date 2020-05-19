@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PathParser;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestConfigurations;
@@ -54,6 +55,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -1189,6 +1191,24 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
          */
         public String getName() {
             return name;
+        }
+
+        /**
+         * Getter for property 'city'.
+         *
+         * @return Value for property 'city'.
+         */
+        public City getCity() {
+            return city;
+        }
+
+        /**
+         * Getter for property 'age'.
+         *
+         * @return Value for property 'age'.
+         */
+        public int getAge() {
+            return age;
         }
     }
 }

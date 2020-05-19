@@ -62,10 +62,7 @@ public class DistinctMapTest {
         ByteBuffer byteBuffer1 = ModelBridgeInternal.serializeJsonToByteBuffer((JsonSerializable) doc1);
         ByteBuffer byteBuffer2 = ModelBridgeInternal.serializeJsonToByteBuffer((JsonSerializable) doc2);
         UInt128 dHash1 = DistinctHash.getHash(doc1);
-        System.out.println("byteBuffer1.equals(byteBuffer2); = " + byteBuffer1.equals(byteBuffer2));
         UInt128 dHash2 = DistinctHash.getHash(doc2);
-        System.out.println("dHash1.equals(dHash2) = " + dHash1.equals(dHash2));
-
     }
 
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")

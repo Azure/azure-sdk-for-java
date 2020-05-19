@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
@@ -18,7 +19,14 @@ import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.function.BinaryOperator;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
@@ -48,9 +56,24 @@ public class AggregateQueryTests extends TestSuiteBase {
         }
     }
 
+    public static class MultiAggregateConfig {
+        String operator1;
+        String operator2;
+        Object expected1;
+        Object expected2;
+
+        public MultiAggregateConfig(String operator1, String operator2, Object expected1, Object expected2) {
+            this.operator1 = operator1;
+            this.operator2 = operator2;
+            this.expected1 = expected1;
+            this.expected2 = expected2;
+        }
+    }
+
     private CosmosAsyncContainer createdCollection;
     private ArrayList<CosmosItemProperties> docs = new ArrayList<CosmosItemProperties>();
     private ArrayList<QueryConfig> queryConfigs = new ArrayList<QueryConfig>();
+    private ArrayList<QueryConfig> multiAggregateQueryConfigs = new ArrayList<QueryConfig>();
 
     private String partitionKey = "mypk";
     private String uniquePartitionKey = "uniquePartitionKey";
@@ -76,7 +99,6 @@ public class AggregateQueryTests extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         for (QueryConfig queryConfig : queryConfigs) {
-            System.out.println("####### queryConfig.query = " + queryConfig.query);
             CosmosPagedFlux<CosmosItemProperties> queryObservable = createdCollection.queryItems(queryConfig.query, options, CosmosItemProperties.class);
 
             FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
@@ -163,13 +185,68 @@ public class AggregateQueryTests extends TestSuiteBase {
 
             // Should add support for non value aggregates before enabling these.
             // https://github.com/Azure/azure-sdk-for-java/issues/6088
-            /*
             query = String.format(aggregateSinglePartitionQueryFormatSelect, config.operator, field, partitionKey,
             uniquePartitionKey);
             testName = String.format("%s SinglePartition %s", config.operator, "SELECT");
-            queryConfigs.add(new QueryConfig(testName, query, new Document("{'$1':" + removeTrailingZerosIfInteger
-            (config.expected) + "}")));
-             */
+            queryConfigs.add(new QueryConfig(testName, query, new Document("{'$1':" + config.expected + "}")));
+        }
+    }
+
+    public void generateMultiAggregateQueryConfig(){
+        List<MultiAggregateConfig> configList = new ArrayList<>();
+
+        List<Integer> integers = docs.stream()
+                                     .filter(cosmosItemProperties -> cosmosItemProperties.has(field))
+                                     .map(cosmosItemProperties -> cosmosItemProperties.getInt(field))
+                                     .collect(Collectors.toList());
+
+        int min = Collections.min(integers);
+        int max = Collections.max(integers);
+        double sum = integers.stream().mapToInt(Integer::intValue).sum();
+        int count = integers.size();
+        double avg = sum / count;
+
+        String multiAggregateQueryFormat = "SELECT %s(r.field), %s(r.field) FROM r";
+        configList.add(new MultiAggregateConfig("MIN", "MAX", min, max));
+        configList.add(new MultiAggregateConfig("Avg", "Sum", avg, sum));
+        configList.add(new MultiAggregateConfig("Count", "Min", count, min));
+
+        for (MultiAggregateConfig config : configList) {
+            String query = String.format(multiAggregateQueryFormat, config.operator1, config.operator2);
+            String testName = String.format("%s, %s multi aggregates", config.operator1, config.operator2);
+            multiAggregateQueryConfigs.add(new QueryConfig(testName,
+                                                           query,
+                                                           new Document("{'$1':" + config.expected1
+                                                                            + ",'$2':" + config.expected2 + "}")));
+        }
+
+        // Adding a multi aggregate query with aliases
+        String query = "SELECT Max(r.field) as max_field, Min(r.field) as min_field FROM r";
+        multiAggregateQueryConfigs.add(new QueryConfig("max, min with alias",
+                                                       query,
+                                                       new Document("{'max_field':" + max
+                                                                        + ",'min_field':" + min + "}")));
+
+
+    }
+
+    @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
+    void queryDocumentsWithMultipleAggregates() {
+        FeedOptions options = new FeedOptions();
+
+        options.setPopulateQueryMetrics(false);
+        options.setMaxDegreeOfParallelism(2);
+
+        for (QueryConfig queryConfig : multiAggregateQueryConfigs) {
+            CosmosPagedFlux<CosmosItemProperties> queryFlux = createdCollection
+                                                                        .queryItems(queryConfig.query, options,
+                                                                                    CosmosItemProperties.class);
+            FeedResponseListValidator<CosmosItemProperties> validator = new FeedResponseListValidator.Builder<CosmosItemProperties>()
+                                                                            .withAggregateValue(queryConfig.expected)
+                                                                            .numberOfPages(1)
+                                                                            .build();
+
+            validateQuerySuccess(queryFlux.byPage(), validator);
         }
     }
 
@@ -205,6 +282,7 @@ public class AggregateQueryTests extends TestSuiteBase {
         }
         bulkInsert();
         generateTestConfigs();
+        generateMultiAggregateQueryConfig();
         waitIfNeededForReplicasToCatchUp(this.getClientBuilder());
     }
 }
