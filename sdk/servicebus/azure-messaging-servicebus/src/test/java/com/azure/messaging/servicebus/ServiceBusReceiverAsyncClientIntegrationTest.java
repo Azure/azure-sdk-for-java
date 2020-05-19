@@ -645,23 +645,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Sets the sender and receiver. If session is enabled, then a single-named session receiver is created.
      */
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled) {
-        this.isSessionEnabled = isSessionEnabled;
-        this.sender = getSenderBuilder(false, entityType, isSessionEnabled).buildAsyncClient();
-
-        if (isSessionEnabled) {
-            assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType,
-                Function.identity(),
-                builder -> builder.sessionId(sessionId)).buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
-                Function.identity(),
-                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
-                .buildAsyncClient();
-        } else {
-            this.receiver = getReceiverBuilder(false, entityType).buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType)
-                .buildAsyncClient();
-        }
+        setSenderAndReceiver(entityType, isSessionEnabled, null);
     }
 
     private void setSenderAndReceiver(MessagingEntityType entityType, boolean isSessionEnabled,
@@ -671,16 +655,20 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         if (isSessionEnabled) {
             assertNotNull(sessionId, "'sessionId' should have been set.");
-            this.receiver = getSessionReceiverBuilder(false, entityType,
-                Function.identity(),
-                builder -> builder.sessionId(sessionId)).buildAsyncClient();
-            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType,
-                Function.identity(),
-                builder -> builder.sessionId(sessionId).receiveMode(ReceiveMode.RECEIVE_AND_DELETE))
+            this.receiver = getSessionReceiverBuilder(false, entityType, Function.identity())
+                .sessionId(sessionId)
+                .maxAutoLockRenewalDuration(autoLockRenewal)
+                .buildAsyncClient();
+            this.receiveAndDeleteReceiver = getSessionReceiverBuilder(false, entityType, Function.identity())
+                .sessionId(sessionId)
+                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         } else {
-            this.receiver = getReceiverBuilder(false, entityType).buildAsyncClient();
-            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType)
+            this.receiver = getReceiverBuilder(false, entityType, Function.identity())
+                .maxAutoLockRenewalDuration(autoLockRenewal)
+                .buildAsyncClient();
+            this.receiveAndDeleteReceiver = getReceiverBuilder(false, entityType, Function.identity())
+                .receiveMode(ReceiveMode.RECEIVE_AND_DELETE)
                 .buildAsyncClient();
         }
     }

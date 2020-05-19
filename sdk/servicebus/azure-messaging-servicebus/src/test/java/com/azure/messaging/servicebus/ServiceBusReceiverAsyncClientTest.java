@@ -13,6 +13,7 @@ import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageWithLockToken;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
@@ -22,7 +23,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorReceiver;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.transport.DeliveryState.DeliveryStateType;
 import org.apache.qpid.proton.message.Message;
@@ -55,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -72,7 +71,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 class ServiceBusReceiverAsyncClientTest {
@@ -253,104 +251,6 @@ class ServiceBusReceiverAsyncClientTest {
             .verifyComplete();
 
         verify(amqpReceiveLink).addCredits(PREFETCH);
-    }
-
-    /**
-     * Verifies that we can receive messages from the processor.
-     */
-    @Test
-    void receivesAndAutoCompletes() throws InterruptedException {
-        // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration);
-        final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL,
-            tracerProvider, messageSerializer, onClientClose);
-
-        final UUID lockToken1 = UUID.randomUUID();
-        final UUID lockToken2 = UUID.randomUUID();
-        final Instant expiration = Instant.now().plus(Duration.ofMinutes(1));
-
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
-        final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
-
-        when(message.getLockToken()).thenReturn(lockToken1);
-        when(message2.getLockToken()).thenReturn(lockToken2);
-
-        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
-        when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
-
-        when(receivedMessage.getLockToken()).thenReturn(lockToken1.toString());
-        when(receivedMessage.getLockedUntil()).thenReturn(expiration);
-        when(receivedMessage2.getLockToken()).thenReturn(lockToken2.toString());
-        when(receivedMessage2.getLockedUntil()).thenReturn(expiration);
-
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
-            .thenReturn(Mono.just(managementNode));
-
-        when(amqpReceiveLink.updateDisposition(eq(lockToken1.toString()), argThat(e -> e.getType() == DeliveryStateType.Accepted))).thenReturn(Mono.empty());
-        when(amqpReceiveLink.updateDisposition(eq(lockToken2.toString()), argThat(e -> e.getType() == DeliveryStateType.Accepted))).thenReturn(Mono.empty());
-
-        // Act and Assert
-        StepVerifier.create(consumer2.receive().take(2))
-            .then(() -> {
-                messageSink.next(message);
-                messageSink.next(message2);
-            })
-            .assertNext(context -> Assertions.assertEquals(receivedMessage, context.getMessage()))
-            .assertNext(context -> Assertions.assertEquals(receivedMessage2, context.getMessage()))
-            .verifyComplete();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        logger.info("Verifying assertions.");
-        verify(amqpReceiveLink).updateDisposition(eq(lockToken1.toString()), any(Accepted.class));
-        verify(amqpReceiveLink).updateDisposition(eq(lockToken2.toString()), any(Accepted.class));
-    }
-
-    /**
-     * Verifies that if there is no lock token, and auto-complete is requested. It errors.
-     */
-    @Test
-    void receivesAndAutoCompleteWithoutLockTokenErrors() {
-        // Arrange
-        final ReceiverOptions options = new ReceiverOptions(ReceiveMode.PEEK_LOCK, PREFETCH, maxAutoLockRenewalDuration);
-        final ServiceBusReceiverAsyncClient consumer2 = new ServiceBusReceiverAsyncClient(
-            NAMESPACE, ENTITY_PATH, MessagingEntityType.QUEUE, options, connectionProcessor, CLEANUP_INTERVAL,
-            tracerProvider, messageSerializer, onClientClose);
-
-        final MessageWithLockToken message = mock(MessageWithLockToken.class);
-        final MessageWithLockToken message2 = mock(MessageWithLockToken.class);
-
-        when(messageSerializer.deserialize(message, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage);
-        when(messageSerializer.deserialize(message2, ServiceBusReceivedMessage.class)).thenReturn(receivedMessage2);
-
-        final Instant lockedUntil = Instant.now().plusSeconds(30);
-        final Instant lockedUntil2 = Instant.now().plusSeconds(30);
-
-        when(receivedMessage.getLockToken()).thenReturn(null);
-        when(receivedMessage.getLockedUntil()).thenReturn(lockedUntil);
-
-        when(receivedMessage2.getLockToken()).thenReturn(UUID.randomUUID().toString());
-        when(receivedMessage2.getLockedUntil()).thenReturn(lockedUntil2);
-
-        when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
-            .thenReturn(Mono.just(managementNode));
-
-        when(managementNode.updateDisposition(any(), eq(DispositionStatus.COMPLETED), isNull(), isNull(), isNull(),
-            isNull(), isNull()))
-            .thenReturn(Mono.delay(Duration.ofMillis(250)).then());
-
-        // Act and Assert
-        try {
-            StepVerifier.create(consumer2.receive().take(2))
-                .then(() -> messageSink.next(message))
-                .expectError(IllegalStateException.class)
-                .verify();
-        } finally {
-            consumer2.close();
-        }
-
-        verifyZeroInteractions(managementNode);
     }
 
     /**
@@ -623,22 +523,15 @@ class ServiceBusReceiverAsyncClientTest {
     @Test
     void receiveIllegalOptions() {
         // Arrange
-        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
+        ServiceBusReceiverClientBuilder builder = new ServiceBusClientBuilder()
             .connectionString(NAMESPACE_CONNECTION_STRING)
             .receiver()
             .topicName("baz").subscriptionName("bar")
             .maxAutoLockRenewalDuration(Duration.ofSeconds(-1))
-            .receiveMode(ReceiveMode.PEEK_LOCK)
-            .buildAsyncClient();
+            .receiveMode(ReceiveMode.PEEK_LOCK);
 
         // Act & Assert
-        StepVerifier.create(receiver.receive())
-            .expectError(IllegalArgumentException.class)
-            .verify();
-
-        StepVerifier.create(receiver.receive())
-            .expectError(NullPointerException.class)
-            .verify();
+        Assertions.assertThrows(IllegalArgumentException.class, () -> builder.buildAsyncClient());
     }
 
     @Test

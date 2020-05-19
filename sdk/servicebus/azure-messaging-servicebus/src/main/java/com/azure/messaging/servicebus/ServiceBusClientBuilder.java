@@ -685,6 +685,9 @@ public final class ServiceBusClientBuilder {
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
+            } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);
@@ -863,6 +866,9 @@ public final class ServiceBusClientBuilder {
             if (prefetchCount < 1) {
                 throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                     "prefetchCount (%s) cannot be less than 1.", prefetchCount)));
+            } else if (maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration.isNegative()) {
+                throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                    "maxAutoLockRenewalDuration (%s) cannot be negative.", maxAutoLockRenewalDuration)));
             }
 
             final ServiceBusConnectionProcessor connectionProcessor = getOrCreateConnectionProcessor(messageSerializer);

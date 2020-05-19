@@ -178,10 +178,10 @@ class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
         Function<ServiceBusSessionReceiverClientBuilder, ServiceBusSessionReceiverClientBuilder> onBuild) {
 
         this.sender = getSenderBuilder(false, entityType, true).buildAsyncClient();
-        this.receiver = getSessionReceiverBuilder(false, entityType,
-            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)),
-            builder -> onBuild.apply(builder))
-            .buildAsyncClient();
+        ServiceBusSessionReceiverClientBuilder sessionBuilder = getSessionReceiverBuilder(false, entityType,
+            builder -> builder.retryOptions(new AmqpRetryOptions().setTryTimeout(operationTimeout)));
+
+        this.receiver = onBuild.apply(sessionBuilder).buildAsyncClient();
     }
 
     private static void assertMessageEquals(String sessionId, String messageId, String contents,
