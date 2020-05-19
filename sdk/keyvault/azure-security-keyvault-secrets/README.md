@@ -121,7 +121,6 @@ The following sections provide several code snippets covering some of the most c
 - [List Secrets](#list-secrets)
 
 ### Create a Secret
-
 Create a secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the Azure Key Vault. If the secret with name already exists then a new version of the secret is created.
 
