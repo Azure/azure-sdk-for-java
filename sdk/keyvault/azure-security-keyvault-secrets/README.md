@@ -141,7 +141,6 @@ System.out.printf("Secret is created with name %s and value %s \n", secret.getNa
 ```
 
 ### Retrieve a Secret
-
 Retrieve a previously stored secret by calling `getSecret`.
 
 ```Java
