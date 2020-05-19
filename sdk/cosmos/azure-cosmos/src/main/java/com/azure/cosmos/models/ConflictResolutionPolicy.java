@@ -148,24 +148,6 @@ public final class ConflictResolutionPolicy {
     }
 
     /**
-     * Instantiates a new Conflict resolution policy.
-     *
-     * @param jsonString the json string
-     */
-    public ConflictResolutionPolicy(String jsonString) {
-        this.jsonSerializable = new JsonSerializable(jsonString);
-    }
-
-    /**
-     * Instantiates a new Conflict resolution policy.
-     *
-     * @param objectNode the object node.
-     */
-    ConflictResolutionPolicy(ObjectNode objectNode) {
-        this.jsonSerializable = new JsonSerializable(objectNode);
-    }
-
-    /**
      * Gets the {@link ConflictResolutionMode} in the Azure Cosmos DB service.
      * By default it is {@link ConflictResolutionMode#LAST_WRITER_WINS}.
      *

@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
@@ -615,8 +616,6 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
-        } else if (t instanceof ConsistencyPolicy) {
-            ((ConsistencyPolicy) t).populatePropertyBag();
         } else if (t instanceof DatabaseAccountLocation) {
             ((DatabaseAccountLocation) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
@@ -652,8 +651,6 @@ public final class ModelBridgeInternal {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
-        } else if (t instanceof ConsistencyPolicy) {
-            return ((ConsistencyPolicy) t).getJsonSerializable();
         } else if (t instanceof DatabaseAccountLocation) {
             return ((DatabaseAccountLocation) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
