@@ -3,21 +3,14 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
-import com.azure.cosmos.implementation.query.aggregation.Aggregator;
-import com.azure.cosmos.implementation.query.aggregation.AverageAggregator;
-import com.azure.cosmos.implementation.query.aggregation.CountAggregator;
-import com.azure.cosmos.implementation.query.aggregation.MaxAggregator;
-import com.azure.cosmos.implementation.query.aggregation.MinAggregator;
-import com.azure.cosmos.implementation.query.aggregation.SumAggregator;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.implementation.Resource;
-import com.azure.cosmos.implementation.Undefined;
-import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
+import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.Undefined;
+import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
+import com.azure.cosmos.models.FeedResponse;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 
@@ -34,7 +27,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
     private final boolean isValueAggregateQuery;
     private IDocumentQueryExecutionComponent<T> component;
-//    private Aggregator aggregator;
     private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
     private SingleGroupAggregator singleGroupAggregator;
 
@@ -101,7 +93,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                             return (FeedResponse<T>) frp;
                         }
 
-                        Document doc = ((Document)page.getResults().get(0));
                         requestCharge += page.getRequestCharge();
 
                         for (T d : page.getResults()) {
@@ -111,10 +102,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                             this.singleGroupAggregator.addValues(rewrittenAggregateProjections.getPayload());
                         }
 
-//                        Document result = this.singleGroupAggregator.getResult();
-
-                        QueryItem values = new QueryItem(doc.toJson());
-//                        this.aggregator.aggregate(values.getItem());
                         for(String key : BridgeInternal.queryMetricsFromFeedResponse(page).keySet()) {
                             if (queryMetricsMap.containsKey(key)) {
                                 QueryMetrics qm = BridgeInternal.queryMetricsFromFeedResponse(page).get(key);
@@ -127,7 +114,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
 
                     if (this.singleGroupAggregator.getResult() == null || !this.singleGroupAggregator.getResult().equals(Undefined.value())) {
                         Document aggregateDocument = this.singleGroupAggregator.getResult();
-//                        BridgeInternal.setProperty(aggregateDocument, Constants.Properties.VALUE, this.aggregator.getResult());
                         aggregateResults.add(aggregateDocument);
                     }
 

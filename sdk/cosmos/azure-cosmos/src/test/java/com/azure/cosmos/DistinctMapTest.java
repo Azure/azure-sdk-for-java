@@ -45,26 +45,6 @@ public class DistinctMapTest {
         assertThat(add3).as("different value should be added again").isTrue();
     }
 
-    @Test(groups = "unit")
-    public void someTest() throws IOException, NoSuchAlgorithmException {
-        String resource1 = String.format("{ "
-                                             + "\"id\": \"12345\","
-                                             + "\"mypk\": \"abcde\""
-                                             + "} ");
-
-        String resource2 = String.format("{ "
-                                             + "\"mypk\": \"abcde\","
-                                             + "\"id\": \"12345\""
-                                             + "} ");
-
-        Document doc1 = new Document(resource1);
-        Document doc2 = new Document(resource2);
-        ByteBuffer byteBuffer1 = ModelBridgeInternal.serializeJsonToByteBuffer((JsonSerializable) doc1);
-        ByteBuffer byteBuffer2 = ModelBridgeInternal.serializeJsonToByteBuffer((JsonSerializable) doc2);
-        UInt128 dHash1 = DistinctHash.getHash(doc1);
-        UInt128 dHash2 = DistinctHash.getHash(doc2);
-    }
-
     @Test(groups = "unit", dataProvider = "distinctMapArgProvider")
     public void stringValue(DistinctQueryType queryType) {
         String resourceString = String.format("{ " + "\"id\": \"a\" }");        Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();

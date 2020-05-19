@@ -38,14 +38,6 @@ public class DistinctHash {
         UInt128 uInt128 = MurmurHash3_128.hash128(bytes, bytes.length);
         return uInt128;
 
-//        final Object obj = OBJECT_MAPPER.treeToValue(ModelBridgeInternal.getPropertyBagFromJsonSerializable
-//        (resource)
-//            , Object.class);
-//        final String sortedJson =
-//            OBJECT_MAPPER.writeValueAsString(obj);
-//        MessageDigest md = MessageDigest.getInstance("SHA-1");
-//        byte[] digest = md.digest(sortedJson.getBytes(Charset.defaultCharset()));
-//        return Base64.getEncoder().encodeToString(digest);
     }
 
     private static UInt128 getHashFromJsonSerializable(JsonSerializable resource) {
