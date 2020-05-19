@@ -20,9 +20,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * A container with custom conflict resolution with no user-registered stored procedure.
  * <pre>{@code
  *
- * 	CosmosContainerProperties containerProperties =
- * 	        new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
- * 	containerProperties.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy());
+ * CosmosContainerProperties containerProperties =
+ *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
+ * containerProperties.setConflictResolutionPolicy(ConflictResolutionPolicy.createCustomPolicy());
  *
  * CosmosAsyncDatabase database = client.createDatabase(databaseSettings).block().getDatabase();
  * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
@@ -33,11 +33,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * A container with custom conflict resolution with a user-registered stored procedure.
  * <pre>{@code
  *
- * 	CosmosContainerProperties containerProperties =
- * 	        new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
+ * CosmosContainerProperties containerProperties =
+ *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
  *
- *  ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy(conflictResolutionSprocName);
- * 	containerProperties.setConflictResolutionPolicy(policy);
+ * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createCustomPolicy(conflictResolutionSprocName);
+ * containerProperties.setConflictResolutionPolicy(policy);
  *
  * CosmosAsyncDatabase database = client.createDatabase(databaseSettings).block().getDatabase();
  * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
@@ -49,11 +49,11 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * A container with custom conflict resolution with a user-registered stored procedure.
  * <pre>{@code
  *
- * 	CosmosContainerProperties containerProperties =
- * 	        new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
+ * CosmosContainerProperties containerProperties =
+ *      new CosmosContainerProperties("Multi-master container", "Multi-master container partition key");
  *
- *  ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy("/path/for/conflict/resolution");
- * 	containerProperties.setConflictResolutionPolicy(policy);
+ * ConflictResolutionPolicy policy = ConflictResolutionPolicy.createLastWriterWinsPolicy("/path/for/conflict/resolution");
+ * containerProperties.setConflictResolutionPolicy(policy);
  *
  * CosmosAsyncDatabase database = client.createDatabase(databaseSettings).block().getDatabase();
  * CosmosAsyncContainer container = database.createContainer(containerProperties).block().getContainer();
