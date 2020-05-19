@@ -8,7 +8,6 @@ import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
-import java.io.IOException;
 import java.time.OffsetDateTime;
 
 /**
@@ -16,7 +15,7 @@ import java.time.OffsetDateTime;
  */
 class ChangefeedFactory {
 
-    private ClientLogger logger = new ClientLogger(ChangefeedFactory.class);
+    private final ClientLogger logger = new ClientLogger(ChangefeedFactory.class);
 
     private final SegmentFactory segmentFactory;
 

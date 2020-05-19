@@ -1,5 +1,6 @@
 package com.azure.storage.blob.changefeed
 
+import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.changefeed.implementation.models.ChangefeedCursor
 
 import spock.lang.Specification
@@ -104,7 +105,7 @@ class ChangefeedCursorTest extends Specification {
         String serialized = cursor.serialize()
 
         when:
-        ChangefeedCursor deserialized = ChangefeedCursor.deserialize(serialized)
+        ChangefeedCursor deserialized = ChangefeedCursor.deserialize(serialized, new ClientLogger(ChangefeedCursorTest.class))
 
         then:
         cursor.getEndTime() == deserialized.getEndTime()

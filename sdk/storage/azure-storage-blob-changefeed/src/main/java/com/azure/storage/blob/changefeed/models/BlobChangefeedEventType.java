@@ -7,6 +7,9 @@ import com.azure.core.util.ExpandableStringEnum;
 
 import java.util.Collection;
 
+/**
+ * This class represents the different BlobChangefeedEventTypes.
+ */
 public final class BlobChangefeedEventType extends ExpandableStringEnum<BlobChangefeedEventType> {
 
     /**
