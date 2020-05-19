@@ -69,9 +69,7 @@ public final class VirtualMachineRunCommandsInner {
             Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands"
-                + "/{commandId}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/runCommands/{commandId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<RunCommandDocumentInner>> get(

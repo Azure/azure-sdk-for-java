@@ -59,8 +59,8 @@ public final class LogAnalyticsInner {
     private interface LogAnalyticsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics"
-                + "/apiAccess/getRequestRateByInterval")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
+                + "/getRequestRateByInterval")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> exportRequestRateByInterval(
@@ -73,8 +73,8 @@ public final class LogAnalyticsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics"
-                + "/apiAccess/getThrottledRequests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
+                + "/getThrottledRequests")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> exportThrottledRequests(
@@ -87,8 +87,8 @@ public final class LogAnalyticsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics"
-                + "/apiAccess/getRequestRateByInterval")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
+                + "/getRequestRateByInterval")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LogAnalyticsOperationResultInner>> beginExportRequestRateByInterval(
@@ -101,8 +101,8 @@ public final class LogAnalyticsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics"
-                + "/apiAccess/getThrottledRequests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
+                + "/getThrottledRequests")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LogAnalyticsOperationResultInner>> beginExportThrottledRequests(
