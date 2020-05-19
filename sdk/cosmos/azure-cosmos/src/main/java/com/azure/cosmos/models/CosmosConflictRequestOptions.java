@@ -8,31 +8,53 @@ import com.azure.cosmos.implementation.RequestOptions;
  * The type Cosmos conflict request options.
  */
 public final class CosmosConflictRequestOptions {
-    private AccessCondition accessCondition;
+    private String ifMatchEtag;
+    private String ifNoneMatchEtag;
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return ifMatchEtag the ifMatchEtag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchEtag() {
+        return this.ifMatchEtag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchEtag the ifMatchEtag associated with the request.
      * @return the current request options
      */
-    public CosmosConflictRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosConflictRequestOptions setIfMatchEtag(String ifMatchEtag) {
+        this.ifMatchEtag = ifMatchEtag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchEtag associated with the request.
+     */
+    public String getIfNoneMatchEtag() {
+        return this.ifNoneMatchEtag;
+    }
+
+    /**
+     * Sets the the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
+     * @return the current request options
+     */
+    public CosmosConflictRequestOptions setIfNoneMatchEtag(String ifNoneMatchEtag) {
+        this.ifNoneMatchEtag = ifNoneMatchEtag;
         return this;
     }
 
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setAccessCondition(accessCondition);
+        requestOptions.setIfMatchEtag(getIfMatchEtag());
+        requestOptions.setIfNoneMatchEtag(getIfNoneMatchEtag());
         return requestOptions;
     }
 }

@@ -12,25 +12,46 @@ public final class CosmosStoredProcedureRequestOptions {
     private ConsistencyLevel consistencyLevel;
     private PartitionKey partitionKey;
     private String sessionToken;
-    private AccessCondition accessCondition;
+    private String ifMatchEtag;
+    private String ifNoneMatchEtag;
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchEtag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchEtag() {
+        return this.ifMatchEtag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchEtag the ifMatchEtag associated with the request.
      * @return the current request options
      */
-    public CosmosStoredProcedureRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosStoredProcedureRequestOptions setIfMatchEtag(String ifMatchEtag) {
+        this.ifMatchEtag = ifMatchEtag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchEtag associated with the request.
+     */
+    public String getIfNoneMatchEtag() {
+        return this.ifNoneMatchEtag;
+    }
+
+    /**
+     * Sets the the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
+     * @return the current request options
+     */
+    public CosmosStoredProcedureRequestOptions setIfNoneMatchEtag(String ifNoneMatchEtag) {
+        this.ifNoneMatchEtag = ifNoneMatchEtag;
         return this;
     }
 
@@ -96,7 +117,8 @@ public final class CosmosStoredProcedureRequestOptions {
 
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setAccessCondition(accessCondition);
+        requestOptions.setIfMatchEtag(getIfMatchEtag());
+        requestOptions.setIfNoneMatchEtag(getIfNoneMatchEtag());
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setPartitionKey(partitionKey);
         requestOptions.setSessionToken(sessionToken);

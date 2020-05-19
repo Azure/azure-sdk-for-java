@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -133,10 +131,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        AccessCondition accessCondition = new AccessCondition();
-        accessCondition.setType(AccessConditionType.IF_MATCH);
-        accessCondition.setCondition(this.lockETag);
-        requestOptions.setAccessCondition(accessCondition);
+        requestOptions.setIfMatchEtag(this.lockETag);
 
         return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)
             .map(documentResourceResponse -> {
