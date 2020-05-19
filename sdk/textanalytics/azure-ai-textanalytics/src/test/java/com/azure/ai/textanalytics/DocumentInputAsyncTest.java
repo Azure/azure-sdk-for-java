@@ -149,11 +149,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsAsyncClient#detectLanguageBatch(Iterable, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#detectLanguageBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void detectLanguagesBatchNullInputWithMaxOverload() {
-        StepVerifier.create(client.detectLanguageBatch(null,
+        StepVerifier.create(client.detectLanguageBatchWithResponse(null,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -163,11 +163,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
-     * {@link TextAnalyticsAsyncClient#detectLanguageBatch(Iterable, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#detectLanguageBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void detectLanguagesBatchEmptyInputListWithMaxOverload() {
-        StepVerifier.create(client.detectLanguageBatch(Collections.emptyList(),
+        StepVerifier.create(client.detectLanguageBatchWithResponse(Collections.emptyList(),
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -285,11 +285,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#recognizeEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void recognizeEntitiesBatchNullInputWithMaxOverload() {
-        StepVerifier.create(client.recognizeEntitiesBatch(null,
+        StepVerifier.create(client.recognizeEntitiesBatchWithResponse(null,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -299,11 +299,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
-     * given for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable, TextAnalyticsRequestOptions)}
+     * given for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void recognizeEntitiesBatchEmptyInputListWithMaxOverload() {
-        StepVerifier.create(client.recognizeEntitiesBatch(Collections.emptyList(),
+        StepVerifier.create(client.recognizeEntitiesBatchWithResponse(Collections.emptyList(),
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -421,11 +421,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void recognizeLinkedEntitiesBatchNullInputWithMaxOverload() {
-        StepVerifier.create(client.recognizeLinkedEntitiesBatch(null,
+        StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(null,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -435,11 +435,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
-     * given for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, TextAnalyticsRequestOptions)}
+     * given for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void recognizeLinkedEntitiesBatchEmptyInputListWithMaxOverload() {
-        StepVerifier.create(client.recognizeLinkedEntitiesBatch(Collections.emptyList(),
+        StepVerifier.create(client.recognizeLinkedEntitiesBatchWithResponse(Collections.emptyList(),
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -557,11 +557,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void extractKeyPhrasesBatchNullInputWithMaxOverload() {
-        StepVerifier.create(client.extractKeyPhrasesBatch(null,
+        StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(null,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -571,11 +571,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
-     * given for {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable, TextAnalyticsRequestOptions)}
+     * given for {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void extractKeyPhrasesBatchEmptyInputListWithMaxOverload() {
-        StepVerifier.create(client.extractKeyPhrasesBatch(Collections.emptyList(),
+        StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(Collections.emptyList(),
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());
@@ -693,11 +693,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void analyseSentimentBatchNullInputWithMaxOverload() {
-        StepVerifier.create(client.analyzeSentimentBatch(null,
+        StepVerifier.create(client.analyzeSentimentBatchWithResponse(null,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(NullPointerException.class, exception.getClass());
@@ -707,11 +707,11 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
-     * given for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable, TextAnalyticsRequestOptions)}
+     * given for {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     @Test
     public void analyseSentimentEmptyInputListWithMaxOverload() {
-        StepVerifier.create(client.analyzeSentimentBatch(Collections.emptyList(),
+        StepVerifier.create(client.analyzeSentimentBatchWithResponse(Collections.emptyList(),
             new TextAnalyticsRequestOptions().setIncludeStatistics(true)))
             .verifyErrorSatisfies(exception -> {
                 assertEquals(IllegalArgumentException.class, exception.getClass());

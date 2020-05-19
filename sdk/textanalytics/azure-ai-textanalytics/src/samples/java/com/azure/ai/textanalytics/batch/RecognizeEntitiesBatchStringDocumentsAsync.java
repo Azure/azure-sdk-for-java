@@ -37,7 +37,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
         // Recognizing entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
         client.recognizeEntitiesBatch(documents, "en").subscribe(
-            entitiesResult -> {
+            recognizeEntitiesResultCollection -> recognizeEntitiesResultCollection.forEach(entitiesResult ->  {
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (entitiesResult.isError()) {
                     // Erroneous document
@@ -48,7 +48,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
                         "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
                         entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
                 }
-            },
+            }),
             error -> System.err.println("There was an error recognizing entities of the documents." + error),
             () -> System.out.println("Batch of entities recognized."));
 

@@ -3,21 +3,22 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -91,13 +92,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable
         final List<String> documents = Arrays.asList(
             "This is written in English", "Este es un documento  escrito en Español.");
-        textAnalyticsAsyncClient.detectLanguageBatch(documents).byPage().subscribe(batchResult -> {
+        textAnalyticsAsyncClient.detectLanguageBatch(documents).subscribe(batchResult -> {
             // Batch statistics
             final TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
             // Batch result of languages
-            for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
+            for (DetectLanguageResult detectLanguageResult : batchResult) {
                 DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                 System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
                     detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
@@ -116,14 +117,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "This is written in English",
             "Este es un documento  escrito en Español."
         );
-        textAnalyticsAsyncClient.detectLanguageBatch(documents, "US").byPage().subscribe(
+        textAnalyticsAsyncClient.detectLanguageBatch(documents, "US").subscribe(
             batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch result of languages
-                for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
+                for (DetectLanguageResult detectLanguageResult : batchResult) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
                         detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
@@ -142,14 +143,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "This is written in English",
             "Este es un documento  escrito en Español."
         );
-        textAnalyticsAsyncClient.detectLanguageBatch(documents, "US", null).byPage().subscribe(
+        textAnalyticsAsyncClient.detectLanguageBatch(documents, "US", null).subscribe(
             batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch result of languages
-                for (DetectLanguageResult detectLanguageResult : batchResult.getElements()) {
+                for (DetectLanguageResult detectLanguageResult : batchResult) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
                         detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
@@ -160,7 +161,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguageBatch(Iterable, TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#detectLanguageBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     public void detectBatchLanguagesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-TextAnalyticsRequestOptions
@@ -172,14 +173,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
-        textAnalyticsAsyncClient.detectLanguageBatch(detectLanguageInputs1, requestOptions).byPage()
+        textAnalyticsAsyncClient.detectLanguageBatchWithResponse(detectLanguageInputs1, requestOptions)
             .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+
+                TextAnalyticsResultCollection<DetectLanguageResult> resultCollection = response.getValue();
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch result of languages
-                for (DetectLanguageResult detectLanguageResult : response.getElements()) {
+                for (DetectLanguageResult detectLanguageResult : resultCollection) {
                     DetectedLanguage detectedLanguage = detectLanguageResult.getPrimaryLanguage();
                     System.out.printf("Detected language name: %s, ISO 6391 Name: %s, confidence score: %f.%n",
                         detectedLanguage.getName(), detectedLanguage.getIso6391Name(),
@@ -231,13 +236,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "I work at Microsoft."
         );
 
-        textAnalyticsAsyncClient.recognizeEntitiesBatch(documents).byPage().subscribe(batchResult -> {
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(documents).subscribe(batchResult -> {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
             // Batch result of categorized entities
-            batchResult.getElements().forEach(recognizeEntitiesResult ->
+            batchResult.forEach(recognizeEntitiesResult ->
                 recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                     "Recognized entity: %s, entity category: %s, entity subcategory: %s, confidence score: %f.%n",
                     entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore())));
@@ -253,14 +258,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         List<String> documents = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeEntitiesBatch(documents, "en").byPage()
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(documents, "en")
             .subscribe(batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch Result of entities
-                batchResult.getElements().forEach(recognizeEntitiesResult ->
+                batchResult.forEach(recognizeEntitiesResult ->
                     recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                         entity.getText(), entity.getCategory(), entity.getConfidenceScore())));
@@ -276,14 +281,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         List<String> documents = Arrays.asList(
             "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
-        textAnalyticsAsyncClient.recognizeEntitiesBatch(documents, "en", null).byPage()
+        textAnalyticsAsyncClient.recognizeEntitiesBatch(documents, "en", null)
             .subscribe(batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
                 // Batch Result of entities
-                batchResult.getElements().forEach(recognizeEntitiesResult ->
+                batchResult.forEach(recognizeEntitiesResult ->
                     recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                             entity.getText(), entity.getCategory(), entity.getConfidenceScore())));
@@ -292,8 +297,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatch(Iterable,
-     * TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     public void recognizeBatchEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
@@ -304,14 +308,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
-        textAnalyticsAsyncClient.recognizeEntitiesBatch(textDocumentInputs1, requestOptions).byPage()
+        textAnalyticsAsyncClient.recognizeEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                TextAnalyticsResultCollection<RecognizeEntitiesResult> resultCollection = response.getValue();
+
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                response.getElements().forEach(recognizeEntitiesResult ->
+                resultCollection.forEach(recognizeEntitiesResult ->
                     recognizeEntitiesResult.getEntities().forEach(entity -> System.out.printf(
                         "Recognized categorized entity: %s, category: %s, confidence score: %f.%n",
                         entity.getText(),
@@ -374,13 +382,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds."
         );
 
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(documents).byPage().subscribe(response -> {
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(documents).subscribe(response -> {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = response.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-            response.getElements().forEach(recognizeLinkedEntitiesResult ->
+            response.forEach(recognizeLinkedEntitiesResult ->
                 recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                     System.out.println("Linked Entities:");
                     System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
@@ -406,14 +414,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds."
         );
 
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(documents, "en").byPage()
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(documents, "en")
             .subscribe(batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                batchResult.getElements().forEach(recognizeLinkedEntitiesResult ->
+                batchResult.forEach(recognizeLinkedEntitiesResult ->
                     recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
@@ -438,14 +446,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds."
         );
 
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(documents, "en", null).byPage()
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(documents, "en", null)
             .subscribe(batchResult -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = batchResult.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                batchResult.getElements().forEach(recognizeLinkedEntitiesResult ->
+                batchResult.forEach(recognizeLinkedEntitiesResult ->
                     recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
@@ -460,8 +468,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable,
-     * TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     public void recognizeBatchLinkedEntitiesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-TextAnalyticsRequestOptions
@@ -472,14 +479,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
-        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatch(textDocumentInputs1, requestOptions).byPage()
+        textAnalyticsAsyncClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> resultCollection = response.getValue();
+
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                response.getElements().forEach(recognizeLinkedEntitiesResult ->
+                resultCollection.forEach(recognizeLinkedEntitiesResult ->
                     recognizeLinkedEntitiesResult.getEntities().forEach(linkedEntity -> {
                         System.out.println("Linked Entities:");
                         System.out.printf("Name: %s, entity ID in data source: %s, URL: %s, data source: %s.%n",
@@ -526,13 +537,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrasesBatch(documents).byPage().subscribe(extractKeyPhraseResults -> {
+        textAnalyticsAsyncClient.extractKeyPhrasesBatch(documents).subscribe(extractKeyPhraseResults -> {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-            extractKeyPhraseResults.getElements().forEach(extractKeyPhraseResult -> {
+            extractKeyPhraseResults.forEach(extractKeyPhraseResult -> {
                 System.out.println("Extracted phrases:");
                 extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
             });
@@ -549,14 +560,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrasesBatch(documents, "en").byPage().subscribe(
+        textAnalyticsAsyncClient.extractKeyPhrasesBatch(documents, "en").subscribe(
             extractKeyPhraseResults -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                extractKeyPhraseResults.getElements().forEach(extractKeyPhraseResult -> {
+                extractKeyPhraseResults.forEach(extractKeyPhraseResult -> {
                     System.out.println("Extracted phrases:");
                     extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
                 });
@@ -573,14 +584,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "Hello world. This is some input text that I love.",
             "Bonjour tout le monde");
 
-        textAnalyticsAsyncClient.extractKeyPhrasesBatch(documents, "en", null).byPage().subscribe(
+        textAnalyticsAsyncClient.extractKeyPhrasesBatch(documents, "en", null).subscribe(
             extractKeyPhraseResults -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = extractKeyPhraseResults.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                extractKeyPhraseResults.getElements().forEach(extractKeyPhraseResult -> {
+                extractKeyPhraseResults.forEach(extractKeyPhraseResult -> {
                     System.out.println("Extracted phrases:");
                     extractKeyPhraseResult.getKeyPhrases().forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
                 });
@@ -589,8 +600,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatch(Iterable,
-     * TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#extractKeyPhrasesBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     public void extractBatchKeyPhrasesMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-TextAnalyticsRequestOptions
@@ -601,14 +611,18 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
-        textAnalyticsAsyncClient.extractKeyPhrasesBatch(textDocumentInputs1, requestOptions).byPage()
+        textAnalyticsAsyncClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                TextAnalyticsResultCollection<ExtractKeyPhraseResult> resultCollection = response.getValue();
+
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : response.getElements()) {
+                for (ExtractKeyPhraseResult extractKeyPhraseResult : resultCollection) {
                     System.out.println("Extracted phrases:");
                     for (String keyPhrase : extractKeyPhraseResult.getKeyPhrases()) {
                         System.out.printf("%s.%n", keyPhrase);
@@ -631,7 +645,8 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
 
             for (SentenceSentiment sentenceSentiment : documentSentiment.getSentences()) {
                 System.out.printf(
-                    "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, negative score: %.2f.%n",
+                    "Recognized sentence sentiment: %s, positive score: %.2f, neutral score: %.2f, "
+                        + "negative score: %.2f.%n",
                     sentenceSentiment.getSentiment(),
                     sentenceSentiment.getConfidenceScores().getPositive(),
                     sentenceSentiment.getConfidenceScores().getNeutral(),
@@ -671,13 +686,13 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         List<String> documents = Arrays.asList(
             "The hotel was dark and unclean.", "The restaurant had amazing gnocchi.");
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents).byPage().subscribe(response -> {
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents).subscribe(response -> {
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = response.getStatistics();
             System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                 batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-            response.getElements().forEach(analyzeSentimentResult -> {
+            response.forEach(analyzeSentimentResult -> {
                 System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                 DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                 System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
@@ -703,14 +718,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "The restaurant had amazing gnocchi."
         );
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en").byPage().subscribe(
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en").subscribe(
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                response.getElements().forEach(analyzeSentimentResult -> {
+                response.forEach(analyzeSentimentResult -> {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
@@ -736,14 +751,14 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             "The restaurant had amazing gnocchi."
         );
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", null).byPage().subscribe(
+        textAnalyticsAsyncClient.analyzeSentimentBatch(documents, "en", null).subscribe(
             response -> {
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = response.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
-                response.getElements().forEach(analyzeSentimentResult -> {
+                response.forEach(analyzeSentimentResult -> {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
@@ -760,8 +775,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatch(Iterable,
-     * TextAnalyticsRequestOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions)}
      */
     public void analyzeBatchSentimentMaxOverload() {
         // BEGIN: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions
@@ -772,15 +786,19 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
-        textAnalyticsAsyncClient.analyzeSentimentBatch(textDocumentInputs1, requestOptions).byPage()
+        textAnalyticsAsyncClient.analyzeSentimentBatchWithResponse(textDocumentInputs1, requestOptions)
             .subscribe(response -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", response.getStatusCode());
+                TextAnalyticsResultCollection<AnalyzeSentimentResult> resultCollection = response.getValue();
+
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = response.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
                     batchStatistics.getTransactionCount(),
                     batchStatistics.getValidDocumentCount());
 
-                response.getElements().forEach(analyzeSentimentResult -> {
+                resultCollection.forEach(analyzeSentimentResult -> {
                     System.out.printf("Document ID: %s%n", analyzeSentimentResult.getId());
                     DocumentSentiment documentSentiment = analyzeSentimentResult.getDocumentSentiment();
                     System.out.printf("Recognized document sentiment: %s.%n", documentSentiment.getSentiment());
@@ -794,30 +812,5 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 });
             });
         // END: com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-TextAnalyticsRequestOptions
-    }
-
-    // Text Analytics Paged flux
-    public void textAnalyticsPagedFluxSample() {
-        TextAnalyticsPagedFlux<RecognizeEntitiesResult> pagedFlux =
-            textAnalyticsAsyncClient.recognizeEntitiesBatch(Collections.singletonList(""));
-        // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribe
-        pagedFlux
-            .log()
-            .subscribe(
-                item -> System.out.println("Processing item" + item),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
-        // END: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribe
-
-        // BEGIN: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribeByPage
-        pagedFlux
-            .byPage()
-            .log()
-            .subscribe(
-                page -> System.out.printf("Processing page containing model version: %s, items:",
-                    page.getModelVersion(), page.getElements()),
-                error -> System.err.println("Error occurred " + error),
-                () -> System.out.println("Completed processing."));
-        // END: com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux.subscribeByPage
     }
 }

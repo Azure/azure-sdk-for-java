@@ -10,13 +10,15 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
+import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedFlux;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
@@ -37,7 +39,6 @@ import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
-import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -60,7 +61,7 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link LinkedEntityCollection}.
+     * Helper function for calling service with max overloaded parameters that returns a {@link LinkedEntityCollection}.
      *
      * @param document A single document.
      * @param language The language code.
@@ -73,70 +74,77 @@ class RecognizeLinkedEntityAsyncClient {
             final TextDocumentInput textDocumentInput = new TextDocumentInput("0", document);
             textDocumentInput.setLanguage(language);
             return recognizeLinkedEntitiesBatch(Collections.singletonList(textDocumentInput), null)
-                    .map(entitiesResult -> {
+                .map(entitiesResultCollection -> {
+                    for (RecognizeLinkedEntitiesResult entitiesResult : entitiesResultCollection.getValue()) {
                         if (entitiesResult.isError()) {
                             throw logger.logExceptionAsError(toTextAnalyticsException(entitiesResult.getError()));
                         }
                         return new LinkedEntityCollection(entitiesResult.getEntities(),
                             entitiesResult.getEntities().getWarnings());
-                    }).last();
+                    }
+                    // this step should never be executed, if executed, we get an empty collection above.
+                    throw logger.logExceptionAsError(
+                        new TextAnalyticsException("None entities recognized.",
+                            TextAnalyticsErrorCode.fromString("NoneEntitiesRecognized").toString(), null));
+                });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link RecognizeLinkedEntitiesResult}.
+     * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
+     * which contains {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult}.
      *
      * @param documents The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return The {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
+     *  {@link RecognizeLinkedEntitiesResult}.
      */
-    TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatch(
+    Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> withContext(context ->
-                getRecognizedLinkedEntitiesResponseInPage(documents, options, context)).flux());
+            return withContext(context -> getRecognizedLinkedEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() ->
-                (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that a returns {@link TextAnalyticsPagedFlux}
-     * which is a paged flux that contains {@link RecognizeLinkedEntitiesResult}.
+     * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
+     * which contains {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult}.
      *
      * @param documents The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return the {@link TextAnalyticsPagedFlux} of {@link RecognizeLinkedEntitiesResult} to be returned by the SDK.
+     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
+     *  {@link RecognizeLinkedEntitiesResult}.
      */
-    TextAnalyticsPagedFlux<RecognizeLinkedEntitiesResult> recognizeLinkedEntitiesBatchWithContext(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+    Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>>
+        recognizeLinkedEntitiesBatchWithContext(Iterable<TextDocumentInput> documents,
+            TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) ->
-                getRecognizedLinkedEntitiesResponseInPage(documents, options, context).flux());
+            return getRecognizedLinkedEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {
-            return new TextAnalyticsPagedFlux<>(() -> (continuationToken, pageSize) -> fluxError(logger, ex));
+            return monoError(logger, ex);
         }
     }
 
     /**
      * Helper method to convert the service response of {@link EntityLinkingResult} to
-     * {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult}
+     * {@link Response} which contains {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult}.
      *
      * @param response the {@link SimpleResponse} of {@link EntityLinkingResult} returned by the service.
      *
-     * @return the {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult} to be returned
-     * by the SDK.
+     * @return A {@link Response} that contains {@link TextAnalyticsResultCollection} of
+     *  {@link RecognizeLinkedEntitiesResult}.
      */
-    private TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> toTextAnalyticsPagedResponse(
+    private Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>
+        toTextAnalyticsResultCollectionResponse(
         final SimpleResponse<EntityLinkingResult> response) {
         final EntityLinkingResult entityLinkingResult = response.getValue();
         // List of documents results
@@ -172,11 +180,10 @@ class RecognizeLinkedEntityAsyncClient {
                     toTextAnalyticsError(documentError.getError()), null));
         });
 
-        return new TextAnalyticsPagedResponse<>(
-            response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            linkedEntitiesResults, null, entityLinkingResult.getModelVersion(),
-            entityLinkingResult.getStatistics() == null ? null
-                : toBatchStatistics(entityLinkingResult.getStatistics()));
+        return new SimpleResponse<>(response,
+            new TextAnalyticsResultCollection<>(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
+                entityLinkingResult.getStatistics() == null ? null
+                    : toBatchStatistics(entityLinkingResult.getStatistics())));
     }
 
     private IterableStream<LinkedEntity> mapLinkedEntity(
@@ -195,16 +202,19 @@ class RecognizeLinkedEntityAsyncClient {
     }
 
     /**
-     * Call the service with REST response, convert to a {@link Mono} of {@link TextAnalyticsPagedResponse} of
-     * {@link RecognizeLinkedEntitiesResult} from a {@link SimpleResponse} of {@link EntityLinkingResult}.
+     * Call the service with REST response, convert to a {@link Mono} of {@link Response} which contains
+     * {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult} from a {@link SimpleResponse}
+     * of {@link EntityLinkingResult}.
      *
      * @param documents The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A {@link Mono} of {@link TextAnalyticsPagedResponse} of {@link RecognizeLinkedEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
+     *  {@link RecognizeLinkedEntitiesResult}.
      */
-    private Mono<TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult>> getRecognizedLinkedEntitiesResponseInPage(
-        Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+    private Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>>
+        getRecognizedLinkedEntitiesResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options,
+            Context context) {
         return service.entitiesLinkingWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
@@ -214,7 +224,7 @@ class RecognizeLinkedEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-            .map(this::toTextAnalyticsPagedResponse)
+            .map(this::toTextAnalyticsResultCollectionResponse)
             .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -42,18 +43,23 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Extracting key phrases for each document in a batch of documents
-        client.extractKeyPhrasesBatch(documents, requestOptions).byPage().subscribe(
-            pagedResponse -> {
-                System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", pagedResponse.getModelVersion());
+        client.extractKeyPhrasesBatchWithResponse(documents, requestOptions).subscribe(
+            keyPhrasesBatchResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", keyPhrasesBatchResultResponse.getStatusCode());
+                TextAnalyticsResultCollection<ExtractKeyPhraseResult> keyPhrasesBatchResultCollection = keyPhrasesBatchResultResponse.getValue();
+
+                // Model version
+                System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
 
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = keyPhrasesBatchResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Extracted key phrase for each of documents from a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (ExtractKeyPhraseResult extractKeyPhraseResult : pagedResponse.getElements()) {
+                for (ExtractKeyPhraseResult extractKeyPhraseResult : keyPhrasesBatchResultCollection) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (extractKeyPhraseResult.isError()) {
                         // Erroneous document

@@ -37,7 +37,7 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
         // Recognizing linked entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
         client.recognizeLinkedEntitiesBatch(documents, "en").subscribe(
-            entitiesResult -> {
+            recognizeLinkedEntitiesResultCollection -> recognizeLinkedEntitiesResultCollection.forEach(entitiesResult -> {
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (entitiesResult.isError()) {
                     // Erroneous document
@@ -52,7 +52,7 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
                             "\tMatched entity: %s, confidence score: %f.%n", entityMatch.getText(), entityMatch.getConfidenceScore()));
                     });
                 }
-            },
+            }),
             error -> System.err.println("There was an error recognizing linked entities of the documents." + error),
             () -> System.out.println("Batch of linked entities recognized."));
 

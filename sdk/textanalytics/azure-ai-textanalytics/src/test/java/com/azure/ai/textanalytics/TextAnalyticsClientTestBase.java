@@ -18,14 +18,15 @@ import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsResult;
+import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
-import com.azure.ai.textanalytics.util.TextAnalyticsPagedResponse;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -380,48 +381,84 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         return builder;
     }
 
-    static void validateDetectLanguage(boolean showStatistics, TextAnalyticsPagedResponse<DetectLanguageResult> expected,
-        TextAnalyticsPagedResponse<DetectLanguageResult> actual) {
+    static void validateDetectLanguageResultCollectionWithResponse(boolean showStatistics,
+        TextAnalyticsResultCollection<DetectLanguageResult> expected,
+        int expectedStatusCode,
+        Response<TextAnalyticsResultCollection<DetectLanguageResult>> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateDetectLanguageResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateDetectLanguageResultCollection(boolean showStatistics,
+        TextAnalyticsResultCollection<DetectLanguageResult> expected,
+        TextAnalyticsResultCollection<DetectLanguageResult> actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage()));
     }
 
-    static void validateCategorizedEntitiesWithPagedResponse(boolean showStatistics,
-        TextAnalyticsPagedResponse<RecognizeEntitiesResult> expected,
-        TextAnalyticsPagedResponse<RecognizeEntitiesResult> actual) {
+    static void validateCategorizedEntitiesResultCollectionWithResponse(boolean showStatistics,
+        TextAnalyticsResultCollection<RecognizeEntitiesResult> expected,
+        int expectedStatusCode, Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateCategorizedEntitiesResultCollection(showStatistics, expected, response.getValue());
+    }
 
+    static void validateCategorizedEntitiesResultCollection(boolean showStatistics,
+        TextAnalyticsResultCollection<RecognizeEntitiesResult> expected,
+        TextAnalyticsResultCollection<RecognizeEntitiesResult> actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(
                 expectedItem.getEntities().stream().collect(Collectors.toList()),
                 actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
-    static void validateCategorizedEntities(
-        TextAnalyticsPagedResponse<CategorizedEntity> expected, TextAnalyticsPagedResponse<CategorizedEntity> actual) {
-        validateCategorizedEntities(expected.getValue(), actual.getValue());
+    static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,
+        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> expected,
+        int expectedStatusCode, Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateLinkedEntitiesResultCollection(showStatistics, expected, response.getValue());
     }
 
-    static void validateLinkedEntitiesWithPagedResponse(boolean showStatistics,
-        TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> expected,
-        TextAnalyticsPagedResponse<RecognizeLinkedEntitiesResult> actual) {
+    static void validateLinkedEntitiesResultCollection(boolean showStatistics,
+        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> expected,
+        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateLinkedEntities(
                 expectedItem.getEntities().stream().collect(Collectors.toList()),
                 actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
-    static void validateExtractKeyPhraseWithPagedResponse(boolean showStatistics,
-        TextAnalyticsPagedResponse<ExtractKeyPhraseResult> expected,
-        TextAnalyticsPagedResponse<ExtractKeyPhraseResult> actual) {
+    static void validateExtractKeyPhraseResultCollectionWithResponse(boolean showStatistics,
+        TextAnalyticsResultCollection<ExtractKeyPhraseResult> expected,
+        int expectedStatusCode, Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateExtractKeyPhraseResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateExtractKeyPhraseResultCollection(boolean showStatistics,
+        TextAnalyticsResultCollection<ExtractKeyPhraseResult> expected,
+        TextAnalyticsResultCollection<ExtractKeyPhraseResult> actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateKeyPhrases(
                 expectedItem.getKeyPhrases().stream().collect(Collectors.toList()),
                 actualItem.getKeyPhrases().stream().collect(Collectors.toList())));
     }
 
-    static void validateSentimentWithPagedResponse(boolean showStatistics,
-        TextAnalyticsPagedResponse<AnalyzeSentimentResult> expected,
-        TextAnalyticsPagedResponse<AnalyzeSentimentResult> actual) {
+    static void validateSentimentResultCollectionWithResponse(boolean showStatistics,
+        TextAnalyticsResultCollection<AnalyzeSentimentResult> expected,
+        int expectedStatusCode, Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>> response) {
+        assertNotNull(response);
+        assertEquals(expectedStatusCode, response.getStatusCode());
+        validateSentimentResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateSentimentResultCollection(boolean showStatistics,
+        TextAnalyticsResultCollection<AnalyzeSentimentResult> expected,
+        TextAnalyticsResultCollection<AnalyzeSentimentResult> actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
     }
@@ -564,13 +601,13 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     /**
      * Helper method to verify {@link TextAnalyticsResult documents} returned in a batch request.
      */
-    private static <T extends TextAnalyticsResult> void validateTextAnalyticsResult(boolean showStatistics,
-        TextAnalyticsPagedResponse<T> expectedResults, TextAnalyticsPagedResponse<T> actualResults,
+    static <T extends TextAnalyticsResult> void validateTextAnalyticsResult(boolean showStatistics,
+        TextAnalyticsResultCollection<T> expectedResults, TextAnalyticsResultCollection<T> actualResults,
         BiConsumer<T, T> additionalAssertions) {
 
-        final Map<String, T> expected = expectedResults.getElements().stream().collect(
+        final Map<String, T> expected = expectedResults.stream().collect(
             Collectors.toMap(TextAnalyticsResult::getId, r -> r));
-        final Map<String, T> actual = actualResults.getElements().stream().collect(
+        final Map<String, T> actual = actualResults.stream().collect(
             Collectors.toMap(TextAnalyticsResult::getId, r -> r));
 
         assertEquals(expected.size(), actual.size());

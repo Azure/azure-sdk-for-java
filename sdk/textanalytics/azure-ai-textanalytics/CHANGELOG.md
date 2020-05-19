@@ -9,6 +9,7 @@
 - Text analytics SDK update the service to version `v3.0` from `v3.0-preview.1`.
 
 **Breaking changes**
+- Removed pagination feature, which removed `TextAnalyticsPagedIterable`, `TextAnalyticsPagedFlux` and `TextAnalyticsPagedResponse`
 - Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
 - Removed `getGraphemeLength()` and `getGraphemeOffset()` from `CategorizedEntity`, `SentenceSentiment`, and `LinkedEntityMatch`.
 - `getGraphemeCount()` in `TextDocumentStatistics` has been renamed to `getCharacterCount()`.

@@ -133,24 +133,24 @@ public class DocumentInputTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsClient#detectLanguageBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#detectLanguageBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void detectLanguagesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.detectLanguageBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true),
+            client.detectLanguageBatchWithResponse(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true),
                 Context.NONE));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
      * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link DetectLanguageInput} is
-     * given for {@link TextAnalyticsClient#detectLanguageBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * given for {@link TextAnalyticsClient#detectLanguageBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void detectLanguagesBatchEmptyInputListWithMaxOverload() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.detectLanguageBatch(
+            client.detectLanguageBatchWithResponse(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
@@ -249,24 +249,24 @@ public class DocumentInputTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#recognizeEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void recognizeEntitiesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.recognizeEntitiesBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true),
+            client.recognizeEntitiesBatchWithResponse(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true),
                 Context.NONE));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
      * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
-     * given for {@link TextAnalyticsClient#recognizeEntitiesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * given for {@link TextAnalyticsClient#recognizeEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void recognizeEntitiesBatchEmptyInputListWithMaxOverload() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.recognizeEntitiesBatch(
+            client.recognizeEntitiesBatchWithResponse(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
@@ -365,12 +365,12 @@ public class DocumentInputTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void recognizeLinkedEntitiesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.recognizeLinkedEntitiesBatch(null,
+            client.recognizeLinkedEntitiesBatchWithResponse(null,
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
@@ -378,12 +378,12 @@ public class DocumentInputTest {
     /**
      * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
      * given for
-     * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#recognizeLinkedEntitiesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void recognizeLinkedEntitiesBatchEmptyInputListWithMaxOverload() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.recognizeLinkedEntitiesBatch(
+            client.recognizeLinkedEntitiesBatchWithResponse(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
@@ -481,12 +481,12 @@ public class DocumentInputTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#extractKeyPhrasesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void extractKeyPhrasesBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.extractKeyPhrasesBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true),
+            client.extractKeyPhrasesBatchWithResponse(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true),
                 Context.NONE));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
@@ -494,12 +494,12 @@ public class DocumentInputTest {
     /**
      * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
      * given for
-     * {@link TextAnalyticsClient#extractKeyPhrasesBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#extractKeyPhrasesBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void extractKeyPhrasesBatchEmptyInputListWithMaxOverload() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.extractKeyPhrasesBatch(
+            client.extractKeyPhrasesBatchWithResponse(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }
@@ -598,23 +598,23 @@ public class DocumentInputTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * {@link TextAnalyticsClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void analyseSentimentBatchNullInputWithMaxOverload() {
         Exception exception = assertThrows(NullPointerException.class, () ->
-            client.analyzeSentimentBatch(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
+            client.analyzeSentimentBatchWithResponse(null, new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_BATCH_NPE_MESSAGE.equals(exception.getMessage()));
     }
 
     /**
      * Verifies that a {@link IllegalArgumentException} is thrown when an empty list of {@link TextDocumentInput} is
-     * given for {@link TextAnalyticsClient#analyzeSentimentBatch(Iterable, TextAnalyticsRequestOptions, Context)}
+     * given for {@link TextAnalyticsClient#analyzeSentimentBatchWithResponse(Iterable, TextAnalyticsRequestOptions, Context)}
      */
     @Test
     public void analyseSentimentEmptyInputListWithMaxOverload() {
         Exception exception = assertThrows(IllegalArgumentException.class, () ->
-            client.analyzeSentimentBatch(
+            client.analyzeSentimentBatchWithResponse(
                 Collections.emptyList(), new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE));
         assertTrue(INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE.equals(exception.getMessage()));
     }

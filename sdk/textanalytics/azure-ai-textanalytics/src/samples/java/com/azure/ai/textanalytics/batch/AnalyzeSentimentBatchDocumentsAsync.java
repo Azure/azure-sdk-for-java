@@ -9,6 +9,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
+import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -45,18 +46,22 @@ public class AnalyzeSentimentBatchDocumentsAsync {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing sentiment for each document in a batch of documents
-        client.analyzeSentimentBatch(documents, requestOptions).byPage().subscribe(
-            pagedResponse -> {
-                System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", pagedResponse.getModelVersion());
+        client.analyzeSentimentBatchWithResponse(documents, requestOptions).subscribe(
+            sentimentBatchResultResponse -> {
+                // Response's status code
+                System.out.printf("Status code of request response: %d%n", sentimentBatchResultResponse.getStatusCode());
+                TextAnalyticsResultCollection<AnalyzeSentimentResult> sentimentBatchResultCollection = sentimentBatchResultResponse.getValue();
+
+                System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());
 
                 // Batch statistics
-                TextDocumentBatchStatistics batchStatistics = pagedResponse.getStatistics();
+                TextDocumentBatchStatistics batchStatistics = sentimentBatchResultCollection.getStatistics();
                 System.out.printf("Documents statistics: document count = %s, erroneous document count = %s, transaction count = %s, valid document count = %s.%n",
                     batchStatistics.getDocumentCount(), batchStatistics.getInvalidDocumentCount(), batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
 
                 // Analyzed sentiment for each document in a batch of documents
                 AtomicInteger counter = new AtomicInteger();
-                for (AnalyzeSentimentResult analyzeSentimentResult : pagedResponse.getElements()) {
+                for (AnalyzeSentimentResult analyzeSentimentResult : sentimentBatchResultCollection) {
                     System.out.printf("%n%s%n", documents.get(counter.getAndIncrement()));
                     if (analyzeSentimentResult.isError()) {
                         // Erroneous document

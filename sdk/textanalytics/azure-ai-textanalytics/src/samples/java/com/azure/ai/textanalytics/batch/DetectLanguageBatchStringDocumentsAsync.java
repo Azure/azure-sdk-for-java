@@ -38,7 +38,7 @@ public class DetectLanguageBatchStringDocumentsAsync {
         // Detecting language for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
         client.detectLanguageBatch(documents, "US").subscribe(
-            detectLanguageResult -> {
+            detectLanguageResultCollection -> detectLanguageResultCollection.forEach(detectLanguageResult -> {
                 // Detected language for each document
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (detectLanguageResult.isError()) {
@@ -50,7 +50,7 @@ public class DetectLanguageBatchStringDocumentsAsync {
                     System.out.printf("Detected primary language: %s, ISO 6391 name: %s, confidence score: %f.%n",
                         language.getName(), language.getIso6391Name(), language.getConfidenceScore());
                 }
-            },
+            }),
             error -> System.err.println("There was an error detecting language of the documents." + error),
             () -> System.out.println("Batch of language detected."));
 

@@ -41,7 +41,7 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
         // Analyzing sentiment for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
         client.analyzeSentimentBatch(documents, "en").subscribe(
-            analyzeSentimentResult -> {
+            analyzeSentimentResultCollection -> analyzeSentimentResultCollection.forEach(analyzeSentimentResult -> {
                 // Analyzed sentiment for each document
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (analyzeSentimentResult.isError()) {
@@ -60,7 +60,7 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
                             sentenceSentiment.getSentiment(), sentenceScores.getPositive(), sentenceScores.getNeutral(), sentenceScores.getNegative());
                     });
                 }
-            },
+            }),
             error -> System.err.println("There was an error analyzing sentiment of the documents." + error),
             () -> System.out.println("Batch of sentiment analyzed."));
 
