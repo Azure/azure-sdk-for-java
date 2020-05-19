@@ -28,8 +28,8 @@ public class ChunkedDownloadUtils {
     Download the first chunk. Construct a Mono which will emit the total count for calculating the number of chunks,
     access conditions containing the etag to lock on, and the response from downloading the first chunk.
      */
-    public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(BlobRange range,
-        ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
+    public static Mono<Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse>> downloadFirstChunk(
+        BlobRange range, ParallelTransferOptions parallelTransferOptions, BlobRequestConditions requestConditions,
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> chunkedDownload, Scheduler scheduler) {
         // We will scope our initial download to either be one chunk or the total size.
         long initialChunkSize = range.getCount() != null
