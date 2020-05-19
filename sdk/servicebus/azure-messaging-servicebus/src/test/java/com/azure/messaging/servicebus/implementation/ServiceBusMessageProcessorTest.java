@@ -7,6 +7,7 @@ import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
@@ -57,7 +58,7 @@ class ServiceBusMessageProcessorTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.initMocks(this);
-        when(messageManagementOperations.updateDisposition(anyString(), any(DeliveryState.class)))
+        when(messageManagementOperations.updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.TXN_NULL))
             .thenReturn(Mono.empty());
     }
 
@@ -91,9 +92,9 @@ class ServiceBusMessageProcessorTest {
             .expectNext(message1, message2, message3, message4)
             .verifyComplete();
 
-        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance());
-        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance());
-        verify(messageManagementOperations).updateDisposition(lock3, Accepted.getInstance());
+        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.TXN_NULL);
+        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance(), AmqpConstants.TXN_NULL);
+        verify(messageManagementOperations).updateDisposition(lock3, Accepted.getInstance(), AmqpConstants.TXN_NULL);
     }
 
     /**
@@ -136,8 +137,8 @@ class ServiceBusMessageProcessorTest {
             .verifyComplete();
 
         verify(messageManagementOperations, atLeast(3)).renewMessageLock(lock1, LINK_NAME);
-        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance());
-        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance());
+        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.TXN_NULL);
+        verify(messageManagementOperations).updateDisposition(lock2, Accepted.getInstance(), AmqpConstants.TXN_NULL);
     }
 
     /**
@@ -201,7 +202,7 @@ class ServiceBusMessageProcessorTest {
 
         verify(messageManagementOperations).renewMessageLock(lock1, LINK_NAME);
         verifyZeroInteractions(message2);
-        verify(messageManagementOperations, never()).updateDisposition(anyString(), any());
+        verify(messageManagementOperations, never()).updateDisposition(anyString(), any(), AmqpConstants.TXN_NULL);
     }
 
     /**
@@ -243,7 +244,7 @@ class ServiceBusMessageProcessorTest {
             .verify();
 
         verifyZeroInteractions(message2);
-        verify(messageManagementOperations, never()).updateDisposition(lock1, Accepted.getInstance());
+        verify(messageManagementOperations, never()).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.TXN_NULL);
     }
 
     /**
@@ -261,7 +262,7 @@ class ServiceBusMessageProcessorTest {
         when(message2.getLockToken()).thenReturn(lock2);
         when(message2.getLockedUntil()).thenAnswer(invocationOnMock -> Instant.now().plusSeconds(5));
 
-        when(messageManagementOperations.updateDisposition(lock1, Accepted.getInstance())).thenAnswer(
+        when(messageManagementOperations.updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.TXN_NULL)).thenAnswer(
             invocationOnMock -> Mono.error(new IllegalArgumentException("Test error occurred.")));
 
         when(messageManagementOperations.renewMessageLock(anyString(), anyString())).thenReturn(Mono.empty());
@@ -276,7 +277,7 @@ class ServiceBusMessageProcessorTest {
             .expectError(IllegalArgumentException.class)
             .verify();
 
-        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance());
+        verify(messageManagementOperations).updateDisposition(lock1, Accepted.getInstance(), AmqpConstants.TXN_NULL);
 
         verifyZeroInteractions(message2);
         verify(messageManagementOperations, never()).renewMessageLock(anyString(), anyString());

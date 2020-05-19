@@ -151,6 +151,26 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     /**
+     * Creates or gets a send link. The same link is returned if there is an existing send link with the same {@code
+     * linkName}. Otherwise, a new link is created and returned.
+     *
+     * @param linkName The name of the link.
+     * @param retryOptions Options to use when creating the link.
+     *
+     * @return A new or existing send link that is connected to the given {@code entityPath}.
+     */
+    @Override
+    public Mono<AmqpSendLink> createTransactionSendLink(String linkName, AmqpRetryOptions retryOptions) {
+        return createSession(linkName).flatMap(session -> {
+            logger.verbose("Get or create producer for path: '{}'", linkName);
+            final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
+
+            return session.createTransactionProducer(linkName, retryOptions.getTryTimeout(), retryPolicy)
+                .cast(AmqpSendLink.class);
+        });
+    }
+
+    /**
      * Creates or gets an existing receive link. The same link is returned if there is an existing receive link with the
      * same {@code linkName}. Otherwise, a new link is created and returned.
      *
@@ -229,15 +249,14 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
                         return current;
                     }
 
-                    final String sessionName = entityPath + "-" + MANAGEMENT_SESSION_NAME;
-                    final String linkName = entityPath + "-" + MANAGEMENT_LINK_NAME;
-                    final String address = entityPath + "/" + MANAGEMENT_ADDRESS;
+                    final String linkName = "coordinator";
 
-                    logger.info("Creating management node. entityPath: [{}]. address: [{}]. linkName: [{}]",
-                        entityPath, address, linkName);
+                    logger.info("Creating management node. entityPath: [{}]. linkName: [{}]",
+                        entityPath, linkName);
 
 
-                    return new TransactionManagerImpl(createSendLink(linkName, linkName, retryOptions), fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
+                    return new TransactionManagerImpl(createTransactionSendLink(linkName, retryOptions),
+                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
                         retryOptions.getTryTimeout());
                 }));
             }));

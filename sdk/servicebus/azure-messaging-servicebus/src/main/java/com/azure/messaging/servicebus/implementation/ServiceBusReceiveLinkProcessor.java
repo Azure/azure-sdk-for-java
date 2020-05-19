@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Operators;
 import reactor.core.scheduler.Schedulers;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Deque;
 import java.util.Objects;
@@ -111,7 +112,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
     }
 
 
-    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(String.format(
                 "lockToken[%s]. state[%s]. Cannot update disposition on closed processor.", lockToken, deliveryState)));
@@ -123,7 +124,7 @@ public class ServiceBusReceiveLinkProcessor extends FluxProcessor<ServiceBusRece
                 "lockToken[%s]. state[%s]. Cannot update disposition with no link.", lockToken, deliveryState)));
         }
 
-        return link.updateDisposition(lockToken, deliveryState);
+        return link.updateDisposition(lockToken, deliveryState, transactionId);
     }
 
     /**

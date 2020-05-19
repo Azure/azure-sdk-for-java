@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.LinkErrorContext;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
@@ -21,6 +22,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.implementation.TransactionManager;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
@@ -28,6 +30,7 @@ import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -232,7 +235,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.ABANDONED, null, null,
-            propertiesToModify, sessionId);
+            propertiesToModify, sessionId, AmqpConstants.TXN_NULL);
     }
 
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
@@ -258,7 +261,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> complete(MessageLockToken lockToken, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
+        return complete(lockToken, receiverOptions.getSessionId(), transaction);
     }
 
     /**
@@ -276,11 +279,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, sessionId);
+            null, sessionId, AmqpConstants.TXN_NULL);
     }
 
     public Mono<Void> complete(MessageLockToken lockToken, String sessionId, Transaction transaction) {
-        throw new UnsupportedOperationException("Not implemented");
+        return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
+            null, sessionId, transaction.getTransactionId());
     }
 
     /**
@@ -360,7 +364,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId) {
         return updateDisposition(lockToken, DispositionStatus.DEFERRED, null, null,
-            propertiesToModify, sessionId);
+            propertiesToModify, sessionId, AmqpConstants.TXN_NULL);
     }
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
@@ -451,7 +455,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         return updateDisposition(lockToken, DispositionStatus.SUSPENDED, deadLetterOptions.getDeadLetterReason(),
-            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId);
+            deadLetterOptions.getDeadLetterErrorDescription(), deadLetterOptions.getPropertiesToModify(), sessionId,
+            AmqpConstants.TXN_NULL);
     }
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
@@ -938,8 +943,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     private Mono<Void> updateDisposition(MessageLockToken message, DispositionStatus dispositionStatus,
-        String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
-        String sessionId) {
+                                         String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify,
+                                         String sessionId, ByteBuffer transactionId) {
+        logger.verbose("!!!! updateDisposition transactionId is null [{}].", (transactionId == AmqpConstants.TXN_NULL) );
 
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
@@ -967,7 +973,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         final Mono<Void> performOnManagement = connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId)))
+                deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionId))
             .then(Mono.fromRunnable(() -> {
                 logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken);
@@ -977,7 +983,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         if (unnamedSessionManager != null) {
             return unnamedSessionManager.updateDisposition(message, sessionId, dispositionStatus, propertiesToModify,
-                deadLetterReason, deadLetterErrorDescription)
+                deadLetterReason, deadLetterErrorDescription, transactionId)
                 .flatMap(isSuccess -> {
                     if (isSuccess) {
                         return Mono.empty();
@@ -990,10 +996,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final ServiceBusAsyncConsumer existingConsumer = consumer.get();
         if (isManagementToken(lockToken) || existingConsumer == null) {
+            logger.verbose("!!!! the token is in management client performOnManagement [{}].", performOnManagement);
             return performOnManagement;
         } else {
+            logger.verbose("!!!! the token is NOT in management client performOnManagement.");
             return existingConsumer.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
-                deadLetterErrorDescription, propertiesToModify)
+                deadLetterErrorDescription, propertiesToModify, transactionId)
                 .then(Mono.fromRunnable(() -> logger.info("{}: Update completed. Disposition: {}. Lock: {}.",
                     entityPath, dispositionStatus, lockToken)));
         }
@@ -1088,15 +1096,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
     }
 
-    public Mono<Void> autoRenewLock(MessageLockToken lockToken, Duration maxLockRenewalDuration) {
-        return null;
-    }
-
-    public Mono<Void> autoRenewLock(String sessionId, Duration maxLockRenewalDuration) {
-        return null;
-    }
-
-
     /**
      * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
      * needs to be in this transaction.
@@ -1110,14 +1109,42 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
-            .flatMap(transactionManager -> transactionManager.createTransaction());
+            .flatMap(TransactionManager::createTransaction)
+            .map(byteBuffer -> {
+                logger.verbose(" !!!! Created transaction .");
+                return new Transaction(byteBuffer);
+            });
     }
 
     public Mono<Void> commitTransaction(Transaction transaction) {
-        return null;
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
+            .flatMap(transactionManager -> {
+                return transactionManager.completeTransaction(transaction, true);
+            }).doFinally(signalType -> {
+                logger.verbose(" !!!! Transaction completed. signalType [{}]", signalType);
+            })
+            .then();
     }
 
     public Mono<Void> rollbackTransaction(Transaction transaction) {
-        return null;
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
+            .flatMap(transactionManager -> {
+                return transactionManager.completeTransaction(transaction, false);
+            }).doFinally(signalType -> {
+                logger.verbose(" !!!! Transaction completed. signalType [{}]", signalType);
+            })
+            .then();
     }
 }

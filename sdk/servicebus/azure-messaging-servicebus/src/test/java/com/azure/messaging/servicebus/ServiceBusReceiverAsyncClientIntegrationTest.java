@@ -3,16 +3,22 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
@@ -20,6 +26,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -82,6 +89,136 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         } finally {
             dispose(receiver, sender, receiveAndDeleteReceiver);
         }
+    }
+
+    /**
+     * Verifies that we can create multiple transaction using sender and receiver.
+     */
+    @Test
+    void createMultipleTansactionTest() {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        //sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+
+        StepVerifier.create(sender.createTransaction())
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+    }
+
+    /**
+     * Verifies that we can create transaction and complete.
+     */
+    @Test
+    void createTansactionAndCommitMessagesTest() throws InterruptedException {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        AtomicReference<Transaction> transaction = new AtomicReference<>();
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+
+        receiver.receive()
+            .map(messageContext -> {
+                logger.verbose("!!!! Test Received Message SQ [{}]", messageContext.getMessage().getSequenceNumber());
+                return receiver.complete(messageContext.getMessage(), transaction.get());
+            })
+            .subscribe();
+
+        TimeUnit.SECONDS.sleep(10);
+        logger.verbose("!!!! Test ready to commit Transaction Id: ", new String(transaction.get().getTransactionId().array()));
+        StepVerifier.create(receiver.commitTransaction(transaction.get()))
+            .verifyComplete();
+        logger.verbose("!!!! Test Wait ... ");
+        TimeUnit.SECONDS.sleep(30);
+        logger.verbose("!!!! Test Exit  after Wait.");
+    }
+
+    /**
+     * Verifies that we can create transaction and complete.
+     */
+    @Test
+    void createTansactionAndRollbackMessagesTest() throws InterruptedException {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        final String messageId = UUID.randomUUID().toString();
+        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
+
+        sendMessage(message).block(TIMEOUT);
+
+        // Assert & Act
+        AtomicReference<Transaction> transaction = new AtomicReference<>();
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+        ReceiveAsyncOptions options =  new ReceiveAsyncOptions();
+        options.setIsAutoCompleteEnabled(false);
+        receiver.receive(options)
+            .take(1)
+            .flatMap(messageContext -> {
+                logger.verbose("!!!! Test Received Message SQ [{}]  Lock [{}] and will complete it transaction [{}]", messageContext.getMessage().getSequenceNumber(), messageContext.getMessage().getLockToken(), (new String(transaction.get().getTransactionId().array(), Charset.defaultCharset())));
+                return receiver.complete(messageContext.getMessage(), transaction.get());
+            })
+            .subscribe();
+
+       // TimeUnit.SECONDS.sleep(15);
+        logger.verbose("!!!! Test ready to rollback Transaction Id is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.TXN_NULL));
+
+        StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
+            .verifyComplete();
+
+        logger.verbose("!!!! Test rollback done and wait ... ");
+        TimeUnit.SECONDS.sleep(15);
+
+        logger.verbose("!!!! Test Exit .....");
+    }
+
+    /**
+     * Verifies that we can create transaction and commit/rollback.
+     */
+    @Test
+    void createAndCompleteTansactionTest() {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
+
+        // Assert & Act
+        AtomicReference<Transaction> transaction = new AtomicReference<>();
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(txn -> {
+                transaction.set(txn);
+                assertNotNull(transaction);
+            })
+            .verifyComplete();
+
+        logger.verbose("!!!! Test Got Transaction Id: ", new String(transaction.get().getTransactionId().array()));
+        StepVerifier.create(receiver.commitTransaction(transaction.get()))
+            .verifyComplete();
     }
 
     /**

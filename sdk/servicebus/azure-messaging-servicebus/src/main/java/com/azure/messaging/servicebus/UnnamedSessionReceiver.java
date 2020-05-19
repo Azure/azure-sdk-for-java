@@ -25,6 +25,7 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
 import reactor.core.scheduler.Scheduler;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -157,8 +158,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
         sessionLockedUntil.set(lockedUntil);
     }
 
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-        return receiveLink.updateDisposition(lockToken, deliveryState);
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
+        return receiveLink.updateDisposition(lockToken, deliveryState, transactionId);
     }
 
     @Override
@@ -249,8 +250,8 @@ class UnnamedSessionReceiver implements AutoCloseable {
         }
 
         @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-            return link.updateDisposition(lockToken, deliveryState);
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
+            return link.updateDisposition(lockToken, deliveryState, transactionId);
         }
 
         @Override

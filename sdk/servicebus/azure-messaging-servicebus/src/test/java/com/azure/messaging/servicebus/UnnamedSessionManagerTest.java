@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.CbsAuthorizationType;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
@@ -174,7 +175,7 @@ class UnnamedSessionManagerTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
-        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance(), AmqpConstants.TXN_NULL)).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));
@@ -228,7 +229,7 @@ class UnnamedSessionManagerTest {
         when(amqpReceiveLink.getSessionId()).thenReturn(Mono.just(sessionId));
         when(amqpReceiveLink.getSessionLockedUntil())
             .thenAnswer(invocation -> Mono.just(sessionLockedUntil));
-        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance())).thenReturn(Mono.empty());
+        when(amqpReceiveLink.updateDisposition(lockToken, Accepted.getInstance(), AmqpConstants.TXN_NULL)).thenReturn(Mono.empty());
 
         when(connection.createReceiveLink(anyString(), eq(ENTITY_PATH), any(ReceiveMode.class), isNull(),
             any(MessagingEntityType.class), isNull())).thenReturn(Mono.just(amqpReceiveLink));

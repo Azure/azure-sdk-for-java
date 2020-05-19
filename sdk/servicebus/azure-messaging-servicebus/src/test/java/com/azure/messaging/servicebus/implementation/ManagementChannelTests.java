@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.implementation;
 
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.RequestResponseChannel;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -336,7 +337,7 @@ class ManagementChannelTests {
         // Act & Assert
         StepVerifier.create(managementChannel.updateDisposition(lockToken.toString(), DispositionStatus.SUSPENDED,
             options.getDeadLetterReason(), options.getDeadLetterErrorDescription(), options.getPropertiesToModify(),
-            sessionId, associatedLinkName))
+            sessionId, associatedLinkName, AmqpConstants.TXN_NULL))
             .verifyComplete();
 
         // Verify the contents of our request to make sure the correct properties were given.

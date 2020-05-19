@@ -45,6 +45,7 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
+import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
 
 /**
  * An <b>asynchronous</b> client to send messages to a Service Bus resource.
@@ -469,7 +470,21 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return a new transaction
      */
     public Mono<Transaction> createTransaction() {
-        return null;
+        if (isDisposed.get()) {
+            return monoError(logger, new IllegalStateException(
+                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
+        }
+
+        return connectionProcessor
+            .flatMap(connection -> connection.getTransactionManager(entityName, entityType))
+            .flatMap(transactionManager -> {
+                return transactionManager.createTransaction();
+            })
+            .map(byteBuffer -> {
+                logger
+                    .verbose(" !!!! Created transaction .");
+                return new Transaction(byteBuffer);
+            });
     }
 
     public Mono<Void> commitTransaction(Transaction transaction) {

@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.Map;
 
@@ -116,8 +117,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-        String associatedLinkName);
+                                 String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+                                 String associatedLinkName, ByteBuffer transactionId);
 
     @Override
     void close();

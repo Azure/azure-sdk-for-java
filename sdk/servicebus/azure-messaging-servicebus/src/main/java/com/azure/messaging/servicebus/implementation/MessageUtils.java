@@ -8,10 +8,13 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ExceptionUtil;
 import com.azure.core.util.CoreUtils;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Modified;
+import org.apache.qpid.proton.amqp.messaging.Outcome;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
@@ -107,11 +110,18 @@ public final class MessageUtils {
      * @return The corresponding DeliveryState, or null if the disposition status is unknown.
      */
     public static DeliveryState getDeliveryState(DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, ByteBuffer transactionId) {
         final DeliveryState state;
         switch (dispositionStatus) {
             case COMPLETED:
-                state = Accepted.getInstance();
+                if (transactionId != AmqpConstants.TXN_NULL) {
+                    TransactionalState tState = new TransactionalState();
+                    tState.setTxnId(new Binary(transactionId.array()));
+                    tState.setOutcome(Accepted.getInstance());
+                    state = tState;
+                } else {
+                    state = Accepted.getInstance();
+                }
                 break;
             case SUSPENDED:
                 final Rejected rejected = new Rejected();

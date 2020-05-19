@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public interface MessageManagementOperations {
      *
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
-    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState);
+    Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId);
 
     /**
      * Asynchronously renews the lock on the message specified by the lock token. The lock will be renewed based on

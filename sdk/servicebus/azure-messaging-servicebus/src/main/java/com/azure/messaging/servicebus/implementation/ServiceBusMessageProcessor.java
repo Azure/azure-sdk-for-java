@@ -6,6 +6,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
@@ -335,9 +336,9 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
                 logger.info("Abandoning message lock: {}", lockToken);
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.ABANDONED,
-                    null, null, null);
+                    null, null, null, AmqpConstants.TXN_NULL);
 
-                managementOperations.updateDisposition(lockToken, deliveryState)
+                managementOperations.updateDisposition(lockToken, deliveryState, AmqpConstants.TXN_NULL)
                     .onErrorContinue((error, item) -> {
                         logger.warning("Could not abandon message with lock: {}", lockToken, error);
                         setInternalError(error);
@@ -361,9 +362,9 @@ public class ServiceBusMessageProcessor extends FluxProcessor<ServiceBusReceived
             logger.info("sequenceNumber[{}]. lock[{}]. Completing message.", sequenceNumber, lockToken);
 
             final DeliveryState deliveryState = MessageUtils.getDeliveryState(DispositionStatus.COMPLETED,
-                null, null, null);
+                null, null, null, AmqpConstants.TXN_NULL);
 
-            managementOperations.updateDisposition(lockToken, deliveryState)
+            managementOperations.updateDisposition(lockToken, deliveryState, AmqpConstants.TXN_NULL)
                 .onErrorResume(error -> {
                     logger.warning("Could not complete message with lock: {}", lockToken, error);
                     setInternalError(error);

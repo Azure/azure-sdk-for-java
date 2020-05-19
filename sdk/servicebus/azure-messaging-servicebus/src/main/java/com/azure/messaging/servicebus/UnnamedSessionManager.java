@@ -27,6 +27,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
 
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collections;
@@ -192,7 +193,7 @@ class UnnamedSessionManager implements AutoCloseable {
      */
     Mono<Boolean> updateDisposition(MessageLockToken lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
-        String deadLetterDescription) {
+        String deadLetterDescription, ByteBuffer transactionId) {
 
         final String operation = "updateDisposition";
         return Mono.when(
@@ -207,9 +208,9 @@ class UnnamedSessionManager implements AutoCloseable {
                 }
 
                 final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-                    deadLetterDescription, propertiesToModify);
+                    deadLetterDescription, propertiesToModify, transactionId);
 
-                return receiver.updateDisposition(lock, deliveryState).thenReturn(true);
+                return receiver.updateDisposition(lock, deliveryState, transactionId).thenReturn(true);
             }));
     }
 

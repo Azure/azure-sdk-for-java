@@ -6,22 +6,39 @@ package com.azure.core.amqp.implementation;
 import com.azure.core.amqp.AmqpLink;
 import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
  * An AMQP link that sends information to the remote endpoint.
  */
 public interface AmqpSendLink extends AmqpLink {
+
     /**
-     * Sends a single message to the remote endpoint.
-     *
-     * @param message Message to send.
-     * @return A Mono that completes when the message has been sent.
-     * @throws AmqpException if the serialized {@code message} exceed the links capacity for a single message.
+     * Creates transaction.
+     * @return {@link DeliveryState} from creating transaction.
      */
+    Mono<DeliveryState> createTransaction();
+
+    /**
+     * Commit or rollback the transaction.
+     * @param transactionId to commit or rollback.
+     * @param isCommit commit if true otherwise rollback.
+     * @return
+     */
+    Mono<DeliveryState> completeTransaction(ByteBuffer transactionId, boolean isCommit);
+
+        /**
+         * Sends a single message to the remote endpoint.
+         *
+         * @param message Message to send.
+         * @return A Mono that completes when the message has been sent.
+         * @throws AmqpException if the serialized {@code message} exceed the links capacity for a single message.
+         */
     Mono<Void> send(Message message);
 
     /**

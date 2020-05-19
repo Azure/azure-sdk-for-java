@@ -10,15 +10,12 @@ import reactor.core.publisher.MonoSink;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * Represents a work item that can be scheduled multiple times.
- */
-class RetriableWorkItem extends WorkItem {
+public class RetriableResponseWorkItem extends WorkItem {
 
-    private final ClientLogger logger = new ClientLogger(RetriableWorkItem.class);
+    private final ClientLogger logger = new ClientLogger(RetriableResponseWorkItem.class);
 
     private final AtomicInteger retryAttempts = new AtomicInteger();
-    private final MonoSink<Void> monoSink;
+    private final MonoSink<DeliveryState> monoSink;
     private final TimeoutTracker timeoutTracker;
     private final byte[] amqpMessage;
     private final int messageFormat;
@@ -27,14 +24,15 @@ class RetriableWorkItem extends WorkItem {
     private boolean waitingForAck;
     private Exception lastKnownException;
 
-    RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-        Duration timeout) {
+    RetriableResponseWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat,
+        MonoSink<DeliveryState> monoSink, Duration timeout) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
             false));
     }
 
-    private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-        TimeoutTracker timeout) {
+    private RetriableResponseWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat,
+        MonoSink<DeliveryState> monoSink, TimeoutTracker timeout) {
+
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
@@ -53,8 +51,8 @@ class RetriableWorkItem extends WorkItem {
 
     @Override
     void success(DeliveryState deliveryState) {
-        logger.verbose(" !!!! Calling success.");
-        monoSink.success();
+        logger.verbose(" !!!! Calling success with [{}].", deliveryState);
+        monoSink.success(deliveryState);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transaction.Coordinator;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -162,6 +163,69 @@ public class ReactorSession implements AmqpSession {
         return openTimeout;
     }
 
+    /*private SenderLinkSettings getTransactionLinkSettings() {
+        SenderLinkSettings linkSettings = new SenderLinkSettings();
+        linkSettings.linkPath = "coordinator";
+
+        final org.apache.qpid.proton.amqp.transport.Target target = new Coordinator();
+        linkSettings.target = target;
+        linkSettings.source = new Source();
+        linkSettings.settleMode = SenderSettleMode.UNSETTLED;
+
+        Map<Symbol, Object> linkProperties = new HashMap<>();
+        // ServiceBus expects timeout to be of type unsignedint
+        //linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger
+        // .valueOf(Util.adjustServerTimeout(underlyingFactory.getOperationTimeout()).toMillis()));
+        linkSettings.linkProperties = linkProperties;
+
+        return linkSettings;
+    }*/
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Mono<AmqpLink> createTransactionProducer(String linkName, Duration timeout, AmqpRetryPolicy retry) {
+        if (isDisposed()) {
+            return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
+                "Cannot create send link '%s' from a closed session.", linkName))));
+        }
+
+        final LinkSubscription<AmqpSendLink> existing = openSendLinks.get(linkName);
+        if (existing != null) {
+            logger.verbose("linkName[{}]: Returning existing send link.", linkName);
+            return Mono.just(existing.getLink());
+        }
+
+        final TokenManager tokenManager = tokenManagerProvider.getTokenManager(cbsNodeSupplier, linkName);
+        return RetryUtil.withRetry(
+            getEndpointStates().takeUntil(state -> state == AmqpEndpointState.ACTIVE),
+            timeout, retry)
+            .then(Mono.<AmqpLink>create(sink -> {
+                try {
+                    // We have to invoke this in the same thread or else proton-j will not properly link up the created
+                    // sender because the link names are not unique. Link name == entity path.
+                    provider.getReactorDispatcher().invoke(() -> {
+                        final LinkSubscription<AmqpSendLink> computed = openSendLinks.compute(linkName,
+                            (linkNameKey, existingLink) -> {
+                                if (existingLink != null) {
+                                    logger.info("linkName[{}]: Another send link exists. Disposing of new one.",
+                                        linkName);
+                                    tokenManager.close();
+                                    return existingLink;
+                                }
+
+                                return getSubscription(linkNameKey, linkNameKey, timeout, retry, tokenManager, true);
+                            });
+
+                        sink.success(computed.getLink());
+                    });
+                } catch (IOException e) {
+                    sink.error(e);
+                }
+            }));
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -196,7 +260,7 @@ public class ReactorSession implements AmqpSession {
                                     return existingLink;
                                 }
 
-                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager);
+                                return getSubscription(linkNameKey, entityPath, timeout, retry, tokenManager, false);
                             });
 
                         sink.success(computed.getLink());
@@ -318,12 +382,17 @@ public class ReactorSession implements AmqpSession {
      * NOTE: Ensure this is invoked using the reactor dispatcher because proton-j is not thread-safe.
      */
     private LinkSubscription<AmqpSendLink> getSubscription(String linkName, String entityPath, Duration timeout,
-        AmqpRetryPolicy retry, TokenManager tokenManager) {
+        AmqpRetryPolicy retry, TokenManager tokenManager, boolean isTransactionCoordinator) {
         final Sender sender = session.sender(linkName);
-        final Target target = new Target();
 
-        target.setAddress(entityPath);
-        sender.setTarget(target);
+        if (isTransactionCoordinator) {
+            sender.setTarget(new Coordinator());
+        } else {
+            final Target target = new Target();
+
+            target.setAddress(entityPath);
+            sender.setTarget(target);
+        }
 
         final Source source = new Source();
         sender.setSource(source);

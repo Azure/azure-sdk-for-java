@@ -15,6 +15,8 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
@@ -69,17 +71,17 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-        String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, ByteBuffer transactionId) {
 
         final DeliveryState deliveryState = MessageUtils.getDeliveryState(dispositionStatus, deadLetterReason,
-            deadLetterErrorDescription, propertiesToModify);
+            deadLetterErrorDescription, propertiesToModify, transactionId);
 
         if (deliveryState == null) {
             return monoError(logger,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-
-        return linkProcessor.updateDisposition(lockToken, deliveryState);
+        logger.verbose("!!!! calling linkProcessor.updateDisposition Transactionid [{}]", (new String(transactionId.array(), Charset.defaultCharset())));
+        return linkProcessor.updateDisposition(lockToken, deliveryState, transactionId);
     }
 
     /**
@@ -104,8 +106,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
         }
 
         @Override
-        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
-            return link.updateDisposition(lockToken, deliveryState);
+        public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
+            return link.updateDisposition(lockToken, deliveryState, transactionId);
         }
 
         @Override

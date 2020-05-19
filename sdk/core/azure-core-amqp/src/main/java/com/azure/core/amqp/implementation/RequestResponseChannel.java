@@ -11,10 +11,12 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -33,6 +35,7 @@ import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentSkipListMap;
@@ -191,6 +194,18 @@ public class RequestResponseChannel implements Disposable {
      * @return An AMQP message representing the service's response to the message.
      */
     public Mono<Message> sendWithAck(final Message message) {
+        return sendWithAck(message, AmqpConstants.TXN_NULL);
+    }
+
+    /**
+     * Sends a message to the message broker using the {@code dispatcher} and gets the response.
+     *
+     * @param message AMQP message to send.
+     * @param transactionId Transaction id to be sent to service bus with message.
+     *
+     * @return An AMQP message representing the service's response to the message.
+     */
+    public Mono<Message> sendWithAck(final Message message, ByteBuffer transactionId) {
         if (isDisposed()) {
             return monoError(logger, new IllegalStateException(
                 "Cannot send a message when request response channel is disposed."));
@@ -223,8 +238,17 @@ public class RequestResponseChannel implements Disposable {
                         // If we try to do proton-j API calls such as sending on AMQP links, it may encounter a race
                         // condition. So, we are forced to use the dispatcher.
                         provider.getReactorDispatcher().invoke(() -> {
-                            sendLink.delivery(UUID.randomUUID().toString()
+                            Delivery delivery = sendLink.delivery(UUID.randomUUID().toString()
                                 .replace("-", "").getBytes(UTF_8));
+
+                            if (transactionId != AmqpConstants.TXN_NULL) {
+                                logger.verbose("!!!! sendWithAck Setting transaction on delivery ...");
+                                TransactionalState transactionalState = new TransactionalState();
+                                transactionalState.setTxnId(new Binary(transactionId.array()));
+                                delivery.disposition(transactionalState);
+                            } else {
+                                logger.verbose("!!!! sendWithAck transaction id  is not present");
+                            }
 
                             final int payloadSize = messageSerializer.getSize(message)
                                 + ClientConstants.MAX_AMQP_HEADER_SIZE_BYTES;

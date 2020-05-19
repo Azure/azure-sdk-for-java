@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.exception.AmqpException;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.ReactorProvider;
 import com.azure.core.amqp.implementation.ReactorReceiver;
 import com.azure.core.amqp.implementation.TokenManager;
@@ -14,6 +15,7 @@ import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
@@ -32,6 +34,8 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -117,10 +121,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     }
 
     @Override
-    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState) {
+    public Mono<Void> updateDisposition(String lockToken, DeliveryState deliveryState, ByteBuffer transactionId) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
         }
+        logger.verbose("!!!! Entry transaction-id for lock token [{}]. id [{}]", lockToken, (new String(transactionId.array(), Charset.defaultCharset())));
 
         final Delivery unsettled = unsettledDeliveries.get(lockToken);
         if (unsettled == null) {
@@ -130,13 +135,28 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             return monoError(logger, Exceptions.propagate(new IllegalArgumentException(
                 "Delivery not on receive link.")));
         }
-
+        final ByteBuffer finalTId = transactionId;
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
         final Mono<Void> result = Mono.create(sink -> {
             workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
-                    unsettled.disposition(deliveryState);
+                    DeliveryState state;
+                    //logger.verbose("!!!! transaction-id for lock token [{}]. id [{}]", lockToken, (new String(finalTId.array(), Charset.defaultCharset())));
+                    /*if (finalTId != AmqpConstants.TXN_NULL) {
+                        state = new TransactionalState();
+                        ((TransactionalState) state).setTxnId(new Binary(finalTId.array()));
+
+                        ((TransactionalState) state).setOutcome((Outcome) deliveryState);
+                        logger.verbose("!!!! Setting transaction-id for lock token [{}].", lockToken);
+                    } else {
+                        state = deliveryState;
+                        logger.verbose("!!!! not Setting transaction-id for lock token [{}].", lockToken);
+                    }*/
+
+                    state = deliveryState;
+
+                    unsettled.disposition(state);
                     pendingUpdates.put(lockToken, workItem);
                 });
             } catch (IOException error) {
@@ -220,11 +240,15 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
             // The delivery was already settled from the message broker.
             // This occurs in the case of receive and delete.
+            logger.verbose("!!!! decodeDelivery lockTokenString [{}] isSettled [{}]", lockTokenString, isSettled);
             if (isSettled) {
                 delivery.disposition(Accepted.getInstance());
+                logger.verbose("!!!! decodeDelivery settling lockTokenString [{}] isSettled [{}]", lockTokenString, isSettled);
+
                 delivery.settle();
             } else {
                 unsettledDeliveries.putIfAbsent(lockToken.toString(), delivery);
+                logger.verbose("!!!! decodeDelivery advancing lockTokenString [{}] isSettled [{}]", lockTokenString, isSettled);
                 receiver.advance();
             }
             return new MessageWithLockToken(message, lockToken);
@@ -271,8 +295,17 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         // If the statuses match, then we settle the delivery and move on.
+        DeliveryState matchingUpdateWorkItemDeliveryState = workItem.getDeliveryState();
+        if (matchingUpdateWorkItemDeliveryState instanceof TransactionalState) {
+            matchingUpdateWorkItemDeliveryState = (DeliveryState) ((TransactionalState) matchingUpdateWorkItemDeliveryState).getOutcome();
+            boolean firstMatch =  (remoteOutcome.getClass().getName().equals(matchingUpdateWorkItemDeliveryState.getClass().getName()));
+            boolean secondMatch = remoteState.getType() == matchingUpdateWorkItemDeliveryState.getType();
+            logger.verbose("!!!! matching response : firstMatch[{}] secondMatch [{}] remoteState.getType() [{}]", firstMatch, secondMatch, remoteState.getType());
+        }
+        //((Accepted) ((TransactionalState) remoteState).getOutcome()).getType() == workItem.getDeliveryState().getType()
         if (remoteState.getType() == workItem.getDeliveryState().getType()) {
-            completeWorkItem(lockToken, delivery, workItem.getSink(), null);
+            logger.verbose("!!!! calling completeWorkItem lockToken [{}]", lockToken);
+            completeWorkItem(lockToken, delivery, workItem.getSink(), null, workItem);
             return;
         }
 
@@ -288,7 +321,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 final Duration retry = retryPolicy.calculateRetryDelay(exception, workItem.incrementRetry());
                 if (retry == null) {
                     logger.info("deliveryTag[{}], state[{}]. Retry attempts exhausted.", lockToken, exception);
-                    completeWorkItem(lockToken, delivery, workItem.getSink(), exception);
+                    completeWorkItem(lockToken, delivery, workItem.getSink(), exception, workItem);
                 } else {
                     workItem.setLastException(exception);
                     workItem.resetStartTime();
@@ -299,7 +332,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                             "linkName[%s], deliveryTag[%s]. Retrying updateDisposition failed to dispatch to Reactor.",
                             error, handler.getErrorContext(receiver)));
 
-                        completeWorkItem(lockToken, delivery, workItem.getSink(), amqpException);
+                        completeWorkItem(lockToken, delivery, workItem.getSink(), amqpException, workItem);
                     }
                 }
 
@@ -311,7 +344,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 logger.info("deliveryTag[{}], state[{}]. Completing pending updateState operation with exception.",
                     lockToken, remoteState.getType(), cancelled);
 
-                completeWorkItem(lockToken, delivery, workItem.getSink(), cancelled);
+                completeWorkItem(lockToken, delivery, workItem.getSink(), cancelled, workItem);
                 break;
             default:
                 final AmqpException error = new AmqpException(false, remoteOutcome.toString(),
@@ -320,7 +353,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 logger.info("deliveryTag[{}], state[{}] Completing pending updateState operation with exception.",
                     lockToken, remoteState.getType(), error);
 
-                completeWorkItem(lockToken, delivery, workItem.getSink(), error);
+                completeWorkItem(lockToken, delivery, workItem.getSink(), error, workItem);
                 break;
         }
     }
@@ -338,12 +371,20 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
                 : new AmqpException(true, AmqpErrorCondition.TIMEOUT_ERROR, "Update disposition request timed out.",
                 handler.getErrorContext(receiver));
 
-            completeWorkItem(key, null, value.getSink(), error);
+            completeWorkItem(key, null, value.getSink(), error, value);
         });
     }
 
-    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error) {
-        final boolean isSettled = delivery != null && delivery.remotelySettled();
+    private void completeWorkItem(String lockToken, Delivery delivery, MonoSink<Void> sink, Throwable error,
+        UpdateDispositionWorkItem workItem) {
+
+        boolean isSettled = delivery != null && delivery.remotelySettled();
+
+        if (workItem.getDeliveryState() instanceof  TransactionalState){
+            isSettled = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
+        }
+
+        logger.verbose("!!!! completeWorkItem lockToken [{}] isSettled :[{}]", lockToken, isSettled);
         if (isSettled) {
             delivery.settle();
         }
@@ -358,9 +399,11 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         if (isSettled) {
+            logger.verbose("!!!! completeWorkItem lockToken [{}] isSettled :[{}] removing from pendingUpdates", lockToken, isSettled);
             pendingUpdates.remove(lockToken);
             unsettledDeliveries.remove(lockToken);
         }
+        logger.verbose("!!!! completeWorkItem Exit pendingUpdates.size [{}].", pendingUpdates.size());
     }
 
     private static final class UpdateDispositionWorkItem {

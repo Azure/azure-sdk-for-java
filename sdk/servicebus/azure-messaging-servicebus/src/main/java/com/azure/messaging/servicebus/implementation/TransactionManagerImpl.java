@@ -4,34 +4,23 @@ import com.azure.core.amqp.exception.AmqpErrorContext;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.exception.SessionErrorContext;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
-import com.azure.core.amqp.implementation.RequestResponseChannel;
-import com.azure.core.amqp.implementation.RequestResponseUtils;
 import com.azure.core.amqp.implementation.TokenManager;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.Transaction;
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.message.Message;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.transaction.Declared;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SynchronousSink;
 
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_RENEW_SESSION_LOCK;
-
 public class TransactionManagerImpl implements TransactionManager {
+    static final String OPERATION_CREATE_TRANSACTION = AmqpConstants.VENDOR + ":create-transaction";
 
     private final MessageSerializer messageSerializer;
     private final TokenManager tokenManager;
@@ -46,9 +35,10 @@ public class TransactionManagerImpl implements TransactionManager {
         this.sendLink = Objects.requireNonNull(sendLink, "'sendLink' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
-        this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
+        this.logger = new ClientLogger(String.format("%s<%s>", TransactionManagerImpl.class, entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
+        this.messageSerializer = Objects.requireNonNull(messageSerializer,
+            "'messageSerializer' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
 
@@ -58,75 +48,34 @@ public class TransactionManagerImpl implements TransactionManager {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Transaction> createTransaction() {
+    public Mono<ByteBuffer> createTransaction() {
 
-        return isAuthorized(OPERATION_RENEW_SESSION_LOCK).then(sendLink.flatMap(sendLink -> {
-            final Message message = createManagementMessage(OPERATION_RENEW_SESSION_LOCK, associatedLinkName);
+        return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink -> {
+            logger.verbose(" !!!! Will create new transaction.");
+            return sendLink.createTransaction();
+        })).map(state -> {
+            Binary txnId = null;
+            if (state instanceof Declared) {
+                Declared declared = (Declared) state;
+                txnId = declared.getTxnId();
+                logger.verbose("New TX started: {}", txnId);
+            } else {
+                logger.error("Not supported response: state {}", state);
+            }
 
-            final Map<String, Object> body = new HashMap<>();
-            //body.put(ManagementConstants.SESSION_ID, sessionId);
-
-            message.setBody(new AmqpValue(body));
-
-            return sendWithVerify(sendLink, message);
-        })).map(response -> {
-            final Object value = ((AmqpValue) response.getBody()).getValue();
-
-            Transaction transaction = null;//new Transaction(ByteBuffer.wrap("".getBytes()));
-            return transaction;
+            return txnId.asByteBuffer();
         });
     }
 
-    private Mono<Message> sendWithVerify(AmqpSendLink sendLink, Message message) {
-        return sendLink.send(message)
-            .handle(Message response, SynchronousSink<Message> sink) -> {
-                Message m =  null;
-                sink.next(response);
-                //return ;
-            })
-            /*.handle((Message response, SynchronousSink<Message> sink) -> {
-                if (RequestResponseUtils.isSuccessful(response)) {
-                    sink.next(response);
-                    return;
-                }
-
-                final AmqpResponseCode statusCode = RequestResponseUtils.getStatusCode(response);
-                final String statusDescription = RequestResponseUtils.getStatusDescription(response);
-                final String errorCondition = RequestResponseUtils.getErrorCondition(response);
-                final Throwable throwable = MessageUtils.toException(
-                    new ErrorCondition(Symbol.getSymbol(errorCondition), statusDescription), sendLink.getErrorContext());
-
-                logger.warning("status[{}] description[{}] condition[{}] Operation not successful.",
-                    statusCode, statusDescription, errorCondition);
-
-                sink.error(throwable);
-            })*/
-            .switchIfEmpty(Mono.error(new AmqpException(true, "No response received from management channel.",
-                sendLink.getErrorContext())));
-    }
-
     /**
-     * Creates an AMQP message with the required application properties.
-     *
-     * @param operation Management operation to perform (ie. peek, update-disposition, etc.)
-     * @param associatedLinkName Name of the open receive link that first received the message.
-     *
-     * @return An AMQP message with the required headers.
+     * {@inheritDoc}
      */
-    private Message createManagementMessage(String operation, String associatedLinkName) {
-        final Duration serverTimeout = MessageUtils.adjustServerTimeout(operationTimeout);
-        final Map<String, Object> applicationProperties = new HashMap<>();
-        applicationProperties.put(ManagementConstants.MANAGEMENT_OPERATION_KEY, operation);
-        applicationProperties.put(ManagementConstants.SERVER_TIMEOUT, serverTimeout.toMillis());
-
-        if (!CoreUtils.isNullOrEmpty(associatedLinkName)) {
-            applicationProperties.put(ManagementConstants.ASSOCIATED_LINK_NAME_KEY, associatedLinkName);
-        }
-
-        final Message message = Proton.message();
-        message.setApplicationProperties(new ApplicationProperties(applicationProperties));
-
-        return message;
+    @Override
+    public Mono<Void> completeTransaction(Transaction transaction, boolean isCommit) {
+        return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink -> {
+            logger.verbose(" !!!! Will complete the transaction.");
+            return sendLink.completeTransaction(transaction.getTransactionId(), isCommit);
+        })).then();
     }
 
     private Mono<Void> isAuthorized(String operation) {
@@ -146,6 +95,7 @@ public class TransactionManagerImpl implements TransactionManager {
     private AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
     }
+
     @Override
     public void close() throws Exception {
 

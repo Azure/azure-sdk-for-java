@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.exception.AmqpErrorContext;
+import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
@@ -97,7 +98,7 @@ class ServiceBusAsyncConsumerTest {
             new AmqpErrorContext("a-namespace")));
 
         when(connection.getEndpointStates()).thenReturn(Flux.create(sink -> sink.next(AmqpEndpointState.ACTIVE)));
-        when(link.updateDisposition(anyString(), any(DeliveryState.class))).thenReturn(Mono.empty());
+        when(link.updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.TXN_NULL)).thenReturn(Mono.empty());
     }
 
     @AfterEach
@@ -141,7 +142,7 @@ class ServiceBusAsyncConsumerTest {
             .expectNext(receivedMessage1, receivedMessage2)
             .verifyComplete();
 
-        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()));
+        verify(link).updateDisposition(eq(lockToken1), eq(Accepted.getInstance()), AmqpConstants.TXN_NULL);
     }
 
     /**
@@ -176,7 +177,7 @@ class ServiceBusAsyncConsumerTest {
             .thenCancel()
             .verify();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.TXN_NULL);
     }
 
     /**
@@ -187,7 +188,7 @@ class ServiceBusAsyncConsumerTest {
         // Arrange
         final boolean isAutoComplete = false;
         final String lockToken = UUID.randomUUID().toString();
-        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance()))
+        when(linkProcessor.updateDisposition(lockToken, Accepted.getInstance(), AmqpConstants.TXN_NULL))
             .thenReturn(Mono.error(new IllegalArgumentException("Should not have called complete.")));
 
         final ServiceBusAsyncConsumer consumer = new ServiceBusAsyncConsumer(LINK_NAME, linkProcessor,
@@ -209,6 +210,6 @@ class ServiceBusAsyncConsumerTest {
             .then(() -> consumer.close())
             .verifyComplete();
 
-        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class));
+        verify(link, never()).updateDisposition(anyString(), any(DeliveryState.class), AmqpConstants.TXN_NULL);
     }
 }
