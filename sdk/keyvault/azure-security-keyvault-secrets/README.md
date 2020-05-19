@@ -1,7 +1,7 @@
 # Azure Key Vault Secret client library for Java
 Azure Key Vault is a cloud service that provides secure storage for secrets, such as passwords and database connection strings.
 
-Azure Key Vault Secrets client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the secrets and its versions.
+The Azure Key Vault Secrets client library allows you to securely store and tightly control the access to tokens, passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the secrets and its versions.
 
 Use the Azure Key Vault Secrets client library to create and manage secrets.
 
