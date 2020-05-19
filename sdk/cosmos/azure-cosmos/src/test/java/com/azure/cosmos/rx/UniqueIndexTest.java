@@ -72,8 +72,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath();
-        excludedPath.setPath("/*");
+        ExcludedPath excludedPath = new ExcludedPath("/*");
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
         IncludedPath includedPath1 = new IncludedPath("/name/?");
@@ -179,8 +178,7 @@ public class UniqueIndexTest extends TestSuiteBase {
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath();
-        excludedPath.setPath("/*");
+        ExcludedPath excludedPath = new ExcludedPath("/*");
         indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
 
         IncludedPath includedPath1 = new IncludedPath("/name/?");

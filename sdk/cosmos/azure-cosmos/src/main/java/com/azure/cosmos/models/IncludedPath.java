@@ -23,18 +23,11 @@ public final class IncludedPath {
 
     /**
      * Constructor.
-     */
-    public IncludedPath() {
-        this.jsonSerializable = new JsonSerializable();
-    }
-
-    /**
-     * Constructor.
      *
      * @param path the included path.
      */
     public IncludedPath(String path) {
-        this();
+        this.jsonSerializable = new JsonSerializable();
         this.setPath(path);
     }
 

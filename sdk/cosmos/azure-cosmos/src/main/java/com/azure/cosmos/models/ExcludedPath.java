@@ -15,18 +15,11 @@ public final class ExcludedPath {
 
     /**
      * Constructor.
-     */
-    public ExcludedPath() {
-        this.jsonSerializable = new JsonSerializable();
-    }
-
-    /**
-     * Constructor.
      *
      * @param path the excluded path.
      */
     public ExcludedPath(String path) {
-        this();
+        this.jsonSerializable = new JsonSerializable();
         this.setPath(path);
     }
 

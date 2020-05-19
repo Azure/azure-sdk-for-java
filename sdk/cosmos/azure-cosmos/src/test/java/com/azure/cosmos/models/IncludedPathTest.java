@@ -2,11 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class IncludedPathTest {
 
@@ -21,12 +22,12 @@ public class IncludedPathTest {
         includedPath.setIndexes(indexes);
 
         List<Index> includedPathIndexes = new ArrayList<>(includedPath.getIndexes());
-        Assertions.assertThat(includedPathIndexes).hasSize(2);
-        Assertions.assertThat(((RangeIndex) includedPathIndexes.get(0)).getDataType()).isEqualTo(DataType.STRING);
-        Assertions.assertThat(((RangeIndex) includedPathIndexes.get(0)).getPrecision()).isEqualTo(-1);
-        Assertions.assertThat(((RangeIndex) includedPathIndexes.get(1)).getDataType()).isEqualTo(DataType.NUMBER);
-        Assertions.assertThat(((RangeIndex) includedPathIndexes.get(1)).getPrecision()).isEqualTo(-1);
+        assertThat(includedPathIndexes).hasSize(2);
+        assertThat(((RangeIndex) includedPathIndexes.get(0)).getDataType()).isEqualTo(DataType.STRING);
+        assertThat(((RangeIndex) includedPathIndexes.get(0)).getPrecision()).isEqualTo(-1);
+        assertThat(((RangeIndex) includedPathIndexes.get(1)).getDataType()).isEqualTo(DataType.NUMBER);
+        assertThat(((RangeIndex) includedPathIndexes.get(1)).getPrecision()).isEqualTo(-1);
 
-        Assertions.assertThat(includedPath.getPath()).isEqualTo(path);
+        assertThat(includedPath.getPath()).isEqualTo(path);
     }
 }
