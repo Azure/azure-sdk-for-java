@@ -260,7 +260,8 @@ secretAsyncClient.beginDeleteSecret("secretName")
 List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
-// The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret` to get its // value as well.
+// The List Secrets operation returns secrets without their value, so for each secret returned we call `getSecret`
+// to get its value as well.
 secretAsyncClient.listPropertiesOfSecrets()
     .subscribe(secretProperties -> secretAsyncClient
         .getSecret(secretProperties.getName(), secretProperties.getVersion())
