@@ -68,7 +68,7 @@ Here is [Azure Cloud Shell](https://shell.azure.com/bash) snippet below to
     export AZURE_TENANT_ID="tenant-ID"
   ```
 
-* Grant the above mentioned application authorization to perform secret operations on the Azure Key Vault:
+* Grant the aforementioned application authorization to perform secret operations on the Key Vault:
 
     ```Bash
     az keyvault set-policy --name <your-key-vault-name> --spn $AZURE_CLIENT_ID --secret-permissions backup delete get list set
