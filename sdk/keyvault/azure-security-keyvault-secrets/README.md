@@ -230,7 +230,6 @@ secretAsyncClient.getSecret("secretName").subscribe(secret ->
 ```
 
 ### Update an existing Secret Asynchronously
-
 Update an existing secret by calling `updateSecretProperties`.
 
 ```Java
