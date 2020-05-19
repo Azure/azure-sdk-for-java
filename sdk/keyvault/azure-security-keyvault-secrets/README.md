@@ -169,7 +169,7 @@ Delete an existing secret by calling `beginDeleteSecret`.
 ```Java
 SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("secretName");
 
-// Deleted Secret is accessible as soon as polling begins
+// Deleted secret is accessible as soon as polling begins
 PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
 
 // Deleted date only works for SoftDelete Enabled Key Vault.
