@@ -91,15 +91,17 @@ public class ManagementClientAsync {
         this.clientSettings = clientSettings;
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
                 .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
+                .setUseProxySelector(true)
+//                .setUseProxyProperties(true)
                 .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
 
-        if(shouldUseProxy(this.namespaceEndpointURI.getHost())){
-            InetSocketAddress address = (InetSocketAddress)this.proxies.get(0).address();
-            String proxyHostName=address.getHostName();
-            int proxyPort=address.getPort();
-
-            clientBuilder.setProxyServer(new ProxyServer.Builder(proxyHostName,proxyPort));
-        }
+//        if(shouldUseProxy(this.namespaceEndpointURI.getHost())){
+//            InetSocketAddress address = (InetSocketAddress)this.proxies.get(0).address();
+//            String proxyHostName=address.getHostName();
+//            int proxyPort=address.getPort();
+//
+//            clientBuilder.setProxyServer(new ProxyServer.Builder(proxyHostName,proxyPort));
+//        }
 
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
     }
