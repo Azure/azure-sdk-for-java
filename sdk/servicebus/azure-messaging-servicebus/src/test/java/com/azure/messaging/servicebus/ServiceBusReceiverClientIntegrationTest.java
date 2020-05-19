@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -32,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Integration tests for {@link ServiceBusReceiverClient} from queues or subscriptions.
  */
+@Tag("integration")
 class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
 
     /* Sometime not all the messages are cleaned-up. This is buffer to ensure all the messages are cleaned-up.*/

@@ -8,6 +8,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,6 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Integration tests for {@link UnnamedSessionManager}.
  */
+@Tag("integration")
 class UnnamedSessionManagerIntegrationTest extends IntegrationTestBase {
     private final AtomicInteger messagesPending = new AtomicInteger();
 
