@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 
 import java.time.Duration;
@@ -108,8 +108,8 @@ public class CosmosItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return responseWrapper.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return responseWrapper.getDiagnostics();
     }
 
     /**
@@ -117,8 +117,8 @@ public class CosmosItemResponse<T> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration getRequestLatency() {
-        return responseWrapper.getRequestLatency();
+    public Duration getDuration() {
+        return responseWrapper.getDuration();
     }
 
     /**

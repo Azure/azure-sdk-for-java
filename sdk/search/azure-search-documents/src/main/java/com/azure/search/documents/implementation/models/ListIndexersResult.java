@@ -7,7 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.Indexer;
+import com.azure.search.documents.models.SearchIndexer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,14 +21,14 @@ public final class ListIndexersResult {
      * The indexers in the Search service.
      */
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<Indexer> indexers;
+    private List<SearchIndexer> indexers;
 
     /**
      * Get the indexers property: The indexers in the Search service.
      *
      * @return the indexers value.
      */
-    public List<Indexer> getIndexers() {
+    public List<SearchIndexer> getIndexers() {
         return this.indexers;
     }
 }

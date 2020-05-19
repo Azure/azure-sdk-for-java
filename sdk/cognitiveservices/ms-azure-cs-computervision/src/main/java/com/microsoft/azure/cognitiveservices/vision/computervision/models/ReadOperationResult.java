@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
-import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,24 +15,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ReadOperationResult {
     /**
-     * Status of the read operation. Possible values include: 'NotStarted',
-     * 'Running', 'Failed', 'Succeeded'.
+     * Status of the read operation. Possible values include: 'notStarted',
+     * 'running', 'failed', 'succeeded'.
      */
     @JsonProperty(value = "status")
-    private TextOperationStatusCodes status;
+    private OperationStatusCodes status;
 
     /**
-     * An array of text recognition result of the read operation.
+     * Get UTC date time the batch operation was submitted.
      */
-    @JsonProperty(value = "recognitionResults")
-    private List<TextRecognitionResult> recognitionResults;
+    @JsonProperty(value = "createdDateTime")
+    private String createdDateTime;
+
+    /**
+     * Get last updated UTC date time of this batch operation.
+     */
+    @JsonProperty(value = "lastUpdatedDateTime")
+    private String lastUpdatedDateTime;
+
+    /**
+     * Analyze batch operation result.
+     */
+    @JsonProperty(value = "analyzeResult")
+    private AnalyzeResults analyzeResult;
 
     /**
      * Get the status value.
      *
      * @return the status value
      */
-    public TextOperationStatusCodes status() {
+    public OperationStatusCodes status() {
         return this.status;
     }
 
@@ -43,28 +54,68 @@ public class ReadOperationResult {
      * @param status the status value to set
      * @return the ReadOperationResult object itself.
      */
-    public ReadOperationResult withStatus(TextOperationStatusCodes status) {
+    public ReadOperationResult withStatus(OperationStatusCodes status) {
         this.status = status;
         return this;
     }
 
     /**
-     * Get the recognitionResults value.
+     * Get the createdDateTime value.
      *
-     * @return the recognitionResults value
+     * @return the createdDateTime value
      */
-    public List<TextRecognitionResult> recognitionResults() {
-        return this.recognitionResults;
+    public String createdDateTime() {
+        return this.createdDateTime;
     }
 
     /**
-     * Set the recognitionResults value.
+     * Set the createdDateTime value.
      *
-     * @param recognitionResults the recognitionResults value to set
+     * @param createdDateTime the createdDateTime value to set
      * @return the ReadOperationResult object itself.
      */
-    public ReadOperationResult withRecognitionResults(List<TextRecognitionResult> recognitionResults) {
-        this.recognitionResults = recognitionResults;
+    public ReadOperationResult withCreatedDateTime(String createdDateTime) {
+        this.createdDateTime = createdDateTime;
+        return this;
+    }
+
+    /**
+     * Get the lastUpdatedDateTime value.
+     *
+     * @return the lastUpdatedDateTime value
+     */
+    public String lastUpdatedDateTime() {
+        return this.lastUpdatedDateTime;
+    }
+
+    /**
+     * Set the lastUpdatedDateTime value.
+     *
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set
+     * @return the ReadOperationResult object itself.
+     */
+    public ReadOperationResult withLastUpdatedDateTime(String lastUpdatedDateTime) {
+        this.lastUpdatedDateTime = lastUpdatedDateTime;
+        return this;
+    }
+
+    /**
+     * Get the analyzeResult value.
+     *
+     * @return the analyzeResult value
+     */
+    public AnalyzeResults analyzeResult() {
+        return this.analyzeResult;
+    }
+
+    /**
+     * Set the analyzeResult value.
+     *
+     * @param analyzeResult the analyzeResult value to set
+     * @return the ReadOperationResult object itself.
+     */
+    public ReadOperationResult withAnalyzeResult(AnalyzeResults analyzeResult) {
+        this.analyzeResult = analyzeResult;
         return this;
     }
 

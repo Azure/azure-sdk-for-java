@@ -7,7 +7,7 @@
 package com.azure.search.documents.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.search.documents.models.DataSource;
+import com.azure.search.documents.models.SearchIndexerDataSource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -21,14 +21,14 @@ public final class ListDataSourcesResult {
      * The datasources in the Search service.
      */
     @JsonProperty(value = "value", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private List<DataSource> dataSources;
+    private List<SearchIndexerDataSource> dataSources;
 
     /**
      * Get the dataSources property: The datasources in the Search service.
      *
      * @return the dataSources value.
      */
-    public List<DataSource> getDataSources() {
+    public List<SearchIndexerDataSource> getDataSources() {
         return this.dataSources;
     }
 }

@@ -160,6 +160,17 @@ class VirtualMachineImpl
     // Type fo the new proximity placement group
     private ProximityPlacementGroupType newProximityPlacementGroupType;
     private final ClientLogger logger = new ClientLogger(VirtualMachineImpl.class);
+    private final ObjectMapper mapper;
+    private static final JacksonAnnotationIntrospector ANNOTATION_INTROSPECTOR = new JacksonAnnotationIntrospector() {
+        @Override
+        public JsonProperty.Access findPropertyAccess(Annotated annotated) {
+            JsonProperty.Access access = super.findPropertyAccess(annotated);
+            if (access == JsonProperty.Access.WRITE_ONLY) {
+                return JsonProperty.Access.AUTO;
+            }
+            return access;
+        }
+    };
 
     VirtualMachineImpl(
         String name,
@@ -185,6 +196,8 @@ class VirtualMachineImpl
         this.virtualMachineMsiHandler = new VirtualMachineMsiHandler(rbacManager, this);
         this.newProximityPlacementGroupName = null;
         this.newProximityPlacementGroupType = null;
+        this.mapper = new ObjectMapper();
+        this.mapper.setAnnotationIntrospector(ANNOTATION_INTROSPECTOR);
     }
 
     // Verbs
@@ -324,17 +337,6 @@ class VirtualMachineImpl
             .map(
                 captureResultInner -> {
                     try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector() {
-                            @Override
-                            public JsonProperty.Access findPropertyAccess(Annotated annotated) {
-                                JsonProperty.Access access = super.findPropertyAccess(annotated);
-                                if (access == JsonProperty.Access.WRITE_ONLY) {
-                                    return JsonProperty.Access.AUTO;
-                                }
-                                return access;
-                            }
-                        });
                         return mapper.writeValueAsString(captureResultInner);
                     } catch (JsonProcessingException ex) {
                         throw logger.logExceptionAsError(Exceptions.propagate(ex));

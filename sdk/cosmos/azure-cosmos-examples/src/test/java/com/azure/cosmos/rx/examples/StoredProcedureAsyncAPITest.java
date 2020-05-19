@@ -109,7 +109,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new Object[]{})
+        client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new ArrayList<>())
               .subscribe(storedProcedureResponse -> {
                     String logResult = "The value of x is 1.";
                     try {
@@ -154,7 +154,9 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[]{"a", 123};
+        List<Object> storedProcedureArgs = new ArrayList<>();
+        storedProcedureArgs.add("a");
+        storedProcedureArgs.add(123);
         client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
               .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -200,7 +202,8 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         SamplePojo samplePojo = new SamplePojo();
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[]{samplePojo};
+        List<Object> storedProcedureArgs = new ArrayList<>();
+        storedProcedureArgs.add(samplePojo);
         client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
               .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();

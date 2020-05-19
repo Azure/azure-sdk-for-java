@@ -14,6 +14,8 @@ import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Indexable;
 import com.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,7 +26,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import reactor.core.publisher.Mono;
 
 /**
  * Implementation for {@link HostnameSslBinding} and its create and update interfaces.
@@ -61,7 +62,7 @@ class HostnameSslBindingImpl<FluentT extends WebAppBase, FluentImplT extends Web
     }
 
     @Override
-    public String virtualIP() {
+    public String virtualIp() {
         return inner().virtualIp();
     }
 

@@ -65,7 +65,7 @@ public final class CosmosContainerRequestOptions {
      *
      * @return the consistency level.
      */
-    public ConsistencyLevel getConsistencyLevel() {
+    ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
@@ -75,7 +75,7 @@ public final class CosmosContainerRequestOptions {
      * @param consistencyLevel the consistency level.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
+    CosmosContainerRequestOptions setConsistencyLevel(ConsistencyLevel consistencyLevel) {
         this.consistencyLevel = consistencyLevel;
         return this;
     }

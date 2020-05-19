@@ -123,15 +123,69 @@ public class ServiceBusReceiverAsyncClientJavaDocCodeSamples {
             .buildAsyncClient();
 
         // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
-        Disposable subscription = receiver.receive().subscribe(context -> {
+        Disposable subscription = receiver.receive().flatMap(context -> {
             ServiceBusReceivedMessage message = context.getMessage();
             System.out.printf("Received message id: %s%n", message.getMessageId());
             System.out.printf("Contents of message as string: %s%n", new String(message.getBody(), UTF_8));
-        });
+            return receiver.complete(message);
+        }).subscribe(aVoid -> System.out.println("Processed message."),
+            error -> System.out.println("Error occurred: " + error));
 
         // When program ends, or you're done receiving all messages.
         receiver.close();
         subscription.dispose();
         // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.receive#all
+    }
+
+    /**
+     * Demonstrates how to create a session receiver for a single, first available session.
+     */
+    public void sessionReceiverSingleInstantiation() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
+        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+                + "SharedAccessKey={key};EntityPath={eh-name}")
+            .sessionReceiver()
+            .queueName("<< QUEUE NAME >>")
+            .buildAsyncClient();
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#singlesession
+
+        consumer.close();
+    }
+
+    /**
+     * Demonstrates how to create a session receiver for a specific session.
+     */
+    public void sessionReceiverNamedInstantiation() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
+        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+                + "SharedAccessKey={key};EntityPath={eh-name}")
+            .sessionReceiver()
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .sessionId("<< my-session-id >>")
+            .buildAsyncClient();
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#sessionId
+
+        consumer.close();
+    }
+
+    /**
+     * Demonstrates how to create a session receiver for processing multiple sessions.
+     */
+    public void sessionReceiverMultipleInstantiation() {
+        // BEGIN: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
+        ServiceBusReceiverAsyncClient consumer = new ServiceBusClientBuilder()
+            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
+                + "SharedAccessKey={key};EntityPath={eh-name}")
+            .sessionReceiver()
+            .topicName("<< TOPIC NAME >>")
+            .subscriptionName("<< SUBSCRIPTION NAME >>")
+            .maxConcurrentSessions(3)
+            .buildAsyncClient();
+        // END: com.azure.messaging.servicebus.servicebusasyncreceiverclient.instantiation#multiplesessions
+
+        consumer.close();
     }
 }

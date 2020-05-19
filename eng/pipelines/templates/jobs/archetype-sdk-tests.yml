@@ -61,6 +61,10 @@ jobs:
 
     variables:
       - template: ../variables/globals.yml
+      # Default $(SubscriptionConfiguration) if the matrix does not specify a $(SubscriptionConfiguration)
+      - name: SubscriptionConfiguration
+        value: $(sub-config-azure-cloud-test-resources)
+
     strategy:
       matrix: ${{ parameters.Matrix }}
       maxParallel: ${{ parameters.MaxParallel }}
