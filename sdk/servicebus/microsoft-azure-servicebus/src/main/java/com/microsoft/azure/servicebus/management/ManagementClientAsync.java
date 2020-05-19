@@ -92,48 +92,8 @@ public class ManagementClientAsync {
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
                 .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
                 .setUseProxySelector(true)
-//                .setUseProxyProperties(true)
                 .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
-
-//        if(shouldUseProxy(this.namespaceEndpointURI.getHost())){
-//            InetSocketAddress address = (InetSocketAddress)this.proxies.get(0).address();
-//            String proxyHostName=address.getHostName();
-//            int proxyPort=address.getPort();
-//
-//            clientBuilder.setProxyServer(new ProxyServer.Builder(proxyHostName,proxyPort));
-//        }
-
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
-    }
-
-    public boolean shouldUseProxy(final String hostName) {
-        final URI uri = createURIFromHostNamePort(hostName, ClientConstants.HTTPS_PORT);
-        final ProxySelector proxySelector = ProxySelector.getDefault();
-        if (proxySelector == null) {
-            return false;
-        }
-
-        final List<Proxy> proxies = proxySelector.select(uri);
-        if (isProxyAddressLegal(proxies)) {
-            this.proxies = proxies;
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    private static URI createURIFromHostNamePort(final String hostName, final int port) {
-        return URI.create(String.format(ClientConstants.HTTPS_URI_FORMAT, hostName, port));
-    }
-
-    private static boolean isProxyAddressLegal(final List<Proxy> proxies) {
-        // only checks the first proxy in the list
-        // returns true if it is an InetSocketAddress, which is required for qpid-proton-j library
-        return proxies != null
-            && !proxies.isEmpty()
-            && proxies.get(0).type() == Proxy.Type.HTTP
-            && proxies.get(0).address() != null
-            && proxies.get(0).address() instanceof InetSocketAddress;
     }
 
     /**
