@@ -52,8 +52,8 @@ class BlobLazyDownloader {
             .setBlockSizeLong(blockSize);
         BlobRequestConditions requestConditions = new BlobRequestConditions();
 
-        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range ->
-            client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
+        Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range
+            -> client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
 
         return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc,
             Schedulers.immediate())
