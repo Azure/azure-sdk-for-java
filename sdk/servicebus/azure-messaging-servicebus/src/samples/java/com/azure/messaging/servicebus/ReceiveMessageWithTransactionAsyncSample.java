@@ -55,7 +55,7 @@ public class ReceiveMessageWithTransactionAsyncSample {
             .setMaxAutoLockRenewalDuration(Duration.ofSeconds(120));
 
 
-        AtomicReference<Transaction>  transaction = new AtomicReference<>();
+        AtomicReference<ServiceBusTransactionContext>  transaction = new AtomicReference<>();
         Disposable subscription = receiver.receive(options)
             .flatMap(context -> {
                 if (transaction.get() ==  null) {

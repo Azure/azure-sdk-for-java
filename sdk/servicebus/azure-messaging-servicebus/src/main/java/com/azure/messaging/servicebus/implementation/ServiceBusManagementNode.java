@@ -117,8 +117,8 @@ public interface ServiceBusManagementNode extends AutoCloseable {
      * @return Mono that completes successfully when the message is completed. Otherwise, returns an error.
      */
     Mono<Void> updateDisposition(String lockToken, DispositionStatus dispositionStatus, String deadLetterReason,
-                                 String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
-                                 String associatedLinkName, ByteBuffer transactionId);
+        String deadLetterErrorDescription, Map<String, Object> propertiesToModify, String sessionId,
+        String associatedLinkName, ByteBuffer transactionId);
 
     @Override
     void close();

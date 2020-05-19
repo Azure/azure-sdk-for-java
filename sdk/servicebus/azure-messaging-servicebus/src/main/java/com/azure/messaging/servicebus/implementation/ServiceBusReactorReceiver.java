@@ -135,28 +135,12 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             return monoError(logger, Exceptions.propagate(new IllegalArgumentException(
                 "Delivery not on receive link.")));
         }
-        final ByteBuffer finalTId = transactionId;
         final UpdateDispositionWorkItem workItem = new UpdateDispositionWorkItem(lockToken, deliveryState, timeout);
         final Mono<Void> result = Mono.create(sink -> {
             workItem.start(sink);
             try {
                 provider.getReactorDispatcher().invoke(() -> {
-                    DeliveryState state;
-                    //logger.verbose("!!!! transaction-id for lock token [{}]. id [{}]", lockToken, (new String(finalTId.array(), Charset.defaultCharset())));
-                    /*if (finalTId != AmqpConstants.TXN_NULL) {
-                        state = new TransactionalState();
-                        ((TransactionalState) state).setTxnId(new Binary(finalTId.array()));
-
-                        ((TransactionalState) state).setOutcome((Outcome) deliveryState);
-                        logger.verbose("!!!! Setting transaction-id for lock token [{}].", lockToken);
-                    } else {
-                        state = deliveryState;
-                        logger.verbose("!!!! not Setting transaction-id for lock token [{}].", lockToken);
-                    }*/
-
-                    state = deliveryState;
-
-                    unsettled.disposition(state);
+                    unsettled.disposition(deliveryState);
                     pendingUpdates.put(lockToken, workItem);
                 });
             } catch (IOException error) {
@@ -295,16 +279,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         // If the statuses match, then we settle the delivery and move on.
-        DeliveryState matchingUpdateWorkItemDeliveryState = workItem.getDeliveryState();
-        if (matchingUpdateWorkItemDeliveryState instanceof TransactionalState) {
-            matchingUpdateWorkItemDeliveryState = (DeliveryState) ((TransactionalState) matchingUpdateWorkItemDeliveryState).getOutcome();
-            boolean firstMatch =  (remoteOutcome.getClass().getName().equals(matchingUpdateWorkItemDeliveryState.getClass().getName()));
-            boolean secondMatch = remoteState.getType() == matchingUpdateWorkItemDeliveryState.getType();
-            logger.verbose("!!!! matching response : firstMatch[{}] secondMatch [{}] remoteState.getType() [{}]", firstMatch, secondMatch, remoteState.getType());
-        }
-        //((Accepted) ((TransactionalState) remoteState).getOutcome()).getType() == workItem.getDeliveryState().getType()
         if (remoteState.getType() == workItem.getDeliveryState().getType()) {
-            logger.verbose("!!!! calling completeWorkItem lockToken [{}]", lockToken);
             completeWorkItem(lockToken, delivery, workItem.getSink(), null, workItem);
             return;
         }

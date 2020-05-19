@@ -17,24 +17,22 @@ class RetriableWorkItem extends WorkItem {
 
     private final ClientLogger logger = new ClientLogger(RetriableWorkItem.class);
 
-    private final AtomicInteger retryAttempts = new AtomicInteger();
     private final MonoSink<Void> monoSink;
     private final TimeoutTracker timeoutTracker;
     private final byte[] amqpMessage;
     private final int messageFormat;
     private final int encodedMessageSize;
 
-    private boolean waitingForAck;
     private Exception lastKnownException;
 
     RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-        Duration timeout) {
+                      Duration timeout) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
             false));
     }
 
     private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<Void> monoSink,
-        TimeoutTracker timeout) {
+                              TimeoutTracker timeout) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
@@ -62,15 +60,6 @@ class RetriableWorkItem extends WorkItem {
         monoSink.error(error);
     }
 
-    int incrementRetryAttempts() {
-        return retryAttempts.incrementAndGet();
-    }
-
-    @Override
-    boolean hasBeenRetried() {
-        return retryAttempts.get() == 0;
-    }
-
     @Override
     int getEncodedMessageSize() {
         return encodedMessageSize;
@@ -90,12 +79,4 @@ class RetriableWorkItem extends WorkItem {
         this.lastKnownException = exception;
     }
 
-    @Override
-    void setWaitingForAck() {
-        this.waitingForAck = true;
-    }
-
-    boolean isWaitingForAck() {
-        return this.waitingForAck;
-    }
 }

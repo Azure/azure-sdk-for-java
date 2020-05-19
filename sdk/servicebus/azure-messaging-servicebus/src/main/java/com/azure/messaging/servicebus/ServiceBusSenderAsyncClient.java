@@ -138,11 +138,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         return sendInternal(Flux.just(message));
     }
 
-    public Mono<Void> send(ServiceBusMessage message, Transaction transaction) {
+    public Mono<Void> send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public Mono<Void> send(Iterable<ServiceBusMessage> messages, Transaction transaction) {
+    public Mono<Void> send(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
     /**
@@ -211,7 +211,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }));
     }
 
-    public Mono<Void> send(ServiceBusMessageBatch batch, Transaction transaction) {
+    public Mono<Void> send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -292,7 +292,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     public Mono<Long> scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -465,11 +465,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
      * needs to be in this transaction.
      * @return a new transaction
      */
-    public Mono<Transaction> createTransaction() {
+    public Mono<ServiceBusTransactionContext> createTransaction() {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
@@ -483,15 +483,15 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             .map(byteBuffer -> {
                 logger
                     .verbose(" !!!! Created transaction .");
-                return new Transaction(byteBuffer);
+                return new ServiceBusTransactionContext(byteBuffer);
             });
     }
 
-    public Mono<Void> commitTransaction(Transaction transaction) {
+    public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         return null;
     }
 
-    public Mono<Void> rollbackTransaction(Transaction transaction) {
+    public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         return null;
     }
 }

@@ -214,7 +214,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return abandon(lockToken, propertiesToModify, receiverOptions.getSessionId());
     }
 
-    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, Transaction transaction) {
+    public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -239,7 +239,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -260,8 +260,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return complete(lockToken, receiverOptions.getSessionId());
     }
 
-    public Mono<Void> complete(MessageLockToken lockToken, Transaction transaction) {
-        return complete(lockToken, receiverOptions.getSessionId(), transaction);
+    public Mono<Void> complete(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
+        return complete(lockToken, receiverOptions.getSessionId(), transactionContext);
     }
 
     /**
@@ -282,9 +282,9 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             null, sessionId, AmqpConstants.TXN_NULL);
     }
 
-    public Mono<Void> complete(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+    public Mono<Void> complete(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
         return updateDisposition(lockToken, DispositionStatus.COMPLETED, null, null,
-            null, sessionId, transaction.getTransactionId());
+            null, sessionId, transactionContext.getTransactionId());
     }
 
     /**
@@ -342,7 +342,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -368,7 +368,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -408,7 +408,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return deadLetter(lockToken, DEFAULT_DEAD_LETTER_OPTIONS, sessionId);
     }
 
-    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+    public Mono<Void> deadLetter(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -430,7 +430,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -460,7 +460,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -1097,11 +1097,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
      * needs to be in this transaction.
      * @return a new transaction
      */
-    public Mono<Transaction> createTransaction() {
+    public Mono<ServiceBusTransactionContext> createTransaction() {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
@@ -1112,11 +1112,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(TransactionManager::createTransaction)
             .map(byteBuffer -> {
                 logger.verbose(" !!!! Created transaction .");
-                return new Transaction(byteBuffer);
+                return new ServiceBusTransactionContext(byteBuffer);
             });
     }
 
-    public Mono<Void> commitTransaction(Transaction transaction) {
+    public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
@@ -1125,14 +1125,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
             .flatMap(transactionManager -> {
-                return transactionManager.completeTransaction(transaction, true);
+                return transactionManager.completeTransaction(transactionContext, true);
             }).doFinally(signalType -> {
                 logger.verbose(" !!!! Transaction completed. signalType [{}]", signalType);
             })
             .then();
     }
 
-    public Mono<Void> rollbackTransaction(Transaction transaction) {
+    public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
@@ -1141,7 +1141,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
             .flatMap(transactionManager -> {
-                return transactionManager.completeTransaction(transaction, false);
+                return transactionManager.completeTransaction(transactionContext, false);
             }).doFinally(signalType -> {
                 logger.verbose(" !!!! Transaction completed. signalType [{}]", signalType);
             })

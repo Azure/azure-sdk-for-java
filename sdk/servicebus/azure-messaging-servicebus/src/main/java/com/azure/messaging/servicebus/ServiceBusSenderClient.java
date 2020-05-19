@@ -101,19 +101,19 @@ public class ServiceBusSenderClient implements AutoCloseable {
         return asyncClient.scheduleMessage(message, scheduledEnqueueTime).block(tryTimeout);
     }
 
-    public void send(ServiceBusMessage message, Transaction transaction) {
+    public void send(ServiceBusMessage message, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public void send(Iterable<ServiceBusMessage> messages, Transaction transaction) {
+    public void send(Iterable<ServiceBusMessage> messages, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime, Transaction transaction) {
+    public Long scheduleMessage(ServiceBusMessage message, Instant scheduledEnqueueTime, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
-    public void send(ServiceBusMessageBatch batch, Transaction transaction) {
+    public void send(ServiceBusMessageBatch batch, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -170,17 +170,17 @@ public class ServiceBusSenderClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
      * needs to be in this transaction.
      * @return a new transaction
      */
-    public Transaction createTransaction() {
+    public ServiceBusTransactionContext createTransaction() {
         return null;
     }
 
-    public void commitTransaction(Transaction transaction) {
+    public void commitTransaction(ServiceBusTransactionContext transactionContext) {
     }
-    public void rollbackTransaction(Transaction transaction) {
+    public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
     }
 
 }

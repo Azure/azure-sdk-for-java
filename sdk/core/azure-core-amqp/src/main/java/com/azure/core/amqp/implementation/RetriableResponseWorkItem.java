@@ -10,18 +10,19 @@ import reactor.core.publisher.MonoSink;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Work item which returns {@link DeliveryState} to subscriber.
+ */
 public class RetriableResponseWorkItem extends WorkItem {
 
     private final ClientLogger logger = new ClientLogger(RetriableResponseWorkItem.class);
 
-    private final AtomicInteger retryAttempts = new AtomicInteger();
     private final MonoSink<DeliveryState> monoSink;
     private final TimeoutTracker timeoutTracker;
     private final byte[] amqpMessage;
     private final int messageFormat;
     private final int encodedMessageSize;
 
-    private boolean waitingForAck;
     private Exception lastKnownException;
 
     RetriableResponseWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat,
@@ -60,15 +61,6 @@ public class RetriableResponseWorkItem extends WorkItem {
         monoSink.error(error);
     }
 
-    int incrementRetryAttempts() {
-        return retryAttempts.incrementAndGet();
-    }
-
-    @Override
-    boolean hasBeenRetried() {
-        return retryAttempts.get() == 0;
-    }
-
     @Override
     int getEncodedMessageSize() {
         return encodedMessageSize;
@@ -86,14 +78,5 @@ public class RetriableResponseWorkItem extends WorkItem {
     @Override
     void setLastKnownException(Exception exception) {
         this.lastKnownException = exception;
-    }
-
-    @Override
-    void setWaitingForAck() {
-        this.waitingForAck = true;
-    }
-
-    boolean isWaitingForAck() {
-        return this.waitingForAck;
     }
 }

@@ -39,7 +39,7 @@ public class ReceiveMessageWithTransactionSample {
             .topicName("<< TOPIC NAME >>")
             .buildClient();
 
-        Transaction transaction = receiverClient.createTransaction();
+        ServiceBusTransactionContext transactionContext = receiverClient.createTransaction();
 
         final IterableStream<ServiceBusReceivedMessageContext> receivedMessages =
             receiverClient.receive(5);
@@ -51,14 +51,14 @@ public class ReceiveMessageWithTransactionSample {
             System.out.println("Received Message Id: " + message.getMessageId());
             System.out.println("Received Message: " + new String(message.getBody()));
 
-            receiverClient.complete(message, transaction);
+            receiverClient.complete(message, transactionContext);
             // set flag appropriately based on message processing result
             processed.set(true);
         });
 
-        senderClient.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8)), transaction);
+        senderClient.send(new ServiceBusMessage("Hello world!".getBytes(UTF_8)), transactionContext);
 
-        receiverClient.commitTransaction(transaction);
+        receiverClient.commitTransaction(transactionContext);
 
         // Close the receiver.
         receiverClient.close();

@@ -9,10 +9,9 @@ import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.TokenManager;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.Transaction;
+import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.transaction.Declared;
-import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
@@ -71,10 +70,10 @@ public class TransactionManagerImpl implements TransactionManager {
      * {@inheritDoc}
      */
     @Override
-    public Mono<Void> completeTransaction(Transaction transaction, boolean isCommit) {
+    public Mono<Void> completeTransaction(ServiceBusTransactionContext transactionContext, boolean isCommit) {
         return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink -> {
             logger.verbose(" !!!! Will complete the transaction.");
-            return sendLink.completeTransaction(transaction.getTransactionId(), isCommit);
+            return sendLink.completeTransaction(transactionContext.getTransactionId(), isCommit);
         })).then();
     }
 

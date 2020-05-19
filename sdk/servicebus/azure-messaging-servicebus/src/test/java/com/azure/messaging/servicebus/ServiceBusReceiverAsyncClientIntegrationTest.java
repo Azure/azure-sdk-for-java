@@ -13,9 +13,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.Charset;
@@ -132,7 +130,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message).block(TIMEOUT);
 
         // Assert & Act
-        AtomicReference<Transaction> transaction = new AtomicReference<>();
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(receiver.createTransaction())
             .assertNext(txn -> {
                 transaction.set(txn);
@@ -170,7 +168,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message).block(TIMEOUT);
 
         // Assert & Act
-        AtomicReference<Transaction> transaction = new AtomicReference<>();
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(receiver.createTransaction())
             .assertNext(txn -> {
                 transaction.set(txn);
@@ -208,7 +206,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setSenderAndReceiver(MessagingEntityType.QUEUE, false);
 
         // Assert & Act
-        AtomicReference<Transaction> transaction = new AtomicReference<>();
+        AtomicReference<ServiceBusTransactionContext> transaction = new AtomicReference<>();
         StepVerifier.create(receiver.createTransaction())
             .assertNext(txn -> {
                 transaction.set(txn);

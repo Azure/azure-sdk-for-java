@@ -12,7 +12,6 @@ import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -89,7 +88,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.abandon(lockToken).block(operationTimeout);
     }
 
-    public void abandon(MessageLockToken lockToken, Transaction transaction) {
+    public void abandon(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -110,7 +109,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.abandon(lockToken, propertiesToModify).block(operationTimeout);
     }
 
-    public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, Transaction transaction) {
+    public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -133,7 +132,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     public void abandon(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -152,7 +151,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.complete(lockToken).block(operationTimeout);
     }
 
-    public void complete(MessageLockToken lockToken, Transaction transaction) {
+    public void complete(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -172,7 +171,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.complete(lockToken, sessionId).block(operationTimeout);
     }
 
-    public void complete(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+    public void complete(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
     }
 
@@ -192,7 +191,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.defer(lockToken).block(operationTimeout);
     }
 
-    public void defer(MessageLockToken lockToken, Transaction transaction) {
+    public void defer(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -214,7 +213,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.defer(lockToken, sessionId).block(operationTimeout);
     }
 
-    public void defer(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+    public void defer(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -236,7 +235,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.defer(lockToken, propertiesToModify).block(operationTimeout);
     }
 
-    public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, Transaction transaction) {
+    public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -260,7 +259,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     public void defer(MessageLockToken lockToken, Map<String, Object> propertiesToModify, String sessionId,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -281,7 +280,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.deadLetter(lockToken).block(operationTimeout);
     }
 
-    public void deadLetter(MessageLockToken lockToken, Transaction transaction) {
+    public void deadLetter(MessageLockToken lockToken, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -303,7 +302,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.deadLetter(lockToken, sessionId).block(operationTimeout);
     }
 
-    public void deadLetter(MessageLockToken lockToken, String sessionId, Transaction transaction) {
+    public void deadLetter(MessageLockToken lockToken, String sessionId, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -324,7 +323,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         asyncClient.deadLetter(lockToken, deadLetterOptions).block(operationTimeout);
     }
 
-    public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, Transaction transaction) {
+    public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -347,7 +346,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     public void deadLetter(MessageLockToken lockToken, DeadLetterOptions deadLetterOptions, String sessionId,
-        Transaction transaction) {
+        ServiceBusTransactionContext transactionContext) {
         throw new UnsupportedOperationException("Not implemented");
 
     }
@@ -716,19 +715,19 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
 
 
     /**
-     * Starts a new service side transaction. The {@link Transaction} should be passed to all operations that
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
      * needs to be in this transaction.
      * @return a new transaction
      */
-    public Transaction createTransaction() {
+    public ServiceBusTransactionContext createTransaction() {
         return null;
     }
 
-    public void commitTransaction(Transaction transaction) {
+    public void commitTransaction(ServiceBusTransactionContext transactionContext) {
 
     }
 
-    public void rollbackTransaction(Transaction transaction) {
+    public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
 
     }
 
