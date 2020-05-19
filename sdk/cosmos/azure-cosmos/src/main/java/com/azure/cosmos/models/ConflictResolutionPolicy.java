@@ -16,6 +16,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
  * Represents the conflict resolution policy configuration for specifying how to resolve conflicts
  * in case writes from different regions result in conflicts on items in the container in the Azure Cosmos DB
  * service.
+ *
+ * Refer to: https://docs.microsoft.com/en-us/azure/cosmos-db/conflict-resolution-policies
+ * 
  * <p>
  * A container with custom conflict resolution with no user-registered stored procedure.
  * <pre>{@code
