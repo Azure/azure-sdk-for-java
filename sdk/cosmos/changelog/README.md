@@ -1,5 +1,5 @@
 ## Changelog
-###3.7.3
+### 3.7.3
 - Updated netty version to 4.1.50.Final because of vulnerabilities found in 4.1.42.Final versions: PR (https://github.com/Azure/azure-sdk-for-java/pull/11271)
 
 ### 3.7.2
