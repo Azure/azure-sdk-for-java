@@ -687,7 +687,6 @@ public class JsonSerializable {
     <T> boolean containsJsonSerializable(Class<T> c) {
         return CompositePath.class.equals(c)
             || ConflictResolutionPolicy.class.equals(c)
-            || ConsistencyPolicy.class.equals(c)
             || DatabaseAccountLocation.class.equals(c)
             || ExcludedPath.class.equals(c)
             || IncludedPath.class.equals(c)
