@@ -123,7 +123,7 @@ The following sections provide several code snippets covering some of the most c
 ### Create a Secret
 
 Create a secret to be stored in the Azure Key Vault.
-- `setSecret` creates a new secret in the Azure Key Vault. if the secret with name already exists then a new version of the secret is created.
+- `setSecret` creates a new secret in the Azure Key Vault. If the secret with name already exists then a new version of the secret is created.
 
 ```Java
 import com.azure.identity.DefaultAzureCredentialBuilder;
