@@ -72,7 +72,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final RetryPolicy retryPolicy,
         final ScheduledExecutorService executor,
         final ProxyConfiguration proxyConfiguration,
-        final int watchdogTriggerSeconds)
+        final Duration watchdogTriggerTime)
             throws IOException {
         if (StringUtil.isNullOrWhiteSpace(connectionString)) {
             throw new IllegalArgumentException("Connection string cannot be null or empty");
@@ -82,7 +82,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
         final EventHubClientImpl eventHubClient = new EventHubClientImpl(connStr.getEventHubName(), executor);
 
-        return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor, proxyConfiguration, watchdogTriggerSeconds)
+        return MessagingFactory.createFromConnectionString(connectionString, retryPolicy, executor, proxyConfiguration, watchdogTriggerTime)
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {

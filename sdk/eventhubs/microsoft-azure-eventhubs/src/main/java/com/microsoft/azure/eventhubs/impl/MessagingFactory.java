@@ -67,7 +67,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     private static final long WATCHDOG_SCAN_DIVISOR = 2;
     private final LinkedList<MessageReceiver> watchdogReceivers;
     private final Object watchdogSyncObject;
-    private final long watchdogTriggerSeconds;
+    private final Duration watchdogTriggerTime;
     private ScheduledFuture<?> watchdogFuture;
     private final long watchdogScanSeconds;
     private boolean watchdogCleanupDone;
@@ -92,7 +92,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                      final ScheduledExecutorService executor,
                      final ReactorFactory reactorFactory,
                      final ProxyConfiguration proxyConfiguration,
-                     final int watchdogTimeoutSeconds) {
+                     final Duration watchdogTriggerTime) {
         super(StringUtil.getRandomString("MF"), null, executor);
 
         if (StringUtil.isNullOrWhiteSpace(hostname)) {
@@ -117,8 +117,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         this.cbsChannelCreateLock = new Object();
         this.mgmtChannelCreateLock = new Object();
 
-        this.watchdogTriggerSeconds = watchdogTimeoutSeconds;
-        this.watchdogScanSeconds = watchdogTriggerSeconds / MessagingFactory.WATCHDOG_SCAN_DIVISOR;
+        this.watchdogTriggerTime = watchdogTriggerTime;
+        this.watchdogScanSeconds = watchdogTriggerTime.toMillis() / MessagingFactory.WATCHDOG_SCAN_DIVISOR / 1000;
         this.watchdogReceivers = new LinkedList<MessageReceiver>();
         this.watchdogSyncObject = new Object();
 
@@ -142,8 +142,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final RetryPolicy retryPolicy,
             final ScheduledExecutorService executor,
             final ProxyConfiguration proxyConfiguration,
-            final int watchdogTriggerSeconds) throws IOException {
-        return createFromConnectionString(connectionString, retryPolicy, executor, null, proxyConfiguration, watchdogTriggerSeconds);
+            final Duration watchdogTriggerTime) throws IOException {
+        return createFromConnectionString(connectionString, retryPolicy, executor, null, proxyConfiguration, watchdogTriggerTime);
     }
 
     public static CompletableFuture<MessagingFactory> createFromConnectionString(
@@ -152,7 +152,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             final ScheduledExecutorService executor,
             final ReactorFactory reactorFactory,
             final ProxyConfiguration proxyConfiguration,
-            final int watchdogTriggerSeconds) throws IOException {
+            final Duration watchdogTriggerTime) throws IOException {
         final ConnectionStringBuilder csb = new ConnectionStringBuilder(connectionString);
         ITokenProvider tokenProvider = null;
         if (!StringUtil.isNullOrWhiteSpace(csb.getSharedAccessSignature())) {
@@ -171,7 +171,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 .setRetryPolicy(retryPolicy)
                 .setReactorFactory(reactorFactory)
                 .setProxyConfiguration(proxyConfiguration)
-                .setWatchdogTriggerTime(watchdogTriggerSeconds);
+                .setWatchdogTriggerTime(watchdogTriggerTime);
 
         return builder.build();
     }
@@ -188,7 +188,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
         private RetryPolicy retryPolicy = RetryPolicy.getDefault();
         private ReactorFactory reactorFactory = new ReactorFactory();
         private ProxyConfiguration proxyConfiguration;
-        private int watchdogTriggerSeconds = EventHubClientOptions.SILENT_OFF;
+        private Duration watchdogTriggerTime = EventHubClientOptions.SILENT_OFF;
 
         public MessagingFactoryBuilder(final String hostname, final ITokenProvider tokenProvider, final ScheduledExecutorService executor) {
             if (StringUtil.isNullOrWhiteSpace(hostname)) {
@@ -233,8 +233,8 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             return this;
         }
 
-        public MessagingFactoryBuilder setWatchdogTriggerTime(int watchdogTriggerSeconds) {
-            this.watchdogTriggerSeconds = watchdogTriggerSeconds;
+        public MessagingFactoryBuilder setWatchdogTriggerTime(Duration watchdogTriggerTime) {
+            this.watchdogTriggerTime = watchdogTriggerTime;
             return this;
         }
 
@@ -247,7 +247,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                     this.executor,
                     this.reactorFactory,
                     this.proxyConfiguration,
-                    this.watchdogTriggerSeconds);
+                    this.watchdogTriggerTime);
             return MessagingFactory.factoryStartup(messagingFactory);
         }
     }
@@ -284,7 +284,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     public void registerForWatchdog(final MessageReceiver rcvr) {
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.SILENT_OFF) {
+        if (this.watchdogTriggerTime.compareTo(EventHubClientOptions.SILENT_OFF) > 0) {
             TRACE_LOGGER.info("Registering for watchdog: " + rcvr.getClientId());
             synchronized (this.watchdogSyncObject) {
                 this.watchdogReceivers.add(rcvr);
@@ -294,7 +294,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     public void unregisterForWatchdog(final MessageReceiver rcvr) {
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.SILENT_OFF) {
+        if (this.watchdogTriggerTime.compareTo(EventHubClientOptions.SILENT_OFF) > 0) {
             TRACE_LOGGER.info("Unregistering for watchdog: " + rcvr.getClientId());
             synchronized (this.watchdogSyncObject) {
                 this.watchdogReceivers.remove(rcvr);
@@ -303,7 +303,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     }
 
     private void startWatchdog() {
-        if (this.watchdogTriggerSeconds > EventHubClientOptions.SILENT_OFF) {
+        if (this.watchdogTriggerTime.compareTo(EventHubClientOptions.SILENT_OFF) > 0) {
             TRACE_LOGGER.info("Watchdog scheduling first run");
             this.watchdogFuture = this.executor.schedule(new WatchDog(), this.watchdogScanSeconds, TimeUnit.SECONDS);
         } else {
@@ -318,10 +318,6 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             if (MessagingFactory.this.getIsClosingOrClosed()) {
                 return;
             }
-            if (MessagingFactory.this.watchdogTriggerSeconds <= EventHubClientOptions.SILENT_OFF) {
-                TRACE_LOGGER.warn("Watchdog should not run when trigger time is " + MessagingFactory.this.watchdogTriggerSeconds + " -- stopping");
-                return;
-            }
 
             LinkedList<MessageReceiver> copiedList = null;
             synchronized (MessagingFactory.this.watchdogSyncObject) {
@@ -330,7 +326,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
             if (!copiedList.isEmpty()) {
                 boolean anyReceiverIsAlive = false;
                 final long longestAgoAllowable = Instant.now().getEpochSecond()
-                        - MessagingFactory.this.watchdogTriggerSeconds;
+                        - (MessagingFactory.this.watchdogTriggerTime.toMillis() / 1000);
 
                 for (MessageReceiver rcvr : copiedList) {
                     TRACE_LOGGER.debug("Watchdog checking receiver " + rcvr.getClientId() + " last: "

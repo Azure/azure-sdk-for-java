@@ -9,6 +9,7 @@ import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.UnresolvedAddressException;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -71,7 +72,7 @@ public interface EventHubClient {
 
 
     /**
-     * Synchronous version of {@link #createFromConnectionString(String, RetryPolicy, ScheduledExecutorService, ProxyConfiguration, int)}.
+     * Synchronous version of {@link #createFromConnectionString(String, RetryPolicy, ScheduledExecutorService, ProxyConfiguration, Duration)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
@@ -86,7 +87,7 @@ public interface EventHubClient {
     static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy,
                                                          final ScheduledExecutorService executor,
                                                          final ProxyConfiguration configuration,
-                                                         final int maximumSilentTime)
+                                                         final Duration maximumSilentTime)
         throws EventHubException, IOException {
         return ExceptionUtil.syncWithIOException(() -> createFromConnectionString(connectionString, retryPolicy, executor, configuration, maximumSilentTime).get());
     }
@@ -166,7 +167,7 @@ public interface EventHubClient {
      */
     static CompletableFuture<EventHubClient> createFromConnectionString(
         final String connectionString, final RetryPolicy retryPolicy, final ScheduledExecutorService executor,
-        final ProxyConfiguration proxyConfiguration, final int maximumSilentTime) throws IOException {
+        final ProxyConfiguration proxyConfiguration, final Duration maximumSilentTime) throws IOException {
         return EventHubClientImpl.create(connectionString, retryPolicy, executor, proxyConfiguration, maximumSilentTime);
     }
 
