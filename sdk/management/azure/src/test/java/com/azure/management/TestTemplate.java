@@ -3,7 +3,7 @@
 package com.azure.management;
 
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.ResourceGroups;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -58,10 +58,10 @@ public abstract class TestTemplate<
      * Tests the listing logic.
      *
      * @return number of resources in the list
-     * @throws CloudException if anything goes wrong
+     * @throws ManagementException if anything goes wrong
      * @throws IOException if anything goes wrong
      */
-    public int verifyListing() throws CloudException, IOException {
+    public int verifyListing() throws ManagementException, IOException {
         PagedIterable<ResourceT> resources = this.collection.list();
         for (ResourceT r : resources) {
             System.out.println("resource id: " + r.id());
@@ -73,10 +73,10 @@ public abstract class TestTemplate<
      * Tests the getting logic.
      *
      * @return the gotten resource
-     * @throws CloudException if anything goes wrong
+     * @throws ManagementException if anything goes wrong
      * @throws IOException if anything goes wrong
      */
-    public ResourceT verifyGetting() throws CloudException, IOException {
+    public ResourceT verifyGetting() throws ManagementException, IOException {
         ResourceT resourceByGroup =
             this.collection.getByResourceGroup(this.resource.resourceGroupName(), this.resource.name());
         ResourceT resourceById = this.collection.getById(resourceByGroup.id());

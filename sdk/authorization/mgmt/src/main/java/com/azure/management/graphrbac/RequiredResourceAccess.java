@@ -5,13 +5,20 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /** The RequiredResourceAccess model. */
 @Fluent
 public final class RequiredResourceAccess {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequiredResourceAccess.class);
+
     /*
      * The list of OAuth2.0 permission scopes and app roles that the
      * application requires from the specified resource.
@@ -35,8 +42,7 @@ public final class RequiredResourceAccess {
      * application. The requiredResourceAccess property of the Application
      * entity is a collection of RequiredResourceAccess.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the resourceAccess property: The list of OAuth2.0 permission scopes and app roles that the application
@@ -91,6 +97,7 @@ public final class RequiredResourceAccess {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -108,5 +115,29 @@ public final class RequiredResourceAccess {
     public RequiredResourceAccess withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resourceAccess() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resourceAccess in model RequiredResourceAccess"));
+        } else {
+            resourceAccess().forEach(e -> e.validate());
+        }
     }
 }

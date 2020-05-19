@@ -5,7 +5,7 @@ package com.azure.search.documents.util;
 
 import com.azure.core.http.rest.PagedIterableBase;
 import com.azure.core.util.paging.ContinuablePagedIterable;
-import com.azure.search.documents.models.SearchRequest;
+import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.models.SearchResult;
 
 /**

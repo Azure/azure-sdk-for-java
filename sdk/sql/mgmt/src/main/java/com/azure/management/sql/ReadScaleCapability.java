@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ReadScaleCapability model. */
 @Fluent
 public final class ReadScaleCapability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReadScaleCapability.class);
+
     /*
      * The maximum number of read scale replicas.
      */
@@ -64,5 +68,13 @@ public final class ReadScaleCapability {
     public ReadScaleCapability withReason(String reason) {
         this.reason = reason;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

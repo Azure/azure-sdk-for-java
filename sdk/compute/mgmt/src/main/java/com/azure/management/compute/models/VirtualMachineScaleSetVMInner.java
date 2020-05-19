@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.AdditionalCapabilities;
 import com.azure.management.compute.DiagnosticsProfile;
 import com.azure.management.compute.HardwareProfile;
@@ -18,6 +19,7 @@ import com.azure.management.compute.Sku;
 import com.azure.management.compute.StorageProfile;
 import com.azure.management.compute.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetVMProtectionPolicy;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -25,6 +27,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetVMInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInner.class);
+
     /*
      * The virtual machine instance ID.
      */
@@ -520,5 +524,49 @@ public class VirtualMachineScaleSetVMInner extends Resource {
         VirtualMachineScaleSetVMProtectionPolicy protectionPolicy) {
         this.protectionPolicy = protectionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (resources() != null) {
+            resources().forEach(e -> e.validate());
+        }
+        if (instanceView() != null) {
+            instanceView().validate();
+        }
+        if (hardwareProfile() != null) {
+            hardwareProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (additionalCapabilities() != null) {
+            additionalCapabilities().validate();
+        }
+        if (osProfile() != null) {
+            osProfile().validate();
+        }
+        if (networkProfile() != null) {
+            networkProfile().validate();
+        }
+        if (networkProfileConfiguration() != null) {
+            networkProfileConfiguration().validate();
+        }
+        if (diagnosticsProfile() != null) {
+            diagnosticsProfile().validate();
+        }
+        if (protectionPolicy() != null) {
+            protectionPolicy().validate();
+        }
     }
 }

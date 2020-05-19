@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryIdentifier model. */
 @Immutable
 public final class GalleryIdentifier {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryIdentifier.class);
+
     /*
      * The unique name of the Shared Image Gallery. This name is generated
      * automatically by Azure.
@@ -25,5 +29,13 @@ public final class GalleryIdentifier {
      */
     public String uniqueName() {
         return this.uniqueName;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

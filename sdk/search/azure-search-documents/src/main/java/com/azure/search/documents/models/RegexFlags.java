@@ -32,7 +32,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
     /**
      * Static value DOTALL for RegexFlags.
      */
-    public static final RegexFlags DOTALL = fromString("DOTALL");
+    public static final RegexFlags DOT_ALL = fromString("DOTALL");
 
     /**
      * Static value LITERAL for RegexFlags.

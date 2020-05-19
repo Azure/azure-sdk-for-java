@@ -5,11 +5,15 @@
 package com.azure.management.dns;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MxRecord model. */
 @Fluent
 public final class MxRecord {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MxRecord.class);
+
     /*
      * The preference value for this MX record.
      */
@@ -60,5 +64,13 @@ public final class MxRecord {
     public MxRecord withExchange(String exchange) {
         this.exchange = exchange;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

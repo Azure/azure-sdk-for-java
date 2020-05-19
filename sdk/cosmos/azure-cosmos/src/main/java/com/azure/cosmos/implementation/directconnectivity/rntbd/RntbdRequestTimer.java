@@ -11,33 +11,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Set;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 public final class RntbdRequestTimer implements AutoCloseable {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdRequestTimer.class);
+
+    private static final ThreadFactory threadFactory = new RntbdThreadFactory(
+        "request-timer",
+        true,
+        Thread.NORM_PRIORITY);
+
     private final long requestTimeoutInNanos;
     private final Timer timer;
 
     public RntbdRequestTimer(final long requestTimeoutInNanos, final long requestTimerResolutionInNanos) {
-        // The HashWheelTimer code shows that cancellation of a timeout takes two timer resolution units to complete.
-        this.timer = new HashedWheelTimer(requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
+        // The HashWheelTimer code shows that cancellation of a timeout takes two timer resolution units to complete
+        this.timer = new HashedWheelTimer(threadFactory, requestTimerResolutionInNanos, TimeUnit.NANOSECONDS);
         this.requestTimeoutInNanos = requestTimeoutInNanos;
-    }
-
-    public long getRequestTimeout(final TimeUnit unit) {
-        return unit.convert(requestTimeoutInNanos, TimeUnit.NANOSECONDS);
     }
 
     @Override
     public void close() {
-        final Set<Timeout> timeouts = this.timer.stop();
-        if (logger.isDebugEnabled()) {
-            final int count = timeouts.size();
-            if (count > 0) {
-                logger.debug("request expiration tasks cancelled: {}", count);
-            }
-        }
+        final Set<Timeout> cancelledTimeouts = this.timer.stop();
+        logger.debug("request expiration tasks cancelled: {}", cancelledTimeouts.size());
     }
 
     public Timeout newTimeout(final TimerTask task) {

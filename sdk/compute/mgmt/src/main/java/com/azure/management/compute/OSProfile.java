@@ -5,12 +5,16 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The OSProfile model. */
 @Fluent
 public final class OSProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
+
     /*
      * Specifies the host OS name of the virtual machine. <br><br> This name
      * cannot be updated after the VM is created. <br><br> **Max-length
@@ -364,5 +368,22 @@ public final class OSProfile {
     public OSProfile withRequireGuestProvisionSignal(Boolean requireGuestProvisionSignal) {
         this.requireGuestProvisionSignal = requireGuestProvisionSignal;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (windowsConfiguration() != null) {
+            windowsConfiguration().validate();
+        }
+        if (linuxConfiguration() != null) {
+            linuxConfiguration().validate();
+        }
+        if (secrets() != null) {
+            secrets().forEach(e -> e.validate());
+        }
     }
 }

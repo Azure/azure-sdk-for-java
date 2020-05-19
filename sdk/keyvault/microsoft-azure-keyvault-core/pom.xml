@@ -9,12 +9,12 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-    <relativePath>../../parents/azure-data-sdk-client</relativePath>
+    <relativePath>../../parents/azure-data-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-core</artifactId>
-  <version>1.2.4</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-core;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-core;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for Key Vault Core</name>

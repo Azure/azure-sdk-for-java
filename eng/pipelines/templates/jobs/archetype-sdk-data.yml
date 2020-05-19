@@ -181,6 +181,8 @@ jobs:
     steps:
       - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
 
+      - template: ../steps/update-version-fix.yml
+
       - template: ../steps/cache-maven-repository.yml
 
       - template: ../steps/install-reporting-tools.yml

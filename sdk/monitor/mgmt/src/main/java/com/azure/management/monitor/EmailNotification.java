@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The EmailNotification model. */
 @Fluent
 public final class EmailNotification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailNotification.class);
+
     /*
      * a value indicating whether to send email to subscription administrator.
      */
@@ -95,5 +99,13 @@ public final class EmailNotification {
     public EmailNotification withCustomEmails(List<String> customEmails) {
         this.customEmails = customEmails;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

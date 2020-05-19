@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The VirtualDirectory model. */
 @Fluent
 public final class VirtualDirectory {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualDirectory.class);
+
     /*
      * Path to virtual application.
      */
@@ -60,5 +64,13 @@ public final class VirtualDirectory {
     public VirtualDirectory withPhysicalPath(String physicalPath) {
         this.physicalPath = physicalPath;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

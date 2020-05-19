@@ -28,7 +28,7 @@ public interface LoadBalancer
     // Getters
 
     /** @return resource IDs of the public IP addresses assigned to the frontends of this load balancer */
-    List<String> publicIPAddressIds();
+    List<String> publicIpAddressIds();
 
     /** @return TCP probes of this load balancer, indexed by the name */
     Map<String, LoadBalancerTcpProbe> tcpProbes();
@@ -57,7 +57,7 @@ public interface LoadBalancer
      * @param publicIPAddress a public IP address to search by
      * @return a public frontend associated with the provided public IP address
      */
-    LoadBalancerPublicFrontend findFrontendByPublicIPAddress(PublicIPAddress publicIPAddress);
+    LoadBalancerPublicFrontend findFrontendByPublicIpAddress(PublicIpAddress publicIPAddress);
 
     /**
      * Searches for the public frontend that is associated with the provided public IP address, if one exists.
@@ -65,7 +65,7 @@ public interface LoadBalancer
      * @param publicIPAddressId the resource ID of a public IP address to search by
      * @return a public frontend associated with the provided public IP address
      */
-    LoadBalancerPublicFrontend findFrontendByPublicIPAddress(String publicIPAddressId);
+    LoadBalancerPublicFrontend findFrontendByPublicIpAddress(String publicIPAddressId);
 
     /** @return public (Internet-facing) frontends */
     Map<String, LoadBalancerPublicFrontend> publicFrontends();

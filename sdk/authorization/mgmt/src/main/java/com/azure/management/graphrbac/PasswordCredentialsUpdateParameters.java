@@ -5,13 +5,17 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.models.PasswordCredentialInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The PasswordCredentialsUpdateParameters model. */
 @Fluent
 public final class PasswordCredentialsUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PasswordCredentialsUpdateParameters.class);
+
     /*
      * A collection of PasswordCredentials.
      */
@@ -36,5 +40,21 @@ public final class PasswordCredentialsUpdateParameters {
     public PasswordCredentialsUpdateParameters withValue(List<PasswordCredentialInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property value in model PasswordCredentialsUpdateParameters"));
+        } else {
+            value().forEach(e -> e.validate());
+        }
     }
 }

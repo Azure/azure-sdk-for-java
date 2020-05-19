@@ -14,13 +14,13 @@ public final class PublicIPSkuType {
     private static final Map<String, PublicIPSkuType> VALUES_BY_NAME = new HashMap<>();
 
     /** Static value Basic for PublicIPSkuType. */
-    public static final PublicIPSkuType BASIC = new PublicIPSkuType(PublicIPAddressSkuName.BASIC);
+    public static final PublicIPSkuType BASIC = new PublicIPSkuType(PublicIpAddressSkuName.BASIC);
 
     /** Static value Standard for PublicIPSkuType. */
-    public static final PublicIPSkuType STANDARD = new PublicIPSkuType(PublicIPAddressSkuName.STANDARD);
+    public static final PublicIPSkuType STANDARD = new PublicIPSkuType(PublicIpAddressSkuName.STANDARD);
 
     /** The actual serialized value for a PublicIPSkuType instance. */
-    private final PublicIPAddressSkuName skuName;
+    private final PublicIpAddressSkuName skuName;
 
     /** @return predefined publicIP SKU types */
     public static PublicIPSkuType[] values() {
@@ -33,7 +33,7 @@ public final class PublicIPSkuType {
      *
      * @param skuName the sku name
      */
-    private PublicIPSkuType(PublicIPAddressSkuName skuName) {
+    private PublicIPSkuType(PublicIpAddressSkuName skuName) {
         this.skuName = skuName;
         if (skuName != null) {
             VALUES_BY_NAME.put(skuName.toString().toLowerCase(Locale.ROOT), this);
@@ -46,7 +46,7 @@ public final class PublicIPSkuType {
      * @param pipSku a sku
      * @return the PublicIPSkuType
      */
-    public static PublicIPSkuType fromSku(PublicIPAddressSku pipSku) {
+    public static PublicIPSkuType fromSku(PublicIpAddressSku pipSku) {
         if (pipSku == null) {
             return null;
         }
@@ -61,9 +61,9 @@ public final class PublicIPSkuType {
         }
     }
 
-    /** @return the PublicIPAddressSku associated with the PublicIPAddressSkuType. */
-    public PublicIPAddressSku sku() {
-        return (new PublicIPAddressSku()).withName(this.skuName);
+    /** @return the PublicIpAddressSku associated with the PublicIpAddressSkuType. */
+    public PublicIpAddressSku sku() {
+        return (new PublicIpAddressSku()).withName(this.skuName);
     }
 
     @Override

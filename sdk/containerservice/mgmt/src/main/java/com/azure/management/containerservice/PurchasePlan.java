@@ -5,11 +5,15 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PurchasePlan model. */
 @Fluent
 public final class PurchasePlan {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
+
     /*
      * The plan ID.
      */
@@ -115,5 +119,13 @@ public final class PurchasePlan {
     public PurchasePlan withPublisher(String publisher) {
         this.publisher = publisher;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

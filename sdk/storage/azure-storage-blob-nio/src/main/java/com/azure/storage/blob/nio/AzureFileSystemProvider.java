@@ -14,6 +14,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.nio.channels.SeekableByteChannel;
@@ -32,6 +33,7 @@ import java.nio.file.NotDirectoryException;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.FileAttributeView;
@@ -191,6 +193,36 @@ public final class AzureFileSystemProvider extends FileSystemProvider {
     public SeekableByteChannel newByteChannel(Path path, Set<? extends OpenOption> set,
             FileAttribute<?>... fileAttributes) throws IOException {
         return null;
+    }
+
+    /**
+     * Opens an input stream to the given path.
+     * <p>
+     * The stream will not attempt to read or buffer the entire file. However, when fetching data, it will always
+     * request the same size chunk of several MB to prevent network thrashing on small reads. Mark and reset are
+     * supported.
+     * <p>
+     * Only {@link StandardOpenOption#READ} is supported. Any other option will throw.
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public InputStream newInputStream(Path path, OpenOption... options) throws IOException {
+        // Validate options. Only read is supported.
+        if (options.length > 1 || (options.length > 0 && !options[0].equals(StandardOpenOption.READ))) {
+            throw LoggingUtility.logError(logger,
+                new UnsupportedOperationException("Only the read option is supported."));
+        }
+
+        // Ensure the path points to a file.
+        AzureResource resource = new AzureResource(path);
+        if (!resource.checkDirStatus().equals(DirectoryStatus.NOT_A_DIRECTORY)) {
+            throw LoggingUtility.logError(logger, new IOException("Path either does not exist or points to a directory."
+                + "Path must point to a file. Path: " + path.toString()));
+        }
+
+        // Note that methods on BlobInputSTream are already synchronized.
+        return new NioBlobInputStream(resource.getBlobClient().openInputStream());
     }
 
     /**

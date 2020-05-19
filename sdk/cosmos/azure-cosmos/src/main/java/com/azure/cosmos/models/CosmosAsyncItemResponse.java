@@ -3,7 +3,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ResourceResponse;
@@ -44,7 +44,7 @@ public class CosmosAsyncItemResponse<T> {
             return item;
         }
 
-        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getResponseDiagnostics());
+        SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
         if (item == null && this.itemClassType == CosmosItemProperties.class) {
             ZonedDateTime serializationStartTime = ZonedDateTime.now(ZoneOffset.UTC);
             item =(T) getProperties();
@@ -167,8 +167,8 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return diagnostics information for the current request to Azure Cosmos DB service.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return resourceResponse.getResponseDiagnostics();
+    public CosmosDiagnostics getDiagnostics() {
+        return resourceResponse.getDiagnostics();
     }
 
     /**
@@ -176,8 +176,8 @@ public class CosmosAsyncItemResponse<T> {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    public Duration getRequestLatency() {
-        return resourceResponse.getRequestLatency();
+    public Duration getDuration() {
+        return resourceResponse.getDuration();
     }
 
     /**

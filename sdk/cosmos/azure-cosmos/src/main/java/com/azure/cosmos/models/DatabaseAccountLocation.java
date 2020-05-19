@@ -12,7 +12,8 @@ import static com.azure.cosmos.BridgeInternal.setProperty;
 /**
  * Represents the location of a database account in the Azure Cosmos DB database service.
  */
-public final class DatabaseAccountLocation extends JsonSerializableWrapper{
+public final class DatabaseAccountLocation {
+    private JsonSerializable jsonSerializable;
 
     /**
      * Constructor.
@@ -78,4 +79,10 @@ public final class DatabaseAccountLocation extends JsonSerializableWrapper{
     void setEndpoint(String endpoint) {
         setProperty(this.jsonSerializable, Constants.Properties.DATABASE_ACCOUNT_ENDPOINT, endpoint);
     }
+
+    void populatePropertyBag() {
+        this.jsonSerializable.populatePropertyBag();
+    }
+
+    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
 }

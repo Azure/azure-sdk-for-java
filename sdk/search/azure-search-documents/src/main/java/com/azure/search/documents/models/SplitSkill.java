@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Text.SplitSkill")
 @Fluent
-public final class SplitSkill extends Skill {
+public final class SplitSkill extends SearchIndexerSkill {
     /*
      * A value indicating which language code to use. Default is en. Possible
      * values include: 'da', 'de', 'en', 'es', 'fi', 'fr', 'it', 'ko', 'pt'
@@ -27,7 +27,7 @@ public final class SplitSkill extends Skill {
 
     /*
      * A value indicating which split mode to perform. Possible values include:
-     * 'pages', 'sentences'
+     * 'Pages', 'Sentences'
      */
     @JsonProperty(value = "textSplitMode")
     private TextSplitMode textSplitMode;
@@ -64,7 +64,7 @@ public final class SplitSkill extends Skill {
 
     /**
      * Get the textSplitMode property: A value indicating which split mode to
-     * perform. Possible values include: 'pages', 'sentences'.
+     * perform. Possible values include: 'Pages', 'Sentences'.
      *
      * @return the textSplitMode value.
      */
@@ -74,7 +74,7 @@ public final class SplitSkill extends Skill {
 
     /**
      * Set the textSplitMode property: A value indicating which split mode to
-     * perform. Possible values include: 'pages', 'sentences'.
+     * perform. Possible values include: 'Pages', 'Sentences'.
      *
      * @param textSplitMode the textSplitMode value to set.
      * @return the SplitSkill object itself.

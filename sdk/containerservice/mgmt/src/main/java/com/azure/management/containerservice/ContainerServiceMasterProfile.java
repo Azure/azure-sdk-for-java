@@ -5,11 +5,15 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerServiceMasterProfile model. */
 @Fluent
 public final class ContainerServiceMasterProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceMasterProfile.class);
+
     /*
      * Number of masters (VMs) in the container service cluster. Allowed values
      * are 1, 3, and 5. The default value is 1.
@@ -41,13 +45,13 @@ public final class ContainerServiceMasterProfile {
      * VNet SubnetID specifies the VNet's subnet identifier.
      */
     @JsonProperty(value = "vnetSubnetID")
-    private String vnetSubnetID;
+    private String vnetSubnetId;
 
     /*
      * FirstConsecutiveStaticIP used to specify the first static ip of masters.
      */
     @JsonProperty(value = "firstConsecutiveStaticIP")
-    private String firstConsecutiveStaticIP;
+    private String firstConsecutiveStaticIp;
 
     /*
      * Storage profile specifies what kind of storage used. Choose from
@@ -148,44 +152,44 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @return the vnetSubnetID value.
+     * @return the vnetSubnetId value.
      */
-    public String vnetSubnetID() {
-        return this.vnetSubnetID;
+    public String vnetSubnetId() {
+        return this.vnetSubnetId;
     }
 
     /**
-     * Set the vnetSubnetID property: VNet SubnetID specifies the VNet's subnet identifier.
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
      *
-     * @param vnetSubnetID the vnetSubnetID value to set.
+     * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
-    public ContainerServiceMasterProfile withVnetSubnetID(String vnetSubnetID) {
-        this.vnetSubnetID = vnetSubnetID;
+    public ContainerServiceMasterProfile withVnetSubnetId(String vnetSubnetId) {
+        this.vnetSubnetId = vnetSubnetId;
         return this;
     }
 
     /**
-     * Get the firstConsecutiveStaticIP property: FirstConsecutiveStaticIP used to specify the first static ip of
+     * Get the firstConsecutiveStaticIp property: FirstConsecutiveStaticIP used to specify the first static ip of
      * masters.
      *
-     * @return the firstConsecutiveStaticIP value.
+     * @return the firstConsecutiveStaticIp value.
      */
-    public String firstConsecutiveStaticIP() {
-        return this.firstConsecutiveStaticIP;
+    public String firstConsecutiveStaticIp() {
+        return this.firstConsecutiveStaticIp;
     }
 
     /**
-     * Set the firstConsecutiveStaticIP property: FirstConsecutiveStaticIP used to specify the first static ip of
+     * Set the firstConsecutiveStaticIp property: FirstConsecutiveStaticIP used to specify the first static ip of
      * masters.
      *
-     * @param firstConsecutiveStaticIP the firstConsecutiveStaticIP value to set.
+     * @param firstConsecutiveStaticIp the firstConsecutiveStaticIp value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
-    public ContainerServiceMasterProfile withFirstConsecutiveStaticIP(String firstConsecutiveStaticIP) {
-        this.firstConsecutiveStaticIP = firstConsecutiveStaticIP;
+    public ContainerServiceMasterProfile withFirstConsecutiveStaticIp(String firstConsecutiveStaticIp) {
+        this.firstConsecutiveStaticIp = firstConsecutiveStaticIp;
         return this;
     }
 
@@ -218,5 +222,25 @@ public final class ContainerServiceMasterProfile {
      */
     public String fqdn() {
         return this.fqdn;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (dnsPrefix() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dnsPrefix in model ContainerServiceMasterProfile"));
+        }
+        if (vmSize() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property vmSize in model ContainerServiceMasterProfile"));
+        }
     }
 }

@@ -7,9 +7,11 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.PolicySettings;
 import com.azure.management.network.WebApplicationFirewallCustomRule;
 import com.azure.management.network.WebApplicationFirewallPolicyResourceState;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class WebApplicationFirewallPolicyInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebApplicationFirewallPolicyInner.class);
+
     /*
      * Gets a unique read-only string that changes whenever the resource is
      * updated.
@@ -165,5 +169,22 @@ public class WebApplicationFirewallPolicyInner extends Resource {
     public WebApplicationFirewallPolicyInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (policySettings() != null) {
+            policySettings().validate();
+        }
+        if (customRules() != null) {
+            customRules().forEach(e -> e.validate());
+        }
+        if (applicationGateways() != null) {
+            applicationGateways().forEach(e -> e.validate());
+        }
     }
 }

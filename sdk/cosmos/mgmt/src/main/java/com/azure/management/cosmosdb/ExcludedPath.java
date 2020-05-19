@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExcludedPath model. */
 @Fluent
 public final class ExcludedPath {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExcludedPath.class);
+
     /*
      * The path for which the indexing behavior applies to. Index paths
      * typically start with root and end with wildcard (/path/*)
@@ -37,5 +41,13 @@ public final class ExcludedPath {
     public ExcludedPath withPath(String path) {
         this.path = path;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

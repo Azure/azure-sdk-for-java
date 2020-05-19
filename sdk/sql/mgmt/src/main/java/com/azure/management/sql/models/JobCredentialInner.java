@@ -7,12 +7,16 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JobCredential model. */
 @JsonFlatten
 @Fluent
 public class JobCredentialInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobCredentialInner.class);
+
     /*
      * The credential user name.
      */
@@ -63,5 +67,13 @@ public class JobCredentialInner extends ProxyResource {
     public JobCredentialInner withPassword(String password) {
         this.password = password;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

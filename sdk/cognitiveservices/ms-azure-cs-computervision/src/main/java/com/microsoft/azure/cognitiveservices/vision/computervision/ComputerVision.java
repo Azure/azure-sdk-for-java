@@ -8,204 +8,142 @@
 
 package com.microsoft.azure.cognitiveservices.vision.computervision;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageInStreamOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageByDomainOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AnalyzeImageOptionalParameter;
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AreaOfInterestResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescriptionExclude;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.Details;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DetectResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DomainModelResults;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.GenerateThumbnailOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageAnalysis;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ImageDescription;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ListModelsResult;
+import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrDetectionLanguage;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrLanguages;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.OcrResult;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ReadOperationResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizePrintedTextOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageInStreamOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagImageOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.TagResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextOperationResult;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.TextRecognitionMode;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.VisualFeatureTypes;
-import rx.Observable;
-
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in ComputerVision.
  */
 public interface ComputerVision {
-
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art
-      *  Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use
-      *  the Read Document interface, the response contains a field called 'Operation-Location'. The
-      *  'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation'
-      *  to access OCR results.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
+     *   Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+     *   response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that
+     *   you must use for your 'GetReadResult' operation to access OCR results.​.
      *
      * @param image An image stream.
+     * @param readInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void batchReadFileInStream(byte[] image);
+    void readInStream(byte[] image, ReadInStreamOptionalParameter readInStreamOptionalParameter);
 
     /**
-     * Use this interface to get the result of a Read Document operation, employing the state-of-the-art
-      *  Optical Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use
-      *  the Read Document interface, the response contains a field called 'Operation-Location'. The
-      *  'Operation-Location' field contains the URL that you must use for your 'Get Read Result operation'
-      *  to access OCR results.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
+     *   Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+     *   response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that
+     *   you must use for your 'GetReadResult' operation to access OCR results.​.
      *
      * @param image An image stream.
+     * @param readInStreamOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<Void> batchReadFileInStreamAsync(byte[] image);
-
-
+    Observable<Void> readInStreamAsync(byte[] image, ReadInStreamOptionalParameter readInStreamOptionalParameter);
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
-      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
-      *  your Get Recognize Text Operation Result operation.
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
+     *   Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+     *   response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that
+     *   you must use for your 'GetReadResult' operation to access OCR results.​.
      *
-     * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the first stage of the readInStream call
      */
-    void recognizeTextInStream(byte[] image, TextRecognitionMode mode);
+    ComputerVisionReadInStreamDefinitionStages.WithImage readInStream();
 
     /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
-      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
-      *  your Get Recognize Text Operation Result operation.
-     *
-     * @param image An image stream.
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
+     * Grouping of readInStream definition stages.
      */
-    Observable<Void> recognizeTextInStreamAsync(byte[] image, TextRecognitionMode mode);
+    interface ComputerVisionReadInStreamDefinitionStages {
+        /**
+         * The stage of the definition to be specify image.
+         */
+        interface WithImage {
+            /**
+             * An image stream.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadInStreamDefinitionStages.WithExecute withImage(byte[] image);
+        }
 
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The BCP-47 language code of the text to be detected in the image. In future versions, when language
+             *   parameter is not passed, language detection will be used to determine the language. However, in the current
+             *   version, missing language parameter will cause English to be used. To ensure that your document is always
+             *   parsed in English without the use of language detection in the future, pass “en” in the language parameter.
+             *   Possible values include: 'en', 'es', 'fr', 'de', 'it', 'nl', 'pt'.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadInStreamDefinitionStages.WithExecute withLanguage(OcrDetectionLanguage language);
 
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ComputerVisionReadInStreamDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
 
     /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should
-      *  be retrieved from 'Operation-Location' field returned from Batch Read File interface.
-     *
-     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ReadOperationResult object if successful.
+     * The entirety of readInStream definition.
      */
-    ReadOperationResult getReadOperationResult(String operationId);
-
-    /**
-     * This interface is used for getting OCR results of Read operation. The URL to this interface should
-      *  be retrieved from 'Operation-Location' field returned from Batch Read File interface.
-     *
-     * @param operationId Id of read operation returned in the response of the 'Batch Read File' interface.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ReadOperationResult object
-     */
-    Observable<ReadOperationResult> getReadOperationResultAsync(String operationId);
-
-
-
-    /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical
-      *  Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read
-      *  File interface, the response contains a field called 'Operation-Location'. The
-      *  'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult'
-      *  operation to access OCR results.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void batchReadFile(String url);
-
-    /**
-     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical
-      *  Character Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read
-      *  File interface, the response contains a field called 'Operation-Location'. The
-      *  'Operation-Location' field contains the URL that you must use for your 'GetReadOperationResult'
-      *  operation to access OCR results.
-     *
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
-     */
-    Observable<Void> batchReadFileAsync(String url);
-
-
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be
-      *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TextOperationResult object if successful.
-     */
-    TextOperationResult getTextOperationResult(String operationId);
-
-    /**
-     * This interface is used for getting text operation result. The URL to this interface should be
-      *  retrieved from 'Operation-Location' field returned from Recognize Text interface.
-     *
-     * @param operationId Id of the text operation returned in the response of the 'Recognize Text'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TextOperationResult object
-     */
-    Observable<TextOperationResult> getTextOperationResultAsync(String operationId);
-
-
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
-      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
-      *  your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ComputerVisionErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void recognizeText(String url, TextRecognitionMode mode);
-
-    /**
-     * Recognize Text operation. When you use the Recognize Text interface, the response contains a field
-      *  called 'Operation-Location'. The 'Operation-Location' field contains the URL that you must use for
-      *  your Get Recognize Text Operation Result operation.
-     *
-     * @param mode Type of text to recognize. Possible values include: 'Handwritten', 'Printed'.
-     * @param url Publicly reachable URL of an image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return a representation of the deferred computation of this call if successful.
-     */
-    Observable<Void> recognizeTextAsync(String url, TextRecognitionMode mode);
-
+    interface ComputerVisionReadInStreamDefinition extends
+        ComputerVisionReadInStreamDefinitionStages.WithImage,
+        ComputerVisionReadInStreamDefinitionStages.WithExecute {
+    }
 
     /**
      * This operation generates a list of words, or tags, that are relevant to the content of the supplied image.
@@ -1017,6 +955,127 @@ public interface ComputerVision {
     interface ComputerVisionAnalyzeImageInStreamDefinition extends
         ComputerVisionAnalyzeImageInStreamDefinitionStages.WithImage,
         ComputerVisionAnalyzeImageInStreamDefinitionStages.WithExecute {
+    }
+
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should
+      *  be retrieved from 'Operation-Location' field returned from Read interface.
+     *
+     * @param operationId Id of read operation returned in the response of the 'Read' interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the ReadOperationResult object if successful.
+     */
+    ReadOperationResult getReadResult(UUID operationId);
+
+    /**
+     * This interface is used for getting OCR results of Read operation. The URL to this interface should
+      *  be retrieved from 'Operation-Location' field returned from Read interface.
+     *
+     * @param operationId Id of read operation returned in the response of the 'Read' interface.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the ReadOperationResult object
+     */
+    Observable<ReadOperationResult> getReadResultAsync(UUID operationId);
+
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
+     *   Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+     *   response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that
+     *   you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param readOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ComputerVisionErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void read(String url, ReadOptionalParameter readOptionalParameter);
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
+     *   Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+     *   response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that
+     *   you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @param url Publicly reachable URL of an image.
+     * @param readOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return a representation of the deferred computation of this call if successful.
+     */
+    Observable<Void> readAsync(String url, ReadOptionalParameter readOptionalParameter);
+
+    /**
+     * Use this interface to get the result of a Read operation, employing the state-of-the-art Optical Character
+     *   Recognition (OCR) algorithms optimized for text-heavy documents. When you use the Read interface, the
+     *   response contains a field called 'Operation-Location'. The 'Operation-Location' field contains the URL that
+     *   you must use for your 'GetReadResult' operation to access OCR results.​.
+     *
+     * @return the first stage of the read call
+     */
+    ComputerVisionReadDefinitionStages.WithUrl read();
+
+    /**
+     * Grouping of read definition stages.
+     */
+    interface ComputerVisionReadDefinitionStages {
+        /**
+         * The stage of the definition to be specify url.
+         */
+        interface WithUrl {
+            /**
+             * Publicly reachable URL of an image.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadDefinitionStages.WithExecute withUrl(String url);
+        }
+
+        /**
+         * The stage of the definition which allows for any other optional settings to be specified.
+         */
+        interface WithAllOptions {
+            /**
+             * The BCP-47 language code of the text to be detected in the image. In future versions, when language
+             *   parameter is not passed, language detection will be used to determine the language. However, in the current
+             *   version, missing language parameter will cause English to be used. To ensure that your document is always
+             *   parsed in English without the use of language detection in the future, pass “en” in the language parameter.
+             *   Possible values include: 'en', 'es', 'fr', 'de', 'it', 'nl', 'pt'.
+             *
+             * @return next definition stage
+             */
+            ComputerVisionReadDefinitionStages.WithExecute withLanguage(OcrDetectionLanguage language);
+
+        }
+
+        /**
+         * The last stage of the definition which will make the operation call.
+        */
+        interface WithExecute extends ComputerVisionReadDefinitionStages.WithAllOptions {
+            /**
+             * Execute the request.
+             *
+             */
+            void execute();
+
+            /**
+             * Execute the request asynchronously.
+             *
+             * @return a representation of the deferred computation of this call if successful.
+             */
+            Observable<Void> executeAsync();
+        }
+    }
+
+    /**
+     * The entirety of read definition.
+     */
+    interface ComputerVisionReadDefinition extends
+        ComputerVisionReadDefinitionStages.WithUrl,
+        ComputerVisionReadDefinitionStages.WithExecute {
     }
 
 

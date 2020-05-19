@@ -7,14 +7,18 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.AddressSpace;
 import com.azure.management.network.BgpSettings;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LocalNetworkGateway model. */
 @JsonFlatten
 @Fluent
 public class LocalNetworkGatewayInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -186,5 +190,19 @@ public class LocalNetworkGatewayInner extends Resource {
     public LocalNetworkGatewayInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (localNetworkAddressSpace() != null) {
+            localNetworkAddressSpace().validate();
+        }
+        if (bgpSettings() != null) {
+            bgpSettings().validate();
+        }
     }
 }

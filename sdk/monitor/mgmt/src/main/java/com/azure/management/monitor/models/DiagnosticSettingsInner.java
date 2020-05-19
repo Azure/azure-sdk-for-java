@@ -21,14 +21,17 @@ import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.management.monitor.ErrorResponseException;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DiagnosticSettings. */
 public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> {
+    private final ClientLogger logger = new ClientLogger(DiagnosticSettingsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final DiagnosticSettingsService service;
 
@@ -56,7 +59,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DiagnosticSettingsResourceInner>> get(
             @HostParam("$host") String host,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
@@ -67,7 +70,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DiagnosticSettingsResourceInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
@@ -79,7 +82,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/{resourceUri}/providers/microsoft.insights/diagnosticSettings/{name}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
@@ -90,7 +93,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{resourceUri}/providers/microsoft.insights/diagnosticSettings")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<DiagnosticSettingsResourceCollectionInner>> list(
             @HostParam("$host") String host,
             @PathParam(value = "resourceUri", encoded = true) String resourceUri,
@@ -104,12 +107,22 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the active diagnostic settings for the specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DiagnosticSettingsResourceInner>> getWithResponseAsync(String resourceUri, String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
         final String apiVersion = "2017-05-01-preview";
         return FluxUtil
             .withContext(context -> service.get(this.client.getHost(), resourceUri, apiVersion, name, context))
@@ -121,8 +134,36 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the active diagnostic settings for the specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DiagnosticSettingsResourceInner>> getWithResponseAsync(
+        String resourceUri, String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String apiVersion = "2017-05-01-preview";
+        return service.get(this.client.getHost(), resourceUri, apiVersion, name, context);
+    }
+
+    /**
+     * Gets the active diagnostic settings for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param name The name of the diagnostic setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the active diagnostic settings for the specified resource.
      */
@@ -145,7 +186,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the active diagnostic settings for the specified resource.
      */
@@ -161,13 +202,28 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param name The name of the diagnostic setting.
      * @param parameters The diagnostic setting resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostic setting resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(
         String resourceUri, String name, DiagnosticSettingsResourceInner parameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
         final String apiVersion = "2017-05-01-preview";
         return FluxUtil
             .withContext(
@@ -182,8 +238,42 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
      * @param parameters The diagnostic setting resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the diagnostic setting resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DiagnosticSettingsResourceInner>> createOrUpdateWithResponseAsync(
+        String resourceUri, String name, DiagnosticSettingsResourceInner parameters, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String apiVersion = "2017-05-01-preview";
+        return service.createOrUpdate(this.client.getHost(), resourceUri, apiVersion, name, parameters, context);
+    }
+
+    /**
+     * Creates or updates diagnostic settings for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param name The name of the diagnostic setting.
+     * @param parameters The diagnostic setting resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostic setting resource.
      */
@@ -208,7 +298,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param name The name of the diagnostic setting.
      * @param parameters The diagnostic setting resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the diagnostic setting resource.
      */
@@ -224,12 +314,22 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String name) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
         final String apiVersion = "2017-05-01-preview";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getHost(), resourceUri, apiVersion, name, context))
@@ -241,8 +341,35 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceUri, String name, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        if (name == null) {
+            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        final String apiVersion = "2017-05-01-preview";
+        return service.delete(this.client.getHost(), resourceUri, apiVersion, name, context);
+    }
+
+    /**
+     * Deletes existing diagnostic settings for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @param name The name of the diagnostic setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -257,7 +384,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * @param resourceUri The identifier of the resource.
      * @param name The name of the diagnostic setting.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -270,12 +397,19 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the active diagnostic settings list for the specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<DiagnosticSettingsResourceCollectionInner>> listWithResponseAsync(String resourceUri) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
         final String apiVersion = "2017-05-01-preview";
         return FluxUtil
             .withContext(context -> service.list(this.client.getHost(), resourceUri, apiVersion, context))
@@ -286,8 +420,32 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      * Gets the active diagnostic settings list for the specified resource.
      *
      * @param resourceUri The identifier of the resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the active diagnostic settings list for the specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<DiagnosticSettingsResourceCollectionInner>> listWithResponseAsync(
+        String resourceUri, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceUri == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceUri is required and cannot be null."));
+        }
+        final String apiVersion = "2017-05-01-preview";
+        return service.list(this.client.getHost(), resourceUri, apiVersion, context);
+    }
+
+    /**
+     * Gets the active diagnostic settings list for the specified resource.
+     *
+     * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the active diagnostic settings list for the specified resource.
      */
@@ -309,7 +467,7 @@ public final class DiagnosticSettingsInner implements InnerSupportsDelete<Void> 
      *
      * @param resourceUri The identifier of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the active diagnostic settings list for the specified resource.
      */

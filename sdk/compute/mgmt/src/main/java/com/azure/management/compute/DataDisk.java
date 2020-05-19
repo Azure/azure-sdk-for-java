@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DataDisk model. */
 @Fluent
 public final class DataDisk {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisk.class);
+
     /*
      * Specifies the logical unit number of the data disk. This value is used
      * to identify data disks within the VM and therefore must be unique for
@@ -310,5 +314,27 @@ public final class DataDisk {
     public DataDisk withToBeDetached(Boolean toBeDetached) {
         this.toBeDetached = toBeDetached;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vhd() != null) {
+            vhd().validate();
+        }
+        if (image() != null) {
+            image().validate();
+        }
+        if (createOption() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property createOption in model DataDisk"));
+        }
+        if (managedDisk() != null) {
+            managedDisk().validate();
+        }
     }
 }

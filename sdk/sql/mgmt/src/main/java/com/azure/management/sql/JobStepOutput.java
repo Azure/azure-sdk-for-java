@@ -5,12 +5,16 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The JobStepOutput model. */
 @Fluent
 public final class JobStepOutput {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobStepOutput.class);
+
     /*
      * The output destination type.
      */
@@ -218,5 +222,33 @@ public final class JobStepOutput {
     public JobStepOutput withCredential(String credential) {
         this.credential = credential;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (serverName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property serverName in model JobStepOutput"));
+        }
+        if (databaseName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property databaseName in model JobStepOutput"));
+        }
+        if (tableName() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property tableName in model JobStepOutput"));
+        }
+        if (credential() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property credential in model JobStepOutput"));
+        }
     }
 }

@@ -40,11 +40,6 @@ public interface Identity
     String clientId();
 
     /**
-     * @return the url that can be queried to obtain the identity credentials
-     */
-    String clientSecretUrl();
-
-    /**
      * Container interface for all the definitions related to identity.
      */
     interface Definition extends

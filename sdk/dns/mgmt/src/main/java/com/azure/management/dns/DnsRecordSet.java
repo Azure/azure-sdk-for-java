@@ -28,7 +28,7 @@ public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZon
     String fqdn();
 
     /** @return the etag associated with the record set. */
-    String eTag();
+    String etag();
 
     /**
      * The entirety of a DNS zone record set definition as a part of parent definition.
@@ -1167,19 +1167,19 @@ public interface DnsRecordSet extends ExternalChildResource<DnsRecordSet, DnsZon
         /** The stage of the record set update allowing to enable ETag validation. */
         interface WithETagCheck {
             /**
-             * Specifies that If-Match header needs to set to the current eTag value associated with the record set.
+             * Specifies that If-Match header needs to set to the current etag value associated with the record set.
              *
              * @return the next stage of the update
              */
             Update withETagCheck();
 
             /**
-             * Specifies that if-Match header needs to set to the given eTag value.
+             * Specifies that if-Match header needs to set to the given etag value.
              *
-             * @param eTagValue the eTag value
+             * @param etagValue the etag value
              * @return the next stage of the update
              */
-            Update withETagCheck(String eTagValue);
+            Update withETagCheck(String etagValue);
         }
     }
 }

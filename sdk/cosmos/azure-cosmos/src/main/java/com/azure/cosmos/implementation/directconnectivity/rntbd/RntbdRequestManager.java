@@ -542,6 +542,7 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
     }
 
     boolean isServiceable(final int demand) {
+        reportIssueUnless(this.hasRequestedRntbdContext(), this, "Direct TCP context request was not issued");
         final int limit = this.hasRntbdContext() ? this.pendingRequestLimit : Math.min(this.pendingRequestLimit, demand);
         return this.pendingRequests.size() < limit;
     }

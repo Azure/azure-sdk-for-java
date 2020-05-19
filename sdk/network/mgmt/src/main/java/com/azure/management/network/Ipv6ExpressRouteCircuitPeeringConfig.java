@@ -6,11 +6,15 @@ package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Ipv6ExpressRouteCircuitPeeringConfig model. */
 @Fluent
 public final class Ipv6ExpressRouteCircuitPeeringConfig {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6ExpressRouteCircuitPeeringConfig.class);
+
     /*
      * The primary address prefix.
      */
@@ -140,5 +144,16 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
     public Ipv6ExpressRouteCircuitPeeringConfig withState(ExpressRouteCircuitPeeringState state) {
         this.state = state;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (microsoftPeeringConfig() != null) {
+            microsoftPeeringConfig().validate();
+        }
     }
 }

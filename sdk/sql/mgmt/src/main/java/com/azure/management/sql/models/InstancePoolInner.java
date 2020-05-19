@@ -7,14 +7,18 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.InstancePoolLicenseType;
 import com.azure.management.sql.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InstancePool model. */
 @JsonFlatten
 @Fluent
 public class InstancePoolInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstancePoolInner.class);
+
     /*
      * The name and tier of the SKU.
      */
@@ -120,5 +124,16 @@ public class InstancePoolInner extends Resource {
     public InstancePoolInner withLicenseType(InstancePoolLicenseType licenseType) {
         this.licenseType = licenseType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
     }
 }

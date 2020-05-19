@@ -14,11 +14,11 @@ import com.azure.management.appservice.CloningInfo;
 import com.azure.management.appservice.ConnStringValueTypePair;
 import com.azure.management.appservice.ConnectionString;
 import com.azure.management.appservice.ConnectionStringType;
-import com.azure.management.appservice.CustomHostNameDnsRecordType;
+import com.azure.management.appservice.CustomHostnameDnsRecordType;
 import com.azure.management.appservice.FtpsState;
-import com.azure.management.appservice.HostNameBinding;
-import com.azure.management.appservice.HostNameSslState;
-import com.azure.management.appservice.HostNameType;
+import com.azure.management.appservice.HostnameBinding;
+import com.azure.management.appservice.HostnameSslState;
+import com.azure.management.appservice.HostnameType;
 import com.azure.management.appservice.JavaVersion;
 import com.azure.management.appservice.MSDeploy;
 import com.azure.management.appservice.ManagedPipelineMode;
@@ -38,7 +38,7 @@ import com.azure.management.appservice.WebAppAuthentication;
 import com.azure.management.appservice.WebAppBase;
 import com.azure.management.appservice.WebContainer;
 import com.azure.management.appservice.models.ConnectionStringDictionaryInner;
-import com.azure.management.appservice.models.HostNameBindingInner;
+import com.azure.management.appservice.models.HostnameBindingInner;
 import com.azure.management.appservice.models.MSDeployStatusInner;
 import com.azure.management.appservice.models.SiteAuthSettingsInner;
 import com.azure.management.appservice.models.SiteConfigInner;
@@ -114,10 +114,10 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     private Set<String> enabledHostNamesSet;
     private Set<String> trafficManagerHostNamesSet;
     private Set<String> outboundIPAddressesSet;
-    private Map<String, HostNameSslState> hostNameSslStateMap;
-    private TreeMap<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
+    private Map<String, HostnameSslState> hostNameSslStateMap;
+    private TreeMap<String, HostnameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
     private List<String> hostNameBindingsToDelete;
-    private TreeMap<String, HostNameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToCreate;
+    private TreeMap<String, HostnameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToCreate;
 
     protected Map<String, String> appSettingsToAdd;
     protected List<String> appSettingsToRemove;
@@ -227,8 +227,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             this.outboundIPAddressesSet = new HashSet<>(Arrays.asList(inner().outboundIpAddresses().split(",[ ]*")));
         }
         this.hostNameSslStateMap = new HashMap<>();
-        if (inner().hostNameSslStates() != null) {
-            for (HostNameSslState hostNameSslState : inner().hostNameSslStates()) {
+        if (inner().hostnameSslStates() != null) {
+            for (HostnameSslState hostNameSslState : inner().hostnameSslStates()) {
                 // Server returns null sometimes, invalid on update, so we set default
                 if (hostNameSslState.sslState() == null) {
                     hostNameSslState.withSslState(SslState.DISABLED);
@@ -246,7 +246,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
-    public Set<String> hostNames() {
+    public Set<String> hostnames() {
         return Collections.unmodifiableSet(hostNamesSet);
     }
 
@@ -279,7 +279,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
-    public Map<String, HostNameSslState> hostNameSslStates() {
+    public Map<String, HostnameSslState> hostnameSslStates() {
         return Collections.unmodifiableMap(hostNameSslStateMap);
     }
 
@@ -344,9 +344,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
-    public String defaultHostName() {
-        if (inner().defaultHostName() != null) {
-            return inner().defaultHostName();
+    public String defaultHostname() {
+        if (inner().defaultHostname() != null) {
+            return inner().defaultHostname();
         } else {
             AzureEnvironment environment = manager().environment();
             String dns = DNS_MAP.get(environment);
@@ -748,7 +748,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     abstract Mono<SiteConfigResourceInner> createOrUpdateSiteConfig(SiteConfigResourceInner siteConfig);
 
-    abstract Mono<Void> deleteHostNameBinding(String hostname);
+    abstract Mono<Void> deleteHostnameBinding(String hostname);
 
     abstract Mono<StringDictionaryInner> listAppSettings();
 
@@ -777,7 +777,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     public void beforeGroupCreateOrUpdate() {
         if (hostNameSslStateMap.size() > 0) {
-            inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
+            inner().withHostnameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
         // Hostname and SSL bindings
         IndexableTaskItem rootTaskItem =
@@ -844,7 +844,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     public Mono<FluentT> updateResourceAsync() {
         SiteInner siteInner = (SiteInner) this.inner();
         SitePatchResourceInner siteUpdate = new SitePatchResourceInner();
-        siteUpdate.withHostNameSslStates(siteInner.hostNameSslStates());
+        siteUpdate.withHostnameSslStates(siteInner.hostnameSslStates());
         siteUpdate.withKind(siteInner.kind());
         siteUpdate.withEnabled(siteInner.enabled());
         siteUpdate.withServerFarmId(siteInner.serverFarmId());
@@ -910,12 +910,12 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @SuppressWarnings("unchecked")
     Mono<FluentT> submitHostNameBindings() {
-        final List<Mono<HostNameBinding>> bindingObservables = new ArrayList<>();
-        for (HostNameBindingImpl<FluentT, FluentImplT> binding : hostNameBindingsToCreate.values()) {
-            bindingObservables.add(Utils.<HostNameBinding>rootResource(binding.createAsync().last()));
+        final List<Mono<HostnameBinding>> bindingObservables = new ArrayList<>();
+        for (HostnameBindingImpl<FluentT, FluentImplT> binding : hostNameBindingsToCreate.values()) {
+            bindingObservables.add(Utils.<HostnameBinding>rootResource(binding.createAsync().last()));
         }
         for (String binding : hostNameBindingsToDelete) {
-            bindingObservables.add(deleteHostNameBinding(binding).then(Mono.empty()));
+            bindingObservables.add(deleteHostnameBinding(binding).then(Mono.empty()));
         }
         if (bindingObservables.isEmpty()) {
             return Mono.just((FluentT) this);
@@ -940,14 +940,14 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     Mono<Indexable> submitSslBindings(final SiteInner site) {
         List<Mono<AppServiceCertificate>> certs = new ArrayList<>();
-        for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
+        for (final HostnameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
             certs.add(binding.newCertificate());
             hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
         }
         if (certs.isEmpty()) {
             return Mono.just((Indexable) this);
         } else {
-            site.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
+            site.withHostnameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
             return Flux
                 .zip(certs, ignored -> site)
                 .last()
@@ -1113,7 +1113,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(
-        final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
+        final HostnameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
         sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         return this;
     }
@@ -1125,13 +1125,13 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
                 defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain(hostname)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.A)
+                    .withDnsRecordType(CustomHostnameDnsRecordType.A)
                     .attach();
             } else {
                 defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain(hostname)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                    .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
                     .attach();
             }
         }
@@ -1139,13 +1139,13 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @SuppressWarnings("unchecked")
-    public HostNameBindingImpl<FluentT, FluentImplT> defineHostnameBinding() {
-        HostNameBindingInner inner = new HostNameBindingInner();
+    public HostnameBindingImpl<FluentT, FluentImplT> defineHostnameBinding() {
+        HostnameBindingInner inner = new HostnameBindingInner();
         inner.withSiteName(name());
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
         inner.withAzureResourceName(name());
-        inner.withHostNameType(HostNameType.VERIFIED);
-        return new HostNameBindingImpl<>(inner, (FluentImplT) this);
+        inner.withHostnameType(HostnameType.VERIFIED);
+        return new HostnameBindingImpl<>(inner, (FluentImplT) this);
     }
 
     @SuppressWarnings("unchecked")
@@ -1154,7 +1154,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             defineHostnameBinding()
                 .withThirdPartyDomain(domain)
                 .withSubDomain(hostname)
-                .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                .withDnsRecordType(CustomHostnameDnsRecordType.CNAME)
                 .attach();
         }
         return (FluentImplT) this;
@@ -1175,7 +1175,7 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @SuppressWarnings("unchecked")
-    FluentImplT withHostNameBinding(final HostNameBindingImpl<FluentT, FluentImplT> hostNameBinding) {
+    FluentImplT withHostNameBinding(final HostnameBindingImpl<FluentT, FluentImplT> hostNameBinding) {
         this.hostNameBindingsToCreate.put(hostNameBinding.name(), hostNameBinding);
         return (FluentImplT) this;
     }
@@ -1205,8 +1205,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @SuppressWarnings("unchecked")
-    public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
-        return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this);
+    public HostnameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
+        return new HostnameSslBindingImpl<>(new HostnameSslState(), (FluentImplT) this);
     }
 
     @SuppressWarnings("unchecked")

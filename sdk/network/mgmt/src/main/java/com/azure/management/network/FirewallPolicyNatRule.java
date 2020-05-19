@@ -5,6 +5,8 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FirewallPolicyNatRule")
 @Fluent
 public final class FirewallPolicyNatRule extends FirewallPolicyRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyNatRule.class);
+
     /*
      * The action type of a Nat rule, SNAT or DNAT
      */
@@ -116,5 +120,21 @@ public final class FirewallPolicyNatRule extends FirewallPolicyRule {
     public FirewallPolicyNatRule withRuleCondition(FirewallPolicyRuleCondition ruleCondition) {
         this.ruleCondition = ruleCondition;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (action() != null) {
+            action().validate();
+        }
+        if (ruleCondition() != null) {
+            ruleCondition().validate();
+        }
     }
 }
