@@ -118,25 +118,25 @@ stages:
                       - checkout: azure-sdk-build-tools
                         path: azure-sdk-build-tools
                       - template: tools/gpg/gpg.yml@azure-sdk-build-tools
-                      # - template: /eng/pipelines/templates/steps/java-publishing.yml
-                      #   parameters:
-                      #     ArtifactID: ${{artifact.name}}
-                      #     GroupID: ${{artifact.groupId}}
-                      #     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                      #     Target: MavenCentral
-                      #     BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                      #     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      # # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
-                      # # this is that the azure-sdk-for-java feed will have the package available immediately
-                      # # whereas Maven can take several hours for the package to become available.
-                      # - template: /eng/pipelines/templates/steps/java-publishing.yml
-                      #   parameters:
-                      #     ArtifactID: ${{artifact.name}}
-                      #     GroupID: ${{artifact.groupId}}
-                      #     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
-                      #     Target: JavaDevFeed
-                      #     BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
-                      #     JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
+                        parameters:
+                          ArtifactID: ${{artifact.name}}
+                          GroupID: ${{artifact.groupId}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          Target: MavenCentral
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
+                      # After publishing to Maven, publish to the azure-sdk-for-java feed. The reason for
+                      # this is that the azure-sdk-for-java feed will have the package available immediately
+                      # whereas Maven can take several hours for the package to become available.
+                      - template: /eng/pipelines/templates/steps/java-publishing.yml
+                        parameters:
+                          ArtifactID: ${{artifact.name}}
+                          GroupID: ${{artifact.groupId}}
+                          ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+                          Target: JavaDevFeed
+                          BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
+                          JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
 
           - ${{if ne(artifact.options.skipPublishDocs, 'true')}}:
             - deployment: PublicDocsMs
