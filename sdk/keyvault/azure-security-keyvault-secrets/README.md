@@ -9,7 +9,6 @@ Use the Azure Key Vault Secrets client library to create and manage secrets.
 
 ## Getting started
 ### Adding the package to your project
-
 Maven dependency for the Azure Key Vault Secrets client library. Add it to your project's POM file.
 
 [//]: # ({x-version-update-start;com.azure:azure-security-keyvault-secrets;current})
