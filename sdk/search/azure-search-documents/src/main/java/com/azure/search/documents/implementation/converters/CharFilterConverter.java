@@ -34,13 +34,12 @@ public final class CharFilterConverter {
      * {@link com.azure.search.documents.implementation.models.CharFilter}. Dedicate works to sub class converter.
      */
     public static com.azure.search.documents.implementation.models.CharFilter map(CharFilter obj) {
-        if (obj instanceof com.azure.search.documents.models.MappingCharFilter) {
-            return MappingCharFilterConverter.map((com.azure.search.documents.models.MappingCharFilter) obj);
-        }
         if (obj instanceof com.azure.search.documents.models.PatternReplaceCharFilter) {
             return PatternReplaceCharFilterConverter.map((com.azure.search.documents.models.PatternReplaceCharFilter) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
-            obj.getClass().getSimpleName())));
+        if (obj instanceof com.azure.search.documents.models.MappingCharFilter) {
+            return MappingCharFilterConverter.map((com.azure.search.documents.models.MappingCharFilter) obj);
+        }
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
     }
 }

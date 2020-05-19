@@ -20,11 +20,11 @@ public final class CognitiveServicesAccountConverter {
      * {@link CognitiveServicesAccount}. Dedicate works to sub class converter.
      */
     public static CognitiveServicesAccount map(com.azure.search.documents.implementation.models.CognitiveServicesAccount obj) {
-        if (obj instanceof DefaultCognitiveServicesAccount) {
-            return DefaultCognitiveServicesAccountConverter.map((DefaultCognitiveServicesAccount) obj);
-        }
         if (obj instanceof CognitiveServicesAccountKey) {
             return CognitiveServicesAccountKeyConverter.map((CognitiveServicesAccountKey) obj);
+        }
+        if (obj instanceof DefaultCognitiveServicesAccount) {
+            return DefaultCognitiveServicesAccountConverter.map((DefaultCognitiveServicesAccount) obj);
         }
         throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_EXTERNAL_ERROR_MSG,
             obj.getClass().getSimpleName())));
@@ -42,7 +42,6 @@ public final class CognitiveServicesAccountConverter {
         if (obj instanceof com.azure.search.documents.models.DefaultCognitiveServicesAccount) {
             return DefaultCognitiveServicesAccountConverter.map((com.azure.search.documents.models.DefaultCognitiveServicesAccount) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
-            obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
     }
 }

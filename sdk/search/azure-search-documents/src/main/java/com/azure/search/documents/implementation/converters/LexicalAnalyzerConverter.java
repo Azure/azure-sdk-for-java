@@ -22,17 +22,17 @@ public final class LexicalAnalyzerConverter {
      * {@link LexicalAnalyzer}. Dedicate works to sub class converter.
      */
     public static LexicalAnalyzer map(com.azure.search.documents.implementation.models.LexicalAnalyzer obj) {
-        if (obj instanceof PatternAnalyzer) {
-            return PatternAnalyzerConverter.map((PatternAnalyzer) obj);
-        }
         if (obj instanceof LuceneStandardAnalyzer) {
             return LuceneStandardAnalyzerConverter.map((LuceneStandardAnalyzer) obj);
         }
-        if (obj instanceof StopAnalyzer) {
-            return StopAnalyzerConverter.map((StopAnalyzer) obj);
+        if (obj instanceof PatternAnalyzer) {
+            return PatternAnalyzerConverter.map((PatternAnalyzer) obj);
         }
         if (obj instanceof CustomAnalyzer) {
             return CustomAnalyzerConverter.map((CustomAnalyzer) obj);
+        }
+        if (obj instanceof StopAnalyzer) {
+            return StopAnalyzerConverter.map((StopAnalyzer) obj);
         }
         throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_EXTERNAL_ERROR_MSG,
             obj.getClass().getSimpleName())));
@@ -46,16 +46,15 @@ public final class LexicalAnalyzerConverter {
         if (obj instanceof com.azure.search.documents.models.CustomAnalyzer) {
             return CustomAnalyzerConverter.map((com.azure.search.documents.models.CustomAnalyzer) obj);
         }
+        if (obj instanceof com.azure.search.documents.models.LuceneStandardAnalyzer) {
+            return LuceneStandardAnalyzerConverter.map((com.azure.search.documents.models.LuceneStandardAnalyzer) obj);
+        }
         if (obj instanceof com.azure.search.documents.models.PatternAnalyzer) {
             return PatternAnalyzerConverter.map((com.azure.search.documents.models.PatternAnalyzer) obj);
         }
         if (obj instanceof com.azure.search.documents.models.StopAnalyzer) {
             return StopAnalyzerConverter.map((com.azure.search.documents.models.StopAnalyzer) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.LuceneStandardAnalyzer) {
-            return LuceneStandardAnalyzerConverter.map((com.azure.search.documents.models.LuceneStandardAnalyzer) obj);
-        }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
-            obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
     }
 }

@@ -137,7 +137,8 @@ public final class SearchFieldConverter {
         }
 
         if (obj.getFields() != null) {
-            List<com.azure.search.documents.implementation.models.SearchField> _fields = obj.getFields().stream().map(com.azure.search.documents.implementation.converters.SearchFieldConverter::map).collect(Collectors.toList());
+            List<com.azure.search.documents.implementation.models.SearchField> _fields =
+                obj.getFields().stream().map(com.azure.search.documents.implementation.converters.SearchFieldConverter::map).collect(Collectors.toList());
             searchField.setFields(_fields);
         }
 

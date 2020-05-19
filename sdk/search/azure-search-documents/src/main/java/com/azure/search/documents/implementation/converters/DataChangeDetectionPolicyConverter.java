@@ -20,11 +20,11 @@ public final class DataChangeDetectionPolicyConverter {
      * {@link DataChangeDetectionPolicy}. Dedicate works to sub class converter.
      */
     public static DataChangeDetectionPolicy map(com.azure.search.documents.implementation.models.DataChangeDetectionPolicy obj) {
-        if (obj instanceof SqlIntegratedChangeTrackingPolicy) {
-            return SqlIntegratedChangeTrackingPolicyConverter.map((SqlIntegratedChangeTrackingPolicy) obj);
-        }
         if (obj instanceof HighWaterMarkChangeDetectionPolicy) {
             return HighWaterMarkChangeDetectionPolicyConverter.map((HighWaterMarkChangeDetectionPolicy) obj);
+        }
+        if (obj instanceof SqlIntegratedChangeTrackingPolicy) {
+            return SqlIntegratedChangeTrackingPolicyConverter.map((SqlIntegratedChangeTrackingPolicy) obj);
         }
         throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_EXTERNAL_ERROR_MSG,
             obj.getClass().getSimpleName())));
@@ -42,7 +42,6 @@ public final class DataChangeDetectionPolicyConverter {
         if (obj instanceof com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy) {
             return HighWaterMarkChangeDetectionPolicyConverter.map((com.azure.search.documents.models.HighWaterMarkChangeDetectionPolicy) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
-            obj.getClass().getSimpleName())));
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
     }
 }

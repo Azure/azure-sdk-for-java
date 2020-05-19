@@ -22,11 +22,11 @@ public final class ScoringFunctionConverter {
      * {@link ScoringFunction}. Dedicate works to sub class converter.
      */
     public static ScoringFunction map(com.azure.search.documents.implementation.models.ScoringFunction obj) {
-        if (obj instanceof MagnitudeScoringFunction) {
-            return MagnitudeScoringFunctionConverter.map((MagnitudeScoringFunction) obj);
-        }
         if (obj instanceof DistanceScoringFunction) {
             return DistanceScoringFunctionConverter.map((DistanceScoringFunction) obj);
+        }
+        if (obj instanceof MagnitudeScoringFunction) {
+            return MagnitudeScoringFunctionConverter.map((MagnitudeScoringFunction) obj);
         }
         if (obj instanceof TagScoringFunction) {
             return TagScoringFunctionConverter.map((TagScoringFunction) obj);
@@ -49,13 +49,12 @@ public final class ScoringFunctionConverter {
         if (obj instanceof com.azure.search.documents.models.TagScoringFunction) {
             return TagScoringFunctionConverter.map((com.azure.search.documents.models.TagScoringFunction) obj);
         }
-        if (obj instanceof com.azure.search.documents.models.DistanceScoringFunction) {
-            return DistanceScoringFunctionConverter.map((com.azure.search.documents.models.DistanceScoringFunction) obj);
-        }
         if (obj instanceof com.azure.search.documents.models.FreshnessScoringFunction) {
             return FreshnessScoringFunctionConverter.map((com.azure.search.documents.models.FreshnessScoringFunction) obj);
         }
-        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG,
-            obj.getClass().getSimpleName())));
+        if (obj instanceof com.azure.search.documents.models.DistanceScoringFunction) {
+            return DistanceScoringFunctionConverter.map((com.azure.search.documents.models.DistanceScoringFunction) obj);
+        }
+        throw LOGGER.logExceptionAsError(new RuntimeException(String.format(ABSTRACT_INTERNAL_ERROR_MSG, obj.getClass().getSimpleName())));
     }
 }

@@ -54,7 +54,7 @@ public final class IndexActionConverter {
 
         T _document = obj.getDocument();
         ObjectMapper jsonMapper = new ObjectMapper();
-        Map<String, Object > additionalProperties = jsonMapper.convertValue(_document, Map.class);
+        Map<String, Object> additionalProperties = jsonMapper.convertValue(_document, Map.class);
         indexAction.setAdditionalProperties(additionalProperties);
 
         if (obj.getParamMap() != null) {
