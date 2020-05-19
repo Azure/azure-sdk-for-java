@@ -26,7 +26,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceByIdAsync(String resourceId, String apiVersion);
+    Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion);
 
     /**
      * Deletes a resource by ID.
@@ -47,7 +47,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters);
+    Observable<GenericResource> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters);
 
     /**
      * Updates a resource by ID.
@@ -58,7 +58,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> updateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters);
+    Observable<GenericResource> updateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters);
 
     /**
      * Gets a resource by ID.
@@ -68,7 +68,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> getByIdAsync(String resourceId, String apiVersion);
+    Observable<GenericResource> getByIdAsync(String resourceId, String apiVersion);
 
     /**
      * Get all the resources in a subscription.
@@ -76,13 +76,13 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<SubscriptionGenericResource> listAsync();
+    Observable<SubscriptionGenericResourceExpanded> listAsync();
 
     /**
      * Moves resources from one resource group to another resource group.
      * The resources to move must be in the same source resource group. The target resource group may be in a different subscription. When moving resources, both the source group and the target group are locked for the duration of the operation. Write and delete operations are blocked on the groups until the move completes.
      *
-     * @param sourceResourceGroupName The name of the resource group containing the rsources to move.
+     * @param sourceResourceGroupName The name of the resource group containing the resources to move.
      * @param parameters Parameters for moving resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -101,7 +101,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 
     /**
      * Deletes a resource.
@@ -130,7 +130,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters);
+    Observable<GenericResource> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters);
 
     /**
      * Updates a resource.
@@ -145,7 +145,7 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> updateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters);
+    Observable<GenericResource> updateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters);
 
     /**
      * Gets a resource.
@@ -159,6 +159,6 @@ public interface Resources extends HasInner<ResourcesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ResourcegroupSubscriptionGenericResource> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
+    Observable<GenericResource> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion);
 
 }
