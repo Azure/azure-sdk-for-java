@@ -220,7 +220,6 @@ secretAsyncClient.setSecret("secret_name", "secret_value").subscribe(secret ->
 ```
 
 ### Retrieve a Secret Asynchronously
-
 Retrieve a previously stored secret by calling `getSecret`.
 
 ```Java
