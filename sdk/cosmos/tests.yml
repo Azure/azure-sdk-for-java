@@ -22,7 +22,6 @@ jobs:
           DisplayName: ReadMyWrites Integration Tests
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Session'
         # 09m 23s, expect passed
         Single_Region_Fast:
@@ -190,7 +189,6 @@ jobs:
           DisplayName: Single Region ReadMyWrites
           OSVmImage: 'ubuntu-18.04'
           ProfileFlag: '-Pe2e'
-          AdditionalArgs: '-DargLine="-Dcosmos.directModeProtocol=Https"'
           DESIRED_CONSISTENCY: 'Strong'
         # 08m 50s, expect passed
         Strong_Https_Fast:

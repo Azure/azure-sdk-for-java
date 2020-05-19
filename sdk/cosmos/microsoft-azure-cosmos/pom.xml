@@ -69,19 +69,19 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-core</artifactId>
-      <version>3.3.0.RELEASE</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+      <version>3.3.5.RELEASE</version> <!-- {x-version-update;cosmos_io.projectreactor:reactor-core;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-codec-http</artifactId>
-      <version>4.1.44.Final</version> <!-- {x-version-update;io.netty:netty-codec-http;external_dependency} -->
+      <version>4.1.50.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-codec-http;external_dependency} -->
     </dependency>
 
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
-      <version>4.1.44.Final</version> <!-- {x-version-update;io.netty:netty-handler;external_dependency} -->
+      <version>4.1.50.Final</version> <!-- {x-version-update;cosmos_io.netty:netty-handler;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -177,7 +177,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
-      <version>0.9.4.RELEASE</version> <!-- {x-version-update;io.projectreactor.netty:reactor-netty;external_dependency} -->
+      <version>0.9.7.RELEASE</version> <!-- {x-version-update;cosmos_io.projectreactor.netty:reactor-netty;external_dependency} -->
     </dependency>
 
     <dependency>
