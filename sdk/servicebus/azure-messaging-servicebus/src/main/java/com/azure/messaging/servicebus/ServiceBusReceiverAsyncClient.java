@@ -1127,7 +1127,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(transactionManager -> {
                 return transactionManager.completeTransaction(transactionContext, true);
             }).doFinally(signalType -> {
-                logger.verbose(" !!!! Transaction completed. signalType [{}]", signalType);
+                logger.verbose(" !!!! commitTransaction completed. signalType [{}]", signalType);
             })
             .then();
     }
@@ -1143,7 +1143,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(transactionManager -> {
                 return transactionManager.completeTransaction(transactionContext, false);
             }).doFinally(signalType -> {
-                logger.verbose(" !!!! Transaction completed. signalType [{}]", signalType);
+                logger.verbose(" !!!! rollbackTransaction completed. signalType [{}]", signalType);
             })
             .then();
     }

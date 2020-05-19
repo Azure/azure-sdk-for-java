@@ -393,7 +393,6 @@ class ReactorSender implements AmqpSendLink {
         synchronized (pendingSendLock) {
             this.pendingSendsMap.put(deliveryTag, workItem);
             this.pendingSendsQueue.offer(new WeightedDeliveryTag(deliveryTag, workItem.hasBeenRetried() ? 1 : 0));
-            logger.verbose("!!!! got lock Added deliveryTag [{}] in pendingSendsMap.", deliveryTag);
         }
 
         this.scheduleWorkOnDispatcher();

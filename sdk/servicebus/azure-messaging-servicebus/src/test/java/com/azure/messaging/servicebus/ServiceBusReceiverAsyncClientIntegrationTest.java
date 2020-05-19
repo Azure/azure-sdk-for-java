@@ -145,11 +145,10 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .subscribe();
 
-        TimeUnit.SECONDS.sleep(10);
         logger.verbose("!!!! Test ready to commit Transaction Id: ", new String(transaction.get().getTransactionId().array()));
-        StepVerifier.create(receiver.commitTransaction(transaction.get()))
+        StepVerifier.create(receiver.commitTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
             .verifyComplete();
-        logger.verbose("!!!! Test Wait ... ");
+        logger.verbose("!!!! called commitTransaction Test Wait ... ");
         TimeUnit.SECONDS.sleep(30);
         logger.verbose("!!!! Test Exit  after Wait.");
     }
@@ -158,7 +157,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create transaction and complete.
      */
     @Test
-    void createTansactionAndRollbackMessagesTest() throws InterruptedException {
+    void createTansactionAndRollbackMessagesTest() {
         // Arrange
         setSenderAndReceiver(MessagingEntityType.QUEUE, false);
 
@@ -177,22 +176,33 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
         ReceiveAsyncOptions options =  new ReceiveAsyncOptions();
         options.setIsAutoCompleteEnabled(false);
-        receiver.receive(options)
+
+        /*receiver.receive(options)
             .take(1)
             .flatMap(messageContext -> {
                 logger.verbose("!!!! Test Received Message SQ [{}]  Lock [{}] and will complete it transaction [{}]", messageContext.getMessage().getSequenceNumber(), messageContext.getMessage().getLockToken(), (new String(transaction.get().getTransactionId().array(), Charset.defaultCharset())));
                 return receiver.complete(messageContext.getMessage(), transaction.get());
             })
             .subscribe();
+        */
 
-       // TimeUnit.SECONDS.sleep(15);
-        logger.verbose("!!!! Test ready to rollback Transaction Id is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.TXN_NULL));
+        final ServiceBusReceivedMessageContext receivedContext = receiver.receive(options).next().block(TIMEOUT);
+        assertNotNull(receivedContext);
 
-        StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(15)))
+        final ServiceBusReceivedMessage receivedMessage = receivedContext.getMessage();
+        assertNotNull(receivedMessage);
+        logger.verbose("!!!! Test Received Message SQ [{}]  Lock [{}] and will complete it transaction [{}]", receivedMessage.getSequenceNumber(), receivedMessage.getLockToken(), (new String(transaction.get().getTransactionId().array(), Charset.defaultCharset())));
+
+        // Assert & Act
+        logger.verbose("!!!! Test ready complete the message transaction is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.TXN_NULL));
+
+        StepVerifier.create(receiver.complete(receivedMessage, transaction.get()))
             .verifyComplete();
 
-        logger.verbose("!!!! Test rollback done and wait ... ");
-        TimeUnit.SECONDS.sleep(15);
+        logger.verbose("!!!! Test ready to rollback Transaction Id is null [{}].", (transaction.get().getTransactionId() == AmqpConstants.TXN_NULL));
+
+        StepVerifier.create(receiver.rollbackTransaction(transaction.get()).delaySubscription(Duration.ofSeconds(1)))
+            .verifyComplete();
 
         logger.verbose("!!!! Test Exit .....");
     }
