@@ -16,13 +16,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AzureFilesIdentityBasedAuthentication {
     /**
      * Indicates the directory service used. Possible values include: 'None',
-     * 'AADDS'.
+     * 'AADDS', 'AD'.
      */
     @JsonProperty(value = "directoryServiceOptions", required = true)
     private DirectoryServiceOptions directoryServiceOptions;
 
     /**
-     * Get indicates the directory service used. Possible values include: 'None', 'AADDS'.
+     * Required if choose AD.
+     */
+    @JsonProperty(value = "activeDirectoryProperties")
+    private ActiveDirectoryProperties activeDirectoryProperties;
+
+    /**
+     * Get indicates the directory service used. Possible values include: 'None', 'AADDS', 'AD'.
      *
      * @return the directoryServiceOptions value
      */
@@ -31,13 +37,33 @@ public class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Set indicates the directory service used. Possible values include: 'None', 'AADDS'.
+     * Set indicates the directory service used. Possible values include: 'None', 'AADDS', 'AD'.
      *
      * @param directoryServiceOptions the directoryServiceOptions value to set
      * @return the AzureFilesIdentityBasedAuthentication object itself.
      */
     public AzureFilesIdentityBasedAuthentication withDirectoryServiceOptions(DirectoryServiceOptions directoryServiceOptions) {
         this.directoryServiceOptions = directoryServiceOptions;
+        return this;
+    }
+
+    /**
+     * Get required if choose AD.
+     *
+     * @return the activeDirectoryProperties value
+     */
+    public ActiveDirectoryProperties activeDirectoryProperties() {
+        return this.activeDirectoryProperties;
+    }
+
+    /**
+     * Set required if choose AD.
+     *
+     * @param activeDirectoryProperties the activeDirectoryProperties value to set
+     * @return the AzureFilesIdentityBasedAuthentication object itself.
+     */
+    public AzureFilesIdentityBasedAuthentication withActiveDirectoryProperties(ActiveDirectoryProperties activeDirectoryProperties) {
+        this.activeDirectoryProperties = activeDirectoryProperties;
         return this;
     }
 
