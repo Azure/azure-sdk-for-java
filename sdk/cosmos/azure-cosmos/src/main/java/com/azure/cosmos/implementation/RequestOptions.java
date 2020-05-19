@@ -80,7 +80,7 @@ public class RequestOptions {
     }
 
     /**
-     * Sets the the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
      * @param ifMatchEtag the ifMatchEtag associated with the request.
      */
@@ -98,7 +98,7 @@ public class RequestOptions {
     }
 
     /**
-     * Sets the the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
      * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
      */
