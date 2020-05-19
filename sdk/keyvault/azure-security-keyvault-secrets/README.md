@@ -132,7 +132,7 @@ import com.azure.security.keyvault.secrets.models.Secret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 
 SecretClient secretClient = new SecretClientBuilder()
-        .vaultUrl(<your-vault-url>)
+        .vaultUrl(<your-key-vault-url>)
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
 
