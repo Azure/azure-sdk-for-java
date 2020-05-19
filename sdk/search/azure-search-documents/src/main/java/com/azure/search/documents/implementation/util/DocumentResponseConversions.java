@@ -6,6 +6,7 @@ package com.azure.search.documents.implementation.util;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.search.documents.SearchDocument;
+import com.azure.search.documents.implementation.models.SearchErrorException;
 
 /**
  * Utility class for Document Response conversions.
@@ -30,9 +31,15 @@ public final class DocumentResponseConversions {
      * otherwise the passed {@link Throwable} unmodified.
      */
     public static Throwable exceptionMapper(Throwable throwable) {
-        return (throwable instanceof HttpResponseException && EMPTY_BODY_404.equalsIgnoreCase(throwable.getMessage()))
-            ? new ResourceNotFoundException(DOCUMENT_NOT_FOUND, ((HttpResponseException) throwable).getResponse())
-            : throwable;
+        if (!(throwable instanceof SearchErrorException)) {
+            return throwable;
+        }
+
+        SearchErrorException exception = (SearchErrorException) throwable;
+        if (EMPTY_BODY_404.equalsIgnoreCase(throwable.getMessage())) {
+            return new ResourceNotFoundException(DOCUMENT_NOT_FOUND, exception.getResponse());
+        }
+        return new HttpResponseException(exception.getMessage(), exception.getResponse());
     }
 
     private DocumentResponseConversions() {

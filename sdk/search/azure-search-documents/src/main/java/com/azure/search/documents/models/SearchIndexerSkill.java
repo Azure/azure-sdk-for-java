@@ -33,7 +33,7 @@ import java.util.List;
     @JsonSubTypes.Type(name = "#Microsoft.Skills.Custom.WebApiSkill", value = WebApiSkill.class)
 })
 @Fluent
-public class SearchIndexerSkill {
+public abstract class SearchIndexerSkill {
     /*
      * The name of the skill which uniquely identifies it within the skillset.
      * A skill with no name defined will be given a default name of its 1-based

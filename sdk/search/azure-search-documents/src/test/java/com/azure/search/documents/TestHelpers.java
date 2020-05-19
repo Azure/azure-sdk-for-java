@@ -10,7 +10,6 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -165,7 +164,7 @@ public final class TestHelpers {
 
     private static void verifyHttpResponseError(Throwable ex, int statusCode, String expectedMessage) {
 
-        assertEquals(SearchErrorException.class, ex.getClass());
+        assertEquals(HttpResponseException.class, ex.getClass());
 
         assertEquals(statusCode, ((HttpResponseException) ex).getResponse().getStatusCode());
 

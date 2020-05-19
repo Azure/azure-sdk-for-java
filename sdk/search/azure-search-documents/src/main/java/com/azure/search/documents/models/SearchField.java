@@ -43,19 +43,6 @@ public final class SearchField {
     private Boolean key;
 
     /*
-     * A value indicating whether the field can be returned in a search result.
-     * You can disable this option if you want to use a field (for example,
-     * margin) as a filter, sorting, or scoring mechanism but do not want the
-     * field to be visible to the end user. This property must be true for key
-     * fields, and it must be null for complex fields. This property can be
-     * changed on existing fields. Enabling this property does not cause any
-     * increase in index storage requirements. Default is true for simple
-     * fields and null for complex fields.
-     */
-    @JsonProperty(value = "retrievable")
-    private Boolean retrievable;
-
-    /*
      * A value indicating whether the field is full-text searchable. This means
      * it will undergo analysis such as word-breaking during indexing. If you
      * set a searchable field to a value like "sunny day", internally it will
@@ -309,40 +296,6 @@ public final class SearchField {
      */
     public SearchField setKey(Boolean key) {
         this.key = key;
-        return this;
-    }
-
-    /**
-     * Get the retrievable property: A value indicating whether the field can
-     * be returned in a search result. You can disable this option if you want
-     * to use a field (for example, margin) as a filter, sorting, or scoring
-     * mechanism but do not want the field to be visible to the end user. This
-     * property must be true for key fields, and it must be null for complex
-     * fields. This property can be changed on existing fields. Enabling this
-     * property does not cause any increase in index storage requirements.
-     * Default is true for simple fields and null for complex fields.
-     *
-     * @return the retrievable value.
-     */
-    private Boolean isRetrievable() {
-        return this.retrievable;
-    }
-
-    /**
-     * Set the retrievable property: A value indicating whether the field can
-     * be returned in a search result. You can disable this option if you want
-     * to use a field (for example, margin) as a filter, sorting, or scoring
-     * mechanism but do not want the field to be visible to the end user. This
-     * property must be true for key fields, and it must be null for complex
-     * fields. This property can be changed on existing fields. Enabling this
-     * property does not cause any increase in index storage requirements.
-     * Default is true for simple fields and null for complex fields.
-     *
-     * @param retrievable the retrievable value to set.
-     * @return the SearchField object itself.
-     */
-    private SearchField setRetrievable(Boolean retrievable) {
-        this.retrievable = retrievable;
         return this;
     }
 
@@ -781,7 +734,7 @@ public final class SearchField {
      * @return the hidden value.
      */
     public Boolean isHidden() {
-        return retrievable == null ? null : !retrievable;
+        return this.hidden;
     }
 
     /**
@@ -797,7 +750,6 @@ public final class SearchField {
      */
     public SearchField setHidden(Boolean hidden) {
         this.hidden = hidden;
-        retrievable = this.hidden == null ? null : !this.hidden;
         return this;
     }
 }

@@ -23,7 +23,6 @@ import com.azure.search.documents.models.MergeSkill;
 import com.azure.search.documents.models.OcrSkill;
 import com.azure.search.documents.models.OcrSkillLanguage;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
-import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchIndexerSkill;
 import com.azure.search.documents.models.SearchIndexerSkillset;
 import com.azure.search.documents.models.SentimentSkill;
@@ -558,7 +557,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         try {
             client.createOrUpdateSkillsetWithResponse(original, true, null, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -578,7 +577,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         try {
             client.deleteSkillsetWithResponse(stale, true, null, Context.NONE);
             fail("deleteFunc should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -595,7 +594,7 @@ public class SkillsetManagementSyncTests extends SearchTestBase {
         try {
             client.deleteSkillsetWithResponse(skillset, true, null, Context.NONE);
             fail("deleteFunc should have failed due to non existent resource.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }

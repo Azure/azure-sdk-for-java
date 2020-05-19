@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -14,7 +15,6 @@ import com.azure.search.documents.models.MagnitudeScoringParameters;
 import com.azure.search.documents.models.ScoringFunctionAggregation;
 import com.azure.search.documents.models.ScoringFunctionInterpolation;
 import com.azure.search.documents.models.ScoringProfile;
-import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchField;
 import com.azure.search.documents.models.SearchFieldDataType;
 import com.azure.search.documents.models.SearchIndex;
@@ -134,8 +134,8 @@ public class IndexManagementSyncTests extends SearchTestBase {
             client.createIndex(index);
             fail("createOrUpdateIndex did not throw an expected Exception");
         } catch (Exception ex) {
-            assertEquals(SearchErrorException.class, ex.getClass());
-            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ((SearchErrorException) ex).getResponse().getStatusCode());
+            assertEquals(HttpResponseException.class, ex.getClass());
+            assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, ((HttpResponseException) ex).getResponse().getStatusCode());
             assertTrue(ex.getMessage().contains(expectedMessage));
         }
     }
@@ -186,7 +186,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         try {
             client.deleteIndexWithResponse(originalIndex, true, null, Context.NONE);
             fail("deleteFunc should have failed due to selected MatchConditions");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -204,7 +204,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         try {
             client.deleteIndexWithResponse(index, true, null, Context.NONE);
             fail("deleteFunc should have failed due to non existent resource.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }
@@ -239,7 +239,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         client.createIndex(index);
         client.deleteIndex(index.getName());
 
-        assertThrows(SearchErrorException.class, () -> client.getIndex(index.getName()));
+        assertThrows(HttpResponseException.class, () -> client.getIndex(index.getName()));
     }
 
     @Test
@@ -546,7 +546,7 @@ public class IndexManagementSyncTests extends SearchTestBase {
         try {
             client.createOrUpdateIndexWithResponse(original, false, true, null, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 

@@ -7,7 +7,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SynonymMap;
 import org.junit.jupiter.api.Test;
 
@@ -250,7 +249,7 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         try {
             client.createOrUpdateSynonymMapWithResponse(original, true, null, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -343,7 +342,7 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         try {
             client.deleteSynonymMapWithResponse(stale, true, null, Context.NONE);
             fail("deleteFunc should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -361,7 +360,7 @@ public class SynonymMapManagementSyncTests extends SearchTestBase {
         try {
             client.deleteSynonymMapWithResponse(updated, true, null, Context.NONE);
             fail("deleteFunc should have failed due to non existent resource.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }

@@ -4,7 +4,7 @@
 // Changes may cause incorrect behavior and will be lost if the code is
 // regenerated.
 
-package com.azure.search.documents.models;
+package com.azure.search.documents.implementation.models;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;

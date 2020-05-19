@@ -17,7 +17,6 @@ import com.azure.search.documents.models.InputFieldMappingEntry;
 import com.azure.search.documents.models.OcrSkill;
 import com.azure.search.documents.models.OutputFieldMappingEntry;
 import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
 import com.azure.search.documents.models.SearchField;
 import com.azure.search.documents.models.SearchFieldDataType;
 import com.azure.search.documents.models.SearchIndex;
@@ -501,7 +500,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         try {
             client.deleteIndexerWithResponse(created, true, null, Context.NONE);
             fail("deleteFunc should have failed due to non existent resource.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
     }
@@ -518,7 +517,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         try {
             client.deleteIndexerWithResponse(stale, true, null, Context.NONE);
             fail("deleteFunc should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 
@@ -560,7 +559,7 @@ public class IndexersManagementSyncTests extends SearchTestBase {
         try {
             client.createOrUpdateIndexerWithResponse(original, true, null, Context.NONE);
             fail("createOrUpdateDefinition should have failed due to precondition.");
-        } catch (SearchErrorException ex) {
+        } catch (HttpResponseException ex) {
             assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
         }
 

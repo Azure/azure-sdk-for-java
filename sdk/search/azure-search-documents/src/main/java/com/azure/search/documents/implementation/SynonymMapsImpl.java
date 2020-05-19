@@ -26,9 +26,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.search.documents.implementation.models.ListSynonymMapsResult;
-import com.azure.search.documents.models.RequestOptions;
-import com.azure.search.documents.models.SearchErrorException;
-import com.azure.search.documents.models.SynonymMap;
+import com.azure.search.documents.implementation.models.RequestOptions;
+import com.azure.search.documents.implementation.models.SearchErrorException;
+import com.azure.search.documents.implementation.models.SynonymMap;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 

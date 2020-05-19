@@ -32,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "#Microsoft.Azure.Search.UaxUrlEmailTokenizer", value = UaxUrlEmailTokenizer.class)
 })
 @Fluent
-public class LexicalTokenizer {
+public abstract class LexicalTokenizer {
     /*
      * The name of the tokenizer. It must only contain letters, digits, spaces,
      * dashes or underscores, can only start and end with alphanumeric

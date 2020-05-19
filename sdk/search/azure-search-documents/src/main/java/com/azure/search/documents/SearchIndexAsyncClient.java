@@ -12,11 +12,18 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.search.documents.implementation.SearchIndexRestClientImpl;
+import com.azure.search.documents.implementation.converters.AutocompleteModeConverter;
+import com.azure.search.documents.implementation.converters.IndexBatchBaseConverter;
+import com.azure.search.documents.implementation.converters.IndexDocumentsResultConverter;
+import com.azure.search.documents.implementation.converters.QueryTypeConverter;
+import com.azure.search.documents.implementation.converters.RequestOptionsConverter;
+import com.azure.search.documents.implementation.converters.SearchModeConverter;
 import com.azure.search.documents.implementation.models.AutocompleteRequest;
 import com.azure.search.documents.implementation.models.SearchContinuationToken;
 import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.implementation.models.SuggestRequest;
 import com.azure.search.documents.implementation.util.DocumentResponseConversions;
+import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.SuggestOptionsHandler;
 import com.azure.search.documents.implementation.SearchIndexRestClientBuilder;
 import com.azure.search.documents.implementation.SerializationUtil;
@@ -27,6 +34,7 @@ import com.azure.search.documents.models.IndexBatchException;
 import com.azure.search.documents.models.IndexDocumentsBatch;
 import com.azure.search.documents.models.IndexDocumentsResult;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.ScoringParameter;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SuggestOptions;
@@ -42,6 +50,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -351,6 +360,7 @@ public final class SearchIndexAsyncClient {
         try {
             return restClient.documents()
                 .countWithRestResponseAsync(context)
+                .onErrorMap(MappingUtils::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -410,7 +420,9 @@ public final class SearchIndexAsyncClient {
         SearchRequest requestToUse = (continuationToken == null) ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.documents().searchPostWithRestResponseAsync(requestToUse, requestOptions, context)
+        return restClient.documents().searchPostWithRestResponseAsync(requestToUse,
+            RequestOptionsConverter.map(requestOptions), context)
+            .onErrorMap(MappingUtils::exceptionMapper)
             .map(searchDocumentResponse -> new SearchPagedResponse(searchDocumentResponse, serviceVersion));
     }
     /**
@@ -450,12 +462,12 @@ public final class SearchIndexAsyncClient {
         RequestOptions requestOptions, Context context) {
         try {
             return restClient.documents()
-                .getWithRestResponseAsync(key, selectedFields, requestOptions, context)
+                .getWithRestResponseAsync(key, selectedFields, RequestOptionsConverter.map(requestOptions), context)
+                .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(res -> {
                     SearchDocument doc = new SearchDocument(res.getValue());
                     return new SimpleResponse<>(res, doc);
                 })
-                .onErrorMap(DocumentResponseConversions::exceptionMapper)
                 .map(Function.identity());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -507,7 +519,9 @@ public final class SearchIndexAsyncClient {
 
     private Mono<SuggestPagedResponse> suggest(RequestOptions requestOptions, SuggestRequest suggestRequest,
         Context context) {
-        return restClient.documents().suggestPostWithRestResponseAsync(suggestRequest, requestOptions, context)
+        return restClient.documents().suggestPostWithRestResponseAsync(suggestRequest,
+            RequestOptionsConverter.map(requestOptions), context)
+            .onErrorMap(MappingUtils::exceptionMapper)
             .map(SuggestPagedResponse::new);
     }
 
@@ -548,10 +562,12 @@ public final class SearchIndexAsyncClient {
     Mono<Response<IndexDocumentsResult>> indexDocumentsWithResponse(IndexDocumentsBatch<?> batch, Context context) {
         try {
             return restClient.documents()
-                .indexWithRestResponseAsync(batch, context)
+                .indexWithRestResponseAsync(IndexBatchBaseConverter.map(batch), context)
+                .onErrorMap(MappingUtils::exceptionMapper)
                 .flatMap(response -> (response.getStatusCode() == MULTI_STATUS_CODE)
-                    ? Mono.error(new IndexBatchException(response.getValue()))
-                    : Mono.just(response));
+                    ? Mono.error(new IndexBatchException(IndexDocumentsResultConverter.map(response.getValue())))
+                    : Mono.just(response)
+                        .map(MappingUtils::mappingIndexDocumentResultResponse));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -594,8 +610,10 @@ public final class SearchIndexAsyncClient {
 
     private Mono<AutocompletePagedResponse> autocomplete(RequestOptions requestOptions, AutocompleteRequest request,
         Context context) {
-        return restClient.documents().autocompletePostWithRestResponseAsync(request, requestOptions, context)
-            .map(AutocompletePagedResponse::new);
+        return restClient.documents().autocompletePostWithRestResponseAsync(request,
+            RequestOptionsConverter.map(requestOptions), context)
+            .onErrorMap(MappingUtils::exceptionMapper)
+            .map(MappingUtils::mappingAutocompleteResponse);
     }
 
     /**
@@ -609,15 +627,18 @@ public final class SearchIndexAsyncClient {
         SearchRequest searchRequest = new SearchRequest().setSearchText(searchText);
 
         if (searchOptions != null) {
-            searchRequest.setSearchMode(searchOptions.getSearchMode())
+            List<String> scoringParameters = searchOptions.getScoringParameters() == null ? null
+                : searchOptions.getScoringParameters().stream().map(ScoringParameter::toString)
+                    .collect(Collectors.toList());
+            searchRequest.setSearchMode(SearchModeConverter.map(searchOptions.getSearchMode()))
                 .setFacets(searchOptions.getFacets())
                 .setFilter(searchOptions.getFilter())
                 .setHighlightPostTag(searchOptions.getHighlightPostTag())
                 .setHighlightPreTag(searchOptions.getHighlightPreTag())
                 .setIncludeTotalResultCount(searchOptions.isIncludeTotalResultCount())
                 .setMinimumCoverage(searchOptions.getMinimumCoverage())
-                .setQueryType(searchOptions.getQueryType())
-                .setScoringParameters(searchOptions.getScoringParameters())
+                .setQueryType(QueryTypeConverter.map(searchOptions.getQueryType()))
+                .setScoringParameters(scoringParameters)
                 .setScoringProfile(searchOptions.getScoringProfile())
                 .setSkip(searchOptions.getSkip())
                 .setTop(searchOptions.getTop());
@@ -704,7 +725,7 @@ public final class SearchIndexAsyncClient {
                 .setHighlightPreTag(autocompleteOptions.getHighlightPreTag())
                 .setMinimumCoverage(autocompleteOptions.getMinimumCoverage())
                 .setTop(autocompleteOptions.getTop())
-                .setAutocompleteMode(autocompleteOptions.getAutocompleteMode());
+                .setAutocompleteMode(AutocompleteModeConverter.map(autocompleteOptions.getAutocompleteMode()));
 
             List<String> searchFields = autocompleteOptions.getSearchFields();
             if (searchFields != null) {
