@@ -12,13 +12,13 @@ import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 import reactor.core.publisher.Flux;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.List;
 
 /**
  * This class provides a synchronous client that contains all the operations that apply to Azure Form Recognizer.
@@ -60,7 +60,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId) {
         return beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, false, null);
     }
@@ -84,7 +84,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomFormsFromUrl(String fileSourceUrl, String modelId, boolean includeTextDetails,
         Duration pollInterval) {
         return client.beginRecognizeCustomFormsFromUrl(fileSourceUrl, modelId, includeTextDetails, pollInterval)
@@ -109,7 +109,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(InputStream data, String modelId, long length, FormContentType formContentType) {
         return beginRecognizeCustomForms(data, modelId, length, formContentType, false, null);
     }
@@ -135,7 +135,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedForm>>
+    public SyncPoller<OperationResult, List<RecognizedForm>>
         beginRecognizeCustomForms(InputStream data, String modelId, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(data);
@@ -158,7 +158,7 @@ public final class FormRecognizerClient {
      * or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
+    public SyncPoller<OperationResult, List<FormPage>> beginRecognizeContentFromUrl(String fileSourceUrl) {
         return beginRecognizeContentFromUrl(fileSourceUrl, null);
     }
 
@@ -178,7 +178,7 @@ public final class FormRecognizerClient {
      * failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<FormPage>>
+    public SyncPoller<OperationResult, List<FormPage>>
         beginRecognizeContentFromUrl(String sourceUrl, Duration pollInterval) {
         return client.beginRecognizeContentFromUrl(sourceUrl, pollInterval).getSyncPoller();
     }
@@ -199,7 +199,7 @@ public final class FormRecognizerClient {
      * been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<FormPage>>
+    public SyncPoller<OperationResult, List<FormPage>>
         beginRecognizeContent(InputStream data, long length, FormContentType formContentType) {
         return beginRecognizeContent(data, length, formContentType, null);
     }
@@ -223,7 +223,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<FormPage>>
+    public SyncPoller<OperationResult, List<FormPage>>
         beginRecognizeContent(InputStream data, long length, FormContentType formContentType, Duration pollInterval) {
         // TODO: #9248 should be able to infer form content type
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(data);
@@ -246,7 +246,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl) {
         return beginRecognizeReceiptsFromUrl(sourceUrl, false, null);
     }
@@ -269,7 +269,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceiptsFromUrl(String sourceUrl, boolean includeTextDetails, Duration pollInterval) {
         return client.beginRecognizeReceiptsFromUrl(sourceUrl, includeTextDetails, pollInterval).getSyncPoller();
     }
@@ -291,7 +291,7 @@ public final class FormRecognizerClient {
      * has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType) {
         return beginRecognizeReceipts(data, length, formContentType, false, null);
     }
@@ -316,7 +316,7 @@ public final class FormRecognizerClient {
      * has completed, has failed, or has been cancelled.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public SyncPoller<OperationResult, IterableStream<RecognizedReceipt>>
+    public SyncPoller<OperationResult, List<RecognizedReceipt>>
         beginRecognizeReceipts(InputStream data, long length, FormContentType formContentType,
         boolean includeTextDetails, Duration pollInterval) {
         Flux<ByteBuffer> buffer = Utility.toFluxByteBuffer(data);

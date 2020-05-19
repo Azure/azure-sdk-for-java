@@ -4,7 +4,8 @@
 package com.azure.ai.formrecognizer.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.IterableStream;
+
+import java.util.List;
 
 /**
  * The FieldText model.
@@ -15,7 +16,7 @@ public final class FieldText extends FormContent {
     /**
      * The list of text element references for the field value.
      */
-    private final IterableStream<FormContent> textContent;
+    private final List<FormContent> textContent;
 
     /**
      * Creates raw OCR FieldText item.
@@ -26,7 +27,7 @@ public final class FieldText extends FormContent {
      * @param textContent The list of text element references when includeTextDetails is set to true.
      */
     public FieldText(String text, BoundingBox boundingBox, Integer pageNumber,
-                     final IterableStream<FormContent> textContent) {
+                     final List<FormContent> textContent) {
         super(text, boundingBox, pageNumber, null);
         this.textContent = textContent;
     }
@@ -60,7 +61,7 @@ public final class FieldText extends FormContent {
      *
      * @return The list of reference elements.
      */
-    public IterableStream<FormContent> getTextContent() {
+    public List<FormContent> getTextContent() {
         return this.textContent;
     }
 }

@@ -7,7 +7,6 @@ import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
 import java.io.ByteArrayInputStream;
@@ -15,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 
 /**
  * Sample for recognizing content information from a document given through a file.
@@ -41,14 +41,15 @@ public class RecognizeContent {
         byte[] fileContent = Files.readAllBytes(sourceFile.toPath());
         InputStream targetStream = new ByteArrayInputStream(fileContent);
 
-        SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
+        SyncPoller<OperationResult, List<FormPage>> recognizeLayoutPoller =
             client.beginRecognizeContent(targetStream, sourceFile.length(), FormContentType.IMAGE_JPEG);
 
-        IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+        List<FormPage> contentPageResults = recognizeLayoutPoller.getFinalResult();
 
-        layoutPageResults.forEach(formPage -> {
+        for (int i = 0; i < contentPageResults.size(); i++) {
+            final FormPage formPage = contentPageResults.get(i);
+            System.out.printf("----Recognizing content for page %s ----", i);
             // Table information
-            System.out.println("----Recognizing content ----");
             System.out.printf("Has width: %s and height: %s, measured with unit: %s%n", formPage.getWidth(),
                 formPage.getHeight(),
                 formPage.getUnit());
@@ -66,6 +67,6 @@ public class RecognizeContent {
                 });
                 System.out.println();
             });
-        });
+        }
     }
 }

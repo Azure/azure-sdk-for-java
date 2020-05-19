@@ -147,10 +147,10 @@ so they're tailored to your forms. You should only recognize forms of the same f
 ```java
 String analyzeFilePath = "{file_source_url}";
 String modelId = "{custom_trained_model_id}";
-SyncPoller<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
+SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
     formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
 
-IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
 recognizedForms.forEach(form -> {
     System.out.println("----------- Recognized Form -----------");
@@ -169,10 +169,10 @@ Recognize text and table structures, along with their bounding box coordinates, 
 <!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L79-L99 -->
 ```java
 String analyzeFilePath = "{file_source_url}";
-SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
+SyncPoller<OperationResult, List<FormPage>> recognizeLayoutPoller =
     formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
 
-IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+List<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
 
 layoutPageResults.forEach(formPage -> {
     // Table information
@@ -197,9 +197,9 @@ Recognize data from a USA sales receipts using a prebuilt model.
 ```java
 String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
     + "/contoso-allinone.jpg";
-SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
     formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
-IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
 receiptPageResults.forEach(recognizedReceipt -> {
     USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);

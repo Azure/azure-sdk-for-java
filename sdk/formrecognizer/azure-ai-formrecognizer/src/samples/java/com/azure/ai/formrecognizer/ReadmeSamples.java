@@ -16,9 +16,9 @@ import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -58,10 +58,10 @@ public class ReadmeSamples {
     public void recognizeCustomForm() {
         String analyzeFilePath = "{file_source_url}";
         String modelId = "{custom_trained_model_id}";
-        SyncPoller<OperationResult, IterableStream<RecognizedForm>> recognizeFormPoller =
+        SyncPoller<OperationResult, List<RecognizedForm>> recognizeFormPoller =
             formRecognizerClient.beginRecognizeCustomFormsFromUrl(analyzeFilePath, modelId);
 
-        IterableStream<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
+        List<RecognizedForm> recognizedForms = recognizeFormPoller.getFinalResult();
 
         recognizedForms.forEach(form -> {
             System.out.println("----------- Recognized Form -----------");
@@ -77,10 +77,10 @@ public class ReadmeSamples {
 
     public void recognizeContent() {
         String analyzeFilePath = "{file_source_url}";
-        SyncPoller<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
+        SyncPoller<OperationResult, List<FormPage>> recognizeLayoutPoller =
             formRecognizerClient.beginRecognizeContentFromUrl(analyzeFilePath);
 
-        IterableStream<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
+        List<FormPage> layoutPageResults = recognizeLayoutPoller.getFinalResult();
 
         layoutPageResults.forEach(formPage -> {
             // Table information
@@ -102,9 +102,9 @@ public class ReadmeSamples {
     public void recognizeReceipt() {
         String receiptSourceUrl = "https://docs.microsoft.com/en-us/azure/cognitive-services/form-recognizer/media"
             + "/contoso-allinone.jpg";
-        SyncPoller<OperationResult, IterableStream<RecognizedReceipt>> syncPoller =
+        SyncPoller<OperationResult, List<RecognizedReceipt>> syncPoller =
             formRecognizerClient.beginRecognizeReceiptsFromUrl(receiptSourceUrl);
-        IterableStream<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
+        List<RecognizedReceipt> receiptPageResults = syncPoller.getFinalResult();
 
         receiptPageResults.forEach(recognizedReceipt -> {
             USReceipt usReceipt = ReceiptExtensions.asUSReceipt(recognizedReceipt);

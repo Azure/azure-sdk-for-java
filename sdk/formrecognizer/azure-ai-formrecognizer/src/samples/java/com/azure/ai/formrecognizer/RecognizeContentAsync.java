@@ -6,10 +6,10 @@ package com.azure.ai.formrecognizer;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.PollerFlux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,10 +30,10 @@ public class RecognizeContentAsync {
             .endpoint("https://{endpoint}.cognitiveservices.azure.com/")
             .buildAsyncClient();
 
-        PollerFlux<OperationResult, IterableStream<FormPage>> recognizeLayoutPoller =
+        PollerFlux<OperationResult, List<FormPage>> recognizeContentPoller =
             client.beginRecognizeContentFromUrl("https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/sample-forms/forms/layout1.jpg");
 
-        Mono<IterableStream<FormPage>> layoutPageResults = recognizeLayoutPoller
+        Mono<List<FormPage>> contentPageResults = recognizeContentPoller
             .last()
             .flatMap(trainingOperationResponse -> {
                 if (trainingOperationResponse.getStatus().isComplete()) {
@@ -45,27 +45,30 @@ public class RecognizeContentAsync {
                 }
             });
 
-        layoutPageResults.subscribe(formPages -> formPages.forEach(formPage -> {
-            // Table information
-            System.out.println("----Recognizing content ----");
-            System.out.printf("Has width: %s and height: %s, measured with unit: %s%n", formPage.getWidth(),
-                formPage.getHeight(),
-                formPage.getUnit());
-            formPage.getTables().forEach(formTable -> {
-                System.out.printf("Table has %s rows and %s columns.%n", formTable.getRowCount(),
-                    formTable.getColumnCount());
-                formTable.getCells().forEach(formTableCell -> {
-                    final StringBuilder boundingBoxStr = new StringBuilder();
-                    if (formTableCell.getBoundingBox() != null) {
-                        formTableCell.getBoundingBox().getPoints().forEach(point ->
-                            boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
-                    }
-                    System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
-                        boundingBoxStr);
+        contentPageResults.subscribe(formPages -> {
+            for (int i = 0; i < formPages.size(); i++) {
+                final FormPage formPage = formPages.get(i);
+                System.out.printf("----Recognizing content for page %s ----", i);
+                System.out.printf("Has width: %s and height: %s, measured with unit: %s%n", formPage.getWidth(),
+                    formPage.getHeight(),
+                    formPage.getUnit());
+                // Table information
+                formPage.getTables().forEach(formTable -> {
+                    System.out.printf("Table has %s rows and %s columns.%n", formTable.getRowCount(),
+                        formTable.getColumnCount());
+                    formTable.getCells().forEach(formTableCell -> {
+                        final StringBuilder boundingBoxStr = new StringBuilder();
+                        if (formTableCell.getBoundingBox() != null) {
+                            formTableCell.getBoundingBox().getPoints().forEach(point ->
+                                boundingBoxStr.append(String.format("[%.2f, %.2f]", point.getX(), point.getY())));
+                        }
+                        System.out.printf("Cell has text %s, within bounding box %s.%n", formTableCell.getText(),
+                            boundingBoxStr);
+                    });
+                    System.out.println();
                 });
-                System.out.println();
-            });
-        }));
+            }
+        });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of

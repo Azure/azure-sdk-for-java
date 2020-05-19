@@ -8,8 +8,9 @@ import com.azure.ai.formrecognizer.models.OperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.TextContentType;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
+
+import java.util.List;
 
 /*
  * Sample to get detailed information to visualize the outlines of form content and fields,
@@ -31,14 +32,15 @@ public class GetBoundingBoxes {
 
         String modelId = "{model_Id}";
         String filePath = "{analyze_file_path}";
-        SyncPoller<OperationResult, IterableStream<RecognizedForm>> trainingPoller =
+        SyncPoller<OperationResult, List<RecognizedForm>> trainingPoller =
             client.beginRecognizeCustomFormsFromUrl(filePath, modelId, true, null);
 
-        IterableStream<RecognizedForm> recognizedForms = trainingPoller.getFinalResult();
+        List<RecognizedForm> recognizedForms = trainingPoller.getFinalResult();
 
         System.out.println("--------RECOGNIZING FORM --------");
-        recognizedForms.forEach(recognizedForm -> {
-            System.out.printf("Form has type: %s%n", recognizedForm.getFormType());
+        for (int i = 0; i < recognizedForms.size(); i++) {
+            final RecognizedForm recognizedForm = recognizedForms.get(i);
+            System.out.printf("Form %s has type: %s%n", i, recognizedForm.getFormType());
             // each field is of type FormField
             //     The value of the field can also be a FormField, or a list of FormFields
             //     In our sample, it is not.
@@ -80,6 +82,6 @@ public class GetBoundingBoxes {
                     System.out.println();
                 });
             });
-        });
+        }
     }
 }
