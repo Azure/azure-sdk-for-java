@@ -180,7 +180,6 @@ deletedSecretPoller.waitForCompletion();
 ```
 
 ### List Secrets
-
 List the secrets in the Azure Key Vault by calling `listPropertiesOfSecrets`.
 
 ```Java
