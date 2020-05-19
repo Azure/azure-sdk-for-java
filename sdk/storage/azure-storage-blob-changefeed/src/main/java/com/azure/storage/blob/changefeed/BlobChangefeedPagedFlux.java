@@ -21,7 +21,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     BlobChangefeedPagedResponse> {
 
     private final Changefeed changefeed;
-    private final Integer defaultPageSize = 5000;
+    private static final Integer defaultPageSize = 5000;
 
     /**
      * Creates an instance of {@link BlobChangefeedPagedFlux}.

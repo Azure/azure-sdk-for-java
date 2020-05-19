@@ -45,7 +45,7 @@ class BlobLazyDownloader {
         this.range = new BlobRange(0, totalSize);
     }
 
-    /*TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but
+    /* TODO (gapra) : It may be possible to unduplicate the code below as well to share between downloadToFile but
        wasnt immediately obvious to me */
     public Flux<ByteBuffer> download() {
         ParallelTransferOptions options = new ParallelTransferOptions()
@@ -55,7 +55,7 @@ class BlobLazyDownloader {
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range ->
             client.downloadWithResponse(range, null, new BlobRequestConditions(), false);
 
-        return ChunkedDownloadUtils.getSetupMono(range, options, requestConditions, downloadFunc,
+        return ChunkedDownloadUtils.downloadFirstChunk(range, options, requestConditions, downloadFunc,
             Schedulers.immediate())
             .flatMapMany(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();

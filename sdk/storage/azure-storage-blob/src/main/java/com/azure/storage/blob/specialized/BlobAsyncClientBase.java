@@ -931,7 +931,7 @@ public class BlobAsyncClientBase {
         Function<BlobRange, Mono<BlobDownloadAsyncResponse>> downloadFunc = range ->
             this.downloadWithResponse(range, downloadRetryOptions, requestConditions, rangeGetContentMd5, context);
 
-        return ChunkedDownloadUtils.getSetupMono(finalRange, finalParallelTransferOptions, requestConditions,
+        return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
             downloadFunc, Schedulers.elastic())
             .flatMap(setupTuple3 -> {
                 long newCount = setupTuple3.getT1();
