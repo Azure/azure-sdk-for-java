@@ -8,7 +8,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.directconnectivity.Address;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -180,10 +180,10 @@ public class RxDocumentServiceResponse {
         return null;
     }
 
-    CosmosResponseDiagnostics getCosmosResponseRequestDiagnosticStatistics() {
+    CosmosDiagnostics getCosmosDiagnostics() {
         if (this.storeResponse == null) {
             return null;
         }
-        return this.storeResponse.getCosmosResponseDiagnostics();
+        return this.storeResponse.getCosmosDiagnostics();
     }
 }

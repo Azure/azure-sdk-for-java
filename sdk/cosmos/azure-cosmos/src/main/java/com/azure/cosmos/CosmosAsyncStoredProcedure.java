@@ -10,6 +10,8 @@ import com.azure.cosmos.models.CosmosStoredProcedureRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 /**
  * The type Cosmos async stored procedure.
  */
@@ -122,11 +124,11 @@ public class CosmosAsyncStoredProcedure {
      * response.
      * In case of failure the {@link Mono} will error.
      *
-     * @param procedureParams the array of procedure parameter values.
+     * @param procedureParams the list of procedure parameter values.
      * @param options the request options.
      * @return an {@link Mono} containing the single resource response with the stored procedure response or an error.
      */
-    public Mono<CosmosAsyncStoredProcedureResponse> execute(Object[] procedureParams,
+    public Mono<CosmosAsyncStoredProcedureResponse> execute(List<Object> procedureParams,
                                                             CosmosStoredProcedureRequestOptions options) {
         if (options == null) {
             options = new CosmosStoredProcedureRequestOptions();

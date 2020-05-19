@@ -127,8 +127,8 @@ public final class RntbdTransportClient extends TransportClient {
 
             record.stage(RntbdRequestRecord.Stage.COMPLETED);
 
-            if (request.requestContext.cosmosResponseDiagnostics == null) {
-                request.requestContext.cosmosResponseDiagnostics = BridgeInternal.createCosmosResponseDiagnostics();
+            if (request.requestContext.cosmosDiagnostics == null) {
+                request.requestContext.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics();
             }
 
             if (response != null) {

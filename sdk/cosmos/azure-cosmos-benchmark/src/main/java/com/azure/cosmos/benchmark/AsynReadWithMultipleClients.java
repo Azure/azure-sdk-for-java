@@ -227,7 +227,7 @@ public class AsynReadWithMultipleClients<T> {
                         .endpoint(endpoint)
                         .key(key)
                         .consistencyLevel(configuration.getConsistencyLevel())
-                        .connectionReuseAcrossClientsEnabled(true)
+                        .connectionSharingAcrossClientsEnabled(true)
                         .contentResponseOnWriteEnabled(Boolean.parseBoolean(configuration.isContentResponseOnWriteEnabled()));
                     if (this.configuration.getConnectionMode().equals(ConnectionMode.DIRECT)) {
                         cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
