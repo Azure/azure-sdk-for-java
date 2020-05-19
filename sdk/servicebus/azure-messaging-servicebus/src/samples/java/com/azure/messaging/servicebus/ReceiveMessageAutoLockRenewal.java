@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus;
 
 import reactor.core.Disposable;
@@ -14,6 +17,7 @@ public class ReceiveMessageAutoLockRenewal {
      * automatically renew the message lock.
      *
      * @param args Unused arguments to the program.
+     *
      * @throws InterruptedException If the program is unable to sleep while waiting for the operations to complete.
      */
     public static void main(String[] args) throws InterruptedException {

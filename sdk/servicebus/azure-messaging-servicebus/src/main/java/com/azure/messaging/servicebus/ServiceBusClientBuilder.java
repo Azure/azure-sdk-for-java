@@ -555,7 +555,7 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Enables auto-lock renewal by renewing session lock renewal until the {@code maxAutoLockRenewalDuration} has
+         * Enables auto-lock renewal by renewing each session lock until the {@code maxAutoLockRenewalDuration} has
          * elapsed.
          *
          * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
@@ -766,8 +766,8 @@ public final class ServiceBusClientBuilder {
         }
 
         /**
-         * Enables auto-lock renewal by renewing session lock renewal until the {@code maxAutoLockRenewalDuration} has
-         * elapsed.
+         * Enables auto-lock renewal by renewing each message lock renewal until the {@code maxAutoLockRenewalDuration}
+         * has elapsed.
          *
          * @param maxAutoLockRenewalDuration Maximum amount of time to renew the session lock.
          * @return The modified {@link ServiceBusReceiverClientBuilder} object.

@@ -41,9 +41,10 @@ class ReceiverOptions {
     }
 
     /**
-     * Gets whether or not the receiver is a session-aware receiver.
+     * Gets whether or not auto-lock renewal is enabled. If the receiver is a session aware receiver, it renews the lock
+     * for the entire session; otherwise, renews the lock for each message.
      *
-     * @return true if it is a session-aware receiver; false otherwise.
+     * @return true if it renews the session or message lock; false otherwise.
      */
     boolean autoLockRenewalEnabled() {
         return maxAutoLockRenewalDuration != null && maxAutoLockRenewalDuration != Duration.ZERO;
