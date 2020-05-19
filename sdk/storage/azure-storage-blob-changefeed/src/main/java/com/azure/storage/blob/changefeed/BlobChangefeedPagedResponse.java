@@ -37,7 +37,7 @@ public class BlobChangefeedPagedResponse implements ContinuablePage<String, Blob
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public IterableStream<BlobChangefeedEvent> getElements() {
         return new IterableStream<>(this.events);

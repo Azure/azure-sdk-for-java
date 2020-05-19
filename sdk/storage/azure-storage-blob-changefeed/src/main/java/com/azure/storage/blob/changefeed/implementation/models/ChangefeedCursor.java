@@ -234,4 +234,10 @@ public class ChangefeedCursor {
             && Objects.equals(getBlockOffset(), that.getBlockOffset())
             && Objects.equals(getObjectBlockIndex(), that.getObjectBlockIndex());
     }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEndTime(), getSegmentTime(), getShardPath(), getChunkPath(), getBlockOffset(),
+            getObjectBlockIndex());
+    }
 }

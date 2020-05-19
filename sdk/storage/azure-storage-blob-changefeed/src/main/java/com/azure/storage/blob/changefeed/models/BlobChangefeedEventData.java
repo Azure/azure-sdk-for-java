@@ -8,6 +8,7 @@ import com.azure.storage.internal.avro.implementation.AvroConstants;
 import com.azure.storage.internal.avro.implementation.schema.AvroSchema;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * This class contains properties of a BlobChangefeedEventData.
@@ -199,18 +200,25 @@ public class BlobChangefeedEventData {
         if (this == o) return true;
         if (!(o instanceof BlobChangefeedEventData)) return false;
         BlobChangefeedEventData that = (BlobChangefeedEventData) o;
-        return getApi().equals(that.getApi())
-            && getClientRequestId().equals(that.getClientRequestId())
-            && getRequestId().equals(that.getRequestId())
-            && getETag().equals(that.getETag())
-            && getContentType().equals(that.getContentType())
-            && getContentLength().equals(that.getContentLength())
-            && getBlobType() == that.getBlobType()
-            && getContentOffset().equals(that.getContentOffset()) &&
-            getDestinationUrl().equals(that.getDestinationUrl()) &&
-            getSourceUrl().equals(that.getSourceUrl()) &&
-            getBlobUrl().equals(that.getBlobUrl()) &&
-            getRecursive().equals(that.getRecursive())
-            && getSequencer().equals(that.getSequencer());
+        return Objects.equals(getApi(), that.getApi()) &&
+            Objects.equals(getClientRequestId(), that.getClientRequestId()) &&
+            Objects.equals(getRequestId(), that.getRequestId()) &&
+            Objects.equals(getETag(), that.getETag()) &&
+            Objects.equals(getContentType(), that.getContentType()) &&
+            Objects.equals(getContentLength(), that.getContentLength()) &&
+            getBlobType() == that.getBlobType() &&
+            Objects.equals(getContentOffset(), that.getContentOffset()) &&
+            Objects.equals(getDestinationUrl(), that.getDestinationUrl()) &&
+            Objects.equals(getSourceUrl(), that.getSourceUrl()) &&
+            Objects.equals(getBlobUrl(), that.getBlobUrl()) &&
+            Objects.equals(getRecursive(), that.getRecursive()) &&
+            Objects.equals(getSequencer(), that.getSequencer());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getApi(), getClientRequestId(), getRequestId(), getETag(), getContentType(),
+            getContentLength(), getBlobType(), getContentOffset(), getDestinationUrl(), getSourceUrl(),
+            getBlobUrl(), getRecursive(), getSequencer());
     }
 }

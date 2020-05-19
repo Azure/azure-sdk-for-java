@@ -39,7 +39,7 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changfeed.BlobChangefeedClient.getEvents}
+     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents}
      *
      * @return The changefeed events.
      */
@@ -60,7 +60,7 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changfeed.BlobChangefeedClient.getEvents}
+     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#OffsetDateTime-OffsetDateTime}
      *
      * @param startTime Filters the results to return events after the start time.
      * @param endTime Filters the results to return events before the end time.
@@ -83,7 +83,7 @@ public class BlobChangefeedClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.changfeed.BlobChangefeedClient.getEvents}
+     * {@codesnippet com.azure.storage.blob.changefeed.BlobChangefeedClient.getEvents#String}
      *
      * @param cursor Identifies the portion of the events to be returned with the next get operation.
      * @return The changefeed events.

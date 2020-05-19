@@ -53,6 +53,7 @@ public class BlobChangefeedEvent {
      * Constructs a {@link BlobChangefeedEvent}.
      *
      * @param record The record.
+     * @return The {@link BlobChangefeedEvent} representing the record.
      */
     public static BlobChangefeedEvent fromRecord(Object record) {
         AvroSchema.checkType("r", record, Map.class);
@@ -186,13 +187,19 @@ public class BlobChangefeedEvent {
         if (this == o) return true;
         if (!(o instanceof BlobChangefeedEvent)) return false;
         BlobChangefeedEvent event = (BlobChangefeedEvent) o;
-        return getTopic().equals(event.getTopic())
-            && getSubject().equals(event.getSubject())
-            && getEventType().equals(event.getEventType())
-            && getEventTime().equals(event.getEventTime())
-            && getId().equals(event.getId())
-            && getData().equals(event.getData())
-            && getDataVersion().equals(event.getDataVersion())
-            && getMetadataVersion().equals(event.getMetadataVersion());
+        return Objects.equals(getTopic(), event.getTopic()) &&
+            Objects.equals(getSubject(), event.getSubject()) &&
+            Objects.equals(getEventType(), event.getEventType()) &&
+            Objects.equals(getEventTime(), event.getEventTime()) &&
+            Objects.equals(getId(), event.getId()) &&
+            Objects.equals(getData(), event.getData()) &&
+            Objects.equals(getDataVersion(), event.getDataVersion()) &&
+            Objects.equals(getMetadataVersion(), event.getMetadataVersion());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTopic(), getSubject(), getEventType(), getEventTime(), getId(), getData(),
+            getDataVersion(), getMetadataVersion());
     }
 }
