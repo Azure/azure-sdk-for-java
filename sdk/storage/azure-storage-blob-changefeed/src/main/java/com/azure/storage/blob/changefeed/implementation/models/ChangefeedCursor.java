@@ -214,11 +214,11 @@ public class ChangefeedCursor {
      * @param cursor The cursor to deserialize.
      * @return The resulting {@link ChangefeedCursor cursor}.
      */
-    public static ChangefeedCursor deserialize(String cursor) throws JsonProcessingException {
+    public static ChangefeedCursor deserialize(String cursor, ClientLogger logger) {
         try {
             return new ObjectMapper().readValue(cursor, ChangefeedCursor.class);
         } catch (IOException e) {
-            throw e;
+            throw logger.logExceptionAsError(new UncheckedIOException(e));
         }
     }
 
