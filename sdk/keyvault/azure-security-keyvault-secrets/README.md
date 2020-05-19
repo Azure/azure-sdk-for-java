@@ -243,7 +243,6 @@ secretAsyncClient.getSecret("secretName").subscribe(secret -> {
 ```
 
 ### Delete a Secret Asynchronously
-
 Delete an existing secret by calling `beginDeleteSecret`.
 
 ```Java
