@@ -87,7 +87,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     @Override
     public void subscribe(CoreSubscriber<? super BlobChangefeedEvent> coreSubscriber) {
-        byPage(null, this.defaultPageSize)
+        byPage(null, defaultPageSize)
             .flatMap((page) -> Flux.fromIterable(page.getElements()))
             .subscribe(coreSubscriber);
     }
