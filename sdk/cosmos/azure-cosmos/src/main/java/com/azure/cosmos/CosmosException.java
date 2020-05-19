@@ -75,7 +75,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        ModelBridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(cosmosError), Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**
@@ -270,7 +270,7 @@ public class CosmosException extends AzureException {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
                 innerErrorMessage = String.valueOf(
-                    ModelBridgeInternal.getObjectFromJsonSerializable(ModelBridgeInternal.getJsonSerializable(cosmosError), "Errors"));
+                    ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
             }
         }
         return innerErrorMessage;

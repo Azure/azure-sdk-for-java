@@ -118,7 +118,7 @@ public interface FailureValidator {
                     assertThat(t).isNotNull();
                     assertThat(t).isInstanceOf(CosmosException.class);
                     assertThat(ModelBridgeInternal.toJsonFromJsonSerializable(BridgeInternal.getCosmosError((CosmosException) t)))
-                        .isEqualTo(ModelBridgeInternal.toJsonFromJsonSerializable(ModelBridgeInternal.getJsonSerializable(cosmosError)));
+                        .isEqualTo(ModelBridgeInternal.toJsonFromJsonSerializable(cosmosError));
                 }
             });
             return this;

@@ -635,7 +635,9 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> JsonSerializable getJsonSerializable(T t) {
-        if (t instanceof CompositePath) {
+        if (t instanceof JsonSerializable) {
+            return (JsonSerializable) t;
+        } if (t instanceof CompositePath) {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
