@@ -109,9 +109,6 @@ public final class SearchIndexerSkillConverter {
         if (obj instanceof com.azure.search.documents.models.ShaperSkill) {
             return ShaperSkillConverter.map((com.azure.search.documents.models.ShaperSkill) obj);
         }
-        if (obj instanceof SearchIndexerSkill) {
-            return SearchIndexerSkillConverter.map(obj);
-        }
         if (obj instanceof com.azure.search.documents.models.MergeSkill) {
             return MergeSkillConverter.map((com.azure.search.documents.models.MergeSkill) obj);
         }
