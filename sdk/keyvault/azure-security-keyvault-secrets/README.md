@@ -150,7 +150,6 @@ System.out.printf("Secret is returned with name %s and value %s \n", secret.getN
 ```
 
 ### Update an existing Secret
-
 Update an existing secret by calling `updateSecretProperties`.
 
 ```Java
