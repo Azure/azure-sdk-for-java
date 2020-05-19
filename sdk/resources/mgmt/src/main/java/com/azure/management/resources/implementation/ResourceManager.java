@@ -13,6 +13,7 @@ import com.azure.management.resources.PolicyAssignments;
 import com.azure.management.resources.PolicyDefinitions;
 import com.azure.management.resources.Providers;
 import com.azure.management.resources.ResourceGroups;
+import com.azure.management.resources.Subscription;
 import com.azure.management.resources.Subscriptions;
 import com.azure.management.resources.Tenants;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -30,6 +31,9 @@ import com.azure.management.resources.models.ResourceManagementClientBuilder;
 import com.azure.management.resources.models.ResourceManagementClientImpl;
 import com.azure.management.resources.models.SubscriptionClientBuilder;
 import com.azure.management.resources.models.SubscriptionClientImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entry point to Azure resource management.
@@ -133,8 +137,10 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         ResourceManager withSubscription(String subscriptionId);
 
         /**
-         * Specifies to use subscription from Azure profile.
+         * Specifies to use subscription from {@link AzureProfile}. If no subscription provided, we will
+         * try to set the only subscription if applicable returned by {@link Authenticated#subscriptions()}.
          *
+         * @throws RuntimeException more than one subscription found in the tenant.
          * @return the ResourceManager instance with entry points that work in a subscription
          */
         ResourceManager withDefaultSubscription();
@@ -192,8 +198,25 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+                List<Subscription> subscriptions = new ArrayList<>();
+                this.subscriptions().list().forEach(subscription -> {
+                    //subscriptions.add(subscription);
+                });
+                if (subscriptions.size() == 0) {
+                    throw logger.logExceptionAsError(
+                        new RuntimeException("Please create a subscription before you start resource management. " +
+                            "To learn more, see: https://azure.microsoft.com/en-us/free/."));
+                } else if (subscriptions.size() > 1) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("More than one subscription found in your tenant. " +
+                        "Please specify which one below is desired for resource management.");
+                    subscriptions.forEach(subscription -> {
+                        stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
+                    });
+                    throw logger.logExceptionAsError(new RuntimeException(stringBuilder.toString()));
+                } else {
+                    profile.withSubscriptionId(subscriptions.get(0).subscriptionId());
+                }
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }

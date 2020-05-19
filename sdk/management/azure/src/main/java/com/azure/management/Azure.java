@@ -73,6 +73,8 @@ import com.azure.management.network.VirtualNetworkGateways;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.GenericResources;
+import com.azure.management.resources.PolicyAssignments;
+import com.azure.management.resources.PolicyDefinitions;
 import com.azure.management.resources.Providers;
 import com.azure.management.resources.ResourceGroups;
 import com.azure.management.resources.Subscription;
@@ -93,6 +95,9 @@ import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.Usages;
 import com.azure.management.storage.implementation.StorageManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class Azure {
@@ -229,9 +234,10 @@ public final class Azure {
          * Selects the default subscription as the subscription for the APIs to work with.
          *
          * <p>The default subscription can be specified inside the Azure profile using {@link
-         * AzureProfile}. If no default subscription has been previously provided, the first subscription as
-         * returned by {@link Authenticated#subscriptions()} will be selected.</p>
+         * AzureProfile}. If no default subscription provided, we will try to set the only
+         * subscription if applicable returned by {@link Authenticated#subscriptions()}</p>
          *
+         * @throws RuntimeException more than one subscription found in the tenant.
          * @return an authenticated Azure client configured to work with the default subscription
          */
         Azure withDefaultSubscription();
@@ -325,8 +331,25 @@ public final class Azure {
         @Override
         public Azure withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                throw logger.logExceptionAsError(
-                    new IllegalArgumentException("Please specify the subscription ID for resource management."));
+                List<Subscription> subscriptions = new ArrayList<>();
+                this.subscriptions().list().forEach(subscription -> {
+                    subscriptions.add(subscription);
+                });
+                if (subscriptions.size() == 0) {
+                    throw logger.logExceptionAsError(
+                        new RuntimeException("Please create a subscription before you start resource management. " +
+                            "To learn more, see: https://azure.microsoft.com/en-us/free/."));
+                } else if (subscriptions.size() > 1) {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    stringBuilder.append("More than one subscription found in your tenant. " +
+                        "Please specify which one below is desired for resource management.");
+                    subscriptions.forEach(subscription -> {
+                        stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
+                    });
+                    throw logger.logExceptionAsError(new RuntimeException(stringBuilder.toString()));
+                } else {
+                    profile.withSubscriptionId(subscriptions.get(0).subscriptionId());
+                }
             }
             return new Azure(httpPipeline, profile, this);
         }
@@ -416,19 +439,19 @@ public final class Azure {
         return resourceManager.providers();
     }
 
-    //    /**
-    //     * @return entry point to managing policy definitions.
-    //     */
-    //    public PolicyDefinitions policyDefinitions() {
-    //        return resourceManager.policyDefinitions();
-    //    }
-    //
-    //    /**
-    //     * @return entry point to managing policy assignments.
-    //     */
-    //    public PolicyAssignments policyAssignments() {
-    //        return resourceManager.policyAssignments();
-    //    }
+    /**
+     * @return entry point to managing policy definitions.
+     */
+    public PolicyDefinitions policyDefinitions() {
+        return resourceManager.policyDefinitions();
+    }
+
+    /**
+     * @return entry point to managing policy assignments.
+     */
+    public PolicyAssignments policyAssignments() {
+        return resourceManager.policyAssignments();
+    }
 
     /** @return entry point to managing storage accounts */
     public StorageAccounts storageAccounts() {
