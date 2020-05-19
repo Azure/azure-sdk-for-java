@@ -163,7 +163,6 @@ System.out.printf("Secret's updated expiry time %s \n", updatedSecretProperties.
 ```
 
 ### Delete a Secret
-
 Delete an existing secret by calling `beginDeleteSecret`.
 
 ```Java
