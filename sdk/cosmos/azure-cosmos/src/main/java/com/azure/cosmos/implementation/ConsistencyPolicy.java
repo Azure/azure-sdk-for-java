@@ -34,7 +34,7 @@ public final class ConsistencyPolicy {
      * @param objectNode the {@link ObjectNode} that represent the
      * {@link JsonSerializable}
      */
-    ConsistencyPolicy(ObjectNode objectNode) {
+    public ConsistencyPolicy(ObjectNode objectNode) {
         this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
@@ -43,7 +43,7 @@ public final class ConsistencyPolicy {
      *
      * @param jsonString the json string that represents the consistency policy.
      */
-    ConsistencyPolicy(String jsonString) {
+    public ConsistencyPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 
