@@ -202,7 +202,6 @@ The following sections provide several code snippets covering some of the most c
 > Note : You should add "System.in.read()" or "Thread.Sleep()" after the function calls in the main class/thread to allow Async functions/operations to execute and finish before the main application/thread exits.
 
 ### Create a Secret Asynchronously
-
 Create a secret to be stored in the Azure Key Vault.
 - `setSecret` creates a new secret in the Azure Key Vault. if the secret with name already exists then a new version of the secret is created.
 ```Java
