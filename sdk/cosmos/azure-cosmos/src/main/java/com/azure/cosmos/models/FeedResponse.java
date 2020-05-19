@@ -6,7 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.FeedResponseDiagnostics;
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -34,7 +34,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
     final boolean nochanges;
     private final ConcurrentMap<String, QueryMetrics> queryMetricsMap;
     private final static String defaultPartition = "0";
-    private final FeedResponseDiagnostics feedResponseDiagnostics;
+    private final CosmosDiagnostics cosmosDiagnostics;
 
     FeedResponse(List<T> results, Map<String, String> headers) {
         this(results, headers, false, false, new ConcurrentHashMap<>());
@@ -63,7 +63,7 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
         this.useEtagAsContinuation = useEtagAsContinuation;
         this.nochanges = nochanges;
         this.queryMetricsMap = new ConcurrentHashMap<>(queryMetricsMap);
-        this.feedResponseDiagnostics = BridgeInternal.createFeedResponseDiagnostics(queryMetricsMap);
+        this.cosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(queryMetricsMap);
     }
 
     /**
@@ -309,8 +309,8 @@ public class FeedResponse<T> implements ContinuablePage<String, T> {
      *
      * @return Feed response diagnostics
      */
-    public FeedResponseDiagnostics getFeedResponseDiagnostics() {
-        return this.feedResponseDiagnostics;
+    public CosmosDiagnostics getCosmosDiagnostics() {
+        return this.cosmosDiagnostics;
     }
 
     ConcurrentMap<String, QueryMetrics> queryMetrics() {

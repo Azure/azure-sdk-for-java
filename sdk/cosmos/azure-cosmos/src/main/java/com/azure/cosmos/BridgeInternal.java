@@ -119,8 +119,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static FeedResponseDiagnostics createFeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new FeedResponseDiagnostics(queryMetricsMap);
+    public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
