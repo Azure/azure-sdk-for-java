@@ -337,12 +337,12 @@ public final class Azure {
                 });
                 if (subscriptions.size() == 0) {
                     throw logger.logExceptionAsError(
-                        new RuntimeException("Please create a subscription before you start resource management. " +
-                            "To learn more, see: https://azure.microsoft.com/en-us/free/."));
+                        new RuntimeException("Please create a subscription before you start resource management. "
+                            + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
                 } else if (subscriptions.size() > 1) {
                     StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append("More than one subscription found in your tenant. " +
-                        "Please specify which one below is desired for resource management.");
+                    stringBuilder.append("More than one subscription found in your tenant. "
+                        + "Please specify which one below is desired for resource management.");
                     subscriptions.forEach(subscription -> {
                         stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
                     });
