@@ -21,7 +21,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     BlobChangefeedPagedResponse> {
 
     private final Changefeed changefeed;
-    private static final Integer defaultPageSize = 5000;
+    private static final Integer DEFAULT_PAGE_SIZE = 5000;
 
     /**
      * Creates an instance of {@link BlobChangefeedPagedFlux}.
@@ -34,12 +34,12 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     @Override
     public Flux<BlobChangefeedPagedResponse> byPage() {
-        return byPage(null, defaultPageSize);
+        return byPage(null, DEFAULT_PAGE_SIZE);
     }
 
     @Override
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken) {
-        return byPage(continuationToken, defaultPageSize);
+        return byPage(continuationToken, DEFAULT_PAGE_SIZE);
     }
 
     @Override
@@ -58,7 +58,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
             return Flux.error(new IllegalArgumentException("preferredPageSize > 0 required but provided: "
                 + preferredPageSize));
         }
-        preferredPageSize = Integer.min(preferredPageSize, defaultPageSize);
+        preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
 
         return changefeed.getEvents()
             /* Window the events to the page size. This takes the Flux<BlobChangefeedEventWrapper> and
@@ -87,7 +87,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
 
     @Override
     public void subscribe(CoreSubscriber<? super BlobChangefeedEvent> coreSubscriber) {
-        byPage(null, defaultPageSize)
+        byPage(null, DEFAULT_PAGE_SIZE)
             .flatMap((page) -> Flux.fromIterable(page.getElements()))
             .subscribe(coreSubscriber);
     }
