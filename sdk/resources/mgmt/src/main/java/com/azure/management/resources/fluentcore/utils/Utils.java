@@ -187,13 +187,13 @@ public final class Utils {
     }
 
     /**
-     * Gets the only subscription in the tenant if applicable.
+     * Gets the only subscription as the default one in the tenant if applicable.
      *
      * @param subscriptions the list of subscriptions
      * @throws IllegalStateException when no subscription or more than one subscription found
      * @return the only subscription existing in the tenant
      */
-    public static String subscriptionId(PagedIterable<Subscription> subscriptions) {
+    public static String defaultSubscription(PagedIterable<Subscription> subscriptions) {
         List<Subscription> subscriptionList = new ArrayList<>();
         subscriptions.forEach(subscription -> {
             subscriptionList.add(subscription);
@@ -203,7 +203,6 @@ public final class Utils {
                 new IllegalStateException("Please create a subscription before you start resource management. "
                 + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
         } else if (subscriptionList.size() > 1) {
-            ClientLogger logger = new ClientLogger(Utils.class);
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("More than one subscription found in your tenant. "
                 + "Please specify which one below is desired for resource management.");

@@ -327,7 +327,7 @@ public final class Azure {
         @Override
         public Azure withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                profile.withSubscriptionId(Utils.subscriptionId(this.subscriptions().list()));
+                profile.withSubscriptionId(Utils.defaultSubscription(this.subscriptions().list()));
             }
             return new Azure(httpPipeline, profile, this);
         }

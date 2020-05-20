@@ -193,7 +193,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                profile.withSubscriptionId(Utils.subscriptionId(this.subscriptions().list()));
+                profile.withSubscriptionId(Utils.defaultSubscription(this.subscriptions().list()));
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }
