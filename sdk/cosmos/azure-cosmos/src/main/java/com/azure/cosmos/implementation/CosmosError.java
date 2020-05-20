@@ -65,7 +65,7 @@ public final class CosmosError extends  JsonSerializable {
      * @return the error code.
      */
     public String getCode() {
-        return this.getString(Constants.Properties.CODE);
+        return super.getString(Constants.Properties.CODE);
     }
 
     /**
@@ -74,7 +74,7 @@ public final class CosmosError extends  JsonSerializable {
      * @param code the error code.
      */
     private void setCode(String code) {
-        this.set(Constants.Properties.CODE, code);
+        super.set(Constants.Properties.CODE, code);
     }
 
     /**
@@ -83,7 +83,7 @@ public final class CosmosError extends  JsonSerializable {
      * @return the error message.
      */
     public String getMessage() {
-        return this.getString(Constants.Properties.MESSAGE);
+        return super.getString(Constants.Properties.MESSAGE);
     }
 
     /**
@@ -92,7 +92,7 @@ public final class CosmosError extends  JsonSerializable {
      * @param message the error message.
      */
     private void setMessage(String message) {
-        this.set(Constants.Properties.MESSAGE, message);
+        super.set(Constants.Properties.MESSAGE, message);
     }
 
     /**
@@ -101,7 +101,7 @@ public final class CosmosError extends  JsonSerializable {
      * @return the error details.
      */
     public String getErrorDetails() {
-        return this.getString(Constants.Properties.ERROR_DETAILS);
+        return super.getString(Constants.Properties.ERROR_DETAILS);
     }
 
     /**
@@ -110,7 +110,7 @@ public final class CosmosError extends  JsonSerializable {
      * @param additionalErrorInfo the partitioned query execution info.
      */
     private void setAdditionalErrorInfo(String additionalErrorInfo) {
-        this.set(Constants.Properties.ADDITIONAL_ERROR_INFO, additionalErrorInfo);
+        super.set(Constants.Properties.ADDITIONAL_ERROR_INFO, additionalErrorInfo);
     }
 
     /**
@@ -119,6 +119,6 @@ public final class CosmosError extends  JsonSerializable {
      * @return the partitioned query execution info.
      */
     public String getPartitionedQueryExecutionInfo() {
-        return this.getString(Constants.Properties.ADDITIONAL_ERROR_INFO);
+        return super.getString(Constants.Properties.ADDITIONAL_ERROR_INFO);
     }
 }

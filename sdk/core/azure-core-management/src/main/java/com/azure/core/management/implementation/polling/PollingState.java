@@ -170,7 +170,7 @@ public final class PollingState {
     /**
      * @return the current status of the long-running-operation.
      */
-    LongRunningOperationStatus getOperationStatus() {
+    public LongRunningOperationStatus getOperationStatus() {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
                 return toLongRunningOperationStatus(this.azureAsyncOperationData.getProvisioningState());

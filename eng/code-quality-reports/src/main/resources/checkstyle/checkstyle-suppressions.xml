@@ -263,10 +263,6 @@
             files="com.azure.identity.implementation.WindowsCredentialApi.java"/>
 
   <!-- Use the logger in a Utility static method. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck"
-            files="com.azure.ai.textanalytics.Transforms.java"/>
-
-  <!-- Use the logger in a Utility static method. -->
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.Transforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.training.CustomModelTransforms.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.GoodLoggingCheck" files="com.azure.ai.formrecognizer.implementation.Utility.java" />
@@ -396,7 +392,7 @@
 
   <!-- Don't enforce non-static ClientLogger instances in azure-core-mgmt PollerFactory and PollingState types-->
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
-            files="com.azure.core.management.implementation.polling.PollerFactory.java"/>
+            files="com.azure.core.management.implementation.polling.PollOperation.java"/>
   <suppress checks="com\.azure\.tools\.checkstyle\.checks\.(ThrowFromClientLoggerCheck|GoodLoggingCheck)"
             files="com.azure.core.management.implementation.polling.PollingState.java"/>
 
