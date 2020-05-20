@@ -304,7 +304,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
 
     private void startWatchdog() {
         if (this.watchdogTriggerTime.compareTo(EventHubClientOptions.SILENT_OFF) > 0) {
-            TRACE_LOGGER.info("Watchdog scheduling first run");
+            TRACE_LOGGER.info("Watchdog scheduling first run in " + this.watchdogScanSeconds + " seconds");
             this.watchdogFuture = this.executor.schedule(new WatchDog(), this.watchdogScanSeconds, TimeUnit.SECONDS);
         } else {
             TRACE_LOGGER.info("Watchdog is OFF");
