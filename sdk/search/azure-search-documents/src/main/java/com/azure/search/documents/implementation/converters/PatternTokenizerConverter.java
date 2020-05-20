@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
  */
 public final class PatternTokenizerConverter {
     private static final ClientLogger LOGGER = new ClientLogger(PatternTokenizerConverter.class);
-    private static final String DELIMITER = "\\|";
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternTokenizer} to {@link PatternTokenizer}.
@@ -33,7 +32,7 @@ public final class PatternTokenizerConverter {
 
         if (obj.getFlags() != null) {
             List<RegexFlags> regexFlags =
-                Arrays.stream(obj.getFlags().toString().split(DELIMITER)).map(RegexFlags::fromString).collect(Collectors.toList());
+                Arrays.stream(obj.getFlags().toString().split("\\|")).map(RegexFlags::fromString).collect(Collectors.toList());
             patternTokenizer.setFlags(regexFlags);
         }
 
@@ -60,7 +59,7 @@ public final class PatternTokenizerConverter {
 
         if (obj.getFlags() != null) {
             String flattenFlags =
-                obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining(DELIMITER));
+                obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
             patternTokenizer.setFlags(com.azure.search.documents.implementation.models.RegexFlags.fromString(flattenFlags));
         }
 

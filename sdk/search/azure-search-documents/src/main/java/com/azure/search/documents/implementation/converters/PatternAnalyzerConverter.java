@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
  */
 public final class PatternAnalyzerConverter {
     private static final ClientLogger LOGGER = new ClientLogger(PatternAnalyzerConverter.class);
-    private static final String DELIMITER = "\\|";
 
     /**
      * Maps from {@link com.azure.search.documents.implementation.models.PatternAnalyzer} to {@link PatternAnalyzer}.
@@ -37,7 +36,7 @@ public final class PatternAnalyzerConverter {
 
         if (obj.getFlags() != null) {
             List<RegexFlags> regexFlags =
-                Arrays.stream(obj.getFlags().toString().split(DELIMITER)).map(RegexFlags::fromString).collect(Collectors.toList());
+                Arrays.stream(obj.getFlags().toString().split("\\|")).map(RegexFlags::fromString).collect(Collectors.toList());
             patternAnalyzer.setFlags(regexFlags);
         }
 
@@ -69,12 +68,12 @@ public final class PatternAnalyzerConverter {
 
         if (obj.getFlags() != null) {
             String flattenFlags =
-                obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining(DELIMITER));
+                obj.getFlags().stream().map(RegexFlags::toString).collect(Collectors.joining("|"));
             patternAnalyzer.setFlags(com.azure.search.documents.implementation.models.RegexFlags.fromString(flattenFlags));
         }
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             patternAnalyzer.setStopwords(_stopwords);
         }
         return patternAnalyzer;
