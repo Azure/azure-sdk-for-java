@@ -6,8 +6,8 @@ package com.azure.search.documents.models;
 import java.util.List;
 
 /**
- * A helper Field model to build a complex field which uses {@code SearchFieldDataType.EDM_COMPLEX_TYPE} or collection of
- * {@code SearchFieldDataType.EDM_COMPLEX_TYPE}.
+ * A helper Field model to build a complex field which uses {@code SearchFieldDataType.EDM_COMPLEX_TYPE} or
+ * collection of {@code SearchFieldDataType.EDM_COMPLEX_TYPE}.
  */
 public class ComplexField extends SearchFieldBase {
     private List<SearchField> fields;
@@ -19,8 +19,8 @@ public class ComplexField extends SearchFieldBase {
      * @param collection Whether the field is a collection of strings.
      */
     public ComplexField(String name, boolean collection) {
-        super(name, collection ? SearchFieldDataType.collection(SearchFieldDataType.COMPLEX) :
-            SearchFieldDataType.COMPLEX);
+        super(name, collection ? SearchFieldDataType.collection(SearchFieldDataType.COMPLEX)
+            : SearchFieldDataType.COMPLEX);
     }
 
     /**

@@ -80,7 +80,9 @@ public class SimpleField extends SearchFieldBase {
     }
 
     /**
-     * Gets or sets a value indicating whether the field can be referenced in {@code $filter} queries. The default is false.
+     * Gets or sets a value indicating whether the field can be referenced in {@code $filter} queries.
+     * The default is false.
+     *
      * @param filterable The boolean to indicate whether the field is filterable or not.
      * @return The SimpleField object itself.
      */

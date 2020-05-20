@@ -22,7 +22,7 @@ public class ScoringParameterTests {
         List<String> parameters = new ArrayList<>(Arrays.asList("hello", "tests"));
         ScoringParameter scoringParameter = new ScoringParameter("test", parameters);
         List<String> scoringParameterValues = scoringParameter.getValues();
-        for (int i = 0; i< parameters.size(); i++) {
+        for (int i = 0; i < parameters.size(); i++) {
             assertEquals(parameters.get(i), scoringParameterValues.get(i));
         }
         parameters.add("test clone");

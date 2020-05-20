@@ -27,8 +27,8 @@ public final class DocumentResponseConversions {
      * Converts the {@link Throwable} into a more descriptive exception type if the {@link SearchDocument} isn't found.
      *
      * @param throwable Throwable thrown during a API call.
-     * @return The {@link Throwable} mapped to a more descriptive exception type if the {@link SearchDocument} isn't found,
-     * otherwise the passed {@link Throwable} unmodified.
+     * @return The {@link Throwable} mapped to a more descriptive exception type if the {@link SearchDocument}
+     * isn't found, otherwise the passed {@link Throwable} unmodified.
      */
     public static Throwable exceptionMapper(Throwable throwable) {
         if (!(throwable instanceof SearchErrorException)) {
