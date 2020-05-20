@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
@@ -27,7 +28,6 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
-import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -440,11 +440,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> CosmosItemProperties getProperties(CosmosItemResponse<T> cosmosItemResponse) {
         return ModelBridgeInternal.getCosmosItemProperties(cosmosItemResponse);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static int getHashCode(CosmosKeyCredential keyCredential) {
-        return keyCredential.getKeyHashCode();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

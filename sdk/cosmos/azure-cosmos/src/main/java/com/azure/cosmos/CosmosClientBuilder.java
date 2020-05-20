@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosAuthorizationTokenResolver;
@@ -38,7 +39,7 @@ public class CosmosClientBuilder {
     private ConsistencyLevel desiredConsistencyLevel;
     private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-    private CosmosKeyCredential cosmosKeyCredential;
+    private AzureKeyCredential azureKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
@@ -273,22 +274,22 @@ public class CosmosClientBuilder {
     }
 
     /**
-     * Gets the {@link CosmosKeyCredential} to be used
+     * Gets the {@link AzureKeyCredential} to be used
      *
-     * @return cosmosKeyCredential
+     * @return {@link AzureKeyCredential}
      */
-    CosmosKeyCredential getKeyCredential() {
-        return cosmosKeyCredential;
+    AzureKeyCredential getKeyCredential() {
+        return azureKeyCredential;
     }
 
     /**
-     * Sets the {@link CosmosKeyCredential} to be used
+     * Sets the {@link AzureKeyCredential} to be used
      *
-     * @param cosmosKeyCredential {@link CosmosKeyCredential}
+     * @param azureKeyCredential {@link AzureKeyCredential}
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder keyCredential(CosmosKeyCredential cosmosKeyCredential) {
-        this.cosmosKeyCredential = cosmosKeyCredential;
+    public CosmosClientBuilder keyCredential(AzureKeyCredential azureKeyCredential) {
+        this.azureKeyCredential = azureKeyCredential;
         return this;
     }
 
@@ -634,10 +635,10 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.cosmosKeyCredential == null,
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.azureKeyCredential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
-                + "cosmos key credential");
-        ifThrowIllegalArgException(cosmosKeyCredential != null && StringUtils.isEmpty(cosmosKeyCredential.getKey()),
+                + "azure key credential");
+        ifThrowIllegalArgException(azureKeyCredential != null && StringUtils.isEmpty(azureKeyCredential.getKey()),
             "cannot buildAsyncClient client without key credential");
         ifThrowIllegalArgException(directConnectionConfig == null && gatewayConnectionConfig == null,
             "cannot buildAsyncClient client without connection config");
