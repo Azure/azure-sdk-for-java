@@ -29,8 +29,8 @@ import java.time.Duration;
  * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.initialization}
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerClient
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class)
 public final class FormTrainingClient {

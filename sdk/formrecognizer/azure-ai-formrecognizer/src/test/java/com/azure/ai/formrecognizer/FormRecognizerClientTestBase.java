@@ -535,7 +535,7 @@ public abstract class FormRecognizerClientTestBase extends TestBase {
     static void validateMultiPageDataUnlabeled(IterableStream<RecognizedForm> recognizedFormResult) {
         List<RecognizedForm> actualRecognizedFormsList = recognizedFormResult.stream().collect(Collectors.toList());
         actualRecognizedFormsList.forEach(recognizedForm -> {
-            assertEquals("form-0", recognizedForm.getFormType());
+            assertNotNull(recognizedForm.getFormType());
             assertEquals(1, recognizedForm.getPages().stream().count());
             recognizedForm.getFields().forEach((label, formField) -> {
                 assertNotNull(formField.getName());

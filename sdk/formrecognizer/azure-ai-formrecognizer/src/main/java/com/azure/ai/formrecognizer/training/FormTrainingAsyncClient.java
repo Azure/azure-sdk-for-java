@@ -56,8 +56,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p><strong>Instantiating an asynchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization}
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerAsyncClient
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingAsyncClient
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
 public final class FormTrainingAsyncClient {

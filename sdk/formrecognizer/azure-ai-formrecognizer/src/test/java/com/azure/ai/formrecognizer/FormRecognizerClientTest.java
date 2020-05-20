@@ -55,6 +55,20 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         return builder.buildClient();
     }
 
+    private FormTrainingClient getFormTrainingClient(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion) {
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
+            .endpoint(getEndpoint())
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .serviceVersion(serviceVersion)
+            .addPolicy(interceptorManager.getRecordPolicy());
+        AzureKeyCredential credential = (getTestMode() == TestMode.PLAYBACK)
+            ? new AzureKeyCredential(INVALID_KEY) : new AzureKeyCredential(getApiKey());
+        builder.credential(credential);
+        return builder.buildClient();
+    }
+
     /**
      * Verifies receipt data for a document using source as file url.
      */
@@ -341,7 +355,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         multipageFromUrlRunner(fileUrl -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingClient().beginTraining(trainingFilesUrl, true);
+                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, true);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller =
@@ -358,7 +372,7 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         client = getFormRecognizerClient(httpClient, serviceVersion);
         multipageFromDataRunner(data -> beginTrainingMultipageRunner((trainingFilesUrl) -> {
             SyncPoller<OperationResult, CustomFormModel> trainingPoller =
-                client.getFormTrainingClient().beginTraining(trainingFilesUrl, false);
+                getFormTrainingClient(httpClient, serviceVersion).beginTraining(trainingFilesUrl, false);
             trainingPoller.waitForCompletion();
 
             SyncPoller<OperationResult, IterableStream<RecognizedForm>> syncPoller =

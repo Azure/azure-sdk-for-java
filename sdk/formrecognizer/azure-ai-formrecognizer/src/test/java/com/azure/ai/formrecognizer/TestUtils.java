@@ -59,8 +59,6 @@ final class TestUtils {
     private static final String AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS =
         "AZURE_FORM_RECOGNIZER_TEST_SERVICE_VERSIONS";
     static final String FORM_JPG = "Form_1.jpg";
-    private static final String AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS =
-        "AZURE_TEXT_ANALYTICS_TEST_SERVICE_VERSIONS";
 
     private TestUtils() {
     }
