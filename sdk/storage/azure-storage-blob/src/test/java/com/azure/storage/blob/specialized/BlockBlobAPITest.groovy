@@ -19,9 +19,11 @@ import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.ProgressReceiver
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.BlobErrorCode
+import com.azure.storage.blob.models.BlobExpirationOffset
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.BlobRequestConditions
+import com.azure.storage.blob.models.BlobScheduleDeletionOptions
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.BlockListType
 import com.azure.storage.blob.models.CustomerProvidedKey
@@ -41,6 +43,7 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.security.MessageDigest
 import java.time.Duration
+import java.time.OffsetDateTime
 
 class BlockBlobAPITest extends APISpec {
     BlockBlobClient blockBlobClient
@@ -1663,5 +1666,27 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         thrown(IllegalArgumentException)
+    }
+
+    @Unroll
+    def "Schedule Deletion min"() {
+        given:
+        def containerClient = dataLakeBlobServiceClient.createBlobContainer(getContainerName())
+        def blobClient = containerClient.getBlobClient(getBlobName())
+        blobClient.upload(defaultInputStream.get(), defaultDataSize)
+
+        when:
+        blobClient.getBlockBlobClient().scheduleDeletion(options)
+
+        then:
+        blobClient.getBlockBlobClient().getProperties()
+
+        where:
+        options                                                                                | _
+        new BlobScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))                      | _
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.CreationTime) | _
+        new BlobScheduleDeletionOptions(Duration.ofDays(1), BlobExpirationOffset.Now)          | _
+        new BlobScheduleDeletionOptions()                                                      | _
+        null                                                                                   | _
     }
 }

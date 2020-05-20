@@ -15,6 +15,7 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.blob.models.BlobScheduleDeletionOptions;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.BlockList;
@@ -495,6 +496,16 @@ public final class BlockBlobClient extends BlobClientBase {
         Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
             base64BlockIds, headers, metadata, tier, requestConditions, context);
 
+        return blockWithOptionalTimeout(response, timeout);
+    }
+
+    public void scheduleDeletion(BlobScheduleDeletionOptions options) {
+        scheduleDeletionWithResponse(options, null, Context.NONE);
+    }
+
+    public Response<Void> scheduleDeletionWithResponse(BlobScheduleDeletionOptions options, Duration timeout,
+                                                       Context context) {
+        Mono<Response<Void>> response = client.scheduleDeletionWithResponse(options, context);
         return blockWithOptionalTimeout(response, timeout);
     }
 }
