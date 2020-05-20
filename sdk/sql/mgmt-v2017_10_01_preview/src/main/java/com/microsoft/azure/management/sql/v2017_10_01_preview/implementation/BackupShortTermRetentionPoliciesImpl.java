@@ -63,10 +63,14 @@ class BackupShortTermRetentionPoliciesImpl extends WrapperImpl<BackupShortTermRe
     public Observable<BackupShortTermRetentionPolicy> getAsync(String resourceGroupName, String serverName, String databaseName) {
         BackupShortTermRetentionPoliciesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
-        .map(new Func1<BackupShortTermRetentionPolicyInner, BackupShortTermRetentionPolicy>() {
+        .flatMap(new Func1<BackupShortTermRetentionPolicyInner, Observable<BackupShortTermRetentionPolicy>>() {
             @Override
-            public BackupShortTermRetentionPolicy call(BackupShortTermRetentionPolicyInner inner) {
-                return wrapModel(inner);
+            public Observable<BackupShortTermRetentionPolicy> call(BackupShortTermRetentionPolicyInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((BackupShortTermRetentionPolicy)wrapModel(inner));
+                }
             }
        });
     }

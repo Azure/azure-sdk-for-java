@@ -31,6 +31,7 @@ import com.microsoft.azure.management.sql.v2017_10_01_preview.TdeCertificates;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceTdeCertificates;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceKeys;
 import com.microsoft.azure.management.sql.v2017_10_01_preview.ManagedInstanceEncryptionProtectors;
+import com.microsoft.azure.management.sql.v2017_10_01_preview.RecoverableManagedDatabases;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -53,6 +54,7 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
     private ManagedInstanceTdeCertificates managedInstanceTdeCertificates;
     private ManagedInstanceKeys managedInstanceKeys;
     private ManagedInstanceEncryptionProtectors managedInstanceEncryptionProtectors;
+    private RecoverableManagedDatabases recoverableManagedDatabases;
     /**
     * Get a Configurable instance that can be used to create SqlManager with optional configuration.
     *
@@ -248,6 +250,16 @@ public final class SqlManager extends ManagerCore<SqlManager, SqlManagementClien
             this.managedInstanceEncryptionProtectors = new ManagedInstanceEncryptionProtectorsImpl(this);
         }
         return this.managedInstanceEncryptionProtectors;
+    }
+
+    /**
+     * @return Entry point to manage RecoverableManagedDatabases.
+     */
+    public RecoverableManagedDatabases recoverableManagedDatabases() {
+        if (this.recoverableManagedDatabases == null) {
+            this.recoverableManagedDatabases = new RecoverableManagedDatabasesImpl(this);
+        }
+        return this.recoverableManagedDatabases;
     }
 
     /**
