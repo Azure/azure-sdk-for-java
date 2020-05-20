@@ -8,6 +8,7 @@ import org.reactivestreams.Subscription;
 import reactor.core.Disposable;
 import reactor.core.publisher.BaseSubscriber;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Operators;
 
 import java.time.Duration;
 import java.util.Queue;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Subscriber that listens to events and publishes them downstream and publishes events to them in the order received.
@@ -36,6 +38,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
 
     private volatile Subscription subscription;
 
+    private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
+        AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
+            "subscription");
+
+
     SynchronousMessageSubscriber(long prefetch, SynchronousReceiveWork initialWork) {
         this.workQueue.add(initialWork);
         requested = initialWork.getNumberOfEvents() > prefetch ? initialWork.getNumberOfEvents() : prefetch;
@@ -47,11 +54,16 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      */
     @Override
     protected void hookOnSubscribe(Subscription subscription) {
-        this.subscription = subscription;
-        remaining.addAndGet(requested);
-        subscription.request(requested);
-        subscriberInitialized = true;
-        drain();
+
+        if (Operators.setOnce(UPSTREAM, this, subscription)) {
+            this.subscription = subscription;
+            remaining.addAndGet(requested);
+            subscription.request(requested);
+            subscriberInitialized = true;
+            drain();
+        } else {
+            logger.error("Already subscribed once.");
+        }
     }
 
     /**
@@ -114,7 +126,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             // Making sure current work not become terminal since last drain queue cycle
             if (currentWork != null && currentWork.isTerminal()) {
                 workQueue.remove(currentWork);
-                if (currentTimeoutOperation != null & !currentTimeoutOperation.isDisposed()) {
+                if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
                     currentTimeoutOperation.dispose();
                 }
                 currentTimeoutOperation = null;
@@ -126,13 +138,14 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             // We might not have all the message in bufferMessages needed for workQueue, Thus we will only remove work
             // from queue when we have delivered all the messages to currentWork.
 
-            while ((currentWork = workQueue.peek()) != null && (currentTimeoutOperation == null || bufferMessages.size() > 0 )) {
+            while ((currentWork = workQueue.peek()) != null
+                && (currentTimeoutOperation == null || bufferMessages.size() > 0)) {
 
                 // Additional check for safety, but normally this work should never be terminal
                 if (currentWork.isTerminal()) {
                     // This work already finished by either timeout or no more messages to send, process next work.
                     workQueue.remove(currentWork);
-                    if (currentTimeoutOperation != null & !currentTimeoutOperation.isDisposed()) {
+                    if (currentTimeoutOperation != null && !currentTimeoutOperation.isDisposed()) {
                         currentTimeoutOperation.dispose();
                     }
                     currentTimeoutOperation = null;
@@ -157,7 +170,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                     }
                     // Now remove from queue since it is complete
                     workQueue.remove(currentWork);
-                    if (currentTimeoutOperation != null & !currentTimeoutOperation.isDisposed()) {
+                    if (!currentTimeoutOperation.isDisposed()) {
                         currentTimeoutOperation.dispose();
                     }
                     currentTimeoutOperation = null;
@@ -179,7 +192,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     /**
      * @param work on which timeout thread need to start.
      *
-     * @return
+     * @return {@link Disposable} for the timeout operation.
      */
     private Disposable getTimeoutOperation(SynchronousReceiveWork work) {
         Duration timeout = work.getTimeout();

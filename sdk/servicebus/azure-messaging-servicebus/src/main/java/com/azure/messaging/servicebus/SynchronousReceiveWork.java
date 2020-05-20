@@ -21,7 +21,7 @@ class SynchronousReceiveWork {
     private final FluxSink<ServiceBusReceivedMessageContext> emitter;
 
     // Indicate state that timeout has occurred for this work.
-    public boolean workTimedOut = false;
+    private boolean workTimedOut = false;
 
     private volatile Throwable error = null;
 

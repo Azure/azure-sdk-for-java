@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
 import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
@@ -469,7 +470,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     }
 
     /**
-     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity.
+     * Receives an iterable stream of {@link ServiceBusReceivedMessage messages} from the Service Bus entity. The
+     * default receive mode is {@link ReceiveMode#PEEK_LOCK } unless it is changed during creation of
+     * {@link ServiceBusReceiverClient} using {@link ServiceBusReceiverClientBuilder#receiveMode(ReceiveMode)}.
      *
      * @param maxMessages The maximum number of messages to receive.
      * @param maxWaitTime The time the client waits for receiving a message before it times out.
@@ -477,7 +480,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      *
      * @throws IllegalArgumentException if {@code maxMessages} or {@code maxWaitTime} is zero or a negative value.
      */
-    public synchronized IterableStream<ServiceBusReceivedMessageContext> receive(int maxMessages,
+    public IterableStream<ServiceBusReceivedMessageContext> receive(int maxMessages,
         Duration maxWaitTime) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
@@ -623,26 +626,26 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * entity.
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
-            FluxSink<ServiceBusReceivedMessageContext> emitter) {
-            final long id = idGenerator.getAndIncrement();
-            final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime,
-                emitter);
+        FluxSink<ServiceBusReceivedMessageContext> emitter) {
 
-            SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
-            if (messageSubscriber == null) {
-                long prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
-                SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(prefetch, work);
+        final long id = idGenerator.getAndIncrement();
+        final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
 
-                if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
-                    newSubscriber.dispose();
-                    SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
-                    existing.queueWork(work);
-                } else {
-                    asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(newSubscriber);
-                }
+        SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
+        if (messageSubscriber == null) {
+            long prefetch = asyncClient.getReceiverOptions().getPrefetchCount();
+            SynchronousMessageSubscriber newSubscriber = new SynchronousMessageSubscriber(prefetch, work);
+
+            if (!synchronousMessageSubscriber.compareAndSet(null, newSubscriber)) {
+                newSubscriber.dispose();
+                SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
+                existing.queueWork(work);
             } else {
-                messageSubscriber.queueWork(work);
+                asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(newSubscriber);
             }
-            logger.verbose("[{}] Receive request queued up.", work.getId());
+        } else {
+            messageSubscriber.queueWork(work);
         }
+        logger.verbose("[{}] Receive request queued up.", work.getId());
+    }
 }
