@@ -6,11 +6,15 @@ package com.azure.management.network.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The EndpointServiceResult model. */
 @Immutable
 public final class EndpointServiceResultInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointServiceResultInner.class);
+
     /*
      * Name of the endpoint service.
      */
@@ -39,5 +43,13 @@ public final class EndpointServiceResultInner extends SubResource {
      */
     public String type() {
         return this.type;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AvailablePrivateEndpointType model. */
 @Fluent
 public final class AvailablePrivateEndpointTypeInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailablePrivateEndpointTypeInner.class);
+
     /*
      * The name of the service and resource.
      */
@@ -112,5 +116,13 @@ public final class AvailablePrivateEndpointTypeInner {
     public AvailablePrivateEndpointTypeInner withResourceName(String resourceName) {
         this.resourceName = resourceName;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

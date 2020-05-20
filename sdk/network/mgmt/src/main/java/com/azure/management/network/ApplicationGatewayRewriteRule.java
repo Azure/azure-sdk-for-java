@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ApplicationGatewayRewriteRule model. */
 @Fluent
 public final class ApplicationGatewayRewriteRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRule.class);
+
     /*
      * Name of the rewrite rule that is unique within an Application Gateway.
      */
@@ -116,5 +120,19 @@ public final class ApplicationGatewayRewriteRule {
     public ApplicationGatewayRewriteRule withActionSet(ApplicationGatewayRewriteRuleActionSet actionSet) {
         this.actionSet = actionSet;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (conditions() != null) {
+            conditions().forEach(e -> e.validate());
+        }
+        if (actionSet() != null) {
+            actionSet().validate();
+        }
     }
 }

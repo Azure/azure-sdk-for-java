@@ -43,9 +43,16 @@ import java.util.Objects;
  *
  * <p>
  * The client needs the service endpoint of the Azure Form Recognizer to access the resource service.
- * {@link #credential(AzureKeyCredential)} gives
- * the builder access credential.
+ * {@link #credential(AzureKeyCredential)} gives the builder access credential.
  * </p>
+ *
+ * <p><strong>Instantiating an asynchronous Form Recognizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerAsyncClient.instantiation}
+ *
+ * <p><strong>Instantiating a synchronous Form Recognizer Client</strong></p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.instantiation}
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -54,6 +61,8 @@ import java.util.Objects;
  * pipeline requires additional setup but allows for finer control on how the {@link FormRecognizerClient} and
  * {@link FormRecognizerAsyncClient} is built.
  * </p>
+ *
+ * {@codesnippet com.azure.ai.formrecognizer.FormRecognizerClient.pipeline.instantiation}
  *
  * @see FormRecognizerAsyncClient
  * @see FormRecognizerClient

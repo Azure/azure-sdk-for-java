@@ -5,6 +5,8 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -12,6 +14,8 @@ import java.util.Map;
 /** The VirtualMachineIdentity model. */
 @Fluent
 public class VirtualMachineIdentity {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineIdentity.class);
+
     /*
      * The principal id of virtual machine identity. This property will only be
      * provided for a system assigned identity.
@@ -112,5 +116,23 @@ public class VirtualMachineIdentity {
         Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (userAssignedIdentities() != null) {
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
 }

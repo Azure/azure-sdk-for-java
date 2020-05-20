@@ -25,9 +25,10 @@ import com.azure.management.resources.fluentcore.arm.models.implementation.Group
 import com.azure.management.resources.fluentcore.utils.ETagState;
 import com.azure.management.resources.fluentcore.utils.PagedConverter;
 import com.azure.management.resources.fluentcore.utils.Utils;
+import reactor.core.publisher.Mono;
+
 import java.util.ArrayList;
 import java.util.List;
-import reactor.core.publisher.Mono;
 
 /** Implementation for {@link DnsZone}. */
 public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZoneImpl, DnsZoneManager>
@@ -43,7 +44,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     private SrvRecordSets srvRecordSets;
     private TxtRecordSets txtRecordSets;
     private DnsRecordSetsImpl recordSets;
-    private final ETagState eTagState = new ETagState();
+    private final ETagState etagState = new ETagState();
 
     DnsZoneImpl(String name, final ZoneInner innerModel, final DnsZoneManager manager) {
         super(name, innerModel, manager);
@@ -66,7 +67,7 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public String eTag() {
+    public String etag() {
         return this.inner().etag();
     }
 
@@ -289,8 +290,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutARecordSet(String name, String eTag) {
-        recordSets.withoutARecordSet(name, eTag);
+    public DnsZoneImpl withoutARecordSet(String name, String etag) {
+        recordSets.withoutARecordSet(name, etag);
         return this;
     }
 
@@ -300,8 +301,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutAaaaRecordSet(String name, String eTag) {
-        recordSets.withoutAaaaRecordSet(name, eTag);
+    public DnsZoneImpl withoutAaaaRecordSet(String name, String etag) {
+        recordSets.withoutAaaaRecordSet(name, etag);
         return this;
     }
 
@@ -311,8 +312,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutCaaRecordSet(String name, String eTag) {
-        recordSets.withoutCaaRecordSet(name, eTag);
+    public DnsZoneImpl withoutCaaRecordSet(String name, String etag) {
+        recordSets.withoutCaaRecordSet(name, etag);
         return this;
     }
 
@@ -322,8 +323,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutCNameRecordSet(String name, String eTag) {
-        recordSets.withoutCNameRecordSet(name, eTag);
+    public DnsZoneImpl withoutCNameRecordSet(String name, String etag) {
+        recordSets.withoutCNameRecordSet(name, etag);
         return this;
     }
 
@@ -333,8 +334,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutMXRecordSet(String name, String eTag) {
-        recordSets.withoutMXRecordSet(name, eTag);
+    public DnsZoneImpl withoutMXRecordSet(String name, String etag) {
+        recordSets.withoutMXRecordSet(name, etag);
         return this;
     }
 
@@ -344,8 +345,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutNSRecordSet(String name, String eTag) {
-        recordSets.withoutNSRecordSet(name, eTag);
+    public DnsZoneImpl withoutNSRecordSet(String name, String etag) {
+        recordSets.withoutNSRecordSet(name, etag);
         return this;
     }
 
@@ -355,8 +356,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutPtrRecordSet(String name, String eTag) {
-        recordSets.withoutPtrRecordSet(name, eTag);
+    public DnsZoneImpl withoutPtrRecordSet(String name, String etag) {
+        recordSets.withoutPtrRecordSet(name, etag);
         return this;
     }
 
@@ -366,8 +367,8 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutSrvRecordSet(String name, String eTag) {
-        recordSets.withoutSrvRecordSet(name, eTag);
+    public DnsZoneImpl withoutSrvRecordSet(String name, String etag) {
+        recordSets.withoutSrvRecordSet(name, etag);
         return this;
     }
 
@@ -377,20 +378,20 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
     }
 
     @Override
-    public DnsZoneImpl withoutTxtRecordSet(String name, String eTag) {
-        recordSets.withoutTxtRecordSet(name, eTag);
+    public DnsZoneImpl withoutTxtRecordSet(String name, String etag) {
+        recordSets.withoutTxtRecordSet(name, etag);
         return this;
     }
 
     @Override
     public DnsZoneImpl withETagCheck() {
-        this.eTagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
+        this.etagState.withImplicitETagCheckOnCreateOrUpdate(this.isInCreateMode());
         return this;
     }
 
     @Override
-    public DnsZoneImpl withETagCheck(String eTagValue) {
-        this.eTagState.withExplicitETagCheckOnUpdate(eTagValue);
+    public DnsZoneImpl withETagCheck(String etagValue) {
+        this.etagState.withExplicitETagCheckOnUpdate(etagValue);
         return this;
     }
 
@@ -408,12 +409,12 @@ public class DnsZoneImpl extends GroupableResourceImpl<DnsZone, ZoneInner, DnsZo
                             self.resourceGroupName(),
                             self.name(),
                             self.inner(),
-                            eTagState.ifMatchValueOnUpdate(self.inner().etag()),
-                            eTagState.ifNonMatchValueOnCreate()))
+                            etagState.ifMatchValueOnUpdate(self.inner().etag()),
+                            etagState.ifNonMatchValueOnCreate()))
             .map(innerToFluentMap(this))
             .map(
                 dnsZone -> {
-                    this.eTagState.clear();
+                    this.etagState.clear();
                     return dnsZone;
                 });
     }

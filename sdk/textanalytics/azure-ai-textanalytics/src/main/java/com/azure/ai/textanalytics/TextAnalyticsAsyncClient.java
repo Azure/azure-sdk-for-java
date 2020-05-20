@@ -32,8 +32,8 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.azure.ai.textanalytics.Transforms.mapByIndex;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.implementation.Utility.mapByIndex;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 

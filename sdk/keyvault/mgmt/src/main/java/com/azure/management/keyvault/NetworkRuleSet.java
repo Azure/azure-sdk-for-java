@@ -5,12 +5,16 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkRuleSet model. */
 @Fluent
 public final class NetworkRuleSet {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
+
     /*
      * Tells what traffic can bypass network rules. This can be 'AzureServices'
      * or 'None'.  If not specified the default is 'AzureServices'.
@@ -30,7 +34,7 @@ public final class NetworkRuleSet {
      * The list of IP address rules.
      */
     @JsonProperty(value = "ipRules")
-    private List<IPRule> ipRules;
+    private List<IpRule> ipRules;
 
     /*
      * The list of virtual network rules.
@@ -87,7 +91,7 @@ public final class NetworkRuleSet {
      *
      * @return the ipRules value.
      */
-    public List<IPRule> ipRules() {
+    public List<IpRule> ipRules() {
         return this.ipRules;
     }
 
@@ -97,7 +101,7 @@ public final class NetworkRuleSet {
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSet object itself.
      */
-    public NetworkRuleSet withIpRules(List<IPRule> ipRules) {
+    public NetworkRuleSet withIpRules(List<IpRule> ipRules) {
         this.ipRules = ipRules;
         return this;
     }
@@ -120,5 +124,19 @@ public final class NetworkRuleSet {
     public NetworkRuleSet withVirtualNetworkRules(List<VirtualNetworkRule> virtualNetworkRules) {
         this.virtualNetworkRules = virtualNetworkRules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipRules() != null) {
+            ipRules().forEach(e -> e.validate());
+        }
+        if (virtualNetworkRules() != null) {
+            virtualNetworkRules().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The NetworkInterfaceDnsSettings model. */
 @Fluent
 public final class NetworkInterfaceDnsSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceDnsSettings.class);
+
     /*
      * List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to
      * azure provided DNS resolution. 'AzureProvidedDNS' value cannot be
@@ -165,5 +169,13 @@ public final class NetworkInterfaceDnsSettings {
     public NetworkInterfaceDnsSettings withInternalDomainNameSuffix(String internalDomainNameSuffix) {
         this.internalDomainNameSuffix = internalDomainNameSuffix;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

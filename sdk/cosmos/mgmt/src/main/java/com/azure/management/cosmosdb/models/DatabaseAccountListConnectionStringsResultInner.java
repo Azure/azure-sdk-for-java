@@ -5,13 +5,18 @@
 package com.azure.management.cosmosdb.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.cosmosdb.DatabaseAccountConnectionString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DatabaseAccountListConnectionStringsResult model. */
 @Fluent
 public final class DatabaseAccountListConnectionStringsResultInner {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(DatabaseAccountListConnectionStringsResultInner.class);
+
     /*
      * An array that contains the connection strings for the Cosmos DB account.
      */
@@ -37,5 +42,16 @@ public final class DatabaseAccountListConnectionStringsResultInner {
         List<DatabaseAccountConnectionString> connectionStrings) {
         this.connectionStrings = connectionStrings;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (connectionStrings() != null) {
+            connectionStrings().forEach(e -> e.validate());
+        }
     }
 }

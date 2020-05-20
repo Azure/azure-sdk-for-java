@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The DiffDiskSettings model. */
 @Fluent
 public final class DiffDiskSettings {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiffDiskSettings.class);
+
     /*
      * Specifies the ephemeral disk settings for operating system disk.
      */
@@ -34,5 +38,13 @@ public final class DiffDiskSettings {
     public DiffDiskSettings withOption(DiffDiskOptions option) {
         this.option = option;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

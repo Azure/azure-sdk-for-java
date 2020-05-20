@@ -7,8 +7,10 @@ package com.azure.management.sql.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.ElasticPoolEdition;
 import com.azure.management.sql.TrackedResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class RecommendedElasticPoolInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedElasticPoolInner.class);
+
     /*
      * The edition of the recommended elastic pool. The ElasticPoolEdition
      * enumeration contains all the valid editions.
@@ -226,5 +230,19 @@ public class RecommendedElasticPoolInner extends ProxyResource {
      */
     public List<RecommendedElasticPoolMetricInner> metrics() {
         return this.metrics;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (databases() != null) {
+            databases().forEach(e -> e.validate());
+        }
+        if (metrics() != null) {
+            metrics().forEach(e -> e.validate());
+        }
     }
 }

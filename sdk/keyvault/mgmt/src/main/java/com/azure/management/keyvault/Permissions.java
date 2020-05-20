@@ -5,12 +5,16 @@
 package com.azure.management.keyvault;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Permissions model. */
 @Fluent
 public final class Permissions {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Permissions.class);
+
     /*
      * Permissions to keys
      */
@@ -113,5 +117,13 @@ public final class Permissions {
     public Permissions withStorage(List<StoragePermissions> storage) {
         this.storage = storage;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

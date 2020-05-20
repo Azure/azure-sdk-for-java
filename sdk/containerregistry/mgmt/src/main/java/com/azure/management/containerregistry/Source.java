@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Source model. */
 @Fluent
 public final class Source {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Source.class);
+
     /*
      * The IP or hostname and the port of the registry node that generated the
      * event. Generally, this will be resolved by os.Hostname() along with the
@@ -22,7 +26,7 @@ public final class Source {
      * The running instance of an application. Changes after each restart.
      */
     @JsonProperty(value = "instanceID")
-    private String instanceID;
+    private String instanceId;
 
     /**
      * Get the addr property: The IP or hostname and the port of the registry node that generated the event. Generally,
@@ -47,22 +51,30 @@ public final class Source {
     }
 
     /**
-     * Get the instanceID property: The running instance of an application. Changes after each restart.
+     * Get the instanceId property: The running instance of an application. Changes after each restart.
      *
-     * @return the instanceID value.
+     * @return the instanceId value.
      */
-    public String instanceID() {
-        return this.instanceID;
+    public String instanceId() {
+        return this.instanceId;
     }
 
     /**
-     * Set the instanceID property: The running instance of an application. Changes after each restart.
+     * Set the instanceId property: The running instance of an application. Changes after each restart.
      *
-     * @param instanceID the instanceID value to set.
+     * @param instanceId the instanceId value to set.
      * @return the Source object itself.
      */
-    public Source withInstanceID(String instanceID) {
-        this.instanceID = instanceID;
+    public Source withInstanceId(String instanceId) {
+        this.instanceId = instanceId;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

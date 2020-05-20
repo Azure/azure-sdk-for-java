@@ -11,6 +11,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -25,10 +26,12 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.management.compute.ApiErrorException;
+import com.azure.management.compute.GalleryApplicationVersionUpdate;
 import com.azure.management.compute.ReplicationStatusTypes;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -36,6 +39,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GalleryApplicationVersions. */
 public final class GalleryApplicationVersionsInner {
+    private final ClientLogger logger = new ClientLogger(GalleryApplicationVersionsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final GalleryApplicationVersionsService service;
 
@@ -64,11 +69,10 @@ public final class GalleryApplicationVersionsInner {
     private interface GalleryApplicationVersionsService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/applications/{galleryApplicationName}/versions"
-                + "/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -81,12 +85,28 @@ public final class GalleryApplicationVersionsInner {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/applications/{galleryApplicationName}/versions"
-                + "/{galleryApplicationVersionName}")
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("galleryName") String galleryName,
+            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("galleryApplicationVersionName") String galleryApplicationVersionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GalleryApplicationVersionUpdate galleryApplicationVersion,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryApplicationVersionInner>> get(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -100,11 +120,10 @@ public final class GalleryApplicationVersionsInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/applications/{galleryApplicationName}/versions"
-                + "/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -117,10 +136,10 @@ public final class GalleryApplicationVersionsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/applications/{galleryApplicationName}/versions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryApplicationVersionListInner>> listByGalleryApplication(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -132,11 +151,10 @@ public final class GalleryApplicationVersionsInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/applications/{galleryApplicationName}/versions"
-                + "/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryApplicationVersionInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -148,13 +166,29 @@ public final class GalleryApplicationVersionsInner {
             @BodyParam("application/json") GalleryApplicationVersionInner galleryApplicationVersion,
             Context context);
 
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<SimpleResponse<GalleryApplicationVersionInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("galleryName") String galleryName,
+            @PathParam("galleryApplicationName") String galleryApplicationName,
+            @PathParam("galleryApplicationVersionName") String galleryApplicationVersionName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GalleryApplicationVersionUpdate galleryApplicationVersion,
+            Context context);
+
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/applications/{galleryApplicationName}/versions"
-                + "/{galleryApplicationVersionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/applications/{galleryApplicationName}/versions/{galleryApplicationVersionName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -168,7 +202,7 @@ public final class GalleryApplicationVersionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryApplicationVersionListInner>> listByGalleryApplicationNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -186,7 +220,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
      *     create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -197,7 +231,43 @@ public final class GalleryApplicationVersionsInner {
         String galleryApplicationName,
         String galleryApplicationVersionName,
         GalleryApplicationVersionInner galleryApplicationVersion) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        if (galleryApplicationVersion == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersion is required and cannot be null."));
+        } else {
+            galleryApplicationVersion.validate();
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -228,7 +298,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
      *     create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -270,7 +340,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
      *     create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -291,6 +361,159 @@ public final class GalleryApplicationVersionsInner {
     }
 
     /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        if (galleryApplicationVersion == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersion is required and cannot be null."));
+        } else {
+            galleryApplicationVersion.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            galleryName,
+                            galleryApplicationName,
+                            galleryApplicationVersionName,
+                            apiVersion,
+                            galleryApplicationVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GalleryApplicationVersionInner> updateAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                galleryApplicationVersion);
+        return this
+            .client
+            .<GalleryApplicationVersionInner, GalleryApplicationVersionInner>getLroResultAsync(
+                mono,
+                this.client.getHttpPipeline(),
+                GalleryApplicationVersionInner.class,
+                GalleryApplicationVersionInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryApplicationVersionInner update(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion) {
+        return updateAsync(
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                galleryApplicationVersion)
+            .block();
+    }
+
+    /**
      * Retrieves information about a gallery Application Version.
      *
      * @param resourceGroupName The name of the resource group.
@@ -300,7 +523,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -311,7 +534,35 @@ public final class GalleryApplicationVersionsInner {
         String galleryApplicationName,
         String galleryApplicationVersionName,
         ReplicationStatusTypes expand) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -338,8 +589,73 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
      * @param expand The expand expression to apply on the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryApplicationVersionInner>> getWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        ReplicationStatusTypes expand,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .get(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                expand,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Retrieves information about a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
+     *     resides.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
+     * @param expand The expand expression to apply on the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -371,7 +687,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -405,7 +721,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
      * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -429,7 +745,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -454,7 +770,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -464,7 +780,35 @@ public final class GalleryApplicationVersionsInner {
         String galleryName,
         String galleryApplicationName,
         String galleryApplicationVersionName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -490,7 +834,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -519,7 +863,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -539,14 +883,36 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationName The name of the Shared Application Gallery Application Definition from which the
      *     Application Versions are to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Application version operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GalleryApplicationVersionInner>> listByGalleryApplicationSinglePageAsync(
         String resourceGroupName, String galleryName, String galleryApplicationName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -578,8 +944,67 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
      * @param galleryApplicationName The name of the Shared Application Gallery Application Definition from which the
      *     Application Versions are to be listed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Application version operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GalleryApplicationVersionInner>> listByGalleryApplicationSinglePageAsync(
+        String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .listByGalleryApplication(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * List gallery Application Versions in a gallery Application Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the Shared Application Gallery Application Definition from which the
+     *     Application Versions are to be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Application version operation response.
      */
@@ -598,8 +1023,31 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
      * @param galleryApplicationName The name of the Shared Application Gallery Application Definition from which the
      *     Application Versions are to be listed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Application version operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GalleryApplicationVersionInner> listByGalleryApplicationAsync(
+        String resourceGroupName, String galleryName, String galleryApplicationName, Context context) {
+        return new PagedFlux<>(
+            () ->
+                listByGalleryApplicationSinglePageAsync(
+                    resourceGroupName, galleryName, galleryApplicationName, context),
+            nextLink -> listByGalleryApplicationNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List gallery Application Versions in a gallery Application Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the Shared Application Gallery Application Definition from which the
+     *     Application Versions are to be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Application version operation response.
      */
@@ -623,7 +1071,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
      *     create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -634,7 +1082,43 @@ public final class GalleryApplicationVersionsInner {
         String galleryApplicationName,
         String galleryApplicationVersionName,
         GalleryApplicationVersionInner galleryApplicationVersion) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        if (galleryApplicationVersion == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersion is required and cannot be null."));
+        } else {
+            galleryApplicationVersion.validate();
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -664,8 +1148,84 @@ public final class GalleryApplicationVersionsInner {
      *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
      * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
      *     create or update.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryApplicationVersionInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionInner galleryApplicationVersion,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        if (galleryApplicationVersion == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersion is required and cannot be null."));
+        } else {
+            galleryApplicationVersion.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                apiVersion,
+                galleryApplicationVersion,
+                context);
+    }
+
+    /**
+     * Create or update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be created.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be created. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -705,7 +1265,7 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
      *     create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Application Version that you want to create or update.
      */
@@ -726,6 +1286,233 @@ public final class GalleryApplicationVersionsInner {
     }
 
     /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryApplicationVersionInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        if (galleryApplicationVersion == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersion is required and cannot be null."));
+        } else {
+            galleryApplicationVersion.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            galleryName,
+                            galleryApplicationName,
+                            galleryApplicationVersionName,
+                            apiVersion,
+                            galleryApplicationVersion,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryApplicationVersionInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        if (galleryApplicationVersion == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersion is required and cannot be null."));
+        } else {
+            galleryApplicationVersion.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .beginUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                apiVersion,
+                galleryApplicationVersion,
+                context);
+    }
+
+    /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GalleryApplicationVersionInner> beginUpdateAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion) {
+        return beginUpdateWithResponseAsync(
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                galleryApplicationVersion)
+            .flatMap(
+                (SimpleResponse<GalleryApplicationVersionInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version is
+     *     to be updated.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be updated. Needs to follow
+     *     semantic version name pattern: The allowed characters are digit and period. Digits must be within the range
+     *     of a 32-bit integer. Format: &lt;MajorVersion&gt;.&lt;MinorVersion&gt;.&lt;Patch&gt;.
+     * @param galleryApplicationVersion Specifies information about the gallery Application Version that you want to
+     *     update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Application Version that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryApplicationVersionInner beginUpdate(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        GalleryApplicationVersionUpdate galleryApplicationVersion) {
+        return beginUpdateAsync(
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                galleryApplicationVersion)
+            .block();
+    }
+
+    /**
      * Delete a gallery Application Version.
      *
      * @param resourceGroupName The name of the resource group.
@@ -734,7 +1521,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -744,7 +1531,35 @@ public final class GalleryApplicationVersionsInner {
         String galleryName,
         String galleryApplicationName,
         String galleryApplicationVersionName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -769,8 +1584,70 @@ public final class GalleryApplicationVersionsInner {
      * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryApplicationName,
+        String galleryApplicationVersionName,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryApplicationName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
+        }
+        if (galleryApplicationVersionName == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter galleryApplicationVersionName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryApplicationName,
+                galleryApplicationVersionName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Delete a gallery Application Version.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Application Gallery in which the Application Definition resides.
+     * @param galleryApplicationName The name of the gallery Application Definition in which the Application Version
+     *     resides.
+     * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -794,7 +1671,7 @@ public final class GalleryApplicationVersionsInner {
      *     resides.
      * @param galleryApplicationVersionName The name of the gallery Application Version to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -811,13 +1688,16 @@ public final class GalleryApplicationVersionsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Application version operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GalleryApplicationVersionInner>> listByGalleryApplicationNextSinglePageAsync(
         String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByGalleryApplicationNext(nextLink, context))
             .<PagedResponse<GalleryApplicationVersionInner>>map(
@@ -830,5 +1710,34 @@ public final class GalleryApplicationVersionsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Application version operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GalleryApplicationVersionInner>> listByGalleryApplicationNextSinglePageAsync(
+        String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByGalleryApplicationNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

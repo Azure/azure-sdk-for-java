@@ -5,12 +5,16 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The EffectiveRoute model. */
 @Fluent
 public final class EffectiveRoute {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveRoute.class);
+
     /*
      * The name of the user defined route. This is optional.
      */
@@ -194,5 +198,13 @@ public final class EffectiveRoute {
     public EffectiveRoute withNextHopType(RouteNextHopType nextHopType) {
         this.nextHopType = nextHopType;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

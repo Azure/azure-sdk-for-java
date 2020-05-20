@@ -7,12 +7,16 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PremierAddOn model. */
 @JsonFlatten
 @Fluent
 public class PremierAddOnInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PremierAddOnInner.class);
+
     /*
      * Premier add on SKU.
      */
@@ -167,5 +171,13 @@ public class PremierAddOnInner extends Resource {
     public PremierAddOnInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

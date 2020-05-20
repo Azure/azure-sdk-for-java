@@ -6,12 +6,12 @@ package com.azure.search.documents.models;
 import java.util.List;
 
 /**
- * A helper Field model to build a searchable {@link Field}.
+ * A helper Field model to build a searchable {@link SearchField}.
  */
 public class SearchableField extends SimpleField {
-    private AnalyzerName analyzer;
-    private AnalyzerName searchAnalyzer;
-    private AnalyzerName indexAnalyzer;
+    private LexicalAnalyzerName analyzer;
+    private LexicalAnalyzerName searchAnalyzer;
+    private LexicalAnalyzerName indexAnalyzer;
     private List<String> synonymMapNames;
 
     /**
@@ -22,16 +22,16 @@ public class SearchableField extends SimpleField {
      * @throws NullPointerException when {@code name} is null.
      */
     public SearchableField(String name, boolean collection) {
-        super(name, DataType.EDM_STRING, collection);
+        super(name, SearchFieldDataType.STRING, collection);
     }
 
     /**
      * Gets the name of the language analyzer. This property cannot be set when either {@code searchAnalyzer} or
      * {@code indexAnalyzer} are set. Once the analyzer is chosen, it cannot be changed for the field in the index.
      *
-     * @return The {@link AnalyzerName} used for analyzer.
+     * @return The {@link LexicalAnalyzerName} used for analyzer.
      */
-    public AnalyzerName getAnalyzer() {
+    public LexicalAnalyzerName getAnalyzer() {
         return analyzer;
     }
 
@@ -39,10 +39,10 @@ public class SearchableField extends SimpleField {
      * Sets the name of the language analyzer. This property cannot be set when either {@code searchAnalyzer} or
      * {@code indexAnalyzer} are set. Once the analyzer is chosen, it cannot be changed for the field in the index.
      *
-     * @param analyzer The {@link AnalyzerName} used for analyzer.
+     * @param analyzer The {@link LexicalAnalyzerName} used for analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setAnalyzer(AnalyzerName analyzer) {
+    public SearchableField setAnalyzer(LexicalAnalyzerName analyzer) {
         this.analyzer = analyzer;
         return this;
     }
@@ -52,9 +52,9 @@ public class SearchableField extends SimpleField {
      * {@code indexAnalyzer}, and cannot be set when {@code analyzer} is set. Once the analyzer is chosen, it cannot be
      * changed for the field in the index.
      *
-     * @return The {@link AnalyzerName} used for search analyzer.
+     * @return The {@link LexicalAnalyzerName} used for search analyzer.
      */
-    public AnalyzerName getSearchAnalyzer() {
+    public LexicalAnalyzerName getSearchAnalyzer() {
         return searchAnalyzer;
     }
 
@@ -63,10 +63,10 @@ public class SearchableField extends SimpleField {
      * {@code indexAnalyzer}, and cannot be set when {@code analyzer} is set. Once the analyzer is chosen, it cannot be
      * changed for the field in the index.
      *
-     * @param searchAnalyzer The {@link AnalyzerName} used for search analyzer.
+     * @param searchAnalyzer The {@link LexicalAnalyzerName} used for search analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setSearchAnalyzer(AnalyzerName searchAnalyzer) {
+    public SearchableField setSearchAnalyzer(LexicalAnalyzerName searchAnalyzer) {
         this.searchAnalyzer = searchAnalyzer;
         return this;
     }
@@ -76,9 +76,9 @@ public class SearchableField extends SimpleField {
      * {@code searchAnalyzer}, and cannot be set when {@code analyzer} is set. Once the analyzer is chosen, it cannot be
      * changed for the field in the index.
      *
-     * @return The {@link AnalyzerName} used for index analyzer.
+     * @return The {@link LexicalAnalyzerName} used for index analyzer.
      */
-    public AnalyzerName getIndexAnalyzer() {
+    public LexicalAnalyzerName getIndexAnalyzer() {
         return indexAnalyzer;
     }
 
@@ -87,10 +87,10 @@ public class SearchableField extends SimpleField {
      * {@code searchAnalyzer}, and cannot be set when {@code analyzer} is set. Once the analyzer is chosen, it cannot be
      * changed for the field in the index.
      *
-     * @param indexAnalyzer The {@link AnalyzerName} used for index analyzer.
+     * @param indexAnalyzer The {@link LexicalAnalyzerName} used for index analyzer.
      * @return The SearchableField object itself.
      */
-    public SearchableField setIndexAnalyzer(AnalyzerName indexAnalyzer) {
+    public SearchableField setIndexAnalyzer(LexicalAnalyzerName indexAnalyzer) {
         this.indexAnalyzer = indexAnalyzer;
         return this;
     }
@@ -124,12 +124,12 @@ public class SearchableField extends SimpleField {
     }
 
     /**
-     * Convert SearchableField to {@link Field}.
+     * Convert SearchableField to {@link SearchField}.
      *
-     * @return The {@link Field} object.
+     * @return The {@link SearchField} object.
      */
-    public Field build() {
-        return new Field()
+    public SearchField build() {
+        return new SearchField()
             .setName(super.getName())
             .setType(super.getDataType())
             .setSearchable(true)

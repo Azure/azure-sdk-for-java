@@ -11,12 +11,14 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.implementa
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Apps;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.AzureAccounts;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Examples;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Features;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.LUISAuthoringClient;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Models;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Patterns;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Permissions;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.Settings;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Trains;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.Versions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
@@ -234,12 +236,38 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
     }
 
     /**
+     * The Settings object to access its operations.
+     */
+    private Settings settings;
+
+    /**
+     * Gets the Settings object to access its operations.
+     * @return the Settings object.
+     */
+    public Settings settings() {
+        return this.settings;
+    }
+
+    /**
+     * The AzureAccounts object to access its operations.
+     */
+    private AzureAccounts azureAccounts;
+
+    /**
+     * Gets the AzureAccounts object to access its operations.
+     * @return the AzureAccounts object.
+     */
+    public AzureAccounts azureAccounts() {
+        return this.azureAccounts;
+    }
+
+    /**
      * Initializes an instance of LUISAuthoringClient client.
      *
      * @param credentials the management credentials for Azure
      */
     public LUISAuthoringClientImpl(ServiceClientCredentials credentials) {
-        this("https://{endpoint}/luis/api/v2.0", credentials);
+        this("https://{Endpoint}/luis/authoring/v3.0-preview", credentials);
     }
 
     /**
@@ -275,6 +303,8 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
         this.trains = new TrainsImpl(restClient().retrofit(), this);
         this.permissions = new PermissionsImpl(restClient().retrofit(), this);
         this.patterns = new PatternsImpl(restClient().retrofit(), this);
+        this.settings = new SettingsImpl(restClient().retrofit(), this);
+        this.azureAccounts = new AzureAccountsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -285,6 +315,6 @@ public class LUISAuthoringClientImpl extends AzureServiceClient implements LUISA
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "LUISAuthoringClient", "2.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "LUISAuthoringClient", "3.0-preview");
     }
 }

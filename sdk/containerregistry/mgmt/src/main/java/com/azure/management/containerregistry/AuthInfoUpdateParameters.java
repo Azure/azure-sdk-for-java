@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AuthInfoUpdateParameters model. */
 @Fluent
 public final class AuthInfoUpdateParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthInfoUpdateParameters.class);
+
     /*
      * The type of Auth token.
      */
@@ -138,5 +142,13 @@ public final class AuthInfoUpdateParameters {
     public AuthInfoUpdateParameters withExpiresIn(Integer expiresIn) {
         this.expiresIn = expiresIn;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

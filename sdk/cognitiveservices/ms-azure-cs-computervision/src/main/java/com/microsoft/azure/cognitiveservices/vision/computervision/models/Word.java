@@ -28,10 +28,10 @@ public class Word {
     private String text;
 
     /**
-     * Qualitative confidence measure. Possible values include: 'High', 'Low'.
+     * Qualitative confidence measure.
      */
-    @JsonProperty(value = "confidence")
-    private TextRecognitionResultConfidenceClass confidence;
+    @JsonProperty(value = "confidence", required = true)
+    private double confidence;
 
     /**
      * Get the boundingBox value.
@@ -78,7 +78,7 @@ public class Word {
      *
      * @return the confidence value
      */
-    public TextRecognitionResultConfidenceClass confidence() {
+    public double confidence() {
         return this.confidence;
     }
 
@@ -88,7 +88,7 @@ public class Word {
      * @param confidence the confidence value to set
      * @return the Word object itself.
      */
-    public Word withConfidence(TextRecognitionResultConfidenceClass confidence) {
+    public Word withConfidence(double confidence) {
         this.confidence = confidence;
         return this;
     }

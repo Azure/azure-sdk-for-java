@@ -6,6 +6,8 @@ package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -13,6 +15,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class SnapshotUpdate {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotUpdate.class);
+
     /*
      * Resource tags
      */
@@ -48,6 +52,13 @@ public class SnapshotUpdate {
      */
     @JsonProperty(value = "properties.encryptionSettingsCollection")
     private EncryptionSettingsCollection encryptionSettingsCollection;
+
+    /*
+     * Encryption property can be used to encrypt data at rest with customer
+     * managed keys or platform managed keys.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
 
     /**
      * Get the tags property: Resource tags.
@@ -155,5 +166,44 @@ public class SnapshotUpdate {
     public SnapshotUpdate withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
         this.encryptionSettingsCollection = encryptionSettingsCollection;
         return this;
+    }
+
+    /**
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @param encryption the encryption value to set.
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (encryptionSettingsCollection() != null) {
+            encryptionSettingsCollection().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
+        }
     }
 }

@@ -11,7 +11,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Explicit list item.
+ * Explicit (exception) list item.
  */
 public class ExplicitListItem {
     /**

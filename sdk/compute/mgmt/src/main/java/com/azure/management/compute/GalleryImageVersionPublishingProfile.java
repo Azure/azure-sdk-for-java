@@ -4,35 +4,22 @@
 
 package com.azure.management.compute;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /** The GalleryImageVersionPublishingProfile model. */
-@Fluent
+@Immutable
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
-    /*
-     * The source image from which the Image Version is going to be created.
-     */
-    @JsonProperty(value = "source", required = true)
-    private GalleryArtifactSource source;
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionPublishingProfile.class);
 
     /**
-     * Get the source property: The source image from which the Image Version is going to be created.
+     * Validates the instance.
      *
-     * @return the source value.
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public GalleryArtifactSource source() {
-        return this.source;
-    }
-
-    /**
-     * Set the source property: The source image from which the Image Version is going to be created.
-     *
-     * @param source the source value to set.
-     * @return the GalleryImageVersionPublishingProfile object itself.
-     */
-    public GalleryImageVersionPublishingProfile withSource(GalleryArtifactSource source) {
-        this.source = source;
-        return this;
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

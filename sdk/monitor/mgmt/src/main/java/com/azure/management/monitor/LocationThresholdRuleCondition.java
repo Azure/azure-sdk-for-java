@@ -6,6 +6,8 @@ package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,7 +18,9 @@ import java.time.Duration;
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.LocationThresholdRuleCondition")
 @JsonFlatten
 @Fluent
-public final class LocationThresholdRuleCondition extends RuleCondition {
+public class LocationThresholdRuleCondition extends RuleCondition {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationThresholdRuleCondition.class);
+
     /*
      * the period of time (in ISO 8601 duration format) that is used to monitor
      * alert activity based on the threshold. If specified then it must be
@@ -71,5 +75,15 @@ public final class LocationThresholdRuleCondition extends RuleCondition {
     public LocationThresholdRuleCondition withFailedLocationCount(int failedLocationCount) {
         this.failedLocationCount = failedLocationCount;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

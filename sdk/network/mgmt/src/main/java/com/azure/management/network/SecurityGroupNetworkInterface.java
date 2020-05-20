@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SecurityGroupNetworkInterface model. */
 @Fluent
 public final class SecurityGroupNetworkInterface {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupNetworkInterface.class);
+
     /*
      * ID of the network interface.
      */
@@ -61,5 +65,16 @@ public final class SecurityGroupNetworkInterface {
         SecurityRuleAssociations securityRuleAssociations) {
         this.securityRuleAssociations = securityRuleAssociations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (securityRuleAssociations() != null) {
+            securityRuleAssociations().validate();
+        }
     }
 }

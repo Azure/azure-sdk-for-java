@@ -3,8 +3,6 @@
 
 package com.azure.messaging.servicebus;
 
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
-import com.azure.messaging.servicebus.models.ReceiveMode;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
@@ -42,17 +40,10 @@ public class ReceiveMultipleSessionsAsyncSample {
             .connectionString(connectionString)
             .sessionReceiver()
             .maxConcurrentSessions(3)
-            .receiveMode(ReceiveMode.PEEK_LOCK)
             .queueName("<<queue-name>>")
             .buildAsyncClient();
 
-        // By default, after messages are processed, they are completed (ie. removed from the queue/topic). Setting
-        // enableAutoComplete to true will tell the processor to complete or abandon the message depending on whether or
-        // not processing the message results in an exception.
-        ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setIsAutoCompleteEnabled(false);
-
-        Disposable subscription = receiver.receive(options)
+        Disposable subscription = receiver.receive()
             .flatMap(context -> {
                 if (context.hasError()) {
                     System.out.printf("An error occurred in session %s. Error: %s%n",
