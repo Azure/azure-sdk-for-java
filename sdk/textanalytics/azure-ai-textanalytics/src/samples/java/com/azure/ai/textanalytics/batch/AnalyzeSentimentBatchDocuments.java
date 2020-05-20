@@ -5,11 +5,10 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -47,12 +46,12 @@ public class AnalyzeSentimentBatchDocuments {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Analyzing sentiment for each document in a batch of documents
-        Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>> sentimentBatchResultResponse =
+        Response<AnalyzeSentimentResultCollection> sentimentBatchResultResponse =
             client.analyzeSentimentBatchWithResponse(documents, requestOptions, Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", sentimentBatchResultResponse.getStatusCode());
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> sentimentBatchResultCollection = sentimentBatchResultResponse.getValue();
+        AnalyzeSentimentResultCollection sentimentBatchResultCollection = sentimentBatchResultResponse.getValue();
 
         // Model version
         System.out.printf("Results of Azure Text Analytics \"Sentiment Analysis\" Model, version: %s%n", sentimentBatchResultCollection.getModelVersion());

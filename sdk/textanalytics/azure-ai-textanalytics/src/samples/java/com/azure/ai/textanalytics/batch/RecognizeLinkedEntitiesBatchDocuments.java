@@ -5,9 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -43,12 +42,12 @@ public class RecognizeLinkedEntitiesBatchDocuments {
         // Request options: show statistics and model version
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
-        Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> linkedEntitiesBatchResultResponse =
+        Response<RecognizeLinkedEntitiesResultCollection> linkedEntitiesBatchResultResponse =
             client.recognizeLinkedEntitiesBatchWithResponse(documents, requestOptions, Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", linkedEntitiesBatchResultResponse.getStatusCode());
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> linkedEntitiesResultCollection = linkedEntitiesBatchResultResponse.getValue();
+        RecognizeLinkedEntitiesResultCollection linkedEntitiesResultCollection = linkedEntitiesBatchResultResponse.getValue();
 
         // Model version
         System.out.printf("Results of Azure Text Analytics \"Linked Entities Recognition\" Model, version: %s%n", linkedEntitiesResultCollection.getModelVersion());

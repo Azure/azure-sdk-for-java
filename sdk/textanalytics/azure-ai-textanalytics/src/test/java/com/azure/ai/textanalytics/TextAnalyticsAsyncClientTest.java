@@ -477,7 +477,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractBatchKeyPhrasesRunner((inputs) ->
             StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
-                .assertNext(response -> validateExtractKeyPhraseResultCollectionWithResponse(false, getExpectedBatchKeyPhrases(), 200, response))
+                .assertNext(response -> validateExtractKeyPhrasesResultCollectionWithResponse(false, getExpectedBatchKeyPhrases(), 200, response))
                 .verifyComplete());
 
     }
@@ -488,7 +488,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
             StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, options))
-                .assertNext(response -> validateExtractKeyPhraseResultCollectionWithResponse(true, getExpectedBatchKeyPhrases(), 200, response))
+                .assertNext(response -> validateExtractKeyPhrasesResultCollectionWithResponse(true, getExpectedBatchKeyPhrases(), 200, response))
                 .verifyComplete());
     }
 
@@ -498,7 +498,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesStringInputRunner((inputs) ->
             StepVerifier.create(client.extractKeyPhrasesBatch(inputs))
-                .assertNext(response -> validateExtractKeyPhraseResultCollection(false, getExpectedBatchKeyPhrases(), response))
+                .assertNext(response -> validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 
@@ -508,7 +508,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
             StepVerifier.create(client.extractKeyPhrasesBatch(inputs, language))
-                .assertNext(response -> validateExtractKeyPhraseResultCollection(false, getExpectedBatchKeyPhrases(), response))
+                .assertNext(response -> validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 
@@ -518,7 +518,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
         extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
             StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, options))
-                .assertNext(response -> validateExtractKeyPhraseResultCollection(true, getExpectedBatchKeyPhrases(), response))
+                .assertNext(response -> validateExtractKeyPhrasesResultCollection(true, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
     }
 

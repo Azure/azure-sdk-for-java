@@ -3,19 +3,18 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -96,7 +95,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "This is written in English",
             "Este es un documento  escrito en Español.");
 
-        TextAnalyticsResultCollection<DetectLanguageResult> resultCollection =
+        DetectLanguageResultCollection resultCollection =
             textAnalyticsClient.detectLanguageBatch(documents);
 
         // Batch statistics
@@ -122,7 +121,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Este es un documento  escrito en Español."
         );
 
-        TextAnalyticsResultCollection<DetectLanguageResult> resultCollection =
+        DetectLanguageResultCollection resultCollection =
             textAnalyticsClient.detectLanguageBatch(documents, "US");
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -149,7 +148,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Este es un documento  escrito en Español."
         );
 
-        TextAnalyticsResultCollection<DetectLanguageResult> resultCollection =
+        DetectLanguageResultCollection resultCollection =
             textAnalyticsClient.detectLanguageBatch(documents, "US", null);
 
         // Batch statistics
@@ -178,13 +177,13 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new DetectLanguageInput("2", "Este es un documento  escrito en Español.", "es")
         );
 
-        Response<TextAnalyticsResultCollection<DetectLanguageResult>> response =
+        Response<DetectLanguageResultCollection> response =
             textAnalyticsClient.detectLanguageBatchWithResponse(detectLanguageInputs,
             new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        TextAnalyticsResultCollection<DetectLanguageResult> detectedLanguageResultCollection = response.getValue();
+        DetectLanguageResultCollection detectedLanguageResultCollection = response.getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();
@@ -245,7 +244,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> resultCollection =
+        RecognizeEntitiesResultCollection resultCollection =
             textAnalyticsClient.recognizeEntitiesBatch(documents);
 
         // Batch statistics
@@ -269,7 +268,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> resultCollection =
+        RecognizeEntitiesResultCollection resultCollection =
             textAnalyticsClient.recognizeEntitiesBatch(documents, "en");
 
         // Batch statistics
@@ -294,7 +293,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "I had a wonderful trip to Seattle last week.",
             "I work at Microsoft.");
 
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> resultCollection =
+        RecognizeEntitiesResultCollection resultCollection =
             textAnalyticsClient.recognizeEntitiesBatch(documents, "en", null);
 
         // Batch statistics
@@ -320,13 +319,13 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("1", "I work at Microsoft.").setLanguage("en")
         );
 
-        Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>> response =
+        Response<RecognizeEntitiesResultCollection> response =
             textAnalyticsClient.recognizeEntitiesBatchWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> recognizeEntitiesResultCollection = response.getValue();
+        RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = response.getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();
@@ -387,7 +386,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Old Faithful is a geyser at Yellowstone Park.",
             "Mount Shasta has lenticular clouds.");
 
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> resultCollection =
+        RecognizeLinkedEntitiesResultCollection resultCollection =
             textAnalyticsClient.recognizeLinkedEntitiesBatch(documents);
 
         // Batch statistics
@@ -418,7 +417,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds."
         );
 
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> resultCollection =
+        RecognizeLinkedEntitiesResultCollection resultCollection =
             textAnalyticsClient.recognizeLinkedEntitiesBatch(documents, "en");
 
         // Batch statistics
@@ -449,7 +448,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             "Mount Shasta has lenticular clouds."
         );
 
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> resultCollection =
+        RecognizeLinkedEntitiesResultCollection resultCollection =
             textAnalyticsClient.recognizeLinkedEntitiesBatch(documents, "en", null);
 
         // Batch statistics
@@ -480,13 +479,13 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
             new TextDocumentInput("2", "Mount Shasta has lenticular clouds.").setLanguage("en")
         );
 
-        Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> response =
+        Response<RecognizeLinkedEntitiesResultCollection> response =
             textAnalyticsClient.recognizeLinkedEntitiesBatchWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> resultCollection = response.getValue();
+        RecognizeLinkedEntitiesResultCollection resultCollection = response.getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -543,7 +542,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Extracting batch key phrases
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> resultCollection =
+        ExtractKeyPhrasesResultCollection resultCollection =
             textAnalyticsClient.extractKeyPhrasesBatch(documents);
 
         // Batch statistics
@@ -572,7 +571,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Extracting batch key phrases
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> resultCollection =
+        ExtractKeyPhrasesResultCollection resultCollection =
             textAnalyticsClient.extractKeyPhrasesBatch(documents, "en");
 
         // Batch statistics
@@ -602,7 +601,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Extracting batch key phrases
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> resultCollection =
+        ExtractKeyPhrasesResultCollection resultCollection =
             textAnalyticsClient.extractKeyPhrasesBatch(documents, "en", null);
 
         // Batch statistics
@@ -632,14 +631,14 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Extracting batch key phrases
-        Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> response =
+        Response<ExtractKeyPhrasesResultCollection> response =
             textAnalyticsClient.extractKeyPhrasesBatchWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
 
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> resultCollection = response.getValue();
+        ExtractKeyPhrasesResultCollection resultCollection = response.getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -723,7 +722,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Analyzing batch sentiments
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> resultCollection =
+        AnalyzeSentimentResultCollection resultCollection =
             textAnalyticsClient.analyzeSentimentBatch(documents);
 
         // Batch statistics
@@ -766,7 +765,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Analyzing batch sentiments
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> resultCollection =
+        AnalyzeSentimentResultCollection resultCollection =
             textAnalyticsClient.analyzeSentimentBatch(documents, "en");
 
         // Batch statistics
@@ -808,7 +807,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Analyzing batch sentiments
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> resultCollection =
+        AnalyzeSentimentResultCollection resultCollection =
             textAnalyticsClient.analyzeSentimentBatch(documents, "en", null);
 
         // Batch statistics
@@ -852,13 +851,13 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         );
 
         // Analyzing batch sentiments
-        Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>> response =
+        Response<AnalyzeSentimentResultCollection> response =
             textAnalyticsClient.analyzeSentimentBatchWithResponse(textDocumentInputs,
                 new TextAnalyticsRequestOptions().setIncludeStatistics(true), Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> resultCollection = response.getValue();
+        AnalyzeSentimentResultCollection resultCollection = response.getValue();
 
         // Batch statistics
         TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();

@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -47,7 +47,7 @@ public class ExtractKeyPhrasesBatchDocumentsAsync {
             keyPhrasesBatchResultResponse -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", keyPhrasesBatchResultResponse.getStatusCode());
-                TextAnalyticsResultCollection<ExtractKeyPhraseResult> keyPhrasesBatchResultCollection = keyPhrasesBatchResultResponse.getValue();
+                ExtractKeyPhrasesResultCollection keyPhrasesBatchResultCollection = keyPhrasesBatchResultResponse.getValue();
 
                 // Model version
                 System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());

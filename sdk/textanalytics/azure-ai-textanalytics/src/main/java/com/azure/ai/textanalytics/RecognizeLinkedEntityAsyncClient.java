@@ -10,10 +10,10 @@ import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
@@ -94,15 +94,14 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
-     * which contains {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult}.
+     * which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @param documents The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeLinkedEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>> recognizeLinkedEntitiesBatch(
+    Mono<Response<RecognizeLinkedEntitiesResultCollection>> recognizeLinkedEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
@@ -114,16 +113,15 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
-     * which contains {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult}.
+     * which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @param documents The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeLinkedEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>>
+    Mono<Response<RecognizeLinkedEntitiesResultCollection>>
         recognizeLinkedEntitiesBatchWithContext(Iterable<TextDocumentInput> documents,
             TextAnalyticsRequestOptions options, Context context) {
         try {
@@ -136,15 +134,13 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Helper method to convert the service response of {@link EntityLinkingResult} to
-     * {@link Response} which contains {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult}.
+     * {@link Response} which contains {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @param response the {@link SimpleResponse} of {@link EntityLinkingResult} returned by the service.
      *
-     * @return A {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeLinkedEntitiesResult}.
+     * @return A {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    private Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>
-        toTextAnalyticsResultCollectionResponse(
+    private Response<RecognizeLinkedEntitiesResultCollection> toRecognizeLinkedEntitiesResultCollectionResponse(
         final SimpleResponse<EntityLinkingResult> response) {
         final EntityLinkingResult entityLinkingResult = response.getValue();
         // List of documents results
@@ -181,7 +177,7 @@ class RecognizeLinkedEntityAsyncClient {
         });
 
         return new SimpleResponse<>(response,
-            new TextAnalyticsResultCollection<>(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
+            new RecognizeLinkedEntitiesResultCollection(linkedEntitiesResults, entityLinkingResult.getModelVersion(),
                 entityLinkingResult.getStatistics() == null ? null
                     : toBatchStatistics(entityLinkingResult.getStatistics())));
     }
@@ -203,16 +199,14 @@ class RecognizeLinkedEntityAsyncClient {
 
     /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} which contains
-     * {@link TextAnalyticsResultCollection} of {@link RecognizeLinkedEntitiesResult} from a {@link SimpleResponse}
-     * of {@link EntityLinkingResult}.
+     * {@link RecognizeLinkedEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntityLinkingResult}.
      *
      * @param documents The list of documents to recognize linked entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeLinkedEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizeLinkedEntitiesResultCollection}.
      */
-    private Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>>
+    private Mono<Response<RecognizeLinkedEntitiesResultCollection>>
         getRecognizedLinkedEntitiesResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options,
             Context context) {
         return service.entitiesLinkingWithResponseAsync(
@@ -224,7 +218,7 @@ class RecognizeLinkedEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized linked entities for a batch of documents - {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize linked entities - {}", error))
-            .map(this::toTextAnalyticsResultCollectionResponse)
+            .map(this::toRecognizeLinkedEntitiesResultCollectionResponse)
             .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

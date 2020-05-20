@@ -6,10 +6,9 @@ package com.azure.ai.textanalytics.batch;
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.Response;
@@ -45,11 +44,11 @@ public class DetectLanguageBatchDocuments {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Detecting language for each document in a batch of documents
-        Response<TextAnalyticsResultCollection<DetectLanguageResult>> detectedLanguageResultResponse = client.detectLanguageBatchWithResponse(documents, requestOptions, Context.NONE);
+        Response<DetectLanguageResultCollection> detectedLanguageResultResponse = client.detectLanguageBatchWithResponse(documents, requestOptions, Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", detectedLanguageResultResponse.getStatusCode());
-        TextAnalyticsResultCollection<DetectLanguageResult> detectedLanguageResultCollection = detectedLanguageResultResponse.getValue();
+        DetectLanguageResultCollection detectedLanguageResultCollection = detectedLanguageResultResponse.getValue();
 
         // Model version
         System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());

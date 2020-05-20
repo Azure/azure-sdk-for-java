@@ -8,11 +8,10 @@ import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -229,7 +228,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeEntitiesBatchInputSingleError(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeBatchCategorizedEntitySingleErrorRunner((inputs) -> {
-            Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>> response = client.recognizeEntitiesBatchWithResponse(inputs, null, Context.NONE);
+            Response<RecognizeEntitiesResultCollection> response = client.recognizeEntitiesBatchWithResponse(inputs, null, Context.NONE);
             response.getValue().forEach(recognizeEntitiesResult -> {
                 Exception exception = assertThrows(TextAnalyticsException.class, recognizeEntitiesResult::getEntities);
                 assertEquals(exception.getMessage(), BATCH_ERROR_EXCEPTION_MESSAGE);
@@ -434,7 +433,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForBatchInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractBatchKeyPhrasesRunner((inputs) ->
-            validateExtractKeyPhraseResultCollectionWithResponse(false, getExpectedBatchKeyPhrases(), 200,
+            validateExtractKeyPhrasesResultCollectionWithResponse(false, getExpectedBatchKeyPhrases(), 200,
                 client.extractKeyPhrasesBatchWithResponse(inputs, null, Context.NONE)));
     }
 
@@ -443,7 +442,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForBatchInputShowStatistics(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractBatchKeyPhrasesShowStatsRunner((inputs, options) ->
-            validateExtractKeyPhraseResultCollectionWithResponse(true, getExpectedBatchKeyPhrases(), 200,
+            validateExtractKeyPhrasesResultCollectionWithResponse(true, getExpectedBatchKeyPhrases(), 200,
                 client.extractKeyPhrasesBatchWithResponse(inputs, options, Context.NONE)));
     }
 
@@ -452,7 +451,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractKeyPhrasesStringInputRunner((inputs) ->
-            validateExtractKeyPhraseResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs)));
+            validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -460,7 +459,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            validateExtractKeyPhraseResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, language)));
+            validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, language)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -468,7 +467,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
-            validateExtractKeyPhraseResultCollection(true, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, options)));
+            validateExtractKeyPhrasesResultCollection(true, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

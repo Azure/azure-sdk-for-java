@@ -6,23 +6,21 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link T} along with model version and batch's statistics
- *
- * @param <T> any child class of {@link TextAnalyticsResult}.
+ * A collection model that contains a list of {@link DetectLanguageResult} along with model version and
+ * batch's statistics.
  */
-public final class TextAnalyticsResultCollection<T extends TextAnalyticsResult> extends IterableStream<T> {
+public class DetectLanguageResultCollection extends IterableStream<DetectLanguageResult> {
     private final String modelVersion;
     private final TextDocumentBatchStatistics statistics;
-
     /**
-     * Create a {@link TextAnalyticsResultCollection} model that maintains a list of {@link T} along
-     * with model version and batch's statistics
+     * Create a {@link DetectLanguageResultCollection} model that maintains a list of {@link DetectLanguageResult}
+     * along with model version and batch's statistics.
      *
-     * @param documentResults A list of generic type {@link T} that is any child class of {@link TextAnalyticsResult}.
+     * @param documentResults A list of {@link DetectLanguageResult}.
      * @param modelVersion The model version trained in service for the request.
      * @param statistics The batch statistics of response.
      */
-    public TextAnalyticsResultCollection(Iterable<T> documentResults, String modelVersion,
+    public DetectLanguageResultCollection(Iterable<DetectLanguageResult> documentResults, String modelVersion,
         TextDocumentBatchStatistics statistics) {
         super(documentResults);
         this.modelVersion = modelVersion;

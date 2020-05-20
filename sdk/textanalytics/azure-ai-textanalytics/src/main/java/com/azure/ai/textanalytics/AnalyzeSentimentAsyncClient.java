@@ -10,10 +10,10 @@ import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextSentiment;
@@ -60,15 +60,15 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that returns a {@link Response}
-     * which contains {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
+     * which contains {@link AnalyzeSentimentResultCollection}.
      *
      * @param documents The list of documents to analyze sentiments for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return A mono {@link Response} contains {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
-    public Mono<Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatch(
+    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
@@ -79,16 +79,16 @@ class AnalyzeSentimentAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters that returns a {@link Response}
-     * which contains {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * Helper function for calling service with max overloaded parameters that returns a mono {@link Response}
+     * which contains {@link AnalyzeSentimentResultCollection}.
      *
      * @param documents The list of documents to analyze sentiments for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} contains {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatchWithContext(
+    Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
@@ -100,13 +100,13 @@ class AnalyzeSentimentAsyncClient {
 
     /**
      * Helper method to convert the service response of {@link SentimentResponse} to {@link Response} that contains
-     * {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * {@link AnalyzeSentimentResultCollection}.
      *
      * @param response The {@link SimpleResponse} of {@link SentimentResponse} returned by the service.
      *
-     * @return A {@link Response} contains {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * @return A {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
-    private Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>> toTextAnalyticsResultCollectionResponse(
+    private Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse(
         SimpleResponse<SentimentResponse> response) {
         final SentimentResponse sentimentResponse = response.getValue();
         final List<AnalyzeSentimentResult> analyzeSentimentResults = new ArrayList<>();
@@ -128,7 +128,7 @@ class AnalyzeSentimentAsyncClient {
                 toTextAnalyticsError(documentError.getError()), null));
         }
         return new SimpleResponse<>(response,
-            new TextAnalyticsResultCollection<>(analyzeSentimentResults, sentimentResponse.getModelVersion(),
+            new AnalyzeSentimentResultCollection(analyzeSentimentResults, sentimentResponse.getModelVersion(),
             sentimentResponse.getStatistics() == null ? null : toBatchStatistics(sentimentResponse.getStatistics())));
     }
 
@@ -196,16 +196,15 @@ class AnalyzeSentimentAsyncClient {
 
     /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} which contains
-     * {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult} from
-     * a {@link SimpleResponse} of {@link SentimentResponse}.
+     * {@link AnalyzeSentimentResultCollection} from a {@link SimpleResponse} of {@link SentimentResponse}.
      *
      * @param documents A list of documents to be analyzed.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} contains {@link TextAnalyticsResultCollection} of {@link AnalyzeSentimentResult}.
+     * @return A mono {@link Response} contains {@link AnalyzeSentimentResultCollection}.
      */
-    private Mono<Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>>> getAnalyzedSentimentResponse(
+    private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
@@ -215,7 +214,7 @@ class AnalyzeSentimentAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-            .map(this::toTextAnalyticsResultCollectionResponse)
+            .map(this::toAnalyzeSentimentResultCollectionResponse)
             .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

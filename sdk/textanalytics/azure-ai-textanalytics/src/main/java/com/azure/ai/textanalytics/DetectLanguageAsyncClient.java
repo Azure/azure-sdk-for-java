@@ -10,9 +10,9 @@ import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
@@ -61,10 +61,9 @@ class DetectLanguageAsyncClient {
      * @param documents The list of documents to detect languages for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link DetectLanguageResult}.
+     * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<DetectLanguageResult>>> detectLanguageBatch(
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatch(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
@@ -81,10 +80,9 @@ class DetectLanguageAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} which contains {@link TextAnalyticsResultCollection}
-     *  of {@link DetectLanguageResult}.
+     * @return A mono {@link Response} which contains {@link DetectLanguageResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<DetectLanguageResult>>> detectLanguageBatchWithContext(
+    Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithContext(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
@@ -96,13 +94,13 @@ class DetectLanguageAsyncClient {
 
     /**
      * Helper method to convert the service response of {@link LanguageResult} to {@link Response} that contains
-     * {@link TextAnalyticsResultCollection} of {@link DetectLanguageResult}.
+     * {@link DetectLanguageResultCollection}.
      *
      * @param response the {@link SimpleResponse} of {@link LanguageResult} returned by the service.
      *
-     * @return A {@link Response} that contains {@link TextAnalyticsResultCollection} of {@link DetectLanguageResult}.
+     * @return A {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    private Response<TextAnalyticsResultCollection<DetectLanguageResult>> toTextAnalyticsResultDocumentResponse(
+    private Response<DetectLanguageResultCollection> toTextAnalyticsResultDocumentResponse(
         SimpleResponse<LanguageResult> response) {
         final LanguageResult languageResult = response.getValue();
         final List<DetectLanguageResult> detectLanguageResults = new ArrayList<>();
@@ -143,7 +141,7 @@ class DetectLanguageAsyncClient {
         }
 
         return new SimpleResponse<>(response,
-            new TextAnalyticsResultCollection<>(detectLanguageResults, languageResult.getModelVersion(),
+            new DetectLanguageResultCollection(detectLanguageResults, languageResult.getModelVersion(),
                 languageResult.getStatistics() == null ? null : toBatchStatistics(languageResult.getStatistics())));
     }
 
@@ -155,10 +153,9 @@ class DetectLanguageAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link DetectLanguageResult}.
+     * @return A mono {@link Response} that contains {@link DetectLanguageResultCollection}.
      */
-    private Mono<Response<TextAnalyticsResultCollection<DetectLanguageResult>>> getDetectedLanguageResponse(
+    private Mono<Response<DetectLanguageResultCollection>> getDetectedLanguageResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.languagesWithResponseAsync(
                 new LanguageBatchInput().setDocuments(toLanguageInput(documents)),

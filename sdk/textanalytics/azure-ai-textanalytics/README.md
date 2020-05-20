@@ -146,8 +146,8 @@ or the number of operation transactions that have gone through, simply call `get
 `TextDocumentStatistics` which contains both information. 
 
 ### Return value collection
-An operation result collection, such as `TextAnalyticsResultCollection<AnalyzeSentimentResult>`, which is the collection of 
-the result of a Text Analytics analyzing sentiment operation. For `TextAnalyticsResultCollection` includes the model
+An operation result collection, such as `AnalyzeSentimentResultCollection`, which is the collection of 
+the result of a Text Analytics analyzing sentiment operation, also it includes the model
 version of the operation and statistics of the batch documents. 
 
 ### Operation on multiple documents

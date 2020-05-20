@@ -5,9 +5,8 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -30,8 +29,8 @@ public class RecognizeEntitiesBatchDocuments {
     public static void main(String[] args) {
         // Instantiate a client that will be used to call the service.
         TextAnalyticsClient client = new TextAnalyticsClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
+            .credential(new AzureKeyCredential("184654c847d54432b8301a4b76f63045"))
+            .endpoint("https://westus2.ppe.cognitiveservices.azure.com")
             .buildClient();
 
         // The texts that need be analyzed.
@@ -44,12 +43,12 @@ public class RecognizeEntitiesBatchDocuments {
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true).setModelVersion("latest");
 
         // Recognizing entities for each document in a batch of documents
-        Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>> entitiesBatchResultResponse =
+        Response<RecognizeEntitiesResultCollection> entitiesBatchResultResponse =
             client.recognizeEntitiesBatchWithResponse(documents, requestOptions, Context.NONE);
 
         // Response's status code
         System.out.printf("Status code of request response: %d%n", entitiesBatchResultResponse.getStatusCode());
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> recognizeEntitiesResultCollection = entitiesBatchResultResponse.getValue();
+        RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = entitiesBatchResultResponse.getValue();
 
         // Model version
         System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());

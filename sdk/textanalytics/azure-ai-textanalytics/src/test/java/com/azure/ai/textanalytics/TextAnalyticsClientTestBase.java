@@ -3,22 +3,21 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
-import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsResult;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
@@ -30,6 +29,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -382,32 +382,32 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateDetectLanguageResultCollectionWithResponse(boolean showStatistics,
-        TextAnalyticsResultCollection<DetectLanguageResult> expected,
+        DetectLanguageResultCollection expected,
         int expectedStatusCode,
-        Response<TextAnalyticsResultCollection<DetectLanguageResult>> response) {
+        Response<DetectLanguageResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateDetectLanguageResultCollection(showStatistics, expected, response.getValue());
     }
 
     static void validateDetectLanguageResultCollection(boolean showStatistics,
-        TextAnalyticsResultCollection<DetectLanguageResult> expected,
-        TextAnalyticsResultCollection<DetectLanguageResult> actual) {
+        DetectLanguageResultCollection expected,
+        DetectLanguageResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validatePrimaryLanguage(expectedItem.getPrimaryLanguage(), actualItem.getPrimaryLanguage()));
     }
 
     static void validateCategorizedEntitiesResultCollectionWithResponse(boolean showStatistics,
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> expected,
-        int expectedStatusCode, Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>> response) {
+        RecognizeEntitiesResultCollection expected,
+        int expectedStatusCode, Response<RecognizeEntitiesResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateCategorizedEntitiesResultCollection(showStatistics, expected, response.getValue());
     }
 
     static void validateCategorizedEntitiesResultCollection(boolean showStatistics,
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> expected,
-        TextAnalyticsResultCollection<RecognizeEntitiesResult> actual) {
+        RecognizeEntitiesResultCollection expected,
+        RecognizeEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateCategorizedEntities(
                 expectedItem.getEntities().stream().collect(Collectors.toList()),
@@ -415,33 +415,33 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateLinkedEntitiesResultCollectionWithResponse(boolean showStatistics,
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> expected,
-        int expectedStatusCode, Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> response) {
+        RecognizeLinkedEntitiesResultCollection expected,
+        int expectedStatusCode, Response<RecognizeLinkedEntitiesResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateLinkedEntitiesResultCollection(showStatistics, expected, response.getValue());
     }
 
     static void validateLinkedEntitiesResultCollection(boolean showStatistics,
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> expected,
-        TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> actual) {
+        RecognizeLinkedEntitiesResultCollection expected,
+        RecognizeLinkedEntitiesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateLinkedEntities(
                 expectedItem.getEntities().stream().collect(Collectors.toList()),
                 actualItem.getEntities().stream().collect(Collectors.toList())));
     }
 
-    static void validateExtractKeyPhraseResultCollectionWithResponse(boolean showStatistics,
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> expected,
-        int expectedStatusCode, Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> response) {
+    static void validateExtractKeyPhrasesResultCollectionWithResponse(boolean showStatistics,
+        ExtractKeyPhrasesResultCollection expected,
+        int expectedStatusCode, Response<ExtractKeyPhrasesResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
-        validateExtractKeyPhraseResultCollection(showStatistics, expected, response.getValue());
+        validateExtractKeyPhrasesResultCollection(showStatistics, expected, response.getValue());
     }
 
-    static void validateExtractKeyPhraseResultCollection(boolean showStatistics,
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> expected,
-        TextAnalyticsResultCollection<ExtractKeyPhraseResult> actual) {
+    static void validateExtractKeyPhrasesResultCollection(boolean showStatistics,
+        ExtractKeyPhrasesResultCollection expected,
+        ExtractKeyPhrasesResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateKeyPhrases(
                 expectedItem.getKeyPhrases().stream().collect(Collectors.toList()),
@@ -449,16 +449,16 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     }
 
     static void validateSentimentResultCollectionWithResponse(boolean showStatistics,
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> expected,
-        int expectedStatusCode, Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>> response) {
+        AnalyzeSentimentResultCollection expected,
+        int expectedStatusCode, Response<AnalyzeSentimentResultCollection> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateSentimentResultCollection(showStatistics, expected, response.getValue());
     }
 
     static void validateSentimentResultCollection(boolean showStatistics,
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> expected,
-        TextAnalyticsResultCollection<AnalyzeSentimentResult> actual) {
+        AnalyzeSentimentResultCollection expected,
+        AnalyzeSentimentResultCollection actual) {
         validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) ->
             validateAnalyzedSentiment(expectedItem.getDocumentSentiment(), actualItem.getDocumentSentiment()));
     }
@@ -601,9 +601,8 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     /**
      * Helper method to verify {@link TextAnalyticsResult documents} returned in a batch request.
      */
-    static <T extends TextAnalyticsResult> void validateTextAnalyticsResult(boolean showStatistics,
-        TextAnalyticsResultCollection<T> expectedResults, TextAnalyticsResultCollection<T> actualResults,
-        BiConsumer<T, T> additionalAssertions) {
+    static <T extends TextAnalyticsResult, H extends IterableStream<T>> void validateTextAnalyticsResult(
+        boolean showStatistics, H expectedResults, H actualResults, BiConsumer<T, T> additionalAssertions) {
 
         final Map<String, T> expected = expectedResults.stream().collect(
             Collectors.toMap(TextAnalyticsResult::getId, r -> r));
@@ -613,7 +612,22 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertEquals(expected.size(), actual.size());
 
         if (showStatistics) {
-            validateBatchStatistics(expectedResults.getStatistics(), actualResults.getStatistics());
+            if (expectedResults instanceof AnalyzeSentimentResultCollection) {
+                validateBatchStatistics(((AnalyzeSentimentResultCollection) expectedResults).getStatistics(),
+                    ((AnalyzeSentimentResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof DetectLanguageResultCollection) {
+                validateBatchStatistics(((DetectLanguageResultCollection) expectedResults).getStatistics(),
+                    ((DetectLanguageResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
+                validateBatchStatistics(((ExtractKeyPhrasesResultCollection) expectedResults).getStatistics(),
+                    ((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeEntitiesResultCollection) actualResults).getStatistics());
+            } else if (expectedResults instanceof RecognizeLinkedEntitiesResultCollection) {
+                validateBatchStatistics(((RecognizeLinkedEntitiesResultCollection) expectedResults).getStatistics(),
+                    ((RecognizeLinkedEntitiesResultCollection) actualResults).getStatistics());
+            }
         }
 
         expected.forEach((key, expectedValue) -> {

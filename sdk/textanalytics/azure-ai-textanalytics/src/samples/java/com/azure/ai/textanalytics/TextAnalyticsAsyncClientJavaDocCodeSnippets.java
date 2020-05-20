@@ -3,17 +3,18 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesResultCollection;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.credential.AzureKeyCredential;
@@ -178,7 +179,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", response.getStatusCode());
 
-                TextAnalyticsResultCollection<DetectLanguageResult> resultCollection = response.getValue();
+                DetectLanguageResultCollection resultCollection = response.getValue();
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
                 System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
@@ -312,7 +313,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-                TextAnalyticsResultCollection<RecognizeEntitiesResult> resultCollection = response.getValue();
+                RecognizeEntitiesResultCollection resultCollection = response.getValue();
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -483,7 +484,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-                TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult> resultCollection = response.getValue();
+                RecognizeLinkedEntitiesResultCollection resultCollection = response.getValue();
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -615,7 +616,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-                TextAnalyticsResultCollection<ExtractKeyPhraseResult> resultCollection = response.getValue();
+                ExtractKeyPhrasesResultCollection resultCollection = response.getValue();
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
@@ -790,7 +791,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> {
                 // Response's status code
                 System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-                TextAnalyticsResultCollection<AnalyzeSentimentResult> resultCollection = response.getValue();
+                AnalyzeSentimentResultCollection resultCollection = response.getValue();
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();

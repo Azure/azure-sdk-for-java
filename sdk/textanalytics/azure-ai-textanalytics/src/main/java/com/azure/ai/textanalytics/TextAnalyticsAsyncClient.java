@@ -5,21 +5,22 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
+import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
-import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
-import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
+import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -193,13 +194,12 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link DetectLanguageResult detected language document result}.
+     * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<DetectLanguageResult>> detectLanguageBatch(Iterable<String> documents) {
+    public Mono<DetectLanguageResultCollection> detectLanguageBatch(Iterable<String> documents) {
         return detectLanguageBatch(documents, defaultCountryHint, null);
     }
 
@@ -219,13 +219,12 @@ public final class TextAnalyticsAsyncClient {
      * specified. To remove this behavior you can reset this parameter by setting this value to empty string
      * {@code countryHint} = "" or "none".
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link DetectLanguageResult detected language document result}.
+     * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<DetectLanguageResult>> detectLanguageBatch(
+    public Mono<DetectLanguageResultCollection> detectLanguageBatch(
         Iterable<String> documents, String countryHint) {
         return detectLanguageBatch(documents, countryHint, null);
     }
@@ -249,13 +248,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link DetectLanguageResult detected language document result}.
+     * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<DetectLanguageResult>> detectLanguageBatch(
+    public Mono<DetectLanguageResultCollection> detectLanguageBatch(
         Iterable<String> documents, String countryHint, TextAnalyticsRequestOptions options) {
 
         if (countryHint != null && countryHint.equalsIgnoreCase("none")) {
@@ -286,13 +284,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link Response} which contains a  {@link TextAnalyticsResultCollection} of
-     * {@link DetectLanguageResult detected language document result}.
+     * @return A {@link Mono} contains a {@link Response} which contains a {@link DetectLanguageResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TextAnalyticsResultCollection<DetectLanguageResult>>> detectLanguageBatchWithResponse(
+    public Mono<Response<DetectLanguageResultCollection>> detectLanguageBatchWithResponse(
         Iterable<DetectLanguageInput> documents, TextAnalyticsRequestOptions options) {
         return detectLanguageAsyncClient.detectLanguageBatch(documents, options);
     }
@@ -373,13 +370,12 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
+     * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatch(
+    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
         Iterable<String> documents) {
         return recognizeEntitiesBatch(documents, defaultLanguage, null);
     }
@@ -399,13 +395,12 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
      * default.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
+     * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatch(
+    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
         Iterable<String> documents, String language) {
         return recognizeEntitiesBatch(documents, language, null);
     }
@@ -428,13 +423,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
+     * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<RecognizeEntitiesResult>> recognizeEntitiesBatch(
+    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         try {
             return recognizeEntitiesBatchWithResponse(
@@ -464,13 +458,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link Response} which contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeEntitiesResult recognized categorized entities document result}.
+     * @return A {@link Mono} contains a {@link Response} which contains a {@link RecognizeEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesBatchWithResponse(
+    public Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return recognizeEntityAsyncClient.recognizeEntitiesBatch(documents, options);
     }
@@ -546,13 +539,12 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
+     * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatch(
+    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
         Iterable<String> documents) {
         return recognizeLinkedEntitiesBatch(documents, defaultLanguage, null);
     }
@@ -574,13 +566,12 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
+     * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatch(
+    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language) {
         return recognizeLinkedEntitiesBatch(documents, language, null);
     }
@@ -604,13 +595,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
+     * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>> recognizeLinkedEntitiesBatch(
+    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         try {
             return recognizeLinkedEntitiesBatchWithResponse(mapByIndex(documents, (index, value) -> {
@@ -641,13 +631,13 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link Response} which contains a {@link TextAnalyticsResultCollection} of
-     * {@link RecognizeLinkedEntitiesResult recognized linked entities document result}.
+     * @return A {@link Mono} contains a {@link Response} which contains a
+     * {@link RecognizeLinkedEntitiesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TextAnalyticsResultCollection<RecognizeLinkedEntitiesResult>>>
+    public Mono<Response<RecognizeLinkedEntitiesResultCollection>>
         recognizeLinkedEntitiesBatchWithResponse(Iterable<TextDocumentInput> documents,
             TextAnalyticsRequestOptions options) {
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntitiesBatch(documents, options);
@@ -723,13 +713,12 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatch(
+    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
         Iterable<String> documents) {
         return extractKeyPhrasesBatch(documents, defaultLanguage, null);
     }
@@ -750,13 +739,12 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatch(
+    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
         Iterable<String> documents, String language) {
         return extractKeyPhrasesBatch(documents, language, null);
     }
@@ -780,13 +768,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> extractKeyPhrasesBatch(
+    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         try {
             return extractKeyPhrasesBatchWithResponse(
@@ -816,13 +803,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link Response} that contains a {@link TextAnalyticsResultCollection} of
-     * {@link ExtractKeyPhraseResult extracted key phrases document result}.
+     * @return A {@link Mono} contains a {@link Response} that contains a {@link ExtractKeyPhrasesResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesBatchWithResponse(
+    public Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return extractKeyPhraseAsyncClient.extractKeyPhrasesWithResponse(documents, options);
     }
@@ -914,13 +900,12 @@ public final class TextAnalyticsAsyncClient {
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
+     * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatch(
+    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
         Iterable<String> documents) {
         return analyzeSentimentBatch(documents, defaultLanguage, null);
     }
@@ -940,13 +925,12 @@ public final class TextAnalyticsAsyncClient {
      * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
      * English as default.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
+     * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatch(
+    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
         Iterable<String> documents, String language) {
         return analyzeSentimentBatch(documents, language, null);
     }
@@ -968,13 +952,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link TextAnalyticsResultCollection} of
-     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
+     * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TextAnalyticsResultCollection<AnalyzeSentimentResult>> analyzeSentimentBatch(
+    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
         Iterable<String> documents, String language, TextAnalyticsRequestOptions options) {
         try {
             return analyzeSentimentBatchWithResponse(
@@ -1003,13 +986,12 @@ public final class TextAnalyticsAsyncClient {
      * @param options The {@link TextAnalyticsRequestOptions options} to configure the scoring model for documents
      * and show statistics.
      *
-     * @return A {@link Mono} contains a {@link Response} that contains a {@link TextAnalyticsResultCollection} of
-     * {@link AnalyzeSentimentResult analyzed text sentiment document result}.
+     * @return A {@link Mono} contains a {@link Response} that contains a {@link AnalyzeSentimentResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TextAnalyticsResultCollection<AnalyzeSentimentResult>>> analyzeSentimentBatchWithResponse(
+    public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         return analyzeSentimentAsyncClient.analyzeSentimentBatch(documents, options);
     }

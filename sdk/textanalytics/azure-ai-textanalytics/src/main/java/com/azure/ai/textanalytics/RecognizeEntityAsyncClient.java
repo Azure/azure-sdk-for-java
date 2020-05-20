@@ -10,10 +10,10 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
+import com.azure.ai.textanalytics.models.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
@@ -100,10 +100,9 @@ class RecognizeEntityAsyncClient {
      * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesBatch(
+    Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
@@ -114,16 +113,15 @@ class RecognizeEntityAsyncClient {
     }
 
     /**
-     * Helper function for calling service with max overloaded parameters with {@link Context} is given
+     * Helper function for calling service with max overloaded parameters with {@link Context} is given.
      *
      * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>>> recognizeEntitiesBatchWithContext(
+    Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
@@ -135,14 +133,13 @@ class RecognizeEntityAsyncClient {
 
     /**
      * Helper method to convert the service response of {@link EntitiesResult} to {@link Response} which contains
-     * {@link TextAnalyticsResultCollection} of {@link RecognizeEntitiesResult}}.
+     * {@link RecognizeEntitiesResultCollection}.
      *
      * @param response the {@link SimpleResponse} of {@link EntitiesResult} returned by the service.
      *
-     * @return A {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeEntitiesResult}.
+     * @return A {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
-    private Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>> toTextAnalyticsResultCollectionResponse(
+    private Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponse(
         final SimpleResponse<EntitiesResult> response) {
         EntitiesResult entitiesResult = response.getValue();
         // List of documents results
@@ -182,23 +179,21 @@ class RecognizeEntityAsyncClient {
         });
 
         return new SimpleResponse<>(response,
-            new TextAnalyticsResultCollection<>(recognizeEntitiesResults, entitiesResult.getModelVersion(),
+            new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
                 entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
     }
 
     /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} that contains
-     * {@link TextAnalyticsResultCollection} of {@link RecognizeEntitiesResult} from a {@link SimpleResponse}
-     * of {@link EntitiesResult}.
+     * {@link RecognizeEntitiesResultCollection} from a {@link SimpleResponse} of {@link EntitiesResult}.
      *
      * @param documents The list of documents to recognize entities for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link RecognizeEntitiesResult}.
+     * @return A mono {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
      */
-    private Mono<Response<TextAnalyticsResultCollection<RecognizeEntitiesResult>>> getRecognizedEntitiesResponse(
+    private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
@@ -209,7 +204,7 @@ class RecognizeEntityAsyncClient {
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-            .map(this::toTextAnalyticsResultCollectionResponse)
+            .map(this::toRecognizeEntitiesResultCollectionResponse)
             .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }

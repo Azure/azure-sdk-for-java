@@ -9,12 +9,12 @@ import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
+import com.azure.ai.textanalytics.models.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
-import com.azure.ai.textanalytics.models.TextAnalyticsResultCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.WarningCode;
@@ -100,10 +100,9 @@ class ExtractKeyPhraseAsyncClient {
      * @param documents A list of documents to extract key phrases for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link ExtractKeyPhraseResult}.
+     * @return A mono {@link Response} that contains {@link ExtractKeyPhrasesResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesWithResponse(
+    Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
             inputDocumentsValidation(documents);
@@ -115,16 +114,15 @@ class ExtractKeyPhraseAsyncClient {
 
     /**
      * Helper function for calling service with max overloaded parameters that returns a {@link Response}
-     * which contains {@link TextAnalyticsResultCollection} of {@link ExtractKeyPhraseResult}.
+     * which contains {@link ExtractKeyPhrasesResultCollection}.
      *
      * @param documents A list of documents to extract key phrases for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} which contains {@link TextAnalyticsResultCollection} of
-     *  {@link ExtractKeyPhraseResult}.
+     * @return A mono {@link Response} which contains {@link ExtractKeyPhrasesResultCollection}.
      */
-    Mono<Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>>> extractKeyPhrasesBatchWithContext(
+    Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
             inputDocumentsValidation(documents);
@@ -136,14 +134,13 @@ class ExtractKeyPhraseAsyncClient {
 
     /**
      * Helper method to convert the service response of {@link KeyPhraseResult} to {@link Response}
-     * which contains {@link TextAnalyticsResultCollection} of {@link ExtractKeyPhraseResult}.
+     * which contains {@link ExtractKeyPhrasesResultCollection}.
      *
      * @param response the {@link SimpleResponse} returned by the service.
      *
-     * @return A {@link Response} which contains {@link TextAnalyticsResultCollection} of
-     *  {@link ExtractKeyPhraseResult}.
+     * @return A {@link Response} which contains {@link ExtractKeyPhrasesResultCollection}.
      */
-    private Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>> toTextAnalyticsResultCollectionResponse(
+    private Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
         final SimpleResponse<KeyPhraseResult> response) {
         final KeyPhraseResult keyPhraseResult = response.getValue();
         // List of documents results
@@ -181,24 +178,22 @@ class ExtractKeyPhraseAsyncClient {
         }
 
         return new SimpleResponse<>(response,
-            new TextAnalyticsResultCollection<>(keyPhraseResultList, keyPhraseResult.getModelVersion(),
+            new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
                 keyPhraseResult.getStatistics() == null ? null
                     : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
 
     /**
      * Call the service with REST response, convert to a {@link Mono} of {@link Response} which contains
-     * {@link TextAnalyticsResultCollection} of {@link ExtractKeyPhraseResult} from a {@link SimpleResponse}
-     * of {@link KeyPhraseResult}.
+     * {@link ExtractKeyPhrasesResultCollection} from a {@link SimpleResponse} of {@link KeyPhraseResult}.
      *
      * @param documents A list of documents to extract key phrases for.
      * @param options The {@link TextAnalyticsRequestOptions} request options.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      *
-     * @return A mono {@link Response} that contains {@link TextAnalyticsResultCollection} of
-     *  {@link ExtractKeyPhraseResult}.
+     * @return A mono {@link Response} that contains {@link ExtractKeyPhrasesResultCollection}.
      */
-    private Mono<Response<TextAnalyticsResultCollection<ExtractKeyPhraseResult>>> getExtractedKeyPhrasesResponse(
+    private Mono<Response<ExtractKeyPhrasesResultCollection>> getExtractedKeyPhrasesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         return service.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
@@ -208,7 +203,7 @@ class ExtractKeyPhraseAsyncClient {
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document - {}", documents.toString()))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-            .map(this::toTextAnalyticsResultCollectionResponse)
+            .map(this::toExtractKeyPhrasesResultCollectionResponse)
             .onErrorMap(throwable -> mapToHttpResponseExceptionIfExist(throwable));
     }
 }
