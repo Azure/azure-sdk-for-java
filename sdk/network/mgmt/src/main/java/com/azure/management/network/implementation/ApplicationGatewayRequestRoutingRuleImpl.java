@@ -82,9 +82,9 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public String hostName() {
+    public String hostname() {
         final ApplicationGatewayListener listener = this.listener();
-        return (listener != null) ? listener.hostName() : null;
+        return (listener != null) ? listener.hostname() : null;
     }
 
     @Override
@@ -333,8 +333,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withHostName(String hostName) {
-        this.parent().updateListener(ensureListener().name()).withHostName(hostName);
+    public ApplicationGatewayRequestRoutingRuleImpl withHostname(String hostName) {
+        this.parent().updateListener(ensureListener().name()).withHostname(hostName);
         return this;
     }
 

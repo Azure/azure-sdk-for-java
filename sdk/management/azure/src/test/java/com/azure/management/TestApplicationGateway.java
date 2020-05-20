@@ -27,13 +27,14 @@ import com.azure.management.network.PublicIpAddresses;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.model.Creatable;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import org.junit.jupiter.api.Assertions;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 
 /** Test of application gateway management. */
 public class TestApplicationGateway {
@@ -712,7 +713,7 @@ public class TestApplicationGateway {
                 .withoutSslCertificate("cert1")
                 .withoutAuthenticationCertificate(authCert1.name())
                 .updateListener(listener443.name())
-                .withHostName("foobar")
+                .withHostname("foobar")
                 .parent()
                 .updateListener(listenerRedirect.name())
                 .withHttp()
@@ -823,7 +824,7 @@ public class TestApplicationGateway {
             rule = resource.requestRoutingRules().get("rule443");
             Assertions.assertNotNull(rule);
             Assertions.assertNotNull(rule.listener());
-            Assertions.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostName()));
+            Assertions.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostname()));
             Assertions.assertNull(rule.redirectConfiguration());
 
             // Verify SSL certificates
@@ -915,7 +916,7 @@ public class TestApplicationGateway {
                                         new File(getClass().getClassLoader().getResource("myTest2.pfx").getFile()))
                                     .withSslCertificatePassword("Abc123")
                                     .withServerNameIndication()
-                                    .withHostName("www.fabricam.com")
+                                    .withHostname("www.fabricam.com")
                                     .attach()
 
                                     // Additional/explicit backends
@@ -1004,7 +1005,7 @@ public class TestApplicationGateway {
             ApplicationGatewayListener listener = appGateway.listeners().get("listener1");
             Assertions.assertNotNull(listener);
             Assertions.assertEquals(9000, listener.frontendPortNumber());
-            Assertions.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostName()));
+            Assertions.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostname()));
             Assertions.assertTrue(listener.requiresServerNameIndication());
             Assertions.assertNotNull(listener.frontend());
             Assertions.assertFalse(listener.frontend().isPrivate());
@@ -1117,7 +1118,7 @@ public class TestApplicationGateway {
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
                 .withInstanceCount(1)
                 .updateListener("listener1")
-                .withHostName("www.contoso.com")
+                .withHostname("www.contoso.com")
                 .parent()
                 .updateRequestRoutingRule("rule443")
                 .fromListener("listener1")
@@ -1154,7 +1155,7 @@ public class TestApplicationGateway {
 
             // Verify listeners
             ApplicationGatewayListener listener = resource.listeners().get("listener1");
-            Assertions.assertTrue("www.contoso.com".equalsIgnoreCase(listener.hostName()));
+            Assertions.assertTrue("www.contoso.com".equalsIgnoreCase(listener.hostname()));
 
             // Verify request routing rules
             Assertions.assertTrue(resource.requestRoutingRules().size() == rulesCount - 1);
@@ -1517,7 +1518,7 @@ public class TestApplicationGateway {
                 .append("\n\t\tName: ")
                 .append(listener.name())
                 .append("\n\t\t\tHost name: ")
-                .append(listener.hostName())
+                .append(listener.hostname())
                 .append("\n\t\t\tServer name indication required? ")
                 .append(listener.requiresServerNameIndication())
                 .append("\n\t\t\tAssociated frontend name: ")
@@ -1596,7 +1597,7 @@ public class TestApplicationGateway {
                 .append("\n\t\tPublic IP address ID: ")
                 .append(rule.publicIpAddressId())
                 .append("\n\t\tHost name: ")
-                .append(rule.hostName())
+                .append(rule.hostname())
                 .append("\n\t\tServer name indication required? ")
                 .append(rule.requiresServerNameIndication())
                 .append("\n\t\tFrontend port: ")

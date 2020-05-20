@@ -110,16 +110,16 @@ Create Index using `searchIndexClient` instantiated in [Create a SearchServiceCl
 
 <!-- embedme ./src/samples/java/com/azure/search/documents/ReadmeSamples.java#L96-L107 -->
 ```java
-Index newIndex = new Index()
+SearchIndex newIndex = new SearchIndex()
     .setName("index_name")
     .setFields(
-        Arrays.asList(new Field()
+        Arrays.asList(new SearchField()
                 .setName("Name")
-                .setType(DataType.EDM_STRING)
+                .setType(SearchFieldDataType.STRING)
                 .setKey(Boolean.TRUE),
-            new Field()
+            new SearchField()
                 .setName("Cuisine")
-                .setType(DataType.EDM_STRING)));
+                .setType(SearchFieldDataType.STRING)));
 // Create index.
 searchServiceClient.createIndex(newIndex);
 ```

@@ -30,11 +30,11 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /*
      * A predefined list of stopwords to use. This property and the stopwords
      * property cannot both be set. Default is English. Possible values
-     * include: 'arabic', 'armenian', 'basque', 'brazilian', 'bulgarian',
-     * 'catalan', 'czech', 'danish', 'dutch', 'english', 'finnish', 'french',
-     * 'galician', 'german', 'greek', 'hindi', 'hungarian', 'indonesian',
-     * 'irish', 'italian', 'latvian', 'norwegian', 'persian', 'portuguese',
-     * 'romanian', 'russian', 'sorani', 'spanish', 'swedish', 'thai', 'turkish'
+     * include: 'Arabic', 'Armenian', 'Basque', 'Brazilian', 'Bulgarian',
+     * 'Catalan', 'Czech', 'Danish', 'Dutch', 'English', 'Finnish', 'French',
+     * 'Galician', 'German', 'Greek', 'Hindi', 'Hungarian', 'Indonesian',
+     * 'Irish', 'Italian', 'Latvian', 'Norwegian', 'Persian', 'Portuguese',
+     * 'Romanian', 'Russian', 'Sorani', 'Spanish', 'Swedish', 'Thai', 'Turkish'
      */
     @JsonProperty(value = "stopwordsList")
     private StopwordsList stopwordsList;
@@ -78,12 +78,12 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /**
      * Get the stopwordsList property: A predefined list of stopwords to use.
      * This property and the stopwords property cannot both be set. Default is
-     * English. Possible values include: 'arabic', 'armenian', 'basque',
-     * 'brazilian', 'bulgarian', 'catalan', 'czech', 'danish', 'dutch',
-     * 'english', 'finnish', 'french', 'galician', 'german', 'greek', 'hindi',
-     * 'hungarian', 'indonesian', 'irish', 'italian', 'latvian', 'norwegian',
-     * 'persian', 'portuguese', 'romanian', 'russian', 'sorani', 'spanish',
-     * 'swedish', 'thai', 'turkish'.
+     * English. Possible values include: 'Arabic', 'Armenian', 'Basque',
+     * 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish', 'Dutch',
+     * 'English', 'Finnish', 'French', 'Galician', 'German', 'Greek', 'Hindi',
+     * 'Hungarian', 'Indonesian', 'Irish', 'Italian', 'Latvian', 'Norwegian',
+     * 'Persian', 'Portuguese', 'Romanian', 'Russian', 'Sorani', 'Spanish',
+     * 'Swedish', 'Thai', 'Turkish'.
      *
      * @return the stopwordsList value.
      */
@@ -94,12 +94,12 @@ public final class StopwordsTokenFilter extends TokenFilter {
     /**
      * Set the stopwordsList property: A predefined list of stopwords to use.
      * This property and the stopwords property cannot both be set. Default is
-     * English. Possible values include: 'arabic', 'armenian', 'basque',
-     * 'brazilian', 'bulgarian', 'catalan', 'czech', 'danish', 'dutch',
-     * 'english', 'finnish', 'french', 'galician', 'german', 'greek', 'hindi',
-     * 'hungarian', 'indonesian', 'irish', 'italian', 'latvian', 'norwegian',
-     * 'persian', 'portuguese', 'romanian', 'russian', 'sorani', 'spanish',
-     * 'swedish', 'thai', 'turkish'.
+     * English. Possible values include: 'Arabic', 'Armenian', 'Basque',
+     * 'Brazilian', 'Bulgarian', 'Catalan', 'Czech', 'Danish', 'Dutch',
+     * 'English', 'Finnish', 'French', 'Galician', 'German', 'Greek', 'Hindi',
+     * 'Hungarian', 'Indonesian', 'Irish', 'Italian', 'Latvian', 'Norwegian',
+     * 'Persian', 'Portuguese', 'Romanian', 'Russian', 'Sorani', 'Spanish',
+     * 'Swedish', 'Thai', 'Turkish'.
      *
      * @param stopwordsList the stopwordsList value to set.
      * @return the StopwordsTokenFilter object itself.

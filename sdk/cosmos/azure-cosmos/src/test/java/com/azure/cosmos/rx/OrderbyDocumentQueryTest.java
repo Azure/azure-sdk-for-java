@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -408,8 +408,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
-    public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps)
-            throws CosmosClientException {
+    public CosmosItemProperties createDocument(CosmosAsyncContainer cosmosContainer, Map<String, Object> keyValueProps) {
         CosmosItemProperties docDefinition = getDocumentDefinition(keyValueProps);
         return BridgeInternal.getProperties(cosmosContainer.createItem(docDefinition).block());
     }
@@ -496,7 +495,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             TestSubscriber<FeedResponse<CosmosItemProperties>> testSubscriber = new TestSubscriber<>();
             queryObservable.byPage(orderByContinuationToken.toString(),1).subscribe(testSubscriber);
             testSubscriber.awaitTerminalEvent(TIMEOUT, TimeUnit.MILLISECONDS);
-            testSubscriber.assertError(CosmosClientException.class);
+            testSubscriber.assertError(CosmosException.class);
         } while (requestContinuation != null);
     }
 

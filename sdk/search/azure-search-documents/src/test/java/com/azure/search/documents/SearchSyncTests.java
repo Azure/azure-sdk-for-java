@@ -6,15 +6,15 @@ package com.azure.search.documents;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.models.CoordinateSystem;
-import com.azure.search.documents.models.DataType;
 import com.azure.search.documents.models.FacetResult;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.GeoPoint;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.RangeFacetResult;
 import com.azure.search.documents.models.RequestOptions;
 import com.azure.search.documents.models.ScoringParameter;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
 import com.azure.search.documents.models.SearchMode;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
@@ -759,7 +759,7 @@ public class SearchSyncTests extends SearchTestBase {
             .setSynonyms("luxury,fancy")).getName();
 
         // Attach index field to SynonymMap
-        Index hotelsIndex = searchServiceClient.getIndex(client.getIndexName());
+        SearchIndex hotelsIndex = searchServiceClient.getIndex(client.getIndexName());
         hotelsIndex.getFields().stream()
             .filter(f -> fieldName.equals(f.getName()))
             .findFirst().get().setSynonymMaps(Collections.singletonList(synonymMapToDelete));
@@ -990,61 +990,61 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithNonNullableTypes() {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("non-nullable-index")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("Key")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setHidden(false)
                     .setKey(true),
-                new Field()
+                new SearchField()
                     .setName("Rating")
                     .setHidden(false)
-                    .setType(DataType.EDM_INT32),
-                new Field()
+                    .setType(SearchFieldDataType.INT32),
+                new SearchField()
                     .setName("Count")
                     .setHidden(false)
-                    .setType(DataType.EDM_INT64),
-                new Field()
+                    .setType(SearchFieldDataType.INT64),
+                new SearchField()
                     .setName("IsEnabled")
                     .setHidden(false)
-                    .setType(DataType.EDM_BOOLEAN),
-                new Field()
+                    .setType(SearchFieldDataType.BOOLEAN),
+                new SearchField()
                     .setName("Ratio")
                     .setHidden(false)
-                    .setType(DataType.EDM_DOUBLE),
-                new Field()
+                    .setType(SearchFieldDataType.DOUBLE),
+                new SearchField()
                     .setName("StartDate")
                     .setHidden(false)
-                    .setType(DataType.EDM_DATE_TIME_OFFSET),
-                new Field()
+                    .setType(SearchFieldDataType.DATE_TIME_OFFSET),
+                new SearchField()
                     .setName("EndDate")
                     .setHidden(false)
-                    .setType(DataType.EDM_DATE_TIME_OFFSET),
-                new Field()
+                    .setType(SearchFieldDataType.DATE_TIME_OFFSET),
+                new SearchField()
                     .setName("TopLevelBucket")
-                    .setType(DataType.EDM_COMPLEX_TYPE)
+                    .setType(SearchFieldDataType.COMPLEX)
                     .setFields(Arrays.asList(
-                        new Field()
+                        new SearchField()
                             .setName("BucketName")
-                            .setType(DataType.EDM_STRING)
+                            .setType(SearchFieldDataType.STRING)
                             .setFilterable(true),
-                        new Field()
+                        new SearchField()
                             .setName("Count")
-                            .setType(DataType.EDM_INT32)
+                            .setType(SearchFieldDataType.INT32)
                             .setFilterable(true))),
-                new Field()
+                new SearchField()
                     .setName("Buckets")
-                    .setType(DataType.collection(DataType.EDM_COMPLEX_TYPE))
+                    .setType(SearchFieldDataType.collection(SearchFieldDataType.COMPLEX))
                     .setFields(Arrays.asList(
-                        new Field()
+                        new SearchField()
                             .setName("BucketName")
-                            .setType(DataType.EDM_STRING)
+                            .setType(SearchFieldDataType.STRING)
                             .setFilterable(true),
-                        new Field()
+                        new SearchField()
                             .setName("Count")
-                            .setType(DataType.EDM_INT32)
+                            .setType(SearchFieldDataType.INT32)
                             .setFilterable(true)))));
 
         setupIndex(index);
@@ -1053,29 +1053,29 @@ public class SearchSyncTests extends SearchTestBase {
     }
 
     String createIndexWithValueTypes() {
-        Index index = new Index()
+        SearchIndex index = new SearchIndex()
             .setName("testindex")
             .setFields(Arrays.asList(
-                new Field()
+                new SearchField()
                     .setName("Key")
-                    .setType(DataType.EDM_STRING)
+                    .setType(SearchFieldDataType.STRING)
                     .setKey(true)
                     .setSearchable(true),
-                new Field()
+                new SearchField()
                     .setName("IntValue")
-                    .setType(DataType.EDM_INT32)
+                    .setType(SearchFieldDataType.INT32)
                     .setFilterable(true),
-                new Field()
+                new SearchField()
                     .setName("Bucket")
-                    .setType(DataType.EDM_COMPLEX_TYPE)
+                    .setType(SearchFieldDataType.COMPLEX)
                     .setFields(Arrays.asList(
-                        new Field()
+                        new SearchField()
                             .setName("BucketName")
-                            .setType(DataType.EDM_STRING)
+                            .setType(SearchFieldDataType.STRING)
                             .setFilterable(true),
-                        new Field()
+                        new SearchField()
                             .setName("Count")
-                            .setType(DataType.EDM_INT32)
+                            .setType(SearchFieldDataType.INT32)
                             .setFilterable(true)
                     ))
                 )

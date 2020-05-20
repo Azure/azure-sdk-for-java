@@ -5,7 +5,6 @@ package com.azure.search.documents.implementation.models;
 
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.search.documents.models.SearchRequest;
 import com.azure.search.documents.util.SearchPagedResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;

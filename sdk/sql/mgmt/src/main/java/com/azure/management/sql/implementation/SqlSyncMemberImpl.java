@@ -158,7 +158,7 @@ public class SqlSyncMemberImpl
     }
 
     @Override
-    public String userName() {
+    public String username() {
         return this.inner().username();
     }
 

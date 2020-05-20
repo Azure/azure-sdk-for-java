@@ -7,6 +7,10 @@ import com.azure.ai.formrecognizer.models.AccountProperties;
 import com.azure.ai.formrecognizer.models.CustomFormModel;
 import com.azure.ai.formrecognizer.models.TrainModelOptions;
 import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
 
 import java.time.Duration;
 
@@ -14,17 +18,32 @@ import java.time.Duration;
  * Code snippet for {@link FormTrainingAsyncClient}
  */
 public class FormTrainingAsyncClientJavaDocCodeSnippets {
-    private FormTrainingAsyncClient formTrainingAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient()
-        .getFormTrainingAsyncClient();
+    private FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for {@link FormTrainingAsyncClient} initialization
      */
     public void formTrainingAsyncClientInInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization
-        FormTrainingAsyncClient formTrainingAsyncClient = new FormRecognizerClientBuilder().buildAsyncClient()
-            .getFormTrainingAsyncClient();
+        FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder().buildAsyncClient();
         // END: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.initialization
+    }
+
+    /**
+     * Code snippet for creating a {@link FormTrainingAsyncClient} with pipeline
+     */
+    public void createFormTrainingAsyncClientWithPipeline() {
+        // BEGIN: com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.pipeline.instantiation
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .policies(/* add policies */)
+            .build();
+
+        FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .pipeline(pipeline)
+            .buildAsyncClient();
+        // END:  com.azure.ai.formrecognizer.training.FormTrainingAsyncClient.pipeline.instantiation
     }
 
     /**

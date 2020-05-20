@@ -113,7 +113,7 @@ public final class ManageSimpleApplicationGateway {
                     .toBackendIPAddress("11.1.1.2")
                     .toBackendIPAddress("11.1.1.3")
                     .toBackendIPAddress("11.1.1.4")
-                    .withHostName("www.contoso.com")
+                    .withHostname("www.contoso.com")
                     .withCookieBasedAffinity()
                     .attach()
                     .apply();

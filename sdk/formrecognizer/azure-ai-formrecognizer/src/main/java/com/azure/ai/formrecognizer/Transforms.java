@@ -89,7 +89,7 @@ final class Transforms {
             }
         } else {
             extractedFormList = new ArrayList<>();
-            for (PageResult pageResultItem : pageResults) {
+            forEachWithIndex(pageResults, ((index, pageResultItem) -> {
                 StringBuffer formType = new StringBuffer("form-");
                 int pageNumber = pageResultItem.getPage();
                 Integer clusterId = pageResultItem.getClusterId();
@@ -103,8 +103,8 @@ final class Transforms {
                     extractedFieldMap,
                     formType.toString(),
                     new PageRange(pageNumber, pageNumber),
-                    new IterableStream<>(Collections.singletonList(formPages.get(pageNumber - 1)))));
-            }
+                    new IterableStream<>(Collections.singletonList(formPages.get(index)))));
+            }));
         }
         return extractedFormList;
     }
@@ -216,24 +216,27 @@ final class Transforms {
         List<ReadResult> readResults, boolean includeTextDetails) {
         Map<String, FormField<?>> extractedFieldMap = new TreeMap<>();
         // add receipt fields
-        documentResultItem.getFields().forEach((key, fieldValue) -> {
-            if (fieldValue != null) {
-                Integer pageNumber = fieldValue.getPage();
-                FieldText labelText = new FieldText(key, null, pageNumber, null);
-                IterableStream<FormContent> formContentList = null;
-                if (includeTextDetails) {
-                    formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+        if (!CoreUtils.isNullOrEmpty(documentResultItem.getFields())) {
+            documentResultItem.getFields().forEach((key, fieldValue) -> {
+                if (fieldValue != null) {
+                    Integer pageNumber = fieldValue.getPage();
+                    FieldText labelText = new FieldText(key, null, pageNumber, null);
+                    IterableStream<FormContent> formContentList = null;
+                    if (includeTextDetails) {
+                        formContentList = setReferenceElements(fieldValue.getElements(), readResults, pageNumber);
+                    }
+                    FieldText valueText = new FieldText(fieldValue.getText(),
+                        toBoundingBox(fieldValue.getBoundingBox()),
+                        pageNumber, formContentList);
+                    extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
+                        readResults));
+                } else {
+                    FieldText labelText = new FieldText(key, null, null, null);
+                    extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
+                        key, null, null, null));
                 }
-                FieldText valueText = new FieldText(fieldValue.getText(), toBoundingBox(fieldValue.getBoundingBox()),
-                    pageNumber, formContentList);
-                extractedFieldMap.put(key, setFormField(labelText, key, fieldValue, valueText, pageNumber,
-                    readResults));
-            } else {
-                FieldText labelText = new FieldText(key, null, null, null);
-                extractedFieldMap.put(key, new FormField<>(DEFAULT_CONFIDENCE_VALUE, labelText,
-                    key, null, null, null));
-            }
-        });
+            });
+        }
         return extractedFieldMap;
     }
 
@@ -309,8 +312,7 @@ final class Transforms {
      * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueObject()}
      * to a SDK level map of {@link FormField}.
      *
-     * @param valueObject The array of field values returned by the service in
-     * {@link FieldValue#getValueObject()} .
+     * @param valueObject The array of field values returned by the service in {@link FieldValue#getValueObject()}.
      *
      * @return The Map of {@link FormField}.
      */
@@ -332,8 +334,7 @@ final class Transforms {
      * {@link com.azure.ai.formrecognizer.implementation.models.FieldValue#getValueArray()}
      * to a SDK level List of {@link FormField}.
      *
-     * @param valueArray The array of field values returned by the service in
-     * {@link FieldValue#getValueArray()}.
+     * @param valueArray The array of field values returned by the service in {@link FieldValue#getValueArray()}.
      * @param readResults The text extraction result returned by the service.
      *
      * @return The List of {@link FormField}.
