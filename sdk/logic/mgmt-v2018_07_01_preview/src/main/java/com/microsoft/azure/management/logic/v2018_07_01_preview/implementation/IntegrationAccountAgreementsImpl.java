@@ -78,10 +78,14 @@ class IntegrationAccountAgreementsImpl extends WrapperImpl<IntegrationAccountAgr
     public Observable<IntegrationAccountAgreement> getAsync(String resourceGroupName, String integrationAccountName, String agreementName) {
         IntegrationAccountAgreementsInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, agreementName)
-        .map(new Func1<IntegrationAccountAgreementInner, IntegrationAccountAgreement>() {
+        .flatMap(new Func1<IntegrationAccountAgreementInner, Observable<IntegrationAccountAgreement>>() {
             @Override
-            public IntegrationAccountAgreement call(IntegrationAccountAgreementInner inner) {
-                return wrapModel(inner);
+            public Observable<IntegrationAccountAgreement> call(IntegrationAccountAgreementInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IntegrationAccountAgreement)wrapModel(inner));
+                }
             }
        });
     }

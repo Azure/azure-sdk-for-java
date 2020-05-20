@@ -64,10 +64,14 @@ class IntegrationAccountBatchConfigurationsImpl extends WrapperImpl<IntegrationA
     public Observable<BatchConfiguration> getAsync(String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
         IntegrationAccountBatchConfigurationsInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, batchConfigurationName)
-        .map(new Func1<BatchConfigurationInner, BatchConfiguration>() {
+        .flatMap(new Func1<BatchConfigurationInner, Observable<BatchConfiguration>>() {
             @Override
-            public BatchConfiguration call(BatchConfigurationInner inner) {
-                return wrapModel(inner);
+            public Observable<BatchConfiguration> call(BatchConfigurationInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((BatchConfiguration)wrapModel(inner));
+                }
             }
        });
     }

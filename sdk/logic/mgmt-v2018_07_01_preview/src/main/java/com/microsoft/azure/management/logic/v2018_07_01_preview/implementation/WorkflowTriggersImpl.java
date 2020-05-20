@@ -47,10 +47,14 @@ class WorkflowTriggersImpl extends WrapperImpl<WorkflowTriggersInner> implements
     public Observable<WorkflowTrigger> getAsync(String resourceGroupName, String workflowName, String triggerName) {
         WorkflowTriggersInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, triggerName)
-        .map(new Func1<WorkflowTriggerInner, WorkflowTrigger>() {
+        .flatMap(new Func1<WorkflowTriggerInner, Observable<WorkflowTrigger>>() {
             @Override
-            public WorkflowTrigger call(WorkflowTriggerInner inner) {
-                return wrapWorkflowTriggerModel(inner);
+            public Observable<WorkflowTrigger> call(WorkflowTriggerInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((WorkflowTrigger)wrapWorkflowTriggerModel(inner));
+                }
             }
        });
     }
