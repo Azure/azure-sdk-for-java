@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -69,8 +69,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
                 // Partition lease update conflict. Reading the current version of lease.
                 return this.client.readItem(itemId, partitionKey, requestOptions, CosmosItemProperties.class)
                     .onErrorResume(throwable -> {
-                        if (throwable instanceof CosmosClientException) {
-                            CosmosClientException ex = (CosmosClientException) throwable;
+                        if (throwable instanceof CosmosException) {
+                            CosmosException ex = (CosmosException) throwable;
                             if (ex.getStatusCode() == HTTP_STATUS_CODE_NOT_FOUND) {
                                 // Partition lease no longer exists
                                 throw new LeaseLostException(cachedLease);
@@ -125,8 +125,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
         return this.client.replaceItem(itemId, partitionKey, lease, this.getCreateIfMatchOptions(lease))
             .map(cosmosItemResponse -> BridgeInternal.getProperties(cosmosItemResponse))
             .onErrorResume(re -> {
-                if (re instanceof CosmosClientException) {
-                    CosmosClientException ex = (CosmosClientException) re;
+                if (re instanceof CosmosException) {
+                    CosmosException ex = (CosmosException) re;
                     switch (ex.getStatusCode()) {
                         case HTTP_STATUS_CODE_PRECONDITION_FAILED: {
                             return Mono.empty();

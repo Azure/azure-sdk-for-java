@@ -45,7 +45,7 @@
     <Field name="defaultEncryptionAlgorithm"/>
     <Bug pattern="UUF_UNUSED_PUBLIC_OR_PROTECTED_FIELD"/>
   </Match>
-  
+
   <!-- Defines native api, doesn't follow java style.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.WindowsCredentialApi(.+)"/>
@@ -53,25 +53,25 @@
       UWF_UNWRITTEN_PUBLIC_OR_PROTECTED_FIELD,
       NM_FIELD_NAMING_CONVENTION"/>
   </Match>
-  
+
   <!-- Exception needs to be caught here.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.VisualStudioCacheAccessor"/>
       <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <!-- Exception needs to be caught here.-->
   <Match>
       <Class name="~com\.azure\.identity\.IntelliJCredential"/>
       <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <!-- Accesses native api, doesn't follow java style.-->
   <Match>
       <Class name="~com\.azure\.identity\.implementation\.LinuxKeyRingAccessor(.+)"/>
       <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
-  
+
   <!-- Accesses native api, doesn't follow java style.-->
   <Match>
       <Class name="com.azure.identity.implementation.WindowsCredentialAccessor"/>
@@ -1215,28 +1215,28 @@
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="cosmosError"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="cosmosDiagnostics"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestTimeline"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
   <!-- Bug: https://github.com/Azure/azure-sdk-for-java/issues/9088 -->
   <Match>
-    <Class name="com.azure.cosmos.CosmosClientException"/>
+    <Class name="com.azure.cosmos.CosmosException"/>
     <Field name="requestUri"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
@@ -2010,7 +2010,7 @@
     <Package name="~com\.azure\.management(\.[^.]+)*\.samples(\.[^.]+)*"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
-  
+
   <!-- Exclude from spring related classes -->
   <Match>
     <Or>
@@ -2022,14 +2022,14 @@
                   RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,
                   RCN_REDUNDANT_NULLCHECK_OF_NULL_VALUE"/>
   </Match>
-  
-  
+
+
   <!-- These fields are designed to be not written. They are for deserializing. -->
   <Match>
       <Class name="com.azure.identity.implementation.LinuxKeyRingAccessor$GError"/>
       <Bug pattern="UWF_UNWRITTEN_FIELD"/>
   </Match>
-  
+
   <!-- These fields use File Reader with default encoding, java 8 doesn't support passing in encoding type. -->
   <Match>
       <Class name="com.azure.identity.implementation.IntelliJCacheAccessor"/>

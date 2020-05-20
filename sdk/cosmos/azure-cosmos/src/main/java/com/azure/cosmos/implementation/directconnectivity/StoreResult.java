@@ -4,7 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -24,7 +24,7 @@ public class StoreResult {
     private final static Logger logger = LoggerFactory.getLogger(StoreResult.class);
 
     private final StoreResponse storeResponse;
-    private final CosmosClientException exception;
+    private final CosmosException exception;
 
     final public long lsn;
     final public String partitionKeyRangeId;
@@ -44,7 +44,7 @@ public class StoreResult {
 
     public StoreResult(
             StoreResponse storeResponse,
-            CosmosClientException exception,
+            CosmosException exception,
             String partitionKeyRangeId,
             long lsn,
             long quorumAckedLsn,
@@ -77,7 +77,7 @@ public class StoreResult {
         this.sessionToken = sessionToken;
     }
 
-    public CosmosClientException getException() throws InternalServerErrorException {
+    public CosmosException getException() throws InternalServerErrorException {
         if (this.exception == null) {
             String message = "Exception should be available but found none";
             assert false : message;
@@ -88,11 +88,11 @@ public class StoreResult {
         return exception;
     }
 
-    public StoreResponse toResponse() throws CosmosClientException {
+    public StoreResponse toResponse() {
         return toResponse(null);
     }
 
-    public StoreResponse toResponse(RequestChargeTracker requestChargeTracker) throws CosmosClientException {
+    public StoreResponse toResponse(RequestChargeTracker requestChargeTracker) {
         if (!this.isValid) {
             if (this.exception == null) {
                 logger.error("Exception not set for invalid response");
@@ -113,9 +113,9 @@ public class StoreResult {
         return this.storeResponse;
     }
 
-    private static void setRequestCharge(StoreResponse response, CosmosClientException cosmosClientException, double totalRequestCharge) {
-        if (cosmosClientException != null) {
-            cosmosClientException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
+    private static void setRequestCharge(StoreResponse response, CosmosException cosmosException, double totalRequestCharge) {
+        if (cosmosException != null) {
+            cosmosException.getResponseHeaders().put(HttpConstants.HttpHeaders.REQUEST_CHARGE,
                     Double.toString(totalRequestCharge));
         }
         // Set total charge as final charge for the response.

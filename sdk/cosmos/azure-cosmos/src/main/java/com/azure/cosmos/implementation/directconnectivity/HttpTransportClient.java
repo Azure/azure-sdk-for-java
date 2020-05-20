@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.ForbiddenException;
 import com.azure.cosmos.implementation.GoneException;
@@ -724,7 +724,7 @@ public class HttpTransportClient extends TransportClient {
                         responsePartitionKeyRangeId = Lists.firstOrDefault(partitionKeyRangeIdValues, null);
                     }
 
-                    CosmosClientException exception;
+                    CosmosException exception;
 
                     switch (statusCode) {
                         case HttpConstants.StatusCodes.UNAUTHORIZED:

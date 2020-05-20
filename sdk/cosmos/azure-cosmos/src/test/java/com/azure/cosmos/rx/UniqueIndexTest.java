@@ -8,7 +8,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.CosmosDatabaseForTest;
@@ -204,8 +204,8 @@ public class UniqueIndexTest extends TestSuiteBase {
                         ImmutableList.of(ImmutableList.of("/name", "/description")));
     }
 
-    private CosmosClientException getDocumentClientException(RuntimeException e) {
-        CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+    private CosmosException getDocumentClientException(RuntimeException e) {
+        CosmosException dce = Utils.as(e, CosmosException.class);
         assertThat(dce).isNotNull();
         return dce;
     }

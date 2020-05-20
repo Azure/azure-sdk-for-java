@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -56,8 +56,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
         return this.client.readItem(markerDocId, new PartitionKey(markerDocId), requestOptions, CosmosItemProperties.class)
             .flatMap(documentResourceResponse -> Mono.just(BridgeInternal.getProperties(documentResourceResponse) != null))
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND) {
                         logger.info("Lease synchronization document not found");
                         return Mono.just(false);
@@ -77,8 +77,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
         return this.client.createItem(this.leaseCollectionLink, containerDocument, new CosmosItemRequestOptions(), false)
             .map( item -> true)
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was created by a different instance");
                         return Mono.just(true);
@@ -106,8 +106,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 }
             })
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was acquired by a different instance");
                         return Mono.just(false);
@@ -143,8 +143,8 @@ class DocumentServiceLeaseStore implements LeaseStore {
                 }
             })
             .onErrorResume(throwable -> {
-                if (throwable instanceof CosmosClientException) {
-                    CosmosClientException e = (CosmosClientException) throwable;
+                if (throwable instanceof CosmosException) {
+                    CosmosException e = (CosmosException) throwable;
                     if (e.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_CONFLICT) {
                         logger.info("Lease synchronization document was acquired by a different instance");
                         return Mono.just(false);

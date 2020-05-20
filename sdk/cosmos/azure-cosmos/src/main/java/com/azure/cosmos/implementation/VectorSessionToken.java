@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 
-import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.apachecommons.collections.map.UnmodifiableMap;
 import com.azure.cosmos.implementation.apachecommons.lang.ObjectUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -120,7 +119,7 @@ public class VectorSessionToken implements ISessionToken {
         return super.hashCode();
     }
 
-    public boolean isValid(ISessionToken otherSessionToken) throws CosmosClientException {
+    public boolean isValid(ISessionToken otherSessionToken) {
         VectorSessionToken other = Utils.as(otherSessionToken, VectorSessionToken.class);
 
         if (other == null) {
@@ -163,7 +162,7 @@ public class VectorSessionToken implements ISessionToken {
     }
 
     // Merge is commutative operation, so a.Merge(b).Equals(b.Merge(a))
-    public ISessionToken merge(ISessionToken obj) throws CosmosClientException {
+    public ISessionToken merge(ISessionToken obj) {
         VectorSessionToken other = Utils.as(obj, VectorSessionToken.class);
 
         if (other == null) {

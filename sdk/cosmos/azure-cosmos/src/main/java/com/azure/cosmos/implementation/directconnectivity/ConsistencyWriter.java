@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
@@ -166,7 +166,7 @@ public class ConsistencyWriter {
                                                t -> {
                                                    try {
                                                        Throwable unwrappedException = Exceptions.unwrap(t);
-                                                       CosmosClientException ex = Utils.as(unwrappedException, CosmosClientException.class);
+                                                       CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
                                                        try {
                                                            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request,
                                                                storeReader.createStoreResult(null, ex, false, false, primaryUri));
@@ -279,7 +279,7 @@ public class ConsistencyWriter {
                 return Mono.just(response);
             }
 
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             // RxJava1 doesn't allow throwing checked exception from Observable operators
             return Mono.error(e);
         }

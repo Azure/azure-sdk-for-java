@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import org.slf4j.Logger;
@@ -73,7 +73,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         this.retryContext = null;
         // Received 403.3 on write region, initiate the endpoint re-discovery
-        CosmosClientException clientException = Utils.as(e, CosmosClientException.class);
+        CosmosException clientException = Utils.as(e, CosmosException.class);
         if (clientException != null && clientException.getDiagnostics() != null) {
             this.cosmosDiagnostics = clientException.getDiagnostics();
         }

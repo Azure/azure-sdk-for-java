@@ -4,14 +4,13 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import reactor.core.publisher.Mono;
 
 public class HttpClientUtils {
@@ -32,14 +31,14 @@ public class HttpClientUtils {
         });
     }
 
-    private static Mono<CosmosClientException> createDocumentClientException(HttpResponse httpResponse) {
+    private static Mono<CosmosException> createDocumentClientException(HttpResponse httpResponse) {
         Mono<String> readStream = httpResponse.bodyAsString().switchIfEmpty(Mono.just(StringUtils.EMPTY));
 
         return readStream.map(body -> {
-            CosmosError cosmosError = ModelBridgeInternal.createCosmosError(body);
+            CosmosError cosmosError = new CosmosError(body);
 
             // TODO: we should set resource address in the Document Client Exception
-            return BridgeInternal.createCosmosClientException(httpResponse.statusCode(), cosmosError,
+            return BridgeInternal.createCosmosException(httpResponse.statusCode(), cosmosError,
                     httpResponse.headers().toMap());
         });
     }

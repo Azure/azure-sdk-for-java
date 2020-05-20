@@ -5,7 +5,7 @@ package com.azure.cosmos.rx.examples.multimaster.samples;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
@@ -491,8 +491,8 @@ public class ConflictWorker {
     }
 
     private boolean hasDocumentClientException(Throwable e, int statusCode) {
-        if (e instanceof CosmosClientException) {
-            CosmosClientException dce = (CosmosClientException) e;
+        if (e instanceof CosmosException) {
+            CosmosException dce = (CosmosException) e;
             return dce.getStatusCode() == statusCode;
         }
 
@@ -501,7 +501,7 @@ public class ConflictWorker {
 
     private boolean hasDocumentClientExceptionCause(Throwable e) {
         while (e != null) {
-            if (e instanceof CosmosClientException) {
+            if (e instanceof CosmosException) {
                 return true;
             }
 
@@ -512,8 +512,8 @@ public class ConflictWorker {
 
     private boolean hasDocumentClientExceptionCause(Throwable e, int statusCode) {
         while (e != null) {
-            if (e instanceof CosmosClientException) {
-                CosmosClientException dce = (CosmosClientException) e;
+            if (e instanceof CosmosException) {
+                CosmosException dce = (CosmosException) e;
                 return dce.getStatusCode() == statusCode;
             }
 

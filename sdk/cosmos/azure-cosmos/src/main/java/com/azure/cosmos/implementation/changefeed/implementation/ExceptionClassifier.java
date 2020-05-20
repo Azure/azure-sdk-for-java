@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 
 /**
  * Classifies exceptions based on the status codes.
@@ -20,7 +20,7 @@ class ExceptionClassifier {
     public static final int SubStatusCode_ReadSessionNotAvailable = 1002;
 
 
-    public static StatusCodeErrorType classifyClientException(CosmosClientException clientException) {
+    public static StatusCodeErrorType classifyClientException(CosmosException clientException) {
         Integer subStatusCode = clientException.getSubStatusCode();
 
         if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_NOT_FOUND && subStatusCode != SubStatusCode_ReadSessionNotAvailable) {
