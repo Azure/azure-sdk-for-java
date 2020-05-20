@@ -82,7 +82,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         detectLanguagesCountryHintRunner((inputs, countryHint) -> validateDetectLanguageResultCollection(
             false, getExpectedBatchDetectedLanguages(),
-            client.detectLanguageBatch(inputs, countryHint)));
+            client.detectLanguageBatch(inputs, countryHint, null)));
     }
 
     /**
@@ -104,7 +104,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void detectLanguagesBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         detectLanguageStringInputRunner((inputs) -> validateDetectLanguageResultCollection(
-            false, getExpectedBatchDetectedLanguages(), client.detectLanguageBatch(inputs)));
+            false, getExpectedBatchDetectedLanguages(), client.detectLanguageBatch(inputs, null, null)));
     }
 
     /**
@@ -262,7 +262,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCategorizedEntityStringInputRunner((inputs) ->
             validateCategorizedEntitiesResultCollection(false, getExpectedBatchCategorizedEntities(),
-                client.recognizeEntitiesBatch(inputs)));
+                client.recognizeEntitiesBatch(inputs, null, null)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -271,7 +271,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeCategorizedEntitiesLanguageHintRunner((inputs, language) ->
             validateCategorizedEntitiesResultCollection(false, getExpectedBatchCategorizedEntities(),
-                client.recognizeEntitiesBatch(inputs, language))
+                client.recognizeEntitiesBatch(inputs, language, null))
         );
     }
 
@@ -291,7 +291,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeEntitiesTooManyDocumentsRunner(inputs -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.recognizeEntitiesBatch(inputs).stream().findFirst().get());
+                () -> client.recognizeEntitiesBatch(inputs, null, null).stream().findFirst().get());
             assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
             assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
         });
@@ -362,7 +362,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeLinkedStringInputRunner((inputs) ->
-            validateLinkedEntitiesResultCollection(false, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatch(inputs)));
+            validateLinkedEntitiesResultCollection(false, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatch(inputs, null, null)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -370,7 +370,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void recognizeLinkedEntitiesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeLinkedLanguageHintRunner((inputs, language) ->
-            validateLinkedEntitiesResultCollection(false, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatch(inputs, language)));
+            validateLinkedEntitiesResultCollection(false, getExpectedBatchLinkedEntities(), client.recognizeLinkedEntitiesBatch(inputs, language, null)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -387,7 +387,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         recognizeLinkedEntitiesTooManyDocumentsRunner(inputs -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.recognizeLinkedEntitiesBatch(inputs).stream().findFirst().get());
+                () -> client.recognizeLinkedEntitiesBatch(inputs, null, null).stream().findFirst().get());
             assertEquals(EXCEEDED_ALLOWED_DOCUMENTS_LIMITS_MESSAGE, exception.getMessage());
             assertEquals(INVALID_DOCUMENT_BATCH, exception.getValue().toString());
         });
@@ -451,7 +451,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForBatchStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractKeyPhrasesStringInputRunner((inputs) ->
-            validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs)));
+            validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, null)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -459,7 +459,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void extractKeyPhrasesForListLanguageHint(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         extractKeyPhrasesLanguageHintRunner((inputs, language) ->
-            validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, language)));
+            validateExtractKeyPhrasesResultCollection(false, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, language, null)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -569,7 +569,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyseSentimentStringInputRunner(inputs ->
             validateSentimentResultCollection(false, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatch(inputs)));
+                client.analyzeSentimentBatch(inputs, null, null)));
     }
 
     /**
@@ -581,7 +581,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
         analyseSentimentLanguageHintRunner((inputs, language) ->
             validateSentimentResultCollection(false, getExpectedBatchTextSentiment(),
-                client.analyzeSentimentBatch(inputs, language)));
+                client.analyzeSentimentBatch(inputs, language, null)));
     }
 
     /**

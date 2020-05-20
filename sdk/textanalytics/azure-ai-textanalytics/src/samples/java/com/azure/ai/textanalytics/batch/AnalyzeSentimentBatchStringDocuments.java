@@ -39,7 +39,7 @@ public class AnalyzeSentimentBatchStringDocuments {
 
         // Analyzed sentiment for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        for (AnalyzeSentimentResult analyzeSentimentResult : client.analyzeSentimentBatch(documents, "en")) {
+        for (AnalyzeSentimentResult analyzeSentimentResult : client.analyzeSentimentBatch(documents, "en", null)) {
             System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (analyzeSentimentResult.isError()) {
                 // Erroneous document

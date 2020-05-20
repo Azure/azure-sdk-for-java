@@ -36,7 +36,7 @@ public class RecognizeLinkedEntitiesBatchStringDocuments {
 
         // Recognizing linked entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        for (RecognizeLinkedEntitiesResult entitiesResult : client.recognizeLinkedEntitiesBatch(documents, "en")) {
+        for (RecognizeLinkedEntitiesResult entitiesResult : client.recognizeLinkedEntitiesBatch(documents, "en", null)) {
             // Recognized linked entities from a batch of documents
             System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
             if (entitiesResult.isError()) {

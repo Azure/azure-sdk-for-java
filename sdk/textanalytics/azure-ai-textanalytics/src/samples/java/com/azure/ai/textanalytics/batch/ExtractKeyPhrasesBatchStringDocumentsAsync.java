@@ -36,7 +36,7 @@ public class ExtractKeyPhrasesBatchStringDocumentsAsync {
 
         // Extracting key phrases for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.extractKeyPhrasesBatch(documents, "en").subscribe(
+        client.extractKeyPhrasesBatch(documents, "en", null).subscribe(
             ExtractKeyPhrasesResultCollection -> ExtractKeyPhrasesResultCollection.forEach(extractKeyPhraseResult -> {
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (extractKeyPhraseResult.isError()) {

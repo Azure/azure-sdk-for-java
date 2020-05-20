@@ -178,58 +178,6 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns the detected language for each of documents.
-     *
-     * This method will use the default country hint that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultCountryHint(String)}. If none is specified, service will use 'US' as
-     * the country hint.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Detects language in a list of documents. Subscribes to the call asynchronously and prints out the
-     * detected language details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable}
-     *
-     * @param documents The list of documents to detect languages for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     *
-     * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResultCollection> detectLanguageBatch(Iterable<String> documents) {
-        return detectLanguageBatch(documents, defaultCountryHint, null);
-    }
-
-    /**
-     * Returns the detected language for each of documents with the provided country hint.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Detects language in a list of documents with a provided country hint for the batch. Subscribes to the
-     * call asynchronously and prints out the detected language details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.detectLanguageBatch#Iterable-String}
-     *
-     * @param documents The list of documents to detect languages for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param countryHint Accepts two letter country codes specified by ISO 3166-1 alpha-2. Defaults to "US" if not
-     * specified. To remove this behavior you can reset this parameter by setting this value to empty string
-     * {@code countryHint} = "" or "none".
-     *
-     * @return A {@link Mono} contains a {@link DetectLanguageResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DetectLanguageResultCollection> detectLanguageBatch(
-        Iterable<String> documents, String countryHint) {
-        return detectLanguageBatch(documents, countryHint, null);
-    }
-
-    /**
      * Returns the detected language for each of documents with the provided country hint and request option.
      *
      * <p><strong>Code sample</strong></p>
@@ -354,58 +302,6 @@ public final class TextAnalyticsAsyncClient {
     }
 
     /**
-     * Returns a list of general categorized entities for the provided list of documents.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize entities in a document. Subscribes to the call asynchronously and prints out the entity details
-     * when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable}
-     *
-     * @param documents A list of documents to recognize entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     *
-     * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
-        Iterable<String> documents) {
-        return recognizeEntitiesBatch(documents, defaultLanguage, null);
-    }
-
-    /**
-     * Returns a list of general categorized entities for the provided list of documents with provided language code.
-     *
-     * <p><strong>Code sample</strong></p>
-     * <p>Recognize entities in a document with the provided language code. Subscribes to the call asynchronously and
-     * prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeCategorizedEntitiesBatch#Iterable-String}
-     *
-     * @param documents A list of documents to recognize entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language. If not set, uses "en" for English as
-     * default.
-     *
-     * @return A {@link Mono} contains a {@link RecognizeEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeEntitiesResultCollection> recognizeEntitiesBatch(
-        Iterable<String> documents, String language) {
-        return recognizeEntitiesBatch(documents, language, null);
-    }
-
-    /**
      * Returns a list of general categorized entities for the provided list of documents with the provided language code
      * and request options.
      *
@@ -520,60 +416,6 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LinkedEntityCollection> recognizeLinkedEntities(String document, String language) {
         return recognizeLinkedEntityAsyncClient.recognizeLinkedEntities(document, language);
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents. See
-     * <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p>Recognize linked entities in a list of documents. Subscribes to the call asynchronously and prints out the
-     * entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable}
-     *
-     * @param documents A list of documents to recognize linked entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     *
-     * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
-        Iterable<String> documents) {
-        return recognizeLinkedEntitiesBatch(documents, defaultLanguage, null);
-    }
-
-    /**
-     * Returns a list of recognized entities with links to a well-known knowledge base for the list of documents with
-     * provided language code.
-     *
-     * See <a href="https://aka.ms/talangs">this</a> for supported languages in Text Analytics API.
-     *
-     * <p>Recognize linked entities in a list of documents with provided language code. Subscribes to the call
-     * asynchronously and prints out the entity details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.recognizeLinkedEntitiesBatch#Iterable-String}
-     *
-     * @param documents A list of documents to recognize linked entities for.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link Mono} contains a {@link RecognizeLinkedEntitiesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RecognizeLinkedEntitiesResultCollection> recognizeLinkedEntitiesBatch(
-        Iterable<String> documents, String language) {
-        return recognizeLinkedEntitiesBatch(documents, language, null);
     }
 
     /**
@@ -695,58 +537,6 @@ public final class TextAnalyticsAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyPhrasesCollection> extractKeyPhrases(String document, String language) {
         return extractKeyPhraseAsyncClient.extractKeyPhrasesSingleText(document, language);
-    }
-
-    /**
-     * Returns a list of strings denoting the key phrases in the document.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p>Extract key phrases in a list of documents. Subscribes to the call asynchronously and prints out the
-     * key phrases when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable}
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     *
-     * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
-        Iterable<String> documents) {
-        return extractKeyPhrasesBatch(documents, defaultLanguage, null);
-    }
-
-    /**
-     * Returns a list of strings denoting the key phrases in the document with provided language code.
-     *
-     * See <a href="https://aka.ms/talangs">this</a> for the list of enabled languages.
-     *
-     * <p>Extract key phrases in a list of documents with a provided language code. Subscribes to the call
-     * asynchronously and prints out the key phrases when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.extractKeyPhrasesBatch#Iterable-String}
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the text. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link Mono} contains a {@link ExtractKeyPhrasesResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExtractKeyPhrasesResultCollection> extractKeyPhrasesBatch(
-        Iterable<String> documents, String language) {
-        return extractKeyPhrasesBatch(documents, language, null);
     }
 
     /**
@@ -881,58 +671,6 @@ public final class TextAnalyticsAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
-     * Neutral) for the document and each sentence within it.
-     *
-     * This method will use the default language that sets up in
-     * {@link TextAnalyticsClientBuilder#defaultLanguage(String)}. If none is specified, service will use 'en' as
-     * the language.
-     *
-     * <p>Analyze sentiment in a list of documents. Subscribes to the call asynchronously and prints out the
-     * sentiment details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable}
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     *
-     * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
-        Iterable<String> documents) {
-        return analyzeSentimentBatch(documents, defaultLanguage, null);
-    }
-
-    /**
-     * Returns a sentiment prediction, as well as confidence scores for each sentiment label (Positive, Negative, and
-     * Neutral) for the document and each sentence within it.
-     *
-     * <p>Analyze sentiment in a list of documents with provided language code. Subscribes to the
-     * call asynchronously and prints out the sentiment details when a response is received.</p>
-     *
-     * {@codesnippet com.azure.ai.textanalytics.TextAnalyticsAsyncClient.analyzeSentimentBatch#Iterable-String}
-     *
-     * @param documents A list of documents to be analyzed.
-     * For text length limits, maximum batch size, and supported text encoding, see
-     * <a href="https://docs.microsoft.com/azure/cognitive-services/text-analytics/overview#data-limits">data limits</a>.
-     * @param language The 2 letter ISO 639-1 representation of language for the document. If not set, uses "en" for
-     * English as default.
-     *
-     * @return A {@link Mono} contains a {@link AnalyzeSentimentResultCollection}.
-     *
-     * @throws NullPointerException if {@code documents} is {@code null}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeSentimentResultCollection> analyzeSentimentBatch(
-        Iterable<String> documents, String language) {
-        return analyzeSentimentBatch(documents, language, null);
     }
 
     /**

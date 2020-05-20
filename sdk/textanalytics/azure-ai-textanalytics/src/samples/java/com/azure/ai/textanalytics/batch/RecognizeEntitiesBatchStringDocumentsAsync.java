@@ -36,7 +36,7 @@ public class RecognizeEntitiesBatchStringDocumentsAsync {
 
         // Recognizing entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizeEntitiesBatch(documents, "en").subscribe(
+        client.recognizeEntitiesBatch(documents, "en", null).subscribe(
             recognizeEntitiesResultCollection -> recognizeEntitiesResultCollection.forEach(entitiesResult ->  {
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (entitiesResult.isError()) {

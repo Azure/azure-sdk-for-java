@@ -40,7 +40,7 @@ public class AnalyzeSentimentBatchStringDocumentsAsync {
 
         // Analyzing sentiment for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.analyzeSentimentBatch(documents, "en").subscribe(
+        client.analyzeSentimentBatch(documents, "en", null).subscribe(
             analyzeSentimentResultCollection -> analyzeSentimentResultCollection.forEach(analyzeSentimentResult -> {
                 // Analyzed sentiment for each document
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));

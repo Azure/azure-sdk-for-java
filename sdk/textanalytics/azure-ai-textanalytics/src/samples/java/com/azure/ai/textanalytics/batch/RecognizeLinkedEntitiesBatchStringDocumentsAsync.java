@@ -36,7 +36,7 @@ public class RecognizeLinkedEntitiesBatchStringDocumentsAsync {
 
         // Recognizing linked entities for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.recognizeLinkedEntitiesBatch(documents, "en").subscribe(
+        client.recognizeLinkedEntitiesBatch(documents, "en", null).subscribe(
             recognizeLinkedEntitiesResultCollection -> recognizeLinkedEntitiesResultCollection.forEach(entitiesResult -> {
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
                 if (entitiesResult.isError()) {

@@ -37,7 +37,7 @@ public class DetectLanguageBatchStringDocumentsAsync {
 
         // Detecting language for each document in a batch of documents
         AtomicInteger counter = new AtomicInteger();
-        client.detectLanguageBatch(documents, "US").subscribe(
+        client.detectLanguageBatch(documents, "US", null).subscribe(
             detectLanguageResultCollection -> detectLanguageResultCollection.forEach(detectLanguageResult -> {
                 // Detected language for each document
                 System.out.printf("%nText = %s%n", documents.get(counter.getAndIncrement()));
