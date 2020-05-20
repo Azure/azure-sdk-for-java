@@ -34,6 +34,7 @@ public final class IndexAction {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }

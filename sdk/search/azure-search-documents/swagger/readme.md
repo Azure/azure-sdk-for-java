@@ -196,4 +196,11 @@ directive:
       where: $
       transform: >-
         return $.replace(/(package com.azure.search.documents.implementation;)/g, "$1\nimport com.azure.core.http.rest.RestProxy;")
+
+    # Add @JsonAnyGetter for IndexAction.java
+    - from: IndexAction.java
+      where: $
+      transform: >-
+        return $
+        .replace(/(    public Map\<String\, Object\> getAdditionalProperties\(\) \{)/g, "    @JsonAnyGetter\n$1")
 ```
