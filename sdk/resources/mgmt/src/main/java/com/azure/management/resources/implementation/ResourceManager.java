@@ -5,7 +5,6 @@ package com.azure.management.resources.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.Deployments;
 import com.azure.management.resources.Features;
 import com.azure.management.resources.GenericResources;
@@ -13,7 +12,6 @@ import com.azure.management.resources.PolicyAssignments;
 import com.azure.management.resources.PolicyDefinitions;
 import com.azure.management.resources.Providers;
 import com.azure.management.resources.ResourceGroups;
-import com.azure.management.resources.Subscription;
 import com.azure.management.resources.Subscriptions;
 import com.azure.management.resources.Tenants;
 import com.azure.management.resources.fluentcore.arm.AzureConfigurable;
@@ -23,6 +21,7 @@ import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.models.FeatureClientBuilder;
 import com.azure.management.resources.models.FeatureClientImpl;
 import com.azure.management.resources.models.PolicyClientBuilder;
@@ -31,9 +30,6 @@ import com.azure.management.resources.models.ResourceManagementClientBuilder;
 import com.azure.management.resources.models.ResourceManagementClientImpl;
 import com.azure.management.resources.models.SubscriptionClientBuilder;
 import com.azure.management.resources.models.SubscriptionClientImpl;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Entry point to Azure resource management.
@@ -140,7 +136,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
          * Specifies to use subscription from {@link AzureProfile}. If no subscription provided, we will
          * try to set the only subscription if applicable returned by {@link Authenticated#subscriptions()}.
          *
-         * @throws RuntimeException more than one subscription found in the tenant.
+         * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return the ResourceManager instance with entry points that work in a subscription
          */
         ResourceManager withDefaultSubscription();
@@ -150,7 +146,6 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
      * The implementation for Authenticated interface.
      */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private HttpPipeline httpPipeline;
         private AzureProfile profile;
         private SdkContext sdkContext;
@@ -198,25 +193,7 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
         @Override
         public ResourceManager withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                List<Subscription> subscriptions = new ArrayList<>();
-                this.subscriptions().list().forEach(subscription -> {
-                    subscriptions.add(subscription);
-                });
-                if (subscriptions.size() == 0) {
-                    throw logger.logExceptionAsError(
-                        new RuntimeException("Please create a subscription before you start resource management. "
-                            + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
-                } else if (subscriptions.size() > 1) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append("More than one subscription found in your tenant. "
-                        + "Please specify which one below is desired for resource management.");
-                    subscriptions.forEach(subscription -> {
-                        stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
-                    });
-                    throw logger.logExceptionAsError(new RuntimeException(stringBuilder.toString()));
-                } else {
-                    profile.withSubscriptionId(subscriptions.get(0).subscriptionId());
-                }
+                profile.withSubscriptionId(Utils.subscriptionId(this.subscriptions().list()));
             }
             return new ResourceManager(httpPipeline, profile, sdkContext);
         }

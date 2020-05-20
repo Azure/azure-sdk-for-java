@@ -5,7 +5,6 @@ package com.azure.management;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.AppServiceCertificateOrders;
 import com.azure.management.appservice.AppServiceCertificates;
 import com.azure.management.appservice.AppServiceDomains;
@@ -85,6 +84,7 @@ import com.azure.management.resources.fluentcore.arm.implementation.AzureConfigu
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
 import com.azure.management.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.management.resources.fluentcore.utils.SdkContext;
+import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.resources.implementation.ResourceManager;
 import com.azure.management.sql.SqlServers;
 import com.azure.management.sql.implementation.SqlServerManager;
@@ -95,9 +95,6 @@ import com.azure.management.storage.StorageAccounts;
 import com.azure.management.storage.StorageSkus;
 import com.azure.management.storage.Usages;
 import com.azure.management.storage.implementation.StorageManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** The entry point for accessing resource management APIs in Azure. */
 public final class Azure {
@@ -237,7 +234,7 @@ public final class Azure {
          * AzureProfile}. If no default subscription provided, we will try to set the only
          * subscription if applicable returned by {@link Authenticated#subscriptions()}</p>
          *
-         * @throws RuntimeException more than one subscription found in the tenant.
+         * @throws IllegalStateException when no subscription or more than one subscription found in the tenant.
          * @return an authenticated Azure client configured to work with the default subscription
          */
         Azure withDefaultSubscription();
@@ -245,7 +242,6 @@ public final class Azure {
 
     /** The implementation for the Authenticated interface. */
     private static final class AuthenticatedImpl implements Authenticated {
-        private final ClientLogger logger = new ClientLogger(AuthenticatedImpl.class);
         private final HttpPipeline httpPipeline;
         private final AzureProfile profile;
         private final ResourceManager.Authenticated resourceManagerAuthenticated;
@@ -331,25 +327,7 @@ public final class Azure {
         @Override
         public Azure withDefaultSubscription() {
             if (profile.subscriptionId() == null) {
-                List<Subscription> subscriptions = new ArrayList<>();
-                this.subscriptions().list().forEach(subscription -> {
-                    subscriptions.add(subscription);
-                });
-                if (subscriptions.size() == 0) {
-                    throw logger.logExceptionAsError(
-                        new RuntimeException("Please create a subscription before you start resource management. "
-                            + "To learn more, see: https://azure.microsoft.com/en-us/free/."));
-                } else if (subscriptions.size() > 1) {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.append("More than one subscription found in your tenant. "
-                        + "Please specify which one below is desired for resource management.");
-                    subscriptions.forEach(subscription -> {
-                        stringBuilder.append("\n" + subscription.displayName() + " : " + subscription.subscriptionId());
-                    });
-                    throw logger.logExceptionAsError(new RuntimeException(stringBuilder.toString()));
-                } else {
-                    profile.withSubscriptionId(subscriptions.get(0).subscriptionId());
-                }
+                profile.withSubscriptionId(Utils.subscriptionId(this.subscriptions().list()));
             }
             return new Azure(httpPipeline, profile, this);
         }
