@@ -18,33 +18,27 @@ import java.util.List;
  */
 public final class ConnectionPolicy {
 
-    //  Constants
-    public static final Duration DEFAULT_REQUEST_TIMEOUT = Duration.ofSeconds(60);
-    public static final Duration DEFAULT_IDLE_CONNECTION_TIMEOUT = Duration.ofSeconds(60);
-    public static final int DEFAULT_MAX_POOL_SIZE = 1000;
-
     private static final ConnectionPolicy defaultPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
 
     private ConnectionMode connectionMode;
-    private String userAgentSuffix;
-    private ThrottlingRetryOptions throttlingRetryOptions;
     private boolean endpointDiscoveryEnabled;
-    private List<String> preferredRegions;
+    private Duration idleConnectionTimeout;
     private boolean multipleWriteRegionsEnabled;
+    private List<String> preferredRegions;
     private boolean readRequestsFallbackEnabled;
+    private ThrottlingRetryOptions throttlingRetryOptions;
+    private String userAgentSuffix;
 
     //  Gateway connection config properties
-    private int maxConnectionPoolSize = DEFAULT_MAX_POOL_SIZE;
-    private Duration requestTimeout = DEFAULT_REQUEST_TIMEOUT;
-    private Duration idleConnectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
+    private int maxConnectionPoolSize;
+    private Duration requestTimeout;
     private InetSocketAddress inetSocketProxyAddress;
 
     //  Direct connection config properties
     private Duration connectionTimeout;
-    private Duration idleChannelTimeout;
     private Duration idleEndpointTimeout;
-    private int maxChannelsPerEndpoint;
-    private int maxRequestsPerChannel;
+    private int maxConnectionsPerEndpoint;
+    private int maxRequestsPerConnection;
 
     /**
      * Constructor.
@@ -60,10 +54,10 @@ public final class ConnectionPolicy {
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
         this(ConnectionMode.DIRECT);
         this.connectionTimeout = directConnectionConfig.getConnectionTimeout();
-        this.idleChannelTimeout = directConnectionConfig.getIdleConnectionTimeout();
+        this.idleConnectionTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
-        this.maxChannelsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
-        this.maxRequestsPerChannel = directConnectionConfig.getMaxRequestsPerConnection();
+        this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
+        this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {
@@ -390,24 +384,6 @@ public final class ConnectionPolicy {
     }
 
     /**
-     * Gets the idle channel timeout
-     * @return idle channel timeout
-     */
-    public Duration getIdleChannelTimeout() {
-        return idleChannelTimeout;
-    }
-
-    /**
-     * Sets the idle channel timeout
-     * @param idleChannelTimeout idle channel timeout
-     * @return the {@link ConnectionPolicy}
-     */
-    public ConnectionPolicy setIdleChannelTimeout(Duration idleChannelTimeout) {
-        this.idleChannelTimeout = idleChannelTimeout;
-        return this;
-    }
-
-    /**
      * Gets the idle endpoint timeout
      * @return the idle endpoint timeout
      */
@@ -429,17 +405,17 @@ public final class ConnectionPolicy {
      * Gets the max channels per endpoint
      * @return the max channels per endpoint
      */
-    public int getMaxChannelsPerEndpoint() {
-        return maxChannelsPerEndpoint;
+    public int getMaxConnectionsPerEndpoint() {
+        return maxConnectionsPerEndpoint;
     }
 
     /**
      * Sets the max channels per endpoint
-     * @param maxChannelsPerEndpoint the max channels per endpoint
+     * @param maxConnectionsPerEndpoint the max channels per endpoint
      * @return the {@link ConnectionPolicy}
      */
-    public ConnectionPolicy setMaxChannelsPerEndpoint(int maxChannelsPerEndpoint) {
-        this.maxChannelsPerEndpoint = maxChannelsPerEndpoint;
+    public ConnectionPolicy setMaxConnectionsPerEndpoint(int maxConnectionsPerEndpoint) {
+        this.maxConnectionsPerEndpoint = maxConnectionsPerEndpoint;
         return this;
     }
 
@@ -447,17 +423,17 @@ public final class ConnectionPolicy {
      * Gets the max requests per endpoint
      * @return the max requests per endpoint
      */
-    public int getMaxRequestsPerChannel() {
-        return maxRequestsPerChannel;
+    public int getMaxRequestsPerConnection() {
+        return maxRequestsPerConnection;
     }
 
     /**
      * Sets the max requests per endpoint
-     * @param maxRequestsPerChannel the max requests per endpoint
+     * @param maxRequestsPerConnection the max requests per endpoint
      * @return the {@link ConnectionPolicy}
      */
-    public ConnectionPolicy setMaxRequestsPerChannel(int maxRequestsPerChannel) {
-        this.maxRequestsPerChannel = maxRequestsPerChannel;
+    public ConnectionPolicy setMaxRequestsPerConnection(int maxRequestsPerConnection) {
+        this.maxRequestsPerConnection = maxRequestsPerConnection;
         return this;
     }
 
@@ -476,10 +452,9 @@ public final class ConnectionPolicy {
             ", inetSocketProxyAddress=" + inetSocketProxyAddress +
             ", readRequestsFallbackEnabled=" + readRequestsFallbackEnabled +
             ", connectionTimeout=" + connectionTimeout +
-            ", idleChannelTimeout=" + idleChannelTimeout +
             ", idleEndpointTimeout=" + idleEndpointTimeout +
-            ", maxChannelsPerEndpoint=" + maxChannelsPerEndpoint +
-            ", maxRequestsPerChannel=" + maxRequestsPerChannel +
+            ", maxChannelsPerEndpoint=" + maxConnectionsPerEndpoint +
+            ", maxRequestsPerChannel=" + maxRequestsPerConnection +
             '}';
     }
 }
