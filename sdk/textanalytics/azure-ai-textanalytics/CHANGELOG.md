@@ -10,7 +10,7 @@
 
 **Breaking changes**
 - Removed pagination feature, which removed `TextAnalyticsPagedIterable`, `TextAnalyticsPagedFlux` and `TextAnalyticsPagedResponse`
-- Removed overload methods for API that takes a list of String, only keep max-overload API that has a list of String, language or country hint, or `TextAnalyticsRequestOption`.
+- Removed overload methods for API that takes a list of String, only keep max-overload API that has a list of String, language or country hint, and `TextAnalyticsRequestOption`.
 - Renamed `apiKey()` to `credential()` on TextAnalyticsClientBuilder.
 - Removed `getGraphemeLength()` and `getGraphemeOffset()` from `CategorizedEntity`, `SentenceSentiment`, and `LinkedEntityMatch`.
 - `getGraphemeCount()` in `TextDocumentStatistics` has been renamed to `getCharacterCount()`.
