@@ -58,7 +58,7 @@ public interface WorkflowTriggers {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable runAsync(String resourceGroupName, String workflowName, String triggerName);
+    Observable<Object> runAsync(String resourceGroupName, String workflowName, String triggerName);
 
     /**
      * Sets the state of a workflow trigger.

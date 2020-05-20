@@ -64,10 +64,14 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
     public Observable<IntegrationAccountSession> getAsync(String resourceGroupName, String integrationAccountName, String sessionName) {
         SessionsInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, sessionName)
-        .map(new Func1<IntegrationAccountSessionInner, IntegrationAccountSession>() {
+        .flatMap(new Func1<IntegrationAccountSessionInner, Observable<IntegrationAccountSession>>() {
             @Override
-            public IntegrationAccountSession call(IntegrationAccountSessionInner inner) {
-                return wrapModel(inner);
+            public Observable<IntegrationAccountSession> call(IntegrationAccountSessionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IntegrationAccountSession)wrapModel(inner));
+                }
             }
        });
     }

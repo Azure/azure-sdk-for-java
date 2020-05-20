@@ -78,10 +78,14 @@ class SchemasImpl extends WrapperImpl<SchemasInner> implements Schemas {
     public Observable<IntegrationAccountSchema> getAsync(String resourceGroupName, String integrationAccountName, String schemaName) {
         SchemasInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, schemaName)
-        .map(new Func1<IntegrationAccountSchemaInner, IntegrationAccountSchema>() {
+        .flatMap(new Func1<IntegrationAccountSchemaInner, Observable<IntegrationAccountSchema>>() {
             @Override
-            public IntegrationAccountSchema call(IntegrationAccountSchemaInner inner) {
-                return wrapModel(inner);
+            public Observable<IntegrationAccountSchema> call(IntegrationAccountSchemaInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((IntegrationAccountSchema)wrapModel(inner));
+                }
             }
        });
     }

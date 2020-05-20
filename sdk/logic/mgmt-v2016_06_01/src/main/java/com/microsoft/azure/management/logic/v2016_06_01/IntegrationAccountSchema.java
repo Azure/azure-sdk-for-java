@@ -121,6 +121,9 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithIntegrationAccount {
            /**
             * Specifies resourceGroupName, integrationAccountName.
+            * @param resourceGroupName The resource group name
+            * @param integrationAccountName The integration account name
+            * @return the next definition stage
             */
             WithSchemaType withExistingIntegrationAccount(String resourceGroupName, String integrationAccountName);
         }
@@ -131,6 +134,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithSchemaType {
            /**
             * Specifies schemaType.
+            * @param schemaType The schema type. Possible values include: 'NotSpecified', 'Xml'
+            * @return the next definition stage
             */
             WithCreate withSchemaType(SchemaType schemaType);
         }
@@ -141,6 +146,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithContent {
             /**
              * Specifies content.
+             * @param content The content
+             * @return the next definition stage
              */
             WithCreate withContent(String content);
         }
@@ -151,6 +158,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithContentType {
             /**
              * Specifies contentType.
+             * @param contentType The content type
+             * @return the next definition stage
              */
             WithCreate withContentType(String contentType);
         }
@@ -161,6 +170,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithDocumentName {
             /**
              * Specifies documentName.
+             * @param documentName The document name
+             * @return the next definition stage
              */
             WithCreate withDocumentName(String documentName);
         }
@@ -171,6 +182,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithFileName {
             /**
              * Specifies fileName.
+             * @param fileName The file name
+             * @return the next definition stage
              */
             WithCreate withFileName(String fileName);
         }
@@ -181,6 +194,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next definition stage
              */
             WithCreate withLocation(String location);
         }
@@ -191,6 +206,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next definition stage
              */
             WithCreate withMetadata(Object metadata);
         }
@@ -201,6 +218,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next definition stage
              */
             WithCreate withTags(Map<String, String> tags);
         }
@@ -211,6 +230,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithTargetNamespace {
             /**
              * Specifies targetNamespace.
+             * @param targetNamespace The target namespace of the schema
+             * @return the next definition stage
              */
             WithCreate withTargetNamespace(String targetNamespace);
         }
@@ -239,6 +260,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithContent {
             /**
              * Specifies content.
+             * @param content The content
+             * @return the next update stage
              */
             Update withContent(String content);
         }
@@ -249,6 +272,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithContentType {
             /**
              * Specifies contentType.
+             * @param contentType The content type
+             * @return the next update stage
              */
             Update withContentType(String contentType);
         }
@@ -259,6 +284,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithDocumentName {
             /**
              * Specifies documentName.
+             * @param documentName The document name
+             * @return the next update stage
              */
             Update withDocumentName(String documentName);
         }
@@ -269,6 +296,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithFileName {
             /**
              * Specifies fileName.
+             * @param fileName The file name
+             * @return the next update stage
              */
             Update withFileName(String fileName);
         }
@@ -279,6 +308,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithLocation {
             /**
              * Specifies location.
+             * @param location The resource location
+             * @return the next update stage
              */
             Update withLocation(String location);
         }
@@ -289,6 +320,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithMetadata {
             /**
              * Specifies metadata.
+             * @param metadata The metadata
+             * @return the next update stage
              */
             Update withMetadata(Object metadata);
         }
@@ -299,6 +332,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithTags {
             /**
              * Specifies tags.
+             * @param tags The resource tags
+             * @return the next update stage
              */
             Update withTags(Map<String, String> tags);
         }
@@ -309,6 +344,8 @@ public interface IntegrationAccountSchema extends HasInner<IntegrationAccountSch
         interface WithTargetNamespace {
             /**
              * Specifies targetNamespace.
+             * @param targetNamespace The target namespace of the schema
+             * @return the next update stage
              */
             Update withTargetNamespace(String targetNamespace);
         }

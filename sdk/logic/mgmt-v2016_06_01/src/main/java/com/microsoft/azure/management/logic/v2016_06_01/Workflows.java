@@ -52,7 +52,7 @@ public interface Workflows extends SupportsCreating<Workflow.DefinitionStages.Bl
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable generateUpgradedDefinitionAsync(String resourceGroupName, String workflowName);
+    Observable<Object> generateUpgradedDefinitionAsync(String resourceGroupName, String workflowName);
 
     /**
      * Get the workflow callback Url.
@@ -73,7 +73,7 @@ public interface Workflows extends SupportsCreating<Workflow.DefinitionStages.Bl
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable listSwaggerAsync(String resourceGroupName, String workflowName);
+    Observable<Object> listSwaggerAsync(String resourceGroupName, String workflowName);
 
     /**
      * Moves an existing workflow.

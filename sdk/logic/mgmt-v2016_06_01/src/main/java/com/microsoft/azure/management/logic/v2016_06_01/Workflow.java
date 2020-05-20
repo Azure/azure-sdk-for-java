@@ -99,51 +99,61 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
         }
 
         /**
-         * The stage of the workflow update allowing to specify Definition.
+         * The stage of the workflow definition allowing to specify Definition.
          */
         interface WithDefinition {
             /**
              * Specifies definition.
+             * @param definition The definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://aka.ms/logic-apps-workflow-definition-language)
+             * @return the next definition stage
              */
             WithCreate withDefinition(Object definition);
         }
 
         /**
-         * The stage of the workflow update allowing to specify IntegrationAccount.
+         * The stage of the workflow definition allowing to specify IntegrationAccount.
          */
         interface WithIntegrationAccount {
             /**
              * Specifies integrationAccount.
+             * @param integrationAccount The integration account
+             * @return the next definition stage
              */
             WithCreate withIntegrationAccount(ResourceReference integrationAccount);
         }
 
         /**
-         * The stage of the workflow update allowing to specify Parameters.
+         * The stage of the workflow definition allowing to specify Parameters.
          */
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters The parameters
+             * @return the next definition stage
              */
             WithCreate withParameters(Map<String, WorkflowParameter> parameters);
         }
 
         /**
-         * The stage of the workflow update allowing to specify Sku.
+         * The stage of the workflow definition allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The sku
+             * @return the next definition stage
              */
             WithCreate withSku(Sku sku);
         }
 
         /**
-         * The stage of the workflow update allowing to specify State.
+         * The stage of the workflow definition allowing to specify State.
          */
         interface WithState {
             /**
              * Specifies state.
+             * @param state The state. Possible values include: 'NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Suspended'
+             * @return the next definition stage
              */
             WithCreate withState(WorkflowState state);
         }
@@ -167,51 +177,61 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
      */
     interface UpdateStages {
         /**
-         * The stage of the workflow {0} allowing to specify Definition.
+         * The stage of the workflow update allowing to specify Definition.
          */
         interface WithDefinition {
             /**
              * Specifies definition.
+             * @param definition The definition. See [Schema reference for Workflow Definition Language in Azure Logic Apps](https://aka.ms/logic-apps-workflow-definition-language)
+             * @return the next update stage
              */
             Update withDefinition(Object definition);
         }
 
         /**
-         * The stage of the workflow {0} allowing to specify IntegrationAccount.
+         * The stage of the workflow update allowing to specify IntegrationAccount.
          */
         interface WithIntegrationAccount {
             /**
              * Specifies integrationAccount.
+             * @param integrationAccount The integration account
+             * @return the next update stage
              */
             Update withIntegrationAccount(ResourceReference integrationAccount);
         }
 
         /**
-         * The stage of the workflow {0} allowing to specify Parameters.
+         * The stage of the workflow update allowing to specify Parameters.
          */
         interface WithParameters {
             /**
              * Specifies parameters.
+             * @param parameters The parameters
+             * @return the next update stage
              */
             Update withParameters(Map<String, WorkflowParameter> parameters);
         }
 
         /**
-         * The stage of the workflow {0} allowing to specify Sku.
+         * The stage of the workflow update allowing to specify Sku.
          */
         interface WithSku {
             /**
              * Specifies sku.
+             * @param sku The sku
+             * @return the next update stage
              */
             Update withSku(Sku sku);
         }
 
         /**
-         * The stage of the workflow {0} allowing to specify State.
+         * The stage of the workflow update allowing to specify State.
          */
         interface WithState {
             /**
              * Specifies state.
+             * @param state The state. Possible values include: 'NotSpecified', 'Completed', 'Enabled', 'Disabled', 'Deleted', 'Suspended'
+             * @return the next update stage
              */
             Update withState(WorkflowState state);
         }

@@ -23,6 +23,8 @@ import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerHistories
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRuns;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActions;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRepetitions;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRepetitionsRequestHistories;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRequestHistories;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionScopedRepetitions;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunOperations;
 import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccounts;
@@ -34,6 +36,7 @@ import com.microsoft.azure.management.logic.v2016_06_01.Partners;
 import com.microsoft.azure.management.logic.v2016_06_01.Agreements;
 import com.microsoft.azure.management.logic.v2016_06_01.Certificates;
 import com.microsoft.azure.management.logic.v2016_06_01.Sessions;
+import com.microsoft.azure.management.logic.v2016_06_01.RosettaNetProcessConfigurations;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -48,6 +51,8 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
     private WorkflowRuns workflowRuns;
     private WorkflowRunActions workflowRunActions;
     private WorkflowRunActionRepetitions workflowRunActionRepetitions;
+    private WorkflowRunActionRepetitionsRequestHistories workflowRunActionRepetitionsRequestHistories;
+    private WorkflowRunActionRequestHistories workflowRunActionRequestHistories;
     private WorkflowRunActionScopedRepetitions workflowRunActionScopedRepetitions;
     private WorkflowRunOperations workflowRunOperations;
     private IntegrationAccounts integrationAccounts;
@@ -59,6 +64,7 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
     private Agreements agreements;
     private Certificates certificates;
     private Sessions sessions;
+    private RosettaNetProcessConfigurations rosettaNetProcessConfigurations;
     /**
     * Get a Configurable instance that can be used to create LogicManager with optional configuration.
     *
@@ -177,6 +183,26 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
     }
 
     /**
+     * @return Entry point to manage WorkflowRunActionRepetitionsRequestHistories.
+     */
+    public WorkflowRunActionRepetitionsRequestHistories workflowRunActionRepetitionsRequestHistories() {
+        if (this.workflowRunActionRepetitionsRequestHistories == null) {
+            this.workflowRunActionRepetitionsRequestHistories = new WorkflowRunActionRepetitionsRequestHistoriesImpl(this);
+        }
+        return this.workflowRunActionRepetitionsRequestHistories;
+    }
+
+    /**
+     * @return Entry point to manage WorkflowRunActionRequestHistories.
+     */
+    public WorkflowRunActionRequestHistories workflowRunActionRequestHistories() {
+        if (this.workflowRunActionRequestHistories == null) {
+            this.workflowRunActionRequestHistories = new WorkflowRunActionRequestHistoriesImpl(this);
+        }
+        return this.workflowRunActionRequestHistories;
+    }
+
+    /**
      * @return Entry point to manage WorkflowRunActionScopedRepetitions.
      */
     public WorkflowRunActionScopedRepetitions workflowRunActionScopedRepetitions() {
@@ -284,6 +310,16 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
             this.sessions = new SessionsImpl(this);
         }
         return this.sessions;
+    }
+
+    /**
+     * @return Entry point to manage RosettaNetProcessConfigurations.
+     */
+    public RosettaNetProcessConfigurations rosettaNetProcessConfigurations() {
+        if (this.rosettaNetProcessConfigurations == null) {
+            this.rosettaNetProcessConfigurations = new RosettaNetProcessConfigurationsImpl(this);
+        }
+        return this.rosettaNetProcessConfigurations;
     }
 
     /**
