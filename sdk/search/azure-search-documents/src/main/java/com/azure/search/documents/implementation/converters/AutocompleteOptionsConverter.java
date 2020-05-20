@@ -5,6 +5,7 @@ import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.AutocompleteMode;
 import com.azure.search.documents.models.AutocompleteOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +47,7 @@ public final class AutocompleteOptionsConverter {
         autocompleteOptions.setHighlightPostTag(_highlightPostTag);
 
         if (obj.getSearchFields() != null) {
-            List<String> _searchFields = obj.getSearchFields().stream().collect(Collectors.toList());
+            List<String> _searchFields = new ArrayList<>(obj.getSearchFields());
             PrivateFieldAccessHelper.set(autocompleteOptions, "searchFields", _searchFields);
         }
 
@@ -88,7 +89,7 @@ public final class AutocompleteOptionsConverter {
         autocompleteOptions.setHighlightPostTag(_highlightPostTag);
 
         if (obj.getSearchFields() != null) {
-            List<String> _searchFields = obj.getSearchFields().stream().collect(Collectors.toList());
+            List<String> _searchFields = new ArrayList<>(obj.getSearchFields());
             PrivateFieldAccessHelper.set(autocompleteOptions, "searchFields", _searchFields);
         }
 

@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.KeepTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public final class KeepTokenFilterConverter {
         keepTokenFilter.setName(_name);
 
         if (obj.getKeepWords() != null) {
-            List<String> _keepWords = obj.getKeepWords().stream().collect(Collectors.toList());
+            List<String> _keepWords = new ArrayList<>(obj.getKeepWords());
             keepTokenFilter.setKeepWords(_keepWords);
         }
 
@@ -49,7 +50,7 @@ public final class KeepTokenFilterConverter {
         keepTokenFilter.setName(_name);
 
         if (obj.getKeepWords() != null) {
-            List<String> _keepWords = obj.getKeepWords().stream().collect(Collectors.toList());
+            List<String> _keepWords = new ArrayList<>(obj.getKeepWords());
             keepTokenFilter.setKeepWords(_keepWords);
         }
 

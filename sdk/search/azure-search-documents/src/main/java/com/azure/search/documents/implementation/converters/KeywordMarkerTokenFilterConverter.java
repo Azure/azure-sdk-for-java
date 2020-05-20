@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.KeywordMarkerTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public final class KeywordMarkerTokenFilterConverter {
         keywordMarkerTokenFilter.setName(_name);
 
         if (obj.getKeywords() != null) {
-            List<String> _keywords = obj.getKeywords().stream().collect(Collectors.toList());
+            List<String> _keywords = new ArrayList<>(obj.getKeywords());
             keywordMarkerTokenFilter.setKeywords(_keywords);
         }
 
@@ -51,7 +52,7 @@ public final class KeywordMarkerTokenFilterConverter {
         keywordMarkerTokenFilter.setName(_name);
 
         if (obj.getKeywords() != null) {
-            List<String> _keywords = obj.getKeywords().stream().collect(Collectors.toList());
+            List<String> _keywords = new ArrayList<>(obj.getKeywords());
             keywordMarkerTokenFilter.setKeywords(_keywords);
         }
 

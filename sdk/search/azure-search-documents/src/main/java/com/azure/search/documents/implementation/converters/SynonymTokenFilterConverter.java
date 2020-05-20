@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.SynonymTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public final class SynonymTokenFilterConverter {
         synonymTokenFilter.setExpand(_expand);
 
         if (obj.getSynonyms() != null) {
-            List<String> _synonyms = obj.getSynonyms().stream().collect(Collectors.toList());
+            List<String> _synonyms = new ArrayList<>(obj.getSynonyms());
             synonymTokenFilter.setSynonyms(_synonyms);
         }
 
@@ -57,7 +58,7 @@ public final class SynonymTokenFilterConverter {
         synonymTokenFilter.setExpand(_expand);
 
         if (obj.getSynonyms() != null) {
-            List<String> _synonyms = obj.getSynonyms().stream().collect(Collectors.toList());
+            List<String> _synonyms = new ArrayList<>(obj.getSynonyms());
             synonymTokenFilter.setSynonyms(_synonyms);
         }
 

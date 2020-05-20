@@ -64,7 +64,7 @@ public final class SearchFieldConverter {
         searchField.setFacetable(_facetable);
 
         if (obj.getSynonymMaps() != null) {
-            List<String> _synonymMaps = obj.getSynonymMaps().stream().collect(Collectors.toList());
+            List<String> _synonymMaps = new ArrayList<>(obj.getSynonymMaps());
             searchField.setSynonymMaps(_synonymMaps);
         }
 

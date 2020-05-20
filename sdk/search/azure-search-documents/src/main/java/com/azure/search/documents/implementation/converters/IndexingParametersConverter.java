@@ -31,8 +31,8 @@ public final class IndexingParametersConverter {
 
         if (obj.getConfiguration() != null) {
             Map<String, Object> _configuration =
-                obj.getConfiguration().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(),
-                    e -> e.getValue()));
+                obj.getConfiguration().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             indexingParameters.setConfiguration(_configuration);
         }
 
@@ -60,8 +60,8 @@ public final class IndexingParametersConverter {
 
         if (obj.getConfiguration() != null) {
             Map<String, Object> _configuration =
-                obj.getConfiguration().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(),
-                    e -> e.getValue()));
+                obj.getConfiguration().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             indexingParameters.setConfiguration(_configuration);
         }
 

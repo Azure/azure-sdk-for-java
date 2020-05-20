@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.CommonGramTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public final class CommonGramTokenFilterConverter {
         commonGramTokenFilter.setUseQueryMode(_useQueryMode);
 
         if (obj.getCommonWords() != null) {
-            List<String> _commonWords = obj.getCommonWords().stream().collect(Collectors.toList());
+            List<String> _commonWords = new ArrayList<>(obj.getCommonWords());
             commonGramTokenFilter.setCommonWords(_commonWords);
         }
         return commonGramTokenFilter;
@@ -60,7 +61,7 @@ public final class CommonGramTokenFilterConverter {
         commonGramTokenFilter.setUseQueryMode(_useQueryMode);
 
         if (obj.getCommonWords() != null) {
-            List<String> _commonWords = obj.getCommonWords().stream().collect(Collectors.toList());
+            List<String> _commonWords = new ArrayList<>(obj.getCommonWords());
             commonGramTokenFilter.setCommonWords(_commonWords);
         }
         return commonGramTokenFilter;

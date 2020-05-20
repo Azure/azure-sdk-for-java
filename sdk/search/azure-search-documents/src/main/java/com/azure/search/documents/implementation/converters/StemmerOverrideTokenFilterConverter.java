@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.StemmerOverrideTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public final class StemmerOverrideTokenFilterConverter {
         stemmerOverrideTokenFilter.setName(_name);
 
         if (obj.getRules() != null) {
-            List<String> _rules = obj.getRules().stream().collect(Collectors.toList());
+            List<String> _rules = new ArrayList<>(obj.getRules());
             stemmerOverrideTokenFilter.setRules(_rules);
         }
         return stemmerOverrideTokenFilter;
@@ -48,7 +49,7 @@ public final class StemmerOverrideTokenFilterConverter {
         stemmerOverrideTokenFilter.setName(_name);
 
         if (obj.getRules() != null) {
-            List<String> _rules = obj.getRules().stream().collect(Collectors.toList());
+            List<String> _rules = new ArrayList<>(obj.getRules());
             stemmerOverrideTokenFilter.setRules(_rules);
         }
         return stemmerOverrideTokenFilter;

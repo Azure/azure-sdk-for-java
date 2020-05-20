@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.PatternCaptureTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public final class PatternCaptureTokenFilterConverter {
         patternCaptureTokenFilter.setName(_name);
 
         if (obj.getPatterns() != null) {
-            List<String> _patterns = obj.getPatterns().stream().collect(Collectors.toList());
+            List<String> _patterns = new ArrayList<>(obj.getPatterns());
             patternCaptureTokenFilter.setPatterns(_patterns);
         }
 
@@ -51,7 +52,7 @@ public final class PatternCaptureTokenFilterConverter {
         patternCaptureTokenFilter.setName(_name);
 
         if (obj.getPatterns() != null) {
-            List<String> _patterns = obj.getPatterns().stream().collect(Collectors.toList());
+            List<String> _patterns = new ArrayList<>(obj.getPatterns());
             patternCaptureTokenFilter.setPatterns(_patterns);
         }
 

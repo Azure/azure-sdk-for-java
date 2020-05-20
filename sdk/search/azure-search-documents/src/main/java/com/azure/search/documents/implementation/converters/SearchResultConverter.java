@@ -54,7 +54,8 @@ public final class SearchResultConverter {
 
         if (obj.getHighlights() != null) {
             Map<String, List<String>> _highlights =
-                obj.getHighlights().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getHighlights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             PrivateFieldAccessHelper.set(searchResult, "highlights", _highlights);
         }
 

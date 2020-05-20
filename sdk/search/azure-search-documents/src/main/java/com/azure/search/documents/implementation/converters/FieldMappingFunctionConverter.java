@@ -28,7 +28,8 @@ public final class FieldMappingFunctionConverter {
 
         if (obj.getParameters() != null) {
             Map<String, Object> _parameters =
-                obj.getParameters().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getParameters().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             fieldMappingFunction.setParameters(_parameters);
         }
         return fieldMappingFunction;
@@ -50,7 +51,8 @@ public final class FieldMappingFunctionConverter {
 
         if (obj.getParameters() != null) {
             Map<String, Object> _parameters =
-                obj.getParameters().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getParameters().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             fieldMappingFunction.setParameters(_parameters);
         }
         return fieldMappingFunction;

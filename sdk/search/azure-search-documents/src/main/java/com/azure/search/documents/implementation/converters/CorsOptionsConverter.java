@@ -4,6 +4,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.CorsOptions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,7 @@ public final class CorsOptionsConverter {
         CorsOptions corsOptions = new CorsOptions();
 
         if (obj.getAllowedOrigins() != null) {
-            List<String> _allowedOrigins = obj.getAllowedOrigins().stream().collect(Collectors.toList());
+            List<String> _allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
             PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", _allowedOrigins);
         }
 
@@ -43,7 +44,7 @@ public final class CorsOptionsConverter {
             new com.azure.search.documents.implementation.models.CorsOptions();
 
         if (obj.getAllowedOrigins() != null) {
-            List<String> _allowedOrigins = obj.getAllowedOrigins().stream().collect(Collectors.toList());
+            List<String> _allowedOrigins = new ArrayList<>(obj.getAllowedOrigins());
             PrivateFieldAccessHelper.set(corsOptions, "allowedOrigins", _allowedOrigins);
         }
 

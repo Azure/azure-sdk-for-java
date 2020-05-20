@@ -4,6 +4,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.StopwordsList;
 import com.azure.search.documents.models.StopwordsTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,7 @@ public final class StopwordsTokenFilterConverter {
         stopwordsTokenFilter.setIgnoreCase(_ignoreCase);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             stopwordsTokenFilter.setStopwords(_stopwords);
         }
 
@@ -66,7 +67,7 @@ public final class StopwordsTokenFilterConverter {
         stopwordsTokenFilter.setIgnoreCase(_ignoreCase);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             stopwordsTokenFilter.setStopwords(_stopwords);
         }
 

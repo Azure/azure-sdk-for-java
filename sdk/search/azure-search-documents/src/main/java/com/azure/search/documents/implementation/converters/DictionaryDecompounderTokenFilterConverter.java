@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.DictionaryDecompounderTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +37,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
         dictionaryDecompounderTokenFilter.setMaxSubwordSize(_maxSubwordSize);
 
         if (obj.getWordList() != null) {
-            List<String> _wordList = obj.getWordList().stream().collect(Collectors.toList());
+            List<String> _wordList = new ArrayList<>(obj.getWordList());
             dictionaryDecompounderTokenFilter.setWordList(_wordList);
         }
 
@@ -68,7 +69,7 @@ public final class DictionaryDecompounderTokenFilterConverter {
         dictionaryDecompounderTokenFilter.setMaxSubwordSize(_maxSubwordSize);
 
         if (obj.getWordList() != null) {
-            List<String> _wordList = obj.getWordList().stream().collect(Collectors.toList());
+            List<String> _wordList = new ArrayList<>(obj.getWordList());
             dictionaryDecompounderTokenFilter.setWordList(_wordList);
         }
 

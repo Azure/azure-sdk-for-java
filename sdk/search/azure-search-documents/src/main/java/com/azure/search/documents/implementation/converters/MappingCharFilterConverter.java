@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.MappingCharFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public final class MappingCharFilterConverter {
         mappingCharFilter.setName(_name);
 
         if (obj.getMappings() != null) {
-            List<String> _mappings = obj.getMappings().stream().collect(Collectors.toList());
+            List<String> _mappings = new ArrayList<>(obj.getMappings());
             mappingCharFilter.setMappings(_mappings);
         }
         return mappingCharFilter;
@@ -48,7 +49,7 @@ public final class MappingCharFilterConverter {
         mappingCharFilter.setName(_name);
 
         if (obj.getMappings() != null) {
-            List<String> _mappings = obj.getMappings().stream().collect(Collectors.toList());
+            List<String> _mappings = new ArrayList<>(obj.getMappings());
             mappingCharFilter.setMappings(_mappings);
         }
         return mappingCharFilter;

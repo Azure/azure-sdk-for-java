@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.LuceneStandardAnalyzer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +31,7 @@ public final class LuceneStandardAnalyzerConverter {
         luceneStandardAnalyzer.setMaxTokenLength(_maxTokenLength);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             luceneStandardAnalyzer.setStopwords(_stopwords);
         }
         return luceneStandardAnalyzer;
@@ -54,7 +55,7 @@ public final class LuceneStandardAnalyzerConverter {
         luceneStandardAnalyzer.setMaxTokenLength(_maxTokenLength);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             luceneStandardAnalyzer.setStopwords(_stopwords);
         }
         return luceneStandardAnalyzer;

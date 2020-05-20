@@ -27,8 +27,8 @@ public final class FacetResultConverter {
 
         if (obj.getAdditionalProperties() != null) {
             Map<String, Object> _additionalProperties =
-                obj.getAdditionalProperties().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(),
-                    e -> e.getValue()));
+                obj.getAdditionalProperties().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             PrivateFieldAccessHelper.set(facetResult, "additionalProperties", _additionalProperties);
         }
         return facetResult;
@@ -49,8 +49,8 @@ public final class FacetResultConverter {
 
         if (obj.getAdditionalProperties() != null) {
             Map<String, Object> _additionalProperties =
-                obj.getAdditionalProperties().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(),
-                    e -> e.getValue()));
+                obj.getAdditionalProperties().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             PrivateFieldAccessHelper.set(facetResult, "additionalProperties", _additionalProperties);
         }
         return facetResult;

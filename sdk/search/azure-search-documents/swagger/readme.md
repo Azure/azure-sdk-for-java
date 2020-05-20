@@ -202,5 +202,6 @@ directive:
       where: $
       transform: >-
         return $
+        .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonAnyGetter;")
         .replace(/(    public Map\<String\, Object\> getAdditionalProperties\(\) \{)/g, "    @JsonAnyGetter\n$1")
 ```

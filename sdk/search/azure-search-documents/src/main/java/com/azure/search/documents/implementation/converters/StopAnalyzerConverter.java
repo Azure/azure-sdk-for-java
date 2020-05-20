@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.StopAnalyzer;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +26,7 @@ public final class StopAnalyzerConverter {
         stopAnalyzer.setName(_name);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             stopAnalyzer.setStopwords(_stopwords);
         }
         return stopAnalyzer;
@@ -45,7 +46,7 @@ public final class StopAnalyzerConverter {
         stopAnalyzer.setName(_name);
 
         if (obj.getStopwords() != null) {
-            List<String> _stopwords = obj.getStopwords().stream().collect(Collectors.toList());
+            List<String> _stopwords = new ArrayList<>(obj.getStopwords());
             stopAnalyzer.setStopwords(_stopwords);
         }
         return stopAnalyzer;

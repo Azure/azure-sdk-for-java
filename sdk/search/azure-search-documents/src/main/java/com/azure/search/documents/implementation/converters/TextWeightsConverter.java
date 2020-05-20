@@ -23,7 +23,8 @@ public final class TextWeightsConverter {
 
         if (obj.getWeights() != null) {
             Map<String, Double> _weights =
-                obj.getWeights().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             textWeights.setWeights(_weights);
         }
         return textWeights;
@@ -41,7 +42,8 @@ public final class TextWeightsConverter {
 
         if (obj.getWeights() != null) {
             Map<String, Double> _weights =
-                obj.getWeights().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getWeights().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             textWeights.setWeights(_weights);
         }
         return textWeights;

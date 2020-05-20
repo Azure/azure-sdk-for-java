@@ -48,7 +48,7 @@ public final class WebApiSkillConverter {
 
         if (obj.getHttpHeaders() != null) {
             Map<String, String> _httpHeaders =
-                obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
             webApiSkill.setHttpHeaders(_httpHeaders);
         }
 
@@ -102,7 +102,8 @@ public final class WebApiSkillConverter {
 
         if (obj.getHttpHeaders() != null) {
             Map<String, String> _httpHeaders =
-                obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e -> e.getValue()));
+                obj.getHttpHeaders().entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey,
+                    Map.Entry::getValue));
             webApiSkill.setHttpHeaders(_httpHeaders);
         }
 

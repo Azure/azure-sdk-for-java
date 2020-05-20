@@ -3,6 +3,7 @@ package com.azure.search.documents.implementation.converters;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.models.ElisionTokenFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,7 +28,7 @@ public final class ElisionTokenFilterConverter {
         elisionTokenFilter.setName(_name);
 
         if (obj.getArticles() != null) {
-            List<String> _articles = obj.getArticles().stream().collect(Collectors.toList());
+            List<String> _articles = new ArrayList<>(obj.getArticles());
             elisionTokenFilter.setArticles(_articles);
         }
         return elisionTokenFilter;
@@ -48,7 +49,7 @@ public final class ElisionTokenFilterConverter {
         elisionTokenFilter.setName(_name);
 
         if (obj.getArticles() != null) {
-            List<String> _articles = obj.getArticles().stream().collect(Collectors.toList());
+            List<String> _articles = new ArrayList<>(obj.getArticles());
             elisionTokenFilter.setArticles(_articles);
         }
         return elisionTokenFilter;
