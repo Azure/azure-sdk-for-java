@@ -11,7 +11,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public class DistinctHash {
@@ -23,11 +22,11 @@ public class DistinctHash {
             .configure(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY, true)
             .configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 
-    public static UInt128 getHash(Object resource) throws IOException,
-                                                              NoSuchAlgorithmException {
+    @SuppressWarnings("unchecked")
+    public static UInt128 getHash(Object resource) throws IOException {
 
         if (resource instanceof List) {
-            return hashList((List) resource);
+            return hashList((List<Object>) resource);
         }
 
         if (resource instanceof JsonSerializable) {
@@ -37,7 +36,6 @@ public class DistinctHash {
         final byte[] bytes = Utils.serializeObjectToByteArray(resource);
         UInt128 uInt128 = MurmurHash3_128.hash128(bytes, bytes.length);
         return uInt128;
-
     }
 
     private static UInt128 getHashFromJsonSerializable(JsonSerializable resource) {
@@ -46,7 +44,7 @@ public class DistinctHash {
         return MurmurHash3_128.hash128(bytes, bytes.length);
     }
 
-    private static UInt128 hashList(List resource) {
+    private static UInt128 hashList(List<Object> resource) {
         UInt128 hash = ArrayHashSeed;
         for (Object obj : resource) {
             if (obj instanceof JsonSerializable) {

@@ -21,9 +21,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.UniqueKey;
 import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -161,11 +159,11 @@ public class JsonSerializable {
         return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 
-    protected <T> Map<String, T> getMap(String propertyKey) {
+    @SuppressWarnings("unchecked")
+    public <T> Map<String, T> getMap(String propertyKey) {
         if (this.propertyBag.has(propertyKey)) {
             Object value = this.get(propertyKey);
-            return getMapper().convertValue(value, new TypeReference<Map<String, T>>() {
-            });
+            return (Map<String, T>) getMapper().convertValue(value, HashMap.class);
         }
         return null;
     }

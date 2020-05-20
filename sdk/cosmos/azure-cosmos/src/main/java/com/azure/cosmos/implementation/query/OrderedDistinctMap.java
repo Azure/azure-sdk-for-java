@@ -2,14 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.Resource;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 public class OrderedDistinctMap extends DistinctMap {
     private volatile UInt128 lastHash;
@@ -30,11 +28,8 @@ public class OrderedDistinctMap extends DistinctMap {
             }
             lastHash = outHash.v;
             return value;
-        } catch (JsonProcessingException | NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Failed to add value to distinct map" +e);
         }
-        return false;
     }
 }

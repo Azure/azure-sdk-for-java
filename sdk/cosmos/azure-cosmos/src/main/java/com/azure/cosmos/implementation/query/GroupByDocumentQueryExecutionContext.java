@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Resource;
@@ -21,10 +23,14 @@ import java.util.function.Function;
 
 public class GroupByDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
 
-    public final String ContinuationTokenNotSupportedWithGroupBy = "Continuation token is not supported for queries " +
-                                                                       "with GROUP BY. Do not use FeedResponse#" +
-                                                                       "responseContinuation or remove the GROUP BY " +
-                                                                       "from the query.";
+    public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
+                                                                                    "for " +
+                                                                                    "queries " +
+                                                                                    "with GROUP BY. Do not use " +
+                                                                                    "FeedResponse#" +
+                                                                                    "responseContinuation or remove " +
+                                                                                    "the GROUP BY " +
+                                                                                    "from the query.";
     private final IDocumentQueryExecutionComponent<T> component;
     private final GroupingTable groupingTable;
 
@@ -41,8 +47,13 @@ public class GroupByDocumentQueryExecutionContext<T extends Resource> implements
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> orderedAliases,
         boolean hasSelectValue) {
+        if (continuationToken != null) {
+            CosmosClientException dce = new BadRequestException(CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY);
+            return Flux.error(dce);
+        }
         GroupingTable table = new GroupingTable(groupByAliasToAggregateType, orderedAliases, hasSelectValue);
-        return createSourceComponentFunction.apply(continuationToken)
+        // Have to pass non-null continuation token once supported
+        return createSourceComponentFunction.apply(null)
                    .map(component -> new GroupByDocumentQueryExecutionContext<>(component,
                                                                                 table));
     }

@@ -1,12 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.implementation.routing.UInt128;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,8 +22,7 @@ public class GroupingTable {
     private final List<String> orderedAliases;
     private final boolean hasSelectValue;
 
-    public GroupingTable(
-        Map<String, AggregateOperator> groupByAliasToAggregateType, List<String> orderedAliases,
+    GroupingTable(Map<String, AggregateOperator> groupByAliasToAggregateType, List<String> orderedAliases,
         boolean hasSelectValue) {
         this.table = new HashMap<>();
         this.groupByAliasToAggregateType = groupByAliasToAggregateType;
@@ -31,7 +30,7 @@ public class GroupingTable {
         this.hasSelectValue = hasSelectValue;
     }
 
-    public void addPayLoad(GroupByDocumentQueryExecutionContext.RewrittenGroupByProjection rewrittenGroupByProjection) {
+    public void addPayLoad(GroupByDocumentQueryExecutionContext<?>.RewrittenGroupByProjection rewrittenGroupByProjection) {
         try {
             final UInt128 groupByKeysHash = DistinctHash.getHash(rewrittenGroupByProjection.getGroupByItems());
             SingleGroupAggregator singleGroupAggregator;
@@ -48,16 +47,12 @@ public class GroupingTable {
 
             singleGroupAggregator.addValues(rewrittenGroupByProjection.getPayload());
 
-        } catch (JsonProcessingException | NoSuchAlgorithmException e) {
-            //TODO: User logger instead
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Failed to add payload to groupby projection", e);
         }
     }
 
     public List<Document> drain(int maxItemCount) {
-        //TODO: Check if this can to be improved?
         Collection<UInt128> keys = this.table.keySet().stream().limit(maxItemCount).collect(Collectors.toList());
         List<SingleGroupAggregator> singleGroupAggregators = new ArrayList<>(keys.size());
         for (UInt128 key : keys) {

@@ -45,7 +45,7 @@ public abstract class SingleGroupAggregator {
         SingleGroupAggregator singleGroupAggregator;
 
         if (hasSelectValue) {
-            if (aggregates != null && !aggregates.isEmpty()) {
+            if (!aggregates.isEmpty()) {
                 // SELECT VALUE <AGGREGATE>
                 singleGroupAggregator = SelectValueAggregateValues.create(
                     aggregates.get(0),
@@ -179,17 +179,14 @@ public abstract class SingleGroupAggregator {
         @Override
         public Document getResult() {
             Document aggregateDocument = new Document();
-            List<Map<String, Object>> aliasToElement = new ArrayList<Map<String, Object>>();
             for (String alias : this.orderedAliases) {
                 AggregateValue aggregateValue = this.aliasToValue.get(alias);
                 if (aggregateValue.getResult() != null) {
                     Map<String, Object> map = new HashMap<>();
                     map.put(alias,  aggregateValue.getResult());
                     aggregateDocument.set(alias, aggregateValue.getResult());
-                    aliasToElement.add(map);
                 }
             }
-//            aggregateDocument = Document.fromObject(aliasToElement.get(0), Utils.getSimpleObjectMapper());
             return aggregateDocument;
         }
 
@@ -286,9 +283,11 @@ public abstract class SingleGroupAggregator {
 
         public static ScalarAggregateValue create(String continuationToken) {
             // Intialize these values using continuationToken when its support added.
+            /*
             Document value = null;
             boolean initialized = false;
-            return new ScalarAggregateValue(value, initialized);
+            */
+            return new ScalarAggregateValue(null, false);
         }
 
         @Override

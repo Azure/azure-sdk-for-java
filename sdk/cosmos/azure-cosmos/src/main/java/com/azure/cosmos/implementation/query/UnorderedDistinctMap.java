@@ -27,11 +27,8 @@ public class UnorderedDistinctMap extends DistinctMap {
         try {
             outHash.v = DistinctHash.getHash(resource);
             return resultSet.add(outHash.v);
-        } catch (JsonProcessingException | NoSuchAlgorithmException e) {
-            throw new IllegalStateException(e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IllegalStateException("Failed to add value to distinct map" + e);
         }
-        return false;
     }
 }

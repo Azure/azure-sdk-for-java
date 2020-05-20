@@ -112,8 +112,8 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                         }
                     }
 
-                    if (this.singleGroupAggregator.getResult() == null || !this.singleGroupAggregator.getResult().equals(Undefined.value())) {
-                        Document aggregateDocument = this.singleGroupAggregator.getResult();
+                    Document aggregateDocument = this.singleGroupAggregator.getResult();
+                    if (aggregateDocument != null) {
                         aggregateResults.add(aggregateDocument);
                     }
 
@@ -160,9 +160,6 @@ public class AggregateDocumentQueryExecutionContext<T extends Resource> implemen
                 throw new IllegalArgumentException("document cannot be null");
             }
             if (isValueAggregateQuery) {
-                if (document != null) {
-
-                }
                 this.payload = new Document(document.getPropertyBag());
             } else {
                 if (document.get("payload") instanceof ObjectNode) {

@@ -73,7 +73,7 @@ public class GroupByQueryTests extends TestSuiteBase {
     public void queryDocuments() {
         boolean qmEnabled = true;
 
-        String query = "SELECT sum(c.age), c.city FROM c group by c.city";
+        String query = "SELECT sum(c.age) as sum_age, c.city FROM c group by c.city";
         FeedOptions options = new FeedOptions();
         ModelBridgeInternal.setFeedOptionsMaxItemCount(options, 35);
         options.setPopulateQueryMetrics(qmEnabled);
@@ -89,7 +89,7 @@ public class GroupByQueryTests extends TestSuiteBase {
         resultMap.forEach((city, sum) ->
                           {
                               Document d = new Document();
-                              d.set("$1", sum);
+                              d.set("sum_age", sum);
                               d.set("city", city);
                               expectedDocumentsList.add(d);
                           });
@@ -106,7 +106,6 @@ public class GroupByQueryTests extends TestSuiteBase {
         for (int i = 0; i < expectedDocumentsList.size(); i++) {
             assertThat(expectedDocumentsList.get(i).toString().equals(queryResults.get(i).toString()));
         }
-
     }
 
     public void bulkInsert() {
