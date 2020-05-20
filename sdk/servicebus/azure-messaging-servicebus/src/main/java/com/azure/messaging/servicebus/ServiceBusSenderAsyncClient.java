@@ -465,8 +465,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     /**
-     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
-     * needs to be in this transaction.
+     * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed along with
+     * {@link ServiceBusReceivedMessage} or {@link MessageLockToken} to all operations that needs to be in
+     * this transaction.
      * @return a new transaction
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
@@ -477,9 +478,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityName, entityType))
-            .flatMap(transactionManager -> {
-                return transactionManager.createTransaction();
-            })
+            .flatMap(transactionManager -> transactionManager.createTransaction())
             .map(byteBuffer -> {
                 logger
                     .verbose(" !!!! Created transaction .");
@@ -488,10 +487,10 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     }
 
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
-        return null;
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
-        return null;
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

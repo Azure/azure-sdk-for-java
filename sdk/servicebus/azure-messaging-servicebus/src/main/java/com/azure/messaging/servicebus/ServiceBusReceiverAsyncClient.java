@@ -1110,10 +1110,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
             .flatMap(TransactionManager::createTransaction)
-            .map(byteBuffer -> {
-                logger.verbose(" !!!! Created transaction .");
-                return new ServiceBusTransactionContext(byteBuffer);
-            });
+            .map(byteBuffer -> new ServiceBusTransactionContext(byteBuffer));
     }
 
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
@@ -1124,11 +1121,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
-            .flatMap(transactionManager -> {
-                return transactionManager.completeTransaction(transactionContext, true);
-            }).doFinally(signalType -> {
-                logger.verbose(" !!!! commitTransaction completed. signalType [{}]", signalType);
-            })
+            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, true))
             .then();
     }
 
@@ -1140,11 +1133,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         return connectionProcessor
             .flatMap(connection -> connection.getTransactionManager(entityPath, entityType))
-            .flatMap(transactionManager -> {
-                return transactionManager.completeTransaction(transactionContext, false);
-            }).doFinally(signalType -> {
-                logger.verbose(" !!!! rollbackTransaction completed. signalType [{}]", signalType);
-            })
+            .flatMap(transactionManager -> transactionManager.completeTransaction(transactionContext, false))
             .then();
     }
 }

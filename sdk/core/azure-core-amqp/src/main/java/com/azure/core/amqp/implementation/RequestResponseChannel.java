@@ -242,12 +242,10 @@ public class RequestResponseChannel implements Disposable {
                                 .replace("-", "").getBytes(UTF_8));
 
                             if (transactionId != AmqpConstants.TXN_NULL) {
-                                logger.verbose("!!!! sendWithAck Setting transaction on delivery ...");
+                                logger.verbose("Setting transaction on delivery.");
                                 TransactionalState transactionalState = new TransactionalState();
                                 transactionalState.setTxnId(new Binary(transactionId.array()));
                                 delivery.disposition(transactionalState);
-                            } else {
-                                logger.verbose("!!!! sendWithAck transaction id  is not present");
                             }
 
                             final int payloadSize = messageSerializer.getSize(message)

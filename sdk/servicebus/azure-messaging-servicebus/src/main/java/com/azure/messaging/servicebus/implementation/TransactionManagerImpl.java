@@ -18,6 +18,9 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.util.Objects;
 
+/**
+ * Implements {@link TransactionManager} which provide utility for transaction API.
+ */
 public class TransactionManagerImpl implements TransactionManager {
     static final String OPERATION_CREATE_TRANSACTION = AmqpConstants.VENDOR + ":create-transaction";
 
@@ -49,18 +52,16 @@ public class TransactionManagerImpl implements TransactionManager {
     @Override
     public Mono<ByteBuffer> createTransaction() {
 
-        return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink -> {
-            logger.verbose(" !!!! Will create new transaction.");
-            return sendLink.createTransaction();
-        })).map(state -> {
-            Binary txnId = null;
-            if (state instanceof Declared) {
-                Declared declared = (Declared) state;
-                txnId = declared.getTxnId();
-                logger.verbose("New TX started: {}", txnId);
-            } else {
-                logger.error("Not supported response: state {}", state);
-            }
+        return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink ->
+            sendLink.createTransaction())).map(state -> {
+                Binary txnId = null;
+                if (state instanceof Declared) {
+                    Declared declared = (Declared) state;
+                    txnId = declared.getTxnId();
+                    logger.verbose("Created new TX started: {}", txnId);
+                } else {
+                    logger.error("Not supported response: state {}", state);
+                }
 
             return txnId.asByteBuffer();
         });
@@ -71,10 +72,8 @@ public class TransactionManagerImpl implements TransactionManager {
      */
     @Override
     public Mono<Void> completeTransaction(ServiceBusTransactionContext transactionContext, boolean isCommit) {
-        return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink -> {
-            logger.verbose(" !!!! Will complete the transaction.");
-            return sendLink.completeTransaction(transactionContext.getTransactionId(), isCommit);
-        })).then();
+        return isAuthorized(OPERATION_CREATE_TRANSACTION).then(sendLink.flatMap(sendLink ->
+            sendLink.completeTransaction(transactionContext.getTransactionId(), isCommit))).then();
     }
 
     private Mono<Void> isAuthorized(String operation) {
@@ -93,10 +92,5 @@ public class TransactionManagerImpl implements TransactionManager {
 
     private AmqpErrorContext getErrorContext() {
         return new SessionErrorContext(fullyQualifiedNamespace, entityPath);
-    }
-
-    @Override
-    public void close() throws Exception {
-
     }
 }

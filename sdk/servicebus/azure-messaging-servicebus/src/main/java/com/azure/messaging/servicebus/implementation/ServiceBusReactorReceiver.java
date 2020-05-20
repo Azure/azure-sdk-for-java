@@ -125,7 +125,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         if (isDisposed.get()) {
             return monoError(logger, new IllegalStateException("Cannot perform operations on a disposed receiver."));
         }
-        logger.verbose("!!!! Entry transaction-id for lock token [{}]. id [{}]", lockToken, (new String(transactionId.array(), Charset.defaultCharset())));
 
         final Delivery unsettled = unsettledDeliveries.get(lockToken);
         if (unsettled == null) {
@@ -224,15 +223,12 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
 
             // The delivery was already settled from the message broker.
             // This occurs in the case of receive and delete.
-            logger.verbose("!!!! decodeDelivery lockTokenString [{}] isSettled [{}]", lockTokenString, isSettled);
             if (isSettled) {
                 delivery.disposition(Accepted.getInstance());
-                logger.verbose("!!!! decodeDelivery settling lockTokenString [{}] isSettled [{}]", lockTokenString, isSettled);
 
                 delivery.settle();
             } else {
                 unsettledDeliveries.putIfAbsent(lockToken.toString(), delivery);
-                logger.verbose("!!!! decodeDelivery advancing lockTokenString [{}] isSettled [{}]", lockTokenString, isSettled);
                 receiver.advance();
             }
             return new MessageWithLockToken(message, lockToken);
@@ -359,7 +355,6 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
             isSettled = delivery.getRemoteState().getType() == workItem.getDeliveryState().getType();
         }
 
-        logger.verbose("!!!! completeWorkItem lockToken [{}] isSettled :[{}]", lockToken, isSettled);
         if (isSettled) {
             delivery.settle();
         }
@@ -374,11 +369,9 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
         }
 
         if (isSettled) {
-            logger.verbose("!!!! completeWorkItem lockToken [{}] isSettled :[{}] removing from pendingUpdates", lockToken, isSettled);
             pendingUpdates.remove(lockToken);
             unsettledDeliveries.remove(lockToken);
         }
-        logger.verbose("!!!! completeWorkItem Exit pendingUpdates.size [{}].", pendingUpdates.size());
     }
 
     private static final class UpdateDispositionWorkItem {

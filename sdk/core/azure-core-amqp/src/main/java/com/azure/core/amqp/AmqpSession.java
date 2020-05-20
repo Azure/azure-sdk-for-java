@@ -41,7 +41,7 @@ public interface AmqpSession extends Disposable {
     Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
 
     /**
-     * Creates a new AMQP link that publishes events to the message broker.
+     * Creates a new AMQP link that can publish transaction events to the message broker.
      *
      * @param linkName Name of the link.
      * @param timeout Timeout required for creating and opening AMQP link.

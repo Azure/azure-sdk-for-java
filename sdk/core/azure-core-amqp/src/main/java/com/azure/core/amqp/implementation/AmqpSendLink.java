@@ -19,15 +19,17 @@ import java.util.List;
 public interface AmqpSendLink extends AmqpLink {
 
     /**
-     * Creates transaction.
-     * @return {@link DeliveryState} from creating transaction.
+     * Creates transaction in Service Bus namespace.
+     *
+     * @return {@link DeliveryState} after creating transaction which would have transactionId.
      */
     Mono<DeliveryState> createTransaction();
 
     /**
      * Commit or rollback the transaction.
+     *
      * @param transactionId to commit or rollback.
-     * @param isCommit commit if true otherwise rollback.
+     * @param isCommit commit the transaction if true otherwise rollback.
      * @return
      */
     Mono<DeliveryState> completeTransaction(ByteBuffer transactionId, boolean isCommit);

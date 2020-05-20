@@ -163,24 +163,6 @@ public class ReactorSession implements AmqpSession {
         return openTimeout;
     }
 
-    /*private SenderLinkSettings getTransactionLinkSettings() {
-        SenderLinkSettings linkSettings = new SenderLinkSettings();
-        linkSettings.linkPath = "coordinator";
-
-        final org.apache.qpid.proton.amqp.transport.Target target = new Coordinator();
-        linkSettings.target = target;
-        linkSettings.source = new Source();
-        linkSettings.settleMode = SenderSettleMode.UNSETTLED;
-
-        Map<Symbol, Object> linkProperties = new HashMap<>();
-        // ServiceBus expects timeout to be of type unsignedint
-        //linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger
-        // .valueOf(Util.adjustServerTimeout(underlyingFactory.getOperationTimeout()).toMillis()));
-        linkSettings.linkProperties = linkProperties;
-
-        return linkSettings;
-    }*/
-
     /**
      * {@inheritDoc}
      */

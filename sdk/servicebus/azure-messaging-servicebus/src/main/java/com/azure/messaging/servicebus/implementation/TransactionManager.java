@@ -5,15 +5,19 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-public interface TransactionManager extends AutoCloseable{
+/**
+ * Provides API to manage transaction on Service Bus namespace.
+ */
+public interface TransactionManager{
     /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued.
+     * Creates the transaction in Service Bus namespace..
      *
      * @return {@link ServiceBusTransactionContext} which represent transaction in service Bus.
      */
     Mono<ByteBuffer> createTransaction();
 
     /**
+     * Completes the given transaction.
      *
      * @param transactionContext to commit or rollback.
      * @param commit true to commit and false to rollback

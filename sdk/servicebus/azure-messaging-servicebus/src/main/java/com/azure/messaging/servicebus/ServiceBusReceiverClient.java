@@ -707,28 +707,21 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         }
     }
 
-    public void autoRenewLock(MessageLockToken lockToken, Duration maxLockRenewalDuration) {
-    }
-
-    public void autoRenewLock(String sessionId, Duration maxLockRenewalDuration) {
-    }
-
-
     /**
      * Starts a new service side transaction. The {@link ServiceBusTransactionContext} should be passed to all operations that
      * needs to be in this transaction.
      * @return a new transaction
      */
     public ServiceBusTransactionContext createTransaction() {
-        return null;
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     public void commitTransaction(ServiceBusTransactionContext transactionContext) {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     public void rollbackTransaction(ServiceBusTransactionContext transactionContext) {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 
 }

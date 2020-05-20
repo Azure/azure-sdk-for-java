@@ -34,13 +34,13 @@ import reactor.core.Disposables;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.ReplayProcessor;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -297,81 +297,23 @@ class ReactorSender implements AmqpSendLink {
 
     @Override
     public Mono<DeliveryState> completeTransaction(ByteBuffer transactionId, boolean isCommit) {
-        logger.verbose("!!!! Will complete transaction isCommit [{}]. Transaction id [{}]", isCommit, (new String(transactionId.array(), Charset.defaultCharset())));
         if (hasConnected.get()) {
-            return Mono.create(sink -> {
-                Message message = Message.Factory.create();
-                Discharge discharge = new Discharge();
-                discharge.setFail(!isCommit);
-                discharge.setTxnId(new Binary(transactionId.array()));
-                message.setBody(new AmqpValue(discharge));
-
-                final int payloadSize = messageSerializer.getSize(message);
-                final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-                final byte[] bytes = new byte[allocationSize];
-
-                int encodedSize = message.encode(bytes, 0, allocationSize);
-                sendWithAck(new RetriableResponseWorkItem(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
-                    sink, timeout));
-            });
+            return Mono.create(sink -> send(getCompleteTransactionMessage(transactionId, isCommit), sink));
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(Mono.create(sink -> {
-                    Message message = Message.Factory.create();
-                    Discharge discharge = new Discharge();
-                    discharge.setFail(!isCommit);
-                    discharge.setTxnId(new Binary(transactionId.array()));
-                    message.setBody(new AmqpValue(discharge));
-
-                    final int payloadSize = messageSerializer.getSize(message);
-                    final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-                    final byte[] bytes = new byte[allocationSize];
-
-                    int encodedSize = message.encode(bytes, 0, allocationSize);
-                    sendWithAck(new RetriableResponseWorkItem(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
-                        sink, timeout));
-                }));
+                .then(Mono.create(sink -> send(getCompleteTransactionMessage(transactionId, isCommit), sink)));
         }
     }
 
     @Override
     public Mono<DeliveryState> createTransaction() {
-        logger.verbose("!!!! Will create new transaction ");
         if (hasConnected.get()) {
-            return Mono.create(sink -> {
-                Message message = Message.Factory.create();
-                Declare declare = new Declare();
-                message.setBody(new AmqpValue(declare));
-
-                final int payloadSize = messageSerializer.getSize(message);
-                final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-                final byte[] bytes = new byte[allocationSize];
-
-                int encodedSize = message.encode(bytes, 0, allocationSize);
-                sendWithAck(new RetriableResponseWorkItem(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
-                    sink, timeout));
-            });
+            return Mono.create(sink -> send(getCreateTransactionMessage(), sink));
         } else {
             return RetryUtil.withRetry(
                 handler.getEndpointStates().takeUntil(state -> state == EndpointState.ACTIVE), timeout, retry)
-                .then(Mono.create(sink -> {
-                    Message message = Message.Factory.create();
-                    Declare declare = new Declare();
-                    message.setBody(new AmqpValue(declare));
-
-                    final int payloadSize = messageSerializer.getSize(message);
-                    final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
-
-                    final byte[] bytes = new byte[allocationSize];
-
-                    int encodedSize = message.encode(bytes, 0, allocationSize);
-                    sendWithAck(new RetriableResponseWorkItem(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
-                        sink, timeout));
-                }));
+                .then(Mono.create(sink -> send(getCreateTransactionMessage(), sink)));
         }
     }
 
@@ -387,17 +329,57 @@ class ReactorSender implements AmqpSendLink {
         }
     }
 
-    private void sendWithAck(WorkItem workItem) {
-        final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
-        logger.verbose("!!!! adding deliveryTag [{}] in pendingSendsMap.", deliveryTag);
-        synchronized (pendingSendLock) {
-            this.pendingSendsMap.put(deliveryTag, workItem);
-            this.pendingSendsQueue.offer(new WeightedDeliveryTag(deliveryTag, workItem.hasBeenRetried() ? 1 : 0));
-        }
-
-        this.scheduleWorkOnDispatcher();
+    /**
+     * Create AMQP {@link Message} for completing the transaction.
+     *
+     * @param transactionId to be used for completing the transaction.
+     * @param isCommit for commiting or rollback
+     * @return created AMQP {@link Message}.
+     */
+    private Message getCompleteTransactionMessage(ByteBuffer transactionId, boolean isCommit) {
+        Message message = Message.Factory.create();
+        Discharge discharge = new Discharge();
+        discharge.setFail(!isCommit);
+        discharge.setTxnId(new Binary(transactionId.array()));
+        message.setBody(new AmqpValue(discharge));
+        return message;
     }
 
+    /**
+     * Create AMQP {@link Message} for creating the transaction.
+     *
+     * @return created AMQP {@link Message}.
+     */
+    private Message getCreateTransactionMessage() {
+        Message message = Message.Factory.create();
+        Declare declare = new Declare();
+        message.setBody(new AmqpValue(declare));
+        return message;
+    }
+
+    /**
+     * Send the AMQP {@link Message}.
+     *
+     * @param message AMQP {@link Message}
+     * @param sink to send back {@link DeliveryState}.
+     */
+    private void send(Message message, MonoSink<DeliveryState> sink) {
+
+        final int payloadSize = messageSerializer.getSize(message);
+        final int allocationSize = payloadSize + MAX_AMQP_HEADER_SIZE_BYTES;
+
+        final byte[] bytes = new byte[allocationSize];
+
+        int encodedSize = message.encode(bytes, 0, allocationSize);
+        send(new RetriableResponseWorkItem(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
+            sink, timeout));
+    }
+
+    /**
+     * Add the work item in pending send to be processed on {@link ReactorDispatcher} thread.
+     *
+     * @param workItem to be processed.
+     */
     private void send(WorkItem workItem) {
         final String deliveryTag = UUID.randomUUID().toString().replace("-", "");
 
@@ -417,8 +399,6 @@ class ReactorSender implements AmqpSendLink {
             logger.warning("Not connected. Not processing send work.");
             return;
         }
-        logger.warning("!!!! processSendWork hasConnected [{}] sender.getCredit [{}]", hasConnected.get(),
-            sender.getCredit());
         while (hasConnected.get() && sender.getCredit() > 0) {
             final WeightedDeliveryTag weightedDelivery;
             final WorkItem workItem;
@@ -433,7 +413,6 @@ class ReactorSender implements AmqpSendLink {
                     deliveryTag = null;
                 }
             }
-            logger.warning("!!!! processSendWork workItem [{}] and deliveryTag [{}] ", workItem, deliveryTag);
             if (workItem == null) {
                 if (deliveryTag != null) {
                     logger.verbose(
@@ -492,7 +471,6 @@ class ReactorSender implements AmqpSendLink {
                 workItem.error(exception);
             }
         }
-        logger.warning("!!!! processSendWork Exit");
     }
 
     private void processDeliveredMessage(Delivery delivery) {
@@ -562,7 +540,6 @@ class ReactorSender implements AmqpSendLink {
                 handler.getErrorContext(sender)));
         } else if (outcome instanceof Declared) {
             final Declared declared = (Declared) outcome;
-            logger.verbose("!!!! This is Declared response type [{}]", declared.getType());
             workItem.success(declared);
         } else {
             cleanupFailedSend(workItem, new AmqpException(false, outcome.toString(),
