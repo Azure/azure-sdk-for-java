@@ -5,7 +5,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.io.IOException;
 
@@ -17,11 +16,14 @@ public class OrderedDistinctMap extends DistinctMap {
     }
 
     @Override
-    public boolean add(Resource resource, Utils.ValueHolder<UInt128> outHash) {
+    public boolean add(Object resource, Utils.ValueHolder<UInt128> outHash) {
         try {
+            if (resource instanceof Resource) {
+                // We do this to ensure the property order in document should not effect the hash
+                resource = getSortedJsonStringValueFromResource((Resource)resource);
+            }
             outHash.v = DistinctHash.getHash(resource);
             // value should be true if hashes are not equal
-//            final boolean value = !StringUtils.equals(lastHash, outHash.v);
             boolean value = true;
             if (lastHash != null) {
                 value = !(outHash.v.equals(lastHash));

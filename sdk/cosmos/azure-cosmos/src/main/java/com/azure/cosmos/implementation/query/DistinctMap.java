@@ -5,8 +5,15 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.UInt128;
+import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 public abstract class DistinctMap {
+
+    private static final ObjectMapper OBJECT_MAPPER =
+        new ObjectMapper().configure(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS, true);
 
     public static DistinctMap create(DistinctQueryType distinctQueryType, UInt128 previousHash) {
         switch (distinctQueryType) {
@@ -21,6 +28,18 @@ public abstract class DistinctMap {
         }
     }
 
-    public abstract boolean add(Resource object, Utils.ValueHolder<UInt128> outHash);
+    public abstract boolean add(Object object, Utils.ValueHolder<UInt128> outHash);
+
+    String getSortedJsonStringValueFromResource(Resource resource) {
+        final Object obj;
+        try {
+            obj = OBJECT_MAPPER.treeToValue(resource.getPropertyBag()
+                , Object.class);
+            final String sortedJson = OBJECT_MAPPER.writeValueAsString(obj);
+            return sortedJson;
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Failed to obtain serialized sorted json");
+        }
+    }
 
 }

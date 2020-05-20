@@ -4,18 +4,12 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.Utils;
-import com.azure.cosmos.implementation.query.DistinctHash;
 import com.azure.cosmos.implementation.query.DistinctMap;
 import com.azure.cosmos.implementation.query.DistinctQueryType;
 import com.azure.cosmos.implementation.routing.UInt128;
-import com.azure.cosmos.implementation.JsonSerializable;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -24,7 +18,7 @@ public class DistinctMapTest {
     @DataProvider(name = "distinctMapArgProvider")
     public Object[][] distinctMapArgProvider() {
         return new Object[][] {
-//            {DistinctQueryType.ORDERED},
+            {DistinctQueryType.ORDERED},
             {DistinctQueryType.UNORDERED},
         };
     }
@@ -133,11 +127,11 @@ public class DistinctMapTest {
                                              + "\"mypk\": \"abcde\","
                                              + "\"id\": \"12345\""
                                              + "} ");
-        Document resource = new Document(resource1);
 
         DistinctMap distinctMap = DistinctMap.create(queryType, null);
-
         Utils.ValueHolder<UInt128> outHash = new Utils.ValueHolder<>();
+
+        Document resource = new Document(resource1);
         boolean add = distinctMap.add(resource, outHash);
         assertThat(add).as("Value should be added first time").isTrue();
         resource = new Document(resource2);

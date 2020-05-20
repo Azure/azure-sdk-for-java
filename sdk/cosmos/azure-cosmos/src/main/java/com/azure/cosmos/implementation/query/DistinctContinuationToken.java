@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.ByteBuffer;
+
 public class DistinctContinuationToken extends JsonSerializable {
 
     private static final String LAST_HASH_PROPERTY_NAME = "lastHash";
@@ -25,8 +27,9 @@ public class DistinctContinuationToken extends JsonSerializable {
         super(serializedDistinctContinuationToken);
     }
 
-    public static boolean tryParse(String serializedDistinctContinuationToken,
-                                   Utils.ValueHolder<DistinctContinuationToken> outDistinctContinuationToken) {
+    public static boolean tryParse(
+        String serializedDistinctContinuationToken,
+        Utils.ValueHolder<DistinctContinuationToken> outDistinctContinuationToken) {
 
         boolean parsed;
         try {
@@ -62,7 +65,11 @@ public class DistinctContinuationToken extends JsonSerializable {
     }
 
     UInt128 getLastHash() {
-        return super.getObject(LAST_HASH_PROPERTY_NAME, UInt128.class);
+        ByteBuffer byteBuffer = super.getObject(LAST_HASH_PROPERTY_NAME, ByteBuffer.class);
+        if (byteBuffer != null) {
+            return new UInt128(byteBuffer);
+        }
+        return null;
     }
 
     /**
@@ -71,7 +78,11 @@ public class DistinctContinuationToken extends JsonSerializable {
      * @param lastHash Value to set for property 'lastHash'.
      */
     public void setLastHash(UInt128 lastHash) {
-        BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash);
+        if (lastHash != null) {
+            BridgeInternal.setProperty(this, LAST_HASH_PROPERTY_NAME, lastHash.toByteBuffer());
+        } else {
+            this.set(LAST_HASH_PROPERTY_NAME, null);
+        }
     }
 
 }

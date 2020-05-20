@@ -7,12 +7,20 @@ import java.nio.ByteBuffer;
 import java.util.Objects;
 
 public class UInt128 {
-    long low;
-    long high;
+    private static final int SIZE  = Long.SIZE + Long.SIZE;
+    public static final int BYTES = SIZE / Byte.SIZE;
+    final long low;
+    final long high;
 
     public UInt128(long x, long y) {
         this.low = x;
         this.high = y;
+    }
+
+    public UInt128 (ByteBuffer byteBuffer) {
+        byteBuffer.rewind();
+        this.low = byteBuffer.getLong();
+        this.high = byteBuffer.getLong();
     }
 
     @Override
@@ -29,11 +37,21 @@ public class UInt128 {
     }
 
     public ByteBuffer toByteBuffer() {
-        ByteBuffer bf1 = ByteBuffer.allocate(8);
-        bf1.putLong(low);
-        ByteBuffer bf2 = ByteBuffer.allocate(8);
-        bf2.putLong(high);
-        ByteBuffer bf3 = ByteBuffer.allocate(bf1.capacity() + bf2.capacity());
-        return bf3.put(bf1).put(bf2);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(BYTES);
+        byteBuffer.putLong(low).putLong(high);
+        return byteBuffer;
+    }
+
+    @Override
+    public String toString() {
+        return toByteBuffer().toString();
+    }
+
+    public long getLow() {
+        return low;
+    }
+
+    public long getHigh() {
+        return high;
     }
 }

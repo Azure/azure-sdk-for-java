@@ -7,11 +7,11 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosClientException;
-import com.azure.cosmos.implementation.Document;
-import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
-import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
+import com.azure.cosmos.models.FeedOptions;
+import com.azure.cosmos.util.CosmosPagedFlux;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -19,13 +19,9 @@ import org.testng.annotations.Test;
 import reactor.core.Exceptions;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.function.BinaryOperator;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
@@ -226,8 +222,6 @@ public class AggregateQueryTests extends TestSuiteBase {
                                                        query,
                                                        new Document("{'max_field':" + max
                                                                         + ",'min_field':" + min + "}")));
-
-
     }
 
     @Test(groups = { "simple" }, timeOut = 2 * TIMEOUT)
