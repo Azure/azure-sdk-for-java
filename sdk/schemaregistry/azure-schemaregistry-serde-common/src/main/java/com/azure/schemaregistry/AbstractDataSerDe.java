@@ -13,9 +13,6 @@ import org.slf4j.LoggerFactory;
  * Common fields and helper methods for both the serializer and the deserializer.
  */
 public abstract class AbstractDataSerDe {
-    protected final Logger log = LoggerFactory.getLogger(getClass());
-
-    public static final Character SCHEMA_PATH_DELIMITER = '.';
     public static final int idSize = 64;
 
     protected SchemaRegistryClient schemaRegistryClient;

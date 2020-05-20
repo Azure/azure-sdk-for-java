@@ -8,36 +8,30 @@ package com.azure.schemaregistry;
 import com.azure.schemaregistry.client.SchemaRegistryClient;
 
 public class TestDummySerializer extends AbstractDataSerializer {
-    private TestDummySerializer(Builder builder) {
-        super(builder.schemaRegistryClient);
+    TestDummySerializer(
+        SchemaRegistryClient mockClient,
+        boolean byteEncoder,
+        boolean autoRegisterSchemas) {
+        super(mockClient);
 
         // allows simulating improperly written serializer constructor that does not initialize byte encoder
-        if (!builder.constructWithoutByteEncoder) {
-            setByteEncoder(builder.byteEncoder);
+        if (byteEncoder) {
+            setByteEncoder(new SampleByteEncoder());
         }
 
-        this.autoRegisterSchemas = builder.autoRegisterSchemas;
+        this.autoRegisterSchemas = autoRegisterSchemas;
     }
 
-    public static class Builder extends AbstractDataSerializer.AbstractBuilder<Builder> {
-        private boolean constructWithoutByteEncoder = false;
+    TestDummySerializer(
+        SchemaRegistryClient mockClient,
+        boolean byteEncoder) {
+        super(mockClient);
 
-        public Builder(SchemaRegistryClient schemaRegistryClient) {
-            super(schemaRegistryClient);
+        // allows simulating improperly written serializer constructor that does not initialize byte encoder
+        if (byteEncoder) {
+            setByteEncoder(new SampleByteEncoder());
         }
 
-        @Override
-        public Builder getActualBuilder() {
-            return this;
-        }
-
-        public TestDummySerializer build() {
-            return new TestDummySerializer(this);
-        }
-
-        public Builder constructWithoutByteEncoder() {
-            this.constructWithoutByteEncoder = true;
-            return this;
-        }
+        // default auto register
     }
 }

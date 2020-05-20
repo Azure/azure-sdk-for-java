@@ -5,26 +5,19 @@
 
 package com.azure.schemaregistry;
 
-import com.azure.schemaregistry.client.MockSchemaRegistryClient;
 import com.azure.schemaregistry.client.SchemaRegistryObject;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
 
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Random;
 
-public class AbstractDataSerializerTest extends TestCase {
-    public AbstractDataSerializerTest(String testName) {
-        super(testName);
-    }
+import static org.junit.jupiter.api.Assertions.*;
 
-    public static Test suite() {
-        return new TestSuite(AbstractDataSerializerTest.class);
-    }
+public class AbstractDataSerializerTest {
 
+    @Test
     public void testRegistryGuidPrefixedToPayload() {
         Random rnd = new Random();
         String MOCK_GUID = "";
@@ -34,7 +27,7 @@ public class AbstractDataSerializerTest extends TestCase {
 
         // manually add SchemaRegistryObject into mock registry client cache
         SampleByteEncoder encoder = new SampleByteEncoder();
-        SchemaRegistryObject<String> registered = new SchemaRegistryObject<>(MOCK_GUID,
+        SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
                 encoder.serializationFormat(),
                 encoder.getSchemaString(null).getBytes(), // always returns same schema string
                 s -> encoder.parseSchemaString(s));
@@ -44,9 +37,7 @@ public class AbstractDataSerializerTest extends TestCase {
         MockSchemaRegistryClient mockRegistryClient = new MockSchemaRegistryClient();
         mockRegistryClient.schemaStringCache.put(encoder.getSchemaString(null), registered);
 
-        TestDummySerializer serializer = new TestDummySerializer.Builder(mockRegistryClient)
-                .byteEncoder(encoder)
-                .build();
+        TestDummySerializer serializer = new TestDummySerializer(mockRegistryClient, true, false);
 
         try {
             byte[] payload = serializer.serializeImpl(1);
@@ -70,10 +61,12 @@ public class AbstractDataSerializerTest extends TestCase {
         }
     }
 
+    @Test
     public void testNullPayloadThrowsSerializationException() {
-        TestDummySerializer serializer = new TestDummySerializer.Builder(new MockSchemaRegistryClient())
-                .byteEncoder(new SampleByteEncoder())
-                .build();
+        TestDummySerializer serializer = new TestDummySerializer(
+            new MockSchemaRegistryClient(),
+            true,
+            false);
 
         try {
             serializer.serializeImpl(null);
@@ -83,11 +76,10 @@ public class AbstractDataSerializerTest extends TestCase {
         }
     }
 
+    @Test
     public void testSerializeWithNullByteEncoderThrows() {
         // don't set byte encoder on constructor
-        TestDummySerializer serializer = new TestDummySerializer.Builder(new MockSchemaRegistryClient())
-                .constructWithoutByteEncoder()
-                .build();
+        TestDummySerializer serializer = new TestDummySerializer(new MockSchemaRegistryClient(), false, false);
 
         try {
             serializer.serializeImpl(1);
@@ -96,9 +88,10 @@ public class AbstractDataSerializerTest extends TestCase {
         }
     }
 
-    public void testBuilderIfRegistryNullThrow() {
+    @Test
+    public void testIfRegistryNullThenThrow() {
         try {
-            TestDummySerializer serializer = new TestDummySerializer.Builder(null).build();
+            TestDummySerializer serializer = new TestDummySerializer(null, true, false);
             fail("Building serializer instance with null registry client failed to throw");
         } catch (IllegalArgumentException e) {
             assertTrue(true);
@@ -107,16 +100,9 @@ public class AbstractDataSerializerTest extends TestCase {
         }
     }
 
-    public void testBuilderAutoRegister() {
-        TestDummySerializer serializer = new TestDummySerializer.Builder(new MockSchemaRegistryClient())
-                .constructWithoutByteEncoder() // doesn't matter
-                .build();
+    @Test
+    public void testDefaultAutoRegister() {
+        TestDummySerializer serializer = new TestDummySerializer(new MockSchemaRegistryClient(), true);
         assertEquals(false, (boolean) serializer.autoRegisterSchemas);
-
-        serializer = new TestDummySerializer.Builder(new MockSchemaRegistryClient())
-                .constructWithoutByteEncoder() // doesn't matter
-                .autoRegisterSchemas(true)
-                .build();
-        assertEquals(true, (boolean) serializer.autoRegisterSchemas);
     }
 }

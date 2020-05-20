@@ -15,11 +15,11 @@ public class SampleByteDecoder implements ByteDecoder {
         return "sample";
     }
 
-    public static final String samplePayload = "sample payload!";
+    public static final String constantPayload = "sample payload!";
 
     @Override
     public Object decodeBytes(byte[] bytes, Object o) throws SerializationException {
-        return samplePayload;
+        return constantPayload;
     }
 
     @Override

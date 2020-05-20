@@ -5,73 +5,60 @@
 
 package com.azure.schemaregistry;
 
-import com.azure.schemaregistry.client.MockSchemaRegistryClient;
 import com.azure.schemaregistry.client.SchemaRegistryObject;
 import com.azure.schemaregistry.client.SchemaRegistryClientException;
-import com.azure.schemaregistry.client.rest.RestService;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.BinaryEncoder;
 import org.apache.avro.io.EncoderFactory;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 
-public class AbstractDataDeserializerTest extends TestCase {
+import static org.junit.jupiter.api.Assertions.*;
+
+public class AbstractDataDeserializerTest {
     private static final String MOCK_GUID = new String(new char[AbstractDataSerDe.idSize]).replace("\0", "a");
     private static final String MOCK_AVRO_SCHEMA_STRING = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
 
     private final EncoderFactory encoderFactory = EncoderFactory.get();
-    private final Schema MOCK_AVRO_SCHEMA;
+    private final Schema MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
 
-    public AbstractDataDeserializerTest(String testName) {
-        super(testName);
-        this.MOCK_AVRO_SCHEMA = (new Schema.Parser()).parse(MOCK_AVRO_SCHEMA_STRING);
-    }
-
-    public static Test suite() {
-        return new TestSuite(AbstractDataDeserializerTest.class);
-    }
-
+    @Test
     public void testLoadDecoder() throws IOException, SchemaRegistryClientException, SerializationException {
         // add standard avro decoder class and test that it is used for decoding payload
         SampleByteDecoder decoder = new SampleByteDecoder();
 
         // manually add SchemaRegistryObject to cache
-        SchemaRegistryObject<Schema> registered = new SchemaRegistryObject<>(MOCK_GUID,
+        SchemaRegistryObject registered = new SchemaRegistryObject(MOCK_GUID,
             decoder.serializationFormat(),
-            MOCK_AVRO_SCHEMA_STRING.getBytes(RestService.SERVICE_CHARSET),
+            MOCK_AVRO_SCHEMA_STRING.getBytes(),
             s -> decoder.parseSchemaString(s));
 
         assertTrue(registered.deserialize() != null);
 
         MockSchemaRegistryClient mockRegistryClient = new MockSchemaRegistryClient();
         mockRegistryClient.guidCache.put(MOCK_GUID, registered);
-        TestDummyDeserializer deserializer = new TestDummyDeserializer.Builder(mockRegistryClient)
-                .byteDecoder(new SampleByteDecoder())
-                .build();
+        TestDummyDeserializer deserializer = new TestDummyDeserializer(mockRegistryClient); // contains byte decoder
 
-        assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaByGuid(MOCK_GUID).schemaGuid);
-        assertEquals(decoder.samplePayload, deserializer.deserialize(getPayload()));
+        assertEquals(MOCK_GUID, deserializer.schemaRegistryClient.getSchemaByGuid(MOCK_GUID).schemaId);
+        assertEquals(decoder.constantPayload, deserializer.deserialize(getPayload()));
     }
 
+    @Test
     public void testNullPayload() throws IOException, SchemaRegistryClientException, SerializationException {
-        TestDummyDeserializer deserializer = new TestDummyDeserializer.Builder(new MockSchemaRegistryClient())
-                .build();
-
+        TestDummyDeserializer deserializer = new TestDummyDeserializer(new MockSchemaRegistryClient());
         assertEquals(null, deserializer.deserialize(null));
     }
 
+    @Test
     public void testIfTooShortPayloadThrow() {
-        TestDummyDeserializer deserializer = new TestDummyDeserializer.Builder(new MockSchemaRegistryClient())
-                .build();
+        TestDummyDeserializer deserializer = new TestDummyDeserializer(new MockSchemaRegistryClient());
 
         try {
             deserializer.deserialize("bad payload".getBytes());
@@ -83,16 +70,13 @@ public class AbstractDataDeserializerTest extends TestCase {
 
     // TODO: add for non-existing guid
 
-    // builder tests
-    public void testBuilderIfRegistryNullOnBuildThrow() {
+    @Test
+    public void testIfRegistryClientNullOnBuildThrow() {
         try {
-            TestDummyDeserializer deserializer = new TestDummyDeserializer.Builder(null).build();
-            assert(deserializer == null);
+            TestDummyDeserializer deserializer = new TestDummyDeserializer(null);
             fail("should not get here.");
         } catch (IllegalArgumentException e) {
             // good
-        } catch (Exception e) {
-            fail("Building deserializer with null registry should fail with IllegalArgumentException");
         }
     }
 

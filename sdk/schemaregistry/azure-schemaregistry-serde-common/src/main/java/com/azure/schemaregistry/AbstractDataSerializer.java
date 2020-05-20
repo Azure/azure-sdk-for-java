@@ -5,6 +5,7 @@
 
 package com.azure.schemaregistry;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.schemaregistry.client.SchemaRegistryClient;
 import com.azure.schemaregistry.client.SchemaRegistryClientException;
 import org.slf4j.Logger;
@@ -13,12 +14,9 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public abstract class AbstractDataSerializer extends AbstractDataSerDe {
-    private static final Logger log = LoggerFactory.getLogger(AbstractDataSerializer.class);
-
     public static Boolean AUTO_REGISTER_SCHEMAS_DEFAULT = false;
     public static String SCHEMA_GROUP_DEFAULT = "$default";
 
@@ -87,9 +85,9 @@ public abstract class AbstractDataSerializer extends AbstractDataSerDe {
             throws IOException, SchemaRegistryClientException {
         if (this.autoRegisterSchemas) {
             return this.schemaRegistryClient.register(schemaGroup, schemaName, schemaString,
-                    serializationFormatString).schemaGuid;
+                    serializationFormatString).schemaId;
         } else {
-            return this.schemaRegistryClient.getGuid(schemaGroup, schemaName, schemaString, serializationFormatString);
+            return this.schemaRegistryClient.getSchemaId(schemaGroup, schemaName, schemaString, serializationFormatString);
         }
     }
 }

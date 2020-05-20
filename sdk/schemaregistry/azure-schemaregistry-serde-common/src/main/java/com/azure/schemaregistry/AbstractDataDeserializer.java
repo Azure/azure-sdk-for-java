@@ -34,7 +34,7 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
 
         ByteBuffer buffer = getByteBuffer(payload);
         String schemaGuid = getSchemaGuidFromPayload(buffer);
-        SchemaRegistryObject<?> registryObject = null;
+        SchemaRegistryObject registryObject = null;
         Object payloadSchema = null;
 
         try {
@@ -60,7 +60,7 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
     }
 
 
-    private ByteDecoder getByteDecoder(SchemaRegistryObject<?> registryObject) throws SerializationException {
+    private ByteDecoder getByteDecoder(SchemaRegistryObject registryObject) throws SerializationException {
         ByteDecoder decoder = byteDecoderMap.get(registryObject.serializationType);
         if (decoder == null) {
             throw new SerializationException("No decoder class found for serialization type " +
@@ -74,7 +74,7 @@ public abstract class AbstractDataDeserializer extends AbstractDataSerDe {
         return buffer;
     }
 
-    protected String getSchemaGuidFromPayload(ByteBuffer buffer) throws SerializationException {
+    private String getSchemaGuidFromPayload(ByteBuffer buffer) throws SerializationException {
         byte[] schemaGuidByteArray = new byte[AbstractDataSerDe.idSize];
         try {
             buffer.get(schemaGuidByteArray);
