@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
@@ -149,8 +150,11 @@ class RecognizeLinkedEntityAsyncClient {
                 new LinkedEntityCollection(
                     mapLinkedEntity(documentLinkedEntities.getEntities()),
                     new IterableStream<>(documentLinkedEntities.getWarnings().stream()
-                        .map(warning -> new TextAnalyticsWarning(warning.getCode().toString(), warning.getMessage()))
-                        .collect(Collectors.toList())))
+                        .map(warning -> {
+                            final WarningCodeValue warningCodeValue = warning.getCode();
+                            return new TextAnalyticsWarning(
+                                warningCodeValue == null ? null : warningCodeValue.toString(), warning.getMessage());
+                        }).collect(Collectors.toList())))
             )));
         // Document errors
         entityLinkingResult.getErrors().forEach(documentError -> {

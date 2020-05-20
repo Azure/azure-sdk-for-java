@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -114,8 +115,11 @@ class DetectLanguageAsyncClient {
 
             // warnings
             final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
-                .map(warning -> new TextAnalyticsWarning(warning.getCode().toString(), warning.getMessage()))
-                .collect(Collectors.toList());
+                .map(warning -> {
+                    final WarningCodeValue warningCodeValue = warning.getCode();
+                    return new TextAnalyticsWarning(warningCodeValue == null ? null : warningCodeValue.toString(),
+                        warning.getMessage());
+                }).collect(Collectors.toList());
 
             detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),

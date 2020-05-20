@@ -6,6 +6,7 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -153,8 +154,11 @@ class RecognizeEntityAsyncClient {
                             entity.getSubcategory(), entity.getConfidenceScore()))
                         .collect(Collectors.toList())),
                     new IterableStream<>(documentEntities.getWarnings().stream()
-                        .map(warning -> new TextAnalyticsWarning(warning.getCode().toString(), warning.getMessage()))
-                        .collect(Collectors.toList())))
+                        .map(warning -> {
+                            final WarningCodeValue warningCodeValue = warning.getCode();
+                            return new TextAnalyticsWarning(
+                                warningCodeValue == null ? null : warningCodeValue.toString(), warning.getMessage());
+                        }).collect(Collectors.toList())))
             )));
         // Document errors
         entitiesResult.getErrors().forEach(documentError -> {

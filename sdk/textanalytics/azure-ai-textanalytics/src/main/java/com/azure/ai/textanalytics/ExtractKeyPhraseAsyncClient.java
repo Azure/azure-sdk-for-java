@@ -8,6 +8,7 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
@@ -149,9 +150,11 @@ class ExtractKeyPhraseAsyncClient {
                     : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
                 new KeyPhrasesCollection(
                     new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning ->
-                        new TextAnalyticsWarning(warning.getCode().toString(), warning.getMessage()))
-                        .collect(Collectors.toList())))));
+                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(warning -> {
+                        final WarningCodeValue warningCodeValue = warning.getCode();
+                        return new TextAnalyticsWarning(warningCodeValue == null ? null : warningCodeValue.toString(),
+                            warning.getMessage());
+                    }).collect(Collectors.toList())))));
         }
         // Document errors
         for (DocumentError documentError : keyPhraseResult.getErrors()) {
