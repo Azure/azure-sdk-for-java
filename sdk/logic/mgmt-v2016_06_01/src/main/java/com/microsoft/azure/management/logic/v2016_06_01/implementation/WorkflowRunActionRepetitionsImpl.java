@@ -73,10 +73,14 @@ class WorkflowRunActionRepetitionsImpl extends WrapperImpl<WorkflowRunActionRepe
     public Observable<ActionRunWorkflowWorkflowRunActionRepetitionDefinition> getAsync(String resourceGroupName, String workflowName, String runName, String actionName, String repetitionName) {
         WorkflowRunActionRepetitionsInner client = this.inner();
         return client.getAsync(resourceGroupName, workflowName, runName, actionName, repetitionName)
-        .map(new Func1<WorkflowRunActionRepetitionDefinitionInner, ActionRunWorkflowWorkflowRunActionRepetitionDefinition>() {
+        .flatMap(new Func1<WorkflowRunActionRepetitionDefinitionInner, Observable<ActionRunWorkflowWorkflowRunActionRepetitionDefinition>>() {
             @Override
-            public ActionRunWorkflowWorkflowRunActionRepetitionDefinition call(WorkflowRunActionRepetitionDefinitionInner inner) {
-                return wrapModel(inner);
+            public Observable<ActionRunWorkflowWorkflowRunActionRepetitionDefinition> call(WorkflowRunActionRepetitionDefinitionInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((ActionRunWorkflowWorkflowRunActionRepetitionDefinition)wrapModel(inner));
+                }
             }
        });
     }
