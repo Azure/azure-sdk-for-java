@@ -7,6 +7,7 @@ import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentenceSentimentValue;
 import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScorePerLabel;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -26,6 +27,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
@@ -141,10 +143,28 @@ class AnalyzeSentimentAsyncClient {
      * @return The {@link AnalyzeSentimentResult} to be returned by the SDK.
      */
     private AnalyzeSentimentResult convertToAnalyzeSentimentResult(DocumentSentiment documentSentiment) {
+        // Document text sentiment
+        if (documentSentiment.getSentiment() == null) {
+            // Not throw exception for an invalid Sentiment type because we should not skip processing the
+            // other response. It is a service issue.
+            logger.logExceptionAsWarning(
+                new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
+                    documentSentiment.getSentiment())));
+        }
+
         final SentimentConfidenceScorePerLabel confidenceScorePerLabel = documentSentiment.getConfidenceScores();
         // Sentence text sentiment
         final List<SentenceSentiment> sentenceSentiments = documentSentiment.getSentences().stream()
             .map(sentenceSentiment -> {
+                final SentenceSentimentValue sentenceSentimentValue = sentenceSentiment.getSentiment();
+                if (sentenceSentimentValue == null) {
+                    // Not throw exception for an invalid Sentiment type because we should not skip processing the
+                    // other response. It is a service issue.
+                    logger.logExceptionAsWarning(
+                        new RuntimeException(String.format(Locale.ROOT, "'%s' is not valid text sentiment.",
+                            sentenceSentiment.getSentiment())));
+                }
+
                 final SentimentConfidenceScorePerLabel confidenceScorePerSentence =
                     sentenceSentiment.getConfidenceScores();
                 return new SentenceSentiment(sentenceSentiment.getText(),
