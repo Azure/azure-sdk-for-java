@@ -105,7 +105,7 @@ public final class BlobServiceAsyncClient {
         CpkInfo customerProvidedKey, EncryptionScope encryptionScope,
         BlobContainerEncryptionScope blobContainerEncryptionScope, boolean anonymousAccess) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           in case the sas token has already been applied. */
+           when the sas token has already been applied. */
         try {
             URI ignored = URI.create(url);
         } catch (IllegalArgumentException ex) {

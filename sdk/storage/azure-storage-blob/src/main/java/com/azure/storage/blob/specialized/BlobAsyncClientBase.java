@@ -141,7 +141,7 @@ public class BlobAsyncClientBase {
         String accountName, String containerName, String blobName, String snapshot, CpkInfo customerProvidedKey,
         EncryptionScope encryptionScope) {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
-           in case the sas token has already been applied. */
+           when the sas token has already been applied. */
         try {
             URI ignored = URI.create(url);
         } catch (IllegalArgumentException ex) {
