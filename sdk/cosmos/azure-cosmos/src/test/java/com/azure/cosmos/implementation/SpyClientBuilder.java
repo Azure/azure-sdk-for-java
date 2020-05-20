@@ -11,7 +11,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.desiredConsistencyLevel = builder.desiredConsistencyLevel;
         super.masterKeyOrResourceToken = builder.masterKeyOrResourceToken;
         super.serviceEndpoint = builder.serviceEndpoint;
-        super.azureKeyCredential = builder.azureKeyCredential;
+        super.credential = builder.credential;
         super.contentResponseOnWriteEnabled = builder.contentResponseOnWriteEnabled;
     }
 
@@ -22,7 +22,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             connectionPolicy,
             desiredConsistencyLevel,
             configs,
-                azureKeyCredential,
+            credential,
             contentResponseOnWriteEnabled);
     }
 
@@ -33,7 +33,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             connectionPolicy,
             desiredConsistencyLevel,
             configs,
-                azureKeyCredential,
+            credential,
             contentResponseOnWriteEnabled);
     }
 
@@ -43,7 +43,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             masterKeyOrResourceToken,
             connectionPolicy,
             desiredConsistencyLevel,
-                azureKeyCredential,
+            credential,
             contentResponseOnWriteEnabled);
     }
 }

@@ -49,7 +49,7 @@ public final class CosmosAsyncClient implements Closeable {
     private final ConsistencyLevel desiredConsistencyLevel;
     private final List<CosmosPermissionProperties> permissions;
     private final CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-    private final AzureKeyCredential azureKeyCredential;
+    private final AzureKeyCredential credential;
     private final boolean sessionCapturingOverride;
     private final boolean enableTransportClientSharing;
     private final boolean contentResponseOnWriteEnabled;
@@ -62,7 +62,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.desiredConsistencyLevel = builder.getConsistencyLevel();
         this.permissions = builder.getPermissions();
         this.cosmosAuthorizationTokenResolver = builder.getAuthorizationTokenResolver();
-        this.azureKeyCredential = builder.getKeyCredential();
+        this.credential = builder.getCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
@@ -74,7 +74,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withSessionCapturingOverride(this.sessionCapturingOverride)
                                        .withConfigs(this.configs)
                                        .withTokenResolver(this.cosmosAuthorizationTokenResolver)
-                                       .withAzureKeyCredential(this.azureKeyCredential)
+                                       .withCredential(this.credential)
                                        .withTransportClientSharing(this.enableTransportClientSharing)
                                        .withContentResponseOnWriteEnabled(this.contentResponseOnWriteEnabled)
                                        .build();
@@ -165,8 +165,8 @@ public final class CosmosAsyncClient implements Closeable {
      *
      * @return azure key credential
      */
-    AzureKeyCredential azureKeyCredential() {
-        return azureKeyCredential;
+    AzureKeyCredential credential() {
+        return credential;
     }
 
     /**

@@ -39,7 +39,7 @@ public class CosmosClientBuilder {
     private ConsistencyLevel desiredConsistencyLevel;
     private List<CosmosPermissionProperties> permissions;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-    private AzureKeyCredential azureKeyCredential;
+    private AzureKeyCredential credential;
     private boolean sessionCapturingOverrideEnabled;
     private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
@@ -278,18 +278,18 @@ public class CosmosClientBuilder {
      *
      * @return {@link AzureKeyCredential}
      */
-    AzureKeyCredential getKeyCredential() {
-        return azureKeyCredential;
+    AzureKeyCredential getCredential() {
+        return credential;
     }
 
     /**
      * Sets the {@link AzureKeyCredential} to be used
      *
-     * @param azureKeyCredential {@link AzureKeyCredential}
+     * @param credential {@link AzureKeyCredential}
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder keyCredential(AzureKeyCredential azureKeyCredential) {
-        this.azureKeyCredential = azureKeyCredential;
+    public CosmosClientBuilder credential(AzureKeyCredential credential) {
+        this.credential = credential;
         return this;
     }
 
@@ -635,10 +635,10 @@ public class CosmosClientBuilder {
         ifThrowIllegalArgException(this.serviceEndpoint == null,
             "cannot buildAsyncClient client without service endpoint");
         ifThrowIllegalArgException(
-            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.azureKeyCredential == null,
+            this.keyOrResourceToken == null && (permissions == null || permissions.isEmpty()) && this.credential == null,
             "cannot buildAsyncClient client without any one of key, resource token, permissions, and "
                 + "azure key credential");
-        ifThrowIllegalArgException(azureKeyCredential != null && StringUtils.isEmpty(azureKeyCredential.getKey()),
+        ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
             "cannot buildAsyncClient client without key credential");
         ifThrowIllegalArgException(directConnectionConfig == null && gatewayConnectionConfig == null,
             "cannot buildAsyncClient client without connection config");

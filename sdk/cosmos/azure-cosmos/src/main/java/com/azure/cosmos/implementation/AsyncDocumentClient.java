@@ -71,7 +71,7 @@ public interface AsyncDocumentClient {
         String masterKeyOrResourceToken;
         URI serviceEndpoint;
         CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
-        AzureKeyCredential azureKeyCredential;
+        AzureKeyCredential credential;
         boolean sessionCapturingOverride;
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
@@ -148,11 +148,11 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withAzureKeyCredential(AzureKeyCredential azureKeyCredential) {
-            if (azureKeyCredential != null && StringUtils.isEmpty(azureKeyCredential.getKey())) {
+        public Builder withCredential(AzureKeyCredential credential) {
+            if (credential != null && StringUtils.isEmpty(credential.getKey())) {
                 throw new IllegalArgumentException("Cannot buildAsyncClient client with empty key credential");
             }
-            this.azureKeyCredential = azureKeyCredential;
+            this.credential = credential;
             return this;
         }
 
@@ -183,10 +183,10 @@ public interface AsyncDocumentClient {
             ifThrowIllegalArgException(this.serviceEndpoint == null, "cannot buildAsyncClient client without service endpoint");
             ifThrowIllegalArgException(
                     this.masterKeyOrResourceToken == null && (permissionFeed == null || permissionFeed.isEmpty())
-                        && this.azureKeyCredential == null,
+                        && this.credential == null,
                     "cannot buildAsyncClient client without any one of masterKey, " +
                         "resource token, permissionFeed and azure key credential");
-            ifThrowIllegalArgException(azureKeyCredential != null && StringUtils.isEmpty(azureKeyCredential.getKey()),
+            ifThrowIllegalArgException(credential != null && StringUtils.isEmpty(credential.getKey()),
                 "cannot buildAsyncClient client without key credential");
 
             RxDocumentClientImpl client = new RxDocumentClientImpl(serviceEndpoint,
@@ -196,7 +196,7 @@ public interface AsyncDocumentClient {
                 desiredConsistencyLevel,
                 configs,
                 cosmosAuthorizationTokenResolver,
-                azureKeyCredential,
+                credential,
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled);
@@ -260,8 +260,8 @@ public interface AsyncDocumentClient {
             this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
         }
 
-        public AzureKeyCredential getAzureKeyCredential() {
-            return azureKeyCredential;
+        public AzureKeyCredential getCredential() {
+            return credential;
         }
     }
 

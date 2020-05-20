@@ -27,14 +27,14 @@ import java.util.Map;
 public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvider {
 
     private static final String AUTH_PREFIX = "type=master&ver=1.0&sig=";
-    private final AzureKeyCredential azureKeyCredential;
+    private final AzureKeyCredential credential;
     private final Mac macInstance;
 
     //  stores current master key's hashcode for performance reasons.
     private int masterKeyHashCode;
 
-    public BaseAuthorizationTokenProvider(AzureKeyCredential azureKeyCredential) {
-        this.azureKeyCredential = azureKeyCredential;
+    public BaseAuthorizationTokenProvider(AzureKeyCredential credential) {
+        this.credential = credential;
         this.macInstance = getMacInstance();
     }
 
@@ -119,7 +119,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             throw new IllegalArgumentException("headers");
         }
 
-        if (StringUtils.isEmpty(this.azureKeyCredential.getKey())) {
+        if (StringUtils.isEmpty(this.credential.getKey())) {
             throw new IllegalArgumentException("key credentials cannot be empty");
         }
 
@@ -245,11 +245,11 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
     }
 
     private Mac getMacInstance() {
-        int masterKeyLatestHashCode = this.azureKeyCredential.getKey().hashCode();
+        int masterKeyLatestHashCode = this.credential.getKey().hashCode();
 
         //  Master key has changed, or this is the first time we are getting mac instance
         if (masterKeyLatestHashCode != this.masterKeyHashCode) {
-            byte[] masterKeyBytes = this.azureKeyCredential.getKey().getBytes(StandardCharsets.UTF_8);
+            byte[] masterKeyBytes = this.credential.getKey().getBytes(StandardCharsets.UTF_8);
             byte[] masterKeyDecodedBytes = Utils.Base64Decoder.decode(masterKeyBytes);
             SecretKey signingKey = new SecretKeySpec(masterKeyDecodedBytes, "HMACSHA256");
             try {

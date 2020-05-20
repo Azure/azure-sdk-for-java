@@ -108,7 +108,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     private static final ImmutableList<ConsistencyLevel> desiredConsistencies;
     private static final ImmutableList<Protocol> protocols;
 
-    protected static final AzureKeyCredential azureKeyCredential;
+    protected static final AzureKeyCredential credential;
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
@@ -157,7 +157,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         objectMapper.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
         objectMapper.configure(JsonParser.Feature.STRICT_DUPLICATE_DETECTION, true);
 
-        azureKeyCredential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
+        credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
     }
 
     protected TestSuiteBase() {
@@ -1056,7 +1056,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .keyCredential(azureKeyCredential)
+                                        .credential(credential)
                                         .gatewayMode(gatewayConnectionConfig)
                                         .throttlingRetryOptions(options)
                                         .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
@@ -1067,7 +1067,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                        List<String> preferredRegions, boolean contentResponseOnWriteEnabled) {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                        .keyCredential(azureKeyCredential)
+                                        .credential(credential)
                                         .gatewayMode(gatewayConnectionConfig)
                                         .multipleWriteRegionsEnabled(multiMasterEnabled)
                                         .preferredRegions(preferredRegions)
@@ -1085,7 +1085,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
                                                                       List<String> preferredRegions,
                                                                       boolean contentResponseOnWriteEnabled) {
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
-                                                               .keyCredential(azureKeyCredential)
+                                                               .credential(credential)
                                                                .directMode(DirectConnectionConfig.getDefaultConfig())
                                                                .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
                                                                .consistencyLevel(consistencyLevel);

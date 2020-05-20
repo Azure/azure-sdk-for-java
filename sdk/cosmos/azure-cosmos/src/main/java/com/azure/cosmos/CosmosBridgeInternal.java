@@ -80,7 +80,7 @@ public final class CosmosBridgeInternal {
             .directMode(builder.getDirectConnectionConfig())
             .gatewayMode(builder.getGatewayConnectionConfig())
             .consistencyLevel(builder.getConsistencyLevel())
-            .keyCredential(builder.getKeyCredential())
+            .credential(builder.getCredential())
             .permissions(builder.getPermissions())
             .authorizationTokenResolver(builder.getAuthorizationTokenResolver())
             .resourceToken(builder.getResourceToken())
