@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -119,8 +120,8 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static FeedResponseDiagnostics createFeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new FeedResponseDiagnostics(queryMetricsMap);
+    public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
