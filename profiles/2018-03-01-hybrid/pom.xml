@@ -10,7 +10,7 @@
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-arm-parent</artifactId>
     <version>1.2.0</version>
-    <relativePath>../../pom.management.xml</relativePath>
+    <relativePath>../../sdk/parents/azure-arm-parent</relativePath>
   </parent>
   <artifactId>azure-profile-parent</artifactId>
   <version>1.0.0-beta</version>

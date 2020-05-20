@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.CreationData;
 import com.azure.management.compute.DiskSku;
 import com.azure.management.compute.DiskState;
+import com.azure.management.compute.Encryption;
 import com.azure.management.compute.EncryptionSettingsCollection;
 import com.azure.management.compute.HyperVGeneration;
 import com.azure.management.compute.OperatingSystemTypes;
@@ -125,6 +126,13 @@ public class DiskInner extends Resource {
      */
     @JsonProperty(value = "properties.diskState", access = JsonProperty.Access.WRITE_ONLY)
     private DiskState diskState;
+
+    /*
+     * Encryption property can be used to encrypt data at rest with customer
+     * managed keys or platform managed keys.
+     */
+    @JsonProperty(value = "properties.encryption")
+    private Encryption encryption;
 
     /**
      * Get the managedBy property: A relative URI containing the ID of the VM that has the disk attached.
@@ -375,6 +383,28 @@ public class DiskInner extends Resource {
     }
 
     /**
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
+     * @param encryption the encryption value to set.
+     * @return the DiskInner object itself.
+     */
+    public DiskInner withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -388,6 +418,9 @@ public class DiskInner extends Resource {
         }
         if (encryptionSettingsCollection() != null) {
             encryptionSettingsCollection().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }

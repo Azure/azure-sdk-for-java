@@ -4,7 +4,6 @@
 package com.azure.search.documents.implementation.util;
 
 import com.azure.search.documents.models.PatternAnalyzer;
-import com.azure.search.documents.models.PatternTokenizer;
 import com.azure.search.documents.models.RegexFlags;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

@@ -48,6 +48,19 @@
                 "signedPermission": "rl",
                 "signedResource": "c"
             }
+        },
+        "multiPageTestingDataContainer": {
+            "type": "string",
+            "defaultValue": "testingdata"
+        },
+        "multiPageTestingDataSasProperties": {
+            "type": "object",
+            "defaultValue": {
+                "canonicalizedResource": "[concat('/blob/', parameters('blobStorageAccount'), '/', parameters('multiPageTestingDataContainer'))]",
+                "signedExpiry": "[dateTimeAdd(utcNow('u'), 'PT2H')]",
+                "signedPermission": "rl",
+                "signedResource": "c"
+            }
         }
     },
     "variables": {
@@ -104,6 +117,10 @@
         "FORM_RECOGNIZER_TESTING_BLOB_CONTAINER_SAS_URL": {
             "type": "string",
             "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('testingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('testingDataSasProperties')).serviceSasToken)]"
+        },
+        "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL": {
+            "type": "string",
+            "value": "[concat(reference(parameters('blobResourceId'), '2019-06-01').primaryEndpoints.blob, parameters('multiPageTestingDataContainer'), '?', listServiceSas(parameters('blobResourceId'), '2019-06-01', parameters('multiPageTestingDataSasProperties')).serviceSasToken)]"
         }
     }
 }

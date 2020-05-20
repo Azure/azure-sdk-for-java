@@ -58,7 +58,7 @@ class ApplicationGatewayListenerImpl
     }
 
     @Override
-    public String hostName() {
+    public String hostname() {
         return this.inner().hostname();
     }
 
@@ -230,7 +230,7 @@ class ApplicationGatewayListenerImpl
     }
 
     @Override
-    public ApplicationGatewayListenerImpl withHostName(String hostname) {
+    public ApplicationGatewayListenerImpl withHostname(String hostname) {
         this.inner().withHostname(hostname);
         return this;
     }

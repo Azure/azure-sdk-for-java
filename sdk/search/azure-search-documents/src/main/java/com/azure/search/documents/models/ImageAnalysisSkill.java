@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Vision.ImageAnalysisSkill")
 @Fluent
-public final class ImageAnalysisSkill extends Skill {
+public final class ImageAnalysisSkill extends SearchIndexerSkill {
     /*
      * A value indicating which language code to use. Default is en. Possible
      * values include: 'en', 'es', 'ja', 'pt', 'zh'

@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer.training;
 
-import com.azure.ai.formrecognizer.FormRecognizerAsyncClient;
 import com.azure.ai.formrecognizer.FormRecognizerClient;
 import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.models.AccountProperties;
@@ -30,23 +29,33 @@ import java.time.Duration;
  * <p><strong>Instantiating a synchronous Form Training Client</strong></p>
  * {@codesnippet com.azure.ai.formrecognizer.training.FormTrainingClient.initialization}
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerClient
+ * @see FormTrainingClientBuilder
+ * @see FormTrainingClient
  */
-@ServiceClient(builder = FormRecognizerClientBuilder.class)
-public class FormTrainingClient {
+@ServiceClient(builder = FormTrainingClientBuilder.class)
+public final class FormTrainingClient {
 
     private final FormTrainingAsyncClient client;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
-     * Each service call goes through the {@link FormRecognizerClientBuilder#pipeline http pipeline}.
+     * Each service call goes through the {@link FormTrainingClientBuilder#pipeline http pipeline}.
      *
-     * @param formTrainingAsyncClient The {@link FormRecognizerAsyncClient} that the client routes its request through.
+     * @param formTrainingAsyncClient The {@link FormTrainingAsyncClient} that the client routes its request through.
      */
-    // TODO (savaity): Still deciding the best approach here, to be redone in #10909
-    public FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
+    FormTrainingClient(FormTrainingAsyncClient formTrainingAsyncClient) {
         this.client = formTrainingAsyncClient;
+    }
+
+    /**
+     * Creates a new {@link FormRecognizerClient} object. The new {@code FormTrainingClient}
+     * uses the same request policy pipeline as the {@code FormTrainingClient}.
+     *
+     * @return A new {@code FormRecognizerClient} object.
+     */
+    public FormRecognizerClient getFormRecognizerClient() {
+        return new FormRecognizerClientBuilder().endpoint(client.getEndpoint()).pipeline(client.getHttpPipeline())
+            .buildClient();
     }
 
     /**

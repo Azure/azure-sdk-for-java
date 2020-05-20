@@ -62,8 +62,7 @@ public final class IndexingPolicy {
             throw new IllegalArgumentException("defaultIndexOverrides is null.");
         }
 
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+        IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
         includedPath.setIndexes(new ArrayList<Index>(Arrays.asList(defaultIndexOverrides)));
         this.getIncludedPaths().add(includedPath);
     }
@@ -264,8 +263,7 @@ public final class IndexingPolicy {
         // If indexing mode is not 'none' and not paths are set, set them to the defaults
         if (this.getIndexingMode() != IndexingMode.NONE && this.getIncludedPaths().size() == 0
                 && this.getExcludedPaths().size() == 0) {
-            IncludedPath includedPath = new IncludedPath();
-            includedPath.setPath(IndexingPolicy.DEFAULT_PATH);
+            IncludedPath includedPath = new IncludedPath(IndexingPolicy.DEFAULT_PATH);
             this.getIncludedPaths().add(includedPath);
         }
 

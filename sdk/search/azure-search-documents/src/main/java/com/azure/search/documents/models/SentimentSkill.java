@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Text.SentimentSkill")
 @Fluent
-public final class SentimentSkill extends Skill {
+public final class SentimentSkill extends SearchIndexerSkill {
     /*
      * A value indicating which language code to use. Default is en. Possible
      * values include: 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'it', 'no',

@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 /**
  * Read and delete conflicts
  */
-public class CosmosAsyncConflict {
+public final class CosmosAsyncConflict {
 
     private final CosmosAsyncContainer container;
     private String id;

@@ -55,12 +55,12 @@ public class InvalidPartitionExceptionRetryPolicy extends DocumentClientRetryPol
                 // TODO: this is blocking. is that fine?
                 if(this.feedOptions != null) {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
                         this.feedOptions.getProperties());
                 } else {
                     this.clientCollectionCache.refresh(
-                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosResponseDiagnostics),
+                        BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                         collectionLink,
                         null);
                 }

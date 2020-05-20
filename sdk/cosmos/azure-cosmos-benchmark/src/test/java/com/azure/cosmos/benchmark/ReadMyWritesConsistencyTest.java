@@ -166,16 +166,10 @@ public class ReadMyWritesConsistencyTest {
         partitionKeyDef.setPaths(paths);
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
-        Collection<Index> indexes = new ArrayList<>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(numberIndex), "getPrecision", -1);
-        indexes.add(numberIndex);
+        IncludedPath includedPath = new IncludedPath("/*");
+        List<Index> indexes = new ArrayList<>();
+        indexes.add(Index.range(DataType.STRING, -1));
+        indexes.add(Index.range(DataType.NUMBER, -1));
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);

@@ -35,7 +35,7 @@ public final class IndexAction<T> {
 
     /*
      * The operation to perform on a document in an indexing batch. Possible
-     * values include: 'upload', 'merge', 'mergeOrUpload', 'delete'
+     * values include: 'Upload', 'Merge', 'MergeOrUpload', 'Delete'
      */
     @JsonProperty(value = "@search.action")
     private IndexActionType actionType;
@@ -69,8 +69,8 @@ public final class IndexAction<T> {
 
     /**
      * Get the actionType property: The operation to perform on a document in
-     * an indexing batch. Possible values include: 'upload', 'merge',
-     * 'mergeOrUpload', 'delete'.
+     * an indexing batch. Possible values include: 'Upload', 'Merge',
+     * 'MergeOrUpload', 'Delete'.
      *
      * @return the actionType value.
      */
@@ -80,8 +80,8 @@ public final class IndexAction<T> {
 
     /**
      * Set the actionType property: The operation to perform on a document in
-     * an indexing batch. Possible values include: 'upload', 'merge',
-     * 'mergeOrUpload', 'delete'.
+     * an indexing batch. Possible values include: 'Upload', 'Merge',
+     * 'MergeOrUpload', 'Delete'.
      *
      * @param actionType the actionType value to set.
      * @return the IndexAction object itself.

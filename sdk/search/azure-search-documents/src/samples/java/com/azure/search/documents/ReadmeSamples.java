@@ -8,11 +8,11 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.util.Context;
-import com.azure.search.documents.models.DataType;
-import com.azure.search.documents.models.Field;
 import com.azure.search.documents.models.Hotel;
-import com.azure.search.documents.models.Index;
 import com.azure.search.documents.models.RequestOptions;
+import com.azure.search.documents.models.SearchField;
+import com.azure.search.documents.models.SearchFieldDataType;
+import com.azure.search.documents.models.SearchIndex;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 
@@ -72,7 +72,7 @@ public class ReadmeSamples {
         headers.put("my-header2", "my-header2-value");
         headers.put("my-header3", "my-header3-value");
         // Call API by passing headers in Context.
-        Index index = new Index().setName(indexName);
+        SearchIndex index = new SearchIndex().setName(indexName);
         searchServiceClient.createIndexWithResponse(
             index,
             new RequestOptions(),
@@ -93,16 +93,16 @@ public class ReadmeSamples {
     }
 
     public void createIndexWithSyncClient() {
-        Index newIndex = new Index()
+        SearchIndex newIndex = new SearchIndex()
             .setName("index_name")
             .setFields(
-                Arrays.asList(new Field()
+                Arrays.asList(new SearchField()
                         .setName("Name")
-                        .setType(DataType.EDM_STRING)
+                        .setType(SearchFieldDataType.STRING)
                         .setKey(Boolean.TRUE),
-                    new Field()
+                    new SearchField()
                         .setName("Cuisine")
-                        .setType(DataType.EDM_STRING)));
+                        .setType(SearchFieldDataType.STRING)));
         // Create index.
         searchServiceClient.createIndex(newIndex);
     }

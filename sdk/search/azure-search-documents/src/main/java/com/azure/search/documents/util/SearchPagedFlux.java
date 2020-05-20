@@ -5,7 +5,7 @@ package com.azure.search.documents.util;
 
 import com.azure.core.http.rest.PagedFluxBase;
 import com.azure.core.util.paging.ContinuablePagedFlux;
-import com.azure.search.documents.models.SearchRequest;
+import com.azure.search.documents.implementation.models.SearchRequest;
 import com.azure.search.documents.models.SearchResult;
 import reactor.core.publisher.Mono;
 

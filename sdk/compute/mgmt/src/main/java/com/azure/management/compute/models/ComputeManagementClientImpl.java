@@ -332,6 +332,18 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         return this.snapshots;
     }
 
+    /** The DiskEncryptionSetsInner object to access its operations. */
+    private final DiskEncryptionSetsInner diskEncryptionSets;
+
+    /**
+     * Gets the DiskEncryptionSetsInner object to access its operations.
+     *
+     * @return the DiskEncryptionSetsInner object.
+     */
+    public DiskEncryptionSetsInner diskEncryptionSets() {
+        return this.diskEncryptionSets;
+    }
+
     /** The GalleriesInner object to access its operations. */
     private final GalleriesInner galleries;
 
@@ -450,6 +462,7 @@ public final class ComputeManagementClientImpl extends AzureServiceClient {
         this.resourceSkus = new ResourceSkusInner(this);
         this.disks = new DisksInner(this);
         this.snapshots = new SnapshotsInner(this);
+        this.diskEncryptionSets = new DiskEncryptionSetsInner(this);
         this.galleries = new GalleriesInner(this);
         this.galleryImages = new GalleryImagesInner(this);
         this.galleryImageVersions = new GalleryImageVersionsInner(this);
