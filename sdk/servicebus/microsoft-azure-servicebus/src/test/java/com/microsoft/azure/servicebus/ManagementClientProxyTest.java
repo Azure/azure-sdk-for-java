@@ -5,6 +5,7 @@ import com.microsoft.azure.servicebus.management.QueueDescription;
 import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.TransportType;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import java.io.IOException;
 import java.net.*;
@@ -18,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ManagementClientProxyTest {
+    @Ignore
     @Test
     public void managementClientWithProxy() throws Exception {
         String proxyHostName = "127.0.0.1";
