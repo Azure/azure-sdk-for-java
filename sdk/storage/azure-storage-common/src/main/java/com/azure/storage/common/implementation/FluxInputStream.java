@@ -170,9 +170,9 @@ public class FluxInputStream extends InputStream {
             .subscribe(
                 // ByteBuffer consumer
                 byteBuffer -> {
+                    this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                     lock.lock();
                     try {
-                        this.buffer = new ByteArrayInputStream(FluxUtil.byteBufferToArray(byteBuffer));
                         this.waitingForData = false;
                         // Signal the consumer when data is available.
                         dataAvailable.signal();
@@ -206,9 +206,9 @@ public class FluxInputStream extends InputStream {
      * Signals to the subscriber when the flux completes without data (onCompletion or onError)
      */
     private void signalOnCompleteOrError() {
+        this.fluxComplete = true;
         lock.lock();
         try {
-            this.fluxComplete = true;
             this.waitingForData = false;
             dataAvailable.signal();
         } finally {
