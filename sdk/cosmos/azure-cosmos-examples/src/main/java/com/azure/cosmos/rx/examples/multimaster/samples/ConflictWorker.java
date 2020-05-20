@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.rx.examples.multimaster.samples;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.models.ConflictResolutionPolicy;
 import com.azure.cosmos.CosmosClientException;
@@ -530,9 +528,7 @@ public class ConflictWorker {
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(new AccessCondition());
-        options.getAccessCondition().setType(AccessConditionType.IF_MATCH);
-        options.getAccessCondition().setCondition(document.getETag());
+        options.setIfMatchETag(document.getETag());
 
 
         return client.replaceDocument(document.getSelfLink(), document, null).onErrorResume(e -> {
@@ -552,9 +548,7 @@ public class ConflictWorker {
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(new AccessCondition());
-        options.getAccessCondition().setType(AccessConditionType.IF_MATCH);
-        options.getAccessCondition().setCondition(document.getETag());
+        options.setIfMatchETag(document.getETag());
 
 
         return client.deleteDocument(document.getSelfLink(), options).onErrorResume(e -> {

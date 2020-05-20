@@ -35,7 +35,6 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.models.AccessConditionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -874,12 +873,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.putAll(customOptions);
         }
 
-        if (options.getAccessCondition() != null) {
-            if (options.getAccessCondition().getType() == AccessConditionType.IF_MATCH) {
-                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getAccessCondition().getCondition());
-            } else {
-                headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getAccessCondition().getCondition());
-            }
+        if (options.getIfMatchETag() != null) {
+                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchETag());
+        }
+
+        if(options.getIfNoneMatchETag() != null) {
+            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchETag());
         }
 
         if (options.getConsistencyLevel() != null) {

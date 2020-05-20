@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.changefeed.implementation;
 
-import com.azure.cosmos.models.AccessCondition;
-import com.azure.cosmos.models.AccessConditionType;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosClientException;
 import com.azure.cosmos.implementation.CosmosItemProperties;
@@ -17,7 +15,6 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseConflictExcept
 import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.ZoneId;
@@ -150,12 +147,8 @@ class DocumentServiceLeaseUpdaterImpl implements ServiceItemLeaseUpdater {
     }
 
     private CosmosItemRequestOptions getCreateIfMatchOptions(Lease lease) {
-        AccessCondition ifMatchCondition = new AccessCondition();
-        ifMatchCondition.setType(AccessConditionType.IF_MATCH);
-        ifMatchCondition.setCondition(lease.getConcurrencyToken());
-
         CosmosItemRequestOptions createIfMatchOptions = new CosmosItemRequestOptions();
-        createIfMatchOptions.setAccessCondition(ifMatchCondition);
+        createIfMatchOptions.setIfMatchETag(lease.getConcurrencyToken());
 
         return createIfMatchOptions;
     }

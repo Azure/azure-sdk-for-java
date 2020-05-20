@@ -17,7 +17,8 @@ public final class CosmosItemRequestOptions {
     private List<String> postTriggerInclude;
     private String sessionToken;
     private PartitionKey partitionKey;
-    private AccessCondition accessCondition;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
 
     /**
      * Constructor
@@ -37,22 +38,42 @@ public final class CosmosItemRequestOptions {
     }
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosItemRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosItemRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     * @return the current request options
+     */
+    public CosmosItemRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
@@ -61,6 +82,7 @@ public final class CosmosItemRequestOptions {
      *
      * @return the consistency level.
      */
+
     ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
@@ -179,8 +201,8 @@ public final class CosmosItemRequestOptions {
     RequestOptions toRequestOptions() {
         //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setAccessCondition(accessCondition);
-        requestOptions.setAccessCondition(getAccessCondition());
+        requestOptions.setIfMatchETag(getIfMatchETag());
+        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         requestOptions.setConsistencyLevel(getConsistencyLevel());
         requestOptions.setIndexingDirective(indexingDirective);
         requestOptions.setPreTriggerInclude(preTriggerInclude);
