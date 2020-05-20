@@ -17,13 +17,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PrivateLinkResources. */
 public final class PrivateLinkResourcesInner {
+    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final PrivateLinkResourcesService service;
 
@@ -54,7 +57,7 @@ public final class PrivateLinkResourcesInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault"
                 + "/vaults/{vaultName}/privateLinkResources")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByVault(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -70,13 +73,30 @@ public final class PrivateLinkResourcesInner {
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources supported for the key vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
         String resourceGroupName, String vaultName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -96,8 +116,49 @@ public final class PrivateLinkResourcesInner {
      *
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the private link resources supported for the key vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<PrivateLinkResourceListResultInner>> listByVaultWithResponseAsync(
+        String resourceGroupName, String vaultName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        }
+        return service
+            .listByVault(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vaultName,
+                this.client.getApiVersion(),
+                context);
+    }
+
+    /**
+     * Gets the private link resources supported for the key vault.
+     *
+     * @param resourceGroupName Name of the resource group that contains the key vault.
+     * @param vaultName The name of the key vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources supported for the key vault.
      */
@@ -120,7 +181,7 @@ public final class PrivateLinkResourcesInner {
      * @param resourceGroupName Name of the resource group that contains the key vault.
      * @param vaultName The name of the key vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources supported for the key vault.
      */

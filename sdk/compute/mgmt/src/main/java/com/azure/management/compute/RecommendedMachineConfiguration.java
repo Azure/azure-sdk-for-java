@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RecommendedMachineConfiguration model. */
 @Fluent
 public final class RecommendedMachineConfiguration {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendedMachineConfiguration.class);
+
     /*
      * Describes the resource range.
      */
@@ -60,5 +64,19 @@ public final class RecommendedMachineConfiguration {
     public RecommendedMachineConfiguration withMemory(ResourceRange memory) {
         this.memory = memory;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (vCPUs() != null) {
+            vCPUs().validate();
+        }
+        if (memory() != null) {
+            memory().validate();
+        }
     }
 }

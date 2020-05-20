@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutoHealRules model. */
 @Fluent
 public final class AutoHealRules {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoHealRules.class);
+
     /*
      * Conditions that describe when to execute the auto-heal actions.
      */
@@ -60,5 +64,19 @@ public final class AutoHealRules {
     public AutoHealRules withActions(AutoHealActions actions) {
         this.actions = actions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (triggers() != null) {
+            triggers().validate();
+        }
+        if (actions() != null) {
+            actions().validate();
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApiManagementConfig model. */
 @Fluent
 public final class ApiManagementConfig {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementConfig.class);
+
     /*
      * APIM-Api Identifier.
      */
@@ -34,5 +38,13 @@ public final class ApiManagementConfig {
     public ApiManagementConfig withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

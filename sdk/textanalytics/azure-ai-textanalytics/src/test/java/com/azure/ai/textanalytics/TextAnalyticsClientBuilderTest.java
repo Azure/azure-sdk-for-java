@@ -24,6 +24,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.azure.ai.textanalytics.TestUtils.AZURE_TEXT_ANALYTICS_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.DETECTED_LANGUAGE_ENGLISH;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_ENGLISH_LANGUAGE_RESULTS;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
@@ -41,7 +42,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests for Text Analytics client builder
  */
 public class TextAnalyticsClientBuilderTest extends TestBase {
-    private static final String AZURE_TEXT_ANALYTICS_API_KEY = "AZURE_TEXT_ANALYTICS_API_KEY";
     private static final String INVALID_KEY = "invalid key";
 
     /**

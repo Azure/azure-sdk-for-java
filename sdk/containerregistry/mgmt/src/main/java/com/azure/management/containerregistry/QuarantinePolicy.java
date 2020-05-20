@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The QuarantinePolicy model. */
 @Fluent
 public final class QuarantinePolicy {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuarantinePolicy.class);
+
     /*
      * The value that indicates whether the policy is enabled or not.
      */
@@ -34,5 +38,13 @@ public final class QuarantinePolicy {
     public QuarantinePolicy withStatus(PolicyStatus status) {
         this.status = status;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

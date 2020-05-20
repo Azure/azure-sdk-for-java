@@ -7,18 +7,22 @@ package com.azure.management.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.GalleryImageVersionPropertiesProvisioningState;
 import com.azure.management.compute.GalleryImageVersionPublishingProfile;
 import com.azure.management.compute.GalleryImageVersionStorageProfile;
 import com.azure.management.compute.ReplicationStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GalleryImageVersion model. */
 @JsonFlatten
 @Fluent
 public class GalleryImageVersionInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageVersionInner.class);
+
     /*
-     * The publishing profile of a gallery Image Version.
+     * Describes the basic gallery artifact publishing profile.
      */
     @JsonProperty(value = "properties.publishingProfile")
     private GalleryImageVersionPublishingProfile publishingProfile;
@@ -32,7 +36,7 @@ public class GalleryImageVersionInner extends Resource {
     /*
      * This is the storage profile of a Gallery Image Version.
      */
-    @JsonProperty(value = "properties.storageProfile", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.storageProfile")
     private GalleryImageVersionStorageProfile storageProfile;
 
     /*
@@ -42,7 +46,7 @@ public class GalleryImageVersionInner extends Resource {
     private ReplicationStatus replicationStatus;
 
     /**
-     * Get the publishingProfile property: The publishing profile of a gallery Image Version.
+     * Get the publishingProfile property: Describes the basic gallery artifact publishing profile.
      *
      * @return the publishingProfile value.
      */
@@ -51,7 +55,7 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the publishingProfile property: The publishing profile of a gallery Image Version.
+     * Set the publishingProfile property: Describes the basic gallery artifact publishing profile.
      *
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryImageVersionInner object itself.
@@ -80,9 +84,9 @@ public class GalleryImageVersionInner extends Resource {
     }
 
     /**
-     * Set the storageProfile value.
+     * Set the storageProfile property: This is the storage profile of a Gallery Image Version.
      *
-     * @param storageProfile the storageProfile value to set
+     * @param storageProfile the storageProfile value to set.
      * @return the GalleryImageVersionInner object itself.
      */
     public GalleryImageVersionInner withStorageProfile(GalleryImageVersionStorageProfile storageProfile) {
@@ -97,5 +101,22 @@ public class GalleryImageVersionInner extends Resource {
      */
     public ReplicationStatus replicationStatus() {
         return this.replicationStatus;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publishingProfile() != null) {
+            publishingProfile().validate();
+        }
+        if (storageProfile() != null) {
+            storageProfile().validate();
+        }
+        if (replicationStatus() != null) {
+            replicationStatus().validate();
+        }
     }
 }

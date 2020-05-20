@@ -250,7 +250,7 @@ Unlike non-session-enabled queues or subscriptions, only a single receiver can r
 receiver fetches a session, Service Bus locks the session for that receiver, and it has exclusive access to messages in
 that session.
 
-#### Send message to a session
+#### Send a message to a session
 
 Create a `ServiceBusSenderClient` for a session enabled queue or topic subscription. Setting `.setSessionId(String)` on
 a `ServiceBusMessage` will publish the message to that session. If the session does not exist, it is created.

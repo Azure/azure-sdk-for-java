@@ -7,6 +7,8 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -14,6 +16,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class BackendAddressPoolInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendAddressPoolInner.class);
+
     /*
      * Gets name of the resource that is unique within the set of backend
      * address pools used by the load balancer. This name can be used to access
@@ -39,7 +43,7 @@ public class BackendAddressPoolInner extends SubResource {
      * interfaces.
      */
     @JsonProperty(value = "properties.backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
-    private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
+    private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
      * Gets load balancing rules that use this backend address pool.
@@ -118,13 +122,13 @@ public class BackendAddressPoolInner extends SubResource {
     }
 
     /**
-     * Get the backendIPConfigurations property: Gets collection of references to IP addresses defined in network
+     * Get the backendIpConfigurations property: Gets collection of references to IP addresses defined in network
      * interfaces.
      *
-     * @return the backendIPConfigurations value.
+     * @return the backendIpConfigurations value.
      */
-    public List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations() {
-        return this.backendIPConfigurations;
+    public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
+        return this.backendIpConfigurations;
     }
 
     /**
@@ -174,5 +178,16 @@ public class BackendAddressPoolInner extends SubResource {
     public BackendAddressPoolInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (backendIpConfigurations() != null) {
+            backendIpConfigurations().forEach(e -> e.validate());
+        }
     }
 }

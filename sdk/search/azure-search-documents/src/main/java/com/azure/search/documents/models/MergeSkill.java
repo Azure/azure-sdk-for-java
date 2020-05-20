@@ -18,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Text.MergeSkill")
 @Fluent
-public final class MergeSkill extends Skill {
+public final class MergeSkill extends SearchIndexerSkill {
     /*
      * The tag indicates the start of the merged text. By default, the tag is
      * an empty space.

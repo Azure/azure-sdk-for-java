@@ -40,7 +40,7 @@ public class CosmosClientBuilder {
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private CosmosKeyCredential cosmosKeyCredential;
     private boolean sessionCapturingOverrideEnabled;
-    private boolean connectionReuseAcrossClientsEnabled;
+    private boolean connectionSharingAcrossClientsEnabled;
     private boolean contentResponseOnWriteEnabled;
     private String userAgentSuffix;
     private ThrottlingRetryOptions throttlingRetryOptions;
@@ -69,7 +69,7 @@ public class CosmosClientBuilder {
      * @param sessionCapturingOverrideEnabled session capturing override
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
+    CosmosClientBuilder sessionCapturingOverrideEnabled(boolean sessionCapturingOverrideEnabled) {
         this.sessionCapturingOverrideEnabled = sessionCapturingOverrideEnabled;
         return this;
     }
@@ -95,7 +95,7 @@ public class CosmosClientBuilder {
      *         .key(key1)
      *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
-     *         .connectionReuseAcrossClientsEnabled(true)
+     *         .connectionSharingAcrossClientsEnabled(true)
      *         .buildAsyncClient();
      *
      * CosmosAsyncClient client2 = new CosmosClientBuilder()
@@ -103,7 +103,7 @@ public class CosmosClientBuilder {
      *         .key(key2)
      *         .directMode()
      *         .consistencyLevel(ConsistencyLevel.SESSION)
-     *         .connectionReuseAcrossClientsEnabled(true)
+     *         .connectionSharingAcrossClientsEnabled(true)
      *         .buildAsyncClient();
      *
      * // when configured this way client1 and client2 will share connections when possible.
@@ -116,11 +116,11 @@ public class CosmosClientBuilder {
      * Please note, when setting this option, the connection configuration (e.g., socket timeout config, idle timeout
      * config) of the first instantiated client will be used for all other client instances.
      *
-     * @param connectionReuseAcrossClientsEnabled connection sharing
+     * @param connectionSharingAcrossClientsEnabled connection sharing
      * @return current cosmosClientBuilder
      */
-    public CosmosClientBuilder connectionReuseAcrossClientsEnabled(boolean connectionReuseAcrossClientsEnabled) {
-        this.connectionReuseAcrossClientsEnabled = true;
+    public CosmosClientBuilder connectionSharingAcrossClientsEnabled(boolean connectionSharingAcrossClientsEnabled) {
+        this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;
         return this;
     }
 
@@ -132,8 +132,8 @@ public class CosmosClientBuilder {
      *
      * @return the connection sharing across multiple clients
      */
-    boolean isConnectionReuseAcrossClientsEnabled() {
-        return this.connectionReuseAcrossClientsEnabled;
+    boolean isConnectionSharingAcrossClientsEnabled() {
+        return this.connectionSharingAcrossClientsEnabled;
     }
 
     /**

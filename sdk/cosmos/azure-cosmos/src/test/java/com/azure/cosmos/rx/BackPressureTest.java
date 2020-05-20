@@ -255,7 +255,7 @@ public class BackPressureTest extends TestSuiteBase {
         // for bulk insert and later queries.
         Offer offer = rxClient.queryOffers(
                 String.format("SELECT * FROM r WHERE r.offerResourceId = '%s'",
-                        createdCollection.read().block().getProperties().getResourceId())
+                    createdCollection.read().block().getProperties().getResourceId())
                         , null).take(1).map(FeedResponse::getResults).single().block().get(0);
         offer.setThroughput(6000);
         offer = rxClient.replaceOffer(offer).single().block().getResource();

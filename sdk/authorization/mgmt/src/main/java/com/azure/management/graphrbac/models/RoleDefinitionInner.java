@@ -6,6 +6,8 @@ package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,6 +15,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class RoleDefinitionInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
+
     /*
      * The role definition ID.
      */
@@ -186,5 +190,16 @@ public class RoleDefinitionInner {
     public RoleDefinitionInner withAssignableScopes(List<String> assignableScopes) {
         this.assignableScopes = assignableScopes;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (permissions() != null) {
+            permissions().forEach(e -> e.validate());
+        }
     }
 }

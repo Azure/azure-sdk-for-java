@@ -10,7 +10,6 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring;
 
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddIntentOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddEntityOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListEntitiesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListHierarchicalEntitiesOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListCompositeEntitiesOptionalParameter;
@@ -20,16 +19,15 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.List
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExamplesMethodOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateIntentOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.DeleteIntentOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateEntityOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatchClosedListOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetIntentSuggestionsOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetEntitySuggestionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListIntentSuggestionsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListEntitySuggestionsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddCustomPrebuiltDomainModelsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddHierarchicalEntityChildOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AddCompositeEntityChildOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetRegexEntityInfosOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.GetPatternAnyEntityInfosOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListRegexEntityInfosOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ListPatternAnyEntityInfosOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateEntityRoleOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreatePrebuiltEntityRoleOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CreateClosedListEntityRoleOptionalParameter;
@@ -48,8 +46,8 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Upda
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateHierarchicalEntityRoleOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateCustomPrebuiltEntityRoleOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.UpdateExplicitListItemOptionalParameter;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.AvailablePrebuiltEntityModel;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ChildEntityModelCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListModelCreateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ClosedListModelUpdateObject;
@@ -58,16 +56,19 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Comp
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.CustomPrebuiltModel;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntitiesSuggestionExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityExtractor;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityModelCreateObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityModelUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.EntityRole;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ExplicitListItem;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalChildEntity;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalEntityExtractor;
-import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.HierarchicalEntityModel;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.IntentClassifier;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.IntentsSuggestionExample;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LabelTextObject;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelFeatureInformation;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.ModelInfoResponse;
+import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.NDepthEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternAnyEntityExtractor;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.PatternAnyModelCreateObject;
@@ -79,6 +80,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Rege
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.RegexModelUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.WordListBaseUpdateObject;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.WordListObject;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -89,21 +91,20 @@ import rx.Observable;
  */
 public interface Models {
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param addIntentOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
+     * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID addIntent(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -111,11 +112,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> addIntentAsync(UUID appId, String versionId, AddIntentOptionalParameter addIntentOptionalParameter);
 
     /**
-     * Adds an intent classifier to the application.
+     * Adds an intent to a version of the application.
      *
      * @return the first stage of the addIntent call
      */
@@ -191,7 +191,7 @@ public interface Models {
     }
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -201,11 +201,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentClassifier&gt; object if successful.
      */
-    @Deprecated
     List<IntentClassifier> listIntents(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -213,11 +212,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentClassifier&gt; object
      */
-    @Deprecated
     Observable<List<IntentClassifier>> listIntentsAsync(UUID appId, String versionId, ListIntentsOptionalParameter listIntentsOptionalParameter);
 
     /**
-     * Gets information about the intent models.
+     * Gets information about the intent models in a version of the application.
      *
      * @return the first stage of the listIntents call
      */
@@ -299,110 +297,34 @@ public interface Models {
         ModelsListIntentsDefinitionStages.WithExecute {
     }
 
+
     /**
-     * Adds an entity extractor to the application.
+     * Adds an entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityModelCreateObject A model object containing the name of the new entity extractor and its children.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
-    UUID addEntity(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
+    UUID addEntity(UUID appId, String versionId, EntityModelCreateObject entityModelCreateObject);
 
     /**
-     * Adds an entity extractor to the application.
+     * Adds an entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param addEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityModelCreateObject A model object containing the name of the new entity extractor and its children.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
-    Observable<UUID> addEntityAsync(UUID appId, String versionId, AddEntityOptionalParameter addEntityOptionalParameter);
+    Observable<UUID> addEntityAsync(UUID appId, String versionId, EntityModelCreateObject entityModelCreateObject);
+
 
     /**
-     * Adds an entity extractor to the application.
-     *
-     * @return the first stage of the addEntity call
-     */
-    ModelsAddEntityDefinitionStages.WithAppId addEntity();
-
-    /**
-     * Grouping of addEntity definition stages.
-     */
-    interface ModelsAddEntityDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddEntityDefinitionStages.WithExecute withVersionId(String versionId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             * Name of the new entity extractor.
-             *
-             * @return next definition stage
-             */
-            ModelsAddEntityDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddEntityDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addEntity definition.
-     */
-    interface ModelsAddEntityDefinition extends
-        ModelsAddEntityDefinitionStages.WithAppId,
-        ModelsAddEntityDefinitionStages.WithVersionId,
-        ModelsAddEntityDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -410,25 +332,23 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the List&lt;EntityExtractor&gt; object if successful.
+     * @return the List&lt;NDepthEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<EntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
+    List<NDepthEntityExtractor> listEntities(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param listEntitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;EntityExtractor&gt; object
+     * @return the observable to the List&lt;NDepthEntityExtractor&gt; object
      */
-    @Deprecated
-    Observable<List<EntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
+    Observable<List<NDepthEntityExtractor>> listEntitiesAsync(UUID appId, String versionId, ListEntitiesOptionalParameter listEntitiesOptionalParameter);
 
     /**
-     * Gets information about the entity models.
+     * Gets information about all the simple entity models in a version of the application.
      *
      * @return the first stage of the listEntities call
      */
@@ -488,16 +408,16 @@ public interface Models {
             /**
              * Execute the request.
              *
-             * @return the List&lt;EntityExtractor&gt; object if successful.
+             * @return the List&lt;NDepthEntityExtractor&gt; object if successful.
              */
-            List<EntityExtractor> execute();
+            List<NDepthEntityExtractor> execute();
 
             /**
              * Execute the request asynchronously.
              *
-             * @return the observable to the List&lt;EntityExtractor&gt; object
+             * @return the observable to the List&lt;NDepthEntityExtractor&gt; object
              */
-            Observable<List<EntityExtractor>> executeAsync();
+            Observable<List<NDepthEntityExtractor>> executeAsync();
         }
     }
 
@@ -510,34 +430,8 @@ public interface Models {
         ModelsListEntitiesDefinitionStages.WithExecute {
     }
 
-
     /**
-     * Adds a hierarchical entity extractor to the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
-     */
-    UUID addHierarchicalEntity(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject);
-
-    /**
-     * Adds a hierarchical entity extractor to the application version.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hierarchicalModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    Observable<UUID> addHierarchicalEntityAsync(UUID appId, String versionId, HierarchicalEntityModel hierarchicalModelCreateObject);
-
-
-    /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -547,11 +441,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;HierarchicalEntityExtractor&gt; object if successful.
      */
-    @Deprecated
     List<HierarchicalEntityExtractor> listHierarchicalEntities(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -559,11 +452,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;HierarchicalEntityExtractor&gt; object
      */
-    @Deprecated
     Observable<List<HierarchicalEntityExtractor>> listHierarchicalEntitiesAsync(UUID appId, String versionId, ListHierarchicalEntitiesOptionalParameter listHierarchicalEntitiesOptionalParameter);
 
     /**
-     * Gets information about the hierarchical entity models.
+     * Gets information about all the hierarchical entity models in a version of the application.
      *
      * @return the first stage of the listHierarchicalEntities call
      */
@@ -645,34 +537,8 @@ public interface Models {
         ModelsListHierarchicalEntitiesDefinitionStages.WithExecute {
     }
 
-
     /**
-     * Adds a composite entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
-     */
-    UUID addCompositeEntity(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject);
-
-    /**
-     * Adds a composite entity extractor to the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param compositeModelCreateObject A model containing the name and children of the new entity extractor.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    Observable<UUID> addCompositeEntityAsync(UUID appId, String versionId, CompositeEntityModel compositeModelCreateObject);
-
-
-    /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -682,11 +548,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;CompositeEntityExtractor&gt; object if successful.
      */
-    @Deprecated
     List<CompositeEntityExtractor> listCompositeEntities(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -694,11 +559,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;CompositeEntityExtractor&gt; object
      */
-    @Deprecated
     Observable<List<CompositeEntityExtractor>> listCompositeEntitiesAsync(UUID appId, String versionId, ListCompositeEntitiesOptionalParameter listCompositeEntitiesOptionalParameter);
 
     /**
-     * Gets information about the composite entity models.
+     * Gets information about all the composite entity models in a version of the application.
      *
      * @return the first stage of the listCompositeEntities call
      */
@@ -781,7 +645,7 @@ public interface Models {
     }
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -791,11 +655,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ClosedListEntityExtractor&gt; object if successful.
      */
-    @Deprecated
     List<ClosedListEntityExtractor> listClosedLists(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -803,11 +666,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ClosedListEntityExtractor&gt; object
      */
-    @Deprecated
     Observable<List<ClosedListEntityExtractor>> listClosedListsAsync(UUID appId, String versionId, ListClosedListsOptionalParameter listClosedListsOptionalParameter);
 
     /**
-     * Gets information about the closedlist models.
+     * Gets information about all the list entity models in a version of the application.
      *
      * @return the first stage of the listClosedLists call
      */
@@ -891,11 +753,11 @@ public interface Models {
 
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -904,11 +766,11 @@ public interface Models {
     UUID addClosedList(UUID appId, String versionId, ClosedListModelCreateObject closedListModelCreateObject);
 
     /**
-     * Adds a closed list model to the application.
+     * Adds a list entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param closedListModelCreateObject A model containing the name and words for the new closed list entity extractor.
+     * @param closedListModelCreateObject A model containing the name and words for the new list entity extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -917,7 +779,7 @@ public interface Models {
 
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -930,7 +792,7 @@ public interface Models {
     List<PrebuiltEntityExtractor> addPrebuilt(UUID appId, String versionId, List<String> prebuiltExtractorNames);
 
     /**
-     * Adds a list of prebuilt entity extractors to the application.
+     * Adds a list of prebuilt entities to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -942,7 +804,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -952,11 +814,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PrebuiltEntityExtractor&gt; object if successful.
      */
-    @Deprecated
     List<PrebuiltEntityExtractor> listPrebuilts(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -964,11 +825,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PrebuiltEntityExtractor&gt; object
      */
-    @Deprecated
     Observable<List<PrebuiltEntityExtractor>> listPrebuiltsAsync(UUID appId, String versionId, ListPrebuiltsOptionalParameter listPrebuiltsOptionalParameter);
 
     /**
-     * Gets information about the prebuilt entity models.
+     * Gets information about all the prebuilt entities in a version of the application.
      *
      * @return the first stage of the listPrebuilts call
      */
@@ -1052,7 +912,7 @@ public interface Models {
 
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1064,7 +924,7 @@ public interface Models {
     List<AvailablePrebuiltEntityModel> listPrebuiltEntities(UUID appId, String versionId);
 
     /**
-     * Gets all the available prebuilt entity extractors for the application.
+     * Gets all the available prebuilt entities in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1075,7 +935,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1085,11 +945,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;ModelInfoResponse&gt; object if successful.
      */
-    @Deprecated
     List<ModelInfoResponse> listModels(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1097,11 +956,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ModelInfoResponse&gt; object
      */
-    @Deprecated
     Observable<List<ModelInfoResponse>> listModelsAsync(UUID appId, String versionId, ListModelsOptionalParameter listModelsOptionalParameter);
 
     /**
-     * Gets information about the application version models.
+     * Gets information about all the intent and entity models in a version of the application.
      *
      * @return the first stage of the listModels call
      */
@@ -1184,7 +1042,7 @@ public interface Models {
     }
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1195,11 +1053,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LabelTextObject&gt; object if successful.
      */
-    @Deprecated
     List<LabelTextObject> examplesMethod(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1208,11 +1065,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabelTextObject&gt; object
      */
-    @Deprecated
     Observable<List<LabelTextObject>> examplesMethodAsync(UUID appId, String versionId, String modelId, ExamplesMethodOptionalParameter examplesMethodOptionalParameter);
 
     /**
-     * Gets the utterances for the given model in the given app version.
+     * Gets the example utterances for the given intent or entity model in a version of the application.
      *
      * @return the first stage of the examplesMethod call
      */
@@ -1308,7 +1164,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1321,7 +1177,7 @@ public interface Models {
     IntentClassifier getIntent(UUID appId, String versionId, UUID intentId);
 
     /**
-     * Gets information about the intent model.
+     * Gets information about the intent model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1333,7 +1189,7 @@ public interface Models {
 
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1344,11 +1200,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateIntent(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1357,11 +1212,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateIntentAsync(UUID appId, String versionId, UUID intentId, UpdateIntentOptionalParameter updateIntentOptionalParameter);
 
     /**
-     * Updates the name of an intent classifier.
+     * Updates the name of an intent in a version of the application.
      *
      * @return the first stage of the updateIntent call
      */
@@ -1449,7 +1303,7 @@ public interface Models {
     }
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1460,11 +1314,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus deleteIntent(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1473,11 +1326,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> deleteIntentAsync(UUID appId, String versionId, UUID intentId, DeleteIntentOptionalParameter deleteIntentOptionalParameter);
 
     /**
-     * Deletes an intent classifier from the application.
+     * Deletes an intent from a version of the application.
      *
      * @return the first stage of the deleteIntent call
      */
@@ -1526,8 +1378,8 @@ public interface Models {
          */
         interface WithAllOptions {
             /**
-             * Also delete the intent's utterances (true). Or move the utterances to the None intent (false - the default
-             *   value).
+             * If true, deletes the intent's example utterances. If false, moves the example utterances to the None intent.
+             *   The default value is false.
              *
              * @return next definition stage
              */
@@ -1567,7 +1419,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1575,61 +1427,307 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntityExtractor object if successful.
+     * @return the NDepthEntityExtractor object if successful.
      */
-    EntityExtractor getEntity(UUID appId, String versionId, UUID entityId);
+    NDepthEntityExtractor getEntity(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Gets information about the entity model.
+     * Gets information about an entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntityExtractor object
+     * @return the observable to the NDepthEntityExtractor object
      */
-    Observable<EntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId);
+    Observable<NDepthEntityExtractor> getEntityAsync(UUID appId, String versionId, UUID entityId);
+
 
 
     /**
-     * Updates the name of an entity extractor.
+     * Deletes an entity or a child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entityId The entity extractor or the child entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
-    OperationStatus updateEntity(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
+    OperationStatus deleteEntity(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Updates the name of an entity extractor.
+     * Deletes an entity or a child from a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> deleteEntityAsync(UUID appId, String versionId, UUID entityId);
+
+
+
+    /**
+     * Updates the name of an entity extractor or the name and instanceOf model of a child entity
+      *  extractor.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @param entityModelUpdateObject A model object containing the name new entity extractor or the name and instance of model of a
+      *  child entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateEntityChild(UUID appId, String versionId, UUID entityId, EntityModelUpdateObject entityModelUpdateObject);
+
+    /**
+     * Updates the name of an entity extractor or the name and instanceOf model of a child entity
+      *  extractor.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor or the child entity extractor ID.
+     * @param entityModelUpdateObject A model object containing the name new entity extractor or the name and instance of model of a
+      *  child entity extractor.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> updateEntityChildAsync(UUID appId, String versionId, UUID entityId, EntityModelUpdateObject entityModelUpdateObject);
+
+
+
+    /**
+     * Gets the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ModelFeatureInformation&gt; object if successful.
+     */
+    List<ModelFeatureInformation> getIntentFeatures(UUID appId, String versionId, UUID intentId);
+
+    /**
+     * Gets the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ModelFeatureInformation&gt; object
+     */
+    Observable<List<ModelFeatureInformation>> getIntentFeaturesAsync(UUID appId, String versionId, UUID intentId);
+
+
+
+    /**
+     * Updates the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus replaceIntentFeatures(UUID appId, String versionId, UUID intentId, List<ModelFeatureInformation> featureRelationsUpdateObject);
+
+    /**
+     * Updates the information of the features used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> replaceIntentFeaturesAsync(UUID appId, String versionId, UUID intentId, List<ModelFeatureInformation> featureRelationsUpdateObject);
+
+
+
+    /**
+     * Deletes a relation from the feature relations used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus deleteIntentFeature(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationDeleteObject);
+
+    /**
+     * Deletes a relation from the feature relations used by the intent in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param intentId The intent classifier ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> deleteIntentFeatureAsync(UUID appId, String versionId, UUID intentId, ModelFeatureInformation featureRelationDeleteObject);
+
+
+
+    /**
+     * Gets the information of the features used by the entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The entity extractor ID.
-     * @param updateEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the List&lt;ModelFeatureInformation&gt; object if successful.
+     */
+    List<ModelFeatureInformation> getEntityFeatures(UUID appId, String versionId, UUID entityId);
+
+    /**
+     * Gets the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the List&lt;ModelFeatureInformation&gt; object
+     */
+    Observable<List<ModelFeatureInformation>> getEntityFeaturesAsync(UUID appId, String versionId, UUID entityId);
+
+
+
+    /**
+     * Updates the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus replaceEntityFeatures(UUID appId, String versionId, UUID entityId, List<ModelFeatureInformation> featureRelationsUpdateObject);
+
+    /**
+     * Updates the information of the features used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationsUpdateObject A list of feature information objects containing the new feature relations.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
-    Observable<OperationStatus> updateEntityAsync(UUID appId, String versionId, UUID entityId, UpdateEntityOptionalParameter updateEntityOptionalParameter);
+    Observable<OperationStatus> replaceEntityFeaturesAsync(UUID appId, String versionId, UUID entityId, List<ModelFeatureInformation> featureRelationsUpdateObject);
+
+
 
     /**
-     * Updates the name of an entity extractor.
+     * Deletes a relation from the feature relations used by the entity in a version of the application.
      *
-     * @return the first stage of the updateEntity call
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
      */
-    ModelsUpdateEntityDefinitionStages.WithAppId updateEntity();
+    OperationStatus deleteEntityFeature(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationDeleteObject);
 
     /**
-     * Grouping of updateEntity definition stages.
+     * Deletes a relation from the feature relations used by the entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param featureRelationDeleteObject A feature information object containing the feature relation to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
      */
-    interface ModelsUpdateEntityDefinitionStages {
+    Observable<OperationStatus> deleteEntityFeatureAsync(UUID appId, String versionId, UUID entityId, ModelFeatureInformation featureRelationDeleteObject);
+
+
+
+    /**
+     * Gets information about a hierarchical entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the HierarchicalEntityExtractor object if successful.
+     */
+    HierarchicalEntityExtractor getHierarchicalEntity(UUID appId, String versionId, UUID hEntityId);
+
+    /**
+     * Gets information about a hierarchical entity in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the HierarchicalEntityExtractor object
+     */
+    Observable<HierarchicalEntityExtractor> getHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId);
+
+
+    /**
+     * Updates the name of a hierarchical entity model in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param updateHierarchicalEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the OperationStatus object if successful.
+     */
+    OperationStatus updateHierarchicalEntity(UUID appId, String versionId, UUID hEntityId, UpdateHierarchicalEntityOptionalParameter updateHierarchicalEntityOptionalParameter);
+
+    /**
+     * Updates the name of a hierarchical entity model in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param hEntityId The hierarchical entity extractor ID.
+     * @param updateHierarchicalEntityOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the OperationStatus object
+     */
+    Observable<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, UpdateHierarchicalEntityOptionalParameter updateHierarchicalEntityOptionalParameter);
+
+    /**
+     * Updates the name of a hierarchical entity model in a version of the application.
+     *
+     * @return the first stage of the updateHierarchicalEntity call
+     */
+    ModelsUpdateHierarchicalEntityDefinitionStages.WithAppId updateHierarchicalEntity();
+
+    /**
+     * Grouping of updateHierarchicalEntity definition stages.
+     */
+    interface ModelsUpdateHierarchicalEntityDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -1650,18 +1748,18 @@ public interface Models {
              *
              * @return next definition stage
              */
-            WithEntityId withVersionId(String versionId);
+            WithHEntityId withVersionId(String versionId);
         }
         /**
-         * The stage of the definition to be specify entityId.
+         * The stage of the definition to be specify hEntityId.
          */
-        interface WithEntityId {
+        interface WithHEntityId {
             /**
-             * The entity extractor ID.
+             * The hierarchical entity extractor ID.
              *
              * @return next definition stage
              */
-            ModelsUpdateEntityDefinitionStages.WithExecute withEntityId(UUID entityId);
+            ModelsUpdateHierarchicalEntityDefinitionStages.WithExecute withHEntityId(UUID hEntityId);
         }
 
         /**
@@ -1673,14 +1771,14 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsUpdateEntityDefinitionStages.WithExecute withName(String name);
+            ModelsUpdateHierarchicalEntityDefinitionStages.WithExecute withName(String name);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ModelsUpdateEntityDefinitionStages.WithAllOptions {
+        interface WithExecute extends ModelsUpdateHierarchicalEntityDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -1698,98 +1796,18 @@ public interface Models {
     }
 
     /**
-     * The entirety of updateEntity definition.
+     * The entirety of updateHierarchicalEntity definition.
      */
-    interface ModelsUpdateEntityDefinition extends
-        ModelsUpdateEntityDefinitionStages.WithAppId,
-        ModelsUpdateEntityDefinitionStages.WithVersionId,
-        ModelsUpdateEntityDefinitionStages.WithEntityId,
-        ModelsUpdateEntityDefinitionStages.WithExecute {
+    interface ModelsUpdateHierarchicalEntityDefinition extends
+        ModelsUpdateHierarchicalEntityDefinitionStages.WithAppId,
+        ModelsUpdateHierarchicalEntityDefinitionStages.WithVersionId,
+        ModelsUpdateHierarchicalEntityDefinitionStages.WithHEntityId,
+        ModelsUpdateHierarchicalEntityDefinitionStages.WithExecute {
     }
 
 
     /**
-     * Deletes an entity extractor from the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus deleteEntity(UUID appId, String versionId, UUID entityId);
-
-    /**
-     * Deletes an entity extractor from the application.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param entityId The entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> deleteEntityAsync(UUID appId, String versionId, UUID entityId);
-
-
-
-    /**
-     * Gets information about the hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the HierarchicalEntityExtractor object if successful.
-     */
-    HierarchicalEntityExtractor getHierarchicalEntity(UUID appId, String versionId, UUID hEntityId);
-
-    /**
-     * Gets information about the hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the HierarchicalEntityExtractor object
-     */
-    Observable<HierarchicalEntityExtractor> getHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId);
-
-
-
-    /**
-     * Updates the name and children of a hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OperationStatus object if successful.
-     */
-    OperationStatus updateHierarchicalEntity(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject);
-
-    /**
-     * Updates the name and children of a hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param hierarchicalModelUpdateObject Model containing names of the children of the hierarchical entity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OperationStatus object
-     */
-    Observable<OperationStatus> updateHierarchicalEntityAsync(UUID appId, String versionId, UUID hEntityId, HierarchicalEntityModel hierarchicalModelUpdateObject);
-
-
-
-    /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Deletes a hierarchical entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1802,7 +1820,7 @@ public interface Models {
     OperationStatus deleteHierarchicalEntity(UUID appId, String versionId, UUID hEntityId);
 
     /**
-     * Deletes a hierarchical entity extractor from the application version.
+     * Deletes a hierarchical entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1815,7 +1833,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1828,7 +1846,7 @@ public interface Models {
     CompositeEntityExtractor getCompositeEntity(UUID appId, String versionId, UUID cEntityId);
 
     /**
-     * Gets information about the composite entity model.
+     * Gets information about a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1841,7 +1859,7 @@ public interface Models {
 
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1855,7 +1873,7 @@ public interface Models {
     OperationStatus updateCompositeEntity(UUID appId, String versionId, UUID cEntityId, CompositeEntityModel compositeModelUpdateObject);
 
     /**
-     * Updates the composite entity extractor.
+     * Updates a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1869,7 +1887,7 @@ public interface Models {
 
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1882,7 +1900,7 @@ public interface Models {
     OperationStatus deleteCompositeEntity(UUID appId, String versionId, UUID cEntityId);
 
     /**
-     * Deletes a composite entity extractor from the application.
+     * Deletes a composite entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -1895,11 +1913,11 @@ public interface Models {
 
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1908,11 +1926,11 @@ public interface Models {
     ClosedListEntityExtractor getClosedList(UUID appId, String versionId, UUID clEntityId);
 
     /**
-     * Gets information of a closed list model.
+     * Gets information about a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClosedListEntityExtractor object
      */
@@ -1921,12 +1939,12 @@ public interface Models {
 
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -1935,12 +1953,12 @@ public interface Models {
     OperationStatus updateClosedList(UUID appId, String versionId, UUID clEntityId, ClosedListModelUpdateObject closedListModelUpdateObject);
 
     /**
-     * Updates the closed list model.
+     * Updates the list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
-     * @param closedListModelUpdateObject The new entity name and words list.
+     * @param clEntityId The list model ID.
+     * @param closedListModelUpdateObject The new list entity name and words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -1948,35 +1966,33 @@ public interface Models {
 
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus patchClosedList(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @param patchClosedListOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> patchClosedListAsync(UUID appId, String versionId, UUID clEntityId, PatchClosedListOptionalParameter patchClosedListOptionalParameter);
 
     /**
-     * Adds a batch of sublists to an existing closedlist.
+     * Adds a batch of sublists to an existing list entity in a version of the application.
      *
      * @return the first stage of the patchClosedList call
      */
@@ -2013,7 +2029,7 @@ public interface Models {
          */
         interface WithClEntityId {
             /**
-             * The closed list model ID.
+             * The list entity model ID.
              *
              * @return next definition stage
              */
@@ -2065,11 +2081,11 @@ public interface Models {
 
 
     /**
-     * Deletes a closed list model from the application.
+     * Deletes a list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2078,11 +2094,11 @@ public interface Models {
     OperationStatus deleteClosedList(UUID appId, String versionId, UUID clEntityId);
 
     /**
-     * Deletes a closed list model from the application.
+     * Deletes a list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list model ID.
+     * @param clEntityId The list entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -2091,7 +2107,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2104,7 +2120,7 @@ public interface Models {
     PrebuiltEntityExtractor getPrebuilt(UUID appId, String versionId, UUID prebuiltId);
 
     /**
-     * Gets information about the prebuilt entity model.
+     * Gets information about a prebuilt entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2117,7 +2133,7 @@ public interface Models {
 
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2130,7 +2146,7 @@ public interface Models {
     OperationStatus deletePrebuilt(UUID appId, String versionId, UUID prebuiltId);
 
     /**
-     * Deletes a prebuilt entity extractor from the application.
+     * Deletes a prebuilt entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2143,39 +2159,39 @@ public interface Models {
 
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    OperationStatus deleteSubList(UUID appId, String versionId, UUID clEntityId, int subListId);
+    OperationStatus deleteSubList(UUID appId, String versionId, UUID clEntityId, long subListId);
 
     /**
-     * Deletes a sublist of a specific closed list model.
+     * Deletes a sublist of a specific list entity model from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    Observable<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId);
+    Observable<OperationStatus> deleteSubListAsync(UUID appId, String versionId, UUID clEntityId, long subListId);
 
 
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -2183,61 +2199,62 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    OperationStatus updateSubList(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject);
+    OperationStatus updateSubList(UUID appId, String versionId, UUID clEntityId, long subListId, WordListBaseUpdateObject wordListBaseUpdateObject);
 
     /**
-     * Updates one of the closed list's sublists.
+     * Updates one of the list entity's sublists in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param subListId The sublist ID.
      * @param wordListBaseUpdateObject A sublist update object containing the new canonical form and the list of words.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    Observable<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, int subListId, WordListBaseUpdateObject wordListBaseUpdateObject);
+    Observable<OperationStatus> updateSubListAsync(UUID appId, String versionId, UUID clEntityId, long subListId, WordListBaseUpdateObject wordListBaseUpdateObject);
 
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the
+     *   application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IntentsSuggestionExample&gt; object if successful.
      */
-    @Deprecated
-    List<IntentsSuggestionExample> getIntentSuggestions(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
+    List<IntentsSuggestionExample> listIntentSuggestions(UUID appId, String versionId, UUID intentId, ListIntentSuggestionsOptionalParameter listIntentSuggestionsOptionalParameter);
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the
+     *   application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param intentId The intent classifier ID.
-     * @param getIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listIntentSuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IntentsSuggestionExample&gt; object
      */
-    @Deprecated
-    Observable<List<IntentsSuggestionExample>> getIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, GetIntentSuggestionsOptionalParameter getIntentSuggestionsOptionalParameter);
+    Observable<List<IntentsSuggestionExample>> listIntentSuggestionsAsync(UUID appId, String versionId, UUID intentId, ListIntentSuggestionsOptionalParameter listIntentSuggestionsOptionalParameter);
 
     /**
-     * Suggests examples that would improve the accuracy of the intent model.
+     * Suggests example utterances that would improve the accuracy of the intent model in a version of the
+     *   application.
      *
-     * @return the first stage of the getIntentSuggestions call
+     * @return the first stage of the listIntentSuggestions call
      */
-    ModelsGetIntentSuggestionsDefinitionStages.WithAppId getIntentSuggestions();
+    ModelsListIntentSuggestionsDefinitionStages.WithAppId listIntentSuggestions();
 
     /**
-     * Grouping of getIntentSuggestions definition stages.
+     * Grouping of listIntentSuggestions definition stages.
      */
-    interface ModelsGetIntentSuggestionsDefinitionStages {
+    interface ModelsListIntentSuggestionsDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -2269,7 +2286,7 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetIntentSuggestionsDefinitionStages.WithExecute withIntentId(UUID intentId);
+            ModelsListIntentSuggestionsDefinitionStages.WithExecute withIntentId(UUID intentId);
         }
 
         /**
@@ -2281,14 +2298,14 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetIntentSuggestionsDefinitionStages.WithExecute withTake(Integer take);
+            ModelsListIntentSuggestionsDefinitionStages.WithExecute withTake(Integer take);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ModelsGetIntentSuggestionsDefinitionStages.WithAllOptions {
+        interface WithExecute extends ModelsListIntentSuggestionsDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -2306,54 +2323,55 @@ public interface Models {
     }
 
     /**
-     * The entirety of getIntentSuggestions definition.
+     * The entirety of listIntentSuggestions definition.
      */
-    interface ModelsGetIntentSuggestionsDefinition extends
-        ModelsGetIntentSuggestionsDefinitionStages.WithAppId,
-        ModelsGetIntentSuggestionsDefinitionStages.WithVersionId,
-        ModelsGetIntentSuggestionsDefinitionStages.WithIntentId,
-        ModelsGetIntentSuggestionsDefinitionStages.WithExecute {
+    interface ModelsListIntentSuggestionsDefinition extends
+        ModelsListIntentSuggestionsDefinitionStages.WithAppId,
+        ModelsListIntentSuggestionsDefinitionStages.WithVersionId,
+        ModelsListIntentSuggestionsDefinitionStages.WithIntentId,
+        ModelsListIntentSuggestionsDefinitionStages.WithExecute {
     }
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the
+     *   application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntitiesSuggestionExample&gt; object if successful.
      */
-    @Deprecated
-    List<EntitiesSuggestionExample> getEntitySuggestions(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
+    List<EntitiesSuggestionExample> listEntitySuggestions(UUID appId, String versionId, UUID entityId, ListEntitySuggestionsOptionalParameter listEntitySuggestionsOptionalParameter);
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the
+     *   application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
      * @param entityId The target entity extractor model to enhance.
-     * @param getEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listEntitySuggestionsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntitiesSuggestionExample&gt; object
      */
-    @Deprecated
-    Observable<List<EntitiesSuggestionExample>> getEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, GetEntitySuggestionsOptionalParameter getEntitySuggestionsOptionalParameter);
+    Observable<List<EntitiesSuggestionExample>> listEntitySuggestionsAsync(UUID appId, String versionId, UUID entityId, ListEntitySuggestionsOptionalParameter listEntitySuggestionsOptionalParameter);
 
     /**
-     * Get suggestion examples that would improve the accuracy of the entity model.
+     * Get suggested example utterances that would improve the accuracy of the entity model in a version of the
+     *   application.
      *
-     * @return the first stage of the getEntitySuggestions call
+     * @return the first stage of the listEntitySuggestions call
      */
-    ModelsGetEntitySuggestionsDefinitionStages.WithAppId getEntitySuggestions();
+    ModelsListEntitySuggestionsDefinitionStages.WithAppId listEntitySuggestions();
 
     /**
-     * Grouping of getEntitySuggestions definition stages.
+     * Grouping of listEntitySuggestions definition stages.
      */
-    interface ModelsGetEntitySuggestionsDefinitionStages {
+    interface ModelsListEntitySuggestionsDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -2385,7 +2403,7 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetEntitySuggestionsDefinitionStages.WithExecute withEntityId(UUID entityId);
+            ModelsListEntitySuggestionsDefinitionStages.WithExecute withEntityId(UUID entityId);
         }
 
         /**
@@ -2397,14 +2415,14 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetEntitySuggestionsDefinitionStages.WithExecute withTake(Integer take);
+            ModelsListEntitySuggestionsDefinitionStages.WithExecute withTake(Integer take);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ModelsGetEntitySuggestionsDefinitionStages.WithAllOptions {
+        interface WithExecute extends ModelsListEntitySuggestionsDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -2422,45 +2440,46 @@ public interface Models {
     }
 
     /**
-     * The entirety of getEntitySuggestions definition.
+     * The entirety of listEntitySuggestions definition.
      */
-    interface ModelsGetEntitySuggestionsDefinition extends
-        ModelsGetEntitySuggestionsDefinitionStages.WithAppId,
-        ModelsGetEntitySuggestionsDefinitionStages.WithVersionId,
-        ModelsGetEntitySuggestionsDefinitionStages.WithEntityId,
-        ModelsGetEntitySuggestionsDefinitionStages.WithExecute {
+    interface ModelsListEntitySuggestionsDefinition extends
+        ModelsListEntitySuggestionsDefinitionStages.WithAppId,
+        ModelsListEntitySuggestionsDefinitionStages.WithVersionId,
+        ModelsListEntitySuggestionsDefinitionStages.WithEntityId,
+        ModelsListEntitySuggestionsDefinitionStages.WithExecute {
     }
 
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the int object if successful.
+     * @return the long object if successful.
      */
-    int addSubList(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject);
+    long addSubList(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject);
 
     /**
-     * Adds a list to an existing closed list.
+     * Adds a sublist to an existing list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param clEntityId The closed list entity extractor ID.
+     * @param clEntityId The list entity extractor ID.
      * @param wordListCreateObject Words list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the int object
+     * @return the observable to the long object
      */
-    Observable<Integer> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject);
+    Observable<Long> addSubListAsync(UUID appId, String versionId, UUID clEntityId, WordListObject wordListCreateObject);
 
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the
+     *   application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2470,11 +2489,11 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;UUID&gt; object if successful.
      */
-    @Deprecated
     List<UUID> addCustomPrebuiltDomain(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the
+     *   application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2482,11 +2501,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;UUID&gt; object
      */
-    @Deprecated
     Observable<List<UUID>> addCustomPrebuiltDomainAsync(UUID appId, String versionId, AddCustomPrebuiltDomainModelsOptionalParameter addCustomPrebuiltDomainOptionalParameter);
 
     /**
-     * Adds a customizable prebuilt domain along with all of its models to this application.
+     * Adds a customizable prebuilt domain along with all of its intent and entity models in a version of the
+     *   application.
      *
      * @return the first stage of the addCustomPrebuiltDomain call
      */
@@ -2563,12 +2582,12 @@ public interface Models {
 
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to
-      *  which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain
+      *  to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2577,12 +2596,12 @@ public interface Models {
     UUID addCustomPrebuiltIntent(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
 
     /**
-     * Adds a custom prebuilt intent model to the application.
+     * Adds a customizable prebuilt intent model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt intent and the name of the domain to
-      *  which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the customizable prebuilt intent and the name of the domain
+      *  to which this model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -2591,7 +2610,7 @@ public interface Models {
 
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2603,7 +2622,7 @@ public interface Models {
     List<IntentClassifier> listCustomPrebuiltIntents(UUID appId, String versionId);
 
     /**
-     * Gets custom prebuilt intents information of this application.
+     * Gets information about customizable prebuilt intents added to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2615,12 +2634,12 @@ public interface Models {
 
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to
-      *  which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this
+      *  model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -2629,12 +2648,12 @@ public interface Models {
     UUID addCustomPrebuiltEntity(UUID appId, String versionId, PrebuiltDomainModelCreateObject prebuiltDomainModelCreateObject);
 
     /**
-     * Adds a custom prebuilt entity model to the application.
+     * Adds a prebuilt entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param prebuiltDomainModelCreateObject A model object containing the name of the custom prebuilt entity and the name of the domain to
-      *  which this model belongs.
+     * @param prebuiltDomainModelCreateObject A model object containing the name of the prebuilt entity and the name of the domain to which this
+      *  model belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -2643,7 +2662,7 @@ public interface Models {
 
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2655,7 +2674,7 @@ public interface Models {
     List<EntityExtractor> listCustomPrebuiltEntities(UUID appId, String versionId);
 
     /**
-     * Gets all custom prebuilt entities information of this application.
+     * Gets all prebuilt entities used in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2667,7 +2686,7 @@ public interface Models {
 
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2679,7 +2698,7 @@ public interface Models {
     List<CustomPrebuiltModel> listCustomPrebuiltModels(UUID appId, String versionId);
 
     /**
-     * Gets all custom prebuilt models information of this application.
+     * Gets all prebuilt intent and entity model information used in a version of this application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2691,7 +2710,7 @@ public interface Models {
 
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2704,7 +2723,7 @@ public interface Models {
     OperationStatus deleteCustomPrebuiltDomain(UUID appId, String versionId, String domainName);
 
     /**
-     * Deletes a prebuilt domain's models from the application.
+     * Deletes a prebuilt domain's models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2717,7 +2736,36 @@ public interface Models {
 
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Creates a single child in an existing entity model hierarchy in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param childEntityModelCreateObject A model object containing the name of the new child model and its children.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the UUID object if successful.
+     */
+    UUID addEntityChild(UUID appId, String versionId, UUID entityId, ChildEntityModelCreateObject childEntityModelCreateObject);
+
+    /**
+     * Creates a single child in an existing entity model hierarchy in a version of the application.
+     *
+     * @param appId The application ID.
+     * @param versionId The version ID.
+     * @param entityId The entity extractor ID.
+     * @param childEntityModelCreateObject A model object containing the name of the new child model and its children.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the UUID object
+     */
+    Observable<UUID> addEntityChildAsync(UUID appId, String versionId, UUID entityId, ChildEntityModelCreateObject childEntityModelCreateObject);
+
+
+
+    /**
+     * Gets information about the child's model contained in an hierarchical entity child model in a
+      *  version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2731,7 +2779,8 @@ public interface Models {
     HierarchicalChildEntity getHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId);
 
     /**
-     * Gets information about the hierarchical entity child model.
+     * Gets information about the child's model contained in an hierarchical entity child model in a
+      *  version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2744,7 +2793,7 @@ public interface Models {
 
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2756,11 +2805,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2770,11 +2818,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, UUID hChildId, UpdateHierarchicalEntityChildOptionalParameter updateHierarchicalEntityChildOptionalParameter);
 
     /**
-     * Renames a single child in an existing hierarchical entity model.
+     * Renames a single child in an existing hierarchical entity model in a version of the application.
      *
      * @return the first stage of the updateHierarchicalEntityChild call
      */
@@ -2875,7 +2922,7 @@ public interface Models {
 
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Deletes a hierarchical entity extractor child in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2889,7 +2936,7 @@ public interface Models {
     OperationStatus deleteHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, UUID hChildId);
 
     /**
-     * Deletes a hierarchical entity extractor child from the application.
+     * Deletes a hierarchical entity extractor child in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -2902,123 +2949,7 @@ public interface Models {
 
 
     /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the UUID object if successful.
-     */
-    @Deprecated
-    UUID addHierarchicalEntityChild(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
-
-    /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @param appId The application ID.
-     * @param versionId The version ID.
-     * @param hEntityId The hierarchical entity extractor ID.
-     * @param addHierarchicalEntityChildOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the UUID object
-     */
-    @Deprecated
-    Observable<UUID> addHierarchicalEntityChildAsync(UUID appId, String versionId, UUID hEntityId, AddHierarchicalEntityChildOptionalParameter addHierarchicalEntityChildOptionalParameter);
-
-    /**
-     * Creates a single child in an existing hierarchical entity model.
-     *
-     * @return the first stage of the addHierarchicalEntityChild call
-     */
-    ModelsAddHierarchicalEntityChildDefinitionStages.WithAppId addHierarchicalEntityChild();
-
-    /**
-     * Grouping of addHierarchicalEntityChild definition stages.
-     */
-    interface ModelsAddHierarchicalEntityChildDefinitionStages {
-        /**
-         * The stage of the definition to be specify appId.
-         */
-        interface WithAppId {
-            /**
-             * The application ID.
-             *
-             * @return next definition stage
-             */
-            WithVersionId withAppId(UUID appId);
-        }
-        /**
-         * The stage of the definition to be specify versionId.
-         */
-        interface WithVersionId {
-            /**
-             * The version ID.
-             *
-             * @return next definition stage
-             */
-            WithHEntityId withVersionId(String versionId);
-        }
-        /**
-         * The stage of the definition to be specify hEntityId.
-         */
-        interface WithHEntityId {
-            /**
-             * The hierarchical entity extractor ID.
-             *
-             * @return next definition stage
-             */
-            ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute withHEntityId(UUID hEntityId);
-        }
-
-        /**
-         * The stage of the definition which allows for any other optional settings to be specified.
-         */
-        interface WithAllOptions {
-            /**
-             *
-             *
-             * @return next definition stage
-             */
-            ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute withName(String name);
-
-        }
-
-        /**
-         * The last stage of the definition which will make the operation call.
-        */
-        interface WithExecute extends ModelsAddHierarchicalEntityChildDefinitionStages.WithAllOptions {
-            /**
-             * Execute the request.
-             *
-             * @return the UUID object if successful.
-             */
-            UUID execute();
-
-            /**
-             * Execute the request asynchronously.
-             *
-             * @return the observable to the UUID object
-             */
-            Observable<UUID> executeAsync();
-        }
-    }
-
-    /**
-     * The entirety of addHierarchicalEntityChild definition.
-     */
-    interface ModelsAddHierarchicalEntityChildDefinition extends
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithAppId,
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithVersionId,
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithHEntityId,
-        ModelsAddHierarchicalEntityChildDefinitionStages.WithExecute {
-    }
-
-    /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3029,11 +2960,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID addCompositeEntityChild(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3042,11 +2972,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> addCompositeEntityChildAsync(UUID appId, String versionId, UUID cEntityId, AddCompositeEntityChildOptionalParameter addCompositeEntityChildOptionalParameter);
 
     /**
-     * Creates a single child in an existing composite entity model.
+     * Creates a single child in an existing composite entity model in a version of the application.
      *
      * @return the first stage of the addCompositeEntityChild call
      */
@@ -3135,7 +3064,7 @@ public interface Models {
 
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3149,7 +3078,7 @@ public interface Models {
     OperationStatus deleteCompositeEntityChild(UUID appId, String versionId, UUID cEntityId, UUID cChildId);
 
     /**
-     * Deletes a composite entity extractor child from the application.
+     * Deletes a composite entity extractor child from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3162,42 +3091,40 @@ public interface Models {
 
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;RegexEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<RegexEntityExtractor> getRegexEntityInfos(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
+    List<RegexEntityExtractor> listRegexEntityInfos(UUID appId, String versionId, ListRegexEntityInfosOptionalParameter listRegexEntityInfosOptionalParameter);
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listRegexEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;RegexEntityExtractor&gt; object
      */
-    @Deprecated
-    Observable<List<RegexEntityExtractor>> getRegexEntityInfosAsync(UUID appId, String versionId, GetRegexEntityInfosOptionalParameter getRegexEntityInfosOptionalParameter);
+    Observable<List<RegexEntityExtractor>> listRegexEntityInfosAsync(UUID appId, String versionId, ListRegexEntityInfosOptionalParameter listRegexEntityInfosOptionalParameter);
 
     /**
-     * Gets information about the regex entity models.
+     * Gets information about the regular expression entity models in a version of the application.
      *
-     * @return the first stage of the getRegexEntityInfos call
+     * @return the first stage of the listRegexEntityInfos call
      */
-    ModelsGetRegexEntityInfosDefinitionStages.WithAppId getRegexEntityInfos();
+    ModelsListRegexEntityInfosDefinitionStages.WithAppId listRegexEntityInfos();
 
     /**
-     * Grouping of getRegexEntityInfos definition stages.
+     * Grouping of listRegexEntityInfos definition stages.
      */
-    interface ModelsGetRegexEntityInfosDefinitionStages {
+    interface ModelsListRegexEntityInfosDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -3218,7 +3145,7 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
+            ModelsListRegexEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
         }
 
         /**
@@ -3230,21 +3157,21 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
+            ModelsListRegexEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
 
             /**
              * The number of entries to return. Maximum page size is 500. Default is 100.
              *
              * @return next definition stage
              */
-            ModelsGetRegexEntityInfosDefinitionStages.WithExecute withTake(Integer take);
+            ModelsListRegexEntityInfosDefinitionStages.WithExecute withTake(Integer take);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ModelsGetRegexEntityInfosDefinitionStages.WithAllOptions {
+        interface WithExecute extends ModelsListRegexEntityInfosDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -3262,21 +3189,22 @@ public interface Models {
     }
 
     /**
-     * The entirety of getRegexEntityInfos definition.
+     * The entirety of listRegexEntityInfos definition.
      */
-    interface ModelsGetRegexEntityInfosDefinition extends
-        ModelsGetRegexEntityInfosDefinitionStages.WithAppId,
-        ModelsGetRegexEntityInfosDefinitionStages.WithVersionId,
-        ModelsGetRegexEntityInfosDefinitionStages.WithExecute {
+    interface ModelsListRegexEntityInfosDefinition extends
+        ModelsListRegexEntityInfosDefinitionStages.WithAppId,
+        ModelsListRegexEntityInfosDefinitionStages.WithVersionId,
+        ModelsListRegexEntityInfosDefinitionStages.WithExecute {
     }
 
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity
+      *  extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -3285,11 +3213,12 @@ public interface Models {
     UUID createRegexEntityModel(UUID appId, String versionId, RegexModelCreateObject regexEntityExtractorCreateObj);
 
     /**
-     * Adds a regex entity model to the application version.
+     * Adds a regular expression entity model to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regex entity extractor.
+     * @param regexEntityExtractorCreateObj A model object containing the name and regex pattern for the new regular expression entity
+      *  extractor.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
@@ -3297,42 +3226,40 @@ public interface Models {
 
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PatternAnyEntityExtractor&gt; object if successful.
      */
-    @Deprecated
-    List<PatternAnyEntityExtractor> getPatternAnyEntityInfos(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
+    List<PatternAnyEntityExtractor> listPatternAnyEntityInfos(UUID appId, String versionId, ListPatternAnyEntityInfosOptionalParameter listPatternAnyEntityInfosOptionalParameter);
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param getPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listPatternAnyEntityInfosOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PatternAnyEntityExtractor&gt; object
      */
-    @Deprecated
-    Observable<List<PatternAnyEntityExtractor>> getPatternAnyEntityInfosAsync(UUID appId, String versionId, GetPatternAnyEntityInfosOptionalParameter getPatternAnyEntityInfosOptionalParameter);
+    Observable<List<PatternAnyEntityExtractor>> listPatternAnyEntityInfosAsync(UUID appId, String versionId, ListPatternAnyEntityInfosOptionalParameter listPatternAnyEntityInfosOptionalParameter);
 
     /**
-     * Get information about the Pattern.Any entity models.
+     * Get information about the Pattern.Any entity models in a version of the application.
      *
-     * @return the first stage of the getPatternAnyEntityInfos call
+     * @return the first stage of the listPatternAnyEntityInfos call
      */
-    ModelsGetPatternAnyEntityInfosDefinitionStages.WithAppId getPatternAnyEntityInfos();
+    ModelsListPatternAnyEntityInfosDefinitionStages.WithAppId listPatternAnyEntityInfos();
 
     /**
-     * Grouping of getPatternAnyEntityInfos definition stages.
+     * Grouping of listPatternAnyEntityInfos definition stages.
      */
-    interface ModelsGetPatternAnyEntityInfosDefinitionStages {
+    interface ModelsListPatternAnyEntityInfosDefinitionStages {
         /**
          * The stage of the definition to be specify appId.
          */
@@ -3353,7 +3280,7 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
+            ModelsListPatternAnyEntityInfosDefinitionStages.WithExecute withVersionId(String versionId);
         }
 
         /**
@@ -3365,21 +3292,21 @@ public interface Models {
              *
              * @return next definition stage
              */
-            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
+            ModelsListPatternAnyEntityInfosDefinitionStages.WithExecute withSkip(Integer skip);
 
             /**
              * The number of entries to return. Maximum page size is 500. Default is 100.
              *
              * @return next definition stage
              */
-            ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute withTake(Integer take);
+            ModelsListPatternAnyEntityInfosDefinitionStages.WithExecute withTake(Integer take);
 
         }
 
         /**
          * The last stage of the definition which will make the operation call.
         */
-        interface WithExecute extends ModelsGetPatternAnyEntityInfosDefinitionStages.WithAllOptions {
+        interface WithExecute extends ModelsListPatternAnyEntityInfosDefinitionStages.WithAllOptions {
             /**
              * Execute the request.
              *
@@ -3397,17 +3324,17 @@ public interface Models {
     }
 
     /**
-     * The entirety of getPatternAnyEntityInfos definition.
+     * The entirety of listPatternAnyEntityInfos definition.
      */
-    interface ModelsGetPatternAnyEntityInfosDefinition extends
-        ModelsGetPatternAnyEntityInfosDefinitionStages.WithAppId,
-        ModelsGetPatternAnyEntityInfosDefinitionStages.WithVersionId,
-        ModelsGetPatternAnyEntityInfosDefinitionStages.WithExecute {
+    interface ModelsListPatternAnyEntityInfosDefinition extends
+        ModelsListPatternAnyEntityInfosDefinitionStages.WithAppId,
+        ModelsListPatternAnyEntityInfosDefinitionStages.WithVersionId,
+        ModelsListPatternAnyEntityInfosDefinitionStages.WithExecute {
     }
 
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3420,7 +3347,7 @@ public interface Models {
     UUID createPatternAnyEntityModel(UUID appId, String versionId, PatternAnyModelCreateObject extractorCreateObject);
 
     /**
-     * Adds a pattern.any entity extractor to the application.
+     * Adds a pattern.any entity extractor to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3433,7 +3360,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3443,10 +3370,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listEntityRoles(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for an entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3454,11 +3381,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getEntityRolesAsync(UUID appId, String versionId, UUID entityId);
+    Observable<List<EntityRole>> listEntityRolesAsync(UUID appId, String versionId, UUID entityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3469,11 +3396,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createEntityRole(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3482,11 +3408,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateEntityRoleOptionalParameter createEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create an entity role in a version of the application.
      *
      * @return the first stage of the createEntityRole call
      */
@@ -3575,7 +3500,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3585,10 +3510,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get a prebuilt entity's roles in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3596,11 +3521,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId);
+    Observable<List<EntityRole>> listPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3611,11 +3536,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3624,11 +3548,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePrebuiltEntityRoleOptionalParameter createPrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @return the first stage of the createPrebuiltEntityRole call
      */
@@ -3717,7 +3640,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3727,10 +3650,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getClosedListEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listClosedListEntityRoles(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3738,11 +3661,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId);
+    Observable<List<EntityRole>> listClosedListEntityRolesAsync(UUID appId, String versionId, UUID entityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3753,11 +3676,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createClosedListEntityRole(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3766,11 +3688,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateClosedListEntityRoleOptionalParameter createClosedListEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a list entity in a version of the application.
      *
      * @return the first stage of the createClosedListEntityRole call
      */
@@ -3859,7 +3780,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3869,10 +3790,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getRegexEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listRegexEntityRoles(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3880,11 +3801,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId);
+    Observable<List<EntityRole>> listRegexEntityRolesAsync(UUID appId, String versionId, UUID entityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3895,11 +3816,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createRegexEntityRole(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -3908,11 +3828,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateRegexEntityRoleOptionalParameter createRegexEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an regular expression entity in a version of the application.
      *
      * @return the first stage of the createRegexEntityRole call
      */
@@ -4001,7 +3920,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4011,10 +3930,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getCompositeEntityRoles(UUID appId, String versionId, UUID cEntityId);
+    List<EntityRole> listCompositeEntityRoles(UUID appId, String versionId, UUID cEntityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4022,11 +3941,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId);
+    Observable<List<EntityRole>> listCompositeEntityRolesAsync(UUID appId, String versionId, UUID cEntityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4037,11 +3956,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4050,11 +3968,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, CreateCompositeEntityRoleOptionalParameter createCompositeEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a composite entity in a version of the application.
      *
      * @return the first stage of the createCompositeEntityRole call
      */
@@ -4143,7 +4060,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4153,10 +4070,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getPatternAnyEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listPatternAnyEntityRoles(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4164,11 +4081,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId);
+    Observable<List<EntityRole>> listPatternAnyEntityRolesAsync(UUID appId, String versionId, UUID entityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4179,11 +4096,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createPatternAnyEntityRole(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4192,11 +4108,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createPatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreatePatternAnyEntityRoleOptionalParameter createPatternAnyEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an Pattern.any entity in a version of the application.
      *
      * @return the first stage of the createPatternAnyEntityRole call
      */
@@ -4285,7 +4200,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4295,10 +4210,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getHierarchicalEntityRoles(UUID appId, String versionId, UUID hEntityId);
+    List<EntityRole> listHierarchicalEntityRoles(UUID appId, String versionId, UUID hEntityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4306,11 +4221,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId);
+    Observable<List<EntityRole>> listHierarchicalEntityRolesAsync(UUID appId, String versionId, UUID hEntityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4321,11 +4236,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4334,11 +4248,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, CreateHierarchicalEntityRoleOptionalParameter createHierarchicalEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for an hierarchical entity in a version of the application.
      *
      * @return the first stage of the createHierarchicalEntityRole call
      */
@@ -4427,7 +4340,7 @@ public interface Models {
 
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4437,10 +4350,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;EntityRole&gt; object if successful.
      */
-    List<EntityRole> getCustomPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId);
+    List<EntityRole> listCustomPrebuiltEntityRoles(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get All Entity Roles for a given entity.
+     * Get all roles for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4448,11 +4361,11 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;EntityRole&gt; object
      */
-    Observable<List<EntityRole>> getCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId);
+    Observable<List<EntityRole>> listCustomPrebuiltEntityRolesAsync(UUID appId, String versionId, UUID entityId);
 
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4463,11 +4376,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the UUID object if successful.
      */
-    @Deprecated
     UUID createCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4476,11 +4388,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the UUID object
      */
-    @Deprecated
     Observable<UUID> createCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, CreateCustomPrebuiltEntityRoleOptionalParameter createCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Create an entity role for an entity in the application.
+     * Create a role for a prebuilt entity in a version of the application.
      *
      * @return the first stage of the createCustomPrebuiltEntityRole call
      */
@@ -4569,7 +4480,7 @@ public interface Models {
 
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4582,7 +4493,7 @@ public interface Models {
     List<ExplicitListItem> getExplicitList(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4594,7 +4505,7 @@ public interface Models {
 
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4605,11 +4516,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the int object if successful.
      */
-    @Deprecated
     int addExplicitListItem(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4618,11 +4528,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the int object
      */
-    @Deprecated
     Observable<Integer> addExplicitListItemAsync(UUID appId, String versionId, UUID entityId, AddExplicitListItemOptionalParameter addExplicitListItemOptionalParameter);
 
     /**
-     * Add a new item to the explicit list for the Pattern.Any entity.
+     * Add a new exception to the explicit list for the Pattern.Any entity in a version of the application.
      *
      * @return the first stage of the addExplicitListItem call
      */
@@ -4711,11 +4620,11 @@ public interface Models {
 
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
+     * @param regexEntityId The regular expression entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -4724,11 +4633,11 @@ public interface Models {
     RegexEntityExtractor getRegexEntityEntityInfo(UUID appId, String versionId, UUID regexEntityId);
 
     /**
-     * Gets information of a regex entity model.
+     * Gets information about a regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity model ID.
+     * @param regexEntityId The regular expression entity model ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegexEntityExtractor object
      */
@@ -4737,11 +4646,11 @@ public interface Models {
 
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -4751,11 +4660,11 @@ public interface Models {
     OperationStatus updateRegexEntityModel(UUID appId, String versionId, UUID regexEntityId, RegexModelUpdateObject regexEntityUpdateObject);
 
     /**
-     * Updates the regex entity model .
+     * Updates the regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @param regexEntityUpdateObject An object containing the new entity name and regex pattern.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
@@ -4765,11 +4674,11 @@ public interface Models {
 
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -4778,11 +4687,11 @@ public interface Models {
     OperationStatus deleteRegexEntityModel(UUID appId, String versionId, UUID regexEntityId);
 
     /**
-     * Deletes a regex entity model from the application.
+     * Deletes a regular expression entity from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param regexEntityId The regex entity extractor ID.
+     * @param regexEntityId The regular expression entity extractor ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
@@ -4791,7 +4700,7 @@ public interface Models {
 
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4804,7 +4713,7 @@ public interface Models {
     PatternAnyEntityExtractor getPatternAnyEntityInfo(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Gets information about the application version's Pattern.Any model.
+     * Gets information about the Pattern.Any model in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4817,7 +4726,8 @@ public interface Models {
 
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the
+      *  application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4831,7 +4741,8 @@ public interface Models {
     OperationStatus updatePatternAnyEntityModel(UUID appId, String versionId, UUID entityId, PatternAnyModelUpdateObject patternAnyUpdateObject);
 
     /**
-     * Updates the name and explicit list of a Pattern.Any entity model.
+     * Updates the name and explicit (exception) list of a Pattern.Any entity model in a version of the
+      *  application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4845,7 +4756,7 @@ public interface Models {
 
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4858,7 +4769,7 @@ public interface Models {
     OperationStatus deletePatternAnyEntityModel(UUID appId, String versionId, UUID entityId);
 
     /**
-     * Deletes a Pattern.Any entity extractor from the application.
+     * Deletes a Pattern.Any entity extractor from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4871,7 +4782,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4885,7 +4796,7 @@ public interface Models {
     EntityRole getEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4898,7 +4809,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4910,11 +4821,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -4924,11 +4834,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateEntityRoleOptionalParameter updateEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given entity in a version of the application.
      *
      * @return the first stage of the updateEntityRole call
      */
@@ -5029,7 +4938,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5043,7 +4952,7 @@ public interface Models {
     OperationStatus deleteEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete an entity role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5057,7 +4966,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5071,7 +4980,7 @@ public interface Models {
     EntityRole getPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5084,7 +4993,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5096,11 +5005,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updatePrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5110,11 +5018,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updatePrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePrebuiltEntityRoleOptionalParameter updatePrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @return the first stage of the updatePrebuiltEntityRole call
      */
@@ -5215,7 +5122,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role in a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5229,7 +5136,7 @@ public interface Models {
     OperationStatus deletePrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role in a prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5243,7 +5150,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5257,7 +5164,7 @@ public interface Models {
     EntityRole getClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5270,7 +5177,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5282,11 +5189,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5296,11 +5202,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateClosedListEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateClosedListEntityRoleOptionalParameter updateClosedListEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given list entity in a version of the application.
      *
      * @return the first stage of the updateClosedListEntityRole call
      */
@@ -5401,7 +5306,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5415,7 +5320,7 @@ public interface Models {
     OperationStatus deleteClosedListEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given list entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5429,7 +5334,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5443,7 +5348,7 @@ public interface Models {
     EntityRole getRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5456,7 +5361,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5468,11 +5373,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5482,11 +5386,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateRegexEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateRegexEntityRoleOptionalParameter updateRegexEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given regular expression entity in a version of the application.
      *
      * @return the first stage of the updateRegexEntityRole call
      */
@@ -5587,7 +5490,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given regular expression in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5601,7 +5504,7 @@ public interface Models {
     OperationStatus deleteRegexEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given regular expression in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5615,7 +5518,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5629,7 +5532,7 @@ public interface Models {
     EntityRole getCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5642,7 +5545,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5654,11 +5557,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5668,11 +5570,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateCompositeEntityRoleAsync(UUID appId, String versionId, UUID cEntityId, UUID roleId, UpdateCompositeEntityRoleOptionalParameter updateCompositeEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given composite entity in a version of the application.
      *
      * @return the first stage of the updateCompositeEntityRole call
      */
@@ -5773,7 +5674,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5787,7 +5688,7 @@ public interface Models {
     OperationStatus deleteCompositeEntityRole(UUID appId, String versionId, UUID cEntityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given composite entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5801,7 +5702,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5815,7 +5716,7 @@ public interface Models {
     EntityRole getPatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5828,7 +5729,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5840,11 +5741,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updatePatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5854,11 +5754,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updatePatternAnyEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdatePatternAnyEntityRoleOptionalParameter updatePatternAnyEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given Pattern.any entity in a version of the application.
      *
      * @return the first stage of the updatePatternAnyEntityRole call
      */
@@ -5959,7 +5858,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5973,7 +5872,7 @@ public interface Models {
     OperationStatus deletePatternAnyEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given Pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -5987,7 +5886,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6001,7 +5900,7 @@ public interface Models {
     EntityRole getHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6014,7 +5913,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6026,11 +5925,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6040,11 +5938,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateHierarchicalEntityRoleAsync(UUID appId, String versionId, UUID hEntityId, UUID roleId, UpdateHierarchicalEntityRoleOptionalParameter updateHierarchicalEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given hierarchical entity in a version of the application.
      *
      * @return the first stage of the updateHierarchicalEntityRole call
      */
@@ -6145,7 +6042,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given hierarchical role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6159,7 +6056,7 @@ public interface Models {
     OperationStatus deleteHierarchicalEntityRole(UUID appId, String versionId, UUID hEntityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given hierarchical role in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6173,7 +6070,7 @@ public interface Models {
 
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6187,7 +6084,7 @@ public interface Models {
     EntityRole getCustomEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Get one entity role for a given entity.
+     * Get one role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6200,7 +6097,7 @@ public interface Models {
 
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6212,11 +6109,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateCustomPrebuiltEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6226,11 +6122,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateCustomPrebuiltEntityRoleAsync(UUID appId, String versionId, UUID entityId, UUID roleId, UpdateCustomPrebuiltEntityRoleOptionalParameter updateCustomPrebuiltEntityRoleOptionalParameter);
 
     /**
-     * Update an entity role for a given entity.
+     * Update a role for a given prebuilt entity in a version of the application.
      *
      * @return the first stage of the updateCustomPrebuiltEntityRole call
      */
@@ -6331,7 +6226,7 @@ public interface Models {
 
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6345,7 +6240,7 @@ public interface Models {
     OperationStatus deleteCustomEntityRole(UUID appId, String versionId, UUID entityId, UUID roleId);
 
     /**
-     * Delete an entity role.
+     * Delete a role for a given prebuilt entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6359,7 +6254,7 @@ public interface Models {
 
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6373,7 +6268,7 @@ public interface Models {
     ExplicitListItem getExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId);
 
     /**
-     * Get the explicit list of the pattern.any entity.
+     * Get the explicit (exception) list of the pattern.any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6386,7 +6281,7 @@ public interface Models {
 
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6398,11 +6293,10 @@ public interface Models {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the OperationStatus object if successful.
      */
-    @Deprecated
     OperationStatus updateExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6412,11 +6306,10 @@ public interface Models {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the OperationStatus object
      */
-    @Deprecated
     Observable<OperationStatus> updateExplicitListItemAsync(UUID appId, String versionId, UUID entityId, long itemId, UpdateExplicitListItemOptionalParameter updateExplicitListItemOptionalParameter);
 
     /**
-     * Updates an explicit list item for a Pattern.Any entity.
+     * Updates an explicit (exception) list item for a Pattern.Any entity in a version of the application.
      *
      * @return the first stage of the updateExplicitListItem call
      */
@@ -6517,7 +6410,8 @@ public interface Models {
 
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the
+      *  application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -6531,7 +6425,8 @@ public interface Models {
     OperationStatus deleteExplicitListItem(UUID appId, String versionId, UUID entityId, long itemId);
 
     /**
-     * Delete the explicit list item from the Pattern.any explicit list.
+     * Delete an item from the explicit (exception) list for a Pattern.any entity in a version of the
+      *  application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.

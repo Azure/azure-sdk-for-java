@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.BackupItemStatus;
 import com.azure.management.appservice.DatabaseBackupSetting;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Immutable
 public class BackupItemInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupItemInner.class);
+
     /*
      * Id of the backup.
      */
@@ -81,13 +85,13 @@ public class BackupItemInner extends ProxyOnlyResource {
      * Timestamp of a last restore operation which used this backup.
      */
     @JsonProperty(value = "properties.lastRestoreTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastRestoreTimeStamp;
+    private OffsetDateTime lastRestoreTimestamp;
 
     /*
      * Timestamp when this backup finished.
      */
     @JsonProperty(value = "properties.finishedTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime finishedTimeStamp;
+    private OffsetDateTime finishedTimestamp;
 
     /*
      * Unique correlation identifier. Please use this along with the timestamp
@@ -193,21 +197,21 @@ public class BackupItemInner extends ProxyOnlyResource {
     }
 
     /**
-     * Get the lastRestoreTimeStamp property: Timestamp of a last restore operation which used this backup.
+     * Get the lastRestoreTimestamp property: Timestamp of a last restore operation which used this backup.
      *
-     * @return the lastRestoreTimeStamp value.
+     * @return the lastRestoreTimestamp value.
      */
-    public OffsetDateTime lastRestoreTimeStamp() {
-        return this.lastRestoreTimeStamp;
+    public OffsetDateTime lastRestoreTimestamp() {
+        return this.lastRestoreTimestamp;
     }
 
     /**
-     * Get the finishedTimeStamp property: Timestamp when this backup finished.
+     * Get the finishedTimestamp property: Timestamp when this backup finished.
      *
-     * @return the finishedTimeStamp value.
+     * @return the finishedTimestamp value.
      */
-    public OffsetDateTime finishedTimeStamp() {
-        return this.finishedTimeStamp;
+    public OffsetDateTime finishedTimestamp() {
+        return this.finishedTimestamp;
     }
 
     /**
@@ -227,5 +231,18 @@ public class BackupItemInner extends ProxyOnlyResource {
      */
     public Long websiteSizeInBytes() {
         return this.websiteSizeInBytes;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (databases() != null) {
+            databases().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AzureReachabilityReportLocation model. */
 @Fluent
 public final class AzureReachabilityReportLocation {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportLocation.class);
+
     /*
      * The name of the country.
      */
@@ -86,5 +90,19 @@ public final class AzureReachabilityReportLocation {
     public AzureReachabilityReportLocation withCity(String city) {
         this.city = city;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (country() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property country in model AzureReachabilityReportLocation"));
+        }
     }
 }

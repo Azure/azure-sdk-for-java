@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PurchasePlan model. */
 @Fluent
 public final class PurchasePlan {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
+
     /*
      * The publisher ID.
      */
@@ -89,5 +93,28 @@ public final class PurchasePlan {
     public PurchasePlan withProduct(String product) {
         this.product = product;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (publisher() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
+        }
+        if (name() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model PurchasePlan"));
+        }
+        if (product() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property product in model PurchasePlan"));
+        }
     }
 }

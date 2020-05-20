@@ -29,10 +29,10 @@ public interface ExpressRouteCrossConnectionPeering
     ExpressRoutePeeringState state();
 
     /** @return the Azure ASN */
-    int azureASN();
+    int azureAsn();
 
     /** @return the peer ASN */
-    long peerASN();
+    long peerAsn();
 
     /** @return the primary address prefix */
     String primaryPeerAddressPrefix();
@@ -109,7 +109,7 @@ public interface ExpressRouteCrossConnectionPeering
              * @param customerASN customer ASN
              * @return the next satge of the definition
              */
-            WithRoutingRegistryName withCustomerASN(int customerASN);
+            WithRoutingRegistryName withCustomerAsn(int customerASN);
         }
 
         /** The stage of Cross Connection Peering definition allowing to specify routing registry name. */
@@ -153,7 +153,7 @@ public interface ExpressRouteCrossConnectionPeering
              * @param peerASN AS number for peering. Both 2-byte and 4-byte AS numbers can be used
              * @return next stage of definition
              */
-            WithCreate withPeerASN(long peerASN);
+            WithCreate withPeerAsn(long peerASN);
         }
 
         interface WithSharedKey {
@@ -219,7 +219,7 @@ public interface ExpressRouteCrossConnectionPeering
              * @param customerASN customer ASN
              * @return the next stage of the definition
              */
-            Update withCustomerASN(int customerASN);
+            Update withCustomerAsn(int customerASN);
         }
 
         /** The stage of Cross Connection Peering definition allowing to specify routing registry name. */
@@ -266,7 +266,7 @@ public interface ExpressRouteCrossConnectionPeering
              * @param peerASN the AS number for peering
              * @return the next stage of the update
              */
-            Update withPeerASN(long peerASN);
+            Update withPeerAsn(long peerASN);
         }
 
         /** Specifies IPv6 configuration. */

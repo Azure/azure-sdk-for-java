@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ComputeModeOptions;
 import com.azure.management.appservice.WorkerSizeOptions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StampCapacity model. */
 @Fluent
 public final class StampCapacityInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StampCapacityInner.class);
+
     /*
      * Name of the stamp.
      */
@@ -305,5 +309,13 @@ public final class StampCapacityInner {
     public StampCapacityInner withIsLinux(Boolean isLinux) {
         this.isLinux = isLinux;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

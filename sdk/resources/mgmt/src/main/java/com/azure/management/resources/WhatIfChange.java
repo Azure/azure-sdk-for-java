@@ -5,12 +5,16 @@
 package com.azure.management.resources;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The WhatIfChange model. */
 @Fluent
 public final class WhatIfChange {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfChange.class);
+
     /*
      * Resource ID
      */
@@ -140,5 +144,26 @@ public final class WhatIfChange {
     public WhatIfChange withDelta(List<WhatIfPropertyChange> delta) {
         this.delta = delta;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resourceId() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property resourceId in model WhatIfChange"));
+        }
+        if (changeType() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property changeType in model WhatIfChange"));
+        }
+        if (delta() != null) {
+            delta().forEach(e -> e.validate());
+        }
     }
 }

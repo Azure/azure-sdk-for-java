@@ -5,6 +5,8 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonTypeName("FirewallPolicyFilterRule")
 @Fluent
 public final class FirewallPolicyFilterRule extends FirewallPolicyRule {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyFilterRule.class);
+
     /*
      * The action type of a Filter rule
      */
@@ -65,5 +69,21 @@ public final class FirewallPolicyFilterRule extends FirewallPolicyRule {
     public FirewallPolicyFilterRule withRuleConditions(List<FirewallPolicyRuleCondition> ruleConditions) {
         this.ruleConditions = ruleConditions;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (action() != null) {
+            action().validate();
+        }
+        if (ruleConditions() != null) {
+            ruleConditions().forEach(e -> e.validate());
+        }
     }
 }

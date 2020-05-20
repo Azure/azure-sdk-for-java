@@ -15,6 +15,7 @@ import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.Exam
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LabeledUtterance;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.LabelExampleResponse;
 import com.microsoft.azure.cognitiveservices.language.luis.authoring.models.OperationStatus;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -26,11 +27,11 @@ import rx.Observable;
 public interface Examples {
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -39,11 +40,11 @@ public interface Examples {
     LabelExampleResponse add(UUID appId, String versionId, ExampleLabelObject exampleLabelObject);
 
     /**
-     * Adds a labeled example to the application.
+     * Adds a labeled example utterance in a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObject An example label with the expected intent and entities.
+     * @param exampleLabelObject A labeled example utterance with the expected intent and entities.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the LabelExampleResponse object
      */
@@ -52,11 +53,11 @@ public interface Examples {
 
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
+     * @param exampleLabelObjectArray Array of example utterances.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -65,11 +66,11 @@ public interface Examples {
     List<BatchLabelExample> batch(UUID appId, String versionId, List<ExampleLabelObject> exampleLabelObjectArray);
 
     /**
-     * Adds a batch of labeled examples to the application.
+     * Adds a batch of labeled example utterances to a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
-     * @param exampleLabelObjectArray Array of examples.
+     * @param exampleLabelObjectArray Array of example utterances.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;BatchLabelExample&gt; object
      */
@@ -77,7 +78,7 @@ public interface Examples {
 
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -87,11 +88,10 @@ public interface Examples {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;LabeledUtterance&gt; object if successful.
      */
-    @Deprecated
     List<LabeledUtterance> list(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter);
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -99,11 +99,10 @@ public interface Examples {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;LabeledUtterance&gt; object
      */
-    @Deprecated
     Observable<List<LabeledUtterance>> listAsync(UUID appId, String versionId, ListExamplesOptionalParameter listOptionalParameter);
 
     /**
-     * Returns examples to be reviewed.
+     * Returns example utterances to be reviewed from a version of the application.
      *
      * @return the first stage of the list call
      */
@@ -187,7 +186,7 @@ public interface Examples {
 
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.
@@ -200,7 +199,7 @@ public interface Examples {
     OperationStatus delete(UUID appId, String versionId, int exampleId);
 
     /**
-     * Deletes the labeled example with the specified ID.
+     * Deletes the labeled example utterances with the specified ID from a version of the application.
      *
      * @param appId The application ID.
      * @param versionId The version ID.

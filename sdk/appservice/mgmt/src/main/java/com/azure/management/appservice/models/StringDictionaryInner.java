@@ -5,13 +5,17 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The StringDictionary model. */
 @Fluent
 public final class StringDictionaryInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StringDictionaryInner.class);
+
     /*
      * Settings.
      */
@@ -36,5 +40,15 @@ public final class StringDictionaryInner extends ProxyOnlyResource {
     public StringDictionaryInner withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

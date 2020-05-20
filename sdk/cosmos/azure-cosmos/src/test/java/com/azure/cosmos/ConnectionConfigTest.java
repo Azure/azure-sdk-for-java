@@ -94,10 +94,10 @@ public class ConnectionConfigTest extends TestSuiteBase {
     public void buildClient_withCustomDirectConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         directConnectionConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
-        directConnectionConfig.setIdleChannelTimeout(IDLE_CHANNEL_TIMEOUT);
+        directConnectionConfig.setIdleConnectionTimeout(IDLE_CHANNEL_TIMEOUT);
         directConnectionConfig.setIdleEndpointTimeout(IDLE_ENDPOINT_TIMEOUT);
-        directConnectionConfig.setMaxChannelsPerEndpoint(100);
-        directConnectionConfig.setMaxRequestsPerChannel(100);
+        directConnectionConfig.setMaxConnectionsPerEndpoint(100);
+        directConnectionConfig.setMaxRequestsPerConnection(100);
         final List<String> preferredRegions = new ArrayList<>();
         preferredRegions.add("West US");
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -193,10 +193,10 @@ public class ConnectionConfigTest extends TestSuiteBase {
 
     private void validateDirectConfig(ConnectionPolicy connectionPolicy, DirectConnectionConfig directConnectionConfig) {
         assertThat(Objects.equals(connectionPolicy.getConnectionTimeout(), directConnectionConfig.getConnectionTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), directConnectionConfig.getIdleChannelTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleChannelTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getIdleChannelTimeout(), directConnectionConfig.getIdleConnectionTimeout()));
+        assertThat(Objects.equals(connectionPolicy.getIdleConnectionTimeout(), directConnectionConfig.getIdleConnectionTimeout()));
         assertThat(Objects.equals(connectionPolicy.getIdleEndpointTimeout(), directConnectionConfig.getIdleEndpointTimeout()));
-        assertThat(Objects.equals(connectionPolicy.getMaxChannelsPerEndpoint(), directConnectionConfig.getMaxChannelsPerEndpoint()));
-        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerChannel(), directConnectionConfig.getMaxRequestsPerChannel()));
+        assertThat(Objects.equals(connectionPolicy.getMaxChannelsPerEndpoint(), directConnectionConfig.getMaxConnectionsPerEndpoint()));
+        assertThat(Objects.equals(connectionPolicy.getMaxRequestsPerChannel(), directConnectionConfig.getMaxRequestsPerConnection()));
     }
 }

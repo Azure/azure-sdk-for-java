@@ -5,13 +5,17 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ServiceTagInformation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ServiceTagsListResult model. */
 @Immutable
 public final class ServiceTagsListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagsListResultInner.class);
+
     /*
      * The name of the cloud.
      */
@@ -100,5 +104,16 @@ public final class ServiceTagsListResultInner {
      */
     public List<ServiceTagInformation> values() {
         return this.values;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (values() != null) {
+            values().forEach(e -> e.validate());
+        }
     }
 }

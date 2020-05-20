@@ -84,11 +84,21 @@ public interface ImmutabilityPolicy
             WithCreate withImmutabilityPeriodSinceCreationInDays(int immutabilityPeriodSinceCreationInDays);
         }
 
+        /** The stage of the immutabilitypolicy definition allowing to specify If-Match header. */
+        interface WithETagCheck {
+            /**
+             * Specifies If-Match header.
+             *
+             * @return the next definition stage
+             */
+            WithCreate withETagCheck();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ImmutabilityPolicy> {
+        interface WithCreate extends WithETagCheck, Creatable<ImmutabilityPolicy> {
         }
     }
     /** The template for a ImmutabilityPolicy update operation, containing all the settings that can be modified. */

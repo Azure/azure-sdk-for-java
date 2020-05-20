@@ -7,13 +7,17 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.CircuitConnectionStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ExpressRouteCircuitConnection model. */
 @JsonFlatten
 @Fluent
 public class ExpressRouteCircuitConnectionInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionInner.class);
+
     /*
      * Gets name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -214,5 +218,13 @@ public class ExpressRouteCircuitConnectionInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

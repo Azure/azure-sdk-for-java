@@ -25,14 +25,17 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.GraphErrorException;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in OAuth2PermissionGrants. */
 public final class OAuth2PermissionGrantsInner {
+    private final ClientLogger logger = new ClientLogger(OAuth2PermissionGrantsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final OAuth2PermissionGrantsService service;
 
@@ -61,22 +64,22 @@ public final class OAuth2PermissionGrantsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/{tenantID}/oauth2PermissionGrants")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<OAuth2PermissionGrantListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("$filter") String filter,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantID,
+            @PathParam("tenantID") String tenantId,
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Post("/{tenantID}/oauth2PermissionGrants")
         @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<OAuth2PermissionGrantInner>> create(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantID,
+            @PathParam("tenantID") String tenantId,
             @BodyParam("application/json") OAuth2PermissionGrantInner body,
             Context context);
 
@@ -88,7 +91,7 @@ public final class OAuth2PermissionGrantsInner {
             @HostParam("$host") String host,
             @PathParam("objectId") String objectId,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantID,
+            @PathParam("tenantID") String tenantId,
             Context context);
 
         @Headers({"Accept: application/json,text/json", "Content-Type: application/json"})
@@ -99,7 +102,7 @@ public final class OAuth2PermissionGrantsInner {
             @HostParam("$host") String host,
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @QueryParam("api-version") String apiVersion,
-            @PathParam("tenantID") String tenantID,
+            @PathParam("tenantID") String tenantId,
             Context context);
     }
 
@@ -108,12 +111,22 @@ public final class OAuth2PermissionGrantsInner {
      *
      * @param filter This is the Service Principal ObjectId associated with the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for get oauth2 permissions grants.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listSinglePageAsync(String filter) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -122,7 +135,7 @@ public final class OAuth2PermissionGrantsInner {
                             this.client.getHost(),
                             filter,
                             this.client.getApiVersion(),
-                            this.client.getTenantID(),
+                            this.client.getTenantId(),
                             context))
             .<PagedResponse<OAuth2PermissionGrantInner>>map(
                 res ->
@@ -140,8 +153,43 @@ public final class OAuth2PermissionGrantsInner {
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
      *
      * @param filter This is the Service Principal ObjectId associated with the app.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<OAuth2PermissionGrantInner>> listSinglePageAsync(String filter, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), filter, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
+    }
+
+    /**
+     * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
+     *
+     * @param filter This is the Service Principal ObjectId associated with the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for get oauth2 permissions grants.
      */
@@ -153,7 +201,23 @@ public final class OAuth2PermissionGrantsInner {
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param filter This is the Service Principal ObjectId associated with the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return server response for get oauth2 permissions grants.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<OAuth2PermissionGrantInner> listAsync(String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(filter, context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for get oauth2 permissions grants.
      */
@@ -169,7 +233,7 @@ public final class OAuth2PermissionGrantsInner {
      *
      * @param filter This is the Service Principal ObjectId associated with the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for get oauth2 permissions grants.
      */
@@ -181,7 +245,7 @@ public final class OAuth2PermissionGrantsInner {
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for get oauth2 permissions grants.
      */
@@ -197,12 +261,25 @@ public final class OAuth2PermissionGrantsInner {
      *
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<OAuth2PermissionGrantInner>> createWithResponseAsync(OAuth2PermissionGrantInner body) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -210,7 +287,7 @@ public final class OAuth2PermissionGrantsInner {
                         .create(
                             this.client.getHost(),
                             this.client.getApiVersion(),
-                            this.client.getTenantID(),
+                            this.client.getTenantId(),
                             body,
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
@@ -220,8 +297,38 @@ public final class OAuth2PermissionGrantsInner {
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<OAuth2PermissionGrantInner>> createWithResponseAsync(
+        OAuth2PermissionGrantInner body, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        return service
+            .create(this.client.getHost(), this.client.getApiVersion(), this.client.getTenantId(), body, context);
+    }
+
+    /**
+     * Grants OAuth2 permissions for the relevant resource Ids of an app.
+     *
+     * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -241,7 +348,7 @@ public final class OAuth2PermissionGrantsInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -265,7 +372,7 @@ public final class OAuth2PermissionGrantsInner {
      *
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -277,7 +384,7 @@ public final class OAuth2PermissionGrantsInner {
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -299,6 +406,19 @@ public final class OAuth2PermissionGrantsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -307,9 +427,38 @@ public final class OAuth2PermissionGrantsInner {
                             this.client.getHost(),
                             objectId,
                             this.client.getApiVersion(),
-                            this.client.getTenantID(),
+                            this.client.getTenantId(),
                             context))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
+     *
+     * @param objectId The object ID of a permission grant.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String objectId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (objectId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        return service
+            .delete(this.client.getHost(), objectId, this.client.getApiVersion(), this.client.getTenantId(), context);
     }
 
     /**
@@ -350,6 +499,19 @@ public final class OAuth2PermissionGrantsInner {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<OAuth2PermissionGrantInner>> listNextSinglePageAsync(String nextLink) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -358,7 +520,7 @@ public final class OAuth2PermissionGrantsInner {
                             this.client.getHost(),
                             nextLink,
                             this.client.getApiVersion(),
-                            this.client.getTenantID(),
+                            this.client.getTenantId(),
                             context))
             .<PagedResponse<OAuth2PermissionGrantInner>>map(
                 res ->
@@ -370,5 +532,43 @@ public final class OAuth2PermissionGrantsInner {
                         res.getValue().odataNextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Gets the next page of OAuth2 permission grants.
+     *
+     * @param nextLink Next link for the list operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws GraphErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the next page of OAuth2 permission grants.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<OAuth2PermissionGrantInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getTenantId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getTenantId() is required and cannot be null."));
+        }
+        return service
+            .listNext(this.client.getHost(), nextLink, this.client.getApiVersion(), this.client.getTenantId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 }

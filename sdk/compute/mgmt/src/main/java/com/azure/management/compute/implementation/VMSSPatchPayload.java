@@ -5,15 +5,15 @@ package com.azure.management.compute.implementation;
 
 import com.azure.core.management.SubResource;
 import com.azure.management.compute.VirtualMachineScaleSet;
-import com.azure.management.compute.VirtualMachineScaleSetIPConfiguration;
+import com.azure.management.compute.VirtualMachineScaleSetIpConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetNetworkConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetUpdate;
-import com.azure.management.compute.VirtualMachineScaleSetUpdateIPConfiguration;
+import com.azure.management.compute.VirtualMachineScaleSetUpdateIpConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetUpdateNetworkConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetUpdateNetworkProfile;
 import com.azure.management.compute.VirtualMachineScaleSetUpdateOSDisk;
 import com.azure.management.compute.VirtualMachineScaleSetUpdateOSProfile;
-import com.azure.management.compute.VirtualMachineScaleSetUpdatePublicIPAddressConfiguration;
+import com.azure.management.compute.VirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
 import com.azure.management.compute.VirtualMachineScaleSetUpdateStorageProfile;
 import com.azure.management.compute.VirtualMachineScaleSetUpdateVMProfile;
 import java.util.ArrayList;
@@ -99,17 +99,17 @@ class VMSSPatchPayload {
                             new VirtualMachineScaleSetUpdateNetworkConfiguration();
                         nicPatchConfig.withDnsSettings(nicConfig.dnsSettings());
                         nicPatchConfig.withEnableAcceleratedNetworking(nicConfig.enableAcceleratedNetworking());
-                        nicPatchConfig.withEnableIPForwarding(nicConfig.enableIPForwarding());
+                        nicPatchConfig.withEnableIpForwarding(nicConfig.enableIpForwarding());
                         nicPatchConfig.withName(nicConfig.name());
                         nicPatchConfig.withNetworkSecurityGroup(nicConfig.networkSecurityGroup());
                         nicPatchConfig.withPrimary(nicConfig.primary());
                         nicPatchConfig.withId(nicConfig.id());
                         if (nicConfig.ipConfigurations() != null) {
                             nicPatchConfig
-                                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetUpdateIPConfiguration>());
-                            for (VirtualMachineScaleSetIPConfiguration ipConfig : nicConfig.ipConfigurations()) {
-                                VirtualMachineScaleSetUpdateIPConfiguration patchIpConfig =
-                                    new VirtualMachineScaleSetUpdateIPConfiguration();
+                                .withIpConfigurations(new ArrayList<VirtualMachineScaleSetUpdateIpConfiguration>());
+                            for (VirtualMachineScaleSetIpConfiguration ipConfig : nicConfig.ipConfigurations()) {
+                                VirtualMachineScaleSetUpdateIpConfiguration patchIpConfig =
+                                    new VirtualMachineScaleSetUpdateIpConfiguration();
                                 patchIpConfig
                                     .withApplicationGatewayBackendAddressPools(
                                         ipConfig.applicationGatewayBackendAddressPools());
@@ -118,23 +118,23 @@ class VMSSPatchPayload {
                                 patchIpConfig.withLoadBalancerInboundNatPools(ipConfig.loadBalancerInboundNatPools());
                                 patchIpConfig.withName(ipConfig.name());
                                 patchIpConfig.withPrimary(ipConfig.primary());
-                                patchIpConfig.withPrivateIPAddressVersion(ipConfig.privateIPAddressVersion());
+                                patchIpConfig.withPrivateIpAddressVersion(ipConfig.privateIpAddressVersion());
                                 patchIpConfig.withSubnet(ipConfig.subnet());
                                 patchIpConfig.withId(ipConfig.id());
-                                if (ipConfig.publicIPAddressConfiguration() != null) {
+                                if (ipConfig.publicIpAddressConfiguration() != null) {
                                     patchIpConfig
-                                        .withPublicIPAddressConfiguration(
-                                            new VirtualMachineScaleSetUpdatePublicIPAddressConfiguration());
+                                        .withPublicIpAddressConfiguration(
+                                            new VirtualMachineScaleSetUpdatePublicIpAddressConfiguration());
                                     patchIpConfig
-                                        .publicIPAddressConfiguration()
-                                        .withDnsSettings(ipConfig.publicIPAddressConfiguration().dnsSettings());
+                                        .publicIpAddressConfiguration()
+                                        .withDnsSettings(ipConfig.publicIpAddressConfiguration().dnsSettings());
                                     patchIpConfig
-                                        .publicIPAddressConfiguration()
+                                        .publicIpAddressConfiguration()
                                         .withIdleTimeoutInMinutes(
-                                            ipConfig.publicIPAddressConfiguration().idleTimeoutInMinutes());
+                                            ipConfig.publicIpAddressConfiguration().idleTimeoutInMinutes());
                                     patchIpConfig
-                                        .publicIPAddressConfiguration()
-                                        .withName(ipConfig.publicIPAddressConfiguration().name());
+                                        .publicIpAddressConfiguration()
+                                        .withName(ipConfig.publicIpAddressConfiguration().name());
                                 }
                                 if (ipConfig.applicationSecurityGroups() != null) {
                                     patchIpConfig.withApplicationSecurityGroups(new ArrayList<SubResource>());

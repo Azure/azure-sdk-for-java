@@ -5,6 +5,8 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -14,6 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("StaticThresholdCriterion")
 @Fluent
 public final class MetricCriteria extends MultiMetricCriteria {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricCriteria.class);
+
     /*
      * the criteria operator.
      */
@@ -64,5 +68,20 @@ public final class MetricCriteria extends MultiMetricCriteria {
     public MetricCriteria withThreshold(double threshold) {
         this.threshold = threshold;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (operator() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property operator in model MetricCriteria"));
+        }
     }
 }

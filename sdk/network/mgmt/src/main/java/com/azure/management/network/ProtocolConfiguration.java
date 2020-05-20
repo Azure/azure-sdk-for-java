@@ -5,11 +5,15 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ProtocolConfiguration model. */
 @Fluent
 public final class ProtocolConfiguration {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtocolConfiguration.class);
+
     /*
      * HTTP configuration of the connectivity check.
      */
@@ -34,5 +38,16 @@ public final class ProtocolConfiguration {
     public ProtocolConfiguration withHttpConfiguration(HttpConfiguration httpConfiguration) {
         this.httpConfiguration = httpConfiguration;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (httpConfiguration() != null) {
+            httpConfiguration().validate();
+        }
     }
 }

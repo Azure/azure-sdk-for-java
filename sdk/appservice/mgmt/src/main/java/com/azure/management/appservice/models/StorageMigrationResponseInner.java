@@ -6,13 +6,17 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The StorageMigrationResponse model. */
 @JsonFlatten
 @Immutable
 public class StorageMigrationResponseInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageMigrationResponseInner.class);
+
     /*
      * When server starts the migration process, it will return an operation ID
      * identifying that particular migration operation.
@@ -28,5 +32,15 @@ public class StorageMigrationResponseInner extends ProxyOnlyResource {
      */
     public String operationId() {
         return this.operationId;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

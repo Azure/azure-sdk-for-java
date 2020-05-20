@@ -5,12 +5,16 @@
 package com.azure.management.compute.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ComputeOperationListResult model. */
 @Immutable
 public final class ComputeOperationListResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeOperationListResultInner.class);
+
     /*
      * The list of compute operations
      */
@@ -24,5 +28,16 @@ public final class ComputeOperationListResultInner {
      */
     public List<ComputeOperationValueInner> value() {
         return this.value;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

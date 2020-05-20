@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Subscriptions. */
 public final class SubscriptionsInner {
+    private final ClientLogger logger = new ClientLogger(SubscriptionsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final SubscriptionsService service;
 
@@ -55,7 +58,7 @@ public final class SubscriptionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/locations")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<LocationListResultInner>> listLocations(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -65,7 +68,7 @@ public final class SubscriptionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubscriptionInner>> get(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -75,14 +78,14 @@ public final class SubscriptionsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubscriptionListResultInner>> list(
             @HostParam("$host") String host, @QueryParam("api-version") String apiVersion, Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubscriptionListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -93,12 +96,19 @@ public final class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -115,8 +125,36 @@ public final class SubscriptionsInner {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return location list operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(String subscriptionId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        return service
+            .listLocations(this.client.getHost(), subscriptionId, this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * This operation provides all the locations that are available for resource providers; however, each resource
+     * provider may support a subset of this list.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response.
      */
@@ -130,8 +168,24 @@ public final class SubscriptionsInner {
      * provider may support a subset of this list.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return location list operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Context context) {
+        return new PagedFlux<>(() -> listLocationsSinglePageAsync(subscriptionId, context));
+    }
+
+    /**
+     * This operation provides all the locations that are available for resource providers; however, each resource
+     * provider may support a subset of this list.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return location list operation response.
      */
@@ -145,12 +199,19 @@ public final class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SubscriptionInner>> getWithResponseAsync(String subscriptionId) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context -> service.get(this.client.getHost(), subscriptionId, this.client.getApiVersion(), context))
@@ -161,8 +222,30 @@ public final class SubscriptionsInner {
      * Gets details about a specified subscription.
      *
      * @param subscriptionId The ID of the target subscription.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about a specified subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SubscriptionInner>> getWithResponseAsync(String subscriptionId, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        return service.get(this.client.getHost(), subscriptionId, this.client.getApiVersion(), context);
+    }
+
+    /**
+     * Gets details about a specified subscription.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription.
      */
@@ -184,7 +267,7 @@ public final class SubscriptionsInner {
      *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details about a specified subscription.
      */
@@ -196,12 +279,16 @@ public final class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.list(this.client.getHost(), this.client.getApiVersion(), context))
             .<PagedResponse<SubscriptionInner>>map(
@@ -219,7 +306,35 @@ public final class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subscriptions for a tenant.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), this.client.getApiVersion(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all subscriptions for a tenant.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant.
      */
@@ -231,7 +346,21 @@ public final class SubscriptionsInner {
     /**
      * Gets all subscriptions for a tenant.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subscriptions for a tenant.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SubscriptionInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all subscriptions for a tenant.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant.
      */
@@ -243,14 +372,17 @@ public final class SubscriptionsInner {
     /**
      * Get the next page of items.
      *
-     * @param nextLink null
+     * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subscription list operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<SubscriptionInner>>map(
@@ -263,5 +395,33 @@ public final class SubscriptionsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subscription list operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

@@ -5,12 +5,16 @@
 package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.KeyVaultSecretStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AppServiceCertificate model. */
 @Fluent
 public final class AppServiceCertificateInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateInner.class);
+
     /*
      * Key Vault resource Id.
      */
@@ -76,5 +80,13 @@ public final class AppServiceCertificateInner {
      */
     public KeyVaultSecretStatus provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -7,12 +7,16 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InboundNatPool model. */
 @JsonFlatten
 @Fluent
 public class InboundNatPool extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatPool.class);
+
     /*
      * The name of the resource that is unique within the set of inbound NAT
      * pools used by the load balancer. This name can be used to access the
@@ -37,7 +41,7 @@ public class InboundNatPool extends SubResource {
      * A reference to frontend IP addresses.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
-    private SubResource frontendIPConfiguration;
+    private SubResource frontendIpConfiguration;
 
     /*
      * The reference to the transport protocol used by the inbound NAT pool.
@@ -83,7 +87,7 @@ public class InboundNatPool extends SubResource {
      * This setting can't be changed after you create the endpoint.
      */
     @JsonProperty(value = "properties.enableFloatingIP")
-    private Boolean enableFloatingIP;
+    private Boolean enableFloatingIp;
 
     /*
      * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
@@ -152,22 +156,22 @@ public class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the frontendIPConfiguration property: A reference to frontend IP addresses.
+     * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
      *
-     * @return the frontendIPConfiguration value.
+     * @return the frontendIpConfiguration value.
      */
-    public SubResource frontendIPConfiguration() {
-        return this.frontendIPConfiguration;
+    public SubResource frontendIpConfiguration() {
+        return this.frontendIpConfiguration;
     }
 
     /**
-     * Set the frontendIPConfiguration property: A reference to frontend IP addresses.
+     * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
      *
-     * @param frontendIPConfiguration the frontendIPConfiguration value to set.
+     * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatPool object itself.
      */
-    public InboundNatPool withFrontendIPConfiguration(SubResource frontendIPConfiguration) {
-        this.frontendIPConfiguration = frontendIPConfiguration;
+    public InboundNatPool withFrontendIpConfiguration(SubResource frontendIpConfiguration) {
+        this.frontendIpConfiguration = frontendIpConfiguration;
         return this;
     }
 
@@ -280,26 +284,26 @@ public class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the enableFloatingIP property: Configures a virtual machine's endpoint for the floating IP capability
+     * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
      *
-     * @return the enableFloatingIP value.
+     * @return the enableFloatingIp value.
      */
-    public Boolean enableFloatingIP() {
-        return this.enableFloatingIP;
+    public Boolean enableFloatingIp() {
+        return this.enableFloatingIp;
     }
 
     /**
-     * Set the enableFloatingIP property: Configures a virtual machine's endpoint for the floating IP capability
+     * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
      *
-     * @param enableFloatingIP the enableFloatingIP value to set.
+     * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatPool object itself.
      */
-    public InboundNatPool withEnableFloatingIP(Boolean enableFloatingIP) {
-        this.enableFloatingIP = enableFloatingIP;
+    public InboundNatPool withEnableFloatingIp(Boolean enableFloatingIp) {
+        this.enableFloatingIp = enableFloatingIp;
         return this;
     }
 
@@ -345,5 +349,13 @@ public class InboundNatPool extends SubResource {
     public InboundNatPool withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

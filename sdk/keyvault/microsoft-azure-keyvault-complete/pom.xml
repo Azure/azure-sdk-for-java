@@ -8,12 +8,12 @@ the MIT License. See License.txt in the project root for license information. --
     <groupId>com.azure</groupId>
     <artifactId>azure-data-sdk-parent</artifactId>
     <version>1.3.0</version> <!-- {x-version-update;com.azure:azure-data-sdk-parent;current} -->
-    <relativePath>../../parents/azure-data-sdk-client</relativePath>
+    <relativePath>../../parents/azure-data-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-keyvault-complete</artifactId>
-  <version>1.2.3</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-complete;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:azure-keyvault-complete;current} -->
   <packaging>pom</packaging>
 
   <name>Microsoft Azure Key Vault SDK Complete</name>

@@ -5,12 +5,16 @@
 package com.azure.management.appservice;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The CertificateDetails model. */
 @Immutable
 public final class CertificateDetails {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateDetails.class);
+
     /*
      * Certificate Version.
      */
@@ -144,5 +148,13 @@ public final class CertificateDetails {
      */
     public String rawData() {
         return this.rawData;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

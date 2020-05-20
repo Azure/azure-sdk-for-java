@@ -20,7 +20,7 @@ import java.util.Map;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Custom.WebApiSkill")
 @Fluent
-public final class WebApiSkill extends Skill {
+public final class WebApiSkill extends SearchIndexerSkill {
     /*
      * The url for the Web API.
      */

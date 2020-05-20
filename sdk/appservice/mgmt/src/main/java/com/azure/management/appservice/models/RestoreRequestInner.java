@@ -6,9 +6,11 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.BackupRestoreOperationType;
 import com.azure.management.appservice.DatabaseBackupSetting;
 import com.azure.management.appservice.ProxyOnlyResource;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class RestoreRequestInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreRequestInner.class);
+
     /*
      * SAS URL to the container.
      */
@@ -325,5 +329,18 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     public RestoreRequestInner withHostingEnvironment(String hostingEnvironment) {
         this.hostingEnvironment = hostingEnvironment;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (databases() != null) {
+            databases().forEach(e -> e.validate());
+        }
     }
 }

@@ -7,9 +7,11 @@ package com.azure.management.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.SecurityRuleAccess;
 import com.azure.management.network.SecurityRuleDirection;
 import com.azure.management.network.SecurityRuleProtocol;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class SecurityRuleInner extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleInner.class);
+
     /*
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
@@ -519,5 +523,19 @@ public class SecurityRuleInner extends SubResource {
     public SecurityRuleInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sourceApplicationSecurityGroups() != null) {
+            sourceApplicationSecurityGroups().forEach(e -> e.validate());
+        }
+        if (destinationApplicationSecurityGroups() != null) {
+            destinationApplicationSecurityGroups().forEach(e -> e.validate());
+        }
     }
 }

@@ -7,10 +7,6 @@ package com.azure.cosmos;
  * Represents the connection mode to be used by the client in the Azure Cosmos DB database service.
  * <p>
  * DIRECT and GATEWAY connectivity modes are supported. DIRECT is the default.
- * Refer to &lt;see&gt;http://azure.microsoft.com/documentation/articles/documentdb-
- * interactions-with-resources/#connectivity-options&lt;/see&gt; for additional
- * details.
- * </p>
  */
 public enum ConnectionMode {
 

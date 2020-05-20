@@ -6,17 +6,21 @@ package com.azure.management.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.ConfigReferenceLocation;
 import com.azure.management.appservice.ConfigReferenceSource;
 import com.azure.management.appservice.ManagedServiceIdentityType;
 import com.azure.management.appservice.ProxyOnlyResource;
 import com.azure.management.appservice.ResolveStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The KeyVaultReferenceResource model. */
 @JsonFlatten
 @Fluent
 public class KeyVaultReferenceResourceInner extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultReferenceResourceInner.class);
+
     /*
      * The reference property.
      */
@@ -249,5 +253,15 @@ public class KeyVaultReferenceResourceInner extends ProxyOnlyResource {
     public KeyVaultReferenceResourceInner withLocation(ConfigReferenceLocation location) {
         this.location = location;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

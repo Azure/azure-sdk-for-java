@@ -5,8 +5,10 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.SignInName;
 import com.azure.management.graphrbac.UserType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,6 +19,8 @@ import java.util.List;
 @JsonTypeName("User")
 @Fluent
 public final class UserInner extends DirectoryObjectInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
+
     /*
      * This must be specified if you are using a federated domain for the
      * user's userPrincipalName (UPN) property when creating a new user
@@ -318,5 +322,18 @@ public final class UserInner extends DirectoryObjectInner {
     public UserInner withSignInNames(List<SignInName> signInNames) {
         this.signInNames = signInNames;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (signInNames() != null) {
+            signInNames().forEach(e -> e.validate());
+        }
     }
 }

@@ -5,7 +5,7 @@ package com.azure.management.appservice;
 
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.management.resources.core.TestUtilities;
 import com.azure.management.resources.fluentcore.arm.Region;
 import com.azure.management.resources.fluentcore.profile.AzureProfile;
@@ -59,7 +59,7 @@ public class FunctionAppsTests extends AppServiceTest {
         if (rgName2 != null) {
             try {
                 resourceManager.resourceGroups().beginDeleteByName(rgName2);
-            } catch (CloudException e) {
+            } catch (ManagementException e) {
                 // fine, RG_NAME_2 is not created
             }
         }

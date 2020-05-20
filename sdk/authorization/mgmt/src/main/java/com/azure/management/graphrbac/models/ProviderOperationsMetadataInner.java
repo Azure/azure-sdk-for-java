@@ -5,14 +5,18 @@
 package com.azure.management.graphrbac.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.graphrbac.ProviderOperation;
 import com.azure.management.graphrbac.ResourceType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The ProviderOperationsMetadata model. */
 @Fluent
 public final class ProviderOperationsMetadataInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationsMetadataInner.class);
+
     /*
      * The provider id.
      */
@@ -167,5 +171,19 @@ public final class ProviderOperationsMetadataInner {
     public ProviderOperationsMetadataInner withOperations(List<ProviderOperation> operations) {
         this.operations = operations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (resourceTypes() != null) {
+            resourceTypes().forEach(e -> e.validate());
+        }
+        if (operations() != null) {
+            operations().forEach(e -> e.validate());
+        }
     }
 }

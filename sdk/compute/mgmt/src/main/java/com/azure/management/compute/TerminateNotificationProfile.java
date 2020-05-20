@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TerminateNotificationProfile model. */
 @Fluent
 public final class TerminateNotificationProfile {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TerminateNotificationProfile.class);
+
     /*
      * Configurable length of time a Virtual Machine being deleted will have to
      * potentially approve the Terminate Scheduled Event before the event is
@@ -67,5 +71,13 @@ public final class TerminateNotificationProfile {
     public TerminateNotificationProfile withEnable(Boolean enable) {
         this.enable = enable;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

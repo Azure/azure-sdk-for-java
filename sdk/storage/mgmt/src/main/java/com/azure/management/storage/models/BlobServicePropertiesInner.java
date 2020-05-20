@@ -7,17 +7,21 @@ package com.azure.management.storage.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.storage.ChangeFeed;
 import com.azure.management.storage.CorsRules;
 import com.azure.management.storage.DeleteRetentionPolicy;
 import com.azure.management.storage.RestorePolicyProperties;
 import com.azure.management.storage.Sku;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The BlobServiceProperties model. */
 @JsonFlatten
 @Fluent
 public class BlobServicePropertiesInner extends ProxyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobServicePropertiesInner.class);
+
     /*
      * Sku name and tier.
      */
@@ -253,5 +257,31 @@ public class BlobServicePropertiesInner extends ProxyResource {
         DeleteRetentionPolicy containerDeleteRetentionPolicy) {
         this.containerDeleteRetentionPolicy = containerDeleteRetentionPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (cors() != null) {
+            cors().validate();
+        }
+        if (deleteRetentionPolicy() != null) {
+            deleteRetentionPolicy().validate();
+        }
+        if (changeFeed() != null) {
+            changeFeed().validate();
+        }
+        if (restorePolicy() != null) {
+            restorePolicy().validate();
+        }
+        if (containerDeleteRetentionPolicy() != null) {
+            containerDeleteRetentionPolicy().validate();
+        }
     }
 }

@@ -7,8 +7,10 @@ package com.azure.management.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.monitor.ActivityLogAlertActionList;
 import com.azure.management.monitor.ActivityLogAlertAllOfCondition;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ActivityLogAlertResourceInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityLogAlertResourceInner.class);
+
     /*
      * A list of resourceIds that will be used as prefixes. The alert will only
      * apply to activityLogs with resourceIds that fall under one of these
@@ -151,5 +155,19 @@ public class ActivityLogAlertResourceInner extends Resource {
     public ActivityLogAlertResourceInner withDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (condition() != null) {
+            condition().validate();
+        }
+        if (actions() != null) {
+            actions().validate();
+        }
     }
 }
