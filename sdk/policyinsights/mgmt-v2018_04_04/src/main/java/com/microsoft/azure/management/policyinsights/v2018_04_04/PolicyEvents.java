@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.policyinsights.v2018_04_04;
 
-import rx.Completable;
 import rx.Observable;
 
 /**
@@ -100,6 +99,6 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable getMetadataAsync(String scope);
+    Observable<String> getMetadataAsync(String scope);
 
 }
