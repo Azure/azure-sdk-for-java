@@ -64,7 +64,7 @@ public class QueryOptions {
     private String apply;
 
     /**
-     * Get the top value.
+     * Get maximum number of records to return.
      *
      * @return the top value
      */
@@ -73,7 +73,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the top value.
+     * Set maximum number of records to return.
      *
      * @param top the top value to set
      * @return the QueryOptions object itself.
@@ -84,7 +84,7 @@ public class QueryOptions {
     }
 
     /**
-     * Get the orderBy value.
+     * Get ordering expression using OData notation. One or more comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      *
      * @return the orderBy value
      */
@@ -93,7 +93,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the orderBy value.
+     * Set ordering expression using OData notation. One or more comma-separated column names with an optional "desc" (the default) or "asc", e.g. "$orderby=PolicyAssignmentId, ResourceId asc".
      *
      * @param orderBy the orderBy value to set
      * @return the QueryOptions object itself.
@@ -104,7 +104,7 @@ public class QueryOptions {
     }
 
     /**
-     * Get the select value.
+     * Get select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      *
      * @return the select value
      */
@@ -113,7 +113,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the select value.
+     * Set select expression using OData notation. Limits the columns on each record to just those requested, e.g. "$select=PolicyAssignmentId, ResourceId".
      *
      * @param select the select value to set
      * @return the QueryOptions object itself.
@@ -124,7 +124,7 @@ public class QueryOptions {
     }
 
     /**
-     * Get the from value.
+     * Get iSO 8601 formatted timestamp specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
      *
      * @return the from value
      */
@@ -133,7 +133,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the from value.
+     * Set iSO 8601 formatted timestamp specifying the start time of the interval to query. When not specified, the service uses ($to - 1-day).
      *
      * @param from the from value to set
      * @return the QueryOptions object itself.
@@ -144,7 +144,7 @@ public class QueryOptions {
     }
 
     /**
-     * Get the to value.
+     * Get iSO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the service uses request time.
      *
      * @return the to value
      */
@@ -153,7 +153,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the to value.
+     * Set iSO 8601 formatted timestamp specifying the end time of the interval to query. When not specified, the service uses request time.
      *
      * @param to the to value to set
      * @return the QueryOptions object itself.
@@ -164,7 +164,7 @@ public class QueryOptions {
     }
 
     /**
-     * Get the filter value.
+     * Get oData filter expression.
      *
      * @return the filter value
      */
@@ -173,7 +173,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the filter value.
+     * Set oData filter expression.
      *
      * @param filter the filter value to set
      * @return the QueryOptions object itself.
@@ -184,7 +184,7 @@ public class QueryOptions {
     }
 
     /**
-     * Get the apply value.
+     * Get oData apply expression for aggregations.
      *
      * @return the apply value
      */
@@ -193,7 +193,7 @@ public class QueryOptions {
     }
 
     /**
-     * Set the apply value.
+     * Set oData apply expression for aggregations.
      *
      * @param apply the apply value to set
      * @return the QueryOptions object itself.
