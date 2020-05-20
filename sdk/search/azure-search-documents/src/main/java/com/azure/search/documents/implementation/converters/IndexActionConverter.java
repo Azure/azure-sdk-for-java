@@ -1,6 +1,8 @@
 package com.azure.search.documents.implementation.converters;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.search.documents.implementation.SerializationUtil;
 import com.azure.search.documents.implementation.util.PrivateFieldAccessHelper;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
@@ -53,8 +55,11 @@ public final class IndexActionConverter {
         }
 
         T _document = obj.getDocument();
-        ObjectMapper jsonMapper = new ObjectMapper();
-        Map<String, Object> additionalProperties = jsonMapper.convertValue(_document, Map.class);
+
+        ObjectMapper mapper = new JacksonAdapter().serializer();
+        SerializationUtil.configureMapper(mapper);
+        Map<String, Object> additionalProperties = mapper.convertValue(_document, Map.class);
+
         indexAction.setAdditionalProperties(additionalProperties);
 
         if (obj.getParamMap() != null) {
