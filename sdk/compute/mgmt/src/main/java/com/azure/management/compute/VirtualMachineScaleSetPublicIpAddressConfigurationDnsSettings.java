@@ -56,8 +56,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
             throw logger
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property domainNameLabel"
-                            + " in model VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
+                        "Missing required property domainNameLabel in model"
+                            + " VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
         }
     }
 }

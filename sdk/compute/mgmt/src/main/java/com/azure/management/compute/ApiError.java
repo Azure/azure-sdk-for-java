@@ -4,14 +4,14 @@
 
 package com.azure.management.compute;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ApiError model. */
-@Fluent
+@Immutable
 public final class ApiError extends ManagementError {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiError.class);
 
@@ -36,5 +36,8 @@ public final class ApiError extends ManagementError {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innererror != null) {
+            innererror.validate();
+        }
     }
 }

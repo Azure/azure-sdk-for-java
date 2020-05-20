@@ -40,7 +40,7 @@ public class CosmosClientException extends AzureException {
     private final int statusCode;
     private final Map<String, String> responseHeaders;
 
-    private CosmosResponseDiagnostics cosmosResponseDiagnostics;
+    private CosmosDiagnostics cosmosDiagnostics;
     private final RequestTimeline requestTimeline;
     private CosmosError cosmosError;
 
@@ -134,10 +134,10 @@ public class CosmosClientException extends AzureException {
 
     @Override
     public String getMessage() {
-        if (cosmosResponseDiagnostics == null) {
+        if (cosmosDiagnostics == null) {
             return innerErrorMessage();
         }
-        return innerErrorMessage() + ", " + cosmosResponseDiagnostics.toString();
+        return innerErrorMessage() + ", " + cosmosDiagnostics.toString();
     }
 
     /**
@@ -243,16 +243,16 @@ public class CosmosClientException extends AzureException {
     }
 
     /**
-     * Gets the Cosmos Response Diagnostic Statistics associated with this exception.
+     * Gets the Cosmos Diagnostic Statistics associated with this exception.
      *
-     * @return Cosmos Response Diagnostic Statistics associated with this exception.
+     * @return Cosmos Diagnostic Statistics associated with this exception.
      */
-    public CosmosResponseDiagnostics getResponseDiagnostics() {
-        return cosmosResponseDiagnostics;
+    public CosmosDiagnostics getDiagnostics() {
+        return cosmosDiagnostics;
     }
 
-    CosmosClientException setResponseDiagnostics(CosmosResponseDiagnostics cosmosResponseDiagnostics) {
-        this.cosmosResponseDiagnostics = cosmosResponseDiagnostics;
+    CosmosClientException setDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+        this.cosmosDiagnostics = cosmosDiagnostics;
         return this;
     }
 

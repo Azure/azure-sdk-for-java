@@ -109,7 +109,7 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new Object[]{})
+        client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, new ArrayList<>())
               .subscribe(storedProcedureResponse -> {
                     String logResult = "The value of x is 1.";
                     try {
@@ -154,7 +154,9 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[]{"a", 123};
+        List<Object> storedProcedureArgs = new ArrayList<>();
+        storedProcedureArgs.add("a");
+        storedProcedureArgs.add(123);
         client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
               .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -200,7 +202,8 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         SamplePojo samplePojo = new SamplePojo();
 
         // Execute the stored procedure
-        Object[] storedProcedureArgs = new Object[]{samplePojo};
+        List<Object> storedProcedureArgs = new ArrayList<>();
+        storedProcedureArgs.add(samplePojo);
         client.executeStoredProcedure(getSprocLink(storedProcedure), requestOptions, storedProcedureArgs)
               .subscribe(storedProcedureResponse -> {
                     String storedProcResultAsString = storedProcedureResponse.getResponseAsString();
@@ -230,16 +233,10 @@ public class StoredProcedureAsyncAPITest extends DocumentClientTest {
         // Set indexing policy to be range range for string and number
         IndexingPolicy indexingPolicy = new IndexingPolicy();
         List<IncludedPath> includedPaths = new ArrayList<IncludedPath>();
-        IncludedPath includedPath = new IncludedPath();
-        includedPath.setPath("/*");
+        IncludedPath includedPath = new IncludedPath("/*");
         List<Index> indexes = new ArrayList<Index>();
-        Index stringIndex = Index.range(DataType.STRING);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(stringIndex), "precision", -1);
-        indexes.add(stringIndex);
-
-        Index numberIndex = Index.range(DataType.NUMBER);
-        BridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(numberIndex), "precision", -1);
-        indexes.add(numberIndex);
+        indexes.add(Index.range(DataType.STRING, -1));
+        indexes.add(Index.range(DataType.NUMBER, -1));
         includedPath.setIndexes(indexes);
         includedPaths.add(includedPath);
         indexingPolicy.setIncludedPaths(includedPaths);

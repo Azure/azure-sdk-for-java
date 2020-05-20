@@ -11,9 +11,9 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines headers for BatchReadFile operation.
+ * Defines headers for ReadInStream operation.
  */
-public class BatchReadFileHeaders {
+public class ReadInStreamHeaders {
     /**
      * URL to query for status of the operation. The operation ID will expire
      * in 48 hours.
@@ -34,9 +34,9 @@ public class BatchReadFileHeaders {
      * Set the operationLocation value.
      *
      * @param operationLocation the operationLocation value to set
-     * @return the BatchReadFileHeaders object itself.
+     * @return the ReadInStreamHeaders object itself.
      */
-    public BatchReadFileHeaders withOperationLocation(String operationLocation) {
+    public ReadInStreamHeaders withOperationLocation(String operationLocation) {
         this.operationLocation = operationLocation;
         return this;
     }

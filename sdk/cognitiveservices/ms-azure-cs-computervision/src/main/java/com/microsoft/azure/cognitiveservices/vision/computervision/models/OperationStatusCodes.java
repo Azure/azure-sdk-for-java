@@ -12,38 +12,38 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TextOperationStatusCodes.
+ * Defines values for OperationStatusCodes.
  */
-public enum TextOperationStatusCodes {
-    /** Enum value NotStarted. */
-    NOT_STARTED("NotStarted"),
+public enum OperationStatusCodes {
+    /** Enum value notStarted. */
+    NOT_STARTED("notStarted"),
 
-    /** Enum value Running. */
-    RUNNING("Running"),
+    /** Enum value running. */
+    RUNNING("running"),
 
-    /** Enum value Failed. */
-    FAILED("Failed"),
+    /** Enum value failed. */
+    FAILED("failed"),
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
+    /** Enum value succeeded. */
+    SUCCEEDED("succeeded");
 
-    /** The actual serialized value for a TextOperationStatusCodes instance. */
+    /** The actual serialized value for a OperationStatusCodes instance. */
     private String value;
 
-    TextOperationStatusCodes(String value) {
+    OperationStatusCodes(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TextOperationStatusCodes instance.
+     * Parses a serialized value to a OperationStatusCodes instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TextOperationStatusCodes object, or null if unable to parse.
+     * @return the parsed OperationStatusCodes object, or null if unable to parse.
      */
     @JsonCreator
-    public static TextOperationStatusCodes fromString(String value) {
-        TextOperationStatusCodes[] items = TextOperationStatusCodes.values();
-        for (TextOperationStatusCodes item : items) {
+    public static OperationStatusCodes fromString(String value) {
+        OperationStatusCodes[] items = OperationStatusCodes.values();
+        for (OperationStatusCodes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

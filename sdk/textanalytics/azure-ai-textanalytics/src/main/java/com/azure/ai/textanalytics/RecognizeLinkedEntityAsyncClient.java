@@ -30,13 +30,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
-import static com.azure.ai.textanalytics.Transforms.toBatchStatistics;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsError;
-import static com.azure.ai.textanalytics.Transforms.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.Transforms.toTextDocumentStatistics;
 import static com.azure.ai.textanalytics.implementation.Utility.getEmptyErrorIdHttpResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
 import static com.azure.ai.textanalytics.implementation.Utility.mapToHttpResponseExceptionIfExist;
+import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
+import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -206,7 +207,7 @@ class RecognizeLinkedEntityAsyncClient {
         getRecognizedLinkedEntitiesResponse(Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options,
             Context context) {
         return service.entitiesLinkingWithResponseAsync(
-            new MultiLanguageBatchInput().setDocuments(Transforms.toMultiLanguageInput(documents)),
+            new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE),
             options == null ? null : options.getModelVersion(),
             options == null ? null : options.isIncludeStatistics())
