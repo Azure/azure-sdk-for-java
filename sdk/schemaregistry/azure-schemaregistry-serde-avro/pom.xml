@@ -41,19 +41,34 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-schemaregistry-serde-common</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-schemaregistry-serde-common;dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.avro</groupId>
       <artifactId>avro</artifactId>
-      <version>1.9.2</version>
+      <version>1.9.2</version> <!-- {x-version-update;org.apache.avro:avro;external_dependency} -->
       <scope>compile</scope>
     </dependency>
+
+    <!-- Test dependencies -->
+    <!-- Test dependencies -->
     <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>5.4.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -68,6 +83,7 @@
           <rules>
             <bannedDependencies>
               <includes>
+                <include>com.azure:*</include>
                 <include>org.apache.avro:avro:[1.9.2]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
               </includes>
             </bannedDependencies>
