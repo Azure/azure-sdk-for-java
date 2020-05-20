@@ -31,7 +31,7 @@ public class CosmosAsyncStoredProcedure {
      *
      * @return the id of the {@link CosmosAsyncStoredProcedure}
      */
-    public String id() {
+    public String getId() {
         return id;
     }
 
@@ -41,13 +41,13 @@ public class CosmosAsyncStoredProcedure {
      * @param id the id of the {@link CosmosAsyncStoredProcedure}
      * @return the same {@link CosmosAsyncStoredProcedure} that had the id set
      */
-    CosmosAsyncStoredProcedure id(String id) {
+    CosmosAsyncStoredProcedure setId(String id) {
         this.id = id;
         return this;
     }
 
     /**
-     * Read a stored procedure by the stored procedure link.
+     * Read a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored
@@ -61,7 +61,7 @@ public class CosmosAsyncStoredProcedure {
     }
 
     /**
-     * Read a stored procedure by the stored procedure link.
+     * Read a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the read stored
@@ -81,7 +81,7 @@ public class CosmosAsyncStoredProcedure {
     }
 
     /**
-     * Deletes a stored procedure by the stored procedure link.
+     * Deletes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
@@ -95,7 +95,7 @@ public class CosmosAsyncStoredProcedure {
     }
 
     /**
-     * Deletes a stored procedure by the stored procedure link.
+     * Deletes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response for the deleted stored
@@ -117,7 +117,7 @@ public class CosmosAsyncStoredProcedure {
     }
 
     /**
-     * Executes a stored procedure by the stored procedure link.
+     * Executes a stored procedure
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single resource response with the stored procedure
@@ -195,7 +195,7 @@ public class CosmosAsyncStoredProcedure {
         builder.append("/");
         builder.append(getURIPathSegment());
         builder.append("/");
-        builder.append(id());
+        builder.append(getId());
         return builder.toString();
     }
 }
