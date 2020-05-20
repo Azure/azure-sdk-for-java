@@ -13,6 +13,7 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.RecognizedReceipt;
 import com.azure.ai.formrecognizer.models.USReceipt;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
+import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.IterableStream;
@@ -29,7 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class ReadmeSamples {
     private FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder().buildClient();
-    private FormTrainingClient formTrainingClient = formRecognizerClient.getFormTrainingClient();
+    private FormTrainingClient formTrainingClient = new FormTrainingClientBuilder().buildClient();
 
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
