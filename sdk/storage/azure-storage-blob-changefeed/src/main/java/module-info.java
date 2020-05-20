@@ -9,4 +9,7 @@ module com.azure.storage.blob.changefeed {
     exports com.azure.storage.blob.changefeed;
 
     exports com.azure.storage.blob.changefeed.models;
+
+    exports com.azure.storage.blob.changefeed.implementation.models to
+        com.fasterxml.jackson.databind;
 }

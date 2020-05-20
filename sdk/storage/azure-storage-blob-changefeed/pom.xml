@@ -271,7 +271,6 @@
                 --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.serializer.jackson=ALL-UNNAMED
                 --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-                --add-exports com.azure.storage.blob.changefeed/com.azure.storage.blob.changefeed.implementation.models=ALL-UNNAMED
                 --add-opens com.azure.storage.common/com.azure.storage.common.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.internal.avro/com.azure.storage.internal.avro.implementation=ALL-UNNAMED
                 --add-opens com.azure.storage.blob.changefeed/com.azure.storage.blob.changefeed=ALL-UNNAMED
