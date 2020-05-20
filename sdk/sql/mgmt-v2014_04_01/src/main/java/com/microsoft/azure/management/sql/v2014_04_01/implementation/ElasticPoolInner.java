@@ -35,7 +35,7 @@ public class ElasticPoolInner extends Resource {
 
     /**
      * The edition of the elastic pool. Possible values include: 'Basic',
-     * 'Standard', 'Premium'.
+     * 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      */
     @JsonProperty(value = "properties.edition")
     private ElasticPoolEdition edition;
@@ -98,7 +98,7 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Get the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'.
+     * Get the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      *
      * @return the edition value
      */
@@ -107,7 +107,7 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
-     * Set the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium'.
+     * Set the edition of the elastic pool. Possible values include: 'Basic', 'Standard', 'Premium', 'GeneralPurpose', 'BusinessCritical'.
      *
      * @param edition the edition value to set
      * @return the ElasticPoolInner object itself.
