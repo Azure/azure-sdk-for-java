@@ -6,6 +6,7 @@ dist/
 
 #javadoc overview files generated from README.md
 readme_overview.html
+**/javadocTemp/**
 
 #External libs
 extlib/

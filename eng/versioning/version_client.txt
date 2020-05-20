@@ -30,7 +30,7 @@ com.azure:azure-search-documents;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-security-keyvault-certificates;4.1.0-beta.2;4.1.0-beta.3
 com.azure:azure-security-keyvault-keys;4.2.0-beta.3;4.2.0-beta.4
 com.azure:azure-security-keyvault-secrets;4.2.0-beta.2;4.2.0-beta.3
-com.azure:azure-sdk-template;1.0.4-beta.12;1.0.4-beta.13
+com.azure:azure-sdk-template;1.0.4-beta.14;1.0.4-beta.15
 com.azure:azure-storage-blob;12.6.1;12.7.0-beta.1
 com.azure:azure-storage-blob-batch;12.5.1;12.6.0-beta.1
 com.azure:azure-storage-blob-cryptography;12.6.1;12.7.0-beta.1

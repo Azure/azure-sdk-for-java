@@ -1,5 +1,11 @@
 # Release History
 
+## 1.0.4-beta.15 (2020-05-20)
+- Test Java Release Pipeline
+
+## 1.0.4-beta.14 (2020-04-27)
+- Test Java Release Pipeline
+
 ## 1.0.4-beta.13 (2020-04-14)
 - Test Java Release Pipeline
 
