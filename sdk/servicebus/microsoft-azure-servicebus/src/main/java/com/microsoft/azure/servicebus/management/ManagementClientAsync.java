@@ -92,6 +92,7 @@ public class ManagementClientAsync {
         DefaultAsyncHttpClientConfig.Builder clientBuilder = Dsl.config()
                 .setConnectTimeout((int) CONNECTION_TIMEOUT.toMillis())
                 .setUseProxySelector(true)
+                .setUseProxyProperties(true)
                 .setRequestTimeout((int) this.clientSettings.getOperationTimeout().toMillis());
         this.asyncHttpClient = asyncHttpClient(clientBuilder);
     }
