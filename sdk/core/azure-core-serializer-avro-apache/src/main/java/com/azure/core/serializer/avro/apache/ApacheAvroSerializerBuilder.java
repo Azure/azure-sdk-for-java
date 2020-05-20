@@ -14,7 +14,8 @@ import org.apache.avro.io.EncoderFactory;
  * @see ApacheAvroSerializer
  */
 public class ApacheAvroSerializerBuilder {
-    private Schema.Parser parser;
+    private boolean validateSchema = true;
+    private boolean validateSchemaDefaults = true;
     private DecoderFactory decoderFactory;
     private EncoderFactory encoderFactory;
     private GenericData genericData;
@@ -25,26 +26,37 @@ public class ApacheAvroSerializerBuilder {
      * @return A new instance of {@link ApacheAvroSerializer}.
      */
     public ApacheAvroSerializer build() {
-        Schema.Parser buildParser = (parser == null) ? new Schema.Parser() : parser;
         DecoderFactory buildDecoderFactory = (decoderFactory == null) ? DecoderFactory.get() : decoderFactory;
         EncoderFactory buildEncoderFactory = (encoderFactory == null) ? EncoderFactory.get() : encoderFactory;
         GenericData buildGenericData = (genericData == null) ? GenericData.get() : genericData;
 
-        return new ApacheAvroSerializer(buildParser, buildDecoderFactory, buildEncoderFactory, buildGenericData);
+        return new ApacheAvroSerializer(validateSchema, validateSchemaDefaults, buildDecoderFactory,
+            buildEncoderFactory, buildGenericData);
     }
 
     /**
-     * Configures the {@link Schema.Parser} that will be used to parse schema strings passed into decode and encode
-     * methods on {@link ApacheAvroSerializer}.
+     * Configures the {@link ApacheAvroSerializer} to validate that a passed schema meets Avro specifications.
      * <p>
-     * If {@code parser} is {@code null} when {@link #build()} is called {@link Schema.Parser#Parser() new
-     * Schema.Parser()} will be used as the parser.
+     * By default {@code validateSchema} is {@code true}.
      *
-     * @param parser The {@link Schema.Parser} used to parse schema strings.
+     * @param validateSchema Flag indicating if schema should be validated.
      * @return The updated ApacheAvroSerializerBuilder object.
      */
-    public ApacheAvroSerializerBuilder schemaParser(Schema.Parser parser) {
-        this.parser = parser;
+    public ApacheAvroSerializerBuilder validateSchema(boolean validateSchema) {
+        this.validateSchema = validateSchema;
+        return this;
+    }
+
+    /**
+     * Configures the {@link ApacheAvroSerializer} to validate default values in the passed schema.
+     * <p>
+     * By default {@code validateSchemaDefaults} is {@code true}.
+     *
+     * @param validateSchemaDefaults Flag indicating if schema defaults should be validated.
+     * @return The updated ApacheAvroSerializerBuilder object.
+     */
+    public ApacheAvroSerializerBuilder validateSchemaDefaults(boolean validateSchemaDefaults) {
+        this.validateSchemaDefaults = validateSchemaDefaults;
         return this;
     }
 

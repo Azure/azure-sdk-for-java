@@ -5,10 +5,12 @@ package com.azure.core.serializer.avro.apache;
 
 import com.azure.core.serializer.AvroSerializer;
 import com.azure.core.util.logging.ClientLogger;
+import org.apache.avro.AvroRuntimeException;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumReader;
 import org.apache.avro.generic.GenericDatumWriter;
+import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
@@ -17,6 +19,7 @@ import reactor.core.Exceptions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -25,14 +28,16 @@ import java.util.Objects;
 public class ApacheAvroSerializer implements AvroSerializer {
     private final ClientLogger logger = new ClientLogger(ApacheAvroSerializer.class);
 
-    private final Schema.Parser parser;
+    private final boolean validateSchema;
+    private final boolean validateSchemaDefaults;
     private final DecoderFactory decoderFactory;
     private final EncoderFactory encoderFactory;
     private final GenericData genericData;
 
-    ApacheAvroSerializer(Schema.Parser parser, DecoderFactory decoderFactory, EncoderFactory encoderFactory,
-        GenericData genericData) {
-        this.parser = parser;
+    ApacheAvroSerializer(boolean validateSchema, boolean validateSchemaDefaults, DecoderFactory decoderFactory,
+        EncoderFactory encoderFactory, GenericData genericData) {
+        this.validateSchema = validateSchema;
+        this.validateSchemaDefaults = validateSchemaDefaults;
         this.decoderFactory = decoderFactory;
         this.encoderFactory = encoderFactory;
         this.genericData = genericData;
@@ -58,11 +63,23 @@ public class ApacheAvroSerializer implements AvroSerializer {
             return null;
         }
 
+        Schema.Parser parser = getParser(validateSchema, validateSchemaDefaults);
+        DatumReader<T> reader;
         try {
-            return new GenericDatumReader<T>(parser.parse(writerSchema), parser.parse(readerSchema), genericData)
-                .read(null, decoderFactory.binaryDecoder(input, null));
+            if (readerSchema.equalsIgnoreCase(writerSchema)) {
+                Schema avroSchema = parser.parse(readerSchema);
+                reader = new GenericDatumReader<>(avroSchema, avroSchema, genericData);
+            } else {
+                reader = new GenericDatumReader<>(parser.parse(writerSchema), parser.parse(readerSchema), genericData);
+            }
+        } catch (AvroRuntimeException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
+
+        try {
+            return reader.read(null, decoderFactory.binaryDecoder(input, null));
         } catch (IOException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(ex));
+            throw logger.logExceptionAsError(new UncheckedIOException(ex));
         }
     }
 
@@ -70,7 +87,7 @@ public class ApacheAvroSerializer implements AvroSerializer {
     public byte[] write(Object value, String schema) {
         Objects.requireNonNull(schema, "'schema' cannot be null.");
 
-        Schema avroSchema = parser.parse(schema);
+        Schema avroSchema = getParser(validateSchema, validateSchemaDefaults).parse(schema);
         DatumWriter<Object> writer = new GenericDatumWriter<>(avroSchema, genericData);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -82,5 +99,10 @@ public class ApacheAvroSerializer implements AvroSerializer {
         } catch (IOException ex) {
             throw logger.logExceptionAsError(Exceptions.propagate(ex));
         }
+    }
+
+    private static Schema.Parser getParser(boolean validateSchema, boolean validateSchemaDefaults) {
+        return new Schema.Parser().setValidate(validateSchema)
+            .setValidateDefaults(validateSchemaDefaults);
     }
 }
