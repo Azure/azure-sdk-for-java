@@ -47,7 +47,7 @@ public class MetricDefinitionInner {
     private UnitDefinitionType unit;
 
     /**
-     * The list of database metric availabities for the metric.
+     * The list of database metric availabilities for the metric.
      */
     @JsonProperty(value = "metricAvailabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricAvailability> metricAvailabilities;
@@ -89,7 +89,7 @@ public class MetricDefinitionInner {
     }
 
     /**
-     * Get the list of database metric availabities for the metric.
+     * Get the list of database metric availabilities for the metric.
      *
      * @return the metricAvailabilities value
      */
