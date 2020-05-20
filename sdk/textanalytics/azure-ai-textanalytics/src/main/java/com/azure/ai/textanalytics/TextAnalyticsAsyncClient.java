@@ -169,8 +169,7 @@ public final class TextAnalyticsAsyncClient {
                         return detectLanguageResult.getPrimaryLanguage();
                     }
                     // this step should never be executed, if executed, we get an empty collection above.
-                    throw logger.logExceptionAsError(new TextAnalyticsException("None language detected.",
-                        TextAnalyticsErrorCode.fromString("NoneLanguageDetected").toString(), null));
+                    return new DetectedLanguage(null, null, -1, null);
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -665,8 +664,7 @@ public final class TextAnalyticsAsyncClient {
                         return sentimentResult.getDocumentSentiment();
                     }
                     // this step should never be executed, if executed, we get an empty collection above.
-                    throw logger.logExceptionAsError(new TextAnalyticsException("None sentiment analyzed.",
-                        TextAnalyticsErrorCode.fromString("NoneSentimentAnalyzed").toString(), null));
+                    return new DocumentSentiment(null, null, null, null);
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

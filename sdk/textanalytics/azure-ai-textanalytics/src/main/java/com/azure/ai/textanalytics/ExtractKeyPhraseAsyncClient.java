@@ -85,9 +85,7 @@ class ExtractKeyPhraseAsyncClient {
                                 keyPhraseResult.getKeyPhrases().getWarnings());
                         }
                         // this step should never be executed, if executed, we get an empty collection above.
-                        throw logger.logExceptionAsError(
-                            new TextAnalyticsException("None key Phrases extracted.",
-                                TextAnalyticsErrorCode.fromString("NoneKeyPhrasesExtracted").toString(), null));
+                        return new KeyPhrasesCollection(null, null);
                     });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

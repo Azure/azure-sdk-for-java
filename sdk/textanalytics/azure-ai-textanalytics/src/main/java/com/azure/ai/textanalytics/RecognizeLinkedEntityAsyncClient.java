@@ -83,9 +83,7 @@ class RecognizeLinkedEntityAsyncClient {
                             entitiesResult.getEntities().getWarnings());
                     }
                     // this step should never be executed, if executed, we get an empty collection above.
-                    throw logger.logExceptionAsError(
-                        new TextAnalyticsException("None entities recognized.",
-                            TextAnalyticsErrorCode.fromString("NoneEntitiesRecognized").toString(), null));
+                    return new LinkedEntityCollection(null, null);
                 });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
