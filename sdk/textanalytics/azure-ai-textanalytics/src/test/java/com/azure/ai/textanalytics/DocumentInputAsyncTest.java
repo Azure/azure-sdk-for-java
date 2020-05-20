@@ -341,7 +341,7 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that a {@link NullPointerException} is thrown when null documents is given for
-     * {@link TextAnalyticsAsyncClient##recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
     public void recognizeLinkedEntitiesBatchNullInput() {
@@ -354,7 +354,7 @@ public class DocumentInputAsyncTest {
 
     /**
      * Verifies that an {@link IllegalArgumentException} is thrown when an empty list of documents is given for
-     * {@link TextAnalyticsAsyncClient##recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
+     * {@link TextAnalyticsAsyncClient#recognizeLinkedEntitiesBatch(Iterable, String, TextAnalyticsRequestOptions)}
      */
     @Test
     public void recognizeLinkedEntitiesBatchEmptyInputList() {
