@@ -116,7 +116,7 @@ public final class BlobContainerAsyncClient {
         /* Check to make sure the uri is valid. We don't want the error to occur later in the generated layer
            when the sas token has already been applied. */
         try {
-            URI ignored = URI.create(url);
+            URI.create(url);
         } catch (IllegalArgumentException ex) {
             throw logger.logExceptionAsError(ex);
         }
