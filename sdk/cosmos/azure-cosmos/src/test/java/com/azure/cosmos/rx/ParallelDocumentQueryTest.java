@@ -348,6 +348,47 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         assertThat(fetchedResults).containsAll(expectedValues);
     }
 
+    @Test(groups = {"simple"})
+    public void queryDocumentsBooleanValue() {
+        FeedOptions options = new FeedOptions();
+
+        options.setMaxDegreeOfParallelism(2);
+
+        List<Boolean> expectedValues = createdDocuments
+                                           .stream()
+                                           .map(d -> ModelBridgeInternal.getBooleanFromJsonSerializable(d, "boolProp"))
+                                           .collect(Collectors.toList());
+
+        String query = "Select value c.boolProp from c";
+
+        CosmosPagedFlux<Boolean> queryObservable = createdCollection.queryItems(query, options, Boolean.class);
+
+        List<Boolean> fetchedResults = new ArrayList<>();
+        queryObservable.byPage().map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
+
+        assertThat(fetchedResults).containsAll(expectedValues);
+    }
+
+    @Test(groups = {"simple"})
+    public void queryDocumentsDoubleValue() {
+        FeedOptions options = new FeedOptions();
+
+        options.setMaxDegreeOfParallelism(2);
+
+        List<Double> expectedValues = createdDocuments.stream()
+                                           .map(d -> ModelBridgeInternal.getDoubleFromJsonSerializable(d, "prop"))
+                                           .collect(Collectors.toList());
+
+        String query = "Select value c.prop from c";
+
+        CosmosPagedFlux<Double> queryObservable = createdCollection.queryItems(query, options, Double.class);
+
+        List<Double> fetchedResults = new ArrayList<>();
+        queryObservable.byPage().map(feedResponse -> fetchedResults.addAll(feedResponse.getResults())).blockLast();
+
+        assertThat(fetchedResults).containsAll(expectedValues);
+    }
+
     @Test(groups = { "simple" })
     public void queryDocumentsPojo(){
         FeedOptions options = new FeedOptions();
