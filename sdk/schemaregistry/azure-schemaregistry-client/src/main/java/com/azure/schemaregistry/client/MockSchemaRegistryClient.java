@@ -13,21 +13,21 @@ import java.util.function.Function;
 
 public class MockSchemaRegistryClient implements SchemaRegistryClient {
 
-    public final HashMap<String, Function<String, ?>> typeParserDictionary;
+    public final HashMap<String, Function<String, Object>> typeParserDictionary;
 
-    public final HashMap<String, SchemaRegistryObject<?>> guidCache;
-    public final HashMap<String, SchemaRegistryObject<?>> schemaStringCache;
+    public final HashMap<String, SchemaRegistryObject> guidCache;
+    public final HashMap<String, SchemaRegistryObject> schemaStringCache;
 
     public MockSchemaRegistryClient() {
-        this.guidCache = new HashMap<String, SchemaRegistryObject<?>>();
-        this.schemaStringCache = new HashMap<String, SchemaRegistryObject<?>>();
-        this.typeParserDictionary = new HashMap<String, Function<String, ?>>();
+        this.guidCache = new HashMap<String, SchemaRegistryObject>();
+        this.schemaStringCache = new HashMap<String, SchemaRegistryObject>();
+        this.typeParserDictionary = new HashMap<String, Function<String, Object>>();
     }
 
-    public void loadSchemaParser(String serializationFormat, Function<String, ?> f) {}
+    public void loadSchemaParser(String serializationFormat, Function<String, Object> f) {}
 
     @Override
-    public SchemaRegistryObject<?> register(String schemaGroup, String schemaName, String schemaString, String serializationType)
+    public SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String serializationType)
             throws IOException, SchemaRegistryClientException {
         if (schemaStringCache.containsKey(schemaString)) {
             return schemaStringCache.get(schemaString);
@@ -37,7 +37,7 @@ public class MockSchemaRegistryClient implements SchemaRegistryClient {
     }
 
     @Override
-    public SchemaRegistryObject<?> getSchemaByGuid(String schemaGuid)
+    public SchemaRegistryObject getSchemaByGuid(String schemaGuid)
             throws IOException, SchemaRegistryClientException {
         if (guidCache.containsKey(schemaGuid)) {
             return guidCache.get(schemaGuid);
@@ -46,10 +46,10 @@ public class MockSchemaRegistryClient implements SchemaRegistryClient {
     }
 
     @Override
-    public String getGuid(String schemaGroup, String schemaName, String schemaString, String serializationType)
+    public String getSchemaId(String schemaGroup, String schemaName, String schemaString, String serializationType)
             throws IOException, SchemaRegistryClientException {
         if (schemaStringCache.containsKey(schemaString)) {
-            return schemaStringCache.get(schemaString).schemaGuid;
+            return schemaStringCache.get(schemaString).schemaId;
         }
 
         return null;

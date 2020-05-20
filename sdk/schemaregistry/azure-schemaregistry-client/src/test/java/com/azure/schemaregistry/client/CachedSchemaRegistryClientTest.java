@@ -5,46 +5,46 @@
 
 package com.azure.schemaregistry.client;
 
-import com.azure.schemaregistry.client.rest.RestService;
-import com.azure.schemaregistry.client.rest.entities.responses.SchemaObjectResponse;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.azure.schemaregistry.client.rest.AzureSchemaRegistryRestService;
+import com.azure.schemaregistry.client.rest.models.GetSchemaByIdHeaders;
+import com.azure.schemaregistry.client.rest.models.GetSchemaByIdResponse;
+import com.azure.schemaregistry.client.rest.models.SchemaId;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.UUID;
 import java.util.function.Function;
 
-import static org.easymock.EasyMock.*;
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CachedSchemaRegistryClientTest extends TestCase {
+public class CachedSchemaRegistryClientTest {
     private static final String MOCK_SERIALIZATION = "mock_serialization_type";
-    private static final String MOCK_GUID = "mock_guid";
+    private static final String MOCK_ID = "mock_guid";
+    private static final SchemaId MOCK_SCHEMA_ID = new SchemaId();
     private static final String MOCK_GROUP = "mockgroup";
     private static final String MOCK_SCHEMA_NAME = "mockname";
     private static final String MOCK_AVRO_SCHEMA = "{\"namespace\":\"example2.avro\",\"type\":\"record\",\"name\":\"User\",\"fields\":[{\"name\":\"name\",\"type\":\"string\"},{\"name\":\"favorite_number\",\"type\": [\"int\", \"null\"]}]}";
 
     private CachedSchemaRegistryClient client;
-    private RestService restService;
-    private HashMap<String, SchemaRegistryObject<?>> guidCache;
-    private HashMap<String, SchemaRegistryObject<?>> schemaStringCache;
-    private HashMap<String, Function<String, ?>> typeParserDictionary;
+    private AzureSchemaRegistryRestService restService;
+    private HashMap<String, SchemaRegistryObject> guidCache;
+    private HashMap<String, SchemaRegistryObject> schemaStringCache;
+    private HashMap<String, Function<String, Object>> typeParserDictionary;
 
-    public CachedSchemaRegistryClientTest(String testName) {
-        super(testName);
-    }
-
-    public static Test suite() {
-        return new TestSuite(CachedSchemaRegistryClientTest.class);
-    }
-
+    @BeforeEach
     protected void setUp() {
-        this.guidCache = new HashMap<String, SchemaRegistryObject<?>>();
-        this.schemaStringCache = new HashMap<String, SchemaRegistryObject<?>>();
+        this.guidCache = new HashMap<String, SchemaRegistryObject>();
+        this.schemaStringCache = new HashMap<String, SchemaRegistryObject>();
 
-        this.typeParserDictionary = new HashMap<String, Function<String, ?>>();
+        this.typeParserDictionary = new HashMap<String, Function<String, Object>>();
         this.typeParserDictionary.put(MOCK_SERIALIZATION, (s)->s);
 
-        this.restService = createNiceMock(RestService.class);
+        this.restService = mock(AzureSchemaRegistryRestService.class);
         this.client = new CachedSchemaRegistryClient(
             this.restService,
             this.guidCache,
@@ -53,55 +53,58 @@ public class CachedSchemaRegistryClientTest extends TestCase {
     }
 
     protected void tearDown() {
+        validateMockitoUsage();
     }
 
+    @Test
     public void testRegisterThenSchemaCacheHit() throws Exception {
-        expect(restService.registerSchema(anyString(), anyString(), anyString(), anyString()))
-            .andReturn(MOCK_GUID)
-            .once();
+        MOCK_SCHEMA_ID.setId(MOCK_ID);
+        when(restService.createSchema(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(MOCK_SCHEMA_ID);
 
-        replay(restService);
+        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
+        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
 
-        assertEquals(MOCK_GUID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaGuid);
-        assertEquals(MOCK_GUID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaGuid);
-
-        verify(restService);
+        verify(restService, times(1)).createSchema(anyString(), anyString(), anyString(), anyString());
     }
 
+    @Test
     public void testGetGuidThenSchemaCacheHit() throws Exception {
-        expect(restService.getGuid(anyString(), anyString(), anyString(), anyString()))
-            .andReturn(MOCK_GUID)
-            .once();
+        MOCK_SCHEMA_ID.setId(MOCK_ID);
+        when(restService.getIdBySchemaContent(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(MOCK_SCHEMA_ID);
 
-        replay(restService);
+        assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
+        assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
 
-        assertEquals(MOCK_GUID, client.getGuid(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
-        assertEquals(MOCK_GUID, client.getGuid(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
-
-        verify(restService);
+        verify(restService, times(1)).getIdBySchemaContent(anyString(), anyString(), anyString(), anyString());
     }
 
+    @Test
     public void testGetSchemaThenGuidCacheHit() throws Exception {
-        expect(restService.getSchemaByGuid(anyString()))
-            .andReturn(new SchemaObjectResponse(null, MOCK_SERIALIZATION, MOCK_GUID))
-            .once();
+        UUID mockId = UUID.randomUUID();
+        GetSchemaByIdHeaders mockHeaders = new GetSchemaByIdHeaders();
+        mockHeaders.setXSchemaType(MOCK_SERIALIZATION);
+        when(restService.getSchemaByIdWithResponseAsync(mockId))
+            .thenReturn(
+                Mono.just(new GetSchemaByIdResponse(null, 200, null, MOCK_AVRO_SCHEMA, mockHeaders)));
 
-        replay(restService);
+        SchemaRegistryObject first = client.getSchemaByGuid(mockId.toString());
+        SchemaRegistryObject second = client.getSchemaByGuid(mockId.toString());
 
-        assertEquals(MOCK_GUID, client.getSchemaByGuid(MOCK_GUID).schemaGuid);
-        assertEquals(MOCK_GUID, client.getSchemaByGuid(MOCK_GUID).schemaGuid);
+        assertTrue(first.equals(second));
+        assertEquals(mockId.toString(), first.schemaId);
 
-        verify(restService);
+        verify(restService, times(1)).getSchemaByIdWithResponseAsync(mockId);
     }
 
+    @Test
     public void testClientReset() throws Exception {
-        expect(restService.registerSchema(anyString(), anyString(), anyString(), anyString()))
-            .andReturn(MOCK_GUID)
-            .times(2);
+        MOCK_SCHEMA_ID.setId(MOCK_ID);
+        when(restService.createSchema(anyString(), anyString(), anyString(), anyString()))
+            .thenReturn(MOCK_SCHEMA_ID);
 
-        replay(restService);
-
-        assertEquals(MOCK_GUID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaGuid);
+        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
 
         client.reset();
 
@@ -111,28 +114,8 @@ public class CachedSchemaRegistryClientTest extends TestCase {
 
         this.typeParserDictionary.put(MOCK_SERIALIZATION, (s)->s);
 
-        assertEquals(MOCK_GUID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaGuid);
+        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
 
-        verify(restService);
-    }
-
-    // builder tests
-    public void testBuilderIfRegistryUrlNullOrEmptyThrow() {
-        try {
-            new CachedSchemaRegistryClient.Builder("")
-                    .loadSchemaParser(null, null)
-                    .build();
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertTrue(true);
-        }
-
-        try {
-            new CachedSchemaRegistryClient.Builder(null)
-                    .build();
-            fail();
-        } catch (IllegalArgumentException e) {
-            assertTrue(true);
-        }
+        verify(restService, times(2)).createSchema(anyString(), anyString(), anyString(), anyString());
     }
 }

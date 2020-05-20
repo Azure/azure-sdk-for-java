@@ -5,55 +5,48 @@
 
 package com.azure.schemaregistry.client;
 
-import com.azure.schemaregistry.client.rest.RestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.charset.Charset;
+import com.azure.core.util.logging.ClientLogger;
 import java.util.function.Function;
 
 /**
  * Stores all relevant information returned from SchemaRegistryClient layer.
- *
- * @param <T> is derived from the parser function that is passed in the constructor.
  */
-public class SchemaRegistryObject<T> {
-    private final Logger log;
+public class SchemaRegistryObject {
+    private final ClientLogger log;
 
-    public final String schemaGuid;
+    public final String schemaId;
     public final String serializationType;
-    private final Charset encoding = RestService.SERVICE_CHARSET;
 
-    private Function<String, T> parseMethod;
+    private Function<String, Object> parseMethod;
 
     public byte[] schemaByteArray;
-    private T deserialized;
+    private Object deserialized;
 
     public SchemaRegistryObject(
-        String schemaGuid,
+        String schemaId,
         String serializationType,
         byte[] schemaByteArray,
-        Function<String, T> parseMethod) {
-        this.schemaGuid = schemaGuid;
+        Function<String, Object> parseMethod) {
+        this.schemaId = schemaId;
         this.serializationType = serializationType;
         this.schemaByteArray = schemaByteArray;
         this.deserialized = null;
         this.parseMethod = parseMethod;
-        this.log = LoggerFactory.getLogger(this.schemaGuid);
+        this.log = new ClientLogger(this.schemaId);
     }
 
     /**
      *  @return schema object of type T, deserialized using stored schema parser method.
      */
-    public T deserialize() {
+    public Object deserialize() {
         if (parseMethod == null) {
-            log.warn(String.format("No loaded parser for %s format. Schema guid: %s", this.serializationType, this.schemaGuid));
+            log.warning(String.format("No loaded parser for %s format. Schema guid: %s", this.serializationType, this.schemaId));
             return null;
         }
 
         if (this.deserialized == null) {
-            log.debug(String.format("Deserializing schema %s", new String(this.schemaByteArray, encoding)));
-            this.deserialized = parseMethod.apply(new String(this.schemaByteArray, encoding));
+            log.verbose(String.format("Deserializing schema %s", new String(this.schemaByteArray)));
+            this.deserialized = parseMethod.apply(new String(this.schemaByteArray));
         }
         return deserialized;
     }

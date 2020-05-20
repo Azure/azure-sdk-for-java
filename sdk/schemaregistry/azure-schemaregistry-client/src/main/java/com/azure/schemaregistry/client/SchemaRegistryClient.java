@@ -20,7 +20,7 @@ public interface SchemaRegistryClient {
      * @param serializationType tag used by schema registry store to identify schema serialization type, e.g. "avro"
      * @param parseMethod function to parse string into usable schema object
      */
-    public void loadSchemaParser(String serializationType, Function<String, ?> parseMethod);
+    public void loadSchemaParser(String serializationType, Function<String, Object> parseMethod);
 
     /**
      * Registers a schema against backing schema registry store.
@@ -33,7 +33,7 @@ public interface SchemaRegistryClient {
      * @throws SchemaRegistryClientException if registration operation fails
      * @throws IOException failed or interrupted I/O operation
      */
-    public SchemaRegistryObject<?> register(String schemaGroup, String schemaName, String schemaString, String serializationType)
+    public SchemaRegistryObject register(String schemaGroup, String schemaName, String schemaString, String serializationType)
             throws IOException, SchemaRegistryClientException;
 
     /**
@@ -46,7 +46,7 @@ public interface SchemaRegistryClient {
      * @throws SchemaRegistryClientException if fetch operation fails
      * @throws IOException failed or interrupted I/O operation
      */
-    public SchemaRegistryObject<?> getSchemaByGuid(String schemaGuid) throws IOException, SchemaRegistryClientException;
+    public SchemaRegistryObject getSchemaByGuid(String schemaGuid) throws IOException, SchemaRegistryClientException;
 
     /**
      * Fetches schema GUID given schema group, name, string representation, and serialization type
@@ -58,7 +58,7 @@ public interface SchemaRegistryClient {
      * @throws SchemaRegistryClientException if fetch operation fails
      * @throws IOException failed or interrupted I/O operation
      */
-    public String getGuid(String schemaGroup, String schemaName, String schemaString, String serializationType)
+    public String getSchemaId(String schemaGroup, String schemaName, String schemaString, String serializationType)
             throws IOException, SchemaRegistryClientException;
 
     /**

@@ -1,4 +1,7 @@
 /**
- * Package containing the classes for CachedSchemaRegistryClient and AzureSchemaRegistryRestService.
+ * Package containing the classes for
+ * - SchemaRegistryClient interface
+ * - CachedSchemaRegistryClient
+ * - AzureSchemaRegistryRestService.
  */
 package com.azure.schemaregistry.client;
