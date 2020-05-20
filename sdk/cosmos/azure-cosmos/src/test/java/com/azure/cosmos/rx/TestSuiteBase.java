@@ -12,7 +12,7 @@ import com.azure.cosmos.CosmosAsyncUser;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosDatabase;
 import com.azure.cosmos.CosmosDatabaseForTest;
 import com.azure.cosmos.CosmosKeyCredential;
@@ -74,7 +74,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -591,7 +590,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
             try {
                 cosmosContainer.deleteItem(documentId, new PartitionKey(partitionKey)).block();
             } catch (Exception e) {
-                CosmosClientException dce = Utils.as(e, CosmosClientException.class);
+                CosmosException dce = Utils.as(e, CosmosException.class);
                 if (dce == null || dce.getStatusCode() != 404) {
                     throw e;
                 }
@@ -631,7 +630,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosDatabaseProperties databaseSettings = new CosmosDatabaseProperties(databaseId);
         try {
             return client.createDatabase(databaseSettings).getDatabase();
-        } catch (CosmosClientException e) {
+        } catch (CosmosException e) {
             e.printStackTrace();
         }
         return null;

@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,9 +19,14 @@ public final class CosmosDiagnostics {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
+    private FeedResponseDiagnostics feedResponseDiagnostics;
 
     CosmosDiagnostics() {
         this.clientSideRequestStatistics = new ClientSideRequestStatistics();
+    }
+
+    CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
+        this.feedResponseDiagnostics = feedResponseDiagnostics;
     }
 
     ClientSideRequestStatistics clientSideRequestStatistics() {
@@ -39,6 +45,10 @@ public final class CosmosDiagnostics {
      */
     @Override
     public String toString() {
+        if (this.feedResponseDiagnostics != null) {
+            return feedResponseDiagnostics.toString();
+        }
+
         try {
             return OBJECT_MAPPER.writeValueAsString(this.clientSideRequestStatistics);
         } catch (JsonProcessingException e) {
@@ -48,12 +58,17 @@ public final class CosmosDiagnostics {
     }
 
     /**
-     * Retrieves duration related to the completion of the request
-     * This represents end to end duration of an operation including all the retries
+     * Retrieves duration related to the completion of the request.
+     * This represents end to end duration of an operation including all the retries.
+     * This is meant for point operation only, for query please use toString() to get full query diagnostics.
      *
      * @return request completion duration
      */
     public Duration getDuration() {
+        if (this.feedResponseDiagnostics != null) {
+            return null;
+        }
+
         return this.clientSideRequestStatistics.getDuration();
     }
 }

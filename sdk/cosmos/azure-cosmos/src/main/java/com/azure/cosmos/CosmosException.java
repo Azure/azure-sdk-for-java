@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
-import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
@@ -21,20 +21,20 @@ import java.util.stream.Collectors;
 /**
  * This class defines a custom exception type for all operations on
  * CosmosClient in the Azure Cosmos DB database service. Applications are
- * expected to catch CosmosClientException and handle errors as appropriate when
+ * expected to catch CosmosException and handle errors as appropriate when
  * calling methods on CosmosClient.
  * <p>
  * Errors coming from the service during normal execution are converted to
- * CosmosClientException before returning to the application with the following
+ * CosmosException before returning to the application with the following
  * exception:
  * <p>
  * When a BE error is encountered during a QueryIterable&lt;T&gt; iteration, an
- * IllegalStateException is thrown instead of CosmosClientException.
+ * IllegalStateException is thrown instead of CosmosException.
  * <p>
  * When a transport level error happens that request is not able to reach the
- * service, an IllegalStateException is thrown instead of CosmosClientException.
+ * service, an IllegalStateException is thrown instead of CosmosException.
  */
-public class CosmosClientException extends AzureException {
+public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private final int statusCode;
@@ -50,7 +50,7 @@ public class CosmosClientException extends AzureException {
     Uri requestUri;
     String resourceAddress;
 
-    protected CosmosClientException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
+    protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
         this.requestTimeline = RequestTimeline.empty();
@@ -58,49 +58,49 @@ public class CosmosClientException extends AzureException {
     }
 
     /**
-     * Creates a new instance of the CosmosClientException class.
+     * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
      */
-    CosmosClientException(int statusCode) {
+    CosmosException(int statusCode) {
         this(statusCode, null, null, null);
     }
 
     /**
-     * Creates a new instance of the CosmosClientException class.
+     * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
      * @param errorMessage the error message.
      */
-    protected CosmosClientException(int statusCode, String errorMessage) {
+    protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        ModelBridgeInternal.setProperty(ModelBridgeInternal.getJsonSerializable(cosmosError), Constants.Properties.MESSAGE, errorMessage);
+        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**
-     * Creates a new instance of the CosmosClientException class.
+     * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
      * @param innerException the original exception.
      */
-    protected CosmosClientException(int statusCode, Exception innerException) {
+    protected CosmosException(int statusCode, Exception innerException) {
         this(statusCode, null, null, innerException);
     }
 
     /**
-     * Creates a new instance of the CosmosClientException class.
+     * Creates a new instance of the CosmosException class.
      *
      * @param statusCode the http status code of the response.
      * @param cosmosErrorResource the error resource object.
      * @param responseHeaders the response headers.
      */
-    protected CosmosClientException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
+    protected CosmosException(int statusCode, CosmosError cosmosErrorResource, Map<String, String> responseHeaders) {
         this(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
     /**
-     * Creates a new instance of the CosmosClientException class.
+     * Creates a new instance of the CosmosException class.
      *
      * @param resourceAddress the address of the resource the request is associated with.
      * @param statusCode the http status code of the response.
@@ -108,17 +108,17 @@ public class CosmosClientException extends AzureException {
      * @param responseHeaders the response headers.
      */
 
-    protected CosmosClientException(String resourceAddress,
-                          int statusCode,
-                          CosmosError cosmosErrorResource,
-                          Map<String, String> responseHeaders) {
+    protected CosmosException(String resourceAddress,
+                              int statusCode,
+                              CosmosError cosmosErrorResource,
+                              Map<String, String> responseHeaders) {
         this(statusCode, cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
         this.resourceAddress = resourceAddress;
         this.cosmosError = cosmosErrorResource;
     }
 
     /**
-     * Creates a new instance of the CosmosClientException class.
+     * Creates a new instance of the CosmosException class.
      *
      * @param message the string message.
      * @param statusCode the http status code of the response.
@@ -126,8 +126,8 @@ public class CosmosClientException extends AzureException {
      * @param responseHeaders the response headers.
      * @param resourceAddress the address of the resource the request is associated with.
      */
-    protected CosmosClientException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode,
-                          String resourceAddress) {
+    protected CosmosException(String message, Exception exception, Map<String, String> responseHeaders, int statusCode,
+                              String resourceAddress) {
         this(statusCode, message, responseHeaders, exception);
         this.resourceAddress = resourceAddress;
     }
@@ -188,7 +188,7 @@ public class CosmosClientException extends AzureException {
      *
      * @return the error.
      */
-    public CosmosError getError() {
+    CosmosError getError() {
         return this.cosmosError;
     }
 
@@ -251,7 +251,7 @@ public class CosmosClientException extends AzureException {
         return cosmosDiagnostics;
     }
 
-    CosmosClientException setDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
+    CosmosException setDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         this.cosmosDiagnostics = cosmosDiagnostics;
         return this;
     }
@@ -270,7 +270,7 @@ public class CosmosClientException extends AzureException {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
                 innerErrorMessage = String.valueOf(
-                    ModelBridgeInternal.getObjectFromJsonSerializable(ModelBridgeInternal.getJsonSerializable(cosmosError), "Errors"));
+                    ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
             }
         }
         return innerErrorMessage;

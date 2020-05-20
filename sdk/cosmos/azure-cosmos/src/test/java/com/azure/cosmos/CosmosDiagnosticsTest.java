@@ -58,7 +58,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
-    public void afterClass() throws CosmosClientException {
+    public void afterClass() {
         assertThat(this.gatewayClient).isNotNull();
         this.gatewayClient.close();
         if (this.directClient != null) {
@@ -67,7 +67,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
-    public void gatewayDiagnostics() throws CosmosClientException {
+    public void gatewayDiagnostics() {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getDiagnostics().toString();
@@ -81,7 +81,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
-    public void gatewayDiagnosticsOnException() throws CosmosClientException {
+    public void gatewayDiagnosticsOnException() {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
         CosmosClient client = null;
@@ -101,7 +101,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     new PartitionKey("wrongPartitionKey"),
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
-        } catch (CosmosClientException exception) {
+        } catch (CosmosException exception) {
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"GATEWAY\"");
@@ -118,7 +118,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
-    public void systemDiagnosticsForSystemStateInformation() throws CosmosClientException {
+    public void systemDiagnosticsForSystemStateInformation() {
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = this.container.createItem(cosmosItemProperties);
         String diagnostics = createResponse.getDiagnostics().toString();
@@ -131,7 +131,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
-    public void directDiagnostics() throws CosmosClientException {
+    public void directDiagnostics() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = cosmosContainer.createItem(cosmosItemProperties);
@@ -150,7 +150,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
 
     //  TODO: (naveen) - Check the priority
     @Test(groups = {"simple"}, priority = 1, enabled = false)
-    public void directDiagnosticsOnException() throws CosmosClientException {
+    public void directDiagnosticsOnException() {
         CosmosContainer cosmosContainer = directClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).getContainer(cosmosAsyncContainer.getId());
         CosmosItemProperties cosmosItemProperties = getCosmosItemProperties();
         CosmosItemResponse<CosmosItemProperties> createResponse = null;
@@ -171,7 +171,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                     new PartitionKey("wrongPartitionKey"),
                     CosmosItemProperties.class);
             fail("request should fail as partition key is wrong");
-        } catch (CosmosClientException exception) {
+        } catch (CosmosException exception) {
             String diagnostics = exception.getDiagnostics().toString();
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
@@ -218,7 +218,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"})
-    public void serializationOnVariousScenarios() throws CosmosClientException {
+    public void serializationOnVariousScenarios() {
         //checking database serialization
         CosmosDatabaseResponse cosmosDatabase = gatewayClient.getDatabase(cosmosAsyncContainer.getDatabase().getId()).read();
         String diagnostics = cosmosDatabase.getDiagnostics().toString();

@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.QueryMetrics;
@@ -26,7 +27,7 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.query.metrics.ClientSideMetrics;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosAsyncItemResponse;
-import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosStoredProcedureProperties;
 import com.azure.cosmos.models.FeedResponse;
@@ -119,39 +120,39 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static FeedResponseDiagnostics createFeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
-        return new FeedResponseDiagnostics(queryMetricsMap);
+    public static CosmosDiagnostics createCosmosDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+        return new CosmosDiagnostics(new FeedResponseDiagnostics(queryMetricsMap));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> E setResourceAddress(E e, String resourceAddress) {
+    public static <E extends CosmosException> E setResourceAddress(E e, String resourceAddress) {
         e.setResourceAddress(resourceAddress);
         return e;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> long getLSN(E e) {
+    public static <E extends CosmosException> long getLSN(E e) {
         return e.lsn;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> String getPartitionKeyRangeId(E e) {
+    public static <E extends CosmosException> String getPartitionKeyRangeId(E e) {
         return e.partitionKeyRangeId;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> String getResourceAddress(E e) {
+    public static <E extends CosmosException> String getResourceAddress(E e) {
         return e.getResourceAddress();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> E setLSN(E e, long lsn) {
+    public static <E extends CosmosException> E setLSN(E e, long lsn) {
         e.lsn = lsn;
         return e;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> E setPartitionKeyRangeId(E e, String partitionKeyRangeId) {
+    public static <E extends CosmosException> E setPartitionKeyRangeId(E e, String partitionKeyRangeId) {
         e.partitionKeyRangeId = partitionKeyRangeId;
         return e;
     }
@@ -162,20 +163,20 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> Uri getRequestUri(CosmosClientException cosmosClientException) {
-        return cosmosClientException.requestUri;
+    public static <E extends CosmosException> Uri getRequestUri(CosmosException cosmosException) {
+        return cosmosException.requestUri;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> void setRequestHeaders(CosmosClientException cosmosClientException,
-                                                                           Map<String, String> requestHeaders) {
-        cosmosClientException.requestHeaders = requestHeaders;
+    public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
+                                                                     Map<String, String> requestHeaders) {
+        cosmosException.requestHeaders = requestHeaders;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosClientException> Map<String, String> getRequestHeaders(
-        CosmosClientException cosmosClientException) {
-        return cosmosClientException.requestHeaders;
+    public static <E extends CosmosException> Map<String, String> getRequestHeaders(
+        CosmosException cosmosException) {
+        return cosmosException.requestHeaders;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -217,11 +218,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static String getInnerErrorMessage(CosmosClientException cosmosClientException) {
-        if (cosmosClientException == null) {
+    public static String getInnerErrorMessage(CosmosException cosmosException) {
+        if (cosmosException == null) {
             return null;
         }
-        return cosmosClientException.innerErrorMessage();
+        return cosmosException.innerErrorMessage();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -255,59 +256,63 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException setCosmosDiagnostics(
-                                            CosmosClientException cosmosClientException,
+    public static CosmosException setCosmosDiagnostics(
+                                            CosmosException cosmosException,
                                             CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosClientException.setDiagnostics(cosmosDiagnostics);
+        return cosmosException.setDiagnostics(cosmosDiagnostics);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException createCosmosClientException(int statusCode) {
-        return new CosmosClientException(statusCode, null, null, null);
+    public static CosmosException createCosmosException(int statusCode) {
+        return new CosmosException(statusCode, null, null, null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException createCosmosClientException(int statusCode, String errorMessage) {
-        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, errorMessage, null, null);
-        cosmosClientException.setError(new CosmosError());
-        ModelBridgeInternal.setProperty(
-            ModelBridgeInternal.getJsonSerializable(cosmosClientException.getError()), Constants.Properties.MESSAGE, errorMessage);
-        return cosmosClientException;
+    public static CosmosException createCosmosException(int statusCode, String errorMessage) {
+        CosmosException cosmosException = new CosmosException(statusCode, errorMessage, null, null);
+        cosmosException.setError(new CosmosError());
+        ModelBridgeInternal.setProperty(cosmosException.getError(), Constants.Properties.MESSAGE, errorMessage);
+        return cosmosException;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException createCosmosClientException(int statusCode, Exception innerException) {
-        return new CosmosClientException(statusCode, null, null, innerException);
+    public static CosmosException createCosmosException(int statusCode, Exception innerException) {
+        return new CosmosException(statusCode, null, null, innerException);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException createCosmosClientException(int statusCode, CosmosError cosmosErrorResource,
-                                                                    Map<String, String> responseHeaders) {
-        return new CosmosClientException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
+    public static CosmosException createCosmosException(int statusCode, CosmosError cosmosErrorResource,
+                                                        Map<String, String> responseHeaders) {
+        return new CosmosException(/* resourceAddress */ null, statusCode, cosmosErrorResource, responseHeaders);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException createCosmosClientException(String resourceAddress,
-                                                                    int statusCode,
-                                                                    CosmosError cosmosErrorResource,
-                                                                    Map<String, String> responseHeaders) {
-        CosmosClientException cosmosClientException = new CosmosClientException(statusCode,
+    public static CosmosException createCosmosException(String resourceAddress,
+                                                        int statusCode,
+                                                        CosmosError cosmosErrorResource,
+                                                        Map<String, String> responseHeaders) {
+        CosmosException cosmosException = new CosmosException(statusCode,
             cosmosErrorResource == null ? null : cosmosErrorResource.getMessage(), responseHeaders, null);
-        cosmosClientException.setResourceAddress(resourceAddress);
-        cosmosClientException.setError(cosmosErrorResource);
-        return cosmosClientException;
+        cosmosException.setResourceAddress(resourceAddress);
+        cosmosException.setError(cosmosErrorResource);
+        return cosmosException;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosClientException createCosmosClientException(String message,
-                                                                    Exception exception,
-                                                                    Map<String, String> responseHeaders,
-                                                                    int statusCode,
-                                                                    String resourceAddress) {
-        CosmosClientException cosmosClientException = new CosmosClientException(statusCode, message, responseHeaders,
+    public static CosmosError getCosmosError(CosmosException cosmosException) {
+        return cosmosException == null ? null : cosmosException.getError();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static CosmosException createCosmosException(String message,
+                                                        Exception exception,
+                                                        Map<String, String> responseHeaders,
+                                                        int statusCode,
+                                                        String resourceAddress) {
+        CosmosException cosmosException = new CosmosException(statusCode, message, responseHeaders,
             exception);
-        cosmosClientException.setResourceAddress(resourceAddress);
-        return cosmosClientException;
+        cosmosException.setResourceAddress(resourceAddress);
+        return cosmosException;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -385,7 +390,7 @@ public final class BridgeInternal {
     public static void recordGatewayResponse(CosmosDiagnostics cosmosDiagnostics,
                                              RxDocumentServiceRequest rxDocumentServiceRequest,
                                              StoreResponse storeResponse,
-                                             CosmosClientException exception) {
+                                             CosmosException exception) {
         cosmosDiagnostics.clientSideRequestStatistics().recordGatewayResponse(rxDocumentServiceRequest, storeResponse, exception);
     }
 

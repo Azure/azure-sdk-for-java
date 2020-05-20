@@ -9,26 +9,47 @@ import com.azure.cosmos.implementation.RequestOptions;
  */
 public final class CosmosDatabaseRequestOptions {
     private Integer offerThroughput;
-    private AccessCondition accessCondition;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
 
     /**
-     * Gets the conditions associated with the request.
+     * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the access condition.
+     * @return the ifMatchETag associated with the request.
      */
-    public AccessCondition getAccessCondition() {
-        return accessCondition;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
-     * Sets the conditions associated with the request.
+     * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param accessCondition the access condition.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosDatabaseRequestOptions setAccessCondition(AccessCondition accessCondition) {
-        this.accessCondition = accessCondition;
+    public CosmosDatabaseRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
+        return this;
+    }
+
+    /**
+     * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @return the ifNoneMatchETag associated with the request.
+     */
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
+    }
+
+    /**
+     * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
+     *
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
+     * @return the current request options
+     */
+    public CosmosDatabaseRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
@@ -59,7 +80,8 @@ public final class CosmosDatabaseRequestOptions {
 
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
-        options.setAccessCondition(accessCondition);
+        options.setIfMatchETag(getIfMatchETag());
+        options.setIfNoneMatchETag(getIfNoneMatchETag());
         options.setOfferThroughput(offerThroughput);
         options.setThroughputProperties(this.throughputProperties);
         return options;

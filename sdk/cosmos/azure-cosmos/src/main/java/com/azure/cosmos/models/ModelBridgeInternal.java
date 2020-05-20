@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosStoredProcedure;
 import com.azure.cosmos.CosmosTrigger;
 import com.azure.cosmos.CosmosUserDefinedFunction;
 import com.azure.cosmos.implementation.Conflict;
+import com.azure.cosmos.implementation.ConsistencyPolicy;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
@@ -482,17 +483,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosError createCosmosError(ObjectNode objectNode) {
-        return new CosmosError(objectNode);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosError createCosmosError(String jsonString) {
-        return new CosmosError(jsonString);
-    }
-
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static JsonSerializable instantiateJsonSerializable(ObjectNode objectNode, Class<?> klassType) {
         try {
             // the hot path should come through here to avoid serialization/deserialization
@@ -615,8 +605,6 @@ public final class ModelBridgeInternal {
             ((CompositePath) t).populatePropertyBag();
         } else if (t instanceof ConflictResolutionPolicy) {
             ((ConflictResolutionPolicy) t).populatePropertyBag();
-        } else if (t instanceof ConsistencyPolicy) {
-            ((ConsistencyPolicy) t).populatePropertyBag();
         } else if (t instanceof DatabaseAccountLocation) {
             ((DatabaseAccountLocation) t).populatePropertyBag();
         } else if (t instanceof ExcludedPath) {
@@ -639,8 +627,6 @@ public final class ModelBridgeInternal {
             ((UniqueKeyPolicy) t).populatePropertyBag();
         } else if (t instanceof Index) {
             ((Index) t).populatePropertyBag();
-        } else if (t instanceof CosmosError) {
-            ((CosmosError) t).populatePropertyBag();
         } else {
             throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
@@ -648,12 +634,12 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> JsonSerializable getJsonSerializable(T t) {
-        if (t instanceof CompositePath) {
+        if (t instanceof JsonSerializable) {
+            return (JsonSerializable) t;
+        } if (t instanceof CompositePath) {
             return ((CompositePath) t).getJsonSerializable();
         } else if (t instanceof ConflictResolutionPolicy) {
             return ((ConflictResolutionPolicy) t).getJsonSerializable();
-        } else if (t instanceof ConsistencyPolicy) {
-            return ((ConsistencyPolicy) t).getJsonSerializable();
         } else if (t instanceof DatabaseAccountLocation) {
             return ((DatabaseAccountLocation) t).getJsonSerializable();
         } else if (t instanceof ExcludedPath) {
@@ -676,8 +662,6 @@ public final class ModelBridgeInternal {
             return ((UniqueKeyPolicy) t).getJsonSerializable();
         } else if (t instanceof Index) {
             return ((Index) t).getJsonSerializable();
-        } else if (t instanceof CosmosError) {
-            return ((CosmosError) t).getJsonSerializable();
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }

@@ -120,7 +120,7 @@ class ClientSideRequestStatistics {
 
     void recordGatewayResponse(
         RxDocumentServiceRequest rxDocumentServiceRequest, StoreResponse storeResponse,
-        CosmosClientException exception) {
+        CosmosException exception) {
         ZonedDateTime responseTime = ZonedDateTime.now(ZoneOffset.UTC);
         connectionMode = ConnectionMode.GATEWAY;
         synchronized (this) {

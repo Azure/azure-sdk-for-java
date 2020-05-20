@@ -154,7 +154,7 @@ public final class ConflictResolutionPolicy {
      *
      * @param jsonString the json string
      */
-    public ConflictResolutionPolicy(String jsonString) {
+    ConflictResolutionPolicy(String jsonString) {
         this.jsonSerializable = new JsonSerializable(jsonString);
     }
 

@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.implementation.CosmosItemProperties;
 import com.azure.cosmos.models.FeedOptions;
@@ -71,7 +71,7 @@ public class AggregateQueryTests extends TestSuiteBase {
     public void queryDocumentsWithAggregates(boolean qmEnabled) throws Exception {
 
         FeedOptions options = new FeedOptions();
-        
+
         options.setPopulateQueryMetrics(qmEnabled);
         options.setMaxDegreeOfParallelism(2);
 
@@ -196,7 +196,7 @@ public class AggregateQueryTests extends TestSuiteBase {
             truncateCollection(createdCollection);
         } catch (Throwable throwable) {
             throwable = Exceptions.unwrap(throwable);
-            if (!(throwable instanceof CosmosClientException)) {
+            if (!(throwable instanceof CosmosException)) {
                 throw new AssertionError(lenientFormat("stopping test due to collection %s truncation failure: ",
                     createdCollection,
                     throwable));
