@@ -873,12 +873,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.putAll(customOptions);
         }
 
-        if (options.getIfMatchEtag() != null) {
-                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchEtag());
+        if (options.getIfMatchETag() != null) {
+                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchETag());
         }
 
-        if(options.getIfNoneMatchEtag() != null) {
-            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchEtag());
+        if(options.getIfNoneMatchETag() != null) {
+            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchETag());
         }
 
         if (options.getConsistencyLevel() != null) {

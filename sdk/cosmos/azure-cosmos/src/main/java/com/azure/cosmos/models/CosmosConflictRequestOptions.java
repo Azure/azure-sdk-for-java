@@ -8,53 +8,53 @@ import com.azure.cosmos.implementation.RequestOptions;
  * The type Cosmos conflict request options.
  */
 public final class CosmosConflictRequestOptions {
-    private String ifMatchEtag;
-    private String ifNoneMatchEtag;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return ifMatchEtag the ifMatchEtag associated with the request.
+     * @return ifMatchETag the ifMatchETag associated with the request.
      */
-    public String getIfMatchEtag() {
-        return this.ifMatchEtag;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
      * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifMatchEtag the ifMatchEtag associated with the request.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosConflictRequestOptions setIfMatchEtag(String ifMatchEtag) {
-        this.ifMatchEtag = ifMatchEtag;
+    public CosmosConflictRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifNoneMatchEtag associated with the request.
+     * @return the ifNoneMatchETag associated with the request.
      */
-    public String getIfNoneMatchEtag() {
-        return this.ifNoneMatchEtag;
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
      * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
+     * @param ifNoneMatchEtag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosConflictRequestOptions setIfNoneMatchEtag(String ifNoneMatchEtag) {
-        this.ifNoneMatchEtag = ifNoneMatchEtag;
+    public CosmosConflictRequestOptions setIfNoneMatchETag(String ifNoneMatchEtag) {
+        this.ifNoneMatchETag = ifNoneMatchEtag;
         return this;
     }
 
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setIfMatchEtag(getIfMatchEtag());
-        requestOptions.setIfNoneMatchEtag(getIfNoneMatchEtag());
+        requestOptions.setIfMatchETag(getIfMatchETag());
+        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         return requestOptions;
     }
 }

@@ -13,8 +13,8 @@ public final class CosmosContainerRequestOptions {
     private boolean populateQuotaInfo;
     private ConsistencyLevel consistencyLevel;
     private String sessionToken;
-    private String ifMatchEtag;
-    private String ifNoneMatchEtag;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private ThroughputProperties throughputProperties;
 
     /**
@@ -104,40 +104,40 @@ public final class CosmosContainerRequestOptions {
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifMatchEtag associated with the request.
+     * @return the ifMatchETag associated with the request.
      */
-    public String getIfMatchEtag() {
-        return this.ifMatchEtag;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
      * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifMatchEtag the ifMatchEtag associated with the request.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setIfMatchEtag(String ifMatchEtag) {
-        this.ifMatchEtag = ifMatchEtag;
+    public CosmosContainerRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifNoneMatchEtag associated with the request.
+     * @return the ifNoneMatchETag associated with the request.
      */
-    public String getIfNoneMatchEtag() {
-        return this.ifNoneMatchEtag;
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
      * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosContainerRequestOptions setIfNoneMatchEtag(String ifNoneMatchEtag) {
-        this.ifNoneMatchEtag = ifNoneMatchEtag;
+    public CosmosContainerRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
@@ -148,8 +148,8 @@ public final class CosmosContainerRequestOptions {
 
     RequestOptions toRequestOptions() {
         RequestOptions options = new RequestOptions();
-        options.setIfMatchEtag(getIfMatchEtag());
-        options.setIfNoneMatchEtag(getIfNoneMatchEtag());
+        options.setIfMatchETag(getIfMatchETag());
+        options.setIfNoneMatchETag(getIfNoneMatchETag());
         options.setOfferThroughput(offerThroughput);
         options.setPopulateQuotaInfo(populateQuotaInfo);
         options.setSessionToken(sessionToken);

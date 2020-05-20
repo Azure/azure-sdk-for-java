@@ -528,7 +528,7 @@ public class ConflictWorker {
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
-        options.setIfMatchEtag(document.getETag());
+        options.setIfMatchETag(document.getETag());
 
 
         return client.replaceDocument(document.getSelfLink(), document, null).onErrorResume(e -> {
@@ -548,7 +548,7 @@ public class ConflictWorker {
         BridgeInternal.setProperty(document, "regionEndpoint", client.getReadEndpoint());
 
         RequestOptions options = new RequestOptions();
-        options.setIfMatchEtag(document.getETag());
+        options.setIfMatchETag(document.getETag());
 
 
         return client.deleteDocument(document.getSelfLink(), options).onErrorResume(e -> {

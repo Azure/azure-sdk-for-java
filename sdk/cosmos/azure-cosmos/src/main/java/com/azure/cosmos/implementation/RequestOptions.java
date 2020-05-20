@@ -24,8 +24,8 @@ public class RequestOptions {
     private String sessionToken;
     private Integer resourceTokenExpirySeconds;
     private String offerType;
-    private String ifMatchEtag;
-    private String ifNoneMatchEtag;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
     private Integer offerThroughput;
     private PartitionKey partitionkey;
     private String partitionKeyRangeId;
@@ -73,37 +73,37 @@ public class RequestOptions {
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return tthe ifMatchEtag associated with the request.
+     * @return tthe ifMatchETag associated with the request.
      */
-    public String getIfMatchEtag() {
-        return this.ifMatchEtag;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
      * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifMatchEtag the ifMatchEtag associated with the request.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      */
-    public void setIfMatchEtag(String ifMatchEtag) {
-        this.ifMatchEtag = ifMatchEtag;
+    public void setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
     }
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifNoneMatchEtag associated with the request.
+     * @return the ifNoneMatchETag associated with the request.
      */
-    public String getIfNoneMatchEtag() {
-        return this.ifNoneMatchEtag;
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
      * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
      */
-    public void setIfNoneMatchEtag(String ifNoneMatchEtag) {
-        this.ifNoneMatchEtag = ifNoneMatchEtag;
+    public void setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
     }
 
     /**

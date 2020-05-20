@@ -131,7 +131,7 @@ class DocumentServiceLeaseStore implements LeaseStore {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        requestOptions.setIfMatchEtag(this.lockETag);
+        requestOptions.setIfMatchETag(this.lockETag);
 
         return this.client.deleteItem(lockId, new PartitionKey(lockId), requestOptions)
             .map(documentResourceResponse -> {

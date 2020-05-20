@@ -9,54 +9,54 @@ import com.azure.cosmos.implementation.RequestOptions;
  */
 public final class CosmosPermissionRequestOptions {
     //TODO: Need to add respective options
-    private String ifMatchEtag;
-    private String ifNoneMatchEtag;
+    private String ifMatchETag;
+    private String ifNoneMatchETag;
 
     /**
      * Gets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifMatchEtag associated with the request.
+     * @return the ifMatchETag associated with the request.
      */
-    public String getIfMatchEtag() {
-        return this.ifMatchEtag;
+    public String getIfMatchETag() {
+        return this.ifMatchETag;
     }
 
     /**
      * Sets the If-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifMatchEtag the ifMatchEtag associated with the request.
+     * @param ifMatchETag the ifMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosPermissionRequestOptions setIfMatchEtag(String ifMatchEtag) {
-        this.ifMatchEtag = ifMatchEtag;
+    public CosmosPermissionRequestOptions setIfMatchETag(String ifMatchETag) {
+        this.ifMatchETag = ifMatchETag;
         return this;
     }
 
     /**
      * Gets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @return the ifNoneMatchEtag associated with the request.
+     * @return the ifNoneMatchETag associated with the request.
      */
-    public String getIfNoneMatchEtag() {
-        return this.ifNoneMatchEtag;
+    public String getIfNoneMatchETag() {
+        return this.ifNoneMatchETag;
     }
 
     /**
      * Sets the If-None-Match (ETag) associated with the request in the Azure Cosmos DB service.
      *
-     * @param ifNoneMatchEtag the ifNoneMatchEtag associated with the request.
+     * @param ifNoneMatchETag the ifNoneMatchETag associated with the request.
      * @return the current request options
      */
-    public CosmosPermissionRequestOptions setIfNoneMatchEtag(String ifNoneMatchEtag) {
-        this.ifNoneMatchEtag = ifNoneMatchEtag;
+    public CosmosPermissionRequestOptions setIfNoneMatchETag(String ifNoneMatchETag) {
+        this.ifNoneMatchETag = ifNoneMatchETag;
         return this;
     }
 
     RequestOptions toRequestOptions() {
         //TODO: Should we set any default values instead of nulls?
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setIfMatchEtag(getIfMatchEtag());
-        requestOptions.setIfNoneMatchEtag(getIfNoneMatchEtag());
+        requestOptions.setIfMatchETag(getIfMatchETag());
+        requestOptions.setIfNoneMatchETag(getIfNoneMatchETag());
         return requestOptions;
     }
 }
