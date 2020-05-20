@@ -11,6 +11,7 @@ import com.azure.core.annotation.Get;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -25,16 +26,20 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.management.compute.ApiErrorException;
+import com.azure.management.compute.GalleryImageUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GalleryImages. */
 public final class GalleryImagesInner {
+    private final ClientLogger logger = new ClientLogger(GalleryImagesInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final GalleryImagesService service;
 
@@ -61,10 +66,10 @@ public final class GalleryImagesInner {
     private interface GalleryImagesService {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/images/{galleryImageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -76,11 +81,27 @@ public final class GalleryImagesInner {
             Context context);
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/images/{galleryImageName}")
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<SimpleResponse<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("galleryName") String galleryName,
+            @PathParam("galleryImageName") String galleryImageName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GalleryImageUpdate galleryImage,
+            Context context);
+
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryImageInner>> get(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -92,10 +113,10 @@ public final class GalleryImagesInner {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/images/{galleryImageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -107,10 +128,10 @@ public final class GalleryImagesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/images")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryImageListInner>> listByGallery(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -121,10 +142,10 @@ public final class GalleryImagesInner {
 
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/images/{galleryImageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
         @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryImageInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -135,12 +156,28 @@ public final class GalleryImagesInner {
             @BodyParam("application/json") GalleryImageInner galleryImage,
             Context context);
 
+        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
+        Mono<SimpleResponse<GalleryImageInner>> beginUpdate(
+            @HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("galleryName") String galleryName,
+            @PathParam("galleryImageName") String galleryImageName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") GalleryImageUpdate galleryImage,
+            Context context);
+
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
-                + "/galleries/{galleryName}/images/{galleryImageName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries"
+                + "/{galleryName}/images/{galleryImageName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("subscriptionId") String subscriptionId,
@@ -153,7 +190,7 @@ public final class GalleryImagesInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<SimpleResponse<GalleryImageListInner>> listByGalleryNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -168,14 +205,40 @@ public final class GalleryImagesInner {
      *     characters.
      * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryImage is required and cannot be null."));
+        } else {
+            galleryImage.validate();
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -202,7 +265,7 @@ public final class GalleryImagesInner {
      *     characters.
      * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
@@ -229,7 +292,7 @@ public final class GalleryImagesInner {
      *     characters.
      * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
@@ -240,20 +303,148 @@ public final class GalleryImagesInner {
     }
 
     /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryImage is required and cannot be null."));
+        } else {
+            galleryImage.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getHost(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            galleryName,
+                            galleryImageName,
+                            apiVersion,
+                            galleryImage,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GalleryImageInner> updateAsync(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        Mono<SimpleResponse<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage);
+        return this
+            .client
+            .<GalleryImageInner, GalleryImageInner>getLroResultAsync(
+                mono, this.client.getHttpPipeline(), GalleryImageInner.class, GalleryImageInner.class)
+            .last()
+            .flatMap(AsyncPollResponse::getFinalResult);
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryImageInner update(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        return updateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage).block();
+    }
+
+    /**
      * Retrieves information about a gallery Image Definition.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
      * @param galleryImageName The name of the gallery Image Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<GalleryImageInner>> getWithResponseAsync(
         String resourceGroupName, String galleryName, String galleryImageName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -275,8 +466,56 @@ public final class GalleryImagesInner {
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
      * @param galleryImageName The name of the gallery Image Definition to be retrieved.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryImageInner>> getWithResponseAsync(
+        String resourceGroupName, String galleryName, String galleryImageName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .get(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryImageName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Retrieves information about a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
+     * @param galleryImageName The name of the gallery Image Definition to be retrieved.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
@@ -300,7 +539,7 @@ public final class GalleryImagesInner {
      * @param galleryName The name of the Shared Image Gallery from which the Image Definitions are to be retrieved.
      * @param galleryImageName The name of the gallery Image Definition to be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
@@ -316,14 +555,35 @@ public final class GalleryImagesInner {
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
      * @param galleryImageName The name of the gallery Image Definition to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String galleryName, String galleryImageName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -346,7 +606,7 @@ public final class GalleryImagesInner {
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
      * @param galleryImageName The name of the gallery Image Definition to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -368,7 +628,7 @@ public final class GalleryImagesInner {
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
      * @param galleryImageName The name of the gallery Image Definition to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -382,14 +642,31 @@ public final class GalleryImagesInner {
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery from which Image Definitions are to be listed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Images operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GalleryImageInner>> listByGallerySinglePageAsync(
         String resourceGroupName, String galleryName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -418,8 +695,59 @@ public final class GalleryImagesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery from which Image Definitions are to be listed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Images operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GalleryImageInner>> listByGallerySinglePageAsync(
+        String resourceGroupName, String galleryName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .listByGallery(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                apiVersion,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * List gallery Image Definitions in a gallery.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery from which Image Definitions are to be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Images operation response.
      */
@@ -435,8 +763,27 @@ public final class GalleryImagesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery from which Image Definitions are to be listed.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Images operation response.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<GalleryImageInner> listByGalleryAsync(
+        String resourceGroupName, String galleryName, Context context) {
+        return new PagedFlux<>(
+            () -> listByGallerySinglePageAsync(resourceGroupName, galleryName, context),
+            nextLink -> listByGalleryNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List gallery Image Definitions in a gallery.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery from which Image Definitions are to be listed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Images operation response.
      */
@@ -455,14 +802,40 @@ public final class GalleryImagesInner {
      *     characters.
      * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<GalleryImageInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String galleryName, String galleryImageName, GalleryImageInner galleryImage) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryImage is required and cannot be null."));
+        } else {
+            galleryImage.validate();
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -488,8 +861,69 @@ public final class GalleryImagesInner {
      *     are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
      *     characters.
      * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryImageInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryImageName,
+        GalleryImageInner galleryImage,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryImage is required and cannot be null."));
+        } else {
+            galleryImage.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryImageName,
+                apiVersion,
+                galleryImage,
+                context);
+    }
+
+    /**
+     * Create or update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be created.
+     * @param galleryImageName The name of the gallery Image Definition to be created or updated. The allowed characters
+     *     are alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
@@ -517,7 +951,7 @@ public final class GalleryImagesInner {
      *     characters.
      * @param galleryImage Specifies information about the gallery Image Definition that you want to create or update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the gallery Image Definition that you want to create or update.
      */
@@ -528,20 +962,210 @@ public final class GalleryImagesInner {
     }
 
     /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryImageInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryImage is required and cannot be null."));
+        } else {
+            galleryImage.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .beginUpdate(
+                            this.client.getHost(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            galleryName,
+                            galleryImageName,
+                            apiVersion,
+                            galleryImage,
+                            context))
+            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<GalleryImageInner>> beginUpdateWithResponseAsync(
+        String resourceGroupName,
+        String galleryName,
+        String galleryImageName,
+        GalleryImageUpdate galleryImage,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        if (galleryImage == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryImage is required and cannot be null."));
+        } else {
+            galleryImage.validate();
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .beginUpdate(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryImageName,
+                apiVersion,
+                galleryImage,
+                context);
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<GalleryImageInner> beginUpdateAsync(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        return beginUpdateWithResponseAsync(resourceGroupName, galleryName, galleryImageName, galleryImage)
+            .flatMap(
+                (SimpleResponse<GalleryImageInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    /**
+     * Update a gallery Image Definition.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be updated.
+     * @param galleryImageName The name of the gallery Image Definition to be updated. The allowed characters are
+     *     alphabets and numbers with dots, dashes, and periods allowed in the middle. The maximum length is 80
+     *     characters.
+     * @param galleryImage Specifies information about the gallery Image Definition that you want to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the gallery Image Definition that you want to create or update.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GalleryImageInner beginUpdate(
+        String resourceGroupName, String galleryName, String galleryImageName, GalleryImageUpdate galleryImage) {
+        return beginUpdateAsync(resourceGroupName, galleryName, galleryImageName, galleryImage).block();
+    }
+
+    /**
      * Delete a gallery image.
      *
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
      * @param galleryImageName The name of the gallery Image Definition to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
         String resourceGroupName, String galleryName, String galleryImageName) {
-        final String apiVersion = "2019-03-01";
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -563,8 +1187,56 @@ public final class GalleryImagesInner {
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
      * @param galleryImageName The name of the gallery Image Definition to be deleted.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String galleryName, String galleryImageName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (galleryName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter galleryName is required and cannot be null."));
+        }
+        if (galleryImageName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter galleryImageName is required and cannot be null."));
+        }
+        final String apiVersion = "2019-07-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                galleryName,
+                galleryImageName,
+                apiVersion,
+                context);
+    }
+
+    /**
+     * Delete a gallery image.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
+     * @param galleryImageName The name of the gallery Image Definition to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -581,7 +1253,7 @@ public final class GalleryImagesInner {
      * @param galleryName The name of the Shared Image Gallery in which the Image Definition is to be deleted.
      * @param galleryImageName The name of the gallery Image Definition to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -594,12 +1266,15 @@ public final class GalleryImagesInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Gallery Images operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<GalleryImageInner>> listByGalleryNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listByGalleryNext(nextLink, context))
             .<PagedResponse<GalleryImageInner>>map(
@@ -612,5 +1287,33 @@ public final class GalleryImagesInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Gallery Images operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<GalleryImageInner>> listByGalleryNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listByGalleryNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

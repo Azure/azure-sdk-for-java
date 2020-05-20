@@ -7,7 +7,9 @@ package com.azure.management.network;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.management.network.models.IPConfigurationProfileInner;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.management.network.models.IpConfigurationProfileInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ContainerNetworkInterfaceConfiguration extends SubResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceConfiguration.class);
+
     /*
      * The name of the resource. This name can be used to access the resource.
      */
@@ -38,7 +42,7 @@ public class ContainerNetworkInterfaceConfiguration extends SubResource {
      * configuration.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<IPConfigurationProfileInner> ipConfigurations;
+    private List<IpConfigurationProfileInner> ipConfigurations;
 
     /*
      * A list of container network interfaces created from this container
@@ -107,7 +111,7 @@ public class ContainerNetworkInterfaceConfiguration extends SubResource {
      *
      * @return the ipConfigurations value.
      */
-    public List<IPConfigurationProfileInner> ipConfigurations() {
+    public List<IpConfigurationProfileInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -118,7 +122,7 @@ public class ContainerNetworkInterfaceConfiguration extends SubResource {
      * @return the ContainerNetworkInterfaceConfiguration object itself.
      */
     public ContainerNetworkInterfaceConfiguration withIpConfigurations(
-        List<IPConfigurationProfileInner> ipConfigurations) {
+        List<IpConfigurationProfileInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -153,5 +157,16 @@ public class ContainerNetworkInterfaceConfiguration extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (ipConfigurations() != null) {
+            ipConfigurations().forEach(e -> e.validate());
+        }
     }
 }

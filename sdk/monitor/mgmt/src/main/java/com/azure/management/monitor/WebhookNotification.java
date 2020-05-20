@@ -5,12 +5,16 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The WebhookNotification model. */
 @Fluent
 public final class WebhookNotification {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookNotification.class);
+
     /*
      * the service address to receive the notification.
      */
@@ -61,5 +65,13 @@ public final class WebhookNotification {
     public WebhookNotification withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -5,13 +5,17 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.models.SecurityRuleInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The SecurityRuleAssociations model. */
 @Fluent
 public final class SecurityRuleAssociations {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleAssociations.class);
+
     /*
      * Network interface and it's custom security rules.
      */
@@ -116,5 +120,25 @@ public final class SecurityRuleAssociations {
         List<EffectiveNetworkSecurityRule> effectiveSecurityRules) {
         this.effectiveSecurityRules = effectiveSecurityRules;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkInterfaceAssociation() != null) {
+            networkInterfaceAssociation().validate();
+        }
+        if (subnetAssociation() != null) {
+            subnetAssociation().validate();
+        }
+        if (defaultSecurityRules() != null) {
+            defaultSecurityRules().forEach(e -> e.validate());
+        }
+        if (effectiveSecurityRules() != null) {
+            effectiveSecurityRules().forEach(e -> e.validate());
+        }
     }
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.compute.AdditionalCapabilities;
 import com.azure.management.compute.AutomaticRepairsPolicy;
 import com.azure.management.compute.Plan;
@@ -16,6 +17,7 @@ import com.azure.management.compute.Sku;
 import com.azure.management.compute.UpgradePolicy;
 import com.azure.management.compute.VirtualMachineScaleSetIdentity;
 import com.azure.management.compute.VirtualMachineScaleSetVMProfile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -23,6 +25,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class VirtualMachineScaleSetInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetInner.class);
+
     /*
      * The virtual machine scale set sku.
      */
@@ -48,7 +52,8 @@ public class VirtualMachineScaleSetInner extends Resource {
     private VirtualMachineScaleSetIdentity identity;
 
     /*
-     * The virtual machine scale set zones.
+     * The virtual machine scale set zones. NOTE: Availability zones can only
+     * be set when you create the scale set.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -211,7 +216,8 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the zones property: The virtual machine scale set zones.
+     * Get the zones property: The virtual machine scale set zones. NOTE: Availability zones can only be set when you
+     * create the scale set.
      *
      * @return the zones value.
      */
@@ -220,7 +226,8 @@ public class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Set the zones property: The virtual machine scale set zones.
+     * Set the zones property: The virtual machine scale set zones. NOTE: Availability zones can only be set when you
+     * create the scale set.
      *
      * @param zones the zones value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -484,5 +491,37 @@ public class VirtualMachineScaleSetInner extends Resource {
     public VirtualMachineScaleSetInner withScaleInPolicy(ScaleInPolicy scaleInPolicy) {
         this.scaleInPolicy = scaleInPolicy;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (plan() != null) {
+            plan().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (upgradePolicy() != null) {
+            upgradePolicy().validate();
+        }
+        if (automaticRepairsPolicy() != null) {
+            automaticRepairsPolicy().validate();
+        }
+        if (virtualMachineProfile() != null) {
+            virtualMachineProfile().validate();
+        }
+        if (additionalCapabilities() != null) {
+            additionalCapabilities().validate();
+        }
+        if (scaleInPolicy() != null) {
+            scaleInPolicy().validate();
+        }
     }
 }

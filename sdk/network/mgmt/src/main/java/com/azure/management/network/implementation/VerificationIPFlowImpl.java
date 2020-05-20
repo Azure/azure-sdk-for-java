@@ -6,8 +6,8 @@ import com.azure.management.network.Access;
 import com.azure.management.network.Direction;
 import com.azure.management.network.IpFlowProtocol;
 import com.azure.management.network.VerificationIPFlow;
-import com.azure.management.network.VerificationIPFlowParameters;
-import com.azure.management.network.models.VerificationIPFlowResultInner;
+import com.azure.management.network.VerificationIpFlowParameters;
+import com.azure.management.network.models.VerificationIpFlowResultInner;
 import com.azure.management.resources.fluentcore.model.implementation.ExecutableImpl;
 import reactor.core.publisher.Mono;
 
@@ -15,8 +15,8 @@ import reactor.core.publisher.Mono;
 public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
     implements VerificationIPFlow, VerificationIPFlow.Definition {
     private final NetworkWatcherImpl parent;
-    private VerificationIPFlowParameters parameters = new VerificationIPFlowParameters();
-    private VerificationIPFlowResultInner result;
+    private VerificationIpFlowParameters parameters = new VerificationIpFlowParameters();
+    private VerificationIpFlowResultInner result;
 
     VerificationIPFlowImpl(NetworkWatcherImpl parent) {
         this.parent = parent;
@@ -74,13 +74,13 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
 
     @Override
     public VerificationIPFlowImpl withLocalIPAddress(String localIPAddress) {
-        parameters.withLocalIPAddress(localIPAddress);
+        parameters.withLocalIpAddress(localIPAddress);
         return this;
     }
 
     @Override
     public VerificationIPFlowImpl withRemoteIPAddress(String remoteIPAddress) {
-        parameters.withRemoteIPAddress(remoteIPAddress);
+        parameters.withRemoteIpAddress(remoteIPAddress);
         return this;
     }
 
@@ -112,7 +112,7 @@ public class VerificationIPFlowImpl extends ExecutableImpl<VerificationIPFlow>
             .manager()
             .inner()
             .networkWatchers()
-            .verifyIPFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
+            .verifyIpFlowAsync(parent.resourceGroupName(), parent.name(), parameters)
             .map(
                 verificationIPFlowResultInner -> {
                     VerificationIPFlowImpl.this.result = verificationIPFlowResultInner;

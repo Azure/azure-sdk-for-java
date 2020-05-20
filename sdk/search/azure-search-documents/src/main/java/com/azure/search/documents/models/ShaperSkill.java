@@ -17,5 +17,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Skills.Util.ShaperSkill")
 @Fluent
-public final class ShaperSkill extends Skill {
+public final class ShaperSkill extends SearchIndexerSkill {
 }

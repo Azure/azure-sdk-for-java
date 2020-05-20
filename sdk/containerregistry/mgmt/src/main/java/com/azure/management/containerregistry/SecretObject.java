@@ -5,11 +5,15 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SecretObject model. */
 @Fluent
 public final class SecretObject {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretObject.class);
+
     /*
      * The value of the secret. The format of this value will be determined
      * based on the type of the secret object. If the type is Opaque, the value
@@ -69,5 +73,13 @@ public final class SecretObject {
     public SecretObject withType(SecretObjectType type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

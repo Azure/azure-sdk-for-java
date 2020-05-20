@@ -5,12 +5,16 @@
 package com.azure.management.sql.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.sql.CheckNameAvailabilityReason;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The CheckNameAvailabilityResponse model. */
 @Immutable
 public final class CheckNameAvailabilityResponseInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityResponseInner.class);
+
     /*
      * The name whose availability was checked.
      */
@@ -73,5 +77,13 @@ public final class CheckNameAvailabilityResponseInner {
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

@@ -59,7 +59,7 @@ public class WebAppsWebDeployTests extends AppServiceTest {
         Assertions.assertNotNull(deployment);
         if (!isPlaybackMode()) {
             SdkContext.sleep(10000);
-            Response<String> response = curl("http://" + webApp1.defaultHostName() + "/helloworld/");
+            Response<String> response = curl("http://" + webApp1.defaultHostname() + "/helloworld/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

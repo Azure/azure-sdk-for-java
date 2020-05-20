@@ -148,7 +148,7 @@ public class SqlSyncGroupImpl
 
     @Override
     public String databaseUserName() {
-        return this.inner().hubDatabaseUserName();
+        return this.inner().hubDatabaseUsername();
     }
 
     @Override
@@ -298,7 +298,7 @@ public class SqlSyncGroupImpl
 
     @Override
     public SqlSyncGroupImpl withDatabaseUserName(String userName) {
-        this.inner().withHubDatabaseUserName(userName);
+        this.inner().withHubDatabaseUsername(userName);
         return this;
     }
 

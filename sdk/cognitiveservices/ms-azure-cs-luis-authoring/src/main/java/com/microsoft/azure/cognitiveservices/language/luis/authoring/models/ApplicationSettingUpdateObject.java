@@ -19,25 +19,25 @@ public class ApplicationSettingUpdateObject {
      * application's endpoint using their own keys.
      */
     @JsonProperty(value = "public")
-    private boolean publicProperty;
+    private boolean isPublic;
 
     /**
-     * Get the publicProperty value.
+     * Get the isPublic value.
      *
-     * @return the publicProperty value
+     * @return the isPublic value
      */
-    public boolean publicProperty() {
-        return this.publicProperty;
+    public boolean isPublic() {
+        return this.isPublic;
     }
 
     /**
-     * Set the publicProperty value.
+     * Set the isPublic value.
      *
-     * @param publicProperty the publicProperty value to set
+     * @param isPublic the isPublic value to set
      * @return the ApplicationSettingUpdateObject object itself.
      */
-    public ApplicationSettingUpdateObject withPublicProperty(boolean publicProperty) {
-        this.publicProperty = publicProperty;
+    public ApplicationSettingUpdateObject withIsPublic(boolean isPublic) {
+        this.isPublic = isPublic;
         return this;
     }
 

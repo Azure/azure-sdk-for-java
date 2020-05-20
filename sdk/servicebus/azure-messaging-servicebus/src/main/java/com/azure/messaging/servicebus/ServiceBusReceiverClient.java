@@ -7,7 +7,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
 import reactor.core.publisher.Flux;
@@ -36,9 +35,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;
-    private static final ReceiveAsyncOptions DEFAULT_RECEIVE_OPTIONS = new ReceiveAsyncOptions()
-        .setIsAutoCompleteEnabled(false)
-        .setMaxAutoLockRenewalDuration(Duration.ZERO);
 
     /* To hold each receive work item to be processed.*/
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
@@ -307,8 +303,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peek() {
-        return asyncClient.peek().block(operationTimeout);
+    public ServiceBusReceivedMessage browse() {
+        return asyncClient.browse().block(operationTimeout);
     }
 
     /**
@@ -321,8 +317,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peek(String sessionId) {
-        return asyncClient.peek(sessionId).block(operationTimeout);
+    public ServiceBusReceivedMessage browse(String sessionId) {
+        return asyncClient.browse(sessionId).block(operationTimeout);
     }
 
     /**
@@ -334,8 +330,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peekAt(long sequenceNumber) {
-        return asyncClient.peekAt(sequenceNumber).block(operationTimeout);
+    public ServiceBusReceivedMessage browseAt(long sequenceNumber) {
+        return asyncClient.browseAt(sequenceNumber).block(operationTimeout);
     }
 
     /**
@@ -348,8 +344,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public ServiceBusReceivedMessage peekAt(long sequenceNumber, String sessionId) {
-        return asyncClient.peekAt(sequenceNumber, sessionId).block(operationTimeout);
+    public ServiceBusReceivedMessage browseAt(long sequenceNumber, String sessionId) {
+        return asyncClient.browseAt(sequenceNumber, sessionId).block(operationTimeout);
     }
 
     /**
@@ -361,13 +357,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekBatch(int maxMessages) {
+    public IterableStream<ServiceBusReceivedMessage> browseBatch(int maxMessages) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatch(maxMessages)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatch(maxMessages)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
@@ -386,13 +382,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekBatch(int maxMessages, String sessionId) {
+    public IterableStream<ServiceBusReceivedMessage> browseBatch(int maxMessages, String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatch(maxMessages, sessionId)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatch(maxMessages, sessionId)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
@@ -412,13 +408,13 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber) {
+    public IterableStream<ServiceBusReceivedMessage> browseBatchAt(int maxMessages, long sequenceNumber) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatchAt(maxMessages, sequenceNumber)
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatchAt(maxMessages, sequenceNumber)
             .timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
@@ -439,15 +435,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
-    public IterableStream<ServiceBusReceivedMessage> peekBatchAt(int maxMessages, long sequenceNumber,
+    public IterableStream<ServiceBusReceivedMessage> browseBatchAt(int maxMessages, long sequenceNumber,
         String sessionId) {
         if (maxMessages <= 0) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
-        final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekBatchAt(maxMessages, sequenceNumber, sessionId)
-            .timeout(operationTimeout);
+        final Flux<ServiceBusReceivedMessage> messages = asyncClient.browseBatchAt(maxMessages, sequenceNumber,
+            sessionId).timeout(operationTimeout);
 
         // Subscribe so we can kick off this operation.
         messages.subscribe();
@@ -627,7 +623,6 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     private void queueWork(int maximumMessageCount, Duration maxWaitTime,
         FluxSink<ServiceBusReceivedMessageContext> emitter) {
-
         final long id = idGenerator.getAndIncrement();
         final SynchronousReceiveWork work = new SynchronousReceiveWork(id, maximumMessageCount, maxWaitTime, emitter);
 
@@ -641,7 +636,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 SynchronousMessageSubscriber existing = synchronousMessageSubscriber.get();
                 existing.queueWork(work);
             } else {
-                asyncClient.receive(DEFAULT_RECEIVE_OPTIONS).subscribeWith(newSubscriber);
+                asyncClient.receive().subscribeWith(newSubscriber);
             }
         } else {
             messageSubscriber.queueWork(work);

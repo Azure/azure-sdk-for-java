@@ -5,6 +5,8 @@
 package com.azure.management.containerregistry;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,6 +17,8 @@ import java.util.List;
 @JsonTypeName("Docker")
 @Fluent
 public final class DockerTaskStep extends TaskStepProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DockerTaskStep.class);
+
     /*
      * The fully qualified image names including the repository and tag.
      */
@@ -174,5 +178,23 @@ public final class DockerTaskStep extends TaskStepProperties {
     public DockerTaskStep withArguments(List<Argument> arguments) {
         this.arguments = arguments;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (dockerFilePath() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property dockerFilePath in model DockerTaskStep"));
+        }
+        if (arguments() != null) {
+            arguments().forEach(e -> e.validate());
+        }
     }
 }

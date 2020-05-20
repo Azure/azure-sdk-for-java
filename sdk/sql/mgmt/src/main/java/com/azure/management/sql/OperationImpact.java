@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The OperationImpact model. */
 @Immutable
 public final class OperationImpact {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationImpact.class);
+
     /*
      * The name of the impact dimension.
      */
@@ -68,5 +72,13 @@ public final class OperationImpact {
      */
     public Double changeValueRelative() {
         return this.changeValueRelative;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

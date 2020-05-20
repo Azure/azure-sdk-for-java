@@ -3,9 +3,22 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.JsonSerializableWrapper;
+import com.azure.cosmos.models.CompositePath;
+import com.azure.cosmos.models.ConflictResolutionPolicy;
+import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.models.DatabaseAccountLocation;
+import com.azure.cosmos.models.ExcludedPath;
+import com.azure.cosmos.models.IncludedPath;
+import com.azure.cosmos.models.Index;
+import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SerializationFormattingPolicy;
+import com.azure.cosmos.models.SpatialSpec;
+import com.azure.cosmos.models.SqlParameter;
+import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.UniqueKey;
+import com.azure.cosmos.models.UniqueKeyPolicy;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -188,12 +201,10 @@ public class JsonSerializable {
             JsonSerializable castedValue = (JsonSerializable) value;
             castedValue.populatePropertyBag();
             this.propertyBag.set(propertyName, castedValue.propertyBag);
-        } else if (value instanceof JsonSerializableWrapper) {
-            JsonSerializableWrapper castedValue = (JsonSerializableWrapper) value;
-            ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(castedValue);
-            this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag);
-        }
-        else {
+        } else if (containsJsonSerializable(value.getClass())) {
+            ModelBridgeInternal.populatePropertyBag(value);
+            this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializable(value).propertyBag);
+        } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string.
             this.propertyBag.set(propertyName, getMapper().valueToTree(value));
@@ -218,12 +229,10 @@ public class JsonSerializable {
                 castedValue.populatePropertyBag();
                 targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag
                                     : this.getMapper().createObjectNode());
-            } else if (childValue instanceof JsonSerializableWrapper) {
-                // JsonSerializable
-                JsonSerializableWrapper castedValue = (JsonSerializableWrapper) childValue;
-                ModelBridgeInternal.populatePropertyBagJsonSerializableWrapper(castedValue);
-                targetArray.add(ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag != null ?
-                    ModelBridgeInternal.getJsonSerializableFromJsonSerializableWrapper(castedValue).propertyBag : this.getMapper().createObjectNode());
+            } else if (containsJsonSerializable(childValue.getClass())) {
+                ModelBridgeInternal.populatePropertyBag(childValue);
+                targetArray.add(ModelBridgeInternal.getJsonSerializable(childValue).propertyBag != null ?
+                    ModelBridgeInternal.getJsonSerializable(childValue).propertyBag : this.getMapper().createObjectNode());
             } else {
                 // POJO, JsonNode, NUMBER (includes Int, Float, Double etc),
                 // Boolean, and STRING.
@@ -354,8 +363,8 @@ public class JsonSerializable {
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 return (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) jsonObj, c);
-            } else if (JsonSerializableWrapper.class.isAssignableFrom(c)) {
-                return (T) ModelBridgeInternal.instantiateJsonSerializableWrapper((ObjectNode) jsonObj, c);
+            } else if (containsJsonSerializable(c)) {
+                return ModelBridgeInternal.instantiateByObjectNode((ObjectNode) jsonObj, c);
             }
             else {
                 // POJO
@@ -394,7 +403,7 @@ public class JsonSerializable {
             boolean isBaseClass = false;
             boolean isEnumClass = false;
             boolean isJsonSerializable = false;
-            boolean isJsonSerializableWrapper = false;
+            boolean containsJsonSerializable = false;
 
             // Check once.
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -404,8 +413,8 @@ public class JsonSerializable {
                 isEnumClass = true;
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 isJsonSerializable = true;
-            } else if (JsonSerializableWrapper.class.isAssignableFrom(c)) {
-                isJsonSerializableWrapper = true;
+            } else if (containsJsonSerializable(c)) {
+                containsJsonSerializable = true;
             } else {
                 JsonSerializable.checkForValidPOJO(c);
             }
@@ -429,9 +438,8 @@ public class JsonSerializable {
                     T t = (T) ModelBridgeInternal.instantiateJsonSerializable((ObjectNode) n, c);
                     result.add(t);
 
-                } else if (isJsonSerializableWrapper) {
-                    // JsonSerializableWrapper
-                    T t = (T) ModelBridgeInternal.instantiateJsonSerializableWrapper((ObjectNode) n, c);
+                } else if (containsJsonSerializable) {
+                    T t = ModelBridgeInternal.instantiateByObjectNode((ObjectNode) n, c);
                     result.add(t);
                 } else {
                     // POJO
@@ -600,9 +608,12 @@ public class JsonSerializable {
         if (CosmosItemProperties.class.isAssignableFrom(c)) {
             return (T) new CosmosItemProperties(this.propertyBag);
         }
-        if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
-                || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)
-                || JsonSerializableWrapper.class.isAssignableFrom(c)) {
+        if (JsonSerializable.class.isAssignableFrom(c)
+            || String.class.isAssignableFrom(c)
+            || Number.class.isAssignableFrom(c)
+            || Boolean.class.isAssignableFrom(c)
+            || containsJsonSerializable(c)) {
+
             return c.cast(this.get(Constants.Properties.VALUE));
         }
         if (List.class.isAssignableFrom(c)) {
@@ -671,5 +682,22 @@ public class JsonSerializable {
 
     public ObjectNode getPropertyBag() {
         return this.propertyBag;
+    }
+
+    <T> boolean containsJsonSerializable(Class<T> c) {
+        return CompositePath.class.equals(c)
+            || ConflictResolutionPolicy.class.equals(c)
+            || DatabaseAccountLocation.class.equals(c)
+            || ExcludedPath.class.equals(c)
+            || IncludedPath.class.equals(c)
+            || IndexingPolicy.class.equals(c)
+            || PartitionKeyDefinition.class.equals(c)
+            || SpatialSpec.class.equals(c)
+            || SqlParameter.class.equals(c)
+            || SqlQuerySpec.class.equals(c)
+            || UniqueKey.class.equals(c)
+            || UniqueKeyPolicy.class.equals(c)
+            || Index.class.isAssignableFrom(c)
+            || CosmosError.class.equals(c);
     }
 }

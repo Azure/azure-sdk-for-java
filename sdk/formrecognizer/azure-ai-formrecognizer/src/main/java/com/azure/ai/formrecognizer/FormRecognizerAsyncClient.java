@@ -75,16 +75,6 @@ public final class FormRecognizerAsyncClient {
     }
 
     /**
-     * Creates a new {@link FormTrainingAsyncClient} object. The new {@code FormTrainingAsyncClient}
-     * uses the same request policy pipeline as the {@code FormRecognizerAsyncClient}.
-     *
-     * @return A new {@link FormTrainingAsyncClient} object.
-     */
-    public FormTrainingAsyncClient getFormTrainingAsyncClient() {
-        return new FormTrainingAsyncClient(this.service, this.serviceVersion);
-    }
-
-    /**
      * Gets the service version the client is using.
      *
      * @return the service version the client is using.

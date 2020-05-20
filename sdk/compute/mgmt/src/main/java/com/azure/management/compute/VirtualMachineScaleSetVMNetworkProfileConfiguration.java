@@ -5,12 +5,17 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The VirtualMachineScaleSetVMNetworkProfileConfiguration model. */
 @Fluent
 public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMNetworkProfileConfiguration.class);
+
     /*
      * The list of network configurations.
      */
@@ -36,5 +41,16 @@ public final class VirtualMachineScaleSetVMNetworkProfileConfiguration {
         List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (networkInterfaceConfigurations() != null) {
+            networkInterfaceConfigurations().forEach(e -> e.validate());
+        }
     }
 }

@@ -64,7 +64,7 @@ input-file:
 - https://github.com/Azure/azure-rest-api-specs/blob/master/specification/search/data-plane/Azure.Search/preview/2019-05-06-preview/searchindex.json
 title: SearchIndexRestClient
 models-subpackage: implementation.models
-custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteRequest,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchError,SearchErrorException,SearchResult,SearchRequest,SearchOptions,RequestOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult,SuggestRequest
+custom-types: QueryType,AutocompleteResult,AutocompleteOptions,AutocompleteItem,IndexDocumentsResult,IndexingResult,SearchError,SearchErrorException,SearchResult,SearchOptions,RequestOptions,IndexBatchBase,IndexAction,FacetResult,SuggestOptions,SuggestResult
 custom-types-subpackage: models
 ```
 
@@ -272,12 +272,12 @@ directive:
           .replace(/(package com.azure.search.documents.models;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
           .replace(/(public Document getDocument())/g, "@JsonIgnore\n$1")
 
-    # Add static Collection<DataType> method to DataType
-    - from: DataType.java
+    # Add static Collection<SearchFieldDataType> method to SearchFieldDataType
+    - from: SearchFieldDataType.java
       where: $
       transform: >-
         return $
-        .replace(/(public static final DataType EDM_COMPLEX_TYPE = fromString\("Edm.ComplexType"\);)/g, "$1\n\n    /**\n     * Returns a collection of a specific DataType\n     * @param dataType the corresponding DataType\n     * @return a Collection of the corresponding DataType\n     */\n    @JsonCreator\n    public static DataType collection(DataType dataType) {\n        return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n    }")
+        .replace(/(public static final SearchFieldDataType COMPLEX = fromString\("Edm.ComplexType"\);)/g, "$1\n\n    /**\n     * Returns a collection of a specific SearchFieldDataType\n     * @param dataType the corresponding SearchFieldDataType\n     * @return a Collection of the corresponding SearchFieldDataType\n     */\n    @JsonCreator\n    public static SearchFieldDataType collection(SearchFieldDataType dataType) {\n        return fromString(String.format(\"Collection(%s)\", dataType.toString()));\n    }")
 
     # Workaround to fix bad host path parameters
     - from:
@@ -407,6 +407,7 @@ directive:
       where: $
       transform: >-
         return $
+         .replace(/(import com\.azure\.search\.documents\.models\.QueryType\;)/g, "$1\nimport com.azure.search.documents.models.ScoringParameter;")
          .replace(/(private List\<String\> scoringParameters\;)/g, "private List<ScoringParameter> scoringParameters;")
          .replace(/(public List\<String\> getScoringParameters\(\) \{)/g, "public List<ScoringParameter> getScoringParameters() {")
          .replace(/(public SearchRequest setScoringParameters\(List\<String\> scoringParameters\) \{)/g, "public SearchRequest setScoringParameters(List<ScoringParameter> scoringParameters) {")
@@ -445,7 +446,7 @@ directive:
 
     # Changed isRetrievable to isHidden
     - from: swagger-document
-      where: $.definitions.Field.properties
+      where: $.definitions.SearchField.properties
       transform: >
          $.hidden = $.retrievable;
          $.hidden = {
@@ -453,12 +454,12 @@ directive:
             "description": "A value indicating whether the field will be returned in a search result. This property must be false for key fields, and must be null for complex fields. You can hide a field from search results if you want to use it only as a filter, for sorting, or for scoring. This property can also be changed on existing fields and enabling it does not cause an increase in index storage requirements."
          }
     
-    - from: Field.java
+    - from: SearchField.java
       where: $
       transform: >-
         return $
         .replace(/(import com\.azure\.core\.annotation\.Fluent\;)/g, "$1\nimport com.fasterxml.jackson.annotation.JsonIgnore;")
-        .replace(/(public Field setRetrievable\(Boolean retrievable\))/g, "private Field setRetrievable(Boolean retrievable)")
+        .replace(/(public SearchField setRetrievable\(Boolean retrievable\))/g, "private SearchField setRetrievable(Boolean retrievable)")
         .replace(/(public Boolean isRetrievable\(\))/g, "private Boolean isRetrievable()")
         .replace(/(        return this\.hidden\;)/g, "        return retrievable == null ? null : !retrievable;")
         .replace(/(this\.hidden \= hidden\;)/g, "$1\n        retrievable = this.hidden == null ? null : !this.hidden;")

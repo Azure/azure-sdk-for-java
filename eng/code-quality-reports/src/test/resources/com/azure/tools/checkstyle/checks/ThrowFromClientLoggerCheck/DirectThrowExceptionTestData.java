@@ -26,4 +26,20 @@ public class DirectThrowExceptionTestData {
             throw new RuntimeException("Error Messages.");
         }
     }
+
+    public void validLogExceptionAsError() {
+        throw logger.logExceptionAsError(new RuntimeException("Error message."));
+    }
+
+    public void validLogThrowableAsError() {
+        throw logger.logThrowableAsError(new RuntimeException("Error message."));
+    }
+
+    public void validLogExceptionAsWarning() {
+        throw logger.logExceptionAsWarning(new RuntimeException("Error message."));
+    }
+
+    public void validLogThrowableAsWarning() {
+        throw logger.logThrowableAsWarning(new RuntimeException("Error message."));
+    }
 }

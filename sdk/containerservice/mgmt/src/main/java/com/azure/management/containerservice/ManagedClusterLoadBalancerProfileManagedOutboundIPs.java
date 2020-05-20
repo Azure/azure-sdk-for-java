@@ -5,11 +5,16 @@
 package com.azure.management.containerservice;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagedClusterLoadBalancerProfileManagedOutboundIPs model. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ManagedClusterLoadBalancerProfileManagedOutboundIPs.class);
+
     /*
      * Desired number of outbound IP created/managed by Azure for the cluster
      * load balancer. Allowed values must be in the range of 1 to 100
@@ -38,5 +43,13 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     public ManagedClusterLoadBalancerProfileManagedOutboundIPs withCount(Integer count) {
         this.count = count;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

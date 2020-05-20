@@ -24,7 +24,7 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -60,7 +60,7 @@ public final class TagsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> deleteValue(
             @HostParam("$host") String host,
             @PathParam("tagName") String tagName,
@@ -72,7 +72,7 @@ public final class TagsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TagValueInner>> createOrUpdateValue(
             @HostParam("$host") String host,
             @PathParam("tagName") String tagName,
@@ -84,7 +84,7 @@ public final class TagsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TagDetailsInner>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("tagName") String tagName,
@@ -95,7 +95,7 @@ public final class TagsInner {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/tagNames/{tagName}")
         @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String host,
             @PathParam("tagName") String tagName,
@@ -106,7 +106,7 @@ public final class TagsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/tagNames")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TagsListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -116,7 +116,7 @@ public final class TagsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<TagsListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -127,12 +127,28 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (tagValue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -152,8 +168,47 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteValueWithResponseAsync(String tagName, String tagValue, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (tagValue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .deleteValue(
+                this.client.getHost(),
+                tagName,
+                tagValue,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes a tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -168,7 +223,7 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -182,12 +237,28 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TagValueInner>> createOrUpdateValueWithResponseAsync(String tagName, String tagValue) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (tagValue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -207,8 +278,48 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<TagValueInner>> createOrUpdateValueWithResponseAsync(
+        String tagName, String tagValue, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (tagValue == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .createOrUpdateValue(
+                this.client.getHost(),
+                tagName,
+                tagValue,
+                this.client.getApiVersion(),
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Creates a tag value. The name of the tag must already exist.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag information.
      */
@@ -231,7 +342,7 @@ public final class TagsInner {
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag information.
      */
@@ -246,12 +357,25 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -270,8 +394,39 @@ public final class TagsInner {
      * prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
      *
      * @param tagName The name of the tag to create.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return tag details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<TagDetailsInner>> createOrUpdateWithResponseAsync(String tagName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .createOrUpdate(
+                this.client.getHost(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+    }
+
+    /**
+     * The tag name can have a maximum of 512 characters and is case insensitive. Tag names created by Azure have
+     * prefixes of microsoft, azure, or windows. You cannot create tags with one of these prefixes.
+     *
+     * @param tagName The name of the tag to create.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag details.
      */
@@ -294,7 +449,7 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag details.
      */
@@ -308,12 +463,25 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String tagName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -331,8 +499,38 @@ public final class TagsInner {
      * You must remove all values from a resource tag before you can delete it.
      *
      * @param tagName The name of the tag.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponseAsync(String tagName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (tagName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .delete(
+                this.client.getHost(), tagName, this.client.getApiVersion(), this.client.getSubscriptionId(), context);
+    }
+
+    /**
+     * You must remove all values from a resource tag before you can delete it.
+     *
+     * @param tagName The name of the tag.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -346,7 +544,7 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -357,12 +555,22 @@ public final class TagsInner {
     /**
      * Gets the names and values of all resource tags that are defined in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the names and values of all resource tags that are defined in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(
                 context ->
@@ -387,7 +595,41 @@ public final class TagsInner {
     /**
      * Gets the names and values of all resource tags that are defined in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the names and values of all resource tags that are defined in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TagDetailsInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        return service
+            .list(this.client.getHost(), this.client.getApiVersion(), this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets the names and values of all resource tags that are defined in a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the names and values of all resource tags that are defined in a subscription.
      */
@@ -399,7 +641,21 @@ public final class TagsInner {
     /**
      * Gets the names and values of all resource tags that are defined in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the names and values of all resource tags that are defined in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<TagDetailsInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets the names and values of all resource tags that are defined in a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the names and values of all resource tags that are defined in a subscription.
      */
@@ -413,12 +669,15 @@ public final class TagsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of subscription tags.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<TagDetailsInner>>map(
@@ -431,5 +690,33 @@ public final class TagsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of subscription tags.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<TagDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

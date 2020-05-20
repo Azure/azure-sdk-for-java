@@ -18,7 +18,6 @@ import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
-import com.azure.messaging.servicebus.models.ReceiveAsyncOptions;
 import com.azure.messaging.servicebus.models.ReceiveMode;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.message.Message;
@@ -133,12 +132,12 @@ class UnnamedSessionManagerTest {
     @Test
     void receiveNull() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, true, 5);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ZERO, null, true, 5);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
         // Act & Assert
-        StepVerifier.create(sessionManager.receive(null))
+        StepVerifier.create(sessionManager.receive())
             .expectError(NullPointerException.class)
             .verify();
     }
@@ -149,13 +148,11 @@ class UnnamedSessionManagerTest {
     @Test
     void singleUnnamedSession() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ofSeconds(20),
+            null, false, null);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
-        ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(20))
-            .setIsAutoCompleteEnabled(true);
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
@@ -182,7 +179,7 @@ class UnnamedSessionManagerTest {
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(sessionManager.receive(options))
+        StepVerifier.create(sessionManager.receive())
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageSink.next(message);
@@ -203,14 +200,12 @@ class UnnamedSessionManagerTest {
     @Test
     void multipleSessions() {
         // Arrange
-        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, null, false, null);
+        ReceiverOptions receiverOptions = new ReceiverOptions(ReceiveMode.PEEK_LOCK, 1, Duration.ofSeconds(20),
+            null, false, null);
         sessionManager = new UnnamedSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
             TIMEOUT, tracerProvider, messageSerializer, receiverOptions);
 
         final int numberOfMessages = 5;
-        final ReceiveAsyncOptions options = new ReceiveAsyncOptions()
-            .setMaxAutoLockRenewalDuration(Duration.ofSeconds(20))
-            .setIsAutoCompleteEnabled(true);
         final String sessionId = "session-1";
         final String lockToken = "a-lock-token";
         final String linkName = "my-link-name";
@@ -236,7 +231,7 @@ class UnnamedSessionManagerTest {
         when(managementNode.renewSessionLock(sessionId, linkName)).thenReturn(Mono.empty());
 
         // Act & Assert
-        StepVerifier.create(sessionManager.receive(options))
+        StepVerifier.create(sessionManager.receive())
             .then(() -> {
                 for (int i = 0; i < numberOfMessages; i++) {
                     messageSink.next(message);

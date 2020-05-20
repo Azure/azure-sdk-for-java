@@ -6,12 +6,16 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PremierAddOnPatchResource model. */
 @JsonFlatten
 @Fluent
 public class PremierAddOnPatchResource extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PremierAddOnPatchResource.class);
+
     /*
      * Premier add on SKU.
      */
@@ -140,5 +144,15 @@ public class PremierAddOnPatchResource extends ProxyOnlyResource {
     public PremierAddOnPatchResource withMarketplaceOffer(String marketplaceOffer) {
         this.marketplaceOffer = marketplaceOffer;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }

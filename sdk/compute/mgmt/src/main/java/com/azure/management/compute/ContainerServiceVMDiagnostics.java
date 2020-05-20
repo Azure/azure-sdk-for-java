@@ -5,11 +5,15 @@
 package com.azure.management.compute;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerServiceVMDiagnostics model. */
 @Fluent
 public final class ContainerServiceVMDiagnostics {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceVMDiagnostics.class);
+
     /*
      * Whether the VM diagnostic agent is provisioned on the VM.
      */
@@ -49,5 +53,13 @@ public final class ContainerServiceVMDiagnostics {
      */
     public String storageUri() {
         return this.storageUri;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

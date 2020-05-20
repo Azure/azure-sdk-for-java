@@ -21,13 +21,16 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AzureFirewallFqdnTags. */
 public final class AzureFirewallFqdnTagsInner {
+    private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final AzureFirewallFqdnTagsService service;
 
@@ -56,7 +59,7 @@ public final class AzureFirewallFqdnTagsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/azureFirewallFqdnTags")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AzureFirewallFqdnTagListResultInner>> list(
             @HostParam("$host") String host,
             @QueryParam("api-version") String apiVersion,
@@ -66,7 +69,7 @@ public final class AzureFirewallFqdnTagsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<AzureFirewallFqdnTagListResultInner>> listAllNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -74,12 +77,22 @@ public final class AzureFirewallFqdnTagsInner {
     /**
      * Gets all the Azure Firewall FQDN Tags in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Firewall FQDN Tags in a subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AzureFirewallFqdnTagInner>> listSinglePageAsync() {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -99,7 +112,42 @@ public final class AzureFirewallFqdnTagsInner {
     /**
      * Gets all the Azure Firewall FQDN Tags in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the Azure Firewall FQDN Tags in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AzureFirewallFqdnTagInner>> listSinglePageAsync(Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .list(this.client.getHost(), apiVersion, this.client.getSubscriptionId(), context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all the Azure Firewall FQDN Tags in a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Firewall FQDN Tags in a subscription.
      */
@@ -111,7 +159,21 @@ public final class AzureFirewallFqdnTagsInner {
     /**
      * Gets all the Azure Firewall FQDN Tags in a subscription.
      *
-     * @throws CloudException thrown if the request is rejected by server.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the Azure Firewall FQDN Tags in a subscription.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<AzureFirewallFqdnTagInner> listAsync(Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(context), nextLink -> listAllNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all the Azure Firewall FQDN Tags in a subscription.
+     *
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Firewall FQDN Tags in a subscription.
      */
@@ -125,12 +187,15 @@ public final class AzureFirewallFqdnTagsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListAzureFirewallFqdnTags API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<AzureFirewallFqdnTagInner>> listAllNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listAllNext(nextLink, context))
             .<PagedResponse<AzureFirewallFqdnTagInner>>map(
@@ -143,5 +208,33 @@ public final class AzureFirewallFqdnTagsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListAzureFirewallFqdnTags API service call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<AzureFirewallFqdnTagInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listAllNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

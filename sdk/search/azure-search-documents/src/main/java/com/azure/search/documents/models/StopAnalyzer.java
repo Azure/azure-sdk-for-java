@@ -19,7 +19,7 @@ import java.util.List;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Azure.Search.StopAnalyzer")
 @Fluent
-public final class StopAnalyzer extends Analyzer {
+public final class StopAnalyzer extends LexicalAnalyzer {
     /*
      * A list of stopwords.
      */

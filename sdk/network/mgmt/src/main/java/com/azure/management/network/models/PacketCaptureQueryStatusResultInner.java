@@ -5,8 +5,10 @@
 package com.azure.management.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.PcError;
 import com.azure.management.network.PcStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,6 +16,8 @@ import java.util.List;
 /** The PacketCaptureQueryStatusResult model. */
 @Fluent
 public final class PacketCaptureQueryStatusResultInner {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureQueryStatusResultInner.class);
+
     /*
      * The name of the packet capture resource.
      */
@@ -168,5 +172,13 @@ public final class PacketCaptureQueryStatusResultInner {
     public PacketCaptureQueryStatusResultInner withPacketCaptureError(List<PcError> packetCaptureError) {
         this.packetCaptureError = packetCaptureError;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

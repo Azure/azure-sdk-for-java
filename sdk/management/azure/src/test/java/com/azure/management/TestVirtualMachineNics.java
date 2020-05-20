@@ -9,7 +9,7 @@ import com.azure.management.compute.VirtualMachineSizeTypes;
 import com.azure.management.compute.VirtualMachines;
 import com.azure.management.network.Network;
 import com.azure.management.network.NetworkInterface;
-import com.azure.management.network.PublicIPAddress;
+import com.azure.management.network.PublicIpAddress;
 import com.azure.management.network.implementation.NetworkManager;
 import com.azure.management.resources.ResourceGroup;
 import com.azure.management.resources.fluentcore.arm.Region;
@@ -96,8 +96,8 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
         NetworkInterface primaryNetworkInterface = virtualMachine.getPrimaryNetworkInterface();
         Assertions.assertEquals(primaryNetworkInterface.primaryPrivateIP(), "10.0.0.4");
 
-        PublicIPAddress primaryPublicIPAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIPAddress();
-        Assertions.assertTrue(primaryPublicIPAddress.fqdn().startsWith(primaryPipName));
+        PublicIpAddress primaryPublicIpAddress = primaryNetworkInterface.primaryIPConfiguration().getPublicIpAddress();
+        Assertions.assertTrue(primaryPublicIpAddress.fqdn().startsWith(primaryPipName));
         return virtualMachine;
     }
 

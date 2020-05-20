@@ -17,10 +17,10 @@ public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> 
     String targetResourceId();
 
     /** @return the source IP address */
-    String sourceIPAddress();
+    String sourceIpAddress();
 
     /** @return the destination IP address */
-    String destinationIPAddress();
+    String destinationIpAddress();
 
     /** @return the network interface id */
     String targetNetworkInterfaceId();
@@ -68,7 +68,7 @@ public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> 
              * @param sourceIPAddress the sourceIPAddress value to set
              * @return the VerificationIPFlow object itself.
              */
-            WithDestinationIP withSourceIPAddress(String sourceIPAddress);
+            WithDestinationIP withSourceIpAddress(String sourceIPAddress);
         }
 
         /** Sets the destination IP address. */
@@ -79,7 +79,7 @@ public interface NextHop extends Executable<NextHop>, HasParent<NetworkWatcher> 
              * @param destinationIPAddress the destinationIPAddress value to set
              * @return the VerificationIPFlow object itself.
              */
-            WithExecute withDestinationIPAddress(String destinationIPAddress);
+            WithExecute withDestinationIpAddress(String destinationIPAddress);
         }
 
         /**

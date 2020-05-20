@@ -26,9 +26,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.management.CloudException;
+import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.management.network.PrepareNetworkPoliciesRequest;
 import com.azure.management.network.UnprepareNetworkPoliciesRequest;
@@ -38,6 +39,8 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Subnets. */
 public final class SubnetsInner {
+    private final ClientLogger logger = new ClientLogger(SubnetsInner.class);
+
     /** The proxy service used to perform REST calls. */
     private final SubnetsService service;
 
@@ -66,7 +69,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> delete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -81,7 +84,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubnetInner>> get(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -97,7 +100,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -113,7 +116,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/PrepareNetworkPolicies")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> prepareNetworkPolicies(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -129,7 +132,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/UnprepareNetworkPolicies")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<Flux<ByteBuffer>>> unprepareNetworkPolicies(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -145,7 +148,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubnetListResultInner>> list(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -159,7 +162,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginDelete(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -174,7 +177,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}")
         @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubnetInner>> beginCreateOrUpdate(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -190,7 +193,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/PrepareNetworkPolicies")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginPrepareNetworkPolicies(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -206,7 +209,7 @@ public final class SubnetsInner {
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
                 + "/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}/UnprepareNetworkPolicies")
         @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> beginUnprepareNetworkPolicies(
             @HostParam("$host") String host,
             @PathParam("resourceGroupName") String resourceGroupName,
@@ -220,7 +223,7 @@ public final class SubnetsInner {
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(CloudException.class)
+        @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<SimpleResponse<SubnetListResultInner>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
@@ -232,13 +235,34 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> deleteWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -262,7 +286,7 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -284,7 +308,7 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -300,13 +324,34 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SubnetInner>> getWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -331,8 +376,58 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified subnet by virtual network and resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SubnetInner>> getWithResponseAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .get(
+                this.client.getHost(),
+                resourceGroupName,
+                virtualNetworkName,
+                subnetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                expand,
+                context);
+    }
+
+    /**
+     * Gets the specified subnet by virtual network and resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified subnet by virtual network and resource group.
      */
@@ -357,7 +452,7 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified subnet by virtual network and resource group.
      */
@@ -384,7 +479,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified subnet by virtual network and resource group.
      */
@@ -400,7 +495,7 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified subnet by virtual network and resource group.
      */
@@ -419,13 +514,40 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Subnet in a virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (subnetParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+        } else {
+            subnetParameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -451,7 +573,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Subnet in a virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
@@ -476,7 +598,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Subnet in a virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
@@ -494,7 +616,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -504,6 +626,35 @@ public final class SubnetsInner {
         String virtualNetworkName,
         String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (prepareNetworkPoliciesRequestParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
+        } else {
+            prepareNetworkPoliciesRequestParameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -529,7 +680,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -557,7 +708,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -579,13 +730,34 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<Flux<ByteBuffer>>> unprepareNetworkPoliciesWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters =
             new UnprepareNetworkPoliciesRequest();
@@ -614,7 +786,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -638,7 +810,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -653,12 +825,30 @@ public final class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subnets in a virtual network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SubnetInner>> listSinglePageAsync(String resourceGroupName, String virtualNetworkName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -688,8 +878,60 @@ public final class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subnets in a virtual network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SubnetInner>> listSinglePageAsync(
+        String resourceGroupName, String virtualNetworkName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .list(
+                this.client.getHost(),
+                resourceGroupName,
+                virtualNetworkName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
+    }
+
+    /**
+     * Gets all subnets in a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subnets in a virtual network.
      */
@@ -705,8 +947,26 @@ public final class SubnetsInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all subnets in a virtual network.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<SubnetInner> listAsync(String resourceGroupName, String virtualNetworkName, Context context) {
+        return new PagedFlux<>(
+            () -> listSinglePageAsync(resourceGroupName, virtualNetworkName, context),
+            nextLink -> listNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * Gets all subnets in a virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subnets in a virtual network.
      */
@@ -722,13 +982,34 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginDeleteWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -751,8 +1032,56 @@ public final class SubnetsInner {
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginDeleteWithResponseAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginDelete(
+                this.client.getHost(),
+                resourceGroupName,
+                virtualNetworkName,
+                subnetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
+    }
+
+    /**
+     * Deletes the specified subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -769,7 +1098,7 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -785,13 +1114,40 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Subnet in a virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SubnetInner>> beginCreateOrUpdateWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (subnetParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+        } else {
+            subnetParameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -816,8 +1172,68 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param subnetParameters Subnet in a virtual network resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subnet in a virtual network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<SimpleResponse<SubnetInner>> beginCreateOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        SubnetInner subnetParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (subnetParameters == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter subnetParameters is required and cannot be null."));
+        } else {
+            subnetParameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginCreateOrUpdate(
+                this.client.getHost(),
+                resourceGroupName,
+                virtualNetworkName,
+                subnetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                subnetParameters,
+                context);
+    }
+
+    /**
+     * Creates or updates a subnet in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param subnetParameters Subnet in a virtual network resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
@@ -843,7 +1259,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param subnetParameters Subnet in a virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return subnet in a virtual network resource.
      */
@@ -861,7 +1277,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -871,6 +1287,35 @@ public final class SubnetsInner {
         String virtualNetworkName,
         String subnetName,
         PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (prepareNetworkPoliciesRequestParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
+        } else {
+            prepareNetworkPoliciesRequestParameters.validate();
+        }
         final String apiVersion = "2019-06-01";
         return FluxUtil
             .withContext(
@@ -895,8 +1340,70 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginPrepareNetworkPoliciesWithResponseAsync(
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        PrepareNetworkPoliciesRequest prepareNetworkPoliciesRequestParameters,
+        Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (prepareNetworkPoliciesRequestParameters == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter prepareNetworkPoliciesRequestParameters is required and cannot be null."));
+        } else {
+            prepareNetworkPoliciesRequestParameters.validate();
+        }
+        final String apiVersion = "2019-06-01";
+        return service
+            .beginPrepareNetworkPolicies(
+                this.client.getHost(),
+                resourceGroupName,
+                virtualNetworkName,
+                subnetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                prepareNetworkPoliciesRequestParameters,
+                context);
+    }
+
+    /**
+     * Prepares a subnet by applying network intent policies.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -919,7 +1426,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param prepareNetworkPoliciesRequestParameters Details of PrepareNetworkPolicies for Subnet.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -941,13 +1448,34 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> beginUnprepareNetworkPoliciesWithResponseAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         final String apiVersion = "2019-06-01";
         UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters =
             new UnprepareNetworkPoliciesRequest();
@@ -975,8 +1503,61 @@ public final class SubnetsInner {
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the completion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> beginUnprepareNetworkPoliciesWithResponseAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, String serviceName, Context context) {
+        if (this.client.getHost() == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (virtualNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter virtualNetworkName is required and cannot be null."));
+        }
+        if (subnetName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subnetName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        UnprepareNetworkPoliciesRequest unprepareNetworkPoliciesRequestParameters =
+            new UnprepareNetworkPoliciesRequest();
+        unprepareNetworkPoliciesRequestParameters.withServiceName(serviceName);
+        return service
+            .beginUnprepareNetworkPolicies(
+                this.client.getHost(),
+                resourceGroupName,
+                virtualNetworkName,
+                subnetName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                unprepareNetworkPoliciesRequestParameters,
+                context);
+    }
+
+    /**
+     * Unprepares a subnet by removing network intent policies.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param serviceName The name of the service for which subnet is being unprepared for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -996,7 +1577,7 @@ public final class SubnetsInner {
      * @param subnetName The name of the subnet.
      * @param serviceName The name of the service for which subnet is being unprepared for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1010,12 +1591,15 @@ public final class SubnetsInner {
      *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CloudException thrown if the request is rejected by server.
+     * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for ListSubnets API service callRetrieves all subnet that belongs to a virtual network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SubnetInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, context))
             .<PagedResponse<SubnetInner>>map(
@@ -1028,5 +1612,33 @@ public final class SubnetsInner {
                         res.getValue().nextLink(),
                         null))
             .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for ListSubnets API service callRetrieves all subnet that belongs to a virtual network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PagedResponse<SubnetInner>> listNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        return service
+            .listNext(nextLink, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

@@ -5,11 +5,15 @@
 package com.azure.management.sql;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AutomaticTuningOptions model. */
 @Fluent
 public final class AutomaticTuningOptions {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomaticTuningOptions.class);
+
     /*
      * Automatic tuning option desired state.
      */
@@ -79,5 +83,13 @@ public final class AutomaticTuningOptions {
      */
     public AutomaticTuningDisabledReason reasonDesc() {
         return this.reasonDesc;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

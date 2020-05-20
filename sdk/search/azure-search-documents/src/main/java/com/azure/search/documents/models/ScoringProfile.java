@@ -38,8 +38,8 @@ public final class ScoringProfile {
     /*
      * A value indicating how the results of individual scoring functions
      * should be combined. Defaults to "Sum". Ignored if there are no scoring
-     * functions. Possible values include: 'sum', 'average', 'minimum',
-     * 'maximum', 'firstMatching'
+     * functions. Possible values include: 'Sum', 'Average', 'Minimum',
+     * 'Maximum', 'FirstMatching'
      */
     @JsonProperty(value = "functionAggregation")
     private ScoringFunctionAggregation functionAggregation;
@@ -112,7 +112,7 @@ public final class ScoringProfile {
      * Get the functionAggregation property: A value indicating how the results
      * of individual scoring functions should be combined. Defaults to "Sum".
      * Ignored if there are no scoring functions. Possible values include:
-     * 'sum', 'average', 'minimum', 'maximum', 'firstMatching'.
+     * 'Sum', 'Average', 'Minimum', 'Maximum', 'FirstMatching'.
      *
      * @return the functionAggregation value.
      */
@@ -124,7 +124,7 @@ public final class ScoringProfile {
      * Set the functionAggregation property: A value indicating how the results
      * of individual scoring functions should be combined. Defaults to "Sum".
      * Ignored if there are no scoring functions. Possible values include:
-     * 'sum', 'average', 'minimum', 'maximum', 'firstMatching'.
+     * 'Sum', 'Average', 'Minimum', 'Maximum', 'FirstMatching'.
      *
      * @param functionAggregation the functionAggregation value to set.
      * @return the ScoringProfile object itself.

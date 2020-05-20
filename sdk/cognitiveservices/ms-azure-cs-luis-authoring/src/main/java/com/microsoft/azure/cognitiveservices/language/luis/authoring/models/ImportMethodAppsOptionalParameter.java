@@ -15,7 +15,8 @@ package com.microsoft.azure.cognitiveservices.language.luis.authoring.models;
 public class ImportMethodAppsOptionalParameter {
     /**
      * The application name to create. If not specified, the application name
-     * will be read from the imported object.
+     * will be read from the imported object. If the application name already
+     * exists, an error is returned.
      */
     private String appName;
 

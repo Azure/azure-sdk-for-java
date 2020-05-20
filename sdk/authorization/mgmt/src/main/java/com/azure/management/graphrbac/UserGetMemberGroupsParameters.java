@@ -5,12 +5,19 @@
 package com.azure.management.graphrbac;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The UserGetMemberGroupsParameters model. */
 @Fluent
 public final class UserGetMemberGroupsParameters {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserGetMemberGroupsParameters.class);
+
     /*
      * If true, only membership in security-enabled groups should be checked.
      * Otherwise, membership in all groups should be checked.
@@ -21,8 +28,7 @@ public final class UserGetMemberGroupsParameters {
     /*
      * Request parameters for GetMemberGroups API call.
      */
-    @JsonProperty(value = "")
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the securityEnabledOnly property: If true, only membership in security-enabled groups should be checked.
@@ -51,6 +57,7 @@ public final class UserGetMemberGroupsParameters {
      *
      * @return the additionalProperties value.
      */
+    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
@@ -64,5 +71,21 @@ public final class UserGetMemberGroupsParameters {
     public UserGetMemberGroupsParameters withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    @JsonAnySetter
+    void withAdditionalProperties(String key, Object value) {
+        if (additionalProperties == null) {
+            additionalProperties = new HashMap<>();
+        }
+        additionalProperties.put(key, value);
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

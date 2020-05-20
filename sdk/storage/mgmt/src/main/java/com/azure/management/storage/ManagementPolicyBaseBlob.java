@@ -5,11 +5,15 @@
 package com.azure.management.storage;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ManagementPolicyBaseBlob model. */
 @Fluent
 public final class ManagementPolicyBaseBlob {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyBaseBlob.class);
+
     /*
      * The function to tier blobs to cool storage. Support blobs currently at
      * Hot tier
@@ -90,5 +94,22 @@ public final class ManagementPolicyBaseBlob {
     public ManagementPolicyBaseBlob withDelete(DateAfterModification delete) {
         this.delete = delete;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (tierToCool() != null) {
+            tierToCool().validate();
+        }
+        if (tierToArchive() != null) {
+            tierToArchive().validate();
+        }
+        if (delete() != null) {
+            delete().validate();
+        }
     }
 }

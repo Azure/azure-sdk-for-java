@@ -4,9 +4,7 @@ package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Iterator;
 import java.util.ServiceLoader;
 
 /**
@@ -17,14 +15,14 @@ import java.util.ServiceLoader;
  */
 public final class TracerProxy {
 
-    private static final List<Tracer> TRACERS;
+    private static Tracer tracer;
+
     static {
         ServiceLoader<Tracer> serviceLoader = ServiceLoader.load(Tracer.class);
-        List<Tracer> tracers = new ArrayList<>();
-        for (Tracer tracer : serviceLoader) {
-            tracers.add(tracer);
+        Iterator<?> iterator = serviceLoader.iterator();
+        if (iterator.hasNext()) {
+            tracer = serviceLoader.iterator().next();
         }
-        TRACERS = Collections.unmodifiableList(tracers);
     }
 
     private TracerProxy() {
@@ -33,7 +31,7 @@ public final class TracerProxy {
 
     /**
      * A new tracing span is created for each {@link Tracer tracer} plugged into the SDK.
-     *
+     * <p>
      * The {@code context} will be checked for information about a parent span. If a parent span is found, the new span
      * will be added as a child. Otherwise, the parent span will be created and added to the {@code context} and any
      * downstream {@code start()} calls will use the created span as the parent.
@@ -44,16 +42,14 @@ public final class TracerProxy {
      * @return An updated {@link Context} object.
      */
     public static Context start(String methodName, Context context) {
-        Context local = context;
-        for (Tracer tracer : TRACERS) {
-            local = tracer.start(methodName, local);
+        if (tracer == null) {
+            return context;
         }
-
-        return local;
+        return tracer.start(methodName, context);
     }
 
     /**
-     * For each {@link Tracer tracer} plugged into the SDK, the key-value pair metadata is added to its current span. If
+     * For the plugged in {@link Tracer tracer}, the key-value pair metadata is added to its current span. If
      * the {@code context} does not contain a span, then no metadata is added.
      *
      * @param key Name of the metadata.
@@ -61,18 +57,24 @@ public final class TracerProxy {
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void setAttribute(String key, String value, Context context) {
-        TRACERS.forEach(tracer -> tracer.setAttribute(key, value, context));
+        if (tracer == null) {
+            return;
+        }
+        tracer.setAttribute(key, value, context);
     }
 
     /**
-     * For each {@link Tracer tracer} plugged into the SDK, its current tracing span is marked as completed.
+     * For the plugged in {@link Tracer tracer}, its current tracing span is marked as completed.
      *
      * @param responseCode Response status code if the span is in a HTTP call context.
      * @param error {@link Throwable} that happened during the span or {@code null} if no exception occurred.
      * @param context Additional metadata that is passed through the call stack.
      */
     public static void end(int responseCode, Throwable error, Context context) {
-        TRACERS.forEach(tracer -> tracer.end(responseCode, error, context));
+        if (tracer == null) {
+            return;
+        }
+        tracer.end(responseCode, error, context);
     }
 
     /**
@@ -84,11 +86,9 @@ public final class TracerProxy {
      * @return An updated {@link Context} object.
      */
     public static Context setSpanName(String spanName, Context context) {
-        Context local = context;
-        for (Tracer tracer : TRACERS) {
-            local = tracer.setSpanName(spanName, context);
+        if (tracer == null) {
+            return context;
         }
-
-        return local;
+        return tracer.setSpanName(spanName, context);
     }
 }

@@ -7,10 +7,12 @@ package com.azure.management.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.HostingEnvironmentProfile;
 import com.azure.management.appservice.ProvisioningState;
 import com.azure.management.appservice.SkuDescription;
 import com.azure.management.appservice.StatusOptions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -18,6 +20,8 @@ import java.time.OffsetDateTime;
 @JsonFlatten
 @Fluent
 public class AppServicePlanInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanInner.class);
+
     /*
      * Description of a SKU for a scalable resource.
      */
@@ -512,5 +516,19 @@ public class AppServicePlanInner extends Resource {
     public AppServicePlanInner withKind(String kind) {
         this.kind = kind;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (sku() != null) {
+            sku().validate();
+        }
+        if (hostingEnvironmentProfile() != null) {
+            hostingEnvironmentProfile().validate();
+        }
     }
 }

@@ -60,10 +60,10 @@ public final class ConnectionPolicy {
     public ConnectionPolicy(DirectConnectionConfig directConnectionConfig) {
         this(ConnectionMode.DIRECT);
         this.connectionTimeout = directConnectionConfig.getConnectionTimeout();
-        this.idleChannelTimeout = directConnectionConfig.getIdleChannelTimeout();
+        this.idleChannelTimeout = directConnectionConfig.getIdleConnectionTimeout();
         this.idleEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
-        this.maxChannelsPerEndpoint = directConnectionConfig.getMaxChannelsPerEndpoint();
-        this.maxRequestsPerChannel = directConnectionConfig.getMaxRequestsPerChannel();
+        this.maxChannelsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
+        this.maxRequestsPerChannel = directConnectionConfig.getMaxRequestsPerConnection();
     }
 
     private ConnectionPolicy(ConnectionMode connectionMode) {

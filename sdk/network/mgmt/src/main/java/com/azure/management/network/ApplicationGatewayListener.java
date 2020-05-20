@@ -3,9 +3,9 @@
 package com.azure.management.network;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.management.network.models.HasHostName;
+import com.azure.management.network.models.HasHostname;
 import com.azure.management.network.models.HasProtocol;
-import com.azure.management.network.models.HasPublicIPAddress;
+import com.azure.management.network.models.HasPublicIpAddress;
 import com.azure.management.network.models.HasServerNameIndication;
 import com.azure.management.network.models.HasSslCertificate;
 import com.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -20,9 +20,9 @@ public interface ApplicationGatewayListener
     extends HasInner<ApplicationGatewayHttpListener>,
         ChildResource<ApplicationGateway>,
         HasSslCertificate<ApplicationGatewaySslCertificate>,
-        HasPublicIPAddress,
+        HasPublicIpAddress,
         HasProtocol<ApplicationGatewayProtocol>,
-        HasHostName,
+        HasHostname,
         HasServerNameIndication,
         HasSubnet {
 
@@ -58,7 +58,7 @@ public interface ApplicationGatewayListener
         interface WithAttach<ParentT>
             extends Attachable.InDefinition<ParentT>,
                 WithProtocol<ParentT>,
-                WithHostName<ParentT>,
+                WithHostname<ParentT>,
                 WithServerNameIndication<ParentT> {
         }
 
@@ -170,7 +170,7 @@ public interface ApplicationGatewayListener
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
          *     definition
          */
-        interface WithHostName<ParentT> extends HasHostName.DefinitionStages.WithHostName<WithAttach<ParentT>> {
+        interface WithHostname<ParentT> extends HasHostname.DefinitionStages.WithHostname<WithAttach<ParentT>> {
         }
 
         /**
@@ -198,7 +198,7 @@ public interface ApplicationGatewayListener
             DefinitionStages.WithFrontendPort<ParentT>,
             DefinitionStages.WithSslCertificate<ParentT>,
             DefinitionStages.WithSslPassword<ParentT>,
-            DefinitionStages.WithHostName<ParentT> {
+            DefinitionStages.WithHostname<ParentT> {
     }
 
     /** Grouping of application gateway HTTP listener update stages. */
@@ -297,7 +297,7 @@ public interface ApplicationGatewayListener
          * The stage of an application gateway frontend listener update allowing to specify the hostname of the website
          * for which the traffic is received.
          */
-        interface WithHostName extends HasHostName.UpdateStages.WithHostName<Update> {
+        interface WithHostname extends HasHostname.UpdateStages.WithHostname<Update> {
         }
     }
 
@@ -305,7 +305,7 @@ public interface ApplicationGatewayListener
     interface Update
         extends Settable<ApplicationGateway.Update>,
             UpdateStages.WithServerNameIndication,
-            UpdateStages.WithHostName,
+            UpdateStages.WithHostname,
             UpdateStages.WithProtocol,
             UpdateStages.WithSslCertificate,
             UpdateStages.WithSslPassword,
@@ -435,7 +435,7 @@ public interface ApplicationGatewayListener
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this
          *     definition
          */
-        interface WithHostName<ParentT> extends HasHostName.UpdateDefinitionStages.WithHostName<WithAttach<ParentT>> {
+        interface WithHostname<ParentT> extends HasHostname.UpdateDefinitionStages.WithHostname<WithAttach<ParentT>> {
         }
 
         /**
@@ -461,7 +461,7 @@ public interface ApplicationGatewayListener
         interface WithAttach<ParentT>
             extends Attachable.InUpdate<ParentT>,
                 UpdateDefinitionStages.WithServerNameIndication<ParentT>,
-                UpdateDefinitionStages.WithHostName<ParentT>,
+                UpdateDefinitionStages.WithHostname<ParentT>,
                 UpdateDefinitionStages.WithProtocol<ParentT> {
         }
     }

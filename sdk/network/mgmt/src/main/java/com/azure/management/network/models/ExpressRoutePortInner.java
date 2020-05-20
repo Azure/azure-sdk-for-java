@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.network.ExpressRoutePortsEncapsulation;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 @JsonFlatten
 @Fluent
 public class ExpressRoutePortInner extends Resource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortInner.class);
+
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -283,5 +287,16 @@ public class ExpressRoutePortInner extends Resource {
     public ExpressRoutePortInner withId(String id) {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (links() != null) {
+            links().forEach(e -> e.validate());
+        }
     }
 }

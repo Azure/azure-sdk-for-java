@@ -6,7 +6,9 @@ package com.azure.management.appservice;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.appservice.models.AppServiceCertificateInner;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,6 +18,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServiceCertificateOrderPatchResource.class);
+
     /*
      * State of the Key Vault secret.
      */
@@ -134,7 +138,7 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
      * Time stamp when the certificate would be auto renewed next
      */
     @JsonProperty(value = "properties.nextAutoRenewalTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextAutoRenewalTimeStamp;
+    private OffsetDateTime nextAutoRenewalTimestamp;
 
     /**
      * Get the certificates property: State of the Key Vault secret.
@@ -382,11 +386,33 @@ public class AppServiceCertificateOrderPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the nextAutoRenewalTimeStamp property: Time stamp when the certificate would be auto renewed next.
+     * Get the nextAutoRenewalTimestamp property: Time stamp when the certificate would be auto renewed next.
      *
-     * @return the nextAutoRenewalTimeStamp value.
+     * @return the nextAutoRenewalTimestamp value.
      */
-    public OffsetDateTime nextAutoRenewalTimeStamp() {
-        return this.nextAutoRenewalTimeStamp;
+    public OffsetDateTime nextAutoRenewalTimestamp() {
+        return this.nextAutoRenewalTimestamp;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
+        if (certificates() != null) {
+            certificates().values().forEach(e -> e.validate());
+        }
+        if (signedCertificate() != null) {
+            signedCertificate().validate();
+        }
+        if (intermediate() != null) {
+            intermediate().validate();
+        }
+        if (root() != null) {
+            root().validate();
+        }
     }
 }

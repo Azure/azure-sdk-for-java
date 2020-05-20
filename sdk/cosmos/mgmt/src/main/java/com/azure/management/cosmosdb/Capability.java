@@ -5,11 +5,15 @@
 package com.azure.management.cosmosdb;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Capability model. */
 @Fluent
 public final class Capability {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Capability.class);
+
     /*
      * Name of the Cosmos DB capability. For example, "name":
      * "EnableCassandra". Current values also include "EnableTable" and
@@ -38,5 +42,13 @@ public final class Capability {
     public Capability withName(String name) {
         this.name = name;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
     }
 }

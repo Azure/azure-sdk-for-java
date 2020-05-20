@@ -5,18 +5,22 @@
 package com.azure.management.monitor;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.util.logging.ClientLogger;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonTypeResolver;
 import java.util.List;
 
 /** The RuleEmailAction model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "odata\\.type")
 @JsonTypeName("Microsoft.Azure.Management.Insights.Models.RuleEmailAction")
-@JsonTypeResolver(OdataTypeDiscriminatorTypeResolver.class)
+@JsonFlatten
 @Fluent
-public final class RuleEmailAction extends RuleAction {
+public class RuleEmailAction extends RuleAction {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RuleEmailAction.class);
+
     /*
      * Whether the administrators (service and co-administrators) of the
      * service should be notified when the alert is activated.
@@ -73,5 +77,15 @@ public final class RuleEmailAction extends RuleAction {
     public RuleEmailAction withCustomEmails(List<String> customEmails) {
         this.customEmails = customEmails;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    @Override
+    public void validate() {
+        super.validate();
     }
 }
