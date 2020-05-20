@@ -1,7 +1,7 @@
 package com.azure.storage.blob.changefeed
 
-import org.junit.Ignore
 import reactor.test.StepVerifier
+import spock.lang.Ignore
 
 class ChangefeedNetworkTest extends APISpec {
 
