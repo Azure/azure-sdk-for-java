@@ -46,7 +46,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /** The Retrofit service to perform REST calls. */
     private ClustersService service;
     /** The service client containing this operation class. */
-    private EventHub2018PreviewManagementClientImpl client;
+    private EventHubManagementClientImpl client;
 
     /**
      * Initializes an instance of ClustersInner.
@@ -54,7 +54,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ClustersInner(Retrofit retrofit, EventHub2018PreviewManagementClientImpl client) {
+    public ClustersInner(Retrofit retrofit, EventHubManagementClientImpl client) {
         this.service = retrofit.create(ClustersService.class);
         this.client = client;
     }
@@ -116,7 +116,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
      * @return the PagedList<AvailableClusterInner> object if successful.
      */
     public PagedList<AvailableClusterInner> list() {
-        PageImpl1<AvailableClusterInner> page = new PageImpl1<>();
+        PageImpl<AvailableClusterInner> page = new PageImpl<>();
         page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
         page.setNextPageLink(null);
         return new PagedList<AvailableClusterInner>(page) {
@@ -146,7 +146,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<AvailableClusterInner>>, Page<AvailableClusterInner>>() {
             @Override
             public Page<AvailableClusterInner> call(ServiceResponse<List<AvailableClusterInner>> response) {
-                PageImpl1<AvailableClusterInner> page = new PageImpl1<>();
+                PageImpl<AvailableClusterInner> page = new PageImpl<>();
                 page.setItems(response.body());
                 return page;
             }
@@ -162,15 +162,13 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<AvailableClusterInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<AvailableClusterInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<AvailableClusterInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<AvailableClusterInner>> result = listDelegate(response);
                         List<AvailableClusterInner> items = null;
                         if (result.body() != null) {
                             items = result.body().items();
@@ -184,9 +182,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<PageImpl1<AvailableClusterInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl1<AvailableClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl1<AvailableClusterInner>>() { }.getType())
+    private ServiceResponse<PageImpl<AvailableClusterInner>> listDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<AvailableClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<AvailableClusterInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -194,7 +192,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -213,7 +211,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -233,7 +231,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ClusterInner&gt; object
      */
@@ -250,7 +248,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;ClusterInner&gt; object
      */
@@ -271,7 +269,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
      *
-    ServiceResponse<PageImpl<ClusterInner>> * @param resourceGroupName Name of the resource group within the Azure subscription.
+    ServiceResponse<PageImpl1<ClusterInner>> * @param resourceGroupName Name of the resource group within the azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ClusterInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -282,15 +280,13 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listByResourceGroup(this.client.subscriptionId(), resourceGroupName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.listByResourceGroup(this.client.subscriptionId(), resourceGroupName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ClusterInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ClusterInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ClusterInner>> result = listByResourceGroupDelegate(response);
+                        ServiceResponse<PageImpl1<ClusterInner>> result = listByResourceGroupDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ClusterInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -299,9 +295,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<PageImpl<ClusterInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ClusterInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<ClusterInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<ClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<ClusterInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -309,7 +305,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -323,7 +319,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -336,7 +332,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterInner object
@@ -353,7 +349,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Gets the resource description of the specified Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterInner object
@@ -368,10 +364,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getByResourceGroup(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.getByResourceGroup(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ClusterInner>> call(Response<ResponseBody> response) {
@@ -395,7 +389,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -409,7 +403,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -422,7 +416,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -439,7 +433,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -454,17 +448,15 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.put(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-01-01-preview";
+        Observable<Response<ResponseBody>> observable = service.put(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ClusterInner>() { }.getType());
     }
 
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -478,7 +470,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -491,7 +483,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterInner object
@@ -508,7 +500,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Creates or updates an instance of an Event Hubs Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ClusterInner object
@@ -523,10 +515,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginPut(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.beginPut(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ClusterInner>> call(Response<ResponseBody> response) {
@@ -552,7 +542,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -567,7 +557,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -581,7 +571,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -599,7 +589,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -615,21 +605,19 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.patch(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-01-01-preview";
+        Observable<Response<ResponseBody>> observable = service.patch(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ClusterInner>() { }.getType());
     }
 
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -644,7 +632,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -658,7 +646,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -676,7 +664,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Modifies mutable properties on the Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param parameters The properties of the Event Hubs Cluster which should be updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -692,14 +680,12 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.beginPatch(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), parameters, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.beginPatch(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ClusterInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ClusterInner>> call(Response<ResponseBody> response) {
@@ -725,7 +711,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -738,7 +724,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -751,7 +737,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -768,7 +754,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
@@ -783,17 +769,15 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-01-01-preview";
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -806,7 +790,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -819,7 +803,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -836,7 +820,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Deletes an existing Event Hubs Cluster. This operation is idempotent.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
@@ -851,10 +835,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -880,7 +862,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -894,7 +876,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -907,7 +889,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EHNamespaceIdListResultInner object
@@ -924,7 +906,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * List all Event Hubs Namespace IDs in an Event Hubs Dedicated Cluster.
      *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param clusterName The name of the Event Hubs Cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the EHNamespaceIdListResultInner object
@@ -939,10 +921,8 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
         if (clusterName == null) {
             throw new IllegalArgumentException("Parameter clusterName is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listNamespaces(this.client.subscriptionId(), resourceGroupName, clusterName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-01-01-preview";
+        return service.listNamespaces(this.client.subscriptionId(), resourceGroupName, clusterName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EHNamespaceIdListResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<EHNamespaceIdListResultInner>> call(Response<ResponseBody> response) {
@@ -1044,7 +1024,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
     /**
      * Lists the available Event Hubs Clusters within an ARM resource group.
      *
-    ServiceResponse<PageImpl<ClusterInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl1<ClusterInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ClusterInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1058,7 +1038,7 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
                 @Override
                 public Observable<ServiceResponse<Page<ClusterInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<ClusterInner>> result = listByResourceGroupNextDelegate(response);
+                        ServiceResponse<PageImpl1<ClusterInner>> result = listByResourceGroupNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<ClusterInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1067,9 +1047,9 @@ public class ClustersInner implements InnerSupportsGet<ClusterInner>, InnerSuppo
             });
     }
 
-    private ServiceResponse<PageImpl<ClusterInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ClusterInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<ClusterInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl1<ClusterInner>, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl1<ClusterInner>>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
