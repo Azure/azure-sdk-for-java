@@ -344,7 +344,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        ServiceBusReceivedMessage receivedMessage = receiver.browse();
+        ServiceBusReceivedMessage receivedMessage = receiver.peek();
 
         // Assert
         assertMessageEquals(receivedMessage, messageId, isSessionEnabled);
@@ -374,7 +374,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         assertNotNull(receivedMessage);
 
         // Act
-        ServiceBusReceivedMessage receivedPeekMessage = receiver.browseAt(receivedMessage.getSequenceNumber());
+        ServiceBusReceivedMessage receivedPeekMessage = receiver.peekAt(receivedMessage.getSequenceNumber());
 
         // Assert
         assertEquals(receivedMessage.getSequenceNumber(), receivedPeekMessage.getSequenceNumber());
@@ -398,7 +398,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.browseBatch(maxMessages);
+        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.peekBatch(maxMessages);
 
         // Assert
         Assertions.assertEquals(maxMessages, (int) iterableMessages.stream().count());
@@ -422,7 +422,7 @@ class ServiceBusReceiverClientIntegrationTest extends IntegrationTestBase {
         sendMessage(message);
 
         // Act
-        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.browseBatchAt(maxMessages, fromSequenceNumber);
+        IterableStream<ServiceBusReceivedMessage> iterableMessages = receiver.peekBatchAt(maxMessages, fromSequenceNumber);
 
         // Assert
         final List<ServiceBusReceivedMessage> asList = iterableMessages.stream().collect(Collectors.toList());
