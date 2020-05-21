@@ -8,13 +8,13 @@ import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
-import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -110,10 +110,12 @@ class DetectLanguageAsyncClient {
                 documentLanguage.getDetectedLanguage();
 
             // warnings
-            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream().map(warning ->
-                new TextAnalyticsWarning(WarningCode.fromString(warning.getCode().toString()),
-                    warning.getMessage())).collect(Collectors.toList());
-
+            final List<TextAnalyticsWarning> warnings = documentLanguage.getWarnings().stream()
+                .map(warning -> {
+                    final WarningCodeValue warningCodeValue = warning.getCode();
+                    return new TextAnalyticsWarning(warningCodeValue == null ? null : warningCodeValue.toString(),
+                        warning.getMessage());
+                }).collect(Collectors.toList());
 
             detectLanguageResults.add(new DetectLanguageResult(
                 documentLanguage.getId(),

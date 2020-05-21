@@ -23,7 +23,7 @@ import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.http.HttpHeaders;
-import com.azure.cosmos.models.CosmosError;
+import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -51,46 +51,46 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
 
-public class CosmosClientExceptionTest {
+public class CosmosExceptionTest {
 
     @Test(groups = { "unit" })
     public void headerNotNull1() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException(0);
+        CosmosException dce = BridgeInternal.createCosmosException(0);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull2() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, "dummy");
+        CosmosException dce = BridgeInternal.createCosmosException(0, "dummy");
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull3() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, new RuntimeException());
+        CosmosException dce = BridgeInternal.createCosmosException(0, new RuntimeException());
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull4() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException(0, (CosmosError) null, (Map<String, String>) null);
+        CosmosException dce = BridgeInternal.createCosmosException(0, (CosmosError) null, (Map<String, String>) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull5() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, 0, (CosmosError) null, (Map<String, String>) null);
+        CosmosException dce = BridgeInternal.createCosmosException((String) null, 0, (CosmosError) null, (Map<String, String>) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
 
     @Test(groups = { "unit" })
     public void headerNotNull6() {
-        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, (Exception) null, (Map<String, String>) null, 0, (String) null);
+        CosmosException dce = BridgeInternal.createCosmosException((String) null, (Exception) null, (Map<String, String>) null, 0, (String) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).isEmpty();
     }
@@ -98,17 +98,17 @@ public class CosmosClientExceptionTest {
     @Test(groups = { "unit" })
     public void headerNotNull7() {
         ImmutableMap<String, String> respHeaders = ImmutableMap.of("key", "getValue");
-        CosmosClientException dce = BridgeInternal.createCosmosClientException((String) null, (Exception) null, respHeaders, 0, (String) null);
+        CosmosException dce = BridgeInternal.createCosmosException((String) null, (Exception) null, respHeaders, 0, (String) null);
         assertThat(dce.getResponseHeaders()).isNotNull();
         assertThat(dce.getResponseHeaders()).contains(respHeaders.entrySet().iterator().next());
     }
 
     @Test(groups = { "unit" }, dataProvider = "subTypes")
-    public void statusCodeIsCorrect(Class<CosmosClientException> type, int expectedStatusCode) {
+    public void statusCodeIsCorrect(Class<CosmosException> type, int expectedStatusCode) {
         try {
-            Constructor<CosmosClientException> constructor = type.getDeclaredConstructor(String.class, HttpHeaders.class, String.class);
+            Constructor<CosmosException> constructor = type.getDeclaredConstructor(String.class, HttpHeaders.class, String.class);
             constructor.setAccessible(true);
-            final CosmosClientException instance = constructor.newInstance("some-message", null, "some-uri");
+            final CosmosException instance = constructor.newInstance("some-message", null, "some-uri");
             assertEquals(instance.getStatusCode(), expectedStatusCode);
         } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException error) {
             String message = lenientFormat("could not create instance of %s due to %s", type, error);

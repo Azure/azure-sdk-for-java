@@ -44,9 +44,8 @@ public class CosmosStoredProcedure {
      * Read cosmos sync stored procedure.
      *
      * @return the cosmos sync stored procedure response
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse read() throws CosmosClientException {
+    public CosmosStoredProcedureResponse read() {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.read());
     }
@@ -56,10 +55,8 @@ public class CosmosStoredProcedure {
      *
      * @param options the options
      * @return the cosmos sync stored procedure response
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse read(CosmosStoredProcedureRequestOptions options) throws
-        CosmosClientException {
+    public CosmosStoredProcedureResponse read(CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.read(options));
     }
@@ -68,9 +65,8 @@ public class CosmosStoredProcedure {
      * Delete cosmos stored procedure.
      *
      * @return the cosmos sync response
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse delete() throws CosmosClientException {
+    public CosmosStoredProcedureResponse delete() {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.delete());
     }
@@ -80,9 +76,8 @@ public class CosmosStoredProcedure {
      *
      * @param options the options
      * @return the cosmos sync response
-     * @throws CosmosClientException the cosmos client exception
      */
-    CosmosStoredProcedureResponse delete(CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+    CosmosStoredProcedureResponse delete(CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.delete(options));
     }
@@ -93,11 +88,10 @@ public class CosmosStoredProcedure {
      * @param procedureParams the procedure params
      * @param options the options
      * @return the cosmos sync stored procedure response
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosStoredProcedureResponse execute(
         List<Object> procedureParams,
-        CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+        CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.execute(procedureParams, options));
     }
@@ -107,10 +101,8 @@ public class CosmosStoredProcedure {
      *
      * @param storedProcedureSettings the stored procedure settings
      * @return the cosmos sync stored procedure response
-     * @throws CosmosClientException the cosmos client exception
      */
-    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings) throws
-        CosmosClientException {
+    public CosmosStoredProcedureResponse replace(CosmosStoredProcedureProperties storedProcedureSettings) {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings));
     }
@@ -121,11 +113,10 @@ public class CosmosStoredProcedure {
      * @param storedProcedureSettings the stored procedure settings
      * @param options the options
      * @return the cosmos sync stored procedure response
-     * @throws CosmosClientException the cosmos client exception
      */
     public CosmosStoredProcedureResponse replace(
         CosmosStoredProcedureProperties storedProcedureSettings,
-        CosmosStoredProcedureRequestOptions options) throws CosmosClientException {
+        CosmosStoredProcedureRequestOptions options) {
         return container.getScripts()
                    .mapStoredProcedureResponseAndBlock(storedProcedure.replace(storedProcedureSettings, options));
 

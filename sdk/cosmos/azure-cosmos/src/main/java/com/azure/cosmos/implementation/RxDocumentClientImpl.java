@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosKeyCredential;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.models.FeedOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -35,7 +35,6 @@ import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyAndResourceTokenPair;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
-import com.azure.cosmos.models.AccessConditionType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -88,7 +87,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean hasAuthKeyResourceToken;
     private final Configs configs;
     private final boolean connectionSharingAcrossClientsEnabled;
-    private CosmosKeyCredential cosmosKeyCredential;
+    private AzureKeyCredential credential;
     private CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver;
     private SessionContainer sessionContainer;
     private String firstResourceTokenFromPermissionFeed = StringUtils.EMPTY;
@@ -130,12 +129,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
                                 CosmosAuthorizationTokenResolver cosmosAuthorizationTokenResolver,
-                                CosmosKeyCredential cosmosKeyCredential,
+                                AzureKeyCredential credential,
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            cosmosKeyCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
+            credential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -145,12 +144,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 ConnectionPolicy connectionPolicy,
                                 ConsistencyLevel consistencyLevel,
                                 Configs configs,
-                                CosmosKeyCredential cosmosKeyCredential,
+                                AzureKeyCredential credential,
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-            cosmosKeyCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
+            credential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled);
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
             for (Permission permission : permissionFeed) {
@@ -198,7 +197,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          ConnectionPolicy connectionPolicy,
                          ConsistencyLevel consistencyLevel,
                          Configs configs,
-                         CosmosKeyCredential cosmosKeyCredential,
+                         AzureKeyCredential credential,
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled) {
@@ -212,19 +211,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.configs = configs;
         this.masterKeyOrResourceToken = masterKeyOrResourceToken;
         this.serviceEndpoint = serviceEndpoint;
-        this.cosmosKeyCredential = cosmosKeyCredential;
+        this.credential = credential;
         this.contentResponseOnWriteEnabled = contentResponseOnWriteEnabled;
 
-        if (this.cosmosKeyCredential != null) {
+        if (this.credential != null) {
             hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.cosmosKeyCredential);
+            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
         } else if (masterKeyOrResourceToken != null && ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)) {
             this.authorizationTokenProvider = null;
             hasAuthKeyResourceToken = true;
         } else if(masterKeyOrResourceToken != null && !ResourceTokenAuthorizationHelper.isResourceToken(masterKeyOrResourceToken)){
-            this.cosmosKeyCredential = new CosmosKeyCredential(this.masterKeyOrResourceToken);
+            this.credential = new AzureKeyCredential(this.masterKeyOrResourceToken);
             hasAuthKeyResourceToken = false;
-            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.cosmosKeyCredential);
+            this.authorizationTokenProvider = new BaseAuthorizationTokenProvider(this.credential);
         } else {
             hasAuthKeyResourceToken = false;
             this.authorizationTokenProvider = null;
@@ -874,12 +873,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             headers.putAll(customOptions);
         }
 
-        if (options.getAccessCondition() != null) {
-            if (options.getAccessCondition().getType() == AccessConditionType.IF_MATCH) {
-                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getAccessCondition().getCondition());
-            } else {
-                headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getAccessCondition().getCondition());
-            }
+        if (options.getIfMatchETag() != null) {
+                headers.put(HttpConstants.HttpHeaders.IF_MATCH, options.getIfMatchETag());
+        }
+
+        if(options.getIfNoneMatchETag() != null) {
+            headers.put(HttpConstants.HttpHeaders.IF_NONE_MATCH, options.getIfNoneMatchETag());
         }
 
         if (options.getConsistencyLevel() != null) {
@@ -1090,7 +1089,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void populateHeaders(RxDocumentServiceRequest request, RequestVerb httpMethod) {
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
-            || this.cosmosAuthorizationTokenResolver != null || this.cosmosKeyCredential != null) {
+            || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
             String resourceName = request.getResourceAddress();
 
             String authorization = this.getUserAuthorizationToken(
@@ -1125,7 +1124,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (this.cosmosAuthorizationTokenResolver != null) {
             return this.cosmosAuthorizationTokenResolver.getAuthorizationToken(requestVerb, resourceName, this.resolveCosmosResourceType(resourceType),
                     properties != null ? Collections.unmodifiableMap(properties) : null);
-        } else if (cosmosKeyCredential != null) {
+        } else if (credential != null) {
             return this.authorizationTokenProvider.generateKeyAuthorizationSignature(requestVerb, resourceName,
                     resourceType, headers);
         } else if (masterKeyOrResourceToken != null && hasAuthKeyResourceToken && resourceTokensMap == null) {

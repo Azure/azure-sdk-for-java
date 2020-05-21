@@ -6,7 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
-import com.azure.cosmos.CosmosClientException;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.models.FeedOptions;
 import reactor.core.publisher.Mono;
 
@@ -48,7 +48,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
     /// <param name="cancellationToken"></param>
     /// <returns>True indicates caller should retry, False otherwise</returns>
     public Mono<ShouldRetryResult> shouldRetry(Exception exception) {
-        CosmosClientException clientException = Utils.as(exception, CosmosClientException.class);
+        CosmosException clientException = Utils.as(exception, CosmosException.class);
         if (clientException != null &&
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.GONE) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE)) {

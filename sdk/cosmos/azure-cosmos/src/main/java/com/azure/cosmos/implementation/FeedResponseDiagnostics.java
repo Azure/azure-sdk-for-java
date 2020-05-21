@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
 import java.util.Map;
@@ -15,7 +14,7 @@ public final class FeedResponseDiagnostics {
 
     private Map<String, QueryMetrics> queryMetricsMap;
 
-    FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
+    public FeedResponseDiagnostics(Map<String, QueryMetrics> queryMetricsMap) {
         this.queryMetricsMap = queryMetricsMap;
     }
 

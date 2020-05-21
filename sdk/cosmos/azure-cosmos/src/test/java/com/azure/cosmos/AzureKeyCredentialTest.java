@@ -35,7 +35,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CosmosKeyCredentialTest extends TestSuiteBase {
+public class AzureKeyCredentialTest extends TestSuiteBase {
 
     private static final int TIMEOUT = 50000;
     private static final int SETUP_TIMEOUT = 20000;
@@ -49,7 +49,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
     private CosmosAsyncContainer container;
 
     @Factory(dataProvider = "clientBuildersWithDirectSession")
-    public CosmosKeyCredentialTest(CosmosClientBuilder clientBuilder) {
+    public AzureKeyCredentialTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
@@ -91,9 +91,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
         Mono<CosmosAsyncContainerResponse> createObservable = database
             .createContainer(collectionDefinition);
 
@@ -103,7 +103,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
         safeDeleteAllCollections(database);
     }
 
@@ -112,12 +112,12 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
         Mono<CosmosAsyncContainerResponse> readObservable = collection.read();
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator =
@@ -126,7 +126,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
         safeDeleteAllCollections(database);
     }
 
@@ -135,12 +135,12 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
         Mono<CosmosAsyncContainerResponse> createObservable = database.createContainer(collectionDefinition);
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
         Mono<CosmosAsyncContainerResponse> deleteObservable = collection.delete();
 
         CosmosResponseValidator<CosmosAsyncContainerResponse> validator = new CosmosResponseValidator.Builder<CosmosAsyncContainerResponse>()
@@ -148,7 +148,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "crudArgProvider", retryAnalyzer = RetryAnalyzer.class)
@@ -159,13 +159,13 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         CosmosAsyncContainer collection = createObservable.block().getContainer();
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
         CosmosContainerProperties collectionSettings = collection.read().block().getProperties();
         // sanity check
         assertThat(collectionSettings.getIndexingPolicy().getIndexingMode()).isEqualTo(IndexingMode.CONSISTENT);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         // replace indexing mode
         IndexingPolicy indexingMode = new IndexingPolicy();
@@ -179,7 +179,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
         safeDeleteAllCollections(database);
     }
 
@@ -187,9 +187,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
     public void createDocumentWithSecondaryKey(String documentId) throws InterruptedException {
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties properties = getDocumentDefinition(documentId);
         Mono<CosmosAsyncItemResponse<CosmosItemProperties>> createObservable = container.createItem(properties, new CosmosItemRequestOptions());
@@ -201,16 +201,16 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateItemSuccess(createObservable, validator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "crudArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void readDocumentWithSecondaryKey(String documentId) throws InterruptedException {
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
         container.createItem(docDefinition, new CosmosItemRequestOptions()).block();
@@ -231,16 +231,16 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateItemSuccess(readObservable, validator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, dataProvider = "crudArgProvider", retryAnalyzer = RetryAnalyzer.class)
     public void deleteDocumentWithSecondaryKey(String documentId) throws InterruptedException {
 
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosItemProperties docDefinition = getDocumentDefinition(documentId);
 
@@ -267,15 +267,15 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         validateItemFailure(readObservable, notFoundValidator);
 
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void createDatabaseWithSecondaryKey() throws Exception {
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -287,15 +287,15 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
             .withId(databaseDefinition.getId()).build();
         validateSuccess(createObservable, validator);
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void readDatabaseWithSecondaryKey() throws Exception {
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         // read database
         Mono<CosmosAsyncDatabaseResponse> readObservable = client.getDatabase(databaseId).read();
@@ -305,15 +305,15 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
             .withId(databaseId).build();
         validateSuccess(readObservable, validator);
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void deleteDatabaseWithSecondaryKey() throws Exception {
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey(TestConfigurations.SECONDARY_MASTER_KEY);
+        credential.update(TestConfigurations.SECONDARY_MASTER_KEY);
 
         // create the database
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
@@ -328,7 +328,7 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
             .nullResource().build();
         validateSuccess(deleteObservable, validator);
         //  sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.SECONDARY_MASTER_KEY);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT,
@@ -336,9 +336,9 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
         expectedExceptionsMessageRegExp = "Illegal base64 character .*")
     public void invalidSecondaryKey() throws Exception {
         // sanity check
-        assertThat(client.cosmosKeyCredential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
+        assertThat(client.credential().getKey()).isEqualTo(TestConfigurations.MASTER_KEY);
 
-        cosmosKeyCredential.setKey("Invalid Secondary Key");
+        credential.update("Invalid Secondary Key");
 
         // create the database, and this should throw Illegal Argument Exception for secondary key
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
@@ -353,11 +353,11 @@ public class CosmosKeyCredentialTest extends TestSuiteBase {
     @AfterMethod(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void afterMethod() {
         //  Set back master getKey before every test
-        cosmosKeyCredential.setKey(TestConfigurations.MASTER_KEY);
+        credential.update(TestConfigurations.MASTER_KEY);
     }
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
-    public void before_CosmosKeyCredentialTest() {
+    public void before_AzureKeyCredentialTest() {
         client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
         container = getSharedMultiPartitionCosmosContainer(client);
