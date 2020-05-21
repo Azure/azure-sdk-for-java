@@ -163,10 +163,12 @@ public class IdentityClient {
                     | KeyStoreException
                     | NoSuchProviderException
                     | IOException e) {
-                    throw new RuntimeException(e);
+                    throw logger.logExceptionAsError(
+                        new RuntimeException("Failed to parse the certificate for the credential.", e));
                 }
             } else {
-                throw new IllegalArgumentException("Must provide client secret or client certificate path");
+                throw logger.logExceptionAsError(
+                    new IllegalArgumentException("Must provide client secret or client certificate path"));
             }
             ConfidentialClientApplication.Builder applicationBuilder =
                 ConfidentialClientApplication.builder(clientId, credential);
