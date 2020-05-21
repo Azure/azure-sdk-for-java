@@ -178,10 +178,14 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
         return  new NamespaceAuthorizationRuleImpl(inner, manager());
     }
 
+    private NetworkRuleSetImpl wrapNetworkRuleSetModel(NetworkRuleSetInner inner) {
+        return  new NetworkRuleSetImpl(inner, manager());
+    }
+
     private Observable<AuthorizationRuleInner> getAuthorizationRuleInnerUsingNamespacesInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String namespaceName = IdParsingUtils.getValueFromIdByName(id, "namespaces");
-        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "AuthorizationRules");
+        String authorizationRuleName = IdParsingUtils.getValueFromIdByName(id, "authorizationRules");
         NamespacesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, authorizationRuleName);
     }
@@ -190,10 +194,14 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
     public Observable<NamespaceAuthorizationRule> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String authorizationRuleName) {
         NamespacesInner client = this.inner();
         return client.getAuthorizationRuleAsync(resourceGroupName, namespaceName, authorizationRuleName)
-        .map(new Func1<AuthorizationRuleInner, NamespaceAuthorizationRule>() {
+        .flatMap(new Func1<AuthorizationRuleInner, Observable<NamespaceAuthorizationRule>>() {
             @Override
-            public NamespaceAuthorizationRule call(AuthorizationRuleInner inner) {
-                return wrapNamespaceAuthorizationRuleModel(inner);
+            public Observable<NamespaceAuthorizationRule> call(AuthorizationRuleInner inner) {
+                if (inner == null) {
+                    return Observable.empty();
+                } else {
+                    return Observable.just((NamespaceAuthorizationRule)wrapNamespaceAuthorizationRuleModel(inner));
+                }
             }
        });
     }
@@ -242,6 +250,24 @@ class NamespacesImpl extends GroupableResourcesCoreImpl<EHNamespace, EHNamespace
             @Override
             public AccessKeys call(AccessKeysInner inner) {
                 return new AccessKeysImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<NetworkRuleSet> listNetworkRuleSetsAsync(final String resourceGroupName, final String namespaceName) {
+        NamespacesInner client = this.inner();
+        return client.listNetworkRuleSetsAsync(resourceGroupName, namespaceName)
+        .flatMapIterable(new Func1<Page<NetworkRuleSetInner>, Iterable<NetworkRuleSetInner>>() {
+            @Override
+            public Iterable<NetworkRuleSetInner> call(Page<NetworkRuleSetInner> page) {
+                return page.items();
+            }
+        })
+        .map(new Func1<NetworkRuleSetInner, NetworkRuleSet>() {
+            @Override
+            public NetworkRuleSet call(NetworkRuleSetInner inner) {
+                return wrapNetworkRuleSetModel(inner);
             }
         });
     }
