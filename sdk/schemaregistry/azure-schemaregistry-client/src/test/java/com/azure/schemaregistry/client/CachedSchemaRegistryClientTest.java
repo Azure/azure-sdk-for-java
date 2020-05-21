@@ -1,7 +1,5 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry.client;
 
@@ -9,6 +7,7 @@ import com.azure.schemaregistry.client.rest.AzureSchemaRegistryRestService;
 import com.azure.schemaregistry.client.rest.models.GetSchemaByIdHeaders;
 import com.azure.schemaregistry.client.rest.models.GetSchemaByIdResponse;
 import com.azure.schemaregistry.client.rest.models.SchemaId;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,7 +41,7 @@ public class CachedSchemaRegistryClientTest {
         this.schemaStringCache = new HashMap<String, SchemaRegistryObject>();
 
         this.typeParserDictionary = new HashMap<String, Function<String, Object>>();
-        this.typeParserDictionary.put(MOCK_SERIALIZATION, (s)->s);
+        this.typeParserDictionary.put(MOCK_SERIALIZATION, (s) -> s);
 
         this.restService = mock(AzureSchemaRegistryRestService.class);
         this.client = new CachedSchemaRegistryClient(
@@ -52,6 +51,7 @@ public class CachedSchemaRegistryClientTest {
             this.typeParserDictionary);
     }
 
+    @AfterEach
     protected void tearDown() {
         validateMockitoUsage();
     }
@@ -62,10 +62,15 @@ public class CachedSchemaRegistryClientTest {
         when(restService.createSchema(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(MOCK_SCHEMA_ID);
 
-        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
-        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
+        assertEquals(
+            MOCK_ID,
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
+        assertEquals(
+            MOCK_ID,
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
-        verify(restService, times(1)).createSchema(anyString(), anyString(), anyString(), anyString());
+        verify(restService, times(1))
+            .createSchema(anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
@@ -77,7 +82,8 @@ public class CachedSchemaRegistryClientTest {
         assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
         assertEquals(MOCK_ID, client.getSchemaId(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION));
 
-        verify(restService, times(1)).getIdBySchemaContent(anyString(), anyString(), anyString(), anyString());
+        verify(restService, times(1))
+            .getIdBySchemaContent(anyString(), anyString(), anyString(), anyString());
     }
 
     @Test
@@ -87,13 +93,18 @@ public class CachedSchemaRegistryClientTest {
         mockHeaders.setXSchemaType(MOCK_SERIALIZATION);
         when(restService.getSchemaByIdWithResponseAsync(mockId))
             .thenReturn(
-                Mono.just(new GetSchemaByIdResponse(null, 200, null, MOCK_AVRO_SCHEMA, mockHeaders)));
+                Mono.just(new GetSchemaByIdResponse(
+                    null,
+                    200,
+                    null,
+                    MOCK_AVRO_SCHEMA,
+                    mockHeaders)));
 
         SchemaRegistryObject first = client.getSchemaByGuid(mockId.toString());
         SchemaRegistryObject second = client.getSchemaByGuid(mockId.toString());
 
         assertTrue(first.equals(second));
-        assertEquals(mockId.toString(), first.schemaId);
+        assertEquals(mockId.toString(), first.getSchemaId());
 
         verify(restService, times(1)).getSchemaByIdWithResponseAsync(mockId);
     }
@@ -104,7 +115,9 @@ public class CachedSchemaRegistryClientTest {
         when(restService.createSchema(anyString(), anyString(), anyString(), anyString()))
             .thenReturn(MOCK_SCHEMA_ID);
 
-        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
+        assertEquals(
+            MOCK_ID,
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
         client.reset();
 
@@ -112,10 +125,13 @@ public class CachedSchemaRegistryClientTest {
         assertEquals(0, schemaStringCache.size());
         assertEquals(0, this.typeParserDictionary.size());
 
-        this.typeParserDictionary.put(MOCK_SERIALIZATION, (s)->s);
+        this.typeParserDictionary.put(MOCK_SERIALIZATION, (s) -> s);
 
-        assertEquals(MOCK_ID, client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).schemaId);
+        assertEquals(
+            MOCK_ID,
+            client.register(MOCK_GROUP, MOCK_SCHEMA_NAME, MOCK_AVRO_SCHEMA, MOCK_SERIALIZATION).getSchemaId());
 
-        verify(restService, times(2)).createSchema(anyString(), anyString(), anyString(), anyString());
+        verify(restService, times(2))
+            .createSchema(anyString(), anyString(), anyString(), anyString());
     }
 }

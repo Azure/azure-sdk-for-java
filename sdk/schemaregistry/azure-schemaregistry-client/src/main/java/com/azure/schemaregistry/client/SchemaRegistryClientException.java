@@ -1,16 +1,24 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License.
- */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
 package com.azure.schemaregistry.client;
 
-public class SchemaRegistryClientException extends Exception {
-    public SchemaRegistryClientException(String s) {
+/**
+ * Runtime exception to be returned from SchemaRegistryClient implementations.
+ */
+public class SchemaRegistryClientException extends RuntimeException {
+    /**
+     * @param s error message returned from schema registry client
+     */
+    SchemaRegistryClientException(String s) {
         super(s);
     }
 
-    public SchemaRegistryClientException(String s, Throwable cause) {
+    /**
+     * @param s error message returned from schema registry client
+     * @param cause Throwable cause of the exception
+     */
+    SchemaRegistryClientException(String s, Throwable cause) {
         super(s, cause);
     }
 }

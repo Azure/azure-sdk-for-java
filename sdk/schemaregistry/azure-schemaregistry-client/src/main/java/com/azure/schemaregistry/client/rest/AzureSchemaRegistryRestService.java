@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.schemaregistry.client.rest;
 
 import com.azure.core.annotation.BodyParam;
@@ -35,16 +38,23 @@ import com.azure.schemaregistry.client.rest.models.GetSchemaVersionsResponse;
 import com.azure.schemaregistry.client.rest.models.GetSchemasByGroupResponse;
 import com.azure.schemaregistry.client.rest.models.SchemaGroup;
 import com.azure.schemaregistry.client.rest.models.SchemaId;
-import java.util.List;
-import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the AzureSchemaRegistryRestService type. */
+import java.util.List;
+import java.util.UUID;
+
+/**
+ * Initializes a new instance of the AzureSchemaRegistryRestService type.
+ */
 public final class AzureSchemaRegistryRestService {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AzureSchemaRegistryRestServiceService service;
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private String host;
 
     /**
@@ -67,7 +77,9 @@ public final class AzureSchemaRegistryRestService {
         return this;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
@@ -79,7 +91,9 @@ public final class AzureSchemaRegistryRestService {
         return this.httpPipeline;
     }
 
-    /** Initializes an instance of AzureSchemaRegistryRestService client. */
+    /**
+     * Initializes an instance of AzureSchemaRegistryRestService client.
+     */
     public AzureSchemaRegistryRestService() {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build());
     }
@@ -110,117 +124,117 @@ public final class AzureSchemaRegistryRestService {
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetSchemaByIdResponse> getSchemaById(
-                @HostParam("$host") String host, @PathParam("schema-id") UUID schemaId, Context context);
+            @HostParam("$host") String host, @PathParam("schema-id") UUID schemaId, Context context);
 
         @Get("/$schemagroups/{group-name}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<SimpleResponse<SchemaGroup>> getGroup(
-                @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
+            @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
 
         @Put("/$schemagroups/{group-name}")
         @ExpectedResponses({201, 409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<CreateGroupResponse> createGroup(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @BodyParam("application/json") SchemaGroup body,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @BodyParam("application/json") SchemaGroup body,
+            Context context);
 
         @Delete("/$schemagroups/{group-name}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteGroup(
-                @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
+            @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
 
         @Get("/$schemagroups/{group-name}/schemas")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetSchemasByGroupResponse> getSchemasByGroup(
-                @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
+            @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
 
         @Delete("/$schemagroups/{group-name}/schemas")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSchemasByGroup(
-                @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
+            @HostParam("$host") String host, @PathParam("group-name") String groupName, Context context);
 
         @Post("/$schemagroups/{group-name}/schemas/{schema-name}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetIdBySchemaContentResponse> getIdBySchemaContent(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                @HeaderParam("X-Schema-Type") String xSchemaType,
-                @BodyParam("application/json") String body,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            @HeaderParam("X-Schema-Type") String xSchemaType,
+            @BodyParam("application/json") String body,
+            Context context);
 
         @Put("/$schemagroups/{group-name}/schemas/{schema-name}")
         @ExpectedResponses({200, 400})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<CreateSchemaResponse> createSchema(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                @HeaderParam("X-Schema-Type") String xSchemaType,
-                @BodyParam("application/json") String body,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            @HeaderParam("X-Schema-Type") String xSchemaType,
+            @BodyParam("application/json") String body,
+            Context context);
 
         @Get("/$schemagroups/{group-name}/schemas/{schema-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetLatestSchemaResponse> getLatestSchema(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            Context context);
 
         @Delete("/$schemagroups/{group-name}/schemas/{schema-name}")
         @ExpectedResponses({204, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSchema(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            Context context);
 
         @Get("/$schemagroups/{group-name}/schemas/{schema-name}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetSchemaVersionsResponse> getSchemaVersions(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            Context context);
 
         @Get("/$schemagroups/{group-name}/schemas/{schema-name}/versions/{version-number}")
         @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<GetSchemaVersionResponse> getSchemaVersion(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                @PathParam("version-number") int versionNumber,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            @PathParam("version-number") int versionNumber,
+            Context context);
 
         @Delete("/$schemagroups/{group-name}/schemas/{schema-name}/versions/{version-number}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteSchemaVersion(
-                @HostParam("$host") String host,
-                @PathParam("group-name") String groupName,
-                @PathParam("schema-name") String schemaName,
-                @PathParam("version-number") int versionNumber,
-                Context context);
+            @HostParam("$host") String host,
+            @PathParam("group-name") String groupName,
+            @PathParam("schema-name") String schemaName,
+            @PathParam("version-number") int versionNumber,
+            Context context);
     }
 
     /**
      * Get all schema groups in namespace.
      *
+     * @return all schema groups in namespace.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all schema groups in namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<List<String>>> getGroupsWithResponseAsync() {
@@ -234,10 +248,10 @@ public final class AzureSchemaRegistryRestService {
      * Get all schema groups in namespace.
      *
      * @param context The context to associate with this operation.
+     * @return all schema groups in namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all schema groups in namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<List<String>>> getGroupsWithResponseAsync(Context context) {
@@ -250,29 +264,29 @@ public final class AzureSchemaRegistryRestService {
     /**
      * Get all schema groups in namespace.
      *
+     * @return all schema groups in namespace.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all schema groups in namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> getGroupsAsync() {
         return getGroupsWithResponseAsync()
-                .flatMap(
-                        (SimpleResponse<List<String>> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (SimpleResponse<List<String>> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get all schema groups in namespace.
      *
+     * @return all schema groups in namespace.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all schema groups in namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> getGroups() {
@@ -283,10 +297,10 @@ public final class AzureSchemaRegistryRestService {
      * Get schema by schema ID.
      *
      * @param schemaId schema ID referencing specific schema in registry namespace.
+     * @return schema by schema ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema by schema ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemaByIdResponse> getSchemaByIdWithResponseAsync(UUID schemaId) {
@@ -304,10 +318,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param schemaId schema ID referencing specific schema in registry namespace.
      * @param context The context to associate with this operation.
+     * @return schema by schema ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema by schema ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemaByIdResponse> getSchemaByIdWithResponseAsync(UUID schemaId, Context context) {
@@ -324,46 +338,47 @@ public final class AzureSchemaRegistryRestService {
      * Get schema by schema ID.
      *
      * @param schemaId schema ID referencing specific schema in registry namespace.
+     * @return schema by schema ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema by schema ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getSchemaByIdAsync(UUID schemaId) {
         return getSchemaByIdWithResponseAsync(schemaId)
-                .flatMap(
-                        (GetSchemaByIdResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GetSchemaByIdResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get schema by schema ID.
      *
      * @param schemaId schema ID referencing specific schema in registry namespace.
+     * @return schema by schema ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema by schema ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getSchemaById(UUID schemaId) {
         return getSchemaByIdAsync(schemaId).block();
 
     }
+
     /**
      * Get schema group description in registry namespace.
      *
      * @param groupName schema group.
+     * @return schema group description in registry namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema group description in registry namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SchemaGroup>> getGroupWithResponseAsync(String groupName) {
@@ -381,10 +396,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param context The context to associate with this operation.
+     * @return schema group description in registry namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema group description in registry namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SimpleResponse<SchemaGroup>> getGroupWithResponseAsync(String groupName, Context context) {
@@ -401,32 +416,32 @@ public final class AzureSchemaRegistryRestService {
      * Get schema group description in registry namespace.
      *
      * @param groupName schema group.
+     * @return schema group description in registry namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema group description in registry namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaGroup> getGroupAsync(String groupName) {
         return getGroupWithResponseAsync(groupName)
-                .flatMap(
-                        (SimpleResponse<SchemaGroup> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (SimpleResponse<SchemaGroup> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get schema group description in registry namespace.
      *
      * @param groupName schema group.
+     * @return schema group description in registry namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema group description in registry namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaGroup getGroup(String groupName) {
@@ -438,10 +453,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param body schema group description.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateGroupResponse> createGroupWithResponseAsync(String groupName, SchemaGroup body) {
@@ -465,10 +480,10 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param body schema group description.
      * @param context The context to associate with this operation.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateGroupResponse> createGroupWithResponseAsync(String groupName, SchemaGroup body, Context context) {
@@ -491,10 +506,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param body schema group description.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> createGroupAsync(String groupName, SchemaGroup body) {
@@ -519,10 +534,10 @@ public final class AzureSchemaRegistryRestService {
      * Delete schema group in schema registry namespace.
      *
      * @param groupName schema group.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(String groupName) {
@@ -540,10 +555,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param context The context to associate with this operation.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGroupWithResponseAsync(String groupName, Context context) {
@@ -560,10 +575,10 @@ public final class AzureSchemaRegistryRestService {
      * Delete schema group in schema registry namespace.
      *
      * @param groupName schema group.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteGroupAsync(String groupName) {
@@ -587,10 +602,10 @@ public final class AzureSchemaRegistryRestService {
      * Returns schema by group name.
      *
      * @param groupName schema group.
+     * @return array of String.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemasByGroupResponse> getSchemasByGroupWithResponseAsync(String groupName) {
@@ -608,10 +623,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param context The context to associate with this operation.
+     * @return array of String.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemasByGroupResponse> getSchemasByGroupWithResponseAsync(String groupName, Context context) {
@@ -628,32 +643,32 @@ public final class AzureSchemaRegistryRestService {
      * Returns schema by group name.
      *
      * @param groupName schema group.
+     * @return array of String.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> getSchemasByGroupAsync(String groupName) {
         return getSchemasByGroupWithResponseAsync(groupName)
-                .flatMap(
-                        (GetSchemasByGroupResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GetSchemasByGroupResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Returns schema by group name.
      *
      * @param groupName schema group.
+     * @return array of String.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<String> getSchemasByGroup(String groupName) {
@@ -664,10 +679,10 @@ public final class AzureSchemaRegistryRestService {
      * Deletes all schemas under specified group name.
      *
      * @param groupName schema group.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSchemasByGroupWithResponseAsync(String groupName) {
@@ -685,10 +700,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param context The context to associate with this operation.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSchemasByGroupWithResponseAsync(String groupName, Context context) {
@@ -705,10 +720,10 @@ public final class AzureSchemaRegistryRestService {
      * Deletes all schemas under specified group name.
      *
      * @param groupName schema group.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSchemasByGroupAsync(String groupName) {
@@ -735,14 +750,14 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
+     * @return iD for schema with matching byte content and schema type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iD for schema with matching byte content and schema type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetIdBySchemaContentResponse> getIdBySchemaContentWithResponseAsync(
-            String groupName, String schemaName, String xSchemaType, String body) {
+        String groupName, String schemaName, String xSchemaType, String body) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -759,9 +774,9 @@ public final class AzureSchemaRegistryRestService {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         return FluxUtil.withContext(
-                context ->
-                        service.getIdBySchemaContent(
-                                this.getHost(), groupName, schemaName, xSchemaType, body, context));
+            context ->
+                service.getIdBySchemaContent(
+                    this.getHost(), groupName, schemaName, xSchemaType, body, context));
     }
 
     /**
@@ -772,14 +787,14 @@ public final class AzureSchemaRegistryRestService {
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
      * @param context The context to associate with this operation.
+     * @return iD for schema with matching byte content and schema type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iD for schema with matching byte content and schema type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetIdBySchemaContentResponse> getIdBySchemaContentWithResponseAsync(
-            String groupName, String schemaName, String xSchemaType, String body, Context context) {
+        String groupName, String schemaName, String xSchemaType, String body, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -805,23 +820,23 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
+     * @return iD for schema with matching byte content and schema type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iD for schema with matching byte content and schema type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaId> getIdBySchemaContentAsync(
-            String groupName, String schemaName, String xSchemaType, String body) {
+        String groupName, String schemaName, String xSchemaType, String body) {
         return getIdBySchemaContentWithResponseAsync(groupName, schemaName, xSchemaType, body)
-                .flatMap(
-                        (GetIdBySchemaContentResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GetIdBySchemaContentResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -831,10 +846,10 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
+     * @return iD for schema with matching byte content and schema type.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return iD for schema with matching byte content and schema type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaId getIdBySchemaContent(String groupName, String schemaName, String xSchemaType, String body) {
@@ -850,14 +865,14 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
+     * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateSchemaResponse> createSchemaWithResponseAsync(
-            String groupName, String schemaName, String xSchemaType, String body) {
+        String groupName, String schemaName, String xSchemaType, String body) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -874,7 +889,7 @@ public final class AzureSchemaRegistryRestService {
             return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         return FluxUtil.withContext(
-                context -> service.createSchema(this.getHost(), groupName, schemaName, xSchemaType, body, context));
+            context -> service.createSchema(this.getHost(), groupName, schemaName, xSchemaType, body, context));
     }
 
     /**
@@ -887,14 +902,14 @@ public final class AzureSchemaRegistryRestService {
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
      * @param context The context to associate with this operation.
+     * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateSchemaResponse> createSchemaWithResponseAsync(
-            String groupName, String schemaName, String xSchemaType, String body, Context context) {
+        String groupName, String schemaName, String xSchemaType, String body, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -922,22 +937,22 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
+     * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaId> createSchemaAsync(String groupName, String schemaName, String xSchemaType, String body) {
         return createSchemaWithResponseAsync(groupName, schemaName, xSchemaType, body)
-                .flatMap(
-                        (CreateSchemaResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (CreateSchemaResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -949,10 +964,10 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param xSchemaType The xSchemaType parameter.
      * @param body schema content.
+     * @return the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SchemaId createSchema(String groupName, String schemaName, String xSchemaType, String body) {
@@ -964,10 +979,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return latest version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetLatestSchemaResponse> getLatestSchemaWithResponseAsync(String groupName, String schemaName) {
@@ -989,14 +1004,14 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param context The context to associate with this operation.
+     * @return latest version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetLatestSchemaResponse> getLatestSchemaWithResponseAsync(
-            String groupName, String schemaName, Context context) {
+        String groupName, String schemaName, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1014,22 +1029,22 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return latest version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getLatestSchemaAsync(String groupName, String schemaName) {
         return getLatestSchemaWithResponseAsync(groupName, schemaName)
-                .flatMap(
-                        (GetLatestSchemaResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GetLatestSchemaResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1037,10 +1052,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return latest version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getLatestSchema(String groupName, String schemaName) {
@@ -1052,10 +1067,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSchemaWithResponseAsync(String groupName, String schemaName) {
@@ -1077,10 +1092,10 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param context The context to associate with this operation.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSchemaWithResponseAsync(String groupName, String schemaName, Context context) {
@@ -1101,10 +1116,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSchemaAsync(String groupName, String schemaName) {
@@ -1130,10 +1145,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return list of versions for specified schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of versions for specified schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemaVersionsResponse> getSchemaVersionsWithResponseAsync(String groupName, String schemaName) {
@@ -1147,7 +1162,7 @@ public final class AzureSchemaRegistryRestService {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
         return FluxUtil.withContext(
-                context -> service.getSchemaVersions(this.getHost(), groupName, schemaName, context));
+            context -> service.getSchemaVersions(this.getHost(), groupName, schemaName, context));
     }
 
     /**
@@ -1156,14 +1171,14 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param context The context to associate with this operation.
+     * @return list of versions for specified schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of versions for specified schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemaVersionsResponse> getSchemaVersionsWithResponseAsync(
-            String groupName, String schemaName, Context context) {
+        String groupName, String schemaName, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1181,22 +1196,22 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return list of versions for specified schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of versions for specified schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<Integer>> getSchemaVersionsAsync(String groupName, String schemaName) {
         return getSchemaVersionsWithResponseAsync(groupName, schemaName)
-                .flatMap(
-                        (GetSchemaVersionsResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GetSchemaVersionsResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1204,10 +1219,10 @@ public final class AzureSchemaRegistryRestService {
      *
      * @param groupName schema group.
      * @param schemaName schema name.
+     * @return list of versions for specified schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of versions for specified schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public List<Integer> getSchemaVersions(String groupName, String schemaName) {
@@ -1220,14 +1235,14 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param versionNumber version number.
+     * @return specified version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemaVersionResponse> getSchemaVersionWithResponseAsync(
-            String groupName, String schemaName, int versionNumber) {
+        String groupName, String schemaName, int versionNumber) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1238,7 +1253,7 @@ public final class AzureSchemaRegistryRestService {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
         return FluxUtil.withContext(
-                context -> service.getSchemaVersion(this.getHost(), groupName, schemaName, versionNumber, context));
+            context -> service.getSchemaVersion(this.getHost(), groupName, schemaName, versionNumber, context));
     }
 
     /**
@@ -1248,14 +1263,14 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param versionNumber version number.
      * @param context The context to associate with this operation.
+     * @return specified version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GetSchemaVersionResponse> getSchemaVersionWithResponseAsync(
-            String groupName, String schemaName, int versionNumber, Context context) {
+        String groupName, String schemaName, int versionNumber, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1274,22 +1289,22 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param versionNumber version number.
+     * @return specified version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getSchemaVersionAsync(String groupName, String schemaName, int versionNumber) {
         return getSchemaVersionWithResponseAsync(groupName, schemaName, versionNumber)
-                .flatMap(
-                        (GetSchemaVersionResponse res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+            .flatMap(
+                (GetSchemaVersionResponse res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
@@ -1298,10 +1313,10 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param versionNumber version number.
+     * @return specified version of schema.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified version of schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getSchemaVersion(String groupName, String schemaName, int versionNumber) {
@@ -1314,14 +1329,14 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param versionNumber version number.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSchemaVersionWithResponseAsync(
-            String groupName, String schemaName, int versionNumber) {
+        String groupName, String schemaName, int versionNumber) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1332,7 +1347,7 @@ public final class AzureSchemaRegistryRestService {
             return Mono.error(new IllegalArgumentException("Parameter schemaName is required and cannot be null."));
         }
         return FluxUtil.withContext(
-                context -> service.deleteSchemaVersion(this.getHost(), groupName, schemaName, versionNumber, context));
+            context -> service.deleteSchemaVersion(this.getHost(), groupName, schemaName, versionNumber, context));
     }
 
     /**
@@ -1342,14 +1357,14 @@ public final class AzureSchemaRegistryRestService {
      * @param schemaName schema name.
      * @param versionNumber version number.
      * @param context The context to associate with this operation.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSchemaVersionWithResponseAsync(
-            String groupName, String schemaName, int versionNumber, Context context) {
+        String groupName, String schemaName, int versionNumber, Context context) {
         if (this.getHost() == null) {
             return Mono.error(new IllegalArgumentException("Parameter this.getHost() is required and cannot be null."));
         }
@@ -1368,15 +1383,15 @@ public final class AzureSchemaRegistryRestService {
      * @param groupName schema group.
      * @param schemaName schema name.
      * @param versionNumber version number.
+     * @return the completion.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSchemaVersionAsync(String groupName, String schemaName, int versionNumber) {
         return deleteSchemaVersionWithResponseAsync(groupName, schemaName, versionNumber)
-                .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**

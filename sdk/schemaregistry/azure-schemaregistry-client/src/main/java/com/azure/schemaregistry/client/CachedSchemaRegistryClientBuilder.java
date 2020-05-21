@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.schemaregistry.client;
 
+import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -7,7 +11,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -27,12 +30,17 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 
+/**
+ *
+ */
+@ServiceClientBuilder(serviceClients = CachedSchemaRegistryClient.class)
 public class CachedSchemaRegistryClientBuilder {
-    private final ClientLogger log = new ClientLogger(CachedSchemaRegistryClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(CachedSchemaRegistryClientBuilder.class);
 
     private static final String DEFAULT_SCOPE = "https://eventhubs.azure.com/.default";
     private static final String CLIENT_PROPERTIES = "azure-schemaregistry-client.properties";
@@ -54,14 +62,12 @@ public class CachedSchemaRegistryClientBuilder {
     private RetryPolicy retryPolicy;
 
     /**
-     * Constructor.
      * Sets the service endpoint for the Azure Schema Registry instance.
      * Supplies client defaults.
      *
-     * @param schemaRegistryUrl The URL of the Azure Schema Registry instance service requests to and receive responses from.
-     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
-     * @throws NullPointerException if {@code endpoint} is null
-     * @throws IllegalArgumentException if {@code endpoint} cannot be parsed into a valid URL.
+     * @param schemaRegistryUrl The URL of the Azure Schema Registry instance
+     * @throws NullPointerException if {@code schemaRegistryUrl} is null
+     * @throws IllegalArgumentException if {@code schemaRegistryUrl} cannot be parsed into a valid URL.
      */
     public CachedSchemaRegistryClientBuilder(String schemaRegistryUrl) {
         Objects.requireNonNull(schemaRegistryUrl, "'schemaRegistryUrl' cannot be null.");
@@ -69,7 +75,8 @@ public class CachedSchemaRegistryClientBuilder {
         try {
             new URL(schemaRegistryUrl);
         } catch (MalformedURLException ex) {
-            throw log.logExceptionAsWarning(new IllegalArgumentException("'schemaRegistryUrl' must be a valid URL.", ex));
+            throw logger.logExceptionAsWarning(
+                new IllegalArgumentException("'schemaRegistryUrl' must be a valid URL.", ex));
         }
 
         if (schemaRegistryUrl.endsWith("/")) {
@@ -93,16 +100,29 @@ public class CachedSchemaRegistryClientBuilder {
         this.headers = new HttpHeaders();
     }
 
+    /**
+     * Sets schema cache size limit.  If limit is exceeded on any cache, all caches are recycled.
+     *
+     * @param maxSchemaMapSize max size for internal schema caches in {@link CachedSchemaRegistryClient}
+     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @throws IllegalArgumentException on invalid maxSchemaMapSize value
+     */
     public CachedSchemaRegistryClientBuilder maxSchemaMapSize(int maxSchemaMapSize) throws IllegalArgumentException {
         if (maxSchemaMapSize < CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_MINIMUM) {
-            throw new IllegalArgumentException(
+            throw logger.logExceptionAsError(new IllegalArgumentException(
                 String.format("Schema map size must be greater than %s entries",
-                    CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_MINIMUM));
+                    CachedSchemaRegistryClient.MAX_SCHEMA_MAP_SIZE_MINIMUM)));
         }
         this.maxSchemaMapSize = maxSchemaMapSize;
         return this;
     }
 
+    /**
+     * Sets the HTTP client to use for sending and receiving requests to and from the service.
+     *
+     * @param httpClient The HTTP client to use for requests.
+     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     */
     public CachedSchemaRegistryClientBuilder httpClient(HttpClient httpClient) {
         this.httpClient = httpClient;
         return this;
@@ -118,7 +138,7 @@ public class CachedSchemaRegistryClientBuilder {
      */
     public CachedSchemaRegistryClientBuilder pipeline(HttpPipeline httpPipeline) {
         if (this.httpPipeline != null && httpPipeline == null) {
-            log.info("HttpPipeline is being set to 'null' when it was previously configured.");
+            logger.info("HttpPipeline is being set to 'null' when it was previously configured.");
         }
 
         this.httpPipeline = httpPipeline;
@@ -126,6 +146,14 @@ public class CachedSchemaRegistryClientBuilder {
     }
 
 
+    /**
+     * Sets the {@link TokenCredential} to use when authenticating HTTP requests for this
+     * {@link CachedSchemaRegistryClient}.
+     *
+     * @param credential {@link TokenCredential}
+     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     * @throws NullPointerException If {@code credential} is {@code null}
+     */
     public CachedSchemaRegistryClientBuilder credential(TokenCredential credential) {
         this.credential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
@@ -169,18 +197,47 @@ public class CachedSchemaRegistryClientBuilder {
         return this;
     }
 
-    public CachedSchemaRegistryClientBuilder loadSchemaParser(String serializationType, Function<String, Object> parseMethod) {
-        if (serializationType == null || serializationType.isEmpty()) {
-            throw new IllegalArgumentException("Serialization type cannot be null or empty.");
+    /**
+     * Loads a parser method Function object used to convert schema strings returned from the Schema Registry
+     * service into useable schema objects.
+     *
+     * Any com.azure.schemaregistry.ByteEncoder or com.azure.schemaregistry.ByteDecoder class will implement
+     * - serializationFormat(), which specifies schema type, and
+     * - parseSchemaString(), which parses schemas of the specified schema type from String to Object.
+     * This method can be used by passing in a method reference, e.g. ByteEncoder::parseSchemaString.
+     *
+     * The parseMethod argument should be a stateless, idempotent function.
+     *
+     * @param schemaType schema type for which the parse method should be applied.
+     * @param parseMethod function for deserializing registry-stored schema strings to Java Objects
+     * @return The updated {@link CachedSchemaRegistryClientBuilder} object.
+     */
+    public CachedSchemaRegistryClientBuilder loadSchemaParser(
+        String schemaType, Function<String, Object> parseMethod) {
+        if (schemaType == null || schemaType.isEmpty()) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Serialization type cannot be null or empty."));
         }
-        if (this.typeParserDictionary.containsKey(serializationType.toLowerCase())) {
-            throw new IllegalArgumentException("Multiple parse methods for single serialization type may not be added.");
+        if (this.typeParserDictionary.containsKey(schemaType.toLowerCase(Locale.ENGLISH))) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Multiple parse methods for single serialization type may not be added."));
         }
-        this.typeParserDictionary.put(serializationType.toLowerCase(), parseMethod);
+        this.typeParserDictionary.put(schemaType.toLowerCase(Locale.ENGLISH), parseMethod);
         return this;
     }
 
-    public CachedSchemaRegistryClient build() {
+    /**
+     * Creates a {@link CachedSchemaRegistryClient} based on options set in the builder.
+     * Every time {@code buildClient()} is called a new instance of {@link CachedSchemaRegistryClient} is created.
+     *
+     * If {@link #pipeline(HttpPipeline) pipeline} is set, then all HTTP pipeline related settings are ignored
+     * endpoint} are when creating the {@link CachedSchemaRegistryClient client}.
+     *
+     * @return A {@link CachedSchemaRegistryClient} with the options set from the builder.
+     * @throws NullPointerException if parameters are incorrectly set.
+     * @throws IllegalArgumentException if credential is not set.
+     */
+    public CachedSchemaRegistryClient buildClient() {
         HttpPipeline pipeline = this.httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
@@ -203,7 +260,7 @@ public class CachedSchemaRegistryClientBuilder {
                 policies.add(new BearerTokenAuthenticationPolicy(credential, DEFAULT_SCOPE));
             } else {
                 // Throw exception that credential and tokenCredential cannot be null
-                throw log.logExceptionAsError(
+                throw logger.logExceptionAsError(
                     new IllegalArgumentException("Missing credential information while building a client."));
             }
 

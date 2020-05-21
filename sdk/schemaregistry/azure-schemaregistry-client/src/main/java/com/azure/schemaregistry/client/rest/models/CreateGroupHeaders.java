@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.schemaregistry.client.rest.models;
 
 import com.azure.core.annotation.Fluent;
@@ -37,5 +40,5 @@ public final class CreateGroupHeaders {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public void validate() {}
+    public void validate() { }
 }

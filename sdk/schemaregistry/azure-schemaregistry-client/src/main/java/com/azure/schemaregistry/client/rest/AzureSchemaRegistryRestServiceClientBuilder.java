@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.schemaregistry.client.rest;
 
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -9,7 +12,7 @@ import com.azure.core.http.policy.UserAgentPolicy;
 
 /** A builder for creating a new instance of the AzureSchemaRegistryRestService type. */
 @ServiceClientBuilder(serviceClients = {AzureSchemaRegistryRestService.class})
-public final class AzureSchemaRegistryRestServiceBuilder {
+public final class AzureSchemaRegistryRestServiceClientBuilder {
     /*
      * server parameter
      */
@@ -19,9 +22,9 @@ public final class AzureSchemaRegistryRestServiceBuilder {
      * Sets server parameter.
      *
      * @param host the host value.
-     * @return the AzureSchemaRegistryRestServiceBuilder.
+     * @return the AzureSchemaRegistryRestServiceClientBuilder.
      */
-    public AzureSchemaRegistryRestServiceBuilder host(String host) {
+    public AzureSchemaRegistryRestServiceClientBuilder host(String host) {
         this.host = host;
         return this;
     }
@@ -35,9 +38,9 @@ public final class AzureSchemaRegistryRestServiceBuilder {
      * Sets The HTTP pipeline to send requests through.
      *
      * @param pipeline the pipeline value.
-     * @return the AzureSchemaRegistryRestServiceBuilder.
+     * @return the AzureSchemaRegistryRestServiceClientBuilder.
      */
-    public AzureSchemaRegistryRestServiceBuilder pipeline(HttpPipeline pipeline) {
+    public AzureSchemaRegistryRestServiceClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
