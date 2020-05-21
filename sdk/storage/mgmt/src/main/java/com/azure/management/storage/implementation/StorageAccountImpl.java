@@ -7,6 +7,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.management.resources.fluentcore.utils.Utils;
 import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.StorageAccountsClient;
 import com.azure.management.storage.models.AccessTier;
 import com.azure.management.storage.models.AccountStatuses;
 import com.azure.management.storage.models.AzureFilesIdentityBasedAuthentication;
@@ -29,7 +30,7 @@ import com.azure.management.storage.models.StorageAccountSkuType;
 import com.azure.management.storage.models.StorageAccountUpdateParameters;
 import com.azure.management.storage.models.StorageService;
 import com.azure.management.storage.fluent.inner.StorageAccountInner;
-import com.azure.management.storage.fluent.StorageAccountsClient;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;

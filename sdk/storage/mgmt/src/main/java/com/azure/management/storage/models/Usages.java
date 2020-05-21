@@ -8,8 +8,8 @@ import com.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.azure.management.resources.fluentcore.model.HasInner;
 import com.azure.management.storage.StorageManager;
-import com.azure.management.storage.fluent.inner.UsageInner;
 import com.azure.management.storage.fluent.UsagesClient;
+import com.azure.management.storage.fluent.inner.UsageInner;
 
 /** Entry point for storage resource usage management API. */
 @Fluent

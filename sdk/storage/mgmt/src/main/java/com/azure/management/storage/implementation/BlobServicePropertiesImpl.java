@@ -5,12 +5,13 @@ package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.BlobServicesClient;
 import com.azure.management.storage.models.BlobServiceProperties;
 import com.azure.management.storage.models.CorsRule;
 import com.azure.management.storage.models.CorsRules;
 import com.azure.management.storage.models.DeleteRetentionPolicy;
 import com.azure.management.storage.fluent.inner.BlobServicePropertiesInner;
-import com.azure.management.storage.fluent.BlobServicesClient;
+
 import java.util.ArrayList;
 import java.util.List;
 import reactor.core.publisher.Mono;

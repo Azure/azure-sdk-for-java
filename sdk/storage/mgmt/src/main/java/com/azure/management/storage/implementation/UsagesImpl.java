@@ -5,9 +5,9 @@ package com.azure.management.storage.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.UsagesClient;
 import com.azure.management.storage.models.Usages;
 import com.azure.management.storage.fluent.inner.UsageInner;
-import com.azure.management.storage.fluent.UsagesClient;
 
 /** The implementation of {@link Usages}. */
 public class UsagesImpl implements Usages {

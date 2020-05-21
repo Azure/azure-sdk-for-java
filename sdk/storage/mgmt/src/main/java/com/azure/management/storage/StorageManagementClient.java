@@ -35,7 +35,7 @@ public final class StorageManagementClient extends AzureServiceClient {
     private final ClientLogger logger = new ClientLogger(StorageManagementClient.class);
 
     /** The ID of the target subscription. */
-    private String subscriptionId;
+    private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
@@ -46,19 +46,8 @@ public final class StorageManagementClient extends AzureServiceClient {
         return this.subscriptionId;
     }
 
-    /**
-     * Sets The ID of the target subscription.
-     *
-     * @param subscriptionId the subscriptionId value.
-     * @return the service client itself.
-     */
-    StorageManagementClient setSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
-    }
-
     /** server parameter. */
-    private String host;
+    private final String host;
 
     /**
      * Gets server parameter.
@@ -69,19 +58,8 @@ public final class StorageManagementClient extends AzureServiceClient {
         return this.host;
     }
 
-    /**
-     * Sets server parameter.
-     *
-     * @param host the host value.
-     * @return the service client itself.
-     */
-    StorageManagementClient setHost(String host) {
-        this.host = host;
-        return this;
-    }
-
     /** Api Version. */
-    private String apiVersion;
+    private final String apiVersion;
 
     /**
      * Gets Api Version.
@@ -90,17 +68,6 @@ public final class StorageManagementClient extends AzureServiceClient {
      */
     public String getApiVersion() {
         return this.apiVersion;
-    }
-
-    /**
-     * Sets Api Version.
-     *
-     * @param apiVersion the apiVersion value.
-     * @return the service client itself.
-     */
-    StorageManagementClient setApiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
-        return this;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -319,29 +286,14 @@ public final class StorageManagementClient extends AzureServiceClient {
         return this.tables;
     }
 
-    /** Initializes an instance of StorageManagementClient client. */
-    public StorageManagementClient() {
-        this(
-            new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy()).build(),
-            AzureEnvironment.AZURE);
-    }
-
-    /**
-     * Initializes an instance of StorageManagementClient client.
-     *
-     * @param httpPipeline The HTTP pipeline to send requests through.
-     */
-    public StorageManagementClient(HttpPipeline httpPipeline) {
-        this(httpPipeline, AzureEnvironment.AZURE);
-    }
-
     /**
      * Initializes an instance of StorageManagementClient client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param environment The Azure environment.
      */
-    StorageManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment) {
+    StorageManagementClient(HttpPipeline httpPipeline, AzureEnvironment environment,
+                            String host, String apiVersion, String subscriptionId) {
         super(httpPipeline, environment);
         this.httpPipeline = httpPipeline;
         this.operations = new OperationsClient(this);
@@ -361,5 +313,8 @@ public final class StorageManagementClient extends AzureServiceClient {
         this.queues = new QueuesClient(this);
         this.tableServices = new TableServicesClient(this);
         this.tables = new TablesClient(this);
+        this.host = host;
+        this.apiVersion = apiVersion;
+        this.subscriptionId = subscriptionId;
     }
 }

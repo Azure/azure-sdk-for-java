@@ -5,6 +5,7 @@ package com.azure.management.storage.implementation;
 
 import com.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.azure.management.storage.StorageManager;
+import com.azure.management.storage.fluent.BlobContainersClient;
 import com.azure.management.storage.models.BlobContainer;
 import com.azure.management.storage.models.ImmutabilityPolicyProperties;
 import com.azure.management.storage.models.LeaseDuration;
@@ -13,7 +14,7 @@ import com.azure.management.storage.models.LeaseStatus;
 import com.azure.management.storage.models.LegalHoldProperties;
 import com.azure.management.storage.models.PublicAccess;
 import com.azure.management.storage.fluent.inner.BlobContainerInner;
-import com.azure.management.storage.fluent.BlobContainersClient;
+
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
