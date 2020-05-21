@@ -163,8 +163,8 @@ public class IdentityClient {
                     | KeyStoreException
                     | NoSuchProviderException
                     | IOException e) {
-                    throw logger.logExceptionAsError(
-                        new RuntimeException("Failed to parse the certificate for the credential.", e));
+                    throw logger.logExceptionAsError(new RuntimeException(
+                        "Failed to parse the certificate for the credential: " + e.getMessage(), e));
                 }
             } else {
                 throw logger.logExceptionAsError(
