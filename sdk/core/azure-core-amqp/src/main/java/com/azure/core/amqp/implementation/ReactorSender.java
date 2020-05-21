@@ -337,7 +337,7 @@ class ReactorSender implements AmqpSendLink {
      * @return created AMQP {@link Message}.
      */
     private Message getCompleteTransactionMessage(ByteBuffer transactionId, boolean isCommit) {
-        Message message = Message.Factory.create();
+        Message message = Proton.message();
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
         discharge.setTxnId(new Binary(transactionId.array()));
@@ -351,7 +351,7 @@ class ReactorSender implements AmqpSendLink {
      * @return created AMQP {@link Message}.
      */
     private Message getCreateTransactionMessage() {
-        Message message = Message.Factory.create();
+        Message message = Proton.message();
         Declare declare = new Declare();
         message.setBody(new AmqpValue(declare));
         return message;

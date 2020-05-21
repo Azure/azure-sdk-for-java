@@ -477,11 +477,9 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         }
 
         return connectionProcessor
-            .flatMap(connection -> connection.getTransactionManager(entityName, entityType))
+            .flatMap(connection -> connection.getTransactionManager())
             .flatMap(transactionManager -> transactionManager.createTransaction())
             .map(byteBuffer -> {
-                logger
-                    .verbose(" !!!! Created transaction .");
                 return new ServiceBusTransactionContext(byteBuffer);
             });
     }

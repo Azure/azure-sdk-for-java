@@ -35,10 +35,13 @@ public interface AmqpSession extends Disposable {
      * @param entityPath The entity path this link connects to when producing events.
      * @param timeout Timeout required for creating and opening AMQP link.
      * @param retryPolicy The retry policy to use when sending messages.
+     * @param authenticationRequired is authentication required.
+     * @param isTransactionCoordinator is it transaction corrdinator.
      *
      * @return A newly created AMQP link.
      */
-    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy);
+    Mono<AmqpLink> createProducer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retryPolicy,
+        boolean authenticationRequired, boolean isTransactionCoordinator);
 
     /**
      * Creates a new AMQP link that can publish transaction events to the message broker.

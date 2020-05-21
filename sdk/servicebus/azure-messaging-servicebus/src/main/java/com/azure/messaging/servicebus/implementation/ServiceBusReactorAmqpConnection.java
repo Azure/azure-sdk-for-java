@@ -145,7 +145,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             logger.verbose("Get or create producer for path: '{}'", entityPath);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy)
+            return session.createProducer(linkName, entityPath, retryOptions.getTryTimeout(), retryPolicy,
+                true, false)
                 .cast(AmqpSendLink.class);
         });
     }
@@ -165,7 +166,8 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
             logger.verbose("Get or create producer for path: '{}'", linkName);
             final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(retryOptions);
 
-            return session.createTransactionProducer(linkName, retryOptions.getTryTimeout(), retryPolicy)
+            return session.createProducer(linkName, linkName, retryOptions.getTryTimeout(), retryPolicy,
+                false, true)
                 .cast(AmqpSendLink.class);
         });
     }
@@ -220,44 +222,34 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     }
 
     @Override
-    public Mono<TransactionManager> getTransactionManager(String entityPath, MessagingEntityType entityType) {
+    public Mono<TransactionManager> getTransactionManager() {
+        final String linkName = "coordinator";
         if (isDisposed()) {
             return Mono.error(logger.logExceptionAsError(new IllegalStateException(String.format(
-                "connectionId[%s]: Connection is disposed. Cannot get management instance for '%s'",
-                connectionId, entityPath))));
+                "connectionId[%s]: Connection is disposed. Cannot get transaction coordinator instance for '%s'",
+                connectionId, linkName))));
         }
 
-        final String entityTypePath = String.join("-", entityType.toString(), entityPath);
 
-        final TransactionManager existing = transactionManagers.get(entityTypePath);
+        final TransactionManager existing = transactionManagers.get(linkName);
         if (existing != null) {
             return Mono.just(existing);
         }
 
         return getReactorConnection().then(
             Mono.defer(() -> {
-                final TokenManager tokenManager = new AzureTokenManagerProvider(authorizationType,
-                    fullyQualifiedNamespace, ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE)
-                    .getTokenManager(getClaimsBasedSecurityNode(), entityPath);
-
-                return tokenManager.authorize().thenReturn(transactionManagers.compute(entityTypePath, (key, current) -> {
+                return Mono.just(transactionManagers.compute(linkName, (key, current) -> {
                     if (current != null) {
-                        logger.info("A management node exists already, returning it.");
+                        logger.info("A transaction coordinator exists already, returning it.");
 
-                        // Close the token manager we had created during this because it is unneeded now.
-                        tokenManager.close();
                         return current;
                     }
 
-                    final String linkName = "coordinator";
+                    logger.info("Creating transaction coordinator. linkName: [{}]",
+                        linkName);
 
-                    logger.info("Creating management node. entityPath: [{}]. linkName: [{}]",
-                        entityPath, linkName);
-
-
-                    return new TransactionManagerImpl(createTransactionSendLink(linkName, retryOptions),
-                        fullyQualifiedNamespace, entityPath, tokenManager, messageSerializer,
-                        retryOptions.getTryTimeout());
+                    return  new TransactionManagerImpl(createTransactionSendLink(linkName, retryOptions),
+                        fullyQualifiedNamespace, linkName);
                 }));
             }));
     }

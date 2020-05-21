@@ -93,14 +93,22 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      * Verifies that we can create multiple transaction using sender and receiver.
      */
     @Test
-    void createMultipleTansactionTest() {
+    void createTansactionTest() {
         // Arrange
         setSenderAndReceiver(MessagingEntityType.QUEUE, false);
 
-        final String messageId = UUID.randomUUID().toString();
-        final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
-
-        //sendMessage(message).block(TIMEOUT);
+        // Assert & Act
+        StepVerifier.create(receiver.createTransaction())
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+    }
+    /**
+     * Verifies that we can create multiple transaction using sender and receiver.
+     */
+    @Test
+    void createMultipleTansactionTest() {
+        // Arrange
+        setSenderAndReceiver(MessagingEntityType.QUEUE, false);
 
         // Assert & Act
         StepVerifier.create(receiver.createTransaction())
@@ -176,15 +184,6 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             .verifyComplete();
         ReceiveAsyncOptions options =  new ReceiveAsyncOptions();
         options.setIsAutoCompleteEnabled(false);
-
-        /*receiver.receive(options)
-            .take(1)
-            .flatMap(messageContext -> {
-                logger.verbose("!!!! Test Received Message SQ [{}]  Lock [{}] and will complete it transaction [{}]", messageContext.getMessage().getSequenceNumber(), messageContext.getMessage().getLockToken(), (new String(transaction.get().getTransactionId().array(), Charset.defaultCharset())));
-                return receiver.complete(messageContext.getMessage(), transaction.get());
-            })
-            .subscribe();
-        */
 
         final ServiceBusReceivedMessageContext receivedContext = receiver.receive(options).next().block(TIMEOUT);
         assertNotNull(receivedContext);
