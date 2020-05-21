@@ -49,7 +49,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public Mono<BlobServiceProperties> createResourceAsync() {
-        BlobServicesClient client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().getBlobServices();
         return client
             .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
             .map(innerToFluentMap(this));
@@ -57,7 +57,7 @@ class BlobServicePropertiesImpl
 
     @Override
     public Mono<BlobServiceProperties> updateResourceAsync() {
-        BlobServicesClient client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().getBlobServices();
         return client
             .setServicePropertiesAsync(this.resourceGroupName, this.accountName, this.inner())
             .map(innerToFluentMap(this));
@@ -65,7 +65,7 @@ class BlobServicePropertiesImpl
 
     @Override
     protected Mono<BlobServicePropertiesInner> getInnerAsync() {
-        BlobServicesClient client = this.manager().inner().blobServices();
+        BlobServicesClient client = this.manager().inner().getBlobServices();
         return client.getServicePropertiesAsync(this.resourceGroupName, this.accountName);
     }
 

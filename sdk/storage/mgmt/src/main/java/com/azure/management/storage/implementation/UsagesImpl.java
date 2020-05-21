@@ -35,6 +35,6 @@ public class UsagesImpl implements Usages {
 
     @Override
     public UsagesClient inner() {
-        return this.manager().inner().usages();
+        return this.manager().inner().getUsages();
     }
 }

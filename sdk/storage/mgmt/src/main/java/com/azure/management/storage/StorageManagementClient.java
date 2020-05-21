@@ -93,7 +93,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the OperationsClient object.
      */
-    public OperationsClient operations() {
+    public OperationsClient getOperations() {
         return this.operations;
     }
 
@@ -105,7 +105,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the SkusClient object.
      */
-    public SkusClient skus() {
+    public SkusClient getSkus() {
         return this.skus;
     }
 
@@ -117,7 +117,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the StorageAccountsClient object.
      */
-    public StorageAccountsClient storageAccounts() {
+    public StorageAccountsClient getStorageAccounts() {
         return this.storageAccounts;
     }
 
@@ -129,7 +129,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the UsagesClient object.
      */
-    public UsagesClient usages() {
+    public UsagesClient getUsages() {
         return this.usages;
     }
 
@@ -141,7 +141,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the ManagementPoliciesClient object.
      */
-    public ManagementPoliciesClient managementPolicies() {
+    public ManagementPoliciesClient getManagementPolicies() {
         return this.managementPolicies;
     }
 
@@ -153,7 +153,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the PrivateEndpointConnectionsClient object.
      */
-    public PrivateEndpointConnectionsClient privateEndpointConnections() {
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
@@ -165,7 +165,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the PrivateLinkResourcesClient object.
      */
-    public PrivateLinkResourcesClient privateLinkResources() {
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
@@ -177,7 +177,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the ObjectReplicationPoliciesOperationsClient object.
      */
-    public ObjectReplicationPoliciesOperationsClient objectReplicationPoliciesOperations() {
+    public ObjectReplicationPoliciesOperationsClient getObjectReplicationPoliciesOperations() {
         return this.objectReplicationPoliciesOperations;
     }
 
@@ -189,7 +189,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the EncryptionScopesClient object.
      */
-    public EncryptionScopesClient encryptionScopes() {
+    public EncryptionScopesClient getEncryptionScopes() {
         return this.encryptionScopes;
     }
 
@@ -201,7 +201,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the BlobServicesClient object.
      */
-    public BlobServicesClient blobServices() {
+    public BlobServicesClient getBlobServices() {
         return this.blobServices;
     }
 
@@ -213,7 +213,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the BlobContainersClient object.
      */
-    public BlobContainersClient blobContainers() {
+    public BlobContainersClient getBlobContainers() {
         return this.blobContainers;
     }
 
@@ -225,7 +225,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the FileServicesClient object.
      */
-    public FileServicesClient fileServices() {
+    public FileServicesClient getFileServices() {
         return this.fileServices;
     }
 
@@ -237,7 +237,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the FileSharesClient object.
      */
-    public FileSharesClient fileShares() {
+    public FileSharesClient getFileShares() {
         return this.fileShares;
     }
 
@@ -249,7 +249,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the QueueServicesClient object.
      */
-    public QueueServicesClient queueServices() {
+    public QueueServicesClient getQueueServices() {
         return this.queueServices;
     }
 
@@ -261,7 +261,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the QueuesClient object.
      */
-    public QueuesClient queues() {
+    public QueuesClient getQueues() {
         return this.queues;
     }
 
@@ -273,7 +273,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the TableServicesClient object.
      */
-    public TableServicesClient tableServices() {
+    public TableServicesClient getTableServices() {
         return this.tableServices;
     }
 
@@ -285,7 +285,7 @@ public final class StorageManagementClient extends AzureServiceClient {
      *
      * @return the TablesClient object.
      */
-    public TablesClient tables() {
+    public TablesClient getTables() {
         return this.tables;
     }
 

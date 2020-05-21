@@ -21,7 +21,7 @@ public class StorageAccountsImpl
     implements StorageAccounts {
 
     public StorageAccountsImpl(final StorageManager storageManager) {
-        super(storageManager.inner().storageAccounts(), storageManager);
+        super(storageManager.inner().getStorageAccounts(), storageManager);
     }
 
     @Override

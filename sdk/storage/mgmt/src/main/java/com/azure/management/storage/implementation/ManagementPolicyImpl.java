@@ -60,7 +60,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> createResourceAsync() {
-        ManagementPoliciesClient client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, cpolicy)
             .map(
@@ -73,7 +73,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     public Mono<ManagementPolicy> updateResourceAsync() {
-        ManagementPoliciesClient client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client
             .createOrUpdateAsync(this.resourceGroupName, this.accountName, upolicy)
             .map(
@@ -86,7 +86,7 @@ class ManagementPolicyImpl extends CreatableUpdatableImpl<ManagementPolicy, Mana
 
     @Override
     protected Mono<ManagementPolicyInner> getInnerAsync() {
-        ManagementPoliciesClient client = this.manager().inner().managementPolicies();
+        ManagementPoliciesClient client = this.manager().inner().getManagementPolicies();
         return client.getAsync(this.resourceGroupName, this.accountName);
     }
 

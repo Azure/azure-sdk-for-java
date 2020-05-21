@@ -36,6 +36,6 @@ public class StorageSkusImpl implements StorageSkus {
 
     @Override
     public SkusClient inner() {
-        return manager.inner().skus();
+        return manager.inner().getSkus();
     }
 }

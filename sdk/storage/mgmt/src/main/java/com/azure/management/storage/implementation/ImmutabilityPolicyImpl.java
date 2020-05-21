@@ -50,7 +50,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> createResourceAsync() {
-        BlobContainersClient client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -64,7 +64,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
-        BlobContainersClient client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client
             .createOrUpdateImmutabilityPolicyAsync(
                 this.resourceGroupName,
@@ -83,7 +83,7 @@ class ImmutabilityPolicyImpl
 
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
-        BlobContainersClient client = this.manager().inner().blobContainers();
+        BlobContainersClient client = this.manager().inner().getBlobContainers();
         return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
     }
 

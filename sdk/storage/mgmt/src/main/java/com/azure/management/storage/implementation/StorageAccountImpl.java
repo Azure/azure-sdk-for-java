@@ -206,7 +206,7 @@ class StorageAccountImpl
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .listKeysAsync(this.resourceGroupName(), this.name())
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
@@ -221,7 +221,7 @@ class StorageAccountImpl
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .regenerateKeyAsync(this.resourceGroupName(), this.name(), keyName)
             .map(storageAccountListKeysResultInner -> storageAccountListKeysResultInner.keys());
     }
@@ -240,7 +240,7 @@ class StorageAccountImpl
 
     @Override
     protected Mono<StorageAccountInner> getInnerAsync() {
-        return this.manager().inner().storageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+        return this.manager().inner().getStorageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     @Override
@@ -503,11 +503,11 @@ class StorageAccountImpl
         this.networkRulesHelper.setDefaultActionIfRequired();
         createParameters.withLocation(this.regionName());
         createParameters.withTags(this.inner().tags());
-        final StorageAccountsClient client = this.manager().inner().storageAccounts();
+        final StorageAccountsClient client = this.manager().inner().getStorageAccounts();
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .createAsync(this.resourceGroupName(), this.name(), createParameters)
             .flatMap(
                 storageAccountInner ->
@@ -524,7 +524,7 @@ class StorageAccountImpl
         return this
             .manager()
             .inner()
-            .storageAccounts()
+            .getStorageAccounts()
             .updateAsync(resourceGroupName(), this.name(), updateParameters)
             .map(innerToFluentMap(this))
             .doOnNext(storageAccount -> clearWrapperProperties());
